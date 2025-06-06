@@ -53,8 +53,6 @@ group :development, :test do
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
 
-  gem "rspec-rails", "~> 8.0.0"
-
   # linting packages used by github action
   gem "bundler-audit", "~> 0.9.2"
 
@@ -78,7 +76,12 @@ end
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
+  gem "database_cleaner-active_record"
+  gem "rspec-rails", "~> 8.0.0"
   gem "selenium-webdriver"
+  gem "shoulda-matchers"
+  gem "simplecov", require: false
+  gem "webdrivers"
 end
 
 # Validating attached document
