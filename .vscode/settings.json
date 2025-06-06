@@ -1,0 +1,188 @@
+// .vscode/settings.json
+
+{
+  // -------------------------------------------------------------------------
+  // Core Editor Behavior & Appearance
+  // -------------------------------------------------------------------------
+
+  // General tab/indentation settings
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.renderWhitespace": "all",
+  "editor.detectIndentation": false, // Enforce our chosen indentation
+  "editor.bracketPairColorization.enabled": true, // Helps with nested code blocks
+  "editor.guides.bracketPairs": "active", // Show active bracket pair guides
+
+  // File encoding and end-of-line
+  "files.encoding": "utf8",
+  "files.eol": "\n", // Enforce Unix-style line endings
+  "files.trimTrailingWhitespace": true, // Remove extra whitespace at the end of lines on save
+  "files.insertFinalNewline": true, // Ensure files end with a newline character on save
+  "files.associations": {
+      "*.erb": "erb"
+  },
+
+  // Save actions: format, fix, organize imports
+  "editor.formatOnSave": true, // Automatically format code on save
+  "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit", // Auto-fix ESLint issues on save
+      "source.fixAll.rubocop": "explicit" // Although LSP handles this, good to be explicit for auto-fix
+  },
+
+  // Prevent pop-up for multiple formatters; specify default
+  "editor.defaultFormatter": null, // Reset global default
+
+  // -------------------------------------------------------------------------
+  // Ruby Language Server (LSP) & RuboCop Integration
+  // -------------------------------------------------------------------------
+
+  // Language-specific settings for Ruby files
+  "[ruby]": {
+      "editor.defaultFormatter": "Shopify.ruby-lsp", // Use the official Ruby LSP extension as the formatter
+      "editor.tabSize": 2, // Specific for Ruby, overrides general if different
+      "editor.insertSpaces": true // Specific for Ruby
+  },
+  // The Ruby LSP extension automatically detects RuboCop in your Gemfile
+  // and uses it for formatting and linting. No special `rubocop.onSave`
+  // or `rubocop.executePath` is needed with the modern LSP setup.
+  // If you need to debug Ruby LSP issues:
+  // "ruby.lsp.debug": true,
+
+  // -------------------------------------------------------------------------
+  // JavaScript/TypeScript (ESLint & Prettier)
+  // -------------------------------------------------------------------------
+
+  // General JavaScript formatting
+  "[javascript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.tabSize": 2,
+      "editor.insertSpaces": true
+  },
+  "[javascriptreact]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.tabSize": 2,
+      "editor.insertSpaces": true
+  },
+  "[typescript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.tabSize": 2,
+      "editor.insertSpaces": true
+  },
+  "[typescriptreact]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.tabSize": 2,
+      "editor.insertSpaces": true
+  },
+
+  // ESLint configuration
+  "eslint.enable": true,
+  "eslint.lintTask.enable": true,
+  "eslint.validate": [
+      "javascript",
+      "javascriptreact",
+      "typescript",
+      "typescriptreact"
+  ],
+  "eslint.options": {
+      "cache": true
+  },
+
+  // Prettier configuration (overrides default options if needed)
+  "prettier.tabWidth": 2,
+  "prettier.useTabs": false,
+  "prettier.singleQuote": true,
+  "prettier.semi": true,
+  "prettier.printWidth": 120, // Adjust as per your team's preference
+  "prettier.jsxSingleQuote": false,
+  "prettier.trailingComma": "es5", // or "all", or "none"
+
+  // -------------------------------------------------------------------------
+  // CSS / SCSS / HTML Formatting
+  // -------------------------------------------------------------------------
+
+  "[css]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.tabSize": 2,
+      "editor.insertSpaces": true
+  },
+  "[scss]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.tabSize": 2,
+      "editor.insertSpaces": true
+  },
+  "[html]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.tabSize": 2,
+      "editor.insertSpaces": true
+  },
+
+  // Optional: Tailwind CSS IntelliSense settings
+  "tailwindCSS.emmetCompletions": true,
+  "tailwindCSS.includeLanguages": {
+      "erb": "html",
+      "html.erb": "html"
+  },
+
+  // -------------------------------------------------------------------------
+  // Files & Search Exclusions (Improve VS Code performance)
+  // -------------------------------------------------------------------------
+
+  // Exclude common directories from the file explorer
+  "files.exclude": {
+      "**/.git": true,
+      "**/.DS_Store": true,
+      "**/.bundle": true,
+      "**/node_modules": true,
+      "**/tmp": true,
+      "**/log": true,
+      "**/public/packs": true,
+      "**/public/assets": true,
+      "**/vendor/bundle": true,
+      "**/vendor/cache": true,
+      "**/.byebug_history": true,
+      "**/.vscode-test": true
+  },
+
+  // Exclude common directories from search results
+  "search.exclude": {
+      "**/.git": true,
+      "**/.bundle": true,
+      "**/node_modules": true,
+      "**/tmp": true,
+      "**/log": true,
+      "**/public/packs": true,
+      "**/public/assets": true,
+      "**/vendor/bundle": true,
+      "**/vendor/cache": true
+  },
+
+  // -------------------------------------------------------------------------
+  // Terminal Integration (adjust for your OS if not Linux/WSL)
+  // -------------------------------------------------------------------------
+
+  // Set default terminal profile for Linux/WSL
+  "terminal.integrated.defaultProfile.linux": "bash", // or "zsh", "fish", "pwsh"
+  "terminal.integrated.profiles.linux": {
+      "bash": {
+          "path": "bash"
+      },
+      "zsh": {
+          "path": "zsh"
+      },
+      "fish": {
+          "path": "fish"
+      },
+      "pwsh": {
+          "path": "pwsh"
+      }
+  },
+  "terminal.integrated.enableFileLinks": "on", // Make file paths in terminal clickable
+  "terminal.integrated.scrollback": 10000, // Increase scrollback buffer
+
+  // -------------------------------------------------------------------------
+  // Git Integration
+  // -------------------------------------------------------------------------
+
+  "git.autofetch": true, // Automatically fetch from remotes
+  "git.pullBeforeCheckout": true // Pull new changes before checking out branches
+}
