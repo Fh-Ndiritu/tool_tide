@@ -76,10 +76,15 @@ jobs:
       #   options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
-      - name: Install packages
-        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y nodejs npm build-essential git libpq-dev libyaml-dev node-gyp pkg-config python-is-python3 google-chrome-stable libvips
+      - name: Install system packages
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y \
+            nodejs npm \
+            build-essential git libpq-dev libyaml-dev node-gyp pkg-config python-is-python3 \
+            google-chrome-stable libvips
 
-      - name: Install Yarn
+      - name: Install Yarn globally
         run: npm install -g yarn
 
       - name: Checkout code
@@ -89,12 +94,17 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: .ruby-version
-          bundler-cache: true
+          bundler-cache: true # This runs 'bundle install'
+
+      # IMPORTANT: ADD THIS STEP TO INSTALL PROJECT'S JAVASCRIPT DEPENDENCIES
+      - name: Install JavaScript dependencies
+        run: yarn install --immutable # Use --immutable for CI/CD environments for strictness
 
       - name: Run tests
         env:
           RAILS_ENV: test
           DATABASE_URL: postgres://postgres:postgres@localhost:5432
+          # REDIS_URL: redis://localhost:6379/0
         run: bin/rails db:test:prepare test test:system
 
       - name: Keep screenshots from failed system tests
