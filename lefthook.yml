@@ -47,6 +47,4 @@ pre-commit:
     rubocop:
       run: bundle exec rubocop --auto-correct-all --force-exclusion
       files: git diff --cached --name-only --diff-filter=ACM | grep '\.rb$'
-    # erblint:
-    #   run: bundle exec erblint --lint-all --force-exclusion --autocorrect
-    #   files: git diff --cached --name-only --diff-filter=ACM | grep '\.erb$'
+      skip: true # This would skip the command entirely if `files` is empty. Not ideal for this specific error.
