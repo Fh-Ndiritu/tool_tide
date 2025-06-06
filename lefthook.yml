@@ -41,10 +41,11 @@
 #     - script: "hello.go"
 #       runner: go run
 
+# This would skip the command entirely if `files` is empty.
 pre-commit:
   parallel: true
   commands:
     rubocop:
       run: bundle exec rubocop --auto-correct-all --force-exclusion
       files: git diff --cached --name-only --diff-filter=ACM | grep '\.rb$'
-      skip: true # This would skip the command entirely if `files` is empty. Not ideal for this specific error.
+      skip: true
