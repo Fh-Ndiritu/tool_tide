@@ -48,4 +48,3 @@ pre-commit:
     rubocop:
       run: bundle exec rubocop --auto-correct-all --force-exclusion
       files: git diff --cached --name-only --diff-filter=ACM | grep '\.rb$'
-      skip: true

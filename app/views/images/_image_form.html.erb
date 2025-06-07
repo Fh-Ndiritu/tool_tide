@@ -13,16 +13,19 @@
           <p class="text-sm -700 my-3">Upload up to 10 images</p>
         </div>
       </div>
-      <div class="hidden preview p-2 min-h-32 max-h-56 overflow-y-auto custom-bar" data-image-uploads-target="preview">
+      <div class="hidden preview px-2 pb-4 min-h-32 max-h-56 overflow-y-auto custom-bar" data-image-uploads-target="preview">
       </div>
   </div>
     <p class="text-sm text-neutral-700 my-2"><span class="text-red-500">*</span> Your data is safe. No storage is used.</p>
 </div>
   <div class="field hidden">
-    <%= form.file_field :images, multiple: true, data: { image_uploads_target: "input" } %>
+    <!--# we need to allow only images-->
+    <%= form.file_field :images, multiple: true, data: { image_uploads_target: "input" }, accept: "image/*" %>
   </div>
 
-
+  <div>
+    <%= form.hidden_field :conversion, value: @conversion %>
+  </div>
   <div class="actions hidden flex justify-center" data-image-uploads-target="submit">
     <%= render(ButtonComponent.new(text: "Upload", type: "submit", classes: "max-w-[150px] mt-4")) %>
   </div>

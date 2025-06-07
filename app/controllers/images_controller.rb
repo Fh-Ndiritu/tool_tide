@@ -1,14 +1,16 @@
 class ImagesController < ApplicationController
   def index
+    # we shall add more conversions later
+    @conversion = "text"
   end
 
   def create
-    binding.irb
+    result = ImageOrchestratorService.perform(image_params[:conversion], image_params[:images])
   end
 
   private
 
-  def text_params
-    params.expect(:text).require(images: [])
+  def image_params
+    params.permit(:conversion, images: [])
   end
 end
