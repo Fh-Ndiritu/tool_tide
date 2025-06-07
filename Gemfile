@@ -97,3 +97,7 @@ gem "rack-attack"
 gem "recaptcha"
 # Framework for creating reusable, testable, & encapsulated view components
 gem "view_component"
+
+gem "tailwindcss-ruby", "~> 4.1"
+
+gem "tailwindcss-rails", "~> 4.2"
