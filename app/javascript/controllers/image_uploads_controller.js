@@ -3,7 +3,7 @@ import { Controller } from '@hotwired/stimulus';
 
 // Connects to data-controller="image-uploads"
 export default class extends Controller {
-  static targets = ['input', 'preview', 'inputTrigger', 'submit', 'contentWrapper', 'form'];
+  static targets = ['input', 'preview', 'inputTrigger', 'submit', 'contentWrapper'];
 
   allFiles = [];
   maxImages = 10;
@@ -25,10 +25,6 @@ export default class extends Controller {
 
     // Add paste event listener to the designated contentWrapper element
     this.contentWrapperTarget.addEventListener('paste', this.handlePaste.bind(this));
-
-    // Listen for Turbo form submission events to manage UI state
-    this.formTarget.addEventListener('turbo:submit-start', this.handleTurboSubmitStart.bind(this));
-    this.formTarget.addEventListener('turbo:submit-end', this.handleTurboSubmitEnd.bind(this));
 
     // Initialize submit button and preview visibility
     this.updateSubmitButtonVisibility();
