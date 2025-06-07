@@ -3,12 +3,10 @@ import { Controller } from '@hotwired/stimulus';
 
 // Connects to data-controller="image-uploads"
 export default class extends Controller {
-  static targets = ['input', 'preview', 'inputTrigger', 'submit', 'contentWrapper', 'form']; // Added 'form' target
+  static targets = ['input', 'preview', 'inputTrigger', 'submit', 'contentWrapper', 'form'];
 
-  // Internal array to keep track of files selected for upload
-  // This is necessary because FileList objects are immutable.
   allFiles = [];
-  maxImages = 10; // New: Define the maximum number of images allowed
+  maxImages = 10;
 
   connect() {
     console.log('ImageUploads controller connected.');
@@ -28,8 +26,9 @@ export default class extends Controller {
     // Add paste event listener to the designated contentWrapper element
     this.contentWrapperTarget.addEventListener('paste', this.handlePaste.bind(this));
 
-    // New: Intercept form submission
-    this.formTarget.addEventListener('submit', this.handleSubmit.bind(this));
+    // Listen for Turbo form submission events to manage UI state
+    this.formTarget.addEventListener('turbo:submit-start', this.handleTurboSubmitStart.bind(this));
+    this.formTarget.addEventListener('turbo:submit-end', this.handleTurboSubmitEnd.bind(this));
 
     // Initialize submit button and preview visibility
     this.updateSubmitButtonVisibility();
@@ -49,10 +48,9 @@ export default class extends Controller {
 
     imageFiles.forEach((file) => {
       const fileId = this._getFileId(file);
-      // New: Check for duplicates and max image limit
       if (!currentFileIds.has(fileId) && this.allFiles.length + filesToAdd.length < this.maxImages) {
         filesToAdd.push(file);
-        currentFileIds.add(fileId); // Add to set to prevent subsequent duplicates within the same batch
+        currentFileIds.add(fileId);
       } else if (currentFileIds.has(fileId)) {
         console.warn(`Skipped duplicate file: ${file.name}`);
       } else if (this.allFiles.length + filesToAdd.length >= this.maxImages) {
@@ -60,65 +58,43 @@ export default class extends Controller {
       }
     });
 
-    this.allFiles = this.allFiles.concat(filesToAdd); // Append only unique and allowed files
+    this.allFiles = this.allFiles.concat(filesToAdd);
 
-    // New: If no files were added and there are existing files, don't hide preview unnecessarily
+    // ************* CRUCIAL: Update the actual file input *************
+    // This is the key change. Whenever `allFiles` is updated, we must
+    // ensure the `inputTarget.files` property reflects it.
+    this.updateFileInput();
+
     if (this.allFiles.length > 0) {
-      this.showPreview(); // Show the preview section when files are added
+      this.showPreview();
     }
 
-    this.renderPreviews(); // Render all current files in the preview
-    // No longer need to update `inputTarget.files` here for submission, as we'll use FormData
-    this.updateSubmitButtonVisibility(); // Show the submit button
+    this.renderPreviews();
+    this.updateSubmitButtonVisibility();
   }
 
-  // New: Handles the form submission
-  async handleSubmit(event) {
-    event.preventDefault(); // Prevent default form submission
-
-    if (this.allFiles.length === 0) {
-      console.warn('No images selected for upload.');
-      return;
-    }
-
-    const formData = new FormData(this.formTarget); // Initialize with existing form data (like authenticity token)
-
-    // Append each image file to the FormData
-    this.allFiles.forEach((file) => {
-      formData.append('images[]', file); // Use 'images[]' to match Rails' expected array parameter
-    });
-
-    // Disable submit button and show loading state if desired
+  // Handles the start of a Turbo form submission
+  handleTurboSubmitStart() {
     this.submitTarget.disabled = true;
-    this.submitTarget.textContent = 'Uploading...'; // Or add a spinner
+    this.submitTarget.textContent = 'Uploading...';
+  }
 
-    try {
-      const response = await fetch(this.formTarget.action, {
-        method: this.formTarget.method,
-        body: formData,
-        // Don't set Content-Type header; fetch will set it correctly for FormData
-      });
+  // Handles the end of a Turbo form submission (whether success or failure)
+  handleTurboSubmitEnd(event) {
+    // Re-enable submit button
+    this.submitTarget.disabled = false;
+    this.submitTarget.textContent = 'Upload';
 
-      if (response.ok) {
-        const result = await response.json(); // Assuming JSON response from Rails
-        console.log('Upload successful:', result);
-        // Clear files and hide preview after successful upload
-        this.allFiles = [];
-        this.renderPreviews();
-        this.updateSubmitButtonVisibility();
-        // You might want to display a success message to the user
-      } else {
-        const errorData = await response.json(); // Assuming JSON error response
-        console.error('Upload failed:', response.status, errorData);
-        // Display an error message to the user
-      }
-    } catch (error) {
-      console.error('Network error during upload:', error);
-      // Display a network error message
-    } finally {
-      // Re-enable submit button
-      this.submitTarget.disabled = false;
-      this.submitTarget.textContent = 'Upload';
+    if (event.detail.success) {
+      console.log('Turbo upload successful!');
+      this.allFiles = []; // Clear files on success
+      this.renderPreviews(); // Clear previews
+      this.updateFileInput(); // Important: Clear the actual file input too!
+      this.updateSubmitButtonVisibility();
+    } else {
+      console.error('Turbo upload failed.');
+      // Turbo will handle rendering error responses.
+      // You might inspect `event.detail.fetchResponse` for more details if needed
     }
   }
 
@@ -138,31 +114,28 @@ export default class extends Controller {
 
   // Handles the change event from the file input
   handleFileChange(event) {
+    // When files are selected via the file input, they are initially in event.target.files.
+    // We add them to allFiles, and then updateFileInput will push them back to inputTarget.files.
     this.addFiles(Array.from(event.target.files));
-    // Clear the input's files after processing to allow selecting the same file again
-    // (though our internal logic will prevent duplicates)
-    event.target.value = '';
+    // No need to clear event.target.value here; updateFileInput handles it
   }
 
   // Handles drag over event for visual feedback
   handleDragOver(event) {
-    event.preventDefault(); // Prevent default to allow drop
+    event.preventDefault();
     event.stopPropagation();
-    // Apply visual indicator to the contentWrapper
     this.contentWrapperTarget.classList.add('border-dashed', 'border-primary', 'border-2');
   }
 
   // Handles drag leave event to remove visual feedback
   handleDragLeave() {
-    // Remove visual indicator from the contentWrapper
     this.contentWrapperTarget.classList.remove('border-dashed', 'border-primary', 'border-2');
   }
 
   // Handles drop event to process dropped files
   handleDrop(event) {
-    event.preventDefault(); // Prevent default to get files from dataTransfer
+    event.preventDefault();
     event.stopPropagation();
-    // Remove visual indicator from the contentWrapper
     this.contentWrapperTarget.classList.remove('border-dashed', 'border-primary', 'border-2');
 
     const droppedFiles = Array.from(event.dataTransfer.files);
@@ -171,19 +144,17 @@ export default class extends Controller {
 
   // Handles paste event to process pasted images
   handlePaste(event) {
-    // Check if there are any items in the clipboard
     if (event.clipboardData && event.clipboardData.items) {
       const pastedFiles = [];
       for (let i = 0; i < event.clipboardData.items.length; i++) {
         const item = event.clipboardData.items[i];
-        // If the item is an image, get it as a File object
         if (item.type.startsWith('image/')) {
           pastedFiles.push(item.getAsFile());
         }
       }
       if (pastedFiles.length > 0) {
         this.addFiles(pastedFiles);
-        event.preventDefault(); // Prevent default paste behavior if images are handled
+        event.preventDefault();
       }
     }
   }
@@ -200,17 +171,16 @@ export default class extends Controller {
   // Renders all images currently in the allFiles array to the preview container
   renderPreviews() {
     const previewContainer = this.previewTarget;
-    previewContainer.innerHTML = ''; // Clear existing previews before re-rendering
-    previewContainer.classList.add('flex', 'flex-wrap', 'gap-4', 'mt-4'); // Ensure flex display for cards
+    previewContainer.innerHTML = '';
+    previewContainer.classList.add('flex', 'flex-wrap', 'gap-4', 'mt-4');
 
     if (this.allFiles.length === 0) {
-      previewContainer.classList.remove('flex', 'flex-wrap', 'gap-4', 'mt-4'); // Remove flex if no files
+      previewContainer.classList.remove('flex', 'flex-wrap', 'gap-4', 'mt-4');
       return;
     }
 
-    // Create an unordered list to hold image cards
     const ul = document.createElement('ul');
-    ul.classList.add('flex', 'flex-wrap', 'gap-4', 'w-full'); // Flex wrap for the ul itself
+    ul.classList.add('flex', 'flex-wrap', 'gap-4', 'w-full');
 
     this.allFiles.forEach((file, index) => {
       const reader = new FileReader();
@@ -226,36 +196,30 @@ export default class extends Controller {
           'shadow-md',
           'border',
           'border-gray-200',
-          'flex-shrink-0' // Ensure cards don't shrink too much
+          'flex-shrink-0'
         );
 
-        // Image element
         const img = document.createElement('img');
         img.src = e.target.result;
         img.classList.add('w-16', 'h-16', 'object-cover', 'rounded-lg', 'border', 'border-gray-300');
         img.alt = file.name;
 
-        // Container for file name and size
         const infoContainer = document.createElement('div');
         infoContainer.classList.add('flex', 'flex-col', 'justify-center', 'flex-grow');
 
-        // File name element
         const fileNameSpan = document.createElement('span');
-        fileNameSpan.classList.add('text-sm', 'font-medium', 'text-gray-800', 'truncate', 'max-w-[120px]'); // Truncate long names
+        fileNameSpan.classList.add('text-sm', 'font-medium', 'text-gray-800', 'truncate', 'max-w-[120px]');
         fileNameSpan.textContent = file.name;
 
-        // File size element
         const fileSizeSpan = document.createElement('span');
         fileSizeSpan.classList.add('text-xs', 'text-gray-500');
         fileSizeSpan.textContent = this.formatFileSize(file.size);
 
-        // Append name and size to info container
         infoContainer.appendChild(fileNameSpan);
         infoContainer.appendChild(fileSizeSpan);
 
-        // Delete button (icon)
         const deleteButton = document.createElement('button');
-        deleteButton.type = 'button'; // Important for forms
+        deleteButton.type = 'button';
         deleteButton.classList.add(
           'text-gray-500',
           'hover:text-red-600',
@@ -265,21 +229,19 @@ export default class extends Controller {
           'p-1',
           'rounded-full',
           'hover:bg-gray-100',
-          'ml-auto' // Push delete button to the right
+          'ml-auto'
         );
         deleteButton.setAttribute('data-action', 'click->image-uploads#removeImage');
-        deleteButton.setAttribute('data-index', index); // Store index to identify which file to remove
+        deleteButton.setAttribute('data-index', index);
 
-        // SVG for delete icon (simple 'x' icon)
         deleteButton.innerHTML = `
           <svg class="w-5 h-5 cursor-pointer" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
           </svg>
         `;
 
-        // Append elements to the list item
         li.appendChild(img);
-        li.appendChild(infoContainer); // Append the new info container
+        li.appendChild(infoContainer);
         li.appendChild(deleteButton);
         ul.appendChild(li);
       };
@@ -296,30 +258,30 @@ export default class extends Controller {
       return;
     }
 
-    // Remove the file from our internal array
     this.allFiles.splice(indexToRemove, 1);
 
-    this.renderPreviews(); // Re-render the entire preview to update indices
-    this.updateFileInput(); // Update the actual file input's FileList
-    this.updateSubmitButtonVisibility(); // Update submit button visibility
+    this.renderPreviews();
+    // ************* CRUCIAL: Update the actual file input after removal *************
+    this.updateFileInput();
+    this.updateSubmitButtonVisibility();
   }
 
-  // This function is no longer solely for updating the hidden file input's files property.
-  // It's still used to keep the `inputTarget.files` consistent with `allFiles`,
-  // which might be useful for other browser behaviors, even if not directly for form submission.
+  // This function is crucial for Turbo submission.
+  // It ensures the actual file input's `files` property matches `this.allFiles`.
   updateFileInput() {
     const dataTransfer = new DataTransfer();
     this.allFiles.forEach((file) => dataTransfer.items.add(file));
     this.inputTarget.files = dataTransfer.files;
+    // Clearing the original input's value might also be helpful
+    // this.inputTarget.value = ''; // This would clear the displayed file name if not already cleared
   }
 
   // Controls the visibility of the submit button
-  // Also hides the preview if there are no files
   updateSubmitButtonVisibility() {
     if (this.allFiles.length > 0) {
       this.submitTarget.classList.remove('hidden');
     } else {
-      this.hidePreview(); // Hide the preview if no files are present
+      this.hidePreview();
       this.submitTarget.classList.add('hidden');
     }
   }

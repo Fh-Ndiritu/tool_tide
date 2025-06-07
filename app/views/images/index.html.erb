@@ -1,5 +1,14 @@
-
+<% content_for :head do %>
+  <!--<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>-->
+  <!--<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>-->
+<% end %>
 
 <div class="w-full">
-  <%= render "image_form" %>
+  <%= turbo_frame_tag "image_form" do %>
+      <%= render "image_form", conversion: @conversion %>
+  <% end %>
+  <div id="results" class="mt-4 my-4">
+    <div class="justify-center items-center">
+    </div>
+  </div>
 </div>

@@ -1,0 +1,19 @@
+<%# Your main view (e.g., app/views/your_controller/index.html.erb) %>
+<%# Assuming @pages is a collection where each item has a `text_html` and `id` %>
+<%= turbo_frame_tag "results" do %>
+  <div class="flex w-full flex-col justify-center items-center py-8 md:w-10/12 lg:w-8/12 m-auto">
+<h2 class=" w-full text-2xl font-bold mb-4  text-secondary text-center">Extraction Results</h2>
+<h5>You can highlight the text and copy it to your clipboard normally</h5>
+<div class=" w-full">
+<%pages.each do |text_html, file_name| %>
+  <div class="my-container-for-iframe my-4 h-[100vh] border-accent rounded-lg shadow-lg p-4 border border-4">
+    <iframe
+      srcdoc='<%= render_iframe_html(text_html, file_name).html_safe %>'
+      class="w-full h-full rounded-lg"
+      frameborder="0"
+    ></iframe>
+  </div>
+<% end %>
+</div>
+</div>
+<% end %>

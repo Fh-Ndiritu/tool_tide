@@ -36,7 +36,7 @@ class Images::ImageTextExtractor
 
 
       # we now have valid html. It needs some js libraries to display well
-      data << text
+      data << [ text, uploaded_image.original_filename ]
     end
     Result.new(success: true, data:)
   rescue StandardError => e

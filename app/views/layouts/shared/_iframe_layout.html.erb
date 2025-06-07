@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Embedded Content</title>
+  <style>
+    /*
+      Place your common CSS for iframe content here.
+      This ensures all embedded content has a consistent base style.
+      For example, making images responsive:
+    */
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        color: #333;
+        line-height: 1.6;
+    }
+    img {
+        max-width: 100%;
+        height: auto;
+        display: block; /* Prevents extra space below images */
+        margin: 15px auto; /* Centers images and adds vertical spacing */
+    }
+    h1, h2, h3, h4, h5, h6 {
+        margin-top: 1.5em;
+        margin-bottom: 0.5em;
+        color: #1a1a1a;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+    th {
+        background-color: #f4f4f4;
+    }
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+    /*
+      If you have specific JS that all iframes should run on load,
+      you can put it here, or use content_for for page-specific JS.
+    */
+  </style>
+  <% if content_for?(:iframe_head_js) %>
+    <%= yield :iframe_head_js %>
+  <% end %>
+</head>
+<body>
+  <%= yield %> <%# This is where your dynamic text_html will be injected %>
+
+  <% if content_for?(:iframe_body_js) %>
+    <%= yield :iframe_body_js %>
+  <% end %>
+</body>
+</html>
