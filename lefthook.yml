@@ -46,5 +46,12 @@ pre-commit:
   parallel: true
   commands:
     rubocop:
-      run: bundle exec rubocop --auto-correct-all --force-exclusion
-      files: git diff --cached --name-only --diff-filter=ACM | grep '\.rb$'
+      glob: '*.rb'
+      run: |
+        staged_files=$(git diff --cached --name-only --diff-filter=ACM | grep '\.rb$')
+        if [ -z "$staged_files" ]; then
+          echo "No Ruby files to check."
+          exit 0
+        else
+          bundle exec rubocop --force-exclusion --auto-correct $staged_files
+        fi
