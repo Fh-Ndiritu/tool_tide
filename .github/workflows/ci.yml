@@ -58,27 +58,10 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    # REMOVED: services section that defined postgres
-    # services:
-    #   postgres:
-    #     image: postgres
-    #     env:
-    #       POSTGRES_USER: postgres
-    #       POSTGRES_PASSWORD: postgres
-    #     ports:
-    #       - 5432:5432
-    #     options: --health-cmd="pg_isready" --health-interval=10s --health-timeout=5s --health-retries=3
-
-    #   # redis:
-    #   #   image: redis
-    #   #   ports:
-    #   #     - 6379:6379
-    #   #   options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
       - name: Install system packages
         run: |
-          # REMOVED: libpq-dev as it's for postgres client
           sudo apt-get update
           sudo apt-get install --no-install-recommends -y \
             nodejs npm \
@@ -101,13 +84,18 @@ jobs:
       - name: Install JavaScript dependencies
         run: yarn install --immutable # Use --immutable for CI/CD environments for strictness
 
-      - name: Run tests
+      - name: Run RSpec tests # Changed step name for clarity
         env:
           RAILS_ENV: test
-          # REMOVED: DATABASE_URL specific to postgres
-          # DATABASE_URL: postgres://postgres:postgres@localhost:5432
-          # REDIS_URL: redis://localhost:6379/0
-        run: bin/rails db:test:prepare test test:system # This will now use database.yml for test environment
+        # Changed the run command to use RSpec
+        run: |
+          bin/rails db:test:prepare # Prepare the test database
+          bundle exec rspec        # Run all RSpec tests
+          # If you specifically want to run system tests separately:
+          # bundle exec rspec spec/system # Runs only system tests
+          # Or if you want to ensure all RSpec tests, including system tests, are run:
+          # bundle exec rspec
+          # (RSpec typically picks up spec/system tests automatically when running `rspec` from the root)
 
       - name: Keep screenshots from failed system tests
         uses: actions/upload-artifact@v4
