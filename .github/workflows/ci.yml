@@ -58,30 +58,31 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
+    # REMOVED: services section that defined postgres
+    # services:
+    #   postgres:
+    #     image: postgres
+    #     env:
+    #       POSTGRES_USER: postgres
+    #       POSTGRES_PASSWORD: postgres
+    #     ports:
+    #       - 5432:5432
+    #     options: --health-cmd="pg_isready" --health-interval=10s --health-timeout=5s --health-retries=3
 
-    services:
-      postgres:
-        image: postgres
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-        ports:
-          - 5432:5432
-        options: --health-cmd="pg_isready" --health-interval=10s --health-timeout=5s --health-retries=3
-
-      # redis:
-      #   image: redis
-      #   ports:
-      #     - 6379:6379
-      #   options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5
+    #   # redis:
+    #   #   image: redis
+    #   #   ports:
+    #   #     - 6379:6379
+    #   #   options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
       - name: Install system packages
         run: |
+          # REMOVED: libpq-dev as it's for postgres client
           sudo apt-get update
           sudo apt-get install --no-install-recommends -y \
             nodejs npm \
-            build-essential git libpq-dev libyaml-dev node-gyp pkg-config python-is-python3 \
+            build-essential git libyaml-dev node-gyp pkg-config python-is-python3 \
             google-chrome-stable libvips
 
       - name: Install Yarn globally
@@ -103,9 +104,10 @@ jobs:
       - name: Run tests
         env:
           RAILS_ENV: test
-          DATABASE_URL: postgres://postgres:postgres@localhost:5432
+          # REMOVED: DATABASE_URL specific to postgres
+          # DATABASE_URL: postgres://postgres:postgres@localhost:5432
           # REDIS_URL: redis://localhost:6379/0
-        run: bin/rails db:test:prepare test test:system
+        run: bin/rails db:test:prepare test test:system # This will now use database.yml for test environment
 
       - name: Keep screenshots from failed system tests
         uses: actions/upload-artifact@v4
