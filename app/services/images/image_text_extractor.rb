@@ -24,7 +24,6 @@ class Images::ImageTextExtractor
     # give copy option
 
     data = []
-    uploaded_image = @images.first
 
     @images.each do |uploaded_image|
       encoded_image = resize_encode_image(uploaded_image)
