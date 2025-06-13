@@ -39,13 +39,15 @@ module Markdownable
 
   def replace_images(markdown, images)
     images.each do |image|
-      base64_image = image["image_base64"]
+      # base64_image = image["image_base64"]
       id = image["id"]
 
       # Create an HTML image tag with the base64 encoded image
-      image_tag = "<img src='#{base64_image}' alt='OCR Image'/>"
+      # image_tag = "<img src='#{base64_image}' alt='OCR Image'/>"
+      image_tag = ""
 
       # Replace the markdown image reference with the HTML image tag
+      # We shall get rid of images for now
       markdown.gsub!("![#{id}](#{id})", image_tag)
     end
     markdown
