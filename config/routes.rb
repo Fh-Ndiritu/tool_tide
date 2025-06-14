@@ -15,6 +15,8 @@ Rails.application.routes.draw do
   root "home#index"
 
   get "images/:source/:conversion", to: "images#new", as: :new_image
+  get "images/extract_text", to: "images#extract_text", as: :extract_text_image
+  post "images/extract", to: "images#extract", as: :extract_images
 
   # New resource for showing/downloading converted images
   resources :converted_images, only: [ :index ] do

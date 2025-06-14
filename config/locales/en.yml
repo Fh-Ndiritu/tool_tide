@@ -30,6 +30,7 @@
 en:
   images:
     titles:
+      extract: Extract text from images, screenshots, and photos for Free
       from:
         jpeg: 'Convert images from JPEG'
         jpg: 'Convert images from JPG'
@@ -64,7 +65,6 @@ en:
         pbm: 'Convert images from PBM'
         xbm: 'Convert images from XBM'
         xpm: 'Convert images from XPM'
-        image: 'Extract Text from Images, Screenshots, and Photos'
 
       to:
         # --- To Formats ---
@@ -101,12 +101,11 @@ en:
         pbm: 'to PBM free'
         xbm: 'to XBM free'
         xpm: 'to XPM free'
-        text: 'from Images free'
     buttons:
       convert: 'Convert Now'
-      text: 'Extract Now'
+      extract: 'Extract Now'
     instructions:
-      text:
+      extract:
         title: How to extract text from an image using Tool Tide
         steps:
           - Upload, drag or drop images into the box above

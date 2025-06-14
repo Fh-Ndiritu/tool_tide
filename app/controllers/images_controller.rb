@@ -8,7 +8,38 @@ class ImagesController < ApplicationController
   end
 
   def extract_text
-    @image_form = ImageExtractionForm.new(conversion: 'text', source: 'image')
+    @image_form = ImageExtractionForm.new
+  end
+
+  def extract
+    @image_form = ImageExtractionForm.new(image_extraction_params)
+    if @image_form.save
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace("results",
+                                                    partial: "images/results_extraction",
+                                                    locals: { pages: @image_form.results }) +
+                               turbo_stream.replace("image_form",
+                                                    partial: "images/image_extraction_form",
+                                                    locals: {
+                                                      image_form: ImageExtractionForm.new
+                                                        }) +
+                               turbo_stream.replace("flash", partial: "/shared/flash")
+        end
+        format.html { redirect_to converted_images_path, notice: "Images converted successfully!" } # Redirect for non-Turbo Stream requests
+      end
+    else
+      respond_to do |format|
+        format.turbo_stream do
+          flash.now[:error] = @image_form.errors.full_messages.join("<br>").html_safe
+          render turbo_stream: turbo_stream.replace("flash", partial: "/shared/flash") +
+                               turbo_stream.replace("image_form",
+                                                    partial: "images/image_extraction_form",
+                                                    locals: { image_form: @image_form }) # Re-render form with errors
+        end
+        format.html { render :new, status: :unprocessable_entity } # Re-render new template for HTML requests
+      end
+    end
   end
 
   def new
@@ -65,6 +96,11 @@ class ImagesController < ApplicationController
   end
 
   private
+
+  def image_extraction_params
+    # we need to filter out blank images
+    params.require(:image_extraction_form).permit().merge(images: params[:image_extraction_form][:images].reject { |img| img.blank? })
+  end
 
   def validate_conversion
     # =========================================================================

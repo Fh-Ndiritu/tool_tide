@@ -69,3 +69,17 @@ FORMAT_ALIASES_MAP = {
   "xbm" => "xbm",
   "xpm" => "xpm"
 }.freeze
+
+
+IMAGE_EXTRACTION_FORMATS = {
+  "jpeg" => "image/jpeg",
+  "png" => "image/png",
+  "webp" => "image/webp",
+  "avif" => "image/avif",
+  "heic" => "image/heic",
+  "heif" => "image/heif",
+  "tiff" => "image/tiff",
+  "bmp" => "image/bmp",
+  "gif" => "image/gif",
+  "svg" => "image/svg+xml"
+}

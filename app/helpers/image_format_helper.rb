@@ -23,4 +23,8 @@ module ImageFormatHelper
   def self.canonical_formats_list
     CANONICAL_IMAGE_FORMATS.keys
   end
+
+  def self.extractable_format?(input_format)
+    IMAGE_EXTRACTION_FORMATS.values.include?(input_format.to_s.downcase)
+  end
 end
