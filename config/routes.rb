@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "home#index"
 
-  get "images/:source/:conversion", to: "images#new"
+  get "images/:source/:conversion", to: "images#new", as: :new_image
 
   # New resource for showing/downloading converted images
   resources :converted_images, only: [ :index ] do

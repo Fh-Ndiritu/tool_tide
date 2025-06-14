@@ -8,11 +8,15 @@ class ImagesController < ApplicationController
   end
 
   def extract_text
+    @image_form = ImageExtractionForm.new(conversion: 'text', source: 'image')
   end
 
   def new
+    if @conversion == @source
+      redirect_to root_path, alert: "Source and conversion formats cannot be the same."
+    end
+
     @image_form = ImageConversionForm.new(conversion: @conversion, source: @source)
-    @supported_formats = ImageFormatHelper.canonical_formats_list
   end
 
   def create
@@ -36,7 +40,12 @@ class ImagesController < ApplicationController
                                                     locals: { converted_file_paths: @image_form.conversion_results, canonical_conversion: @image_form.canonical_conversion }) +
                                turbo_stream.replace("image_form",
                                                     partial: "images/image_form",
-                                                    locals: { image_form: ImageConversionForm.new, supported_formats: @supported_formats }) +
+                                                    locals: {
+                                                      image_form: ImageConversionForm.new(
+                                                        source: @image_form.source,
+                                                        conversion: @image_form.conversion),
+                                                        supported_formats: @supported_formats }
+                                                        ) +
                                turbo_stream.replace("flash", partial: "/shared/flash")
         end
         format.html { redirect_to converted_images_path, notice: "Images converted successfully!" } # Redirect for non-Turbo Stream requests
@@ -54,7 +63,6 @@ class ImagesController < ApplicationController
       end
     end
   end
-
 
   private
 

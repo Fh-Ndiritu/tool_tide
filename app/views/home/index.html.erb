@@ -13,12 +13,12 @@
 
   <div class="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-8 gap-4 flex-wrap mx-auto ">
       <!--# we shall pair each image with the various conversions we can run on it-->
-  <% IMAGE_FORMATS.keys.each do |source| %>
-   <% IMAGE_FORMATS.keys.each do |conversion| %>
+<% CANONICAL_IMAGE_FORMATS.keys.each do |source| %>
+   <% CANONICAL_IMAGE_FORMATS.keys.each do |conversion| %>
     <% next if source == conversion %>
       <%= render ButtonComponent.new(
         text: "#{source.upcase} to #{conversion.upcase}",
-      href: "images/#{source.downcase}/#{conversion.downcase}",
+      href: new_image_path(source, conversion),
       classes: "card bg-base-100 w-auto shadow-xl p-4 rounded bg-#{ ['primary', 'secondary', 'accent'].sample} } text-base flex text-white opacity-80 hover:opacity-100 text-center"
       ) %>
     <% end %>
