@@ -1,0 +1,76 @@
+
+<%# Set specific content for SEO tags in the layout for the Image Text Extractor page %>
+<%
+  # @image_form is guaranteed to be defined here.
+  # Its attributes (source, conversion) might be nil on initial page load.
+
+  # Fallback to general terms if source/conversion are not yet set
+  source_format = @image_form.source&.upcase || "IMAGES" # e.g., "JPG", "PNG", or "IMAGES" if not selected
+  conversion_format = @image_form.conversion&.upcase || "TEXT" # e.g., "JPEG", "PNG", or "TEXT" if not selected
+
+  # Define common image output formats for conditional logic
+  image_output_formats = ["JPEG", "PNG", "WEBP", "GIF", "BMP", "TIFF", "ICO"]
+
+  # Determine if it's an image-to-image conversion or image-to-text (OCR)
+  is_image_to_image_conversion = image_output_formats.include?(conversion_format)
+
+  if is_image_to_image_conversion
+    main_action = "Convert #{source_format} to #{conversion_format}"
+    main_feature = "#{source_format} to #{conversion_format} Converter"
+    tool_type = "Image Converter"
+    short_description_action = "Convert your #{source_format} files to #{conversion_format}"
+    og_image_alt_base = "Screenshot of Tool Tide's #{source_format} to #{conversion_format} Converter in action"
+    twitter_image_alt_base = "Visual representation of #{source_format} being converted to #{conversion_format}"
+  else # Default to Image to Text (OCR)
+    main_action = "Extract Text from #{source_format}"
+    main_feature = "Image to Text Extractor"
+    tool_type = "Free Online OCR Tool"
+    short_description_action = "Extract text from any image format: photos, scanned documents, handwritten notes, and screenshots"
+    og_image_alt_base = "Screenshot of Tool Tide's Image to Text Extractor in action, showing text being extracted"
+    twitter_image_alt_base = "Visual representation of text being extracted from an image"
+  end
+
+  # Helper to generate dynamic keywords
+  def generate_keywords(source_val, conversion_val)
+    keywords = ["online tool", "free converter", "fast", "accurate"]
+
+    # Add specific format conversions
+    keywords << "#{source_val.downcase} to #{conversion_val.downcase}" if source_val && conversion_val
+
+    # Add general format converters (only if source is a specific image type)
+    if source_val && !["IMAGES", "TEXT"].include?(source_val.upcase) # "IMAGES" is a fallback, not a specific format
+      keywords << "#{source_val.downcase} converter"
+    end
+
+    # Add OCR specific keywords
+    if conversion_val && conversion_val.upcase == "TEXT"
+      keywords << "image to text"
+      keywords << "OCR"
+    end
+
+    # Add your brand name
+    keywords << "Tool Tide"
+
+    keywords.compact.uniq.join(", ")
+  end
+%>
+
+<% content_for(:title, "#{main_action} | #{tool_type} - Tool Tide") %>
+
+<% content_for(:description, "#{short_description_action}. Tool Tide's #{tool_type.downcase} is fast, accurate, and secure for digitizing your content.") %>
+
+<% content_for(:keywords, generate_keywords(@image_form.source, @image_form.conversion)) %>
+
+<%# Open Graph (Social Media Sharing) %>
+<% content_for(:og_title, "#{main_feature} | #{tool_type} - Tool Tide") %>
+<% content_for(:og_description, "#{short_description_action} online. Tool Tide offers a free, accurate, and fast #{tool_type.downcase} for all your #{conversion_format.downcase} needs.") %>
+<% content_for(:og_image_alt, "#{og_image_alt_base} by Tool Tide") %>
+
+<%# Twitter Card (Social Media Sharing) %>
+<% content_for(:twitter_title, "#{main_action} Free | Tool Tide #{tool_type}") %>
+<% content_for(:twitter_description, "Need to #{short_description_action.downcase}? Use Tool Tide's free online #{tool_type.downcase} for quick and accurate results.") %>
+<% content_for(:twitter_image_alt, "#{twitter_image_alt_base} by Tool Tide") %>
+
+<%= content_for(:schema_name, "#{main_feature} - Tool Tide") %>
+<%= content_for(:schema_description, "#{short_description_action} with Tool Tide's free online #{tool_type.downcase}.") %>
+

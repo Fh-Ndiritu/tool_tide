@@ -28,4 +28,98 @@
 #       enabled: "ON"
 
 en:
-  hello: "Hello world"
+  images:
+    titles:
+      extract: Extract text from images, screenshots, and photos for Free
+      from:
+        jpeg: 'Convert images from JPEG'
+        jpg: 'Convert images from JPG'
+        png: 'Convert images from PNG'
+        webp: 'Convert images from WebP'
+        avif: 'Convert images from AVIF'
+        heic: 'Convert images from HEIC'
+        heif: 'Convert images from HEIF'
+        tiff: 'Convert images from TIFF'
+        tif: 'Convert images from TIF'
+        bmp: 'Convert images from BMP'
+        gif: 'Convert images from GIF'
+        svg: 'Convert images from SVG'
+        ico: 'Convert images from ICO'
+        pdf: 'Convert images from PDF'
+        psd: 'Convert images from PSD'
+        raw: 'Convert images from RAW'
+        dng: 'Convert images from DNG'
+        cr2: 'Convert images from CR2'
+        nef: 'Convert images from NEF'
+        arw: 'Convert images from ARW'
+        jp2: 'Convert images from JP2'
+        jpf: 'Convert images from JPF'
+        jpx: 'Convert images from JPX'
+        hdr: 'Convert images from HDR'
+        exr: 'Convert images from EXR'
+        tga: 'Convert images from TGA'
+        pcx: 'Convert images from PCX'
+        pnm: 'Convert images from PNM'
+        ppm: 'Convert images from PPM'
+        pgm: 'Convert images from PGM'
+        pbm: 'Convert images from PBM'
+        xbm: 'Convert images from XBM'
+        xpm: 'Convert images from XPM'
+
+      to:
+        # --- To Formats ---
+        jpeg: 'to JPEG free'
+        jpg: 'to JPG free'
+        png: 'to PNG free'
+        webp: 'to WebP free'
+        avif: 'to AVIF free'
+        heic: 'to HEIC free'
+        heif: 'to HEIF free'
+        tiff: 'to TIFF free'
+        tif: 'to TIF free'
+        bmp: 'to BMP free'
+        gif: 'to GIF free'
+        svg: 'to SVG free'
+        ico: 'to ICO free'
+        pdf: 'to PDF free'
+        psd: 'to PSD free'
+        raw: 'to RAW free'
+        dng: 'to DNG free'
+        cr2: 'to CR2 free'
+        nef: 'to NEF free'
+        arw: 'to ARW free'
+        jp2: 'to JP2 free'
+        jpf: 'to JPF free'
+        jpx: 'to JPX free'
+        hdr: 'to HDR free'
+        exr: 'to EXR free'
+        tga: 'to TGA free'
+        pcx: 'to PCX free'
+        pnm: 'to PNM free'
+        ppm: 'to PPM free'
+        pgm: 'to PGM free'
+        pbm: 'to PBM free'
+        xbm: 'to XBM free'
+        xpm: 'to XPM free'
+    buttons:
+      convert: 'Convert Now'
+      extract: 'Extract Now'
+    instructions:
+      extract:
+        title: How to extract text from an image using Tool Tide
+        steps:
+          - Upload, drag or drop images into the box above
+          - You can extract upto 10 images at a time using tool tide
+          - Click the "Extract Now" button to extract text from the image
+          - Watch as the text is extracted from the image and displayed on the screen
+          - Copy the text from each image and use it as you wish. The name of the original image is displayed above the extracted text
+      convert:
+        title: How to convert images using Tool Tide
+        steps:
+          - Upload, drag or drop images into the box above
+          - You can convert upto 10 images at a time using tool tide
+          - Click the "Convert Now" button to convert the image
+          - Watch as the image is converted and displayed on the screen
+          - Download the converted image by clicking the download button
+          - The name of the original image is displayed above the converted image
+          - Download as a zip file by clicking the download all button

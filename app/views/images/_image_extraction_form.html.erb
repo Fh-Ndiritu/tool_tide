@@ -4,7 +4,7 @@
 <%= turbo_frame_tag "image_form" do %>
   <%# Initialize form_with with your form object %>
   <%# The `model: image_form` tells Rails to build parameters like `image_conversion_form[images]`, `image_conversion_form[conversion]`, etc. %>
-  <%= form_with(model: image_form, url: images_path, method: :post , multipart: true, data: { controller: "image-uploads", turbo: true }) do |form| %>
+  <%= form_with(model: image_form, url: extract_images_path, method: :post , multipart: true, data: { controller: "image-uploads", turbo: true }) do |form| %>
 
     <%# Display form-level errors from the form object %>
     <% if form.object.errors.any? %>
@@ -36,19 +36,11 @@
       </div>
       <div class="field hidden">
         <%# `form.file_field :images` now automatically creates `image_conversion_form[images]` %>
-        <%= form.file_field :images, multiple: true, data: { image_uploads_target: "input" }, accept: CANONICAL_IMAGE_FORMATS[image_form.source] %>
-      </div>
-
-      <div>
-        <%# Use form.hidden_field for conversion and source %>
-        <%# These fields will get their values from `image_form.conversion` and `image_form.source` %>
-        <%# and will be submitted as `image_conversion_form[conversion]` and `image_conversion_form[source]` %>
-        <%= form.hidden_field :conversion %>
-        <%= form.hidden_field :source %>
+        <%= form.file_field :images, multiple: true, data: { image_uploads_target: "input" }, accept: 'image/*' %>
       </div>
       <div class="actions hidden flex justify-center" data-image-uploads-target="submit">
         <%# Pass the conversion value from the form object to your ButtonComponent %>
-        <%= render(ButtonComponent.new(text: t("images.buttons.convert"), type: "submit", classes: "max-w-[150px] mt-4")) %>
+        <%= render(ButtonComponent.new(text: t("images.buttons.extract"), type: "submit", classes: "max-w-[150px] mt-4")) %>
       </div>
     </div>
   <% end %>

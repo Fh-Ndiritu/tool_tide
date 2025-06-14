@@ -1,0 +1,23 @@
+<%# locals: { converted_file_paths: @image_form.conversion_results, canonical_conversion: @image_form.canonical_conversion } %>
+
+<div id="results" class="mt-8 p-6 bg-white rounded-lg shadow">
+  <h2 class="text-2xl font-bold mb-4">Converted Files (<%= canonical_conversion.upcase %>)</h2>
+  <% if converted_file_paths.present? %>
+    <p class="text-gray-700 mb-4">Your files have been converted successfully. Download them below:</p>
+    <ul>
+      <% converted_file_paths.each do |path| %>
+        <% filename = File.basename(path) %>
+        <li class="mb-2">
+          <%= link_to filename, download_file_converted_images_path(filename: filename),
+                      class: "text-blue-600 hover:underline font-semibold" %>
+          <% if File.exist?(path) %>
+            <span class="text-gray-500 text-sm">(<%= number_to_human_size(File.size(path)) %>)</span>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+    <p class="text-sm text-gray-500 mt-4">Note: These are temporary files and may be removed automatically after some time.</p>
+  <% else %>
+    <p class="text-gray-700">No converted files found for this operation.</p>
+  <% end %>
+</div>

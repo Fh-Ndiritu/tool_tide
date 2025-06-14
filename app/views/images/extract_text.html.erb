@@ -18,15 +18,28 @@
 <%= content_for(:schema_name, "Image to Text Extractor - Tool Tide") %>
 <%= content_for(:schema_description, "Convert images to editable text with Tool Tide's free online OCR tool. Extract text from photos, screenshots, and handwritten notes.") %>
 
-<%# You only need content_for(:robots) if you want to explicitly change it from the default "index, follow" %>
-<%# For example, to prevent indexing: %>
-<%# content_for(:robots, "noindex, nofollow") %>
 <div class="w-full">
-  <%= turbo_frame_tag "image_form" do %>
-      <%= render "image_form", conversion: @conversion %>
+  <h1 class="text-4xl font-bold text-center text-text-secondary my-8">
+    <%= t("images.titles.extract") %>
+  </h1>
+ <div class="pb-8">
+   <%= turbo_frame_tag "image_form" do %>
+      <%= render "image_extraction_form", image_form: @image_form %>
   <% end %>
-  <div id="results" class="mt-4 my-4">
+ </div>
+
+   <div id="results" class="mt-4 my-4">
     <div class="justify-center items-center">
     </div>
+  </div>
+
+
+  <div class="justify-center items-center card bg-base-100 shadow-xl image-full my-8 p-6 rounded-lg border-dashed border-2 border-gray-300">
+    <h2 class="text-2xl font-semibold text-text-secondary"><%= t("images.instructions.extract.title") %></h2>
+    <ol class="list-decimal list-inside my-6 text-sm leading-relaxed">
+      <% t("images.instructions.extract.steps").each do |step| %>
+        <li><%= step %></li>
+        <% end %>
+    </ol>
   </div>
 </div>

@@ -1,0 +1,28 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "File Access",
+      "warning_code": 16,
+      "fingerprint": "75ab731bca761e8b019ec6f6e9a981ccaa555e26969cba8f8da6963fbf7f2613",
+      "check_name": "SendFile",
+      "message": "Parameter value used in file name",
+      "file": "app/controllers/converted_images_controller.rb",
+      "line": 26,
+      "link": "https://brakemanscanner.org/docs/warning_types/file_access/",
+      "code": "send_file(Rails.root.join(\"tmp\", \"conversions\", File.basename(params[:filename])), :filename => File.basename(Rails.root.join(\"tmp\", \"conversions\", File.basename(params[:filename]))), :type => ((ImageFormatHelper.mime_type_for(File.extname(Rails.root.join(\"tmp\", \"conversions\", File.basename(params[:filename]))).delete(\".\")) or \"application/octet-stream\")), :disposition => \"attachment\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "ConvertedImagesController",
+        "method": "download"
+      },
+      "user_input": "params[:filename]",
+      "confidence": "Weak",
+      "cwe_id": [
+        22
+      ],
+      "note": ""
+    }
+  ],
+  "brakeman_version": "7.0.2"
+}

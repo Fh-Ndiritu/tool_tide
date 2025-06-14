@@ -1,0 +1,24 @@
+<%# app/views/converted_images/index.html.erb %>
+<h1>Converted Files</h1>
+
+<% if @converted_file_paths.present? %>
+  <p>Your files have been converted successfully. You can download them below:</p>
+  <ul>
+    <% @converted_file_paths.each do |path| %>
+      <% filename = File.basename(path) %>
+      <li>
+        <%= link_to filename, download_file_converted_images_path(filename: filename) %>
+        <%# Optional: Show file size %>
+        <% if File.exist?(path) %>
+          (<%= number_to_human_size(File.size(path)) %>)
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+  <p class="text-sm text-gray-500 mt-4">Note: These are temporary files and may be removed automatically after some time.</p>
+<% else %>
+  <p>No recently converted files found. Please convert some images.</p>
+  <%= link_to "Convert New Images", new_images_path %>
+<% end %>
+
+<%= link_to "Back to Converter", new_images_path %>
