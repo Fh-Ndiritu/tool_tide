@@ -16,14 +16,13 @@ class ConvertedImagesController < ApplicationController
     # Construct the full, safe path to the temporary file
     # Security Note: File.basename(params[:filename]) is used to sanitize user input
     # and prevent path traversal, ensuring files are only served from 'tmp/conversions'.
-    # Brakeman suppress: SendFile, confidence: Weak, reason: "False positive. User input is sanitized with File.basename to prevent path traversal, ensuring access is strictly within 'tmp/conversions' directory."
-
     file_path = Rails.root.join("tmp", "conversions", File.basename(requested_filename))
 
     if File.exist?(file_path) && File.readable?(file_path)
       # Determine content type for the browser
       mime_type = ImageFormatHelper.mime_type_for(File.extname(file_path).delete(".")) || "application/octet-stream"
 
+      # Brakeman suppress: SendFile, confidence: Weak, reason: "False positive. User input is sanitized with File.basename to prevent path traversal, ensuring access is strictly within 'tmp/conversions' directory."
       send_file file_path,
                 filename: File.basename(file_path),
                 type: mime_type,
