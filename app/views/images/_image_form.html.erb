@@ -1,34 +1,55 @@
-<!--# Image upload component that accepts multiple images and displays them in a grid
+<%# Image upload component that accepts multiple images and displays them in a grid
 # max of 10 images
--->
+%>
 <%= turbo_frame_tag "image_form" do %>
-  <%= form_with(url: images_url, method: :post , multipart: true, data: { controller: "image-uploads", turbo: true }) do |form| %>
-  <div>
-    <div class="image-upload-card block w-full rounded-lg bg-neutral-100 p-4 shadow-md">
-      <div class="rounded-lg bg-accent p-4 flex preview-hidden" data-image-uploads-target="contentWrapper">
-          <div class="flex items-center justify-center input-trigger upload-tips text-center cursor-pointer bg-primary text-text-light hover:text-neutral-300  p-2 border border-dashed border-white rounded-lg" data-image-uploads-target="inputTrigger">
-            <div class="block">
-              <h4 class="my-4">Drop, Upload or Paste images with Ctr+V</h4>
-              <%= render(IconComponent.new(name: "upload", classes: "flex items-center justify-center text-neutral-100 cursor-pointer")) %>
-              <p class="text-sm -700 my-3">Upload up to 10 images</p>
-            </div>
-          </div>
-          <div class="hidden preview px-2 pb-4 min-h-32 max-h-56 overflow-y-auto custom-bar" data-image-uploads-target="preview">
-          </div>
+  <%# Initialize form_with with your form object %>
+  <%# The `model: image_form` tells Rails to build parameters like `image_conversion_form[images]`, `image_conversion_form[conversion]`, etc. %>
+  <%= form_with(model: image_form, url: images_path, method: :post , multipart: true, data: { controller: "image-uploads", turbo: true }) do |form| %>
+
+    <%# Display form-level errors from the form object %>
+    <% if form.object.errors.any? %>
+      <div id="error_explanation" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+        <strong class="font-bold">Conversion failed:</strong>
+        <span class="block sm:inline">Please correct the following errors:</span>
+        <ul class="mt-2 list-disc list-inside">
+          <% form.object.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
       </div>
-        <p class="text-sm text-neutral-700 my-2"><span class="text-red-500">*</span> Your data is safe. No storage is used.</p>
-    </div>
-    <div class="field hidden">
-      <!--# we need to allow only images-->
-      <%= form.file_field :images, multiple: true, data: { image_uploads_target: "input" }, accept: "image/*" %>
-    </div>
+    <% end %>
 
     <div>
-      <%= form.hidden_field :conversion, value: conversion %>
-    </div>
-    <div class="actions hidden flex justify-center" data-image-uploads-target="submit">
-      <%= render(ButtonComponent.new(text: "Extract Now", type: "submit", classes: "max-w-[150px] mt-4")) %>
-    </div>
+      <div class="image-upload-card block w-full rounded-lg bg-neutral-100 p-4 shadow-md">
+        <div class="rounded-lg bg-accent p-4 flex preview-hidden" data-image-uploads-target="contentWrapper">
+            <div class="flex items-center justify-center input-trigger upload-tips text-center cursor-pointer bg-primary text-text-light hover:text-neutral-300  p-2 border border-dashed border-white rounded-lg" data-image-uploads-target="inputTrigger">
+              <div class="block">
+                <h4 class="my-4">Drop, Upload or Paste images with Ctr+V</h4>
+                <%= render(IconComponent.new(name: "upload", classes: "flex items-center justify-center text-neutral-100 cursor-pointer")) %>
+                <p class="text-sm -700 my-3">Upload up to 10 images</p>
+              </div>
+            </div>
+            <div class="hidden preview px-2 pb-4 min-h-32 max-h-56 overflow-y-auto custom-bar" data-image-uploads-target="preview">
+            </div>
+        </div>
+          <p class="text-sm text-neutral-700 my-2"><span class="text-red-500">*</span> Your data is safe. No storage is used.</p>
+      </div>
+      <div class="field hidden">
+        <%# `form.file_field :images` now automatically creates `image_conversion_form[images]` %>
+        <%= form.file_field :images, multiple: true, data: { image_uploads_target: "input" }, accept: CANONICAL_IMAGE_FORMATS[image_form.source] %>
+      </div>
+
+      <div>
+        <%# Use form.hidden_field for conversion and source %>
+        <%# These fields will get their values from `image_form.conversion` and `image_form.source` %>
+        <%# and will be submitted as `image_conversion_form[conversion]` and `image_conversion_form[source]` %>
+        <%= form.hidden_field :conversion %>
+        <%= form.hidden_field :source %>
+      </div>
+      <div class="actions hidden flex justify-center" data-image-uploads-target="submit">
+        <%# Pass the conversion value from the form object to your ButtonComponent %>
+        <%= render(ButtonComponent.new(text: t("images.buttons.convert"), type: "submit", classes: "max-w-[150px] mt-4")) %>
+      </div>
     </div>
   <% end %>
 <% end %>

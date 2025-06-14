@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get "home/index"
   resources :images, only: [ :create, :index ]
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -11,5 +12,13 @@ Rails.application.routes.draw do
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
   # Defines the root path route ("/")
-  root "images#index"
+  root "home#index"
+
+  get "images/:source/:conversion", to: "images#new"
+
+  # New resource for showing/downloading converted images
+  resources :converted_images, only: [ :index ] do
+    # Route for downloading a specific file by its unique identifier (e.g., filename)
+    get "download/:filename", on: :collection, to: "converted_images#download", as: :download_file, constraints: { filename: /.*/ }
+  end
 end
