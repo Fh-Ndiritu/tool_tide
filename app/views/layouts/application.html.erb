@@ -29,6 +29,11 @@
     <meta name="twitter:image:alt" content="<%= content_for(:twitter_image_alt) %>">
   <% end %>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+
   <%# Assuming favicons are placed in app/assets/images/favicon/ or public/favicon/ %>
   <link rel="apple-touch-icon" sizes="180x180" href="<%= asset_path("favicon/apple-touch-icon.png") %>">
   <link rel="icon" type="image/png" sizes="32x32" href="<%= asset_path("favicon/favicon-32x32.png") %>">
@@ -93,10 +98,11 @@
 
       gtag('config', 'G-ESX8FF1NG8');
     </script>
+
   </head>
 
-  <body>
-    <main class="container mx-auto mt-28 px-5 flex max-w-[1200px]">
+  <body >
+    <main class="container mx-auto mt-28 px-5 flex max-w-[1200px] text-neutral-800">
       <div id="flash" data-controller="flash"><%= render "shared/flash" %></div>
       <%= yield %>
     </main>

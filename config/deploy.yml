@@ -38,6 +38,11 @@ env:
   secret:
     - RAILS_MASTER_KEY
     - MISTRAL_API_KEY
+    - DO_USERNAME
+    - REGISTRY_NAME
+    - APP_NAME
+    - SERVER_NAME
+    - HOST_PUBLIC_IP
   clear:
     # Run the Solid Queue Supervisor inside the web server's Puma process to do jobs.
     # When you start using multiple servers, you should split out job processing to a dedicated machine.

@@ -6,7 +6,7 @@
   <div>
     <div class="image-upload-card block w-full rounded-lg bg-neutral-100 p-4 shadow-md">
       <div class="rounded-lg bg-accent p-4 flex preview-hidden" data-image-uploads-target="contentWrapper">
-          <div class="flex items-center justify-center input-trigger upload-tips text-center cursor-pointer bg-primary text-text-light hover:text-neutral-300  p-2 border border-dotted border-white rounded-lg" data-image-uploads-target="inputTrigger">
+          <div class="flex items-center justify-center input-trigger upload-tips text-center cursor-pointer bg-primary text-text-light hover:text-neutral-300  p-2 border border-dashed border-white rounded-lg" data-image-uploads-target="inputTrigger">
             <div class="block">
               <h4 class="my-4">Drop, Upload or Paste images with Ctr+V</h4>
               <%= render(IconComponent.new(name: "upload", classes: "flex items-center justify-center text-neutral-100 cursor-pointer")) %>
@@ -27,7 +27,7 @@
       <%= form.hidden_field :conversion, value: conversion %>
     </div>
     <div class="actions hidden flex justify-center" data-image-uploads-target="submit">
-      <%= render(ButtonComponent.new(text: "Upload", type: "submit", classes: "max-w-[150px] mt-4")) %>
+      <%= render(ButtonComponent.new(text: "Extract Now", type: "submit", classes: "max-w-[150px] mt-4")) %>
     </div>
     </div>
   <% end %>

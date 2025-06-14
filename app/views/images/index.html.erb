@@ -22,11 +22,27 @@
 <%# For example, to prevent indexing: %>
 <%# content_for(:robots, "noindex, nofollow") %>
 <div class="w-full">
-  <%= turbo_frame_tag "image_form" do %>
+  <h1 class="text-4xl font-bold text-center text-text-secondary my-8">Extract Text from Images, Photos, and Screenshots for Free</h1>
+ <div class="pb-8">
+   <%= turbo_frame_tag "image_form" do %>
       <%= render "image_form", conversion: @conversion %>
   <% end %>
-  <div id="results" class="mt-4 my-4">
+ </div>
+
+   <div id="results" class="mt-4 my-4">
     <div class="justify-center items-center">
     </div>
+  </div>
+
+
+  <div class="justify-center items-center card bg-base-100 shadow-xl image-full my-8 p-6 rounded-lg border-dashed border-2 border-gray-300">
+    <h2 class="text-2xl font-semibold text-text-secondary">How to extract text from an image using Tool Tide</h2>
+    <ol class="list-decimal list-inside my-6 text-sm leading-relaxed">
+      <li>Upload, drag or drop images into the box above</li>
+      <li>You can extract upto 10 images at a time using tool tide</li>
+      <li>Click the "Extract Now" button to extract text from the image</li>
+      <li>Watch as the text is extracted from the image and displayed on the screen</li>
+      <li>Copy the text from each image and use it as you wish. The name of the original image is displayed above the extracted text</li>
+    </ol>
   </div>
 </div>
