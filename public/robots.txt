@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.tooltide.fyi/sitemap.xml.gz
+Sitemap: https://tooltide.fyi/sitemap.xml.gz
