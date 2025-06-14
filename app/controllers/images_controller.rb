@@ -8,7 +8,6 @@ class ImagesController < ApplicationController
   end
 
   def extract_text
-
   end
 
   def new
@@ -93,6 +92,6 @@ class ImagesController < ApplicationController
     params.require(:image_conversion_form).permit(
       :conversion,
       :source
-    ).merge(images: params[:image_conversion_form][:images].reject{ |img| img.blank? })
+    ).merge(images: params[:image_conversion_form][:images].reject { |img| img.blank? })
   end
 end

@@ -20,7 +20,7 @@ module Images
         image.format(@target_format)
         image.write(output_path)
 
-        Result.new(success: true, data: { converted_file_path: output_path})
+        Result.new(success: true, data: { converted_file_path: output_path })
       rescue MiniMagick::Invalid => e
         Result.new(success: false, error: "Invalid image file or unsupported format. Details: #{e.message}")
       rescue StandardError => e
