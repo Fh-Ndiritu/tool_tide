@@ -108,7 +108,7 @@ class ImagesController < ApplicationController
     # accounting for aliases and case-insensitivity.
     canonical_conversion = ImageFormatHelper.canonical_format(params[:conversion])
 
-    if canonical_conversion
+    if canonical_conversion && DESTINATION_IMAGE_FORMATS.include?(canonical_conversion)
       # Store the canonical format if it's valid.
       # This ensures consistency in subsequent logic (e.g., MiniMagick calls).
       @conversion = canonical_conversion

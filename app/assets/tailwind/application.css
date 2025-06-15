@@ -85,7 +85,8 @@ html {
   left: 50%;
   transform: translateX(-50%);
   width: auto;
-  max-width: 400px;
+  max-width: 80vw;
+  min-width: 300px;
   z-index: 9999;
   opacity: 0.9;
 }

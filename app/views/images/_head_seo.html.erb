@@ -5,14 +5,10 @@
   # Its attributes (source, conversion) might be nil on initial page load.
 
   # Fallback to general terms if source/conversion are not yet set
-  source_format = @image_form.source&.upcase || "IMAGES" # e.g., "JPG", "PNG", or "IMAGES" if not selected
-  conversion_format = @image_form.conversion&.upcase || "TEXT" # e.g., "JPEG", "PNG", or "TEXT" if not selected
-
-  # Define common image output formats for conditional logic
-  image_output_formats = ["JPEG", "PNG", "WEBP", "GIF", "BMP", "TIFF", "ICO"]
-
+  source_format = @image_form.source&.upcase
+  conversion_format = @image_form.conversion&.upcase
   # Determine if it's an image-to-image conversion or image-to-text (OCR)
-  is_image_to_image_conversion = image_output_formats.include?(conversion_format)
+  is_image_to_image_conversion = CANONICAL_IMAGE_FORMATS.keys.include?(conversion_format.downcase)
 
   if is_image_to_image_conversion
     main_action = "Convert #{source_format} to #{conversion_format}"
@@ -21,13 +17,6 @@
     short_description_action = "Convert your #{source_format} files to #{conversion_format}"
     og_image_alt_base = "Screenshot of Tool Tide's #{source_format} to #{conversion_format} Converter in action"
     twitter_image_alt_base = "Visual representation of #{source_format} being converted to #{conversion_format}"
-  else # Default to Image to Text (OCR)
-    main_action = "Extract Text from #{source_format}"
-    main_feature = "Image to Text Extractor"
-    tool_type = "Free Online OCR Tool"
-    short_description_action = "Extract text from any image format: photos, scanned documents, handwritten notes, and screenshots"
-    og_image_alt_base = "Screenshot of Tool Tide's Image to Text Extractor in action, showing text being extracted"
-    twitter_image_alt_base = "Visual representation of text being extracted from an image"
   end
 
   # Helper to generate dynamic keywords

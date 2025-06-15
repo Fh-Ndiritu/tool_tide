@@ -13,7 +13,6 @@ CANONICAL_IMAGE_FORMATS = {
   "gif" => "image/gif",
   "svg" => "image/svg+xml",
   "ico" => "image/x-icon",
-  "pdf" => "application/pdf",
   "psd" => "image/vnd.adobe.photoshop",
   "raw" => "image/x-raw", # Note: raw is generic, specific raw types might be handled differently
   "dng" => "image/dng",
@@ -83,3 +82,29 @@ IMAGE_EXTRACTION_FORMATS = {
   "gif" => "image/gif",
   "svg" => "image/svg+xml"
 }
+
+DESTINATION_IMAGE_FORMATS = [
+  "jpeg",
+  "png",
+  "webp",
+  "avif",
+  "heic",
+  "heif",
+  "tiff",
+  "bmp",
+  "gif",
+  "svg",
+  "ico",
+  "psd",
+  "jp2",
+  "hdr",
+  "exr",
+  "tga",
+  "pcx",
+  "pnm",
+  "ppm",
+  "pgm",
+  "pbm",
+  "xbm",
+  "xpm"
+].freeze

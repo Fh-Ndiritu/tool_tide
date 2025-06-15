@@ -14,7 +14,7 @@
   <div class="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-8 gap-4 flex-wrap mx-auto mt-4 bg-neutral-100">
       <!--# we shall pair each image with the various conversions we can run on it-->
 <% CANONICAL_IMAGE_FORMATS.keys.each do |source| %>
-   <% CANONICAL_IMAGE_FORMATS.keys.each do |conversion| %>
+   <% DESTINATION_IMAGE_FORMATS.each do |conversion| %>
     <% next if source == conversion %>
       <%= render ButtonComponent.new(
         text: "#{source.upcase} to #{conversion.upcase}",

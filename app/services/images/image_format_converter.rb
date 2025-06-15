@@ -13,18 +13,21 @@ module Images
     end
 
     def perform
-      output_path = generate_output_path(@image_file.original_filename, @target_format)
-
+      output_path = generate_output_path(@image_file.original_filename, @target_format).to_s
       begin
-        image = MiniMagick::Image.open(@image_file.path)
-        image.format(@target_format)
-        image.write(output_path)
+        # The main conversion step using ImageProcessing::Vips
+        ImageProcessing::Vips
+          .source(@image_file.path)
+          .convert(@target_format)
+          .call(destination: output_path)
 
         Result.new(success: true, data: { converted_file_path: output_path })
-      rescue MiniMagick::Invalid => e
-        Result.new(success: false, error: "Invalid image file or unsupported format. Details: #{e.message}")
+      rescue ImageProcessing::Error => e
+        # Catch specific image_processing errors
+        Result.new(success: false, error: "Image processing failed: #{e.message}")
       rescue StandardError => e
-        Result.new(success: false, error: "An unexpected error occurred during image processing. Details: #{e.message}")
+        # Catch any other unexpected errors during the process
+        Result.new(success: false, error: "An unexpected error occurred: #{e.message}")
       end
     end
 
