@@ -14,10 +14,34 @@ FROM docker.io/library/ruby:$RUBY_VERSION-slim AS base
 # Rails app lives here
 WORKDIR /rails
 
-# Install base packages
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y curl libjemalloc2 libvips postgresql-client && \
-    rm -rf /var/lib/apt/lists /var/cache/apt/archives
+  apt-get install --no-install-recommends -y \
+  curl \
+  libjemalloc2 \
+  libvips \
+  libvips-tools \
+  # postgresql-client \
+  imagemagick \
+  libmagickwand-dev \
+  libmagickcore-dev \
+  # Core image format libraries
+  libjpeg-dev \
+  libpng-dev \
+  libtiff-dev \
+  libgif-dev \
+  libwebp-dev \
+  # Modern image format libraries
+  libheif-dev \
+  libavif-dev \
+  libopenjp2-7-dev \
+  libexr-dev \
+  # SVG and Font rendering libraries
+  librsvg2-dev \
+  libxml2-dev \
+  libfreetype-dev \
+  libfontconfig1-dev \
+  # Clean up APT cache
+  && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
 # Set production environment
 ENV RAILS_ENV="production" \
@@ -30,7 +54,7 @@ FROM base AS build
 
 # Install packages needed to build gems and node modules
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential git libyaml-dev node-gyp pkg-config python-is-python3 libvips libvips-tools imagemagick && \
+    apt-get install --no-install-recommends -y build-essential git libyaml-dev node-gyp pkg-config python-is-python3 && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Install JavaScript dependencies
