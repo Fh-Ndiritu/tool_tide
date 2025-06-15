@@ -34,7 +34,6 @@ RUN apt-get update -qq && \
   libheif-dev \
   libavif-dev \
   libopenjp2-7-dev \
-  libexr-dev \
   # SVG and Font rendering libraries
   librsvg2-dev \
   libxml2-dev \
