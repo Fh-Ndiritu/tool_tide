@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
-  resources :direct_uploads, only: [:create]
+  resources :direct_uploads, only: [ :create ]
   post "landscaper/modify_image", to: "landscaper#modify_image"
   get "home/index"
-  resources :landscaper, only: [:index]
+  resources :landscaper, only: [ :index ]
   resources :images, only: [ :create, :index ]
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

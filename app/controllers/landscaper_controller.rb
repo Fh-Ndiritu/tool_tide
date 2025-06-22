@@ -1,6 +1,6 @@
 class LandscaperController < ApplicationController
   # Protect from CSRF attacks
-  skip_before_action :verify_authenticity_token, only: [:modify_image]
+  skip_before_action :verify_authenticity_token, only: [ :modify_image ]
 
   def index
     @url = ActiveStorage::Blob.first.url

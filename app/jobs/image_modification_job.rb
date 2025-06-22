@@ -44,7 +44,7 @@ class ImageModificationJob < ApplicationJob
     #      base64: "no" # Request URL back
     #    })
     #    ai_response_data = JSON.parse(response.body.to_s)
-  #    modified_image_url = ai_response_data['output'] # Adjust based on actual API response structure
+    #    modified_image_url = ai_response_data['output'] # Adjust based on actual API response structure
 
     # Simulate AI processing time and result
     sleep(5) # Simulate AI processing time

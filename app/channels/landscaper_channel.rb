@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class LandscaperChannel < ApplicationCable::Channel
   def subscribed
     # TODO: we shall update this to be more specific later
