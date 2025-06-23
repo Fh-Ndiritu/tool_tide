@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  mount ActionCable.server => "/cable"
   resources :direct_uploads, only: [ :create ]
   post "landscaper/modify_image", to: "landscaper#modify_image"
   get "home/index"

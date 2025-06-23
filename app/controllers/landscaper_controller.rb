@@ -19,7 +19,7 @@ class LandscaperController < ApplicationController
     # Enqueue the AI processing job
     # This job will handle fetching images, calling AI API, and uploading results
     # It will also broadcast updates via Action Cable
-    ImageModificationJob.perform_later(original_image_url, mask_image_data, prompt)
+    ImageModificationJob.perform_now(original_image_url, mask_image_data, prompt)
 
     # Respond immediately to the frontend to indicate job acceptance
     render json: { message: "Image modification request received. Processing in background." }, status: :accepted
