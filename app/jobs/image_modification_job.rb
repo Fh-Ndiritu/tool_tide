@@ -1,10 +1,10 @@
 # app/jobs/image_modification_job.rb
 # This job processes an image by applying Bria AI's inpainting capabilities.
 
-require 'base64'
-require 'tempfile' # For handling temporary files if Base64 image is returned
-require 'securerandom' # For generating unique filenames
-require 'open-uri' # For opening URLs, including potentially Active Storage public URLs
+require "base64"
+require "tempfile" # For handling temporary files if Base64 image is returned
+require "securerandom" # For generating unique filenames
+require "open-uri" # For opening URLs, including potentially Active Storage public URLs
 
 # Ensure the BriaAI module from lib/bria_ai.rb is loaded.
 # In a Rails application, `lib` is typically autoloaded, but you might need to
@@ -61,20 +61,20 @@ class ImageModificationJob < ApplicationJob
       #    The API generally returns the processed image in the same format as the input.
       modified_image_url = nil
 
-      if bria_response.success? && bria_response.body && bria_response.body['urls'] && bria_response.body['urls'].any?
-        first_result = bria_response.body['urls'].first
+      if bria_response.success? && bria_response.body && bria_response.body["urls"] && bria_response.body["urls"].any?
+        first_result = bria_response.body["urls"].first
 
         # Prioritize 'url' if available, as the input was a URL.
-        if first_result.is_a?(Hash) && first_result['url']
+        if first_result.is_a?(Hash) && first_result["url"]
           Rails.logger.info "Bria AI returned image URL: #{first_result['url']}"
-          modified_image_url = first_result['url']
-        elsif first_result.is_a?(Hash) && first_result['b64_json']
+          modified_image_url = first_result["url"]
+        elsif first_result.is_a?(Hash) && first_result["b64_json"]
           # Fallback: If Bria AI returns Base64, upload it to Active Storage.
           Rails.logger.info "Bria AI returned Base64 image, uploading to Active Storage."
-          decoded_image = Base64.decode64(first_result['b64_json'])
+          decoded_image = Base64.decode64(first_result["b64_json"])
 
           # Create a temporary file to store the decoded image.
-          temp_file = Tempfile.new(['bria_ai_modified_', '.png'], binmode: true)
+          temp_file = Tempfile.new([ "bria_ai_modified_", ".png" ], binmode: true)
           temp_file.write(decoded_image)
           temp_file.rewind # Rewind to the beginning of the file before reading.
 
@@ -82,7 +82,7 @@ class ImageModificationJob < ApplicationJob
           modified_blob = ActiveStorage::Blob.create_and_upload!(
             io: temp_file,
             filename: "bria_ai_modified_#{SecureRandom.hex(8)}.png",
-            content_type: 'image/png' # Assuming PNG, adjust if API provides content type.
+            content_type: "image/png" # Assuming PNG, adjust if API provides content type.
           )
           modified_image_url = modified_blob.url # Get the public URL from Active Storage.
 
@@ -104,7 +104,7 @@ class ImageModificationJob < ApplicationJob
       # 3. Broadcast the result back to the frontend via Action Cable.
       ActionCable.server.broadcast(
         "landscaper_channel", # Ensure this matches the channel subscribed to on the frontend.
-        {modified_image_url: modified_image_url}
+        { modified_image_url: modified_image_url }
       )
       Rails.logger.info "Image modification job completed for #{original_image_url}. Result broadcasted: #{modified_image_url}"
 
@@ -113,7 +113,7 @@ class ImageModificationJob < ApplicationJob
       Rails.logger.error "Bria AI Authentication Error for #{original_image_url}: #{e.message}"
       ActionCable.server.broadcast(
         "landscaper_channel",
-        {error: "Authentication failed with Bria AI. Please check your API token."}
+        { error: "Authentication failed with Bria AI. Please check your API token." }
       )
     rescue BriaAI::RateLimitError => e
       Rails.logger.warn "Bria AI Rate Limit Exceeded for #{original_image_url}: #{e.message}"
@@ -128,13 +128,13 @@ class ImageModificationJob < ApplicationJob
       Rails.logger.error "Bria AI API Error for #{original_image_url}: #{e.message}"
       ActionCable.server.broadcast(
         "landscaper_channel",
-       { error: "Failed to process image with Bria AI: #{e.message}"}
+       { error: "Failed to process image with Bria AI: #{e.message}" }
       )
     rescue BriaAI::Error => e
       Rails.logger.error "General Bria AI error for #{original_image_url}: #{e.message}"
       ActionCable.server.broadcast(
         "landscaper_channel",
-        {error: "An unexpected Bria AI service error occurred: #{e.message}"}
+        { error: "An unexpected Bria AI service error occurred: #{e.message}" }
       )
     # --- General Error Handling ---
     rescue StandardError => e
@@ -142,7 +142,7 @@ class ImageModificationJob < ApplicationJob
       Rails.logger.error "Image modification job failed for #{original_image_url}: #{e.class}: #{e.message}\n#{e.backtrace.join("\n")}"
       ActionCable.server.broadcast(
         "landscaper_channel",
-        {error: "An unexpected error occurred during image modification: #{e.message}"}
+        { error: "An unexpected error occurred during image modification: #{e.message}" }
       )
     end
   end
@@ -156,14 +156,14 @@ class ImageModificationJob < ApplicationJob
   # @return [String] A public URL or a Base64 encoded string of the image.
   def prepare_original_image_for_bria(original_image_url)
     # Check if the URL looks like a local Active Storage path (e.g., "/rails/active_storage/blobs/...")
-    if original_image_url.start_with?('/rails/active_storage/blobs/')
+    if original_image_url.start_with?("/rails/active_storage/blobs/")
       Rails.logger.info "Detected Active Storage local URL for original image. Attempting to encode to Base64."
 
       # Extract the signed ID from the Active Storage URL
       # The signed ID is the part after "/rails/active_storage/blobs/" and before the last "/".
       # Example: "/rails/active_storage/blobs/eyJfcmFpbHMiOnsiZGF0YSI6NTEsInB1ciI6ImJsb2JfaWQifX0=--ef0d1b48b4f4298e8bacfa4ba34f75b7ada2f865/avatar.jpg"
       # The part we need is "eyJfcmFpbHMiOnsiZGF0YSI6NTEsInB1ciI6ImJsb2JfaWQifX0=--ef0d1b48b4f4298e8bacfa4ba34f75b7ada2f865"
-      signed_id = original_image_url.split('/')[4..-2].join('/') rescue nil
+      signed_id = original_image_url.split("/")[4..-2].join("/") rescue nil
 
       unless signed_id
         Rails.logger.error "Could not extract signed_id from Active Storage URL: #{original_image_url}"
@@ -178,11 +178,11 @@ class ImageModificationJob < ApplicationJob
       # `blob.download` reads the content directly.
       encoded_image_data = Base64.strict_encode64(blob.download)
       Rails.logger.info "Successfully encoded Active Storage image to Base64."
-      return encoded_image_data
+      encoded_image_data
     else
       # If it's not an Active Storage local path, assume it's already a public URL.
       Rails.logger.info "Original image URL is not an Active Storage local URL, treating as public URL."
-      return original_image_url
+      original_image_url
     end
   rescue ActiveStorage::FileNotFoundError => e
     Rails.logger.error "Active Storage file not found for URL #{original_image_url}: #{e.message}"

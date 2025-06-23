@@ -2,9 +2,9 @@
 # This file defines the BriaAI module, its configuration, custom error classes,
 # and the API client using Faraday for robust HTTP requests.
 
-require 'faraday'
-require 'faraday/retry' # Required for automatic retry logic
-require 'json' # Required for JSON parsing, though Faraday::Response::Json usually handles it
+require "faraday"
+require "faraday/retry" # Required for automatic retry logic
+require "json" # Required for JSON parsing, though Faraday::Response::Json usually handles it
 
 # Main module for Bria AI integration.
 module BriaAI
@@ -26,7 +26,7 @@ module BriaAI
 
     def initialize
       # Default base URL for Bria AI API.
-      @base_url = 'https://engine.prod.bria-api.com/'
+      @base_url = "https://engine.prod.bria-api.com/"
       # Default to asynchronous processing (sync: false) as recommended for performance.
       # Jobs might prefer sync: true for simplicity of immediate results.
       @default_sync_mode = false
@@ -39,14 +39,14 @@ module BriaAI
         interval_randomness: 0.5, # Adds randomness to interval to prevent thundering herd.
         backoff_factor: 2, # Factor by which interval increases on each retry.
         exceptions: [
-          Faraday::TimeoutError, Faraday::ConnectionFailed, # Standard network errors.
+          Faraday::TimeoutError, Faraday::ConnectionFailed # Standard network errors.
           # Faraday::ClientError is caught by custom_error_handler, which then re-raises
           # specific BriaAI errors. The retry middleware should catch these too if re-raised
           # by custom_error_handler before it, but often it's configured to handle pre-middleware errors.
           # Listing them here as general network errors which retry should catch.
         ],
         # methods: Faraday::Retry::Middleware::REQUEST_METHODS, # Apply retry to all HTTP methods.
-        retry_statuses: [429, 503, 504], # Retry on these specific HTTP status codes.
+        retry_statuses: [ 429, 503, 504 ], # Retry on these specific HTTP status codes.
         # `retry_if` block allows custom logic for determining if a request should be retried.
         # Here, it leverages the default logic from Faraday::Retry for exceptions.
         retry_if: ->(env, exception) { Faraday::Retry::Middleware.retry_on_exception?(env, exception) }
@@ -74,7 +74,7 @@ module BriaAI
   # BriaAI.configure, the gem still has sensible defaults and attempts to
   # load the API token from environment variables.
   configure do |config|
-    config.api_token = ENV['BRIA_AI_API_TOKEN'] # Assumes API token is in an environment variable
+    config.api_token = ENV["BRIA_AI_API_TOKEN"] # Assumes API token is in an environment variable
   end
 
   # The main client class for interacting with the Bria AI API.
@@ -119,9 +119,9 @@ module BriaAI
         faraday.response :custom_error_handler
 
         # Set mandatory headers.
-        faraday.headers['api_token'] = @api_token
-        faraday.headers['Content-Type'] = 'application/json'
-        faraday.headers['Accept'] = 'application/json'
+        faraday.headers["api_token"] = @api_token
+        faraday.headers["Content-Type"] = "application/json"
+        faraday.headers["Accept"] = "application/json"
 
         # Use the default HTTP adapter (e.g., Net::HTTP).
         faraday.adapter Faraday.default_adapter
@@ -134,11 +134,11 @@ module BriaAI
     # @param input_data [String] The image URL or Base64 string.
     # @return [Hash] A hash with either `:image_url` or `:image_file` key.
     def prepare_image_input(input_data)
-      if input_data.to_s.start_with?('http://', 'https://')
+      if input_data.to_s.start_with?("http://", "https://")
         { image_url: input_data }
-      elsif input_data.to_s.include?('data:') && input_data.to_s.include?('base64,')
+      elsif input_data.to_s.include?("data:") && input_data.to_s.include?("base64,")
         # Extract raw Base64 string by removing the data URI prefix.
-        { file: input_data.split(',')[1] }
+        { file: input_data.split(",")[1] }
       else
         # Assume it's a raw Base64 string if no prefix or URL.
         { file: input_data }
@@ -150,14 +150,14 @@ module BriaAI
     # @param input_data [String] The mask URL or Base64 string.
     # @return [Hash] A hash with either `:mask_url` or `:mask_file` key.
     def prepare_mask_input(input_data)
-      if input_data.to_s.start_with?('http://', 'https://')
-        { mask_url: input_data, mask_type: 'manual' }
-      elsif input_data.to_s.include?('data:') && input_data.to_s.include?('base64,')
+      if input_data.to_s.start_with?("http://", "https://")
+        { mask_url: input_data, mask_type: "manual" }
+      elsif input_data.to_s.include?("data:") && input_data.to_s.include?("base64,")
         # Extract raw Base64 string by removing the data URI prefix.
-        { mask_file: input_data.split(',')[1], mask_type: 'manual' }
+        { mask_file: input_data.split(",")[1], mask_type: "manual" }
       else
         # Assume it's a raw Base64 string if no prefix or URL.
-        { mask_file: input_data, mask_type: 'manual' }
+        { mask_file: input_data, mask_type: "manual" }
       end
     end
 
@@ -180,7 +180,7 @@ module BriaAI
       payload[:num_results] = num_results if num_results
       payload[:seed] = seed if seed
 
-      @connection.post('/v1/gen_fill', payload)
+      @connection.post("/v1/gen_fill", payload)
     end
 
     # Calls the `/image-editing/eraser` endpoint for removing elements or masked areas.
@@ -189,7 +189,7 @@ module BriaAI
     # @return [Faraday::Response] The API response object.
     def eraser(image_input:, mask_input:)
       payload = prepare_image_input(image_input).merge(prepare_mask_input(mask_input))
-      @connection.post('image-editing/eraser', payload)
+      @connection.post("image-editing/eraser", payload)
     end
   end # class Client
 
@@ -234,7 +234,7 @@ module BriaAI
     rescue Faraday::ClientError => e # Catches 4xx and 5xx errors from raise_error middleware.
       status = e.response[:status]
       body = e.response[:body] || {} # Ensure body is a hash, or empty if nil.
-      error_message = body['detail'] || body['message'] || body.to_s || "An unknown API error occurred."
+      error_message = body["detail"] || body["message"] || body.to_s || "An unknown API error occurred."
 
       case status
       when 401, 403
