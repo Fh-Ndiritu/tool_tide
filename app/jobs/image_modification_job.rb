@@ -51,7 +51,7 @@ class ImageModificationJob < ApplicationJob
       # (e.g., a separate job or a loop) to fetch the final result once ready.
       bria_response = bria_client.gen_fill(
         image_input: image_input_for_bria, # Use the processed image input
-        mask_input: mask_image_data, # The client handles removing the "data:image/png;base64," prefix.
+        mask_input: flip_mask_colors(mask_image_data), # The client handles removing the "data:image/png;base64," prefix.
         prompt: prompt,
         sync: true, # Request synchronous processing for immediate result.
         num_results: 1 # Request only one modified image.
@@ -194,5 +194,46 @@ class ImageModificationJob < ApplicationJob
   rescue StandardError => e
     Rails.logger.error "Unexpected error in prepare_original_image_for_bria: #{e.class}: #{e.message}"
     raise BriaAI::Error, "An unexpected error occurred while preparing the original image: #{e.message}"
+  end
+
+  def flip_mask_colors(data_url)
+    # Ensure the data_url starts with "data:image/png;base64,"
+    unless data_url.start_with?("data:image/png;base64,")
+      raise ArgumentError, "Invalid data_url format. Expected 'data:image/png;base64,' prefix."
+    end
+
+    # Extract the base64 part of the data URL
+    _mime_type, base64_data = data_url.split(",", 2)
+
+    if base64_data.nil?
+      raise ArgumentError, "Could not extract base64 data from the provided URL."
+    end
+
+    # Decode the base64 string into binary image data
+    decoded_image_data = Base64.decode64(base64_data)
+
+    begin
+      # Use MiniMagick to read the image from the binary data
+      # The `read` method can take a binary string or a file path.
+      image = MiniMagick::Image.read(decoded_image_data)
+
+      # Invert the colors of the image.
+      # For a black and white mask, `negate` will turn black pixels white and white pixels black.
+      image.negate
+
+      # Convert the modified image back to a binary string (PNG format is typically preserved)
+      inverted_image_binary_data = image.to_blob
+
+      # Encode the binary data back to base64
+      inverted_base64 = Base64.encode64(inverted_image_binary_data)
+
+      # Return the new base64 encoded image as a data URL, preserving the PNG mime type
+      "data:image/png;base64,#{inverted_base64}"
+    rescue MiniMagick::Error => e
+      raise "Image processing error with MiniMagick: #{e.message}. " \
+            "Please ensure ImageMagick is correctly installed and accessible on your system."
+    rescue => e
+      raise "An unexpected error occurred during mask color flipping: #{e.message}"
+    end
   end
 end

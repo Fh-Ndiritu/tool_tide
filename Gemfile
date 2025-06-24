@@ -103,3 +103,5 @@ gem "tailwindcss-rails", "~> 4.2"
 gem "sitemap_generator", "~> 6.3"
 
 gem "faraday-retry", "~> 2.3"
+
+gem "mini_magick", "~> 5.2"

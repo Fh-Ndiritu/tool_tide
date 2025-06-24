@@ -35,7 +35,7 @@ export default class extends Controller {
   isDrawing = false;
   lastLine = null;
   currentTool = 'brush';
-  brushSize = 20;
+  brushSize = 60;
   startRectX = 0;
   startRectY = 0;
   currentRect = null;
@@ -43,15 +43,19 @@ export default class extends Controller {
   // Maximum dimension (width or height) for client-side image resizing before upload
   MAX_UPLOAD_DIMENSION = 1920;
 
+  // NEW: Maximum width for displaying the image on the Konva canvas
+  // The height will be calculated to maintain aspect ratio.
+  MAX_CANVAS_DISPLAY_WIDTH = 500;
+
   connect() {
     console.log('Landscaper controller connected!');
     this.showSection('upload');
 
-    // The ResizeObserver is removed as the Konva Stage will now match the image's natural dimensions,
-    // and responsive display for the overall container will be handled by CSS.
+    document.addEventListener('landscaper:data-received', this.handleDataReceived.bind(this));
   }
 
   disconnect() {
+    document.removeEventListener('landscaper:data-received', this.handleDataReceived.bind(this));
     this.resetEditor();
   }
 
@@ -68,8 +72,6 @@ export default class extends Controller {
         break;
       case 'editor':
         this.editorSectionTarget.classList.remove('hidden');
-        // Konva initialization now happens *after* image load, in loadImageOnCanvas
-        // No need for a separate initializeKonva call here or handleCanvasResize on section show
         break;
       case 'loading':
         this.loadingSectionTarget.classList.remove('hidden');
@@ -113,6 +115,7 @@ export default class extends Controller {
   }
 
   // Helper function for client-side image resizing
+  // This resizes the image before upload to a max of MAX_UPLOAD_DIMENSION (e.g., 1920px)
   async resizeImage(file, maxWidth, maxHeight) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -126,16 +129,17 @@ export default class extends Controller {
           if (width > maxWidth || height > maxHeight) {
             const aspectRatio = width / height;
             if (width > height) {
+              // Landscape or square
               width = maxWidth;
               height = width / aspectRatio;
             } else {
+              // Portrait
               height = maxHeight;
               width = height * aspectRatio;
             }
 
             // Ensure dimensions don't exceed limits after initial scaling
             // This is a safety check if the aspect ratio calculation resulted in a dimension still exceeding max.
-            // (e.g., if maxWidth was hit, but height is still too large due to initial calculation)
             if (width > maxWidth) {
               width = maxWidth;
               height = width / aspectRatio;
@@ -168,8 +172,8 @@ export default class extends Controller {
                 reject(new Error('Canvas toBlob failed during resizing.'));
               }
             },
-            file.type, // Use original file type for the output blob
-            0.9 // Compression quality for JPEG/WebP (0.9 for good balance)
+            file.type,
+            0.9
           );
         };
         image.onerror = () => reject(new Error('Image loading failed for client-side resizing.'));
@@ -224,7 +228,6 @@ export default class extends Controller {
           console.log('Blob filename:', blob.filename);
 
           if (blob && blob.signed_id) {
-            // Construct the URL to the uploaded original image (which is now the client-resized version)
             this.originalImageUrlValue = `/rails/active_storage/blobs/${blob.signed_id}/${encodeURIComponent(
               blob.filename
             )}`;
@@ -262,21 +265,22 @@ export default class extends Controller {
 
   // --- Konva.js Canvas Initialization & Image Loading ---
   // initializeKonva now takes the exact dimensions of the image it will display.
-  initializeKonva(imageWidth, imageHeight) {
+  initializeKonva(imageDisplayWidth, imageDisplayHeight) {
+    // Changed parameter names
     this.editorSectionTarget.classList.remove('hidden');
     const container = this.canvasContainerTarget;
 
-    console.log('Initializing Konva Stage with image dimensions:', imageWidth, imageHeight);
+    console.log('Initializing Konva Stage with display dimensions:', imageDisplayWidth, imageDisplayHeight);
 
     if (this.stage) {
       this.stage.destroy(); // Destroy previous stage if it exists
     }
 
-    // Konva Stage width and height are set directly to the image's dimensions
+    // Konva Stage width and height are set directly to the calculated display dimensions
     this.stage = new Konva.Stage({
       container: container,
-      width: imageWidth,
-      height: imageHeight,
+      width: imageDisplayWidth,
+      height: imageDisplayHeight,
     });
 
     this.layer = new Konva.Layer();
@@ -285,13 +289,13 @@ export default class extends Controller {
     this.maskLayer = new Konva.Layer();
     this.stage.add(this.maskLayer);
 
-    // Mask canvas dimensions also match the image dimensions
+    // Mask canvas dimensions also match the image display dimensions
     const maskCanvas = document.createElement('canvas');
-    maskCanvas.width = imageWidth;
-    maskCanvas.height = imageHeight;
+    maskCanvas.width = imageDisplayWidth;
+    maskCanvas.height = imageDisplayHeight;
     this.maskContext = maskCanvas.getContext('2d');
     this.maskContext.fillStyle = 'white'; // Initialize mask with white background
-    this.maskContext.fillRect(0, 0, imageWidth, imageHeight);
+    this.maskContext.fillRect(0, 0, imageDisplayWidth, imageDisplayHeight);
 
     console.log('Mask canvas dimensions:', maskCanvas.width, maskCanvas.height);
 
@@ -299,40 +303,32 @@ export default class extends Controller {
       image: maskCanvas,
       x: 0,
       y: 0,
-      opacity: 0.5, // Visual opacity for the mask over the original image
-      // globalCompositeOperation: 'source-over' is the default and can be omitted
+      opacity: 0.5,
     });
     this.maskLayer.add(this.maskImageNode);
 
     this.setupDrawingEvents();
 
-    // Apply CSS to the container to make the fixed-size Konva canvas responsive.
-    // This allows the canvas to shrink/grow with the viewport while maintaining aspect ratio.
-    container.style.maxWidth = '100%';
-    container.style.height = 'auto'; // Let height adjust based on maxWidth and aspect ratio
+    // No need for specific CSS here, as the stage dimensions are already fixed to the desired display size.
+    // The parent container should ensure visibility and responsiveness.
+    // Any `max-width: 100%` on the container will handle responsiveness if the screen is smaller than 500px.
+    container.style.width = `${imageDisplayWidth}px`; // Set explicit width
+    container.style.height = `${imageDisplayHeight}px`; // Set explicit height
+    container.style.maxWidth = '100%'; // Ensures it shrinks on smaller screens
     container.style.margin = '0 auto'; // Center the container
     container.style.overflow = 'hidden'; // Hide overflow if content is larger
-    // The actual Konva canvas element will be the 'imageWidth' x 'imageHeight'
-    // but its display size will be governed by these container styles and the browser's scaling.
   }
 
-  // handleCanvasResize is no longer needed as the Konva Stage dimensions are fixed to the image,
-  // and the mask canvas is created with the same fixed dimensions.
-  // The outer container manages its responsive display via CSS.
-  // The original handleCanvasResize logic was for fitting an image *into* a resizable stage,
-  // which is different from the requirement "canvas is the same size and aspect ratio as the image".
-  // The mask context dimensions are set precisely in initializeKonva and will match the stage/image.
   handleCanvasResize() {
-    // This function is effectively no longer needed in its original form.
-    // The Konva stage and mask canvas are initialized to the exact image dimensions
-    // and do not dynamically resize to the container.
-    // The container's CSS handles responsive scaling of the fixed-size canvas.
-    console.log('handleCanvasResize called, but stage dimensions are now fixed to image dimensions.');
+    // This function is still effectively not needed for dynamic resizing Konva stage
+    // as the stage is initialized to a fixed size based on the image's display dimensions.
+    // However, the internal logic for resizing the mask canvas if it somehow differs
+    // from the stage dimensions is retained as a safety measure.
+    console.log('handleCanvasResize called, but stage dimensions are now fixed to image display dimensions.');
     if (this.stage && this.maskContext && this.maskImageNode) {
       const stageWidth = this.stage.width();
       const stageHeight = this.stage.height();
 
-      // Ensure the mask canvas dimensions match the stage dimensions (which are image dimensions)
       if (this.maskContext.canvas.width !== stageWidth || this.maskContext.canvas.height !== stageHeight) {
         const oldMaskCanvas = this.maskContext.canvas;
         const newMaskCanvas = document.createElement('canvas');
@@ -364,22 +360,36 @@ export default class extends Controller {
     img.onload = () => {
       console.log('Image loaded successfully:', img.naturalWidth, img.naturalHeight);
 
-      // Initialize Konva stage, layers, and mask with the actual natural dimensions of the loaded image.
-      this.initializeKonva(img.naturalWidth, img.naturalHeight);
+      let displayWidth = img.naturalWidth;
+      let displayHeight = img.naturalHeight;
+
+      // NEW: Calculate display dimensions based on MAX_CANVAS_DISPLAY_WIDTH
+      if (displayWidth > this.MAX_CANVAS_DISPLAY_WIDTH) {
+        const aspectRatio = displayWidth / displayHeight;
+        displayWidth = this.MAX_CANVAS_DISPLAY_WIDTH;
+        displayHeight = displayWidth / aspectRatio;
+      }
+      // Ensure height is not fractional to prevent rendering issues
+      displayHeight = Math.round(displayHeight);
+
+      console.log('Calculated display dimensions for Konva:', displayWidth, displayHeight);
+
+      // Initialize Konva stage, layers, and mask with the calculated display dimensions.
+      this.initializeKonva(displayWidth, displayHeight);
 
       if (!this.stage) {
         console.error('Konva Stage is not initialized after image load.');
         return;
       }
 
-      // The imageNode is created with the natural dimensions and placed at (0,0)
+      // The imageNode is created with the calculated display dimensions and placed at (0,0)
       this.imageNode = new Konva.Image({
         image: img,
         x: 0,
         y: 0,
-        width: img.naturalWidth,
-        height: img.naturalHeight,
-        draggable: false, // Prevent dragging the base image
+        width: displayWidth,
+        height: displayHeight,
+        draggable: false,
       });
 
       this.layer.add(this.imageNode);
@@ -415,8 +425,6 @@ export default class extends Controller {
     const pos = this.stage.getPointerPosition();
     if (!pos) return;
 
-    // With the stage dimensions now directly matching the image dimensions (1:1 pixel mapping),
-    // the pointer position relative to the stage is the correct drawing coordinate.
     const { x, y } = this.getRelativePointerPosition(pos);
 
     this.maskContext.globalCompositeOperation = this.currentTool === 'eraser' ? 'destination-out' : 'source-over';
@@ -428,7 +436,6 @@ export default class extends Controller {
     if (this.currentTool === 'brush' || this.currentTool === 'eraser') {
       this.maskContext.beginPath();
       this.maskContext.moveTo(x, y);
-      // Visual line for real-time drawing feedback on the mask layer (will be destroyed on mouseup)
       this.lastLine = new Konva.Line({
         points: [x, y],
         stroke: this.currentTool === 'eraser' ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)',
@@ -445,12 +452,12 @@ export default class extends Controller {
         y: y,
         width: 0,
         height: 0,
-        fill: 'rgba(0,0,0,0.5)', // Visible fill for the rectangle selection
+        fill: 'rgba(0,0,0,0.5)',
         opacity: 1,
       });
       this.maskLayer.add(this.currentRect);
     }
-    this.maskLayer.batchDraw(); // Update mask layer to show initial drawing/rect
+    this.maskLayer.batchDraw();
   }
 
   handleMouseMove(e) {
@@ -459,40 +466,35 @@ export default class extends Controller {
     const pos = this.stage.getPointerPosition();
     if (!pos) return;
 
-    // Directly use pointer position as stage is 1:1 with image
     const { x, y } = this.getRelativePointerPosition(pos);
 
     if (this.currentTool === 'brush' || this.currentTool === 'eraser') {
       this.maskContext.lineTo(x, y);
-      this.maskContext.stroke(); // Draw on the off-screen mask canvas context
+      this.maskContext.stroke();
       if (this.lastLine) {
-        // Update the visual Konva Line node for smooth feedback
         this.lastLine.points(this.lastLine.points().concat([x, y]));
       }
     } else if (this.currentTool === 'rect' && this.currentRect) {
-      // Update the Konva Rectangle node for visual feedback
       const width = x - this.startRectX;
       const height = y - this.startRectY;
       this.currentRect.width(width);
       this.currentRect.height(height);
     }
     if (this.maskImageNode) {
-      // Update the Konva Image node with the modified off-screen mask canvas
       this.maskImageNode.image(this.maskContext.canvas);
-      this.maskLayer.batchDraw(); // Redraw mask layer to show changes
+      this.maskLayer.batchDraw();
     }
   }
 
   handleMouseUp() {
     this.isDrawing = false;
     if (this.currentTool === 'brush' || this.currentTool === 'eraser') {
-      this.maskContext.closePath(); // Finish the path on the mask canvas
+      this.maskContext.closePath();
       if (this.lastLine) {
-        this.lastLine.destroy(); // Remove the temporary visual line
+        this.lastLine.destroy();
         this.lastLine = null;
       }
     } else if (this.currentTool === 'rect' && this.currentRect) {
-      // Draw the final rectangle onto the off-screen mask canvas
       this.maskContext.fillStyle = 'black';
       this.maskContext.fillRect(
         this.currentRect.x(),
@@ -500,33 +502,26 @@ export default class extends Controller {
         this.currentRect.width(),
         this.currentRect.height()
       );
-      this.currentRect.destroy(); // Remove the temporary visual rectangle
+      this.currentRect.destroy();
       this.currentRect = null;
     }
     if (this.maskImageNode) {
-      this.maskImageNode.image(this.maskContext.canvas); // Update Konva Image node with final mask
-      this.maskLayer.batchDraw(); // Redraw mask layer
+      this.maskImageNode.image(this.maskContext.canvas);
+      this.maskLayer.batchDraw();
     }
   }
 
-  // Corrected getRelativePointerPosition:
-  // With the Konva Stage set to the natural dimensions of the image,
-  // and the imageNode placed at (0,0) and matching those dimensions,
-  // the pointer position directly from stage.getPointerPosition() is already
-  // in the correct pixel coordinates relative to the image.
   getRelativePointerPosition(absolutePos) {
-    // If the imageNode exists and has an image, return the absolute pointer position directly.
-    // No complex scaling or offset calculations are needed because:
-    // 1. The Konva stage is sized exactly to the image's natural dimensions.
-    // 2. The image node itself is placed at (0,0) within that stage and uses its natural dimensions.
-    // Therefore, the stage's coordinate system is a 1:1 match with the image's pixel coordinates.
+    // Now that the Konva stage is explicitly sized to the calculated display dimensions
+    // and the imageNode also matches these dimensions, the pointer position from
+    // stage.getPointerPosition() is already the correct pixel coordinate relative to the displayed image.
     if (this.imageNode && this.imageNode.image()) {
       return {
         x: absolutePos.x,
         y: absolutePos.y,
       };
     }
-    return { x: 0, y: 0 }; // Fallback
+    return { x: 0, y: 0 };
   }
 
   selectRectTool() {
@@ -554,21 +549,17 @@ export default class extends Controller {
   clearSelection() {
     this.showConfirmation('Are you sure you want to clear all selections?', () => {
       if (this.maskContext && this.maskContext.canvas) {
-        // Clear and refill mask canvas with white
         this.maskContext.clearRect(0, 0, this.maskContext.canvas.width, this.maskContext.canvas.height);
         this.maskContext.fillStyle = 'white';
         this.maskContext.fillRect(0, 0, this.maskContext.canvas.width, this.maskContext.canvas.height);
 
-        // Update Konva mask image node with the cleared canvas
         if (this.maskImageNode) {
           this.maskImageNode.image(this.maskContext.canvas);
         }
-        // Remove any temporary drawing lines/rects from the mask layer
         if (this.maskLayer) {
-          // It's better to remove all children except the maskImageNode itself
           const childrenToKeep = this.maskLayer.getChildren().filter((node) => node === this.maskImageNode);
           this.maskLayer.removeChildren();
-          this.maskLayer.add(...childrenToKeep); // Add back only the maskImageNode
+          this.maskLayer.add(...childrenToKeep);
           this.maskLayer.batchDraw();
         }
         console.log('Selections cleared.');
@@ -576,7 +567,6 @@ export default class extends Controller {
     });
   }
 
-  // Replaces standard alert() for displaying simple messages
   showMessage(message) {
     const messageDiv = document.createElement('div');
     messageDiv.className = 'fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50';
@@ -636,19 +626,16 @@ export default class extends Controller {
     if (!this.imageNode || !this.imageNode.image()) {
       console.error('Image node or image is not available.');
       this.showMessage('Image data is not available for modification.');
-      this.showSection('editor'); // Go back to editor if image is gone
+      this.showSection('editor');
       this.progressBarContainerTarget.classList.add('hidden');
       return;
     }
 
-    // Use the dimensions of the Konva stage, which are now set to the natural
-    // (potentially resized by client-side preprocessing) image dimensions.
-    const originalImageWidth = this.stage.width();
-    const originalImageHeight = this.stage.height();
-
+    // Use the *current Konva stage dimensions* for the mask, as these now
+    // represent the desired display size (max 500px width, aspect-ratio preserved).
     const finalMaskCanvas = document.createElement('canvas');
-    finalMaskCanvas.width = originalImageWidth;
-    finalMaskCanvas.height = originalImageHeight;
+    finalMaskCanvas.width = this.stage.width();
+    finalMaskCanvas.height = this.stage.height();
     const finalMaskContext = finalMaskCanvas.getContext('2d');
 
     // Draw the mask canvas onto the final mask canvas, ensuring it's the same size as the image
@@ -660,8 +647,8 @@ export default class extends Controller {
       this.maskContext.canvas.height, // Source rectangle
       0,
       0,
-      originalImageWidth,
-      originalImageHeight // Destination rectangle
+      finalMaskCanvas.width,
+      finalMaskCanvas.height // Destination rectangle
     );
 
     const maskDataURL = finalMaskCanvas.toDataURL('image/png');
@@ -694,7 +681,24 @@ export default class extends Controller {
     }
   }
 
+  handleDataReceived(event) {
+    const data = event.detail;
+    console.log('Handling data received in Stimulus controller:', data);
+
+    if (data.modified_image_url) {
+      this.modifiedImageUrlValue = data.modified_image_url;
+      console.log('Modified Image URL:', this.modifiedImageUrlValue);
+      this.displayResults();
+    } else if (data.error) {
+      alert(`AI processing error: ${data.error}`);
+      this.showSection('editor');
+    }
+  }
+
   displayResults() {
+    // If the images in the result section should also be limited to 500px width,
+    // you'll need to apply CSS styles to them or use a utility like Tailwind's max-w-sm/md/lg.
+    // For now, they'll display at their natural size unless CSS constrains them.
     this.originalResultImageTarget.src = this.originalImageUrlValue;
     this.modifiedResultImageTarget.src = this.modifiedImageUrlValue;
     this.downloadButtonTarget.href = this.modifiedImageUrlValue;
@@ -712,7 +716,6 @@ export default class extends Controller {
   editFurther() {
     this.resetEditor();
     this.originalImageUrlValue = this.modifiedImageUrlValue;
-    // Reload the modified image for further editing
     this.loadImageOnCanvas(this.originalImageUrlValue);
   }
 
@@ -734,17 +737,15 @@ export default class extends Controller {
     this.isDrawing = false;
     this.lastLine = null;
     this.currentRect = null;
-    this.fileInputTarget.value = null; // Clear file input
+    this.fileInputTarget.value = null;
     this.promptInputTarget.value = '';
     this.originalImageUrlValue = '';
     this.modifiedImageUrlValue = '';
     this.progressBarTarget.style.width = '0%';
     this.progressBarContainerTarget.classList.add('hidden');
-    // Ensure brush size control visibility is reset to default (visible for brush/eraser)
     this.brushSizeControlTarget.classList.remove('hidden');
-    this.currentTool = 'brush'; // Reset default tool
-    this.brushSize = 20; // Reset default brush size
-    // Reset container styles in case they were set for a specific image size
+    this.currentTool = 'brush';
+    this.brushSize = 60;
     const container = this.canvasContainerTarget;
     container.style.width = '';
     container.style.height = '';

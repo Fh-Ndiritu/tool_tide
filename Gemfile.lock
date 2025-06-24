@@ -510,6 +510,7 @@ DEPENDENCIES
   kamal
   kramdown (~> 2.5)
   lefthook
+  mini_magick (~> 5.2)
   propshaft
   puma (>= 5.0)
   rack-attack
