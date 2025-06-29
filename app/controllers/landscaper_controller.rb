@@ -4,7 +4,6 @@ class LandscaperController < ApplicationController
   before_action :fetch_prompt, only: :modify_image
 
   def index
-
   end
 
   def modify_image
