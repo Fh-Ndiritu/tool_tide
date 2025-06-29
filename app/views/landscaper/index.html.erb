@@ -1,11 +1,11 @@
 <div data-controller="landscaper"
      data-landscaper-upload-url-value="<%= rails_direct_uploads_url %>"
-     class="min-h-screen bg-neutral-100 flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 font-sans">
+     class="min-h-screen bg-neutral-100 flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 w-full">
 
-  <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-text-dark text-center mb-6 sm:mb-8">Transform Your Landscape with AI</h1>
+<h1 class="text-4xl font-bold text-center text-text-primary my-8"><%= t("landscaper.title")  %></h1>
 
-  <!-- Upload Section -->
-  <div data-landscaper-target="uploadSection" class="w-full max-w-md sm:max-w-lg lg:max-w-2xl bg-white shadow-xl rounded-lg p-6 sm:p-8 text-center">
+<!--# Uploading section-->
+  <div data-landscaper-target="uploadSection" class="w-full max-w-md sm:max-w-lg lg:max-w-3xl bg-white shadow-xl rounded-lg p-6 sm:p-8 text-center">
     <h2 class="text-xl sm:text-2xl font-semibold text-text-dark mb-4">Upload Your Yard Photo</h2>
     <div data-action="dragover->landscaper#dragOver dragleave->landscaper#dragLeave drop->landscaper#drop click->landscaper#triggerFileInput"
          data-landscaper-target="dropZone"
@@ -19,7 +19,7 @@
     <p class="text-xs text-neutral-400 mt-2">Supports JPG, PNG, WEBP</p>
   </div>
 
-  <!-- Editor Section -->
+<!--# Editor Section-->
   <div data-landscaper-target="editorSection" class="w-full max-w-full lg:max-w-6xl bg-white shadow-xl rounded-lg flex flex-col lg:flex-row p-4 mt-8">
     <div class="lg:w-3/4 w-full h-[400px] sm:h-[500px] lg:h-[600px] bg-neutral-100 flex text-black items-center justify-center relative overflow-hidden rounded-md" data-landscaper-target="canvasContainer">
 
@@ -33,9 +33,10 @@
           <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.232z"></path></svg>
         </button>
         <button data-action="click->landscaper#selectEraserTool" class="p-2 rounded-md text-neutral-700 hover:bg-secondary hover:text-text-light transition-colors duration-200" title="Eraser">
-          <!-- Eraser icon SVG -->
-        </button>
+          </button>
         <button data-action="click->landscaper#clearSelection" class="p-2 rounded-md text-sm text-neutral-700 hover:bg-neutral-300 transition-colors duration-200" title="Clear Selection">Clear</button>
+        <button data-action="click->landscaper#undoPaintAction" data-landscaper-target="undoButton" class="p-2 rounded-md text-sm text-neutral-700 hover:bg-neutral-300 transition-colors duration-200" title="Undo Last Action">Undo</button>
+        <button data-action="click->landscaper#redoPaintAction" data-landscaper-target="redoButton" class="p-2 rounded-md text-sm text-neutral-700 hover:bg-neutral-300 transition-colors duration-200" title="Redo Last Undo">Redo</button>
       </div>
 
       <div data-landscaper-target="brushSizeControl" class="hidden">
@@ -43,10 +44,16 @@
         <input type="range" id="brush-size" min="5" max="50" value="20" data-action="input->landscaper#updateBrushSize" class="w-full h-2 bg-neutral-300 rounded-lg appearance-none cursor-pointer accent-primary">
       </div>
 
-      <textarea data-landscaper-target="promptInput"
-                placeholder="Describe your desired landscaping changes (e.g., 'add a vibrant rose garden', 'replace with a zen rock garden')."
-                class="w-full flex-grow p-3 border border-neutral-300 rounded-md resize-none focus:ring-primary focus:border-primary text-text-dark text-sm"></textarea>
-
+<!--# we show landscape_presets as a select option-->
+      <div class="mb-4">
+        <label for="landscape-preset" class="block text-sm font-medium text-neutral-700 mb-1">Landscape Preset</label>
+        <select id="landscape-preset" data-landscaper-target="selectPreset" class="w-full p-2 border border-neutral-300 rounded-md focus:ring-primary focus:border-primary text-text-dark text-sm">
+          <option value="" disabled selected hidden>Choose a vibe</option>
+          <%= LANDSCAPE_PRESETS.each do |preset, description| %>
+           <option value="<%= preset %>"><%= preset.humanize %> - <%= description %></option>
+           <% end %>
+        </select>
+      </div>
       <button data-action="click->landscaper#submitModification"
               class="w-full bg-primary text-text-light py-3 rounded-md hover:bg-text-primary transition-colors duration-200 font-bold text-lg">
         Generate Landscape
@@ -58,7 +65,6 @@
     </div>
   </div>
 
-  <!-- Loading Section -->
   <div data-landscaper-target="loadingSection" class="hidden fixed inset-0 bg-neutral-100 bg-opacity-75 flex flex-col items-center justify-center z-50">
     <div class="inline-block h-12 w-12 animate-spin rounded-full border-4 border-solid border-current border-e-transparent text-primary" role="status">
       <span class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">Loading...</span>
@@ -69,7 +75,6 @@
     </div>
   </div>
 
-  <!-- Result Section -->
   <div data-landscaper-target="resultSection" class="hidden w-full max-w-full lg:max-w-6xl bg-white shadow-xl rounded-lg p-6 sm:p-8 mt-8">
     <h2 class="text-2xl sm:text-3xl font-bold text-text-dark mb-6 text-center">Your Transformed Landscape</h2>
     <div class="flex flex-col lg:flex-row justify-around items-center space-y-8 lg:space-y-0 lg:space-x-8">
@@ -96,5 +101,14 @@
         Start New Design
       </button>
     </div>
+  </div>
+
+  <div class="justify-center items-center card bg-base-100 shadow-xl image-full my-8 p-6 rounded-lg border-dashed border-2 border-gray-300 w-full max-w-md sm:max-w-lg lg:max-w-3xl xl:max-w-4xl">
+    <h2 class="text-2xl font-semibold text-text-secondary"><%= t("landscaper.instructions.title") %> </h2>
+    <ol class="list-decimal list-inside my-6 text-sm leading-relaxed">
+      <% t("landscaper.instructions.steps").each do |step| %>
+        <li><%= step %></li>
+        <% end %>
+    </ol>
   </div>
 </div>

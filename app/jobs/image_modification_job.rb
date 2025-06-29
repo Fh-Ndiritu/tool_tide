@@ -49,9 +49,10 @@ class ImageModificationJob < ApplicationJob
       # If `sync: false` were used (Bria AI's default for optimal performance),
       # the response would contain a job ID, requiring a polling mechanism
       # (e.g., a separate job or a loop) to fetch the final result once ready.
+      mask_input = flip_mask_colors(mask_image_data)
       bria_response = bria_client.gen_fill(
         image_input: image_input_for_bria, # Use the processed image input
-        mask_input: flip_mask_colors(mask_image_data), # The client handles removing the "data:image/png;base64," prefix.
+        mask_input: , # The client handles removing the "data:image/png;base64," prefix.
         prompt: prompt,
         sync: true, # Request synchronous processing for immediate result.
         num_results: 1 # Request only one modified image.

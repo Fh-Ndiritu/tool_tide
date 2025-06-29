@@ -15,8 +15,12 @@ export default class extends Controller {
     'originalResultImage',
     'modifiedResultImage',
     'downloadButton',
-    'promptInput',
+    'selectPreset',
     'brushSizeControl',
+    // NEW: Add undo/redo buttons as targets if you want to enable/disable them
+    // based on history state
+    'undoButton',
+    'redoButton',
   ];
 
   static values = {
@@ -40,6 +44,11 @@ export default class extends Controller {
   startRectY = 0;
   currentRect = null;
 
+  // NEW: History for undo/redo functionality
+  maskHistory = [];
+  historyPointer = -1;
+  MAX_HISTORY_STATES = 10; // Limit history to prevent excessive memory usage
+
   // Maximum dimension (width or height) for client-side image resizing before upload
   MAX_UPLOAD_DIMENSION = 1920;
 
@@ -52,6 +61,7 @@ export default class extends Controller {
     this.showSection('upload');
 
     document.addEventListener('landscaper:data-received', this.handleDataReceived.bind(this));
+    this.updateUndoRedoButtonStates(); // Initialize button states
   }
 
   disconnect() {
@@ -309,6 +319,12 @@ export default class extends Controller {
 
     this.setupDrawingEvents();
 
+    // Reset history when a new image is loaded
+    this.maskHistory = [];
+    this.historyPointer = -1;
+    this.saveMaskState(); // Save initial blank mask state
+    this.updateUndoRedoButtonStates(); // Update button states after initialization
+
     // No need for specific CSS here, as the stage dimensions are already fixed to the desired display size.
     // The parent container should ensure visibility and responsiveness.
     // Any `max-width: 100%` on the container will handle responsiveness if the screen is smaller than 500px.
@@ -363,15 +379,24 @@ export default class extends Controller {
       let displayWidth = img.naturalWidth;
       let displayHeight = img.naturalHeight;
 
-      // NEW: Calculate display dimensions based on MAX_CANVAS_DISPLAY_WIDTH
-      if (displayWidth > this.MAX_CANVAS_DISPLAY_WIDTH) {
+      this.editorSectionTarget.classList.remove('hidden');
+      // Get the actual width of the editorSection
+      const editorSectionActualWidth = this.editorSectionTarget.offsetWidth;
+
+      // Determine the maximum allowable width for the canvas
+      let maxAllowableCanvasWidth = this.MAX_CANVAS_DISPLAY_WIDTH;
+
+      // If editorSection is smaller than MAX_CANVAS_DISPLAY_WIDTH, use 96% of its width
+      if (editorSectionActualWidth < this.MAX_CANVAS_DISPLAY_WIDTH) {
+        maxAllowableCanvasWidth = editorSectionActualWidth * 0.96; // 96% of editorSection width
+      }
+
+      if (displayWidth > maxAllowableCanvasWidth) {
         const aspectRatio = displayWidth / displayHeight;
-        displayWidth = this.MAX_CANVAS_DISPLAY_WIDTH;
+        displayWidth = maxAllowableCanvasWidth;
         displayHeight = displayWidth / aspectRatio;
       }
-      // Ensure height is not fractional to prevent rendering issues
       displayHeight = Math.round(displayHeight);
-
       console.log('Calculated display dimensions for Konva:', displayWidth, displayHeight);
 
       // Initialize Konva stage, layers, and mask with the calculated display dimensions.
@@ -495,19 +520,111 @@ export default class extends Controller {
         this.lastLine = null;
       }
     } else if (this.currentTool === 'rect' && this.currentRect) {
-      this.maskContext.fillStyle = 'black';
+      // For rectangle, directly apply to maskContext
+      this.maskContext.fillStyle = 'black'; // Ensure black fill for mask
+      // Need to respect globalCompositeOperation for eraser tool with rect
+      const originalCompositeOperation = this.maskContext.globalCompositeOperation;
+      this.maskContext.globalCompositeOperation = this.currentTool === 'eraser' ? 'destination-out' : 'source-over';
       this.maskContext.fillRect(
         this.currentRect.x(),
         this.currentRect.y(),
         this.currentRect.width(),
         this.currentRect.height()
       );
+      this.maskContext.globalCompositeOperation = originalCompositeOperation; // Restore original
+
       this.currentRect.destroy();
       this.currentRect = null;
     }
+
     if (this.maskImageNode) {
       this.maskImageNode.image(this.maskContext.canvas);
       this.maskLayer.batchDraw();
+    }
+    this.saveMaskState(); // Save the state after the action
+  }
+
+  // --- Undo/Redo Logic ---
+  saveMaskState() {
+    if (!this.maskContext) return;
+
+    // If we've undone some actions and now perform a new one,
+    // we need to clear the "future" history (redo states)
+    if (this.historyPointer < this.maskHistory.length - 1) {
+      this.maskHistory = this.maskHistory.slice(0, this.historyPointer + 1);
+    }
+
+    // Get the current image data from the mask canvas
+    const imageData = this.maskContext.getImageData(
+      0,
+      0,
+      this.maskContext.canvas.width,
+      this.maskContext.canvas.height
+    );
+    this.maskHistory.push(imageData);
+
+    // Limit history size
+    if (this.maskHistory.length > this.MAX_HISTORY_STATES) {
+      this.maskHistory.shift(); // Remove the oldest state
+    } else {
+      this.historyPointer++;
+    }
+
+    console.log('Mask state saved. History size:', this.maskHistory.length, 'Pointer:', this.historyPointer);
+    this.updateUndoRedoButtonStates();
+  }
+
+  applyMaskState(imageData) {
+    this.maskContext.clearRect(0, 0, this.maskContext.canvas.width, this.maskContext.canvas.height); // Clear current
+    this.maskContext.putImageData(imageData, 0, 0); // Apply the saved state
+
+    if (this.maskImageNode) {
+      this.maskImageNode.image(this.maskContext.canvas);
+      this.maskLayer.batchDraw();
+    }
+  }
+
+  undoPaintAction() {
+    if (this.historyPointer > 0) {
+      this.historyPointer--;
+      const imageData = this.maskHistory[this.historyPointer];
+      if (imageData) {
+        this.applyMaskState(imageData);
+        console.log('Undo successful. History pointer:', this.historyPointer);
+      }
+    } else {
+      console.log('No more undo history.');
+      this.showMessage('No more actions to undo.');
+    }
+    this.updateUndoRedoButtonStates();
+  }
+
+  redoPaintAction() {
+    if (this.historyPointer < this.maskHistory.length - 1) {
+      this.historyPointer++;
+      const imageData = this.maskHistory[this.historyPointer];
+      if (imageData) {
+        this.applyMaskState(imageData);
+        console.log('Redo successful. History pointer:', this.historyPointer);
+      }
+    } else {
+      console.log('No more redo history.');
+      this.showMessage('No more actions to redo.');
+    }
+    this.updateUndoRedoButtonStates();
+  }
+
+  updateUndoRedoButtonStates() {
+    // Only try to access targets if they exist (e.g., editor section is visible)
+    if (this.hasUndoButtonTarget) {
+      this.undoButtonTarget.disabled = this.historyPointer <= 0;
+      this.undoButtonTarget.classList.toggle('opacity-50', this.historyPointer <= 0);
+      this.undoButtonTarget.classList.toggle('cursor-not-allowed', this.historyPointer <= 0);
+    }
+    if (this.hasRedoButtonTarget) {
+      this.redoButtonTarget.disabled = this.historyPointer >= this.maskHistory.length - 1;
+      this.redoButtonTarget.classList.toggle('opacity-50', this.historyPointer >= this.maskHistory.length - 1);
+      this.redoButtonTarget.classList.toggle('cursor-not-allowed', this.historyPointer >= this.maskHistory.length - 1);
     }
   }
 
@@ -563,6 +680,7 @@ export default class extends Controller {
           this.maskLayer.batchDraw();
         }
         console.log('Selections cleared.');
+        this.saveMaskState(); // Save state after clearing
       }
     });
   }
@@ -613,9 +731,9 @@ export default class extends Controller {
       this.showMessage('Please upload an image first.');
       return;
     }
-    const prompt = this.promptInputTarget.value.trim();
-    if (!prompt) {
-      this.showMessage('Please enter a prompt for your landscaping modification.');
+    const preset = this.selectPresetTarget.value.trim();
+    if (!preset) {
+      this.showMessage('Please select a vibe to style your yard.');
       return;
     }
 
@@ -661,9 +779,11 @@ export default class extends Controller {
           'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content,
         },
         body: JSON.stringify({
-          original_image_url: this.originalImageUrlValue,
-          mask_image_data: maskDataURL,
-          prompt: prompt,
+          landscape: {
+            original_image_url: this.originalImageUrlValue,
+            mask_image_data: maskDataURL,
+            preset: preset,
+          },
         }),
       });
 
@@ -738,7 +858,7 @@ export default class extends Controller {
     this.lastLine = null;
     this.currentRect = null;
     this.fileInputTarget.value = null;
-    this.promptInputTarget.value = '';
+    this.selectPresetTarget.value = '';
     this.originalImageUrlValue = '';
     this.modifiedImageUrlValue = '';
     this.progressBarTarget.style.width = '0%';
@@ -752,5 +872,9 @@ export default class extends Controller {
     container.style.maxWidth = '';
     container.style.margin = '';
     container.style.overflow = '';
+    // Clear history on reset
+    this.maskHistory = [];
+    this.historyPointer = -1;
+    this.updateUndoRedoButtonStates(); // Update button states after reset
   }
 }
