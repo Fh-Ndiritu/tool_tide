@@ -52,7 +52,7 @@ class ImageModificationJob < ApplicationJob
       mask_input = flip_mask_colors(mask_image_data)
       bria_response = bria_client.gen_fill(
         image_input: image_input_for_bria, # Use the processed image input
-        mask_input: , # The client handles removing the "data:image/png;base64," prefix.
+        mask_input:, # The client handles removing the "data:image/png;base64," prefix.
         prompt: prompt,
         sync: true, # Request synchronous processing for immediate result.
         num_results: 1 # Request only one modified image.

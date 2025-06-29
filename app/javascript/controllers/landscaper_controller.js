@@ -17,8 +17,7 @@ export default class extends Controller {
     'downloadButton',
     'selectPreset',
     'brushSizeControl',
-    // NEW: Add undo/redo buttons as targets if you want to enable/disable them
-    // based on history state
+    'brushSizeDisplay', // NEW: Add brushSizeDisplay as a target
     'undoButton',
     'redoButton',
   ];
@@ -39,12 +38,12 @@ export default class extends Controller {
   isDrawing = false;
   lastLine = null;
   currentTool = 'brush';
-  brushSize = 60;
+  brushSize = 40; // Default brush size
   startRectX = 0;
   startRectY = 0;
   currentRect = null;
 
-  // NEW: History for undo/redo functionality
+  // NEW: History for undo/redo functionality - Changed to store data URLs
   maskHistory = [];
   historyPointer = -1;
   MAX_HISTORY_STATES = 10; // Limit history to prevent excessive memory usage
@@ -60,6 +59,9 @@ export default class extends Controller {
     console.log('Landscaper controller connected!');
     this.showSection('upload');
 
+    // Ensure the brush size input and display reflect the initial default value
+    this.setBrushSize(this.brushSize); // Use the new helper method
+
     document.addEventListener('landscaper:data-received', this.handleDataReceived.bind(this));
     this.updateUndoRedoButtonStates(); // Initialize button states
   }
@@ -67,6 +69,20 @@ export default class extends Controller {
   disconnect() {
     document.removeEventListener('landscaper:data-received', this.handleDataReceived.bind(this));
     this.resetEditor();
+  }
+
+  // Helper method to set brush size and update display
+  setBrushSize(size) {
+    this.brushSize = size;
+    if (this.hasBrushSizeControlTarget) {
+      const brushSizeInput = this.brushSizeControlTarget.querySelector('#brush-size');
+      if (brushSizeInput) {
+        brushSizeInput.value = this.brushSize;
+      }
+    }
+    if (this.hasBrushSizeDisplayTarget) {
+      this.brushSizeDisplayTarget.textContent = `${this.brushSize}px`;
+    }
   }
 
   // --- UI State Management ---
@@ -313,7 +329,7 @@ export default class extends Controller {
       image: maskCanvas,
       x: 0,
       y: 0,
-      opacity: 0.5,
+      opacity: 0.4,
     });
     this.maskLayer.add(this.maskImageNode);
 
@@ -453,7 +469,7 @@ export default class extends Controller {
     const { x, y } = this.getRelativePointerPosition(pos);
 
     this.maskContext.globalCompositeOperation = this.currentTool === 'eraser' ? 'destination-out' : 'source-over';
-    this.maskContext.strokeStyle = 'black';
+    this.maskContext.strokeStyle = 'green'; // Changed from black to green
     this.maskContext.lineWidth = this.brushSize;
     this.maskContext.lineJoin = 'round';
     this.maskContext.lineCap = 'round';
@@ -463,7 +479,7 @@ export default class extends Controller {
       this.maskContext.moveTo(x, y);
       this.lastLine = new Konva.Line({
         points: [x, y],
-        stroke: this.currentTool === 'eraser' ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)',
+        stroke: this.currentTool === 'eraser' ? 'rgba(255,255,255, 0.7)' : 'rgba(0,128,0, 0.7)', // Changed from black to green
         strokeWidth: this.brushSize,
         lineCap: 'round',
         lineJoin: 'round',
@@ -477,7 +493,7 @@ export default class extends Controller {
         y: y,
         width: 0,
         height: 0,
-        fill: 'rgba(0,0,0,0.5)',
+        fill: 'rgba(0,128,0, 0.7)', // Changed from black to green
         opacity: 1,
       });
       this.maskLayer.add(this.currentRect);
@@ -521,7 +537,7 @@ export default class extends Controller {
       }
     } else if (this.currentTool === 'rect' && this.currentRect) {
       // For rectangle, directly apply to maskContext
-      this.maskContext.fillStyle = 'black'; // Ensure black fill for mask
+      this.maskContext.fillStyle = 'green'; // Changed from black to green
       // Need to respect globalCompositeOperation for eraser tool with rect
       const originalCompositeOperation = this.maskContext.globalCompositeOperation;
       this.maskContext.globalCompositeOperation = this.currentTool === 'eraser' ? 'destination-out' : 'source-over';
@@ -554,14 +570,9 @@ export default class extends Controller {
       this.maskHistory = this.maskHistory.slice(0, this.historyPointer + 1);
     }
 
-    // Get the current image data from the mask canvas
-    const imageData = this.maskContext.getImageData(
-      0,
-      0,
-      this.maskContext.canvas.width,
-      this.maskContext.canvas.height
-    );
-    this.maskHistory.push(imageData);
+    // Capture the entire visual state of the mask canvas as a data URL
+    const dataURL = this.maskContext.canvas.toDataURL();
+    this.maskHistory.push(dataURL);
 
     // Limit history size
     if (this.maskHistory.length > this.MAX_HISTORY_STATES) {
@@ -574,22 +585,35 @@ export default class extends Controller {
     this.updateUndoRedoButtonStates();
   }
 
-  applyMaskState(imageData) {
-    this.maskContext.clearRect(0, 0, this.maskContext.canvas.width, this.maskContext.canvas.height); // Clear current
-    this.maskContext.putImageData(imageData, 0, 0); // Apply the saved state
+  applyMaskState(dataURL) {
+    if (!this.maskContext || !this.maskImageNode) {
+      console.error('Cannot apply mask state: maskContext or maskImageNode is null.');
+      return;
+    }
 
-    if (this.maskImageNode) {
+    const img = new Image();
+    img.onload = () => {
+      // Clear the canvas completely before drawing the new state
+      this.maskContext.clearRect(0, 0, this.maskContext.canvas.width, this.maskContext.canvas.height);
+      // Draw the restored image onto the mask canvas
+      this.maskContext.drawImage(img, 0, 0, this.maskContext.canvas.width, this.maskContext.canvas.height);
+
       this.maskImageNode.image(this.maskContext.canvas);
       this.maskLayer.batchDraw();
-    }
+      console.log('Mask state applied from dataURL.');
+    };
+    img.onerror = (e) => {
+      console.error('Error loading mask image from dataURL for undo/redo:', e);
+    };
+    img.src = dataURL;
   }
 
   undoPaintAction() {
     if (this.historyPointer > 0) {
       this.historyPointer--;
-      const imageData = this.maskHistory[this.historyPointer];
-      if (imageData) {
-        this.applyMaskState(imageData);
+      const dataURL = this.maskHistory[this.historyPointer];
+      if (dataURL) {
+        this.applyMaskState(dataURL);
         console.log('Undo successful. History pointer:', this.historyPointer);
       }
     } else {
@@ -602,9 +626,9 @@ export default class extends Controller {
   redoPaintAction() {
     if (this.historyPointer < this.maskHistory.length - 1) {
       this.historyPointer++;
-      const imageData = this.maskHistory[this.historyPointer];
-      if (imageData) {
-        this.applyMaskState(imageData);
+      const dataURL = this.maskHistory[this.historyPointer];
+      if (dataURL) {
+        this.applyMaskState(dataURL);
         console.log('Redo successful. History pointer:', this.historyPointer);
       }
     } else {
@@ -653,14 +677,8 @@ export default class extends Controller {
     console.log('Selected: Brush Tool');
   }
 
-  selectEraserTool() {
-    this.currentTool = 'eraser';
-    this.brushSizeControlTarget.classList.remove('hidden');
-    console.log('Selected: Eraser Tool');
-  }
-
   updateBrushSize(event) {
-    this.brushSize = parseInt(event.target.value);
+    this.setBrushSize(parseInt(event.target.value)); // Use the helper method
   }
 
   clearSelection() {
@@ -674,9 +692,6 @@ export default class extends Controller {
           this.maskImageNode.image(this.maskContext.canvas);
         }
         if (this.maskLayer) {
-          const childrenToKeep = this.maskLayer.getChildren().filter((node) => node === this.maskImageNode);
-          this.maskLayer.removeChildren();
-          this.maskLayer.add(...childrenToKeep);
           this.maskLayer.batchDraw();
         }
         console.log('Selections cleared.');
@@ -769,6 +784,9 @@ export default class extends Controller {
       finalMaskCanvas.height // Destination rectangle
     );
 
+    // Convert green shades to black
+    this.convertGreenToBlack(finalMaskCanvas, finalMaskContext);
+
     const maskDataURL = finalMaskCanvas.toDataURL('image/png');
 
     try {
@@ -799,6 +817,28 @@ export default class extends Controller {
       this.showSection('editor');
       this.progressBarContainerTarget.classList.add('hidden');
     }
+  }
+
+  // Function to convert green shades to black
+  convertGreenToBlack(canvas, context) {
+    const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+    const data = imageData.data;
+
+    for (let i = 0; i < data.length; i += 4) {
+      const red = data[i];
+      const green = data[i + 1];
+      const blue = data[i + 2];
+
+      // Check if the pixel is a shade of green
+      if (green > red && green > blue) {
+        // Convert green shades to black
+        data[i] = 0; // Red
+        data[i + 1] = 0; // Green
+        data[i + 2] = 0; // Blue
+      }
+    }
+
+    context.putImageData(imageData, 0, 0);
   }
 
   handleDataReceived(event) {
@@ -835,7 +875,6 @@ export default class extends Controller {
 
   editFurther() {
     this.resetEditor();
-    this.originalImageUrlValue = this.modifiedImageUrlValue;
     this.loadImageOnCanvas(this.originalImageUrlValue);
   }
 
@@ -858,23 +897,24 @@ export default class extends Controller {
     this.lastLine = null;
     this.currentRect = null;
     this.fileInputTarget.value = null;
-    this.selectPresetTarget.value = '';
-    this.originalImageUrlValue = '';
+    if (this.hasSelectPresetTarget) {
+      this.selectPresetTarget.value = '';
+    }
     this.modifiedImageUrlValue = '';
     this.progressBarTarget.style.width = '0%';
     this.progressBarContainerTarget.classList.add('hidden');
     this.brushSizeControlTarget.classList.remove('hidden');
     this.currentTool = 'brush';
-    this.brushSize = 60;
+    this.setBrushSize(40); // Reset to new default using helper
     const container = this.canvasContainerTarget;
     container.style.width = '';
     container.style.height = '';
     container.style.maxWidth = '';
     container.style.margin = '';
     container.style.overflow = '';
-    // Clear history on reset
+    // Crucially, reset undo/redo history
     this.maskHistory = [];
     this.historyPointer = -1;
-    this.updateUndoRedoButtonStates(); // Update button states after reset
+    this.updateUndoRedoButtonStates();
   }
 }
