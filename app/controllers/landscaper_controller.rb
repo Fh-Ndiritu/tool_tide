@@ -4,7 +4,7 @@ class LandscaperController < ApplicationController
   before_action :fetch_prompt, only: :modify_image
 
   def index
-    @url = ActiveStorage::Blob.first.url
+
   end
 
   def modify_image

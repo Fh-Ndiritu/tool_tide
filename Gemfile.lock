@@ -322,7 +322,7 @@ GEM
       zeitwerk (~> 2.6)
     rainbow (3.1.1)
     rake (13.3.0)
-    rdoc (6.14.0)
+    rdoc (6.14.1)
       erb
       psych (>= 4.0.0)
     recaptcha (5.19.0)
@@ -516,6 +516,7 @@ DEPENDENCIES
   rack-attack
   rails (~> 8.0.2)
   rails_best_practices
+  rdoc (= 6.14.1)
   recaptcha
   rspec-rails (~> 8.0.0)
   rubocop
