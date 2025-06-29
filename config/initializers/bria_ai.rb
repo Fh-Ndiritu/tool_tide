@@ -1,7 +1,6 @@
 # config/initializers/bria_ai.rb
 
-require_relative "../../lib/bria_ai" # Add this line to explicitly load the module
-
+require "bria_ai"
 BriaAI.configure do |config|
   config.api_token = ENV.fetch("BRIA_AI_API_TOKEN", nil)
   config.logger = Rails.logger # Use Rails' logger for better integration
