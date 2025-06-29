@@ -83,6 +83,15 @@ IMAGE_EXTRACTION_FORMATS = {
   "svg" => "image/svg+xml"
 }
 
+IMAGE_LANDSCAPE_FORMATS = {
+  "jpeg" => "image/jpeg",
+  "png" => "image/png",
+  "webp" => "image/webp",
+  "avif" => "image/avif",
+  "heic" => "image/heic",
+  "heif" => "image/heif"
+}
+
 DESTINATION_IMAGE_FORMATS = [
   "jpeg",
   "png",
@@ -106,3 +115,18 @@ DESTINATION_IMAGE_FORMATS = [
   "xbm",
   "xpm"
 ].freeze
+
+LANDSCAPE_PRESETS = {
+  "zen_minimalist" => "Serene, simple, reflective, calm.",
+  "cottage" => "Abundant, charming, relaxed, whimsical.",
+  "desert" => "Arid, sculptural, water-wise, resilient.",
+  "mediterranean" => "Fragrant, sunny, rustic, relaxed.",
+  "tropical" => "Vibrant, exotic, dense, verdant.",
+  "coastal" => "Salty, breezy, resilient, relaxed.",
+  "formal" => "Elegant, ordered, symmetrical, structured.",
+  "modern" => "Clean, minimalist, bold, structured.",
+  "countryside" => "Manicured, traditional, rolling, structured."
+}
+
+
+PROMPTS = YAML.load_file(Rails.root.join("config", "prompts.yml"))

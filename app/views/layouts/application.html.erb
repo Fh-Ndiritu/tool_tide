@@ -98,11 +98,12 @@
 
       gtag('config', 'G-ESX8FF1NG8');
     </script>
+    <script src="https://unpkg.com/konva@9/konva.min.js"></script>
 
   </head>
 
   <body >
-    <main class="container mx-auto mt-28 px-5 flex max-w-[1200px] text-neutral-800">
+    <main class="container mx-auto px-5 flex max-w-[1200px] text-neutral-800">
       <div id="flash" data-controller="flash"><%= render "shared/flash" %></div>
       <%= yield %>
     </main>

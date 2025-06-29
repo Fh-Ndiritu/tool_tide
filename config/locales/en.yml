@@ -28,6 +28,23 @@
 #       enabled: "ON"
 
 en:
+  landscaper:
+    title: Transform Your Landscape with AI-Powered Image Editing for Free
+    instructions:
+      title: How to generate an AI landscape of your home
+      steps:
+        - Upload a photo that includes the area you want to transform.
+        - We only support JPEG, JPG, PNG, and WebP images.
+        - You can convert the images to the right format using the free tools we offer.
+        - Our AI will analyze the image and display it for you to select what to change.
+        - Draw or paint the areas you want to change
+        - You can change the brush size under settings
+        - User the clear button to remove all the painted areas
+        - Use the undo button to remove the last painted area
+        - Select the vibe you want to apply to the landscape
+        - Click on the generate button to create your AI landscape and watch the magic happen
+        - The new landscape is generated and displayed for you to download
+        - We shall be adding a shopping list and a 3D view of the landscape soon
   images:
     titles:
       extract: Extract text from images, screenshots, and photos for Free

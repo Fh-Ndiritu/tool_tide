@@ -8,7 +8,7 @@ class IconComponent < ViewComponent::Base
 
   def call
     # Path to your SVG files (adjust if your icons are in a different asset path)
-    svg_path = Rails.root.join("app", "assets", "images", "icons", "#{@name}.svg")
+    svg_path = Rails.root.join("app", "assets", "images", "icons", "#{@name}.erb")
 
     if File.exist?(svg_path)
       svg_content = File.read(svg_path).html_safe
