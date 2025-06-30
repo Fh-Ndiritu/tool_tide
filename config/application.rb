@@ -33,8 +33,5 @@ module ToolTide
                        controller_specs: true,
                        request_specs: false
     end
-    # Replace the default in-process and non-durable queuing backend for Active Job.
-    config.active_job.queue_adapter = :solid_queue
-    config.solid_queue.connects_to = { database: { writing: :queue } }
   end
 end

@@ -35,6 +35,8 @@ registry:
 
 # Inject ENV variables into containers (secrets come from .kamal/secrets).
 env:
+  clear:
+    BASE_URL: 'https://tooltide.fyi'
   secret:
     - RAILS_MASTER_KEY
     - MISTRAL_API_KEY

@@ -25,6 +25,7 @@
   <meta name="twitter:title" content="<%= content_for(:twitter_title) || content_for(:title) || "Tool Tide - Free Online Image, Video, & Text Tools" %>">
   <meta name="twitter:description" content="<%= content_for(:twitter_description) || content_for(:description) || "Tool Tide offers a comprehensive suite of free online tools: convert images, extract text from photos, resize videos, and much more. Fast, secure, and user-friendly." %>">
   <meta name="twitter:image" content="<%= content_for(:twitter_image) || asset_path("tool_tide_og.jpg") %>">
+  <%= action_cable_meta_tag %>
   <% if content_for(:twitter_image_alt).present? %>
     <meta name="twitter:image:alt" content="<%= content_for(:twitter_image_alt) %>">
   <% end %>
