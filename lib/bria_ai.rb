@@ -1,5 +1,5 @@
 # lib/bria_ai.rb
-# This file defines the BriaAI module, its configuration, custom error classes,
+# This file defines the BriaAi module, its configuration, custom error classes,
 # and the API client using Faraday for robust HTTP requests.
 
 require "faraday"
@@ -7,7 +7,7 @@ require "faraday/retry" # Required for automatic retry logic
 require "json" # Required for JSON parsing, though Faraday::Response::Json usually handles it
 
 # Main module for Bria AI integration.
-module BriaAI
+module BriaAi
   # Base error class for all Bria AI specific exceptions.
   class Error < StandardError; end
   # Raised when authentication (API token) fails or is forbidden (401/403).
@@ -41,7 +41,7 @@ module BriaAI
         exceptions: [
           Faraday::TimeoutError, Faraday::ConnectionFailed # Standard network errors.
           # Faraday::ClientError is caught by custom_error_handler, which then re-raises
-          # specific BriaAI errors. The retry middleware should catch these too if re-raised
+          # specific BriaAi errors. The retry middleware should catch these too if re-raised
           # by custom_error_handler before it, but often it's configured to handle pre-middleware errors.
           # Listing them here as general network errors which retry should catch.
         ],
@@ -54,14 +54,14 @@ module BriaAI
     end
   end
 
-  # Class methods for the BriaAI module to manage configuration.
+  # Class methods for the BriaAi module to manage configuration.
   class << self
     attr_accessor :configuration
   end
 
   # Yields the configuration object to a block, allowing users to configure the gem.
   # Example:
-  #   BriaAI.configure do |config|
+  #   BriaAi.configure do |config|
   #     config.api_token = ENV['BRIA_AI_API_TOKEN']
   #     config.logger = Rails.logger
   #   end
@@ -71,7 +71,7 @@ module BriaAI
   end
 
   # Default configuration setup. This ensures that if the user doesn't call
-  # BriaAI.configure, the gem still has sensible defaults and attempts to
+  # BriaAi.configure, the gem still has sensible defaults and attempts to
   # load the API token from environment variables.
   configure do |config|
     config.api_token = ENV["BRIA_AI_API_TOKEN"] # Assumes API token is in an environment variable
@@ -88,15 +88,15 @@ module BriaAI
     # @param default_sync_mode [Boolean] Whether API calls should default to synchronous.
     # @param retry_options [Hash] Options for the Faraday::Retry middleware.
     def initialize(api_token: nil, base_url: nil, logger: nil, default_sync_mode: nil, retry_options: nil)
-      @api_token = api_token || BriaAI.configuration.api_token
-      @base_url = base_url || BriaAI.configuration.base_url
-      @logger = logger || BriaAI.configuration.logger
-      @default_sync_mode = default_sync_mode || BriaAI.configuration.default_sync_mode
-      @retry_options = retry_options || BriaAI.configuration.retry_options
+      @api_token = api_token || BriaAi.configuration.api_token
+      @base_url = base_url || BriaAi.configuration.base_url
+      @logger = logger || BriaAi.configuration.logger
+      @default_sync_mode = default_sync_mode || BriaAi.configuration.default_sync_mode
+      @retry_options = retry_options || BriaAi.configuration.retry_options
 
       # Ensure API token is present.
       unless @api_token
-        raise BriaAI::ConfigurationError, "Bria AI API token is not configured. Please set it via BriaAI.configure or ENV['BRIA_AI_API_TOKEN']."
+        raise BriaAi::ConfigurationError, "Bria AI API token is not configured. Please set it via BriaAi.configure or ENV['BRIA_AI_API_TOKEN']."
       end
 
       # Set up the Faraday connection with necessary middleware.
@@ -115,7 +115,7 @@ module BriaAI
         faraday.request :request_logger, @logger
         faraday.response :response_logger, @logger
 
-        # Custom error handler to convert Faraday exceptions into specific BriaAI errors.
+        # Custom error handler to convert Faraday exceptions into specific BriaAi errors.
         faraday.response :custom_error_handler
 
         # Set mandatory headers.
@@ -203,7 +203,7 @@ module BriaAI
     end
 
     def call(env)
-      @logger.debug "[BriaAI] Request: #{env.method.upcase} #{env.url} | Headers: #{env.request_headers.inspect} | Body: #{env.body.inspect}"
+      @logger.debug "[BriaAi] Request: #{env.method.upcase} #{env.url} | Headers: #{env.request_headers.inspect} | Body: #{env.body.inspect}"
       @app.call(env)
     end
   end
@@ -218,16 +218,16 @@ module BriaAI
 
     def call(env)
       @app.call(env).on_complete do |response_env|
-        @logger.debug "[BriaAI] Response: #{response_env.status} | Headers: #{response_env.response_headers.inspect} | Body: #{response_env.body.inspect}"
+        @logger.debug "[BriaAi] Response: #{response_env.status} | Headers: #{response_env.response_headers.inspect} | Body: #{response_env.body.inspect}"
       end
     rescue Faraday::Error => e
-      @logger.error "[BriaAI] Request failed before response (e.g., connection issue): #{e.class}: #{e.message}"
+      @logger.error "[BriaAi] Request failed before response (e.g., connection issue): #{e.class}: #{e.message}"
       raise # Re-raise the exception after logging.
     end
   end
   Faraday::Response.register_middleware(response_logger: -> { ResponseLogger })
 
-  # Faraday middleware for converting generic Faraday errors into specific BriaAI errors.
+  # Faraday middleware for converting generic Faraday errors into specific BriaAi errors.
   class CustomErrorHandler < Faraday::Middleware
     def call(env)
       @app.call(env) # Pass the request through the middleware stack.
@@ -238,24 +238,24 @@ module BriaAI
 
       case status
       when 401, 403
-        raise BriaAI::AuthenticationError, "Bria AI Authentication Error (Status: #{status}): #{error_message}"
+        raise BriaAi::AuthenticationError, "Bria AI Authentication Error (Status: #{status}): #{error_message}"
       when 429
         # Faraday::Retry middleware should catch 429, but if it's exhausted retries, this will be the final error.
-        raise BriaAI::RateLimitError, "Bria AI Rate Limit Exceeded (Status: #{status}): #{error_message}"
+        raise BriaAi::RateLimitError, "Bria AI Rate Limit Exceeded (Status: #{status}): #{error_message}"
       when 400, 422 # Bad Request, Unprocessable Entity
-        raise BriaAI::APIError, "Bria AI API Request Error (Status: #{status}): #{error_message}"
+        raise BriaAi::APIError, "Bria AI API Request Error (Status: #{status}): #{error_message}"
       when 500, 502, 503, 504 # Server errors
         # Faraday::Retry should handle 503, 504. If not caught, it's a persistent server error.
-        raise BriaAI::APIError, "Bria AI Server Error (Status: #{status}): #{error_message}"
+        raise BriaAi::APIError, "Bria AI Server Error (Status: #{status}): #{error_message}"
       else
-        raise BriaAI::APIError, "Bria AI API Error (Status: #{status}): #{error_message}"
+        raise BriaAi::APIError, "Bria AI API Error (Status: #{status}): #{error_message}"
       end
     rescue Faraday::TimeoutError => e
-      raise BriaAI::Error, "Bria AI API Timeout: #{e.message}"
+      raise BriaAi::Error, "Bria AI API Timeout: #{e.message}"
     rescue Faraday::ConnectionFailed => e
-      raise BriaAI::Error, "Bria AI API Connection Failed: #{e.message}"
+      raise BriaAi::Error, "Bria AI API Connection Failed: #{e.message}"
     rescue StandardError => e # Catch any other unexpected errors from Faraday.
-      raise BriaAI::Error, "An unexpected error occurred during Bria AI API call: #{e.class}: #{e.message}"
+      raise BriaAi::Error, "An unexpected error occurred during Bria AI API call: #{e.class}: #{e.message}"
     end
   end
   Faraday::Response.register_middleware(custom_error_handler: -> { CustomErrorHandler })

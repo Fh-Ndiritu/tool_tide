@@ -6,12 +6,12 @@ require "tempfile" # For handling temporary files if Base64 image is returned
 require "securerandom" # For generating unique filenames
 require "open-uri" # For opening URLs, including potentially Active Storage public URLs
 
-# Ensure the BriaAI module from lib/bria_ai.rb is loaded.
+# Ensure the BriaAi module from lib/bria_ai.rb is loaded.
 # In a Rails application, `lib` is typically autoloaded, but you might need to
 # add `require 'bria_ai'` if not using standard Rails autoloading or if it's
 # a standalone script.
 # Example for Rails initializer (`config/initializers/bria_ai.rb`):
-# BriaAI.configure do |config|
+# BriaAi.configure do |config|
 #   config.api_token = ENV['BRIA_AI_API_TOKEN']
 #   config.logger = Rails.logger
 #   config.default_sync_mode = true # Set to true if you want immediate (blocking) results
@@ -28,8 +28,8 @@ class ImageModificationJob < ApplicationJob
     Rails.logger.info "Starting ImageModificationJob for #{original_image_url}"
 
     # Initialize the Bria AI client.
-    # It will pick up configuration from `BriaAI.configure` or environment variables.
-    bria_client = BriaAI::Client.new
+    # It will pick up configuration from `BriaAi.configure` or environment variables.
+    bria_client = BriaAi::Client.new
 
     begin
       # Determine the actual image input for Bria AI.
@@ -39,7 +39,7 @@ class ImageModificationJob < ApplicationJob
 
       # 1. Call the Bria AI API for inpainting using the /gen-fill endpoint.
       #    NOTE: If you encounter a 404 error ("Resource Not Found") for the /gen-fill endpoint,
-      #    please ensure that in `lib/bria_ai.rb`, the `gen_fill` method in `BriaAI::Client`
+      #    please ensure that in `lib/bria_ai.rb`, the `gen_fill` method in `BriaAi::Client`
       #    is calling the correct API path: `@connection.post('image-editing/gen_fill', payload)`
       #    (using an underscore `_` instead of a hyphen `-`).
       Rails.logger.info "Calling Bria AI /image-editing/gen_fill endpoint with image: #{original_image_url}, prompt: '#{prompt}'"
@@ -94,12 +94,12 @@ class ImageModificationJob < ApplicationJob
             modified_image_url = first_result
         else
           # Handle cases where the expected output format is not found.
-          raise BriaAI::APIError, "Bria AI response did not contain expected image output (url or b64_json) in 'urls' array."
+          raise BriaAi::APIError, "Bria AI response did not contain expected image output (url or b64_json) in 'urls' array."
         end
       else
         # Log and raise an error if the API response indicates failure or is empty.
         Rails.logger.error "Bria AI response was unsuccessful or empty: #{bria_response.body.inspect}"
-        raise BriaAI::APIError, "Bria AI API call failed or returned no results. Response: #{bria_response.body.inspect}"
+        raise BriaAi::APIError, "Bria AI API call failed or returned no results. Response: #{bria_response.body.inspect}"
       end
 
       # 3. Broadcast the result back to the frontend via Action Cable.
@@ -110,13 +110,13 @@ class ImageModificationJob < ApplicationJob
       Rails.logger.info "Image modification job completed for #{original_image_url}. Result broadcasted: #{modified_image_url}"
 
     # --- Error Handling for Bria AI Specific Errors ---
-    rescue BriaAI::AuthenticationError => e
+    rescue BriaAi::AuthenticationError => e
       Rails.logger.error "Bria AI Authentication Error for #{original_image_url}: #{e.message}"
       ActionCable.server.broadcast(
         "landscaper_channel",
         { error: "Authentication failed with Bria AI. Please check your API token." }
       )
-    rescue BriaAI::RateLimitError => e
+    rescue BriaAi::RateLimitError => e
       Rails.logger.warn "Bria AI Rate Limit Exceeded for #{original_image_url}: #{e.message}"
       ActionCable.server.broadcast(
         "landscaper_channel",
@@ -125,13 +125,13 @@ class ImageModificationJob < ApplicationJob
       # Optionally re-raise the exception here if you want ActiveJob's built-in retry
       # mechanism to handle retrying this job after a delay.
       # raise # Uncomment to re-raise and allow ActiveJob to retry if configured.
-    rescue BriaAI::APIError => e
+    rescue BriaAi::APIError => e
       Rails.logger.error "Bria AI API Error for #{original_image_url}: #{e.message}"
       ActionCable.server.broadcast(
         "landscaper_channel",
        { error: "Failed to process image with Bria AI: #{e.message}" }
       )
-    rescue BriaAI::Error => e
+    rescue BriaAi::Error => e
       Rails.logger.error "General Bria AI error for #{original_image_url}: #{e.message}"
       ActionCable.server.broadcast(
         "landscaper_channel",
@@ -187,14 +187,14 @@ class ImageModificationJob < ApplicationJob
     end
   rescue ActiveStorage::FileNotFoundError => e
     Rails.logger.error "Active Storage file not found for URL #{original_image_url}: #{e.message}"
-    raise BriaAI::Error, "Original image file not found in Active Storage: #{e.message}"
+    raise BriaAi::Error, "Original image file not found in Active Storage: #{e.message}"
   rescue ArgumentError => e
     # Catching the ArgumentError raised for invalid URL format or other parsing issues
     Rails.logger.error "Error preparing original image for Bria AI: #{e.message}"
-    raise BriaAI::Error, "Error preparing original image for Bria AI: #{e.message}"
+    raise BriaAi::Error, "Error preparing original image for Bria AI: #{e.message}"
   rescue StandardError => e
     Rails.logger.error "Unexpected error in prepare_original_image_for_bria: #{e.class}: #{e.message}"
-    raise BriaAI::Error, "An unexpected error occurred while preparing the original image: #{e.message}"
+    raise BriaAi::Error, "An unexpected error occurred while preparing the original image: #{e.message}"
   end
 
   def flip_mask_colors(data_url)
