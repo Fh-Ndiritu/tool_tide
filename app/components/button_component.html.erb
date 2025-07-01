@@ -2,10 +2,9 @@
   <!-- Render as link -->
   <a href="<%= @href %>" data-turbo-frame="<%= @data[:turbo_frame] %>"
     class="<%= @classes %>">
-    <!-- Icon -->
-    <span class="mb-1 rounded-full bg-white text-4xl">
-      <%= raw @svg %>
-    </span>
+      <% if @svg %>
+        <%= render(IconComponent.new(name: @svg, classes: @svg_classes)) %>
+    <% end %>
     <!-- Button Text -->
     <span>
       <%= @text %>
@@ -16,10 +15,7 @@
   <button type="<%= @type %>"
     class="<%= @classes %>">
     <% if @svg %>
-      <!-- Icon -->
-      <span class="p-2 mb-2 rounded-full bg-white">
-        <%= raw @svg %>
-      </span>
+        <%= render(IconComponent.new(name: @svg, classes: @svg_classes)) %>
     <% end %>
     <!-- Button Text -->
     <span>
