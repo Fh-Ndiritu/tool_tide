@@ -1,6 +1,7 @@
 <% if @href.present? %>
   <!-- Render as link -->
-  <a href="<%= @href %>" data-turbo-frame="<%= @data[:turbo_frame] %>"
+  <a href="<%= @href %>"
+  <%= @data.map { |key, value| "data-#{key}=\"#{value}\"" }.join(' ') %>
     class="<%= @classes %>">
       <% if @svg %>
         <%= render(IconComponent.new(name: @svg, classes: @svg_classes)) %>
@@ -13,7 +14,9 @@
 <% else %>
   <!-- Render as button -->
   <button type="<%= @type %>"
-    class="<%= @classes %>">
+    class="<%= @classes %>"
+      <%= @data.map { |key, value| "data-#{key}=\"#{value}\"" }.join(' ') %>
+    >
     <% if @svg %>
         <%= render(IconComponent.new(name: @svg, classes: @svg_classes)) %>
     <% end %>
