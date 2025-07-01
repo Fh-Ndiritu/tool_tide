@@ -12,15 +12,15 @@ const subscription = consumer.subscriptions.create(
   { channel: 'LandscaperChannel' },
   {
     connected() {
-      console.log('Connected to LandscaperChannel');
+      // console.log('Connected to LandscaperChannel');
     },
 
     disconnected() {
-      console.log('Disconnected from LandscaperChannel');
+      // console.log('Disconnected from LandscaperChannel');
     },
 
     received(data) {
-      console.log('Received data from LandscaperChannel:', data);
+      // console.log('Received data from LandscaperChannel:', data);
 
       // Dispatch a custom event with the received data
       const event = new CustomEvent('landscaper:data-received', {

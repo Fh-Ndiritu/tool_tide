@@ -38,3 +38,6 @@ SitemapGenerator::Sitemap.create do
 
   add extract_text_image_path
 end
+
+
+# rake sitemap:refresh:no_ping

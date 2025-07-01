@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
   # Defines the root path route ("/")
-  root "home#index"
+  root "landscaper#index"
 
   get "images/:source/:conversion", to: "images#new", as: :new_image
   get "images/extract_text", to: "images#extract_text", as: :extract_text_image

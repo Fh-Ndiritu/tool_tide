@@ -9,13 +9,13 @@ const cableUrl = document.querySelector('meta[name="action-cable-url"]')?.conten
 let consumer;
 if (cableUrl) {
   consumer = createConsumer(cableUrl);
-  console.log('Action Cable consumer created with URL:', cableUrl);
+  // console.log('Action Cable consumer created with URL:', cableUrl);
 } else {
   console.warn('Action Cable meta tag not found. Falling back to default or development URL.');
   // Fallback for development or if meta tag is not used
   consumer = createConsumer('wss://localhost:3000/cable');
 }
 
-console.log(consumer);
+// console.log(consumer);
 
 export default consumer;

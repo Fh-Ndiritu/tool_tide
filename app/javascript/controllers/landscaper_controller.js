@@ -56,7 +56,6 @@ export default class extends Controller {
   MAX_CANVAS_DISPLAY_WIDTH = 500;
 
   connect() {
-    console.log('Landscaper controller connected!');
     this.showSection('upload');
 
     // Ensure the brush size input and display reflect the initial default value

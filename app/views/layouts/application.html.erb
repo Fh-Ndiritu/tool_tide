@@ -104,6 +104,7 @@
   </head>
 
   <body >
+    <%= render "shared/navbar" %>
     <main class="container mx-auto px-5 flex max-w-[1200px] text-neutral-800">
       <div id="flash" data-controller="flash"><%= render "shared/flash" %></div>
       <%= yield %>

@@ -132,3 +132,8 @@ html {
   opacity: 0;
   transform: translateY(-10px);
 }
+
+#navigation-links .active-item {
+  background: var(--color-secondary);
+  color: var(--color-text-light);
+}

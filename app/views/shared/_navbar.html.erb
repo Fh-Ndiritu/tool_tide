@@ -1,0 +1,41 @@
+<nav class="p-4 shadow-md rounded-b-lg mb-10 bg-accent" data-controller="navbar">
+  <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
+    <div class="w-full flex justify-between items-center mb-4 md:mb-0">
+      <div class="flex-shrink-0">
+        <%= link_to root_path, class: "flex items-center" do %>
+          <%= image_tag "tool_tide_logo.jpg",
+          alt: "Tool Tide FYI",
+          class:"h-12 w-12 rounded-full mr-2" %>
+        <% end %>
+      </div>
+
+      <div class="md:hidden" data-action="click->navbar#toggleMenu">
+        <%= render ButtonComponent.new(
+              text: "",
+              classes: "bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
+              svg: 'list',
+              svg_classes: "bg-transparent h-6 w-6 text-neutral-900",
+              data: { action: "click->navbar#toggleMenu" }
+              ) %>
+      </div>
+    </div>
+
+    <div id="navigation-links" data-navbar-target="navigationLinks" class="md:pr-4 md:justify-end hidden md:flex flex-col md:flex-row max-md:w-full items-center space-y-2 md:space-y-0 md:space-x-4 md:min-w-6/12">
+      <%= render ButtonComponent.new(
+        text: "AI Landscaper",
+        href: root_path,
+        classes: "#{active_item(root_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
+        ) %>
+      <%= render ButtonComponent.new(
+        text: "Text Extractor",
+        href: extract_text_image_path,
+        classes: "#{active_item(extract_text_image_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
+        ) %>
+      <%= render ButtonComponent.new(
+        text: "Image Converter",
+        href: home_index_path,
+        classes: "#{active_item(home_index_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
+        ) %>
+    </div>
+  </div>
+</nav>
