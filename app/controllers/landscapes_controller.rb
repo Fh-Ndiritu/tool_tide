@@ -1,9 +1,10 @@
-class LandscaperController < ApplicationController
+class LandscapesController < ApplicationController
   # Protect from CSRF attacks
   skip_before_action :verify_authenticity_token, only: [ :modify_image ]
   before_action :fetch_prompt, only: :modify_image
 
   def index
+    @landscape = Landscape.new
   end
 
   def modify_image
@@ -27,6 +28,15 @@ class LandscaperController < ApplicationController
     Rails.logger.error "Error in modify_image endpoint: #{e.message}"
     render json: { error: "Internal server error: #{e.message}" }, status: :internal_server_error
   end
+
+  def create
+
+  end
+
+  def show
+
+  end
+
 
   private
 

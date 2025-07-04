@@ -61,12 +61,12 @@ export default class extends Controller {
     // Ensure the brush size input and display reflect the initial default value
     this.setBrushSize(this.brushSize); // Use the new helper method
 
-    document.addEventListener('landscaper:data-received', this.handleDataReceived.bind(this));
+    document.addEventListener('landscape:data-received', this.handleDataReceived.bind(this));
     this.updateUndoRedoButtonStates(); // Initialize button states
   }
 
   disconnect() {
-    document.removeEventListener('landscaper:data-received', this.handleDataReceived.bind(this));
+    document.removeEventListener('landscape:data-received', this.handleDataReceived.bind(this));
     this.resetEditor();
   }
 
@@ -224,7 +224,7 @@ export default class extends Controller {
     console.log('uploadFile: Attempting to upload:', file.name, 'Type:', file.type, 'Size:', file.size);
 
     if (!this.uploadUrlValue) {
-      console.error('uploadUrlValue is missing. Check data-landscaper-upload-url-value in HTML.');
+      console.error('uploadUrlValue is missing. Check data-landscape-upload-url-value in HTML.');
       this.showMessage('Upload configuration error. Please contact support.');
       this.showSection('upload');
       this.progressBarContainerTarget.classList.add('hidden');
@@ -789,7 +789,7 @@ export default class extends Controller {
     const maskDataURL = finalMaskCanvas.toDataURL('image/png');
 
     try {
-      const response = await fetch('/landscaper/modify_image', {
+      const response = await fetch('/landscape/modify_image', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -19,129 +19,130 @@
 <%= content_for(:schema_description, "Use LandscapAI to generate stunningly realistic, rich, and accurate landscaping images for free. Design and visualize your perfect outdoor spaces with advanced AI technology.") %>
 
 
-<div data-controller="landscaper"
-     data-landscaper-upload-url-value="<%= rails_direct_uploads_url %>"
+<div data-controller="landscape"
+     data-landscape-upload-url-value="<%= rails_direct_uploads_url %>"
      class="min-h-screen bg-neutral-100 flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 w-full">
 
-<h1 class="text-4xl font-bold text-center text-text-primary my-8"><%= t("landscaper.title")  %></h1>
+<h1 class="text-4xl font-bold text-center text-text-primary my-8"><%= t("landscape.title")  %></h1>
 
 <!--# Uploading section-->
-  <div data-landscaper-target="uploadSection" class="w-full max-w-md sm:max-w-lg lg:max-w-3xl bg-white shadow-xl rounded-lg p-6 sm:p-8 text-center">
+  <div data-landscape-target="uploadSection" class="w-full max-w-md sm:max-w-lg lg:max-w-3xl bg-white shadow-xl rounded-lg p-6 sm:p-8 text-center">
     <h2 class="text-xl sm:text-2xl font-semibold text-text-dark mb-4">Upload Your Yard Photo</h2>
-    <div data-action="dragover->landscaper#dragOver dragleave->landscaper#dragLeave drop->landscaper#drop click->landscaper#triggerFileInput"
-         data-landscaper-target="dropZone"
+    <div data-action="dragover->landscape#dragOver dragleave->landscape#dragLeave drop->landscape#drop click->landscape#triggerFileInput"
+         data-landscape-target="dropZone"
          class="border-2 border-dashed border-neutral-300 rounded-lg p-8 sm:p-12 text-center text-neutral-500 hover:border-primary hover:bg-neutral-100 transition-colors duration-200 cursor-pointer">
       <svg class="mx-auto h-10 w-10 sm:h-12 sm:w-12 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
       </svg>
       <p class="mt-2 text-sm sm:text-base">Drag & drop your image here or click to upload</p>
-      <!--# we accept only JPEG, JPG, PNG, or heic-->
-      <input type="file" data-landscaper-target="fileInput" data-action="change->landscaper#handleFileChange" accept="image/webp, image/jpeg, image/jpg, image/png" class="hidden">
+      <%= form_with model: @landscape, local: false, data: { controller: "landscape" } do |form| %>
+        <%= form.file_field :original_image, data: { action: "change->landscape#handleFileChange", landscape_target: "fileInput" } , class: "hidden", accept: "image/*" %>
+      <% end %>
     </div>
     <p class="text-xs text-neutral-400 mt-2">Supports JPG, PNG, WEBP</p>
   </div>
 
 <!--# Editor Section-->
-  <div data-landscaper-target="editorSection" class="w-full max-w-full lg:max-w-6xl bg-white shadow-xl rounded-lg flex flex-col lg:flex-row p-4 mt-8">
-    <div class="lg:w-3/4 w-full h-[400px] sm:h-[500px] lg:h-[600px] bg-neutral-100 flex text-black items-center justify-center relative overflow-hidden rounded-md" data-landscaper-target="canvasContainer">
+  <div data-landscape-target="editorSection" class="w-full max-w-full lg:max-w-6xl bg-white shadow-xl rounded-lg flex flex-col lg:flex-row p-4 mt-8">
+    <div class="lg:w-3/4 w-full h-[400px] sm:h-[500px] lg:h-[600px] bg-neutral-100 flex text-black items-center justify-center relative overflow-hidden rounded-md" data-landscape-target="canvasContainer">
 
     </div>
     <div class="lg:w-1/4 w-full p-4 flex flex-col space-y-4 lg:space-y-6">
       <div class="flex flex-wrap justify-center sm:justify-start gap-2 border-b border-neutral-300 pb-4">
 
         <!--# draw using rectangles-->
-        <button data-action="click->landscaper#selectRectTool" class="p-2 rounded-md text-neutral-700 hover:bg-primary hover:text-text-light transition-colors duration-200" title="Rectangle Select">
+        <button data-action="click->landscape#selectRectTool" class="p-2 rounded-md text-neutral-700 hover:bg-primary hover:text-text-light transition-colors duration-200" title="Rectangle Select">
           <%= render(IconComponent.new(name: "rectangle-dashed", classes: "flex items-center justify-center text-neutral-100 cursor-pointer")) %>
         </button>
 
         <!--# select brush tool-->
-        <button data-action="click->landscaper#selectBrushTool" class="p-2 rounded-md text-neutral-700 hover:bg-primary hover:text-text-light transition-colors duration-200" title="Brush Select">
+        <button data-action="click->landscape#selectBrushTool" class="p-2 rounded-md text-neutral-700 hover:bg-primary hover:text-text-light transition-colors duration-200" title="Brush Select">
            <%= render(IconComponent.new(name: "paint-brush-household", classes: "flex items-center justify-center text-neutral-100 cursor-pointer")) %>
         </button>
 
         <!--# undo the last paint-->
-        <button data-action="click->landscaper#undoPaintAction" data-landscaper-target="undoButton"
+        <button data-action="click->landscape#undoPaintAction" data-landscape-target="undoButton"
         class="p-2 rounded-md text-sm text-neutral-700 hover:bg-neutral-300 transition-colors duration-200" title="Undo Last Action">
                     <%= render(IconComponent.new(name: "arrow-counter-clockwise", classes: "flex items-center justify-center text-neutral-100 cursor-pointer")) %>
         </button>
 
         <!--# redo the last undo action-->
         <button
-        data-action="click->landscaper#redoPaintAction"
-        data-landscaper-target="redoButton"
+        data-action="click->landscape#redoPaintAction"
+        data-landscape-target="redoButton"
         class="p-2 rounded-md text-sm text-neutral-700 hover:bg-neutral-300 transition-colors duration-200"
         title="Redo Last Undo">
                      <%= render(IconComponent.new(name: "arrow-clockwise", classes: "flex items-center justify-center text-neutral-100 cursor-pointer")) %>
         </button>
 
         <!--# reset the entire mask paint-->
-        <button data-action="click->landscaper#clearSelection" class="p-2 rounded-md text-sm text-neutral-700 hover:bg-neutral-300 transition-colors duration-200" title="Clear Selection">
+        <button data-action="click->landscape#clearSelection" class="p-2 rounded-md text-sm text-neutral-700 hover:bg-neutral-300 transition-colors duration-200" title="Clear Selection">
           Reset Selection
         </button>
       </div>
 
-      <div data-landscaper-target="brushSizeControl" class="hidden">
+      <div data-landscape-target="brushSizeControl" class="hidden">
         <label for="brush-size" class="block text-sm font-medium text-neutral-700 mb-2">Brush Size</label>
         <div class="flex items-center space-x-3">
           <span class="text-sm text-neutral-600">20px</span>
-          <input type="range" id="brush-size" min="20" max="100" value="40" data-action="input->landscaper#updateBrushSize" class="w-full h-2 bg-neutral-300 rounded-lg appearance-none cursor-pointer accent-primary">
-          <span data-landscaper-target="brushSizeDisplay" class="text-xs font-semibold  text-text-secondary">40px</span>
+          <input type="range" id="brush-size" min="20" max="100" value="40" data-action="input->landscape#updateBrushSize" class="w-full h-2 bg-neutral-300 rounded-lg appearance-none cursor-pointer accent-primary">
+          <span data-landscape-target="brushSizeDisplay" class="text-xs font-semibold  text-text-secondary">40px</span>
           <span class="text-sm text-neutral-600">100px</span> </div>
       </div>
 
 <!--# we show landscape_presets as a select option-->
       <div class="mb-4">
         <label for="landscape-preset" class="block text-sm font-medium text-neutral-700 mb-1">Landscape Preset</label>
-        <select id="landscape-preset" data-landscaper-target="selectPreset" class="w-full p-2 border border-neutral-300 rounded-md focus:ring-primary focus:border-primary text-text-dark text-sm">
+        <select id="landscape-preset" data-landscape-target="selectPreset" class="w-full p-2 border border-neutral-300 rounded-md focus:ring-primary focus:border-primary text-text-dark text-sm">
           <option value="" disabled selected hidden>Choose a vibe</option>
           <%= LANDSCAPE_PRESETS.each do |preset, description| %>
            <option value="<%= preset %>"><%= preset.humanize %> - <%= description %></option>
            <% end %>
         </select>
       </div>
-      <button data-action="click->landscaper#submitModification"
+      <button data-action="click->landscape#submitModification"
               class="w-full bg-primary text-text-light py-3 rounded-md hover:bg-text-primary transition-colors duration-200 font-bold text-lg">
         Generate Landscape
       </button>
-      <button data-action="click->landscaper#cancelEdit"
+      <button data-action="click->landscape#cancelEdit"
               class="w-full bg-neutral-300 text-neutral-800 py-3 rounded-md hover:bg-neutral-500 transition-colors duration-200 font-bold text-lg">
         Cancel
       </button>
     </div>
   </div>
 
-  <div data-landscaper-target="loadingSection" class="hidden fixed inset-0 bg-neutral-100 bg-opacity-75 flex flex-col items-center justify-center z-50">
+  <div data-landscape-target="loadingSection" class="hidden fixed inset-0 bg-neutral-100 bg-opacity-75 flex flex-col items-center justify-center z-50">
     <div class="inline-block h-12 w-12 animate-spin rounded-full border-4 border-solid border-current border-e-transparent text-primary" role="status">
       <span class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">Loading...</span>
     </div>
     <p class="text-xl text-text-dark mt-4">Generating your new landscape...</p>
-    <div data-landscaper-target="progressBarContainer" class="w-64 h-2 bg-neutral-300 rounded-full mt-4 hidden">
-      <div data-landscaper-target="progressBar" class="bg-primary h-2 rounded-full" style="width: 0%;"></div>
+    <div data-landscape-target="progressBarContainer" class="w-64 h-2 bg-neutral-300 rounded-full mt-4 hidden">
+      <div data-landscape-target="progressBar" class="bg-primary h-2 rounded-full" style="width: 0%;"></div>
     </div>
   </div>
 
-  <div data-landscaper-target="resultSection" class="hidden w-full max-w-full lg:max-w-6xl bg-white shadow-xl rounded-lg p-6 sm:p-8 mt-8">
+  <div data-landscape-target="resultSection" class="hidden w-full max-w-full lg:max-w-6xl bg-white shadow-xl rounded-lg p-6 sm:p-8 mt-8">
     <h2 class="text-2xl sm:text-3xl font-bold text-text-dark mb-6 text-center">Your Transformed Landscape</h2>
     <div class="flex flex-col lg:flex-row justify-around items-center space-y-8 lg:space-y-0 lg:space-x-8">
       <div class="flex flex-col items-center w-full lg:w-1/2">
         <p class="text-lg font-semibold text-text-dark mb-2">Original</p>
-        <img data-landscaper-target="originalResultImage" src="" alt="Original Landscape" class="max-w-full h-auto border border-neutral-300 rounded-md shadow-sm">
+        <img data-landscape-target="originalResultImage" src="" alt="Original Landscape" class="max-w-full h-auto border border-neutral-300 rounded-md shadow-sm">
       </div>
       <div class="flex flex-col items-center w-full lg:w-1/2">
         <p class="text-lg font-semibold text-text-dark mb-2">AI Enhanced</p>
-        <img data-landscaper-target="modifiedResultImage" src="" alt="AI Modified Landscape" class="max-w-full h-auto border border-neutral-300 rounded-md shadow-sm">
+        <img data-landscape-target="modifiedResultImage" src="" alt="AI Modified Landscape" class="max-w-full h-auto border border-neutral-300 rounded-md shadow-sm">
       </div>
     </div>
     <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4 mt-8">
-      <a data-landscaper-target="downloadButton" href="#" download="transformed_landscape.png"
+      <a data-landscape-target="downloadButton" href="#" download="transformed_landscape.png"
          class="bg-primary text-text-light py-3 px-6 rounded-md hover:bg-text-primary transition-colors duration-200 font-bold text-center text-lg">
         Download
       </a>
-      <button data-action="click->landscaper#editFurther"
+      <button data-action="click->landscape#editFurther"
               class="bg-secondary text-text-light py-3 px-6 rounded-md hover:bg-text-secondary transition-colors duration-200 font-bold text-lg">
         Edit Further
       </button>
-      <button data-action="click->landscaper#startNewDesign"
+      <button data-action="click->landscape#startNewDesign"
               class="bg-neutral-300 text-neutral-800 py-3 px-6 rounded-md hover:bg-neutral-500 transition-colors duration-200 font-bold text-lg">
         Start New Design
       </button>
@@ -149,9 +150,9 @@
   </div>
 
   <div class="justify-center items-center card bg-base-100 shadow-xl image-full my-8 p-6 rounded-lg border-dashed border-2 border-gray-300 w-full max-w-md sm:max-w-lg lg:max-w-3xl xl:max-w-4xl">
-    <h2 class="text-2xl font-semibold text-text-secondary"><%= t("landscaper.instructions.title") %> </h2>
+    <h2 class="text-2xl font-semibold text-text-secondary"><%= t("landscape.instructions.title") %> </h2>
     <ol class="list-decimal list-inside my-6 text-sm leading-relaxed">
-      <% t("landscaper.instructions.steps").each do |step| %>
+      <% t("landscape.instructions.steps").each do |step| %>
         <li><%= step %></li>
         <% end %>
     </ol>

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe LandscaperController, type: :controller do
+RSpec.describe LandscapesController, type: :controller do
   describe "GET #index" do
     it "returns http success" do
       get :index

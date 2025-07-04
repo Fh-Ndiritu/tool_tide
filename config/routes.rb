@@ -1,9 +1,9 @@
 Rails.application.routes.draw do
   mount ActionCable.server => "/cable"
   resources :direct_uploads, only: [ :create ]
-  post "landscaper/modify_image", to: "landscaper#modify_image"
+  post "landscape/modify_image", to: "landscapes#modify_image"
   get "home/index"
-  resources :landscaper, only: [ :index ]
+  resources :landscapes, except: [ :destroy]
   resources :images, only: [ :create, :index ]
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
   # Defines the root path route ("/")
-  root "landscaper#index"
+  root "landscapes#index"
 
   get "images/:source/:conversion", to: "images#new", as: :new_image
   get "images/extract_text", to: "images#extract_text", as: :extract_text_image

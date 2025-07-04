@@ -104,7 +104,7 @@ class ImageModificationJob < ApplicationJob
 
       # 3. Broadcast the result back to the frontend via Action Cable.
       ActionCable.server.broadcast(
-        "landscaper_channel", # Ensure this matches the channel subscribed to on the frontend.
+        "landscape_channel", # Ensure this matches the channel subscribed to on the frontend.
         { modified_image_url: modified_image_url }
       )
       Rails.logger.info "Image modification job completed for #{original_image_url}. Result broadcasted: #{modified_image_url}"
@@ -113,13 +113,13 @@ class ImageModificationJob < ApplicationJob
     rescue BriaAi::AuthenticationError => e
       Rails.logger.error "Bria AI Authentication Error for #{original_image_url}: #{e.message}"
       ActionCable.server.broadcast(
-        "landscaper_channel",
+        "landscape_channel",
         { error: "Authentication failed with Bria AI. Please check your API token." }
       )
     rescue BriaAi::RateLimitError => e
       Rails.logger.warn "Bria AI Rate Limit Exceeded for #{original_image_url}: #{e.message}"
       ActionCable.server.broadcast(
-        "landscaper_channel",
+        "landscape_channel",
         error: "Bria AI rate limit exceeded. Please try again shortly."
       )
       # Optionally re-raise the exception here if you want ActiveJob's built-in retry
@@ -128,13 +128,13 @@ class ImageModificationJob < ApplicationJob
     rescue BriaAi::APIError => e
       Rails.logger.error "Bria AI API Error for #{original_image_url}: #{e.message}"
       ActionCable.server.broadcast(
-        "landscaper_channel",
+        "landscape_channel",
        { error: "Failed to process image with Bria AI: #{e.message}" }
       )
     rescue BriaAi::Error => e
       Rails.logger.error "General Bria AI error for #{original_image_url}: #{e.message}"
       ActionCable.server.broadcast(
-        "landscaper_channel",
+        "landscape_channel",
         { error: "An unexpected Bria AI service error occurred: #{e.message}" }
       )
     # --- General Error Handling ---
@@ -142,7 +142,7 @@ class ImageModificationJob < ApplicationJob
       # Catch any other unexpected errors that might occur during job execution.
       Rails.logger.error "Image modification job failed for #{original_image_url}: #{e.class}: #{e.message}\n#{e.backtrace.join("\n")}"
       ActionCable.server.broadcast(
-        "landscaper_channel",
+        "landscape_channel",
         { error: "An unexpected error occurred during image modification: #{e.message}" }
       )
     end
