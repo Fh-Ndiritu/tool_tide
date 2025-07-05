@@ -20,11 +20,13 @@
       </div>
     </div>
 
-    <div id="navigation-links" data-navbar-target="navigationLinks" class="md:pr-4 md:justify-end hidden md:flex flex-col md:flex-row max-md:w-full items-center space-y-2 md:space-y-0 md:space-x-4 md:min-w-6/12">
+    <div id="navigation-links"
+    data-navbar-target="navigationLinks"
+    class="md:pr-4 md:justify-end hidden md:flex flex-col md:flex-row max-md:w-full items-center space-y-2 md:space-y-0 md:space-x-4 md:min-w-8/12">
       <%= render ButtonComponent.new(
         text: "AI Landscaper",
-        href: root_path,
-        classes: "#{active_item(root_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
+        href: new_landscape_path,
+        classes: "#{active_item(new_landscape_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
         ) %>
       <%= render ButtonComponent.new(
         text: "Text Extractor",
@@ -33,8 +35,8 @@
         ) %>
       <%= render ButtonComponent.new(
         text: "Image Converter",
-        href: home_index_path,
-        classes: "#{active_item(home_index_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
+        href: root_path,
+        classes: "#{active_item(root_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
         ) %>
     </div>
   </div>
