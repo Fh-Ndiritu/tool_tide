@@ -1,0 +1,57 @@
+<% content_for(:title, "Free AI Landscaping Design Tool | Generate Realistic Garden Images - LandscapAI") %>
+
+<% content_for(:description, "Unleash your creativity with LandscapAI, the FREE online tool that generates stunning, rich, and lifelike landscaping images from your ideas. Design your dream garden, visualize outdoor spaces, and create beautiful, accurate landscape designs instantly.") %>
+
+<% content_for(:keywords, "free landscaping tool, AI landscaping design, generate garden images, realistic landscape design, online landscaping tool, visualize outdoor spaces, garden planner, landscape creator, AI garden generator, lifelike landscaping, accurate landscaping images, custom landscape design, LandscapAI") %>
+
+<%# Open Graph (Social Media Sharing) %>
+<% content_for(:og_title, "LandscapAI | Free AI Tool for Realistic Landscaping Images") %>
+<% content_for(:og_description, "Transform your landscaping visions into reality with LandscapAI! Generate beautiful, accurate, and lifelike garden designs for free. Perfect for homeowners, designers, and enthusiasts.") %>
+<% content_for(:og_image_alt, "Screenshot of LandscapAI generating a beautiful, realistic garden image") %>
+
+<%# Twitter Card (Social Media Sharing) %>
+<% content_for(:twitter_title, "Design Your Dream Garden FREE | LandscapAI") %>
+<% content_for(:twitter_description, "Get instant, lifelike landscaping images with LandscapAI, your free AI-powered garden design tool. Visualize outdoor spaces with rich, accurate detail.") %>
+<% content_for(:twitter_image_alt, "Vibrant AI-generated landscaping image created by LandscapAI") %>
+
+<%= content_for(:schema_name, "LandscapAI - Free AI Landscaping Image Generator") %>
+<%= content_for(:schema_description, "Use LandscapAI to generate stunningly realistic, rich, and accurate landscaping images for free. Design and visualize your perfect outdoor spaces with advanced AI technology.") %>
+
+<%= turbo_frame_tag "landscape" do %>
+<div data-controller="landscape-uploader" class="min-h-[70vh] bg-neutral-100 flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 w-full">
+
+<h1 class="text-4xl font-bold text-center text-text-primary my-8"><%= t("landscape.title")  %></h1>
+<div data-landscape-uploader-target="uploadSection" class="w-full max-w-md sm:max-w-lg lg:max-w-3xl bg-white shadow-xl rounded-lg p-6 sm:p-8 text-center">
+    <h2 class="text-xl sm:text-2xl font-semibold text-text-dark mb-4">Upload Your Yard Photo</h2>
+    <div data-action="dragover->landscape-uploader#dragOver dragleave->landscape-uploader#dragLeave drop->landscape-uploader#drop click->landscape-uploader#triggerFileInput"
+         data-landscape-uploader-target="dropZone"
+         class="border-2 border-dashed border-neutral-300 rounded-lg p-8 sm:p-12 text-center text-neutral-500 hover:border-primary hover:bg-neutral-100 transition-colors duration-200 cursor-pointer">
+      <svg class="mx-auto h-10 w-10 sm:h-12 sm:w-12 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+      </svg>
+      <p class="mt-2 text-sm sm:text-base">Drag & drop your image here or click to upload</p>
+      <%= form_with model: @landscape, local: false, data: {landscape_uploader_target: 'form'} do |form| %>
+        <%= form.file_field :original_image, data: { action: "change->landscape-uploader#handleFileChange", landscape_uploader_target: "fileInput" } , class: "hidden", accept: "image/*" %>
+
+        <!--# we track the width of the device to use for resize-->
+        <%= form.hidden_field :device_width, data: { landscape_uploader_target: "deviceWidthInput" } %>
+        <%= form.submit "Upload", class: "hidden" %>
+      <% end %>
+    </div>
+    <p class="text-xs text-neutral-400 mt-2">Supports JPG, PNG, WEBP, HEIF, HEIC, AVIF and more image formats</p>
+  </div>
+
+      <div data-landscape-uploader-target="loadingSection" class="hidden fixed inset-0 bg-neutral-100 bg-opacity-75 flex flex-col items-center justify-center z-50">
+    <div class="inline-block h-12 w-12 animate-spin rounded-full border-4 border-solid border-current border-e-transparent text-primary" role="status">
+      <span class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">Loading...</span>
+    </div>
+    <p class="text-xl text-text-dark mt-4">Generating your new landscape...</p>
+    <div data-landscape-uploader-target="progressBarContainer" class="w-64 h-2 bg-neutral-300 rounded-full mt-4 hidden">
+      <div data-landscape-uploader-target="progressBar" class="bg-primary h-2 rounded-full" style="width: 0%;"></div>
+    </div>
+  </div>
+  </div>
+
+
+<% end %>
+

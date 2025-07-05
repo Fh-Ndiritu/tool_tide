@@ -2,5 +2,5 @@
 import '@hotwired/turbo-rails';
 import '@hotwired/stimulus';
 import 'controllers';
-import 'channels/landscaper_channel';
+import 'channels/landscape_channel';
 import 'channels';

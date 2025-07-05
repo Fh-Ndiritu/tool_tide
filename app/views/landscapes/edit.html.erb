@@ -1,0 +1,161 @@
+<% content_for(:title, "Free AI Landscaping Design Tool | Generate Realistic Garden Images - LandscapAI") %>
+
+<% content_for(:description, "Unleash your creativity with LandscapAI, the FREE online tool that generates stunning, rich, and lifelike landscaping images from your ideas. Design your dream garden, visualize outdoor spaces, and create beautiful, accurate landscape designs instantly.") %>
+
+<% content_for(:keywords, "free landscaping tool, AI landscaping design, generate garden images, realistic landscape design, online landscaping tool, visualize outdoor spaces, garden planner, landscape creator, AI garden generator, lifelike landscaping, accurate landscaping images, custom landscape design, LandscapAI") %>
+
+<%# Open Graph (Social Media Sharing) %>
+<% content_for(:og_title, "LandscapAI | Free AI Tool for Realistic Landscaping Images") %>
+<% content_for(:og_description, "Transform your landscaping visions into reality with LandscapAI! Generate beautiful, accurate, and lifelike garden designs for free. Perfect for homeowners, designers, and enthusiasts.") %>
+<% content_for(:og_image_alt, "Screenshot of LandscapAI generating a beautiful, realistic garden image") %>
+
+<%# Twitter Card (Social Media Sharing) %>
+<% content_for(:twitter_title, "Design Your Dream Garden FREE | LandscapAI") %>
+<% content_for(:twitter_description, "Get instant, lifelike landscaping images with LandscapAI, your free AI-powered garden design tool. Visualize outdoor spaces with rich, accurate detail.") %>
+<% content_for(:twitter_image_alt, "Vibrant AI-generated landscaping image created by LandscapAI") %>
+
+<%= content_for(:schema_name, "LandscapAI - Free AI Landscaping Image Generator") %>
+<%= content_for(:schema_description, "Use LandscapAI to generate stunningly realistic, rich, and accurate landscaping images for free. Design and visualize your perfect outdoor spaces with advanced AI technology.") %>
+
+<%= turbo_frame_tag "edit_landscape" do %>
+    <div data-controller="landscape-editor"
+      data-landscape-editor-original-image-url-value="<%= @landscape.original_image.attached? ? url_for(@landscape.original_image) : '' %>"
+      data-landscape-editor-landscape-id-value="<%= @landscape.id %>"
+     data-editor-modified-image-url-value="<%= @landscape.landscaped_image.url if @landscape.landscaped_image.attached? %>"
+     data-editor-display-image-width-value="<%= @landscape.original_image.metadata['width'] %>"
+     data-editor-display-image-height-value="<%= @landscape.original_image.metadata['height'] %>"
+     data-editor-landscape-id-value="<%= @landscape.id %>"
+     class="min-h-screen bg-neutral-100 flex flex-col items-center justify-center p-4 max-md:px-0 sm:p-6 lg:p-8 w-full">
+
+<h1 class="text-4xl font-bold text-center text-text-primary my-8"><%= t("landscape.title")  %></h1>
+
+<div data-landscape-editor-target="editorSection" class=" w-full max-w-full lg:max-w-6xl bg-white shadow-xl rounded-lg flex flex-col lg:flex-row p-4 max-md:px-0 mt-8">
+    <div
+      data-controller="konva-canvas"
+      data-konva-canvas-target="canvasContainer" <%# KonvaCanvasController will initialize Konva on this element %>
+      data-landscape-editor-target="konvaCanvasWrapper" <%# LandscapeController will use this to find the KonvaCanvasController instance %>
+      data-konva-canvas-image-url-value="<%= @landscape.original_image.attached? ? url_for(@landscape.original_image) : '' %>"
+      data-konva-canvas-display-width-value="<%= @canvas[:width]%>"  <%# Will be set dynamically by landscape#processAndLoadImageForEditor %>
+      data-konva-canvas-display-height-value="<%= @canvas[:height] %>" <%# Will be set dynamically by landscape#processAndLoadImageForEditor %>
+      data-konva-canvas-brush-size-value="40"    <%# Default initial brush size %>
+
+      class=" bg-neutral-100 flex text-black items-center justify-center relative overflow-hidden rounded-md"
+    >
+    </div>
+    <div class="lg:w-1/4 w-full p-4 flex flex-col space-y-4 lg:space-y-6">
+      <div class="flex flex-wrap justify-center sm:justify-start gap-2 border-b border-neutral-300 pb-4 ">
+
+        <button data-action="click->landscape-editor#selectRectTool" class="p-2 rounded-md text-neutral-700 hover:bg-primary hover:text-text-light transition-colors duration-200" title="Rectangle Select">
+          <%= render(IconComponent.new(name: "rectangle-dashed", classes: "flex items-center justify-center text-neutral-100 cursor-pointer h-6 w-6")) %>
+        </button>
+
+        <button data-action="click->landscape-editor#selectBrushTool" class="p-2 rounded-md text-neutral-700 hover:bg-primary hover:text-text-light transition-colors duration-200" title="Brush Select">
+           <%= render(IconComponent.new(name: "paint-brush-household", classes: "flex items-center justify-center text-neutral-100 cursor-pointer h-6 w-6")) %>
+        </button>
+
+        <button data-action="click->landscape-editor#undoPaintAction" data-landscape-editor-target="undoButton"
+        class="p-2 rounded-md text-sm text-neutral-700 hover:bg-neutral-300 transition-colors duration-200" title="Undo Last Action">
+                    <%= render(IconComponent.new(name: "arrow-counter-clockwise", classes: "flex items-center justify-center text-neutral-100 cursor-pointer h-6 w-6")) %>
+        </button>
+
+        <button
+        data-action="click->landscape-editor#redoPaintAction"
+        data-landscape-editor-target="redoButton"
+        class="p-2 rounded-md text-sm text-neutral-700 hover:bg-neutral-300 transition-colors duration-200"
+        title="Redo Last Undo">
+                     <%= render(IconComponent.new(name: "arrow-clockwise", classes: "flex items-center justify-center text-neutral-100 cursor-pointer h-6 w-6")) %>
+        </button>
+
+        <button data-action="click->landscape-editor#clearSelection" class="p-2 rounded-md text-sm text-neutral-700 hover:bg-neutral-300 transition-colors duration-200" title="Clear Selection">
+          Reset Selection
+        </button>
+      </div>
+
+      <div data-landscape-editor-target="brushSizeControl" class="hidden">
+        <label for="brush-size" class="block text-sm font-medium text-neutral-700 mb-2">Brush Size</label>
+        <div class="flex items-center space-x-3">
+          <span class="text-sm text-neutral-600">20px</span>
+          <input type="range" id="brush-size" min="20" max="100" value="40" data-action="input->landscape-editor#updateBrushSize" class="w-full h-2 bg-neutral-300 rounded-lg appearance-none cursor-pointer accent-primary">
+          <span data-landscape-editor-target="brushSizeDisplay" class="text-xs font-semibold  text-text-secondary">40px</span>
+          <span class="text-sm text-neutral-600">100px</span> </div>
+      </div>
+
+
+<div class="mb-4">
+        <label for="landscape-preset" class="block text-sm font-medium text-neutral-700 mb-1">Landscape Preset</label>
+        <select id="landscape-preset" data-landscape-editor-target="selectPreset" class="w-full p-2 border border-neutral-300 rounded-md focus:ring-primary focus:border-primary text-text-dark text-sm">
+          <option value="" disabled selected hidden>Choose a vibe</option>
+          <% LANDSCAPE_PRESETS.each do |preset, description| %>
+           <option value="<%= preset %>"><%= preset.humanize %> - <%= description %></option>
+           <% end %>
+        </select>
+      </div>
+
+      <%# Form for AJAX submission. Note the data-action and form_with helper %>
+      <%= form_with(url: modify_image_path, method: :post, html: { data: { action: "submit->landscape-editor#submitModification", landscape_editor_target: "form" } }) do |form| %>
+        <%= form.hidden_field :mask_image_data, data: { landscape_editor_target: "maskImageDataInput" } %>
+        <%= form.hidden_field :preset, data: { landscape_editor_target: "presetInput" } %> <%# Hidden field to send the selected preset %>
+        <%= form.hidden_field :id, value: @landscape.id, data: { landscape_editor_target: "landscapeIdInput" } %>
+
+        <button type="submit"
+                class="w-full bg-primary text-text-light py-3 rounded-md hover:bg-text-primary transition-colors duration-200 font-bold text-lg">
+          Generate Landscape
+        </button>
+      <% end %>
+
+      <button data-action="click->landscape-editor#cancelEdit"
+              class="w-full bg-neutral-300 text-neutral-800 py-3 rounded-md hover:bg-neutral-500 transition-colors duration-200 font-bold text-lg">
+        Cancel
+      </button>
+    </div>
+  </div>
+
+  <div data-landscape-editor-target="loadingSection" class="hidden fixed inset-0 bg-neutral-100 bg-opacity-75 flex flex-col items-center justify-center z-50">
+    <div class="inline-block h-12 w-12 animate-spin rounded-full border-4 border-solid border-current border-e-transparent text-primary" role="status">
+      <span class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">Loading...</span>
+    </div>
+    <p class="text-xl text-text-dark mt-4">Generating your new landscape...</p>
+    <div data-landscape-editor-target="progressBarContainer" class="w-64 h-2 bg-neutral-300 rounded-full mt-4 hidden">
+      <div data-landscape-editor-target="progressBar" class="bg-primary h-2 rounded-full" style="width: 0%;"></div>
+    </div>
+  </div>
+
+  <div data-landscape-editor-target="resultSection" class="hidden w-full max-w-full lg:max-w-6xl bg-white shadow-xl rounded-lg p-6 sm:p-8 mt-8">
+    <h2 class="text-2xl sm:text-3xl font-bold text-text-dark mb-6 text-center">Your Transformed Landscape</h2>
+    <div class="flex flex-col lg:flex-row justify-around items-center space-y-8 lg:space-y-0 lg:space-x-8">
+      <div class="flex flex-col items-center w-full lg:w-1/2">
+        <p class="text-lg font-semibold text-text-dark mb-2">Original</p>
+        <img data-landscape-editor-target="originalResultImage" src="<%= @landscape.original_image.attached? ? url_for(@landscape.original_image) : '' %>" alt="Original Landscape" class="max-w-full h-auto border border-neutral-300 rounded-md shadow-sm">
+      </div>
+      <div class="flex flex-col items-center w-full lg:w-1/2">
+        <p class="text-lg font-semibold text-text-dark mb-2">AI Enhanced</p>
+        <img data-landscape-editor-target="modifiedResultImage" src="<%= @landscape.landscaped_image.attached? ? url_for(@landscape.landscaped_image) : '' %>" alt="AI Modified Landscape" class="max-w-full h-auto border border-neutral-300 rounded-md shadow-sm">
+      </div>
+    </div>
+    <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4 mt-8">
+      <a data-landscape-editor-target="downloadButton" href="#" download="transformed_landscape.png"
+         class="bg-primary text-text-light py-3 px-6 rounded-md hover:bg-text-primary transition-colors duration-200 font-bold text-center text-lg">
+        Download
+      </a>
+      <button data-action="click->landscape-editor#editFurther"
+              class="bg-secondary text-text-light py-3 px-6 rounded-md hover:bg-text-secondary transition-colors duration-200 font-bold text-lg">
+        Edit Further
+      </button>
+      <button data-action="click->landscape-editor#startNewDesign"
+              class="bg-neutral-300 text-neutral-800 py-3 px-6 rounded-md hover:bg-neutral-500 transition-colors duration-200 font-bold text-lg">
+        Start New Design
+      </button>
+    </div>
+  </div>
+
+  <div class="justify-center items-center card bg-base-100 shadow-xl image-full my-8 p-6 rounded-lg border-dashed border-2 border-gray-300 w-full max-w-md sm:max-w-lg lg:max-w-3xl xl:max-w-4xl">
+    <h2 class="text-2xl font-semibold text-text-secondary"><%= t("landscape.instructions.title") %> </h2>
+    <ol class="list-decimal list-inside my-6 text-sm leading-relaxed">
+      <% t("landscape.instructions.steps").each do |step| %>
+        <li><%= step %></li>
+        <% end %>
+    </ol>
+  </div>
+</div>
+
+<% end %>

@@ -1,6 +1,6 @@
-class LandscaperChannel < ApplicationCable::Channel
+class LandscapeChannel < ApplicationCable::Channel
   def subscribed
-   stream_from "landscaper_channel"
+   stream_from "landscape_channel"
   end
 
   def unsubscribed
