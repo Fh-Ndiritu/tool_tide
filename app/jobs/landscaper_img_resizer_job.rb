@@ -20,7 +20,7 @@ class LandscaperImgResizerJob < ApplicationJob
         # Process the image using ImageProcessing::Vips
         processed_image = ImageProcessing::Vips
                           .source(temp_file)
-                          .convert('jpeg')
+                          .convert("jpeg")
                           .resize_to_fit(nil, max_width)
                           .call
 
@@ -28,7 +28,7 @@ class LandscaperImgResizerJob < ApplicationJob
         landscape.original_image.attach(
           io: File.open(processed_image.path),
           filename: "#{original_attachment.filename.base}.jpeg", # Ensure .jpg extension
-          content_type: 'image/jpeg'
+          content_type: "image/jpeg"
         )
       rescue ImageProcessing::Error => e
         Rails.logger.error "Image processing failed for Landscape ID: #{landscape_id}, Attachment SGID #{attachment_sgid}: #{e.message}"
