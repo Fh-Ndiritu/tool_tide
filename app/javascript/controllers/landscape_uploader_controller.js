@@ -2,15 +2,33 @@
 import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
-  static targets = ['fileInput', 'dropZone', 'progressBarContainer', 'progressBar', 'form'];
+  static targets = ['fileInput', 'dropZone', 'progressBarContainer', 'progressBar', 'form', 'deviceWidthInput'];
 
   // Maximum dimension for client-side image resizing BEFORE server upload
   MAX_UPLOAD_IMAGE_WIDTH = 1024;
-  MAX_UPLOAD_IMAGE_HEIGHT = 1024;
+  MAX_UPLOAD_IMAGE_HEIGHT = 1000;
 
   connect() {
     console.log('Upload Controller connected.');
     this.progressBarContainerTarget.classList.add('hidden'); // Ensure hidden on connect
+    this.deviceWidthInputTarget.value = this.calculateCanvasWidth();
+  }
+
+  calculateCanvasWidth() {
+    // We can use a max width of 700 px
+    // If the device width is less than this, we set it to 80% of the device width
+    const deviceWidth = window.innerWidth;
+    let maxWidth = 0;
+    if (deviceWidth > 700 && deviceWidth < 992) {
+      maxWidth = 580;
+    } else if (deviceWidth >= 992) {
+      maxWidth = 680;
+    } else {
+      maxWidth = deviceWidth * 0.8;
+    }
+    this.MAX_UPLOAD_IMAGE_WIDTH = maxWidth;
+    return maxWidth;
+    // return deviceWidth < 700 ? deviceWidth * 0.8 : 700; // 80% of device
   }
 
   // --- File Input Handlers ---

@@ -32,7 +32,9 @@
       <p class="mt-2 text-sm sm:text-base">Drag & drop your image here or click to upload</p>
       <%= form_with model: @landscape, local: false, data: {landscape_uploader_target: 'form'} do |form| %>
         <%= form.file_field :original_image, data: { action: "change->landscape-uploader#handleFileChange", landscape_uploader_target: "fileInput" } , class: "hidden", accept: "image/*" %>
-        <%= form.hidden_field :mask_image_data, data: { landscape_uploader_target: "maskImageDataInput" } %>
+
+        <!--# we track the width of the device to use for resize-->
+        <%= form.hidden_field :device_width, data: { landscape_uploader_target: "deviceWidthInput" } %>
         <%= form.submit "Upload", class: "hidden" %>
       <% end %>
     </div>

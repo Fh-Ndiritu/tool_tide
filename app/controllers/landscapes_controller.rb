@@ -38,13 +38,12 @@ class LandscapesController < ApplicationController
   def create
     original_image = params.dig(:landscape, :original_image)
     if original_image.present?
-      @landscape = Landscape.new
-      @landscape.original_image.attach(original_image)
-      @landscape.save
-
+      create_landscape(original_image)
+      width = params.dig(:landscape, :device_width).to_i
+      LandscaperImgResizerJob.perform_now(@landscape.id, @landscape.original_image.to_sgid.to_s, width)
       respond_to do |format|
         format.html { redirect_to edit_landscape_path(@landscape) }
-        format.turbo_stream { render turbo_stream: turbo_stream.replace("new_landscape", partial: "landscapes/landscape", locals: { landscape: @landscape, canvas: }) }
+        # format.turbo_stream { render turbo_stream: turbo_stream.replace("new_landscape", partial: "landscapes/landscape", locals: { landscape: @landscape, canvas: }) }
       end
     else
       flash[:alert] = "Please upload an image"
@@ -53,16 +52,23 @@ class LandscapesController < ApplicationController
   end
 
   def show
-
   end
 
 
   private
 
+  def create_landscape(original_image)
+    @landscape = Landscape.new
+    @landscape.original_image.attach(original_image)
+    @landscape.save
+  end
+
   def canvas
     return {} unless @landscape.original_image.attached?
 
-    metadata = @landscape.original_image.blob.metadata
+    blob = @landscape.original_image.blob
+    blob.analyze unless blob.metadata[:width] && blob.metadata[:height]
+    metadata = blob.metadata
     { width: metadata[:width], height: metadata[:height] }
   end
 
@@ -89,5 +95,4 @@ class LandscapesController < ApplicationController
   def landscape_params
     params.require(:landscape).permit(:original_image, :preset, :mask_image_data)
   end
-
 end

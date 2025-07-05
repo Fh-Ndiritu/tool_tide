@@ -38,14 +38,31 @@ export default class extends Controller {
     console.log('Display Width:', this.displayWidthValue);
     console.log('Display Height:', this.displayHeightValue);
 
-    if (this.hasImageUrlValue && this.imageUrlValue && this.hasDisplayWidthValue && this.hasDisplayHeightValue) {
-      if (!this.stage) {
-        this.initializeKonva();
-      }
-      this.loadImage(this.imageUrlValue);
+    // Always try to initialize Konva if we have the dimensions.
+    // This ensures that even if imageUrl isn't immediately available,
+    // the stage is prepared for when it does arrive (e.g., via a value change).
+    if (
+      this.hasDisplayWidthValue &&
+      this.hasDisplayHeightValue &&
+      this.displayWidthValue > 0 &&
+      this.displayHeightValue > 0
+    ) {
+      this.initializeKonva();
     } else {
-      console.log('imageUrl, displayWidth, or displayHeight not yet set. Skipping image load.');
+      console.warn('Initial displayWidth or displayHeight not valid. Konva stage will not be initialized immediately.');
     }
+
+    // --- IMPORTANT CHANGE HERE ---
+    // Defer loadImage call to ensure DOM has settled after initialization
+    // requestAnimationFrame is generally preferred for rendering-related tasks
+    // as it runs just before the browser's next repaint.
+    requestAnimationFrame(() => {
+      if (this.hasImageUrlValue && this.imageUrlValue && this.stage) {
+        this.loadImage(this.imageUrlValue);
+      } else {
+        console.log('Image URL not yet set, or Konva stage not ready after RAF. Skipping initial image load.');
+      }
+    });
   }
 
   disconnect() {
@@ -55,28 +72,39 @@ export default class extends Controller {
 
   // Called when displayWidthValue changes
   displayWidthValueChanged() {
+    // Check for stage existence and dimension changes
     if (
       this.stage &&
       (this.stage.width() !== this.displayWidthValue || this.stage.height() !== this.displayHeightValue)
     ) {
       console.log('Konva stage dimensions changed, re-initializing.');
-      this.initializeKonva();
-      if (this.imageNode && this.hasImageUrlValue && this.imageUrlValue) {
-        this.loadImage(this.imageUrlValue);
+      this.initializeKonva(); // Re-initialize Konva with new dimensions
+
+      // After re-initialization, if an image URL exists, load it
+      if (this.hasImageUrlValue && this.imageUrlValue) {
+        // Defer loadImage after re-initialization as well
+        requestAnimationFrame(() => {
+          this.loadImage(this.imageUrlValue);
+        });
       }
     }
   }
 
   // Called when displayHeightValue changes
   displayHeightValueChanged() {
+    // Similar logic as displayWidthValueChanged to avoid duplication,
+    // you could abstract this if multiple valueChange methods trigger the same re-init/reload.
     if (
       this.stage &&
       (this.stage.width() !== this.displayWidthValue || this.stage.height() !== this.displayHeightValue)
     ) {
       console.log('Konva stage dimensions changed, re-initializing.');
       this.initializeKonva();
-      if (this.imageNode && this.hasImageUrlValue && this.imageUrlValue) {
-        this.loadImage(this.imageUrlValue);
+
+      if (this.hasImageUrlValue && this.imageUrlValue) {
+        requestAnimationFrame(() => {
+          this.loadImage(this.imageUrlValue);
+        });
       }
     }
   }
@@ -86,7 +114,6 @@ export default class extends Controller {
     this.brushSize = this.brushSizeValue;
   }
 
-  // --- Konva.js Canvas Initialization ---
   initializeKonva() {
     if (
       !this.hasDisplayWidthValue ||
@@ -99,8 +126,14 @@ export default class extends Controller {
     }
 
     if (this.stage) {
-      this.stage.destroy(); // Clean up existing stage if re-initializing
-      this.stage = null; // Ensure it's null before re-creation
+      console.log('Destroying existing Konva stage for re-initialization.');
+      this.stage.destroy();
+      this.stage = null;
+      this.layer = null;
+      this.maskLayer = null;
+      this.imageNode = null;
+      this.maskContext = null;
+      this.maskImageNode = null;
     }
 
     const container = this.canvasContainerTarget;
@@ -109,7 +142,7 @@ export default class extends Controller {
     container.style.maxWidth = '100%';
     container.style.margin = '0 auto';
     container.style.overflow = 'hidden';
-    container.innerHTML = ''; // Clear any previous canvas elements
+    container.innerHTML = '';
 
     this.stage = new Konva.Stage({
       container: container,
@@ -127,7 +160,7 @@ export default class extends Controller {
     maskCanvas.width = this.displayWidthValue;
     maskCanvas.height = this.displayHeightValue;
     this.maskContext = maskCanvas.getContext('2d');
-    this.maskContext.fillStyle = 'white'; // Initialize mask with white
+    this.maskContext.fillStyle = 'white';
     this.maskContext.fillRect(0, 0, this.displayWidthValue, this.displayHeightValue);
 
     this.maskImageNode = new Konva.Image({
@@ -139,15 +172,16 @@ export default class extends Controller {
     this.maskLayer.add(this.maskImageNode);
 
     this.setupDrawingEvents();
-    this.resetMaskHistory(); // Reset history on new initialization
-    this.saveMaskState(); // Save initial blank mask state
+    this.resetMaskHistory();
+    this.saveMaskState();
     console.log(`Konva Stage initialized with dimensions: ${this.displayWidthValue}x${this.displayHeightValue}`);
   }
 
   // --- Image Loading for Canvas Display ---
-  async loadImage(imageDataURL) {
+  loadImage(imageDataURL) {
     if (!this.stage) {
       console.error('loadImage called but Konva stage is not initialized.');
+      // This log should ideally not appear with the requestAnimationFrame fix.
       return;
     }
 
@@ -169,7 +203,7 @@ export default class extends Controller {
 
         this.layer.add(this.imageNode);
         this.layer.batchDraw();
-        this.resetMaskHistory(); // Reset mask and history for new image
+        this.resetMaskHistory();
         this.saveMaskState();
         console.log('Image loaded onto Konva canvas.');
         resolve();

@@ -25,11 +25,11 @@
      data-editor-display-image-width-value="<%= @landscape.original_image.metadata['width'] %>"
      data-editor-display-image-height-value="<%= @landscape.original_image.metadata['height'] %>"
      data-editor-landscape-id-value="<%= @landscape.id %>"
-     class="min-h-screen bg-neutral-100 flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 w-full">
+     class="min-h-screen bg-neutral-100 flex flex-col items-center justify-center p-4 max-md:px-0 sm:p-6 lg:p-8 w-full">
 
 <h1 class="text-4xl font-bold text-center text-text-primary my-8"><%= t("landscape.title")  %></h1>
 
-<div data-landscape-editor-target="editorSection" class=" w-full max-w-full lg:max-w-6xl bg-white shadow-xl rounded-lg flex flex-col lg:flex-row p-4 mt-8">
+<div data-landscape-editor-target="editorSection" class=" w-full max-w-full lg:max-w-6xl bg-white shadow-xl rounded-lg flex flex-col lg:flex-row p-4 max-md:px-0 mt-8">
     <div
       data-controller="konva-canvas"
       data-konva-canvas-target="canvasContainer" <%# KonvaCanvasController will initialize Konva on this element %>
@@ -39,23 +39,23 @@
       data-konva-canvas-display-height-value="<%= @canvas[:height] %>" <%# Will be set dynamically by landscape#processAndLoadImageForEditor %>
       data-konva-canvas-brush-size-value="40"    <%# Default initial brush size %>
 
-      class="lg:w-3/4 w-full h-[400px] sm:h-[500px] lg:h-[600px] bg-neutral-100 flex text-black items-center justify-center relative overflow-hidden rounded-md"
+      class=" bg-neutral-100 flex text-black items-center justify-center relative overflow-hidden rounded-md"
     >
     </div>
     <div class="lg:w-1/4 w-full p-4 flex flex-col space-y-4 lg:space-y-6">
-      <div class="flex flex-wrap justify-center sm:justify-start gap-2 border-b border-neutral-300 pb-4">
+      <div class="flex flex-wrap justify-center sm:justify-start gap-2 border-b border-neutral-300 pb-4 ">
 
         <button data-action="click->landscape-editor#selectRectTool" class="p-2 rounded-md text-neutral-700 hover:bg-primary hover:text-text-light transition-colors duration-200" title="Rectangle Select">
-          <%= render(IconComponent.new(name: "rectangle-dashed", classes: "flex items-center justify-center text-neutral-100 cursor-pointer")) %>
+          <%= render(IconComponent.new(name: "rectangle-dashed", classes: "flex items-center justify-center text-neutral-100 cursor-pointer h-6 w-6")) %>
         </button>
 
         <button data-action="click->landscape-editor#selectBrushTool" class="p-2 rounded-md text-neutral-700 hover:bg-primary hover:text-text-light transition-colors duration-200" title="Brush Select">
-           <%= render(IconComponent.new(name: "paint-brush-household", classes: "flex items-center justify-center text-neutral-100 cursor-pointer")) %>
+           <%= render(IconComponent.new(name: "paint-brush-household", classes: "flex items-center justify-center text-neutral-100 cursor-pointer h-6 w-6")) %>
         </button>
 
         <button data-action="click->landscape-editor#undoPaintAction" data-landscape-editor-target="undoButton"
         class="p-2 rounded-md text-sm text-neutral-700 hover:bg-neutral-300 transition-colors duration-200" title="Undo Last Action">
-                    <%= render(IconComponent.new(name: "arrow-counter-clockwise", classes: "flex items-center justify-center text-neutral-100 cursor-pointer")) %>
+                    <%= render(IconComponent.new(name: "arrow-counter-clockwise", classes: "flex items-center justify-center text-neutral-100 cursor-pointer h-6 w-6")) %>
         </button>
 
         <button
@@ -63,7 +63,7 @@
         data-landscape-editor-target="redoButton"
         class="p-2 rounded-md text-sm text-neutral-700 hover:bg-neutral-300 transition-colors duration-200"
         title="Redo Last Undo">
-                     <%= render(IconComponent.new(name: "arrow-clockwise", classes: "flex items-center justify-center text-neutral-100 cursor-pointer")) %>
+                     <%= render(IconComponent.new(name: "arrow-clockwise", classes: "flex items-center justify-center text-neutral-100 cursor-pointer h-6 w-6")) %>
         </button>
 
         <button data-action="click->landscape-editor#clearSelection" class="p-2 rounded-md text-sm text-neutral-700 hover:bg-neutral-300 transition-colors duration-200" title="Clear Selection">

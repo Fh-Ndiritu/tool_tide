@@ -5,7 +5,7 @@ require "base64"
 require "tempfile" # For handling temporary files if Base64 image is returned
 require "securerandom" # For generating unique filenames
 require "open-uri" # For opening URLs, including potentially Active Storage public URLs
-require 'mini_magick' # Ensure MiniMagick is required if flip_mask_colors uses it
+require "mini_magick" # Ensure MiniMagick is required if flip_mask_colors uses it
 
 class ImageModificationJob < ApplicationJob
   queue_as :default # Or a specific queue for AI tasks, e.g., :ai_processing
@@ -25,7 +25,7 @@ class ImageModificationJob < ApplicationJob
         decoded_mask = Base64.decode64(base64_content)
 
         # Create a Tempfile for the mask
-        mask_temp_file = Tempfile.new(["mask_data_", ".png"], binmode: true)
+        mask_temp_file = Tempfile.new([ "mask_data_", ".png" ], binmode: true)
         mask_temp_file.write(decoded_mask)
         mask_temp_file.rewind
 
@@ -99,7 +99,7 @@ class ImageModificationJob < ApplicationJob
             # If it's a data URL (e.g., from Bria's b64_json), decode and attach
             _mime_type, base64_content = modified_image_url.split(",", 2)
             decoded_image = Base64.decode64(base64_content)
-            landscaped_temp_file = Tempfile.new(["landscaped_", ".png"], binmode: true)
+            landscaped_temp_file = Tempfile.new([ "landscaped_", ".png" ], binmode: true)
             landscaped_temp_file.write(decoded_image)
             landscaped_temp_file.rewind
 
