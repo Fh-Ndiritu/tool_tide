@@ -1,0 +1,30 @@
+<div class="flex flex-col items-center justify-center min-h-screen w-full">
+
+  <h1 class="text-3xl font-bold text-center my-6 text-primary">Convert and extract images</h1>
+
+
+  <%= render ButtonComponent.new(
+    text: "Extract text from images",
+    href: extract_text_image_path,
+    classes: "card bg-base-100 w-auto max-w-[300px] shadow-xl p-4 rounded bg-#{ ['primary', 'secondary', 'accent'].sample} } text-base flex text-white opacity-80 hover:opacity-100 text-center my-8 mb-12"
+    ) %>
+
+
+
+  <div class="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-8 gap-4 flex-wrap mx-auto mt-4 bg-neutral-100">
+      <!--# we shall pair each image with the various conversions we can run on it-->
+<% CANONICAL_IMAGE_FORMATS.keys.each do |source| %>
+   <% DESTINATION_IMAGE_FORMATS.each do |conversion| %>
+    <% next if source == conversion %>
+      <%= render ButtonComponent.new(
+        text: "#{source.upcase} to #{conversion.upcase}",
+      href: new_image_path(source, conversion),
+      classes: "card bg-base-100 w-auto shadow-xl p-4 rounded bg-#{ ['primary', 'secondary', 'accent'].sample} } text-base flex text-white opacity-80 hover:opacity-100 text-center"
+      ) %>
+    <% end %>
+    <br>
+  <% end %>
+  </div>
+
+
+</div>
