@@ -15,7 +15,7 @@
     main_feature = "#{source_format} to #{conversion_format} Converter"
     tool_type = "Image Converter"
     short_description_action = "Convert your #{source_format} files to #{conversion_format}"
-    og_image_alt_base = "Screenshot of Tool Tide's #{source_format} to #{conversion_format} Converter in action"
+    og_image_alt_base = "Screenshot of Hadaa's #{source_format} to #{conversion_format} Converter in action"
     twitter_image_alt_base = "Visual representation of #{source_format} being converted to #{conversion_format}"
   end
 
@@ -38,28 +38,28 @@
     end
 
     # Add your brand name
-    keywords << "Tool Tide"
+    keywords << "Hadaa"
 
     keywords.compact.uniq.join(", ")
   end
 %>
 
-<% content_for(:title, "#{main_action} | #{tool_type} - Tool Tide") %>
+<% content_for(:title, "#{main_action} | #{tool_type} - Hadaa") %>
 
-<% content_for(:description, "#{short_description_action}. Tool Tide's #{tool_type.downcase} is fast, accurate, and secure for digitizing your content.") %>
+<% content_for(:description, "#{short_description_action}. Hadaa's #{tool_type.downcase} is fast, accurate, and secure for digitizing your content.") %>
 
 <% content_for(:keywords, generate_keywords(@image_form.source, @image_form.conversion)) %>
 
 <%# Open Graph (Social Media Sharing) %>
-<% content_for(:og_title, "#{main_feature} | #{tool_type} - Tool Tide") %>
-<% content_for(:og_description, "#{short_description_action} online. Tool Tide offers a free, accurate, and fast #{tool_type.downcase} for all your #{conversion_format.downcase} needs.") %>
-<% content_for(:og_image_alt, "#{og_image_alt_base} by Tool Tide") %>
+<% content_for(:og_title, "#{main_feature} | #{tool_type} - Hadaa") %>
+<% content_for(:og_description, "#{short_description_action} online. Hadaa offers a free, accurate, and fast #{tool_type.downcase} for all your #{conversion_format.downcase} needs.") %>
+<% content_for(:og_image_alt, "#{og_image_alt_base} by Hadaa") %>
 
 <%# Twitter Card (Social Media Sharing) %>
-<% content_for(:twitter_title, "#{main_action} Free | Tool Tide #{tool_type}") %>
-<% content_for(:twitter_description, "Need to #{short_description_action.downcase}? Use Tool Tide's free online #{tool_type.downcase} for quick and accurate results.") %>
-<% content_for(:twitter_image_alt, "#{twitter_image_alt_base} by Tool Tide") %>
+<% content_for(:twitter_title, "#{main_action} Free | Hadaa #{tool_type}") %>
+<% content_for(:twitter_description, "Need to #{short_description_action.downcase}? Use Hadaa's free online #{tool_type.downcase} for quick and accurate results.") %>
+<% content_for(:twitter_image_alt, "#{twitter_image_alt_base} by Hadaa") %>
 
-<%= content_for(:schema_name, "#{main_feature} - Tool Tide") %>
-<%= content_for(:schema_description, "#{short_description_action} with Tool Tide's free online #{tool_type.downcase}.") %>
+<%= content_for(:schema_name, "#{main_feature} - Hadaa") %>
+<%= content_for(:schema_description, "#{short_description_action} with Hadaa's free online #{tool_type.downcase}.") %>
 

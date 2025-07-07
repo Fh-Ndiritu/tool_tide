@@ -123,18 +123,18 @@ en:
       extract: 'Extract Now'
     instructions:
       extract:
-        title: How to extract text from an image using Tool Tide
+        title: How to extract text from an image using Hadaa
         steps:
           - Upload, drag or drop images into the box above
-          - You can extract upto 10 images at a time using tool tide
+          - You can extract upto 10 images at a time using Hadaa
           - Click the "Extract Now" button to extract text from the image
           - Watch as the text is extracted from the image and displayed on the screen
           - Copy the text from each image and use it as you wish. The name of the original image is displayed above the extracted text
       convert:
-        title: How to convert images using Tool Tide
+        title: How to convert images using Hadaa
         steps:
           - Upload, drag or drop images into the box above
-          - You can convert upto 10 images at a time using tool tide
+          - You can convert upto 10 images at a time using Hadaa
           - Click the "Convert Now" button to convert the image
           - Watch as the image is converted and displayed on the screen
           - Download the converted image by clicking the download button
