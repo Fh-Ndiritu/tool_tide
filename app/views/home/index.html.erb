@@ -18,20 +18,28 @@
 <%= content_for(:schema_description, "Use LandscapAI to generate stunningly realistic, rich, and accurate landscaping images for free. Design and visualize your perfect outdoor spaces with advanced AI technology.") %>
 <%= content_for(:main_classes, "mx-0 pl-0 pr-0 flex max-w-[100vw] ") %>
 
-<section class="relative h-screen flex items-center justify-start overflow-hidden bg-amber-100">
+<section class="relative h-auto min-h-[80vh] lg:h-screen flex items-center justify-start overflow-hidden bg-amber-100">
   <div class="absolute inset-0 bg-cover bg-center" style="background-image: url(<%= image_path('how_hadaa_ai_works.webp') %>);"></div>
 
-  <div class="absolute inset-0 bg-gradient-to-r from-neutral-900 via-neutral-900/70 to-transparent"></div>
+  <div class="absolute inset-0 max-md:bg-neutral-900 max-md:opacity-80  lg:bg-gradient-to-r lg:from-neutral-900 lg:via-neutral-900/70 lg:to-transparent"></div>
 
-  <div class="relative z-10 w-full lg:w-1/2 p-6 md:p-10 lg:pl-20 text-text-light">
+  <div class="relative z-10 w-full lg:w-2/3 p-6 md:p-10 lg:pl-20 text-text-light">
     <h1 class="text-3xl md:text-5xl font-bold mb-4 leading-tight">
-      Hadaa Ai Landscaper: Draw, Design & Visualize Your Dream Garden with AI
+      Hadaa Ai Landscaper: <em class="text-2xl md:text-4xl text-text-secondary">Draw, Design & Visualize Your Dream Garden with AI</em>
     </h1>
     <p class="text-base md:text-lg mb-8">
-      Welcome to Hadaa Ai Landscaper, the revolutionary AI tool that puts the power of professional landscape design directly into your hands. Forget endless guesswork and costly mistakes. With Hadaa, you can upload a photo of your outdoor space, intuitively draw on it, and make precise modifications to bring your vision to life. Our advanced AI transforms your ideas into stunning, realistic designs, complete with smart plant recommendations, seasonal previews, and actionable planting guides. Whether you're a DIY enthusiast or a seasoned professional, Hadaa is your ultimate partner for creating the perfect outdoor oasis.
+      Welcome to Hadaa Ai Landscaper, the revolutionary AI tool that puts the power of professional landscape design directly into your hands.
+      With Hadaa, you can upload a photo of your outdoor space, intuitively draw on it, and make precise modifications to bring your vision to life.
+      </p>
+      <p class="text-base md:text-lg mb-8">
+      Our advanced AI transforms your ideas into stunning, realistic designs, complete with smart plant recommendations, seasonal previews,
+      and actionable planting guides. Whether you're a DIY enthusiast or a seasoned professional, Hadaa is your ultimate partner for creating the perfect outdoor oasis.
     </p>
-    <a href="#try-now" class="inline-block bg-primary hover:bg-secondary text-text-light font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105">
-      Try now, free!
-    </a>
+     <%= render ButtonComponent.new(
+        text: "Try now, free for life!",
+      href: new_landscape_path,
+      classes: "mt-4 inline-block bg-primary hover:bg-secondary text-text-light font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105"
+      ) %>
+
   </div>
 </section>
