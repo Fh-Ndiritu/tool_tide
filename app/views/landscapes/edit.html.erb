@@ -92,7 +92,7 @@
       </div>
 
       <%# Form for AJAX submission. Note the data-action and form_with helper %>
-      <%= form_with(url: modify_image_path, method: :post, html: { data: { action: "submit->landscape-editor#submitModification", landscape_editor_target: "form" } }) do |form| %>
+      <%= form_with(url: modify_landscapes_path, method: :post, html: { data: { action: "submit->landscape-editor#submitModification", landscape_editor_target: "form" } }) do |form| %>
         <%= form.hidden_field :mask_image_data, data: { landscape_editor_target: "maskImageDataInput" } %>
         <%= form.hidden_field :preset, data: { landscape_editor_target: "presetInput" } %> <%# Hidden field to send the selected preset %>
         <%= form.hidden_field :id, value: @landscape.id, data: { landscape_editor_target: "landscapeIdInput" } %>

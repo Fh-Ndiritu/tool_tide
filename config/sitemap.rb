@@ -36,7 +36,7 @@ SitemapGenerator::Sitemap.create do
     end
   end
 
-  add extract_text_image_path
+  add extract_text_images_path
 end
 
 

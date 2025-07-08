@@ -5,7 +5,7 @@
 
   <%= render ButtonComponent.new(
     text: "Extract text from images",
-    href: extract_text_image_path,
+    href: extract_text_images_path,
     classes: "card bg-base-100 w-auto max-w-[300px] shadow-xl p-4 rounded bg-#{ ['primary', 'secondary', 'accent'].sample} } text-base flex text-white opacity-80 hover:opacity-100 text-center my-8 mb-12"
     ) %>
 
@@ -18,7 +18,7 @@
     <% next if source == conversion %>
       <%= render ButtonComponent.new(
         text: "#{source.upcase} to #{conversion.upcase}",
-      href: new_image_path(source, conversion),
+      href: new_images_path(source, conversion),
       classes: "card bg-base-100 w-auto shadow-xl p-4 rounded bg-#{ ['primary', 'secondary', 'accent'].sample} } text-base flex text-white opacity-80 hover:opacity-100 text-center"
       ) %>
     <% end %>

@@ -1,7 +1,7 @@
 class LandscapesController < ApplicationController
   # Protect from CSRF attacks
   skip_before_action :verify_authenticity_token, only: [ :create ]
-  before_action :set_landscape, only: %i[show edit modify_image]
+  before_action :set_landscape, only: %i[show edit modify]
 
   def new
     @landscape = Landscape.new
@@ -15,7 +15,7 @@ class LandscapesController < ApplicationController
     @canvas = canvas
   end
 
-  def modify_image
+  def modify
     update_prompt
     mask_image_data = landscape_params[:mask_image_data]
 
