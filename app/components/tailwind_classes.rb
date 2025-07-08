@@ -3,7 +3,8 @@ module TailwindClasses
     "background-color" => /^bg-/,
     "text-color" => /^text-/,
     "width" => /^w-/,
-    "flex-direction" => /^flex-(row|col)$/
+    "flex-direction" => /^flex-(row|col)$/,
+    "rounded" => /^rounded-/
   }.freeze
 
   private

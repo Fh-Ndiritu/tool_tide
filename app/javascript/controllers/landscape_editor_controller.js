@@ -394,7 +394,7 @@ export default class extends Controller {
     formData.append('id', landscapeId);
 
     try {
-      const response = await fetch(`/landscape/modify_image`, {
+      const response = await fetch(`/landscapes/modify`, {
         method: 'POST',
         headers: {
           'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content, // Include CSRF token

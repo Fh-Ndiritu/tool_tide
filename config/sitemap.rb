@@ -32,11 +32,11 @@ SitemapGenerator::Sitemap.create do
   CANONICAL_IMAGE_FORMATS.keys.each do |source|
     DESTINATION_IMAGE_FORMATS.each do |conversion|
       next if source == conversion
-      add new_image_path(source, conversion)
+      add new_images_path(source, conversion)
     end
   end
 
-  add extract_text_image_path
+  add extract_text_images_path
 end
 
 
