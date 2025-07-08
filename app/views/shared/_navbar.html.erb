@@ -34,6 +34,17 @@
         href: new_landscape_path,
         classes: "#{active_item(new_landscape_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
         ) %>
+
+
+        <!--# id navigation for homepage-->
+        <% if active_item(root_path).present? %>
+          <%= render ButtonComponent.new(
+            text: "How it Works",
+            href: "#how_it_works",
+            classes: "#{active_item(new_landscape_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
+            ) %>
+        <% end %>
+
       <%= render ButtonComponent.new(
         text: "Text Extractor",
         href: extract_text_images_path,
