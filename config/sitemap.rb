@@ -1,5 +1,5 @@
 # Set the host name for URL creation
-SitemapGenerator::Sitemap.default_host = "https://tooltide.fyi/"
+SitemapGenerator::Sitemap.default_host = "https://hadaa.app/"
 
 SitemapGenerator::Sitemap.create do
   # Put links creation logic here.
