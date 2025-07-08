@@ -16,6 +16,7 @@
 
 <%= content_for(:schema_name, "LandscapAI - Free AI Landscaping Image Generator") %>
 <%= content_for(:schema_description, "Use LandscapAI to generate stunningly realistic, rich, and accurate landscaping images for free. Design and visualize your perfect outdoor spaces with advanced AI technology.") %>
+<%= content_for(:main_classes, "container mx-auto px-5 flex max-w-[1200px] text-neutral-800 mt-10") %>
 
 <%= turbo_frame_tag "edit_landscape" do %>
     <div data-controller="landscape-editor"
