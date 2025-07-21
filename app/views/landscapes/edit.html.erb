@@ -22,7 +22,7 @@
     <div data-controller="landscape-editor"
       data-landscape-editor-original-image-url-value="<%= @landscape.original_image.attached? ? url_for(@landscape.original_image) : '' %>"
       data-landscape-editor-landscape-id-value="<%= @landscape.id %>"
-     data-editor-modified-image-url-value="<%= @landscape.landscaped_image.url if @landscape.landscaped_image.attached? %>"
+     data-editor-modified-image-url-value="<%= @landscape.modified_image.url if @landscape.modified_image.attached? %>"
      data-editor-display-image-width-value="<%= @landscape.original_image.metadata['width'] %>"
      data-editor-display-image-height-value="<%= @landscape.original_image.metadata['height'] %>"
      data-editor-landscape-id-value="<%= @landscape.id %>"
@@ -130,7 +130,7 @@
       </div>
       <div class="flex flex-col items-center w-full lg:w-1/2">
         <p class="text-lg font-semibold text-text-dark mb-2">AI Enhanced</p>
-        <img data-landscape-editor-target="modifiedResultImage" src="<%= @landscape.landscaped_image.attached? ? url_for(@landscape.landscaped_image) : '' %>" alt="AI Modified Landscape" class="max-w-full h-auto border border-neutral-300 rounded-md shadow-sm">
+        <img data-landscape-editor-target="modifiedResultImage" src="<%= @landscape.modified_image.attached? ? url_for(@landscape.modified_image) : '' %>" alt="AI Modified Landscape" class="max-w-full h-auto border border-neutral-300 rounded-md shadow-sm">
       </div>
     </div>
     <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4 mt-8">
