@@ -1,23 +1,11 @@
 # app/jobs/image_modification_job.rb
-# This job processes an image by applying Bria AI's inpainting capabilities.
-
-require "base64"
-require "tempfile" # For handling temporary files if Base64 image is returned
-require "securerandom" # For generating unique filenames
-require "open-uri" # For opening URLs, including potentially Active Storage public URLs
-require "mini_magick" # Ensure MiniMagick is required if flip_mask_colors uses it
+require "mini_magick"
 
 class ImageModificationJob < ApplicationJob
-  queue_as :default # Or a specific queue for AI tasks, e.g., :ai_processing
-
-  # The perform method is where the job's main logic resides.
-  # @param landscape_id [Integer] The ID of the Landscape record.
-  # @param raw_mask_image_data [String] The Base64-encoded mask image (e.g., "data:image/png;base64,...").
+  queue_as :default
   def perform(landscape_id, raw_mask_image_data)
     Rails.logger.info "Starting ImageModificationJob for Landscape ID: #{landscape_id}"
     @landscape = Landscape.find(landscape_id)
-
-    # --- SAVE MASK_IMAGE_DATA TO ACTIVE STORAGE ---
     save_mask(raw_mask_image_data) if raw_mask_image_data.present?
     @b64_input_image =  prepare_original_image_for_bria(@landscape.original_image)
 
@@ -94,8 +82,6 @@ class ImageModificationJob < ApplicationJob
   ensure
     File.delete(temp_path) if File.exist?(temp_path)
   end
-
-
 
   def process_bria_results(bria_response)
     if bria_response.success? && bria_response.body["urls"].any?
@@ -223,8 +209,6 @@ class ImageModificationJob < ApplicationJob
 
   # This helper method now ALWAYS reads the Active Storage blob and returns its Base64 encoding.
   # This makes it independent of whether Active Storage generates public, private, or localhost URLs.
-  # @param original_image_attachment [ActiveStorage::Attached::One] The Active Storage attachment object.
-  # @return [String] A Base64 encoded string of the image (without the "data:image/..." prefix).
   def prepare_original_image_for_bria(original_image_attachment)
     unless original_image_attachment.attached?
       raise BriaAi::Error, "Original image is not attached to the landscape record."
@@ -244,6 +228,7 @@ class ImageModificationJob < ApplicationJob
   end
 
 
+  # GCP and Bria expect the white and black to be inverted in the mask
   def flip_mask_colors(data_url)
     unless data_url.start_with?("data:image/png;base64,")
       raise ArgumentError, "Invalid data_url format. Expected 'data:image/png;base64,' prefix."
