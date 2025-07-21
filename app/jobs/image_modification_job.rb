@@ -84,10 +84,10 @@ class ImageModificationJob < ApplicationJob
 
   def save_b64_results(b64_result)
     # gcp will responnd with a hash of type and data
-    img_from_b64 = Base64.decode64(b64_result['bytesBase64Encoded'])
-    extension = b64_result['mimeType'].split('/').last
+    img_from_b64 = Base64.decode64(b64_result["bytesBase64Encoded"])
+    extension = b64_result["mimeType"].split("/").last
     temp_path = Rails.root.join("tmp", "#{SecureRandom.hex(10)}.#{extension}")
-    File.open(temp_path, 'wb') do |file|
+    File.open(temp_path, "wb") do |file|
       file.write(img_from_b64)
     end
     @landscape.modified_image.attach(io: File.open(temp_path), filename: "modified_image.#{extension}")
@@ -169,7 +169,7 @@ class ImageModificationJob < ApplicationJob
            },
            "mask": {
               "image": {
-                "bytesBase64Encoded": @b64_mask_image.split(',', 2).last
+                "bytesBase64Encoded": @b64_mask_image.split(",", 2).last
               }
            }
         }
@@ -177,7 +177,7 @@ class ImageModificationJob < ApplicationJob
       "parameters": {
         "editConfig": {
           "editMode": "inpainting-insert",
-          guidanceScale: 450,
+          guidanceScale: 450
         },
         "sampleCount": 1
       }
@@ -202,7 +202,7 @@ class ImageModificationJob < ApplicationJob
               "referenceType": "REFERENCE_TYPE_MASK",
               "referenceId": 2,
               "referenceImage": {
-                "bytesBase64Encoded":  @b64_mask_image.split(',', 2).last
+                "bytesBase64Encoded":  @b64_mask_image.split(",", 2).last
               },
               "maskImageConfig": {
                 "maskMode": "MASK_MODE_USER_PROVIDED"
