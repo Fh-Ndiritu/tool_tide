@@ -27,6 +27,8 @@ export default class extends Controller {
   startRectX = 0;
   startRectY = 0;
   currentRect = null;
+  // New property for the cursor circle
+  cursorCircle = null;
 
   maskHistory = [];
   historyPointer = -1;
@@ -112,6 +114,11 @@ export default class extends Controller {
   // Called when brushSizeValue changes
   brushSizeValueChanged() {
     this.brushSize = this.brushSizeValue;
+    // Update the cursor circle size if it exists
+    if (this.cursorCircle) {
+      this.cursorCircle.radius(this.brushSizeValue / 2);
+      this.maskLayer.batchDraw();
+    }
   }
 
   initializeKonva() {
@@ -134,6 +141,7 @@ export default class extends Controller {
       this.imageNode = null;
       this.maskContext = null;
       this.maskImageNode = null;
+      this.cursorCircle = null; // Reset cursor circle
     }
 
     const container = this.canvasContainerTarget;
@@ -170,6 +178,15 @@ export default class extends Controller {
       opacity: 0.4,
     });
     this.maskLayer.add(this.maskImageNode);
+
+    // Initialize cursor circle
+    this.cursorCircle = new Konva.Circle({
+      radius: this.brushSizeValue / 2,
+      fill: 'rgba(0,128,0, 0.7)', // Same color as brush stroke
+      listening: false, // Make sure it doesn't interfere with drawing events
+      visible: false, // Initially hidden
+    });
+    this.maskLayer.add(this.cursorCircle);
 
     this.setupDrawingEvents();
     this.resetMaskHistory();
@@ -222,6 +239,9 @@ export default class extends Controller {
       this.stage.on('mousedown touchstart', this._handleMouseDown.bind(this));
       this.stage.on('mousemove touchmove', this._handleMouseMove.bind(this));
       this.stage.on('mouseup touchend', this._handleMouseUp.bind(this));
+      // Add events for cursor visibility
+      this.stage.on('mouseenter', this._handleMouseEnter.bind(this));
+      this.stage.on('mouseleave', this._handleMouseLeave.bind(this));
     }
   }
 
@@ -233,6 +253,20 @@ export default class extends Controller {
       x: pos.x,
       y: pos.y,
     };
+  }
+
+  _handleMouseEnter() {
+    if (this.cursorCircle && (this.currentTool === 'brush' || this.currentTool === 'eraser')) {
+      this.cursorCircle.visible(true);
+      this.maskLayer.batchDraw();
+    }
+  }
+
+  _handleMouseLeave() {
+    if (this.cursorCircle) {
+      this.cursorCircle.visible(false);
+      this.maskLayer.batchDraw();
+    }
   }
 
   _handleMouseDown(e) {
@@ -278,12 +312,36 @@ export default class extends Controller {
   }
 
   _handleMouseMove(e) {
-    if (!this.isDrawing || !this.imageNode || !this.stage) return;
+    if (!this.imageNode || !this.stage) return;
 
     const pos = this.stage.getPointerPosition();
-    if (!pos) return;
+    if (!pos) {
+      // Hide cursor if pointer is not available (e.g., mouse moved off stage quickly)
+      if (this.cursorCircle) {
+        this.cursorCircle.visible(false);
+        this.maskLayer.batchDraw();
+      }
+      return;
+    }
 
     const { x, y } = this._getRelativePointerPosition(pos);
+
+    // Update cursor circle position and visibility
+    if (this.cursorCircle && (this.currentTool === 'brush' || this.currentTool === 'eraser')) {
+      this.cursorCircle.x(x);
+      this.cursorCircle.y(y);
+      this.cursorCircle.visible(true);
+      // Set fill color based on tool
+      this.cursorCircle.fill(this.currentTool === 'eraser' ? 'rgba(255,255,255, 0.7)' : 'rgba(0,128,0, 0.7)');
+    } else if (this.cursorCircle) {
+      // Hide cursor if tool is not brush or eraser
+      this.cursorCircle.visible(false);
+    }
+
+    if (!this.isDrawing) {
+      this.maskLayer.batchDraw(); // Only redraw for cursor movement if not drawing
+      return;
+    }
 
     if (this.currentTool === 'brush' || this.currentTool === 'eraser') {
       this.maskContext.lineTo(x, y);
@@ -454,6 +512,18 @@ export default class extends Controller {
     const toolName = event.params.tool || 'brush';
     this.currentTool = toolName;
     console.log(`Tool set to: ${this.currentTool}`);
+
+    // Update cursor visibility based on the new tool
+    if (this.cursorCircle) {
+      if (this.currentTool === 'brush' || this.currentTool === 'eraser') {
+        this.cursorCircle.visible(true);
+        // Ensure cursor color matches the tool
+        this.cursorCircle.fill(this.currentTool === 'eraser' ? 'rgba(255,255,255, 0.7)' : 'rgba(0,128,0, 0.7)');
+      } else {
+        this.cursorCircle.visible(false);
+      }
+      this.maskLayer.batchDraw();
+    }
   }
 
   setBrushSizeFromUI(event) {
@@ -571,6 +641,7 @@ export default class extends Controller {
     this.imageNode = null;
     this.maskContext = null;
     this.maskImageNode = null;
+    this.cursorCircle = null; // Ensure cursor circle is cleaned up
     this.maskHistory = [];
     this.historyPointer = -1;
     if (this.hasCanvasContainerTarget) {
