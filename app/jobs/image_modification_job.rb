@@ -10,7 +10,7 @@ class ImageModificationJob < ApplicationJob
     @b64_input_image =  prepare_original_image_for_bria(@landscape.original_image)
 
     @premium = false
-    @b64_mask_image = flip_mask_colors(raw_mask_image_data)
+    @b64_mask_image = flip_mask_colors
     if @premium
       gcp_inpaint
     else
@@ -228,21 +228,10 @@ class ImageModificationJob < ApplicationJob
 
 
   # GCP and Bria expect the white and black to be inverted in the mask
-  def flip_mask_colors(data_url)
-    unless data_url.start_with?("data:image/png;base64,")
-      raise ArgumentError, "Invalid data_url format. Expected 'data:image/png;base64,' prefix."
-    end
-
-    _mime_type, base64_data = data_url.split(",", 2)
-
-    if base64_data.nil?
-      raise ArgumentError, "Could not extract base64 data from the provided URL."
-    end
-
-    decoded_image_data = Base64.decode64(base64_data)
-
+  def flip_mask_colors
+    blob = @landscape.mask_image_data.variant(:final).processed.blob
     begin
-      image = MiniMagick::Image.read(decoded_image_data)
+      image = MiniMagick::Image.read(blob.download)
       image.negate
       inverted_image_binary_data = image.to_blob
       inverted_base64 = Base64.encode64(inverted_image_binary_data)
