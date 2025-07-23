@@ -43,7 +43,6 @@ class LandscapesController < ApplicationController
       LandscaperImgResizerJob.perform_now(@landscape.id, @landscape.original_image.to_sgid.to_s, width)
       respond_to do |format|
         format.html { redirect_to edit_landscape_path(@landscape) }
-        # format.turbo_stream { render turbo_stream: turbo_stream.replace("new_landscape", partial: "landscapes/landscape", locals: { landscape: @landscape, canvas: }) }
       end
     else
       flash[:alert] = "Please upload an image"

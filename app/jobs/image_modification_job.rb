@@ -18,7 +18,7 @@ class ImageModificationJob < ApplicationJob
     end
 
     if @landscape.modified_image.attached?
-      original_image_url = @landscape.original_image.url
+      original_image_url = @landscape.original_image.variant(:final).processed.url
       ActionCable.server.broadcast(
         "landscape_channel",
         { original_image_url:, modified_image_url: @landscape.modified_image.url }
@@ -57,7 +57,7 @@ class ImageModificationJob < ApplicationJob
     bria_response = BriaAi::Client.new.gen_fill(
       image_input: @b64_input_image,
       mask_input:  @b64_mask_image,
-      prompt: "A beautiful garden of red roses, tulips, and daisies with a green lawm and a fountain in the center",
+      prompt: @landscape.prompt,
       sync: true,
       num_results: 1
     )
@@ -215,8 +215,7 @@ class ImageModificationJob < ApplicationJob
     end
 
     Rails.logger.info "Reading original image from Active Storage blob and encoding to Base64."
-    # `original_image_attachment.download` reads the content directly from storage.
-    encoded_image_data = Base64.strict_encode64(original_image_attachment.download)
+    encoded_image_data = Base64.strict_encode64(original_image_attachment.variant(:final).processed.download)
     Rails.logger.info "Successfully encoded Active Storage image to Base64."
     encoded_image_data
   rescue ActiveStorage::FileNotFoundError => e
