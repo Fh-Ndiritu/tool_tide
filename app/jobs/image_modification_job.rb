@@ -231,10 +231,12 @@ class ImageModificationJob < ApplicationJob
   def flip_mask_colors
     blob = @landscape.mask_image_data.variant(:final).processed.blob
     begin
+      # image = MiniMagick::Image.read(blob)
       image = MiniMagick::Image.read(blob.download)
-      image.negate
-      inverted_image_binary_data = image.to_blob
-      inverted_base64 = Base64.encode64(inverted_image_binary_data)
+      image.colorspace("Gray").threshold("50%").negate
+
+      image.format "png"
+      inverted_base64 = Base64.encode64(image.to_blob)
       "data:image/png;base64,#{inverted_base64}"
     rescue MiniMagick::Error => e
       raise "Image processing error with MiniMagick: #{e.message}. " \
