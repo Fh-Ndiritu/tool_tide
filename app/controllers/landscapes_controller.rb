@@ -26,7 +26,8 @@ class LandscapesController < ApplicationController
     # Enqueue the AI processing job
     # This job will handle fetching images, calling AI API, and uploading results
     # It will also broadcast updates via Action Cable
-    ImageModificationJob.perform_now(@landscape.id, mask_image_data)
+    save_mask(mask_image_data)
+    ImageModificationJob.perform_now(@landscape.id)
 
     # Respond immediately to the frontend to indicate job acceptance
     render json: { message: "Image modification request received. Processing in background." }, status: :accepted
@@ -93,5 +94,30 @@ class LandscapesController < ApplicationController
 
   def landscape_params
     params.require(:landscape).permit(:original_image, :preset, :mask_image_data)
+  end
+
+  def save_mask(raw_mask_image_data)
+    # Extract base64 content and decode
+    _mime_type, base64_content = raw_mask_image_data.split(",", 2)
+    decoded_mask = Base64.decode64(base64_content)
+
+    # Create a Tempfile for the mask
+    mask_temp_file = Tempfile.new([ "mask_data_", ".png" ], binmode: true)
+    mask_temp_file.write(decoded_mask)
+    mask_temp_file.rewind
+
+    # Attach the mask to the landscape record
+    @landscape.mask_image_data.attach(
+      io: mask_temp_file,
+      filename: "mask_#{SecureRandom.hex(8)}.png",
+      content_type: "image/png"
+    )
+    Rails.logger.info "Mask image data saved to Active Storage for Landscape ID: #{@landscape.id}"
+  rescue => e
+    Rails.logger.error "Failed to save mask_image_data for Landscape ID #{@landscape.id}: #{e.message}"
+    # For now, we'll log and continue, as the AI processing might still work even if mask saving fails.
+  ensure
+    mask_temp_file.close if mask_temp_file
+    mask_temp_file.unlink if mask_temp_file
   end
 end
