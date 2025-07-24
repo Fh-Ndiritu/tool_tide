@@ -9,7 +9,6 @@ class LandscapesController < ApplicationController
   end
 
   def show
-
   end
 
   def edit
