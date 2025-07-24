@@ -8,7 +8,9 @@ export default class extends Controller {
     'resultSection',
     'konvaCanvasWrapper',
     'originalResultImage',
-    'modifiedResultImage',
+    'modifiedResultImage1', // Keep these targets for consistency, though they won't be set directly here anymore
+    'modifiedResultImage2',
+    'modifiedResultImage3',
     'downloadButton',
     'selectPreset',
     'brushSizeControl',
@@ -19,8 +21,8 @@ export default class extends Controller {
     'maskImageDataInput',
     'modifiedImageUrlInput',
     'landscapeIdInput', // Hidden input to pass landscape ID back to Rails
-    'progressBarContainer', // Add this target if it's for the AI processing bar
-    'progressBar', // Add this target if it's for the AI processing bar
+    'progressBarContainer',
+    'progressBar',
   ];
 
   static values = {
@@ -54,7 +56,7 @@ export default class extends Controller {
     // --- REVISED LOGIC FOR CONNECT METHOD ---
     const originalImageExists = this.originalImageUrlValue && this.originalImageUrlValue.length > 0;
     const modifiedImageExists = this.modifiedImageUrlValue && this.modifiedImageUrlValue.length > 0;
-    const hasLandscapeId = this.hasLandscapeIdValue && this.landscapeIdValue != null; // Check for ID existence and non-null/undefined
+    const hasLandscapeId = this.hasLandscapeIdValue && this.landscapeIdValue != null;
 
     if (originalImageExists) {
       console.log('Original image URL found, initializing editor.');
@@ -64,36 +66,23 @@ export default class extends Controller {
         this.displayImageHeightValue
       );
     } else if (modifiedImageExists) {
-      // If only a modified URL is present, display results directly
-      // Note: originalImageURL might still be needed for the 'original' display
-      this.displayResults(this.originalImageUrlValue || '', this.modifiedImageUrlValue);
+      // If a modified URL is present on initial load, it means it's already processed.
+      // We will now redirect to the show page to display it.
+      console.log('Modified image URL found on connect, redirecting to show page.');
+      this.redirectToLandscapeShow(this.landscapeIdValue);
     } else if (hasLandscapeId) {
-      // If there's a landscape ID but no image URLs, it implies an image might be processing
-      // or a fresh page load where the image will be fetched.
-      // In this case, we might want to show loading or redirect if it's truly an empty state.
-      // For now, let's assume if there's an ID, the image *should* exist or be fetched.
       console.warn('Landscape ID found but no image URLs. This might be an intermediate state or an error.');
-      // You could add a check here to fetch the image if it's expected.
-      // For now, it will proceed without an image on the canvas.
-      this.showSection('editor'); // Still show editor, but it'll be empty.
+      this.showSection('editor');
       this.showMessage("No image to display yet. Please upload one or check if it's still processing.");
     } else {
       console.error('Editor Controller connected without image data or a landscape ID.');
-      // Keep the current section hidden or show a generic message area
-      // and allow the user to click "Start New Design"
       this.showMessage("It looks like there's no image to edit. Please start a new design by uploading an image.");
-      // Ensure no section is shown or default to a safe state
       this.editorSectionTarget.classList.add('hidden');
       this.loadingSectionTarget.classList.add('hidden');
       this.resultSectionTarget.classList.add('hidden');
-
-      // Given the critical nature of no image, an explicit redirect to '/landscapes/new'
-      // might be the most user-friendly approach here, as there's nothing to edit.
-      // Uncomment this line if you want to force redirect in a truly empty state.
       this.returnToNewDesign(2000);
     }
 
-    // Set the landscape_id in the hidden input for form submissions
     if (hasLandscapeId) {
       this.landscapeIdInputTarget.value = this.landscapeIdValue;
     }
@@ -111,16 +100,12 @@ export default class extends Controller {
     this.resetEditorState();
   }
 
-  // --- UI State Management ---
-  // Assuming a showSection method exists in your controller:
   showSection(sectionName) {
     console.log('showSection called with:', sectionName);
-    // Ensure all sections are hidden first
     this.editorSectionTarget.classList.add('hidden');
     this.loadingSectionTarget.classList.add('hidden');
-    this.resultSectionTarget.classList.add('hidden'); // Ensure this is hidden initially
+    this.resultSectionTarget.classList.add('hidden');
 
-    // Then show the requested section
     switch (sectionName) {
       case 'editor':
         this.editorSectionTarget.classList.remove('hidden');
@@ -135,7 +120,6 @@ export default class extends Controller {
     }
   }
 
-  // Helper for updating brush size display
   setBrushSizeDisplay(size) {
     if (this.hasBrushSizeControlTarget) {
       const brushSizeInput = this.brushSizeControlTarget.querySelector('#brush-size');
@@ -148,12 +132,6 @@ export default class extends Controller {
     }
   }
 
-  /**
-   * Initializes the Konva editor with the provided image URL and dimensions.
-   * @param {string} imageUrl The URL of the image to display.
-   * @param {number} displayWidth The width for the canvas.
-   * @param {number} displayHeight The height for the canvas.
-   */
   async initializeEditorWithImage(imageUrl, displayWidth, displayHeight) {
     const konvaController = this.application.getControllerForElementAndIdentifier(
       this.konvaCanvasWrapperTarget,
@@ -194,7 +172,6 @@ export default class extends Controller {
     }
   }
 
-  // Listener for custom events from KonvaCanvasManager
   _handleKonvaHistoryChange(event) {
     const { historyPointer, historyLength } = event.detail;
     this.updateUndoRedoButtonStates(historyPointer, historyLength);
@@ -212,7 +189,7 @@ export default class extends Controller {
       konvaController.undo();
     } else {
       console.error('ERROR: konva-canvas controller NOT found for konvaCanvasWrapperTarget!');
-      this.showMessage('No active drawing tool or actions to undo.'); // More specific message
+      this.showMessage('No active drawing tool or actions to undo.');
     }
   }
 
@@ -228,7 +205,7 @@ export default class extends Controller {
       konvaController.redo();
     } else {
       console.error('ERROR: konva-canvas controller NOT found for konvaCanvasWrapperTarget!');
-      this.showMessage('No active drawing tool or actions to redo.'); // More specific message
+      this.showMessage('No active drawing tool or actions to redo.');
     }
   }
 
@@ -302,7 +279,6 @@ export default class extends Controller {
     });
   }
 
-  // --- Message/Confirmation Pop-ups ---
   showMessage(message) {
     const messageDiv = document.createElement('div');
     messageDiv.className = 'fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50';
@@ -344,9 +320,8 @@ export default class extends Controller {
     };
   }
 
-  // --- AJAX Form Submission (for AI processing after making mask) ---
   async submitModification(event) {
-    event.preventDefault(); // Prevent default form submission
+    event.preventDefault();
 
     const konvaController = this.application.getControllerForElementAndIdentifier(
       this.konvaCanvasWrapperTarget,
@@ -386,9 +361,8 @@ export default class extends Controller {
       this.returnToNewDesign();
     }
 
-    // Prepare data for AJAX request
     const formData = new FormData();
-    formData.append('landscape[id]', landscapeId); // Ensure landscape ID is sent
+    formData.append('landscape[id]', landscapeId);
     formData.append('landscape[mask_image_data]', maskDataURL);
     formData.append('landscape[preset]', preset);
     formData.append('id', landscapeId);
@@ -397,8 +371,8 @@ export default class extends Controller {
       const response = await fetch(`/landscapes/modify`, {
         method: 'POST',
         headers: {
-          'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content, // Include CSRF token
-          Accept: 'application/json', // Request JSON response
+          'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content,
+          Accept: 'application/json',
         },
         body: formData,
       });
@@ -411,11 +385,7 @@ export default class extends Controller {
       const responseData = await response.json();
       console.log('AJAX submission successful:', responseData);
 
-      // Even with AJAX, we still expect ActionCable to broadcast the final result,
-      // as the AI processing is likely async.
-      // The AJAX response here might just confirm the job was queued.
       if (responseData.status === 'processing' || responseData.status === 'queued') {
-        // Keep showing loading section while ActionCable waits for completion
         console.log('AI processing queued. Waiting for ActionCable broadcast...');
       } else {
         // If the backend returns the final result directly (less common for AI)
@@ -424,69 +394,47 @@ export default class extends Controller {
     } catch (error) {
       console.error('Error submitting modification:', error);
       this.showMessage(`Error: ${error.message}. Please try again.`);
-      this.showSection('editor'); // Go back to editor on AJAX error
+      this.showSection('editor');
       if (this.hasProgressBarContainerTarget) {
         this.progressBarContainerTarget.classList.add('hidden');
       }
     }
   }
 
-  // Assumed to be in app/javascript/controllers/editor_controller.js or landscape_editor_controller.js
-  // based on data-controller="landscape-editor" in your HTML
-
-  // Assume these are correctly defined targets:
-  // static targets = ["editorSection", "loadingSection", "resultSection",
-  //                    "originalResultImage", "modifiedResultImage", "downloadButton",
-  //                    "progressBarContainer", "progressBar", ...]
-
   handleAiDataReceived(event) {
     const data = event.detail;
     console.log('Handling AI data received in Editor Controller:', data);
 
-    if (data.modified_image_url) {
-      // Log the URLs received here to confirm they are what you expect
-      console.log('handleAiDataReceived - Original URL:', data.original_image_url);
-      console.log('handleAiDataReceived - Modified URL:', data.modified_image_url);
-
-      this.displayResults(data.original_image_url, data.modified_image_url);
+    if (data.status === 'completed' && data.landscape_id) {
+      console.log('AI processing completed. Redirecting to landscape show page:', data.landscape_id);
+      this.redirectToLandscapeShow(data.landscape_id);
     } else if (data.error) {
       this.showMessage(`AI processing error: ${data.error}`);
       this.showSection('editor');
+    } else {
+      console.warn('AI data received but not in expected completed format or missing landscape_id.');
+      // Keep showing loading or return to editor if no clear status
+      // You might want to add a timeout to return to editor if no completion signal
     }
     if (this.hasProgressBarContainerTarget) {
       this.progressBarContainerTarget.classList.add('hidden');
     }
   }
 
-  displayResults(originalUrl, modifiedUrl) {
-    console.log('displayResults called with:');
-    console.log('  Original URL:', originalUrl);
-    console.log('  Modified URL:', modifiedUrl);
-
-    // Check if targets are available
-    if (!this.hasOriginalResultImageTarget || !this.hasModifiedResultImageTarget) {
-      console.error('displayResults: Image targets not found!');
-      return; // Exit if targets are missing
-    }
-
-    this.originalResultImageTarget.src = originalUrl || ''; // originalUrl might be null/undefined
-    this.modifiedResultImageTarget.src = modifiedUrl;
-    this.downloadButtonTarget.href = modifiedUrl;
-
-    console.log('displayResults: Setting originalResultImage src to', this.originalResultImageTarget.src);
-    console.log('displayResults: Setting modifiedResultImage src to', this.modifiedResultImageTarget.src);
-
-    // This is the CRITICAL part for visibility
-    this.showSection('result');
-
-    // Ensure progress bar is hidden
-    if (this.hasProgressBarContainerTarget) {
-      this.progressBarContainerTarget.classList.add('hidden');
+  // New method to handle redirection
+  redirectToLandscapeShow(landscapeId) {
+    if (landscapeId) {
+      window.location.href = `/landscapes/${landscapeId}`;
+    } else {
+      console.error('Cannot redirect, landscape ID is missing.');
+      this.showMessage('An error occurred. Please try starting a new design.');
+      this.returnToNewDesign(2000);
     }
   }
 
-  // And your Stimulus targets might look something like this in your controller class:
-  // static targets = ["editorSection", "loadingSection", "resultSection", "originalResultImage", "modifiedResultImage", "downloadButton", "modifiedImageUrlInput", "progressBarContainer", "progressBar"];
+  // The displayResults method is no longer needed in this controller
+  // as the show page will handle displaying the images.
+  // displayResults(originalUrl, modifiedUrls) { /* ... */ }
 
   cancelEdit() {
     this.showConfirmation('Discard current changes and start over?', () => {
@@ -500,8 +448,8 @@ export default class extends Controller {
       this.resetEditorState();
       const landscapeId = this.landscapeIdValue;
       if (landscapeId) {
-        window.location.href = `/landscapes/${landscapeId}/edit`;
-        this.showSection('loading');
+        window.location.href = `/landscapes/${landscapeId}/edit`; // Stay on edit page
+        this.showSection('loading'); // Show loading state briefly
       } else {
         this.showMessage('Original image ID not available for further editing. Please start a new design.');
         this.returnToNewDesign(2000);
@@ -520,7 +468,6 @@ export default class extends Controller {
     this.returnToNewDesign();
   }
 
-  // --- Editor Reset ---
   resetEditorState() {
     const konvaController = this.application.getControllerForElementAndIdentifier(
       this.konvaCanvasWrapperTarget,
@@ -531,8 +478,15 @@ export default class extends Controller {
     }
 
     this.maskImageDataInputTarget.value = '';
+    // These targets are no longer directly set by this controller, but good to clear if they exist
+    if (this.hasOriginalResultImageTarget) this.originalResultImageTarget.src = '';
+    if (this.hasModifiedResultImage1Target) this.modifiedResultImage1Target.src = '';
+    if (this.hasModifiedResultImage2Target) this.modifiedResultImage2Target.src = '';
+    if (this.hasModifiedResultImage3Target) this.modifiedResultImage3Target.src = '';
+    if (this.hasDownloadButtonTarget) this.downloadButtonTarget.removeAttribute('href');
+
     if (this.hasModifiedImageUrlInputTarget) {
-      this.modifiedImageUrlInputTarget.value = ''; // Corrected target name here if it was a typo
+      this.modifiedImageUrlInputTarget.value = '';
     }
     if (this.hasSelectPresetTarget) {
       this.selectPresetTarget.value = '';

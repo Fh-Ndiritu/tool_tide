@@ -10,17 +10,17 @@ class ImageModificationJob < ApplicationJob
 
     @premium = true
     @b64_mask_image = flip_mask_colors
+
     if @premium
       gcp_inpaint
     else
       bria_inpaint
     end
 
-    if @landscape.modified_image.attached?
-      original_image_url = @landscape.original_image.variant(:final).processed.url
+    if @landscape.modified_images.attached?
       ActionCable.server.broadcast(
         "landscape_channel",
-        { original_image_url:, modified_image_url: @landscape.modified_image.url }
+        { status: "completed", landscape_id: @landscape.id }
       )
     end
   end
@@ -28,11 +28,10 @@ class ImageModificationJob < ApplicationJob
 
   private
 
-
   def gcp_inpaint
     response = fetch_gcp_response
     if response.is_a?(Hash) && response["predictions"].present?
-      save_b64_results(response["predictions"][0])
+      save_b64_results(response["predictions"])
     else
       Rails.logger.error "Unexpected response from GCP: #{response}"
       raise "Unexpected response from GCP"
@@ -62,17 +61,20 @@ class ImageModificationJob < ApplicationJob
     )
   end
 
-  def save_b64_results(b64_result)
+  def save_b64_results(predictions)
     # gcp will responnd with a hash of type and data
-    img_from_b64 = Base64.decode64(b64_result["bytesBase64Encoded"])
-    extension = b64_result["mimeType"].split("/").last
-    temp_path = Rails.root.join("tmp", "#{SecureRandom.hex(10)}.#{extension}")
-    File.open(temp_path, "wb") do |file|
-      file.write(img_from_b64)
+    predictions.each do |prediction|
+      b64_data = prediction["bytesBase64Encoded"]
+      img_from_b64 = Base64.decode64(b64_data)
+      extension = prediction["mimeType"].split("/").last
+      temp_path = Rails.root.join("tmp", "#{SecureRandom.hex(10)}.#{extension}")
+
+      File.open(temp_path, "wb") do |file|
+        file.write(img_from_b64)
+      end
+      @landscape.modified_images.attach(io: File.open(temp_path), filename: "modified_image.#{extension}")
+      File.delete(temp_path) if File.exist?(temp_path)
     end
-    @landscape.modified_image.attach(io: File.open(temp_path), filename: "modified_image.#{extension}")
-  ensure
-    File.delete(temp_path) if File.exist?(temp_path)
   end
 
   def process_bria_results(bria_response)
@@ -115,7 +117,7 @@ class ImageModificationJob < ApplicationJob
   def apply_mask_for_transparency(output_path = nil)
    unless defined?(@landscape) && @landscape.respond_to?(:original_image) && @landscape.respond_to?(:mask_image_data)
       raise ArgumentError, "Instance variable @landscape must be set and have original_image and mask_image_data attachments."
-    end
+   end
 
     # 1. Download images and read into MiniMagick
     puts "Downloading original image blob..."
@@ -137,8 +139,8 @@ class ImageModificationJob < ApplicationJob
 
     # --- 3. Ensure the mask is exactly black and white (binarize it) ---
     mask_image.combine_options do |c|
-      c.colorspace('Gray') # Ensure it's grayscale first
-      c.threshold('50%')   # Binarize: below 50% luminance -> black, above/at 50% -> white.
+      c.colorspace("Gray") # Ensure it's grayscale first
+      c.threshold("50%")   # Binarize: below 50% luminance -> black, above/at 50% -> white.
       # Uncomment `c.negate` if black areas of your mask should reveal the image.
       # (i.e., if your mask is conceptually inverted for DstIn).
       # c.negate
@@ -154,15 +156,15 @@ class ImageModificationJob < ApplicationJob
 
     # Ensure original_image has an alpha channel before compositing
     original_image.combine_options do |c|
-      c.alpha 'on'
+      c.alpha "on"
     end
     puts "Original image ensured to have an alpha channel for DstIn."
 
     masked_image = original_image.composite(mask_image) do |c|
-      c.compose 'DstIn' # Destination In Source - Keeps original pixels where mask is opaque.
+      c.compose "DstIn" # Destination In Source - Keeps original pixels where mask is opaque.
     end
 
-    masked_image.format 'png' # Force PNG output if not already.
+    masked_image.format "png" # Force PNG output if not already.
     if output_path.present?
       masked_image.write(output_path)
       puts "Masked image saved to #{output_path}"
@@ -181,8 +183,7 @@ class ImageModificationJob < ApplicationJob
 
 
   def gcp_payload
-
-            #
+     #
      {
       "instances": [
         {
@@ -202,14 +203,14 @@ class ImageModificationJob < ApplicationJob
               "referenceType": "REFERENCE_TYPE_RAW",
               "referenceId": 1,
               "referenceImage": {
-                "bytesBase64Encoded": apply_mask_for_transparency(Rails.root.join("tmp", "masked_image.png"))
+                "bytesBase64Encoded": apply_mask_for_transparency
               }
             }
           ]
         }
       ],
       "parameters": {
-        "sampleCount": 1
+        "sampleCount": 3
       }
     }
   end

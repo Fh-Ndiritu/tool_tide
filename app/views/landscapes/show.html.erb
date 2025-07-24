@@ -1,0 +1,67 @@
+<% content_for(:title, "Your AI Landscaping Designs | Hadaa Ai ") %>
+<% content_for(:description, "View your stunning AI-generated landscaping designs on Hadaa Ai . See your original garden alongside multiple transformed versions.") %>
+<% content_for(:keywords, "AI landscaping results, garden designs, transformed landscapes, Hadaa Ai gallery") %>
+
+<%# Open Graph (Social Media Sharing) - You might want to dynamically set og:image to one of the modified images %>
+<%= content_for(:og_title, "My Transformed Landscape with Hadaa Ai ") %>
+<%= content_for(:og_description, "Check out my amazing garden transformation, created with Hadaa Ai 's free AI landscaping tool!") %>
+<%= content_for(:og_image, @landscape.modified_images.first.present? ? url_for(@landscape.modified_images.first) : url_for(@landscape.original_image) ) %>
+<%= content_for(:og_image_alt, "AI-generated transformed landscape by Hadaa Ai ") %>
+
+<%# Twitter Card (Social Media Sharing) %>
+<%= content_for(:twitter_title, "My New Garden Design by Hadaa Ai ") %>
+<%= content_for(:twitter_description, "See how AI transformed my garden! Free and realistic designs from Hadaa Ai .") %>
+<%= content_for(:twitter_image, @landscape.modified_images.first.present? ? url_for(@landscape.modified_images.first) : url_for(@landscape.original_image) ) %>
+<%= content_for(:twitter_image_alt, "Vibrant AI-generated landscaping image from Hadaa Ai ") %>
+
+<%= content_for(:schema_name, "Hadaa Ai - Transformed Landscape View") %>
+<%= content_for(:schema_description, "View the original and AI-enhanced versions of your landscape design created using Hadaa Ai .") %>
+<%= content_for(:main_classes, "container mx-auto px-5 flex max-w-[1200px] text-neutral-800 mt-10") %>
+
+<div class="min-h-screen bg-neutral-100 flex flex-col items-center justify-center p-4 max-md:px-0 sm:p-6 lg:p-8 w-full">
+  <div class="mb-14 ">
+      <h1 class="text-4xl font-bold text-center text-text-primary mb-4">You have a new look!</h1>
+  </div>
+
+  <%# Container for the grid with relative positioning and padding for the absolute card %>
+  <div class="relative w-full max-w-full lg:max-w-6xl  shadow-xl rounded-lg p-6 sm:p-8 pt-20 sm:pt-24 lg:pt-28 border-2 border-dashed border-neutral-300 mt-20">
+
+    <%# Absolute Card - Positioned at top-center and overlapping %>
+    <div class="absolute-card absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2  border-4 border-gray-200 rounded-full shadow-lg z-10 w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 flex items-center justify-center">
+      <% if @landscape.original_image.attached? %>
+        <%= image_tag url_for(@landscape.original_image), alt: "Original Landscape", class: "w-full h-full object-cover rounded-full" %>
+      <% else %>
+        <p class="text-neutral-600 text-xs text-center p-1">No image</p>
+      <% end %>
+    </div>
+
+   <div class="pt-7">
+        <%# Action Buttons moved up %>
+    <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4 mb-10">
+      <%= link_to "Edit Further", edit_landscape_path(@landscape),
+                  class: "bg-secondary text-text-light py-3 px-6 rounded-md hover:bg-text-secondary transition-colors duration-200 font-bold text-lg text-center" %>
+      <%= link_to "Start New Design", new_landscape_path,
+                  class: "bg-neutral-300 text-neutral-800 py-3 px-6 rounded-md hover:bg-neutral-500 transition-colors duration-200 font-bold text-lg text-center" %>
+    </div>
+    <% if @landscape.modified_images.attached? && @landscape.modified_images.any? %>
+      <div class="columns-1 sm:columns-2 lg:columns-3 gap-6">
+        <% @landscape.modified_images.each_with_index do |modified_image, index| %>
+          <div class="break-inside-avoid-column mb-6 bg-neutral-50 rounded-lg shadow-sm overflow-hidden flex flex-col items-center text-center p-4">
+            <p class="text-lg font-semibold text-text-dark mb-2">Design <%= index + 1 %></p>
+            <%= image_tag url_for(modified_image), alt: "AI Modified Landscape #{index + 1}", class: "max-w-full h-auto object-cover rounded-md border border-neutral-300 shadow-sm" %>
+            <a href="<%= url_for(modified_image) %>" download="hadaa_ai_transformed_<%= index + 1 %>.png"
+               class="mt-4 px-4 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition-colors duration-200">
+              Download Design <%= index + 1 %>
+            </a>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="text-center p-4">
+        <p class="text-lg text-neutral-600">No AI-enhanced images found yet.</p>
+        <p class="text-sm text-neutral-500">Please return to the editor to generate designs.</p>
+      </div>
+    <% end %>
+   </div>
+  </div>
+</div>

@@ -9,6 +9,7 @@ class LandscapesController < ApplicationController
   end
 
   def show
+
   end
 
   def edit
@@ -26,6 +27,7 @@ class LandscapesController < ApplicationController
     # Enqueue the AI processing job
     # This job will handle fetching images, calling AI API, and uploading results
     # It will also broadcast updates via Action Cable
+    # unless @landscape.mask_image_data.attached?
     save_mask(mask_image_data)
     ImageModificationJob.perform_now(@landscape.id)
 
