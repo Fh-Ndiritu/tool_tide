@@ -40,13 +40,13 @@
     <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4 mb-10">
       <%= link_to "Edit Further", edit_landscape_path(@landscape),
                   class: "bg-secondary text-text-light py-3 px-6 rounded-md hover:bg-text-secondary transition-colors duration-200 font-bold text-lg text-center" %>
-      <%= link_to "Start New Design", new_landscape_path,
+      <%= link_to "New Design", new_landscape_path,
                   class: "bg-neutral-300 text-neutral-800 py-3 px-6 rounded-md hover:bg-neutral-500 transition-colors duration-200 font-bold text-lg text-center" %>
     </div>
     <% if @landscape.modified_images.attached? && @landscape.modified_images.any? %>
-      <div class="columns-1 sm:columns-2 lg:columns-3 gap-6">
-        <% @landscape.modified_images.each_with_index do |modified_image, index| %>
-          <div class="break-inside-avoid-column mb-6 bg-neutral-50 rounded-lg shadow-sm overflow-hidden flex flex-col items-center text-center p-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 md:grid-cols-3">
+        <% @landscape.modified_images.order(created_at: :desc).each_with_index do |modified_image, index| %>
+          <div class=" mb-6 bg-neutral-50 rounded-lg shadow-sm overflow-hidden flex flex-col items-center text-center p-4">
             <p class="text-lg font-semibold text-text-dark mb-2">Design <%= index + 1 %></p>
             <%= image_tag url_for(modified_image), alt: "AI Modified Landscape #{index + 1}", class: "max-w-full h-auto object-cover rounded-md border border-neutral-300 shadow-sm" %>
             <a href="<%= url_for(modified_image) %>" download="hadaa_ai_transformed_<%= index + 1 %>.png"
@@ -58,7 +58,7 @@
       </div>
     <% else %>
       <div class="text-center p-4">
-        <p class="text-lg text-neutral-600">No AI-enhanced images found yet.</p>
+        <p class="text-lg text-neutral-600">No Landscape generations found yet.</p>
         <p class="text-sm text-neutral-500">Please return to the editor to generate designs.</p>
       </div>
     <% end %>

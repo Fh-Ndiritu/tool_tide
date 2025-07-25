@@ -27,6 +27,7 @@ class LandscapesController < ApplicationController
     # This job will handle fetching images, calling AI API, and uploading results
     # It will also broadcast updates via Action Cable
     # unless @landscape.mask_image_data.attached?
+
     save_mask(mask_image_data)
     ImageModificationJob.perform_now(@landscape.id)
 
@@ -82,7 +83,7 @@ class LandscapesController < ApplicationController
     prompt = PROMPTS["landscape_presets"][preset]
     raise "Preset prompts not found" unless prompt.present?
 
-    @landscape.update prompt: prompt
+    @landscape.update prompt: gsub_prompt(prompt)
   end
 
   def set_landscape
@@ -120,5 +121,20 @@ class LandscapesController < ApplicationController
   ensure
     mask_temp_file.close if mask_temp_file
     mask_temp_file.unlink if mask_temp_file
+  end
+
+
+  def gsub_prompt(prompt)
+    " DO NOT MODIFY THE UNMASKED AREAS OF THE IMAGE.
+      Create a new image based on the original image, but only modify the areas defined by the black mask.
+      Use professional plant, flower and feature placements that reflect a professional and intricate landscaper at work.
+      #{prompt}
+      If doors or entrances are present, add blending pathways that match this style.
+      Use stones, lawns and pathways to improve the overall aesthetic.
+      Ensure vibrant japanese plants and colors are used to enhance the overall aesthetic.
+      Ensure photorealistic rendering of the landscape.
+      8k resolution, highly detailed, photorealistic, vibrant colors.
+      Ensure the final image is harmonious and visually appealing.
+    "
   end
 end
