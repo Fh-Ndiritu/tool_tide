@@ -133,43 +133,45 @@ export default class extends Controller {
   }
 
   async initializeEditorWithImage(imageUrl, displayWidth, displayHeight) {
-    const konvaController = this.application.getControllerForElementAndIdentifier(
-      this.konvaCanvasWrapperTarget,
-      'konva-canvas'
-    );
+    setTimeout(() => {
+      const konvaController = this.application.getControllerForElementAndIdentifier(
+        this.konvaCanvasWrapperTarget,
+        'konva-canvas'
+      );
 
-    if (konvaController) {
-      const editorSectionActualWidth = this.editorSectionTarget.offsetWidth;
-      let maxAllowableCanvasWidth = this.MAX_CANVAS_DISPLAY_WIDTH;
+      if (konvaController) {
+        const editorSectionActualWidth = this.editorSectionTarget.offsetWidth;
+        let maxAllowableCanvasWidth = this.MAX_CANVAS_DISPLAY_WIDTH;
 
-      if (editorSectionActualWidth < this.MAX_CANVAS_DISPLAY_WIDTH) {
-        maxAllowableCanvasWidth = editorSectionActualWidth * 0.96;
+        if (editorSectionActualWidth < this.MAX_CANVAS_DISPLAY_WIDTH) {
+          maxAllowableCanvasWidth = editorSectionActualWidth * 0.96;
+        }
+
+        let finalDisplayWidth = displayWidth;
+        let finalDisplayHeight = displayHeight;
+
+        if (finalDisplayWidth > maxAllowableCanvasWidth) {
+          const aspectRatio = finalDisplayWidth / finalDisplayHeight;
+          finalDisplayWidth = maxAllowableCanvasWidth;
+          finalDisplayHeight = finalDisplayWidth / aspectRatio;
+        }
+        finalDisplayHeight = Math.round(finalDisplayHeight);
+        finalDisplayWidth = Math.round(finalDisplayWidth);
+
+        console.log('Calculated final display dimensions for Konva:', finalDisplayWidth, finalDisplayHeight);
+
+        konvaController.displayWidthValue = finalDisplayWidth;
+        konvaController.displayHeightValue = finalDisplayHeight;
+        konvaController.imageUrlValue = imageUrl;
+        konvaController.brushSizeValue = parseInt(this.brushSizeControlTarget.querySelector('#brush-size').value, 10);
+
+        this.showSection('editor');
+      } else {
+        console.error('Konva Canvas Controller not found on konvaCanvasWrapperTarget.');
+        this.showMessage('Error initializing editor. Please ensure Konva Canvas is correctly set up.');
+        this.returnToNewDesign(1000);
       }
-
-      let finalDisplayWidth = displayWidth;
-      let finalDisplayHeight = displayHeight;
-
-      if (finalDisplayWidth > maxAllowableCanvasWidth) {
-        const aspectRatio = finalDisplayWidth / finalDisplayHeight;
-        finalDisplayWidth = maxAllowableCanvasWidth;
-        finalDisplayHeight = finalDisplayWidth / aspectRatio;
-      }
-      finalDisplayHeight = Math.round(finalDisplayHeight);
-      finalDisplayWidth = Math.round(finalDisplayWidth);
-
-      console.log('Calculated final display dimensions for Konva:', finalDisplayWidth, finalDisplayHeight);
-
-      konvaController.displayWidthValue = finalDisplayWidth;
-      konvaController.displayHeightValue = finalDisplayHeight;
-      konvaController.imageUrlValue = imageUrl;
-      konvaController.brushSizeValue = parseInt(this.brushSizeControlTarget.querySelector('#brush-size').value, 10);
-
-      this.showSection('editor');
-    } else {
-      console.error('Konva Canvas Controller not found on konvaCanvasWrapperTarget.');
-      this.showMessage('Error initializing editor. Please ensure Konva Canvas is correctly set up.');
-      this.returnToNewDesign(2000);
-    }
+    }, 1000);
   }
 
   _handleKonvaHistoryChange(event) {

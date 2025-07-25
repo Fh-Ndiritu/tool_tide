@@ -18,10 +18,10 @@
 
 <%= turbo_frame_tag "edit_landscape" do %>
   <div data-controller="landscape-editor"
-    data-landscape-editor-original-image-url-value="<%= @landscape.original_image.attached? ? url_for(@landscape.original_image) : '' %>"
+    data-landscape-editor-original-image-url-value="<%= @landscape.original_responsive_image.attached? ? url_for(@landscape.original_responsive_image) : '' %>"
     data-landscape-editor-landscape-id-value="<%= @landscape.id %>"
-    data-editor-display-image-width-value="<%= @landscape.original_image.metadata['width'] %>"
-    data-editor-display-image-height-value="<%= @landscape.original_image.metadata['height'] %>"
+    data-editor-display-image-width-value="<%= @landscape.original_responsive_image.metadata['width'] %>"
+    data-editor-display-image-height-value="<%= @landscape.original_responsive_image.metadata['height'] %>"
     data-editor-landscape-id-value="<%= @landscape.id %>"
     class="min-h-screen bg-neutral-100 flex flex-col items-center justify-center p-4 max-md:px-0 sm:p-6 lg:p-8 w-full">
 
@@ -32,7 +32,7 @@
         data-controller="konva-canvas"
         data-konva-canvas-target="canvasContainer"
         data-landscape-editor-target="konvaCanvasWrapper"
-        data-konva-canvas-image-url-value="<%= @landscape.original_image.attached? ? url_for(@landscape.original_image) : '' %>"
+        data-konva-canvas-image-url-value="<%= @landscape.original_responsive_image.attached? ? url_for(@landscape.original_responsive_image) : '' %>"
         data-konva-canvas-display-width-value="<%= @canvas[:width]%>"
         data-konva-canvas-display-height-value="<%= @canvas[:height] %>"
         data-konva-canvas-brush-size-value="40"

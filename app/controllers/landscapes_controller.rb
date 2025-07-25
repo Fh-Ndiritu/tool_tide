@@ -66,9 +66,9 @@ class LandscapesController < ApplicationController
   end
 
   def canvas
-    return {} unless @landscape.original_image.attached?
+    return {} unless @landscape.original_responsive_image.attached?
 
-    blob = @landscape.original_image.blob
+    blob = @landscape.original_responsive_image.blob
     blob.analyze unless blob.metadata[:width] && blob.metadata[:height]
     metadata = blob.metadata
     { width: metadata[:width], height: metadata[:height] }

@@ -1,6 +1,7 @@
 class LandscaperImgResizerJob < ApplicationJob
   queue_as :default
 
+  # this generates and saves a responsive image we can use in the frontend
   def perform(landscape_id, attachment_sgid, max_width = 700)
     landscape = Landscape.find_by(id: landscape_id)
     return unless landscape
@@ -21,15 +22,16 @@ class LandscaperImgResizerJob < ApplicationJob
         processed_image = ImageProcessing::Vips
                           .source(temp_file)
                           .convert("jpeg")
-                          .resize_to_fit(nil, max_width)
+                          .resize_to_fit(max_width, nil)
                           .call
 
         # Attach the processed image to the :processed_image attachment
-        landscape.original_image.attach(
+        landscape.original_responsive_image.attach(
           io: File.open(processed_image.path),
           filename: "#{original_attachment.filename.base}.jpeg", # Ensure .jpg extension
           content_type: "image/jpeg"
         )
+        landscape.original_responsive_image.blob.analyze_later
       rescue ImageProcessing::Error => e
         Rails.logger.error "Image processing failed for Landscape ID: #{landscape_id}, Attachment SGID #{attachment_sgid}: #{e.message}"
       ensure
@@ -37,5 +39,5 @@ class LandscaperImgResizerJob < ApplicationJob
         temp_file.close! if temp_file.respond_to?(:close!)
       end
     end
-end
+  end
 end
