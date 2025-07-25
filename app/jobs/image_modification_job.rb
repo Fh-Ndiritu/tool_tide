@@ -42,8 +42,7 @@ class ImageModificationJob < ApplicationJob
   def fetch_gcp_response
     location = ENV.fetch("GCP_LOCATION")
     endpoint = "https://#{location}-aiplatform.googleapis.com/v1/projects/#{ ENV.fetch("GCP_PROJECT_ID")}/locations/#{location}/publishers/google/models/imagen-3.0-capability-001:predict"
-    apply_mask_for_transparency
-    # Gcp::Client.new.send(endpoint, gcp_payload)
+    Gcp::Client.new.send(endpoint, gcp_payload)
   end
 
   def bria_inpaint
@@ -115,10 +114,9 @@ class ImageModificationJob < ApplicationJob
     end
   end
 
-  # frozen_string_literal: true
-
   def apply_mask_for_transparency
-    output_path = Rails.root.join("tmp", "test3.png")
+    output_path = nil
+    # output_path = Rails.root.join("tmp", "test3.png")
 
     unless defined?(@landscape) && @landscape.respond_to?(:original_image) && @landscape.respond_to?(:mask_image_data)
       raise ArgumentError, "Instance variable @landscape must be set and have original_image and mask_image_data attachments."
@@ -183,7 +181,7 @@ class ImageModificationJob < ApplicationJob
         }
       ],
       "parameters": {
-        "sampleCount": 1
+        "sampleCount": 3
       }
     }
   end
