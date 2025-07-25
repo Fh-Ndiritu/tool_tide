@@ -9,7 +9,9 @@ class Landscape < ApplicationRecord
 
   # this will be resized by the image modification job, ensure resize happens for BRIA AI too
   # The mask will always be smaller than what we need
-  has_one_attached :mask_image_data
+  has_one_attached :mask_image_data do |attachable|
+     attachable.variant :final, resize_to_limit: [ 1024, 1024 ]
+  end
 
   has_many_attached :modified_images
 end

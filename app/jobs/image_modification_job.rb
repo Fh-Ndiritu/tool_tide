@@ -42,7 +42,8 @@ class ImageModificationJob < ApplicationJob
   def fetch_gcp_response
     location = ENV.fetch("GCP_LOCATION")
     endpoint = "https://#{location}-aiplatform.googleapis.com/v1/projects/#{ ENV.fetch("GCP_PROJECT_ID")}/locations/#{location}/publishers/google/models/imagen-3.0-capability-001:predict"
-    Gcp::Client.new.send(endpoint, gcp_payload)
+    apply_mask_for_transparency
+    # Gcp::Client.new.send(endpoint, gcp_payload)
   end
 
   def bria_inpaint
@@ -114,73 +115,54 @@ class ImageModificationJob < ApplicationJob
     end
   end
 
-  # Applies a black and white mask to the @landscape's original image
-  def apply_mask_for_transparency(output_path = nil)
-   unless defined?(@landscape) && @landscape.respond_to?(:original_image) && @landscape.respond_to?(:mask_image_data)
+  # frozen_string_literal: true
+
+  def apply_mask_for_transparency
+    output_path = Rails.root.join("tmp", "test3.png")
+
+    unless defined?(@landscape) && @landscape.respond_to?(:original_image) && @landscape.respond_to?(:mask_image_data)
       raise ArgumentError, "Instance variable @landscape must be set and have original_image and mask_image_data attachments."
-   end
-
-    # 1. Download images and read into MiniMagick
-    puts "Downloading original image blob..."
-    original_image_data = @landscape.original_image.variant(:final).processed.download
-    original_image = MiniMagick::Image.read(original_image_data)
-    puts "Original image loaded into MiniMagick. Dimensions: #{original_image.dimensions.join('x')}"
-
-    puts "Downloading mask image blob..."
-    mask_image_data_binary = @landscape.mask_image_data.download
-    mask_image = MiniMagick::Image.read(mask_image_data_binary)
-    puts "Mask image loaded into MiniMagick. Dimensions: #{mask_image.dimensions.join('x')}"
-
-    # 2. Ensure both images and the mask are the same dimensions
-    unless original_image.dimensions == mask_image.dimensions
-      puts "Resizing mask from #{mask_image.dimensions.join('x')} to #{original_image.dimensions.join('x')} to match original image dimensions."
-      mask_image.resize "#{original_image.width}x#{original_image.height}!"
-      puts "Mask resized to: #{mask_image.dimensions.join('x')}"
     end
 
-    # --- 3. Ensure the mask is exactly black and white (binarize it) ---
-    mask_image.combine_options do |c|
-      c.colorspace("Gray") # Ensure it's grayscale first
-      c.threshold("50%")   # Binarize: below 50% luminance -> black, above/at 50% -> white.
-      # Uncomment `c.negate` if black areas of your mask should reveal the image.
-      # (i.e., if your mask is conceptually inverted for DstIn).
-      # c.negate
+    begin
+      original_image_data = @landscape.original_image.variant(:final).processed.download
+      original_image = MiniMagick::Image.read(original_image_data)
+
+      mask_image_data_binary = @landscape.mask_image_data.variant(:final).processed.download
+      mask_image = MiniMagick::Image.read(mask_image_data_binary)
+
+      unless original_image.dimensions == mask_image.dimensions
+        mask_image.resize "#{original_image.width}x#{original_image.height}!"
+      end
+
+      mask_image.combine_options do |c|
+        c.colorspace("Gray")
+        c.threshold("50%")
+      end
+
+      mask_image.transparent("white")
+
+      masked_image = original_image.composite(mask_image) do |c|
+        c.compose "Over"
+      end
+
+      if output_path.present?
+        masked_image.write(output_path)
+      end
+
+      Base64.encode64(masked_image.to_blob)
+
+    rescue MiniMagick::Error => e
+      puts "MiniMagick Error during mask application: #{e.message}"
+      puts "Command attempted: #{e.command}" if e.respond_to?(:command)
+      raise
+    rescue StandardError => e
+      puts "An unexpected error occurred during mask application: #{e.message}"
+      puts e.backtrace.join("\n")
+      raise
     end
-    puts "Mask image binarized."
-
-    # --- 4. Apply the binarized mask using 'DstIn' compose operator ---
-    # The 'DstIn' (Destination In Source) operator keeps the original image pixels
-    # where the mask (source) pixels are opaque (typically white) and makes them
-    # transparent where the mask is transparent (typically black).
-    # This is a very common and robust method for applying a clipping mask.
-    # It requires: original_image, and a mask where WHITE = keep, BLACK = transparent.
-
-    # Ensure original_image has an alpha channel before compositing
-    original_image.combine_options do |c|
-      c.alpha "on"
-    end
-    puts "Original image ensured to have an alpha channel for DstIn."
-
-    masked_image = original_image.composite(mask_image) do |c|
-      c.compose "DstIn" # Destination In Source - Keeps original pixels where mask is opaque.
-    end
-
-    masked_image.format "png" # Force PNG output if not already.
-    if output_path.present?
-      masked_image.write(output_path)
-      puts "Masked image saved to #{output_path}"
-    end
-
-    Base64.encode64(masked_image.to_blob)
-  rescue MiniMagick::Error => e
-    puts "MiniMagick Error during mask application: #{e.message}"
-    puts "Command attempted: #{e.command}" if e.respond_to?(:command)
-    raise # Re-raise for handling upstream
-  rescue StandardError => e
-    puts "An unexpected error occurred during mask application: #{e.message}"
-    puts e.backtrace.join("\n")
-    raise # Re-raise for handling upstream
   end
+
 
 
   def gcp_payload
@@ -201,7 +183,7 @@ class ImageModificationJob < ApplicationJob
         }
       ],
       "parameters": {
-        "sampleCount": 2
+        "sampleCount": 1
       }
     }
   end
