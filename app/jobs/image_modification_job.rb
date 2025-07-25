@@ -201,7 +201,7 @@ class ImageModificationJob < ApplicationJob
         }
       ],
       "parameters": {
-        "sampleCount": 3
+        "sampleCount": 2
       }
     }
   end

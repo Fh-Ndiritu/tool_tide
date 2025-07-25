@@ -47,7 +47,6 @@
       <div class="grid grid-cols-1 md:grid-cols-2 md:grid-cols-3">
         <% @landscape.modified_images.order(created_at: :desc).each_with_index do |modified_image, index| %>
           <div class=" mb-6 bg-neutral-50 rounded-lg shadow-sm overflow-hidden flex flex-col items-center text-center p-4">
-            <p class="text-lg font-semibold text-text-dark mb-2">Design <%= index + 1 %></p>
             <%= image_tag url_for(modified_image), alt: "AI Modified Landscape #{index + 1}", class: "max-w-full h-auto object-cover rounded-md border border-neutral-300 shadow-sm" %>
             <a href="<%= url_for(modified_image) %>" download="hadaa_ai_transformed_<%= index + 1 %>.png"
                class="mt-4 px-4 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition-colors duration-200">
