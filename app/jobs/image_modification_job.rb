@@ -8,7 +8,7 @@ class ImageModificationJob < ApplicationJob
     @landscape = Landscape.find(landscape_id)
     @b64_input_image =  prepare_original_image_for_bria(@landscape.original_image)
 
-    @premium = true
+    @premium = false
     @b64_mask_image = flip_mask_colors
 
     if @premium
@@ -51,7 +51,7 @@ class ImageModificationJob < ApplicationJob
       mask_input:  @b64_mask_image,
       prompt: @landscape.prompt,
       sync: true,
-      num_results: 1
+      num_results: 3
     )
     process_bria_results(bria_response)
   rescue StandardError => e
@@ -79,14 +79,11 @@ class ImageModificationJob < ApplicationJob
   end
 
   def process_bria_results(bria_response)
+    # binding.irb
     if bria_response.success? && bria_response.body["urls"].any?
-      first_result = bria_response.body["urls"].first
-
-      if first_result.is_a?(String)
-          modified_image_url = first_result
-          download_and_save_image(modified_image_url)
-      else
-        raise BriaAi::APIError, "Bria AI response did not contain expected image output in 'urls' array."
+      bria_response.body["urls"].each do |url|
+        next unless url.is_a?(String)
+        download_and_save_image(url)
       end
     else
       raise BriaAi::APIError, "Bria AI API call failed or returned no results. Response: #{bria_response.body.inspect}"
@@ -98,7 +95,7 @@ class ImageModificationJob < ApplicationJob
 
     begin
       downloaded_image = URI.parse(modified_image_url).open
-      @landscape.modified_image.attach(
+      @landscape.modified_images.attach(
         io: downloaded_image,
         filename: "landscaped_#{SecureRandom.hex(8)}.png",
         content_type: downloaded_image.content_type # Infer content type
@@ -126,7 +123,7 @@ class ImageModificationJob < ApplicationJob
       original_image_data = @landscape.original_image.variant(:final).processed.download
       original_image = MiniMagick::Image.read(original_image_data)
 
-      mask_image_data_binary = @landscape.mask_image_data.variant(:final).processed.download
+      mask_image_data_binary = @landscape.mask_image_data.download
       mask_image = MiniMagick::Image.read(mask_image_data_binary)
 
       unless original_image.dimensions == mask_image.dimensions
@@ -148,7 +145,7 @@ class ImageModificationJob < ApplicationJob
         masked_image.write(output_path)
       end
 
-      Base64.encode64(masked_image.to_blob)
+      Base64.strict_encode64(masked_image.to_blob)
 
     rescue MiniMagick::Error => e
       puts "MiniMagick Error during mask application: #{e.message}"
@@ -168,7 +165,7 @@ class ImageModificationJob < ApplicationJob
      {
       "instances": [
         {
-          "prompt": @landscape.prompt,
+          "prompt": gsub_prompt(@landscape.prompt),
           "referenceImages": [
             {
               "referenceType": "REFERENCE_TYPE_RAW",
@@ -184,6 +181,20 @@ class ImageModificationJob < ApplicationJob
         "sampleCount": 3
       }
     }
+  end
+
+  def gsub_prompt(prompt)
+    " DO NOT MODIFY THE UNMASKED AREAS OF THE IMAGE.
+      Create a new image based on the original image, but only modify the areas defined by the black mask.
+      Use professional plant, flower and feature placements that reflect a professional and intricate landscaper at work.
+      #{prompt}
+      If doors or entrances are present, add blending pathways that match this style.
+      Use stones, lawns and pathways to improve the overall aesthetic.
+      Ensure vibrant japanese plants and colors are used to enhance the overall aesthetic.
+      Ensure photorealistic rendering of the landscape.
+      8k resolution, highly detailed, photorealistic, vibrant colors.
+      Ensure the final image is harmonious and visually appealing.
+    "
   end
 
   # This helper method now ALWAYS reads the Active Storage blob and returns its Base64 encoding.
@@ -215,7 +226,7 @@ class ImageModificationJob < ApplicationJob
       image.colorspace("Gray").threshold("50%").negate
 
       image.format "png"
-      inverted_base64 = Base64.encode64(image.to_blob)
+      inverted_base64 = Base64.strict_encode64(image.to_blob)
       "data:image/png;base64,#{inverted_base64}"
     rescue MiniMagick::Error => e
       raise "Image processing error with MiniMagick: #{e.message}. " \

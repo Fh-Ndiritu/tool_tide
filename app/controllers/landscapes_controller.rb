@@ -83,7 +83,7 @@ class LandscapesController < ApplicationController
     prompt = PROMPTS["landscape_presets"][preset]
     raise "Preset prompts not found" unless prompt.present?
 
-    @landscape.update prompt: gsub_prompt(prompt)
+    @landscape.update prompt:
   end
 
   def set_landscape
@@ -100,17 +100,26 @@ class LandscapesController < ApplicationController
 
   def save_mask(raw_mask_image_data)
     # Extract base64 content and decode
+    # we need to resize this to match the size of the final image
     _mime_type, base64_content = raw_mask_image_data.split(",", 2)
     decoded_mask = Base64.decode64(base64_content)
 
-    # Create a Tempfile for the mask
-    mask_temp_file = Tempfile.new([ "mask_data_", ".png" ], binmode: true)
-    mask_temp_file.write(decoded_mask)
-    mask_temp_file.rewind
+    original_image_data = @landscape.original_image.variant(:final).processed.download
+    original_image = MiniMagick::Image.read(original_image_data)
+
+    mask_image = MiniMagick::Image.read(decoded_mask)
+
+    unless original_image.dimensions == mask_image.dimensions
+      mask_image.resize "#{original_image.width}x#{original_image.height}!"
+    end
+
+    mask_image.format "png"
+
+    io = StringIO.new(mask_image.to_blob)
 
     # Attach the mask to the landscape record
     @landscape.mask_image_data.attach(
-      io: mask_temp_file,
+      io: io,
       filename: "mask_#{SecureRandom.hex(8)}.png",
       content_type: "image/png"
     )
@@ -118,23 +127,5 @@ class LandscapesController < ApplicationController
   rescue => e
     Rails.logger.error "Failed to save mask_image_data for Landscape ID #{@landscape.id}: #{e.message}"
     # For now, we'll log and continue, as the AI processing might still work even if mask saving fails.
-  ensure
-    mask_temp_file.close if mask_temp_file
-    mask_temp_file.unlink if mask_temp_file
-  end
-
-
-  def gsub_prompt(prompt)
-    " DO NOT MODIFY THE UNMASKED AREAS OF THE IMAGE.
-      Create a new image based on the original image, but only modify the areas defined by the black mask.
-      Use professional plant, flower and feature placements that reflect a professional and intricate landscaper at work.
-      #{prompt}
-      If doors or entrances are present, add blending pathways that match this style.
-      Use stones, lawns and pathways to improve the overall aesthetic.
-      Ensure vibrant japanese plants and colors are used to enhance the overall aesthetic.
-      Ensure photorealistic rendering of the landscape.
-      8k resolution, highly detailed, photorealistic, vibrant colors.
-      Ensure the final image is harmonious and visually appealing.
-    "
   end
 end
