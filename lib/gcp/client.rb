@@ -20,7 +20,6 @@ module Gcp
 
     def generate_access_token
       credentials = Google::Auth::ServiceAccountCredentials.make_creds(
-        json_key_io: File.open(ENV.fetch("GOOGLE_APPLICATION_CREDENTIALS")),
         scope: "https://www.googleapis.com/auth/cloud-platform"
       )
 

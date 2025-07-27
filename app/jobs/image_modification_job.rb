@@ -8,7 +8,7 @@ class ImageModificationJob < ApplicationJob
     @landscape = Landscape.find(landscape_id)
     @b64_input_image =  prepare_original_image_for_bria(@landscape.original_image)
 
-    @premium = false
+    @premium = true
     @b64_mask_image = flip_mask_colors
 
     if @premium
@@ -40,8 +40,8 @@ class ImageModificationJob < ApplicationJob
   end
 
   def fetch_gcp_response
-    location = ENV.fetch("GCP_LOCATION")
-    endpoint = "https://#{location}-aiplatform.googleapis.com/v1/projects/#{ ENV.fetch("GCP_PROJECT_ID")}/locations/#{location}/publishers/google/models/imagen-3.0-capability-001:predict"
+    location = ENV.fetch("GOOGLE_LOCATION")
+    endpoint = "https://#{location}-aiplatform.googleapis.com/v1/projects/#{ ENV.fetch("GOOGLE_PROJECT_ID")}/locations/#{location}/publishers/google/models/imagen-3.0-capability-001:predict"
     Gcp::Client.new.send(endpoint, gcp_payload)
   end
 
