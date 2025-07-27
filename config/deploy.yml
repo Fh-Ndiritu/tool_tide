@@ -46,15 +46,6 @@ env:
     - SERVER_NAME
     - HOST_PUBLIC_IP
     - BRIA_AI_API_TOKEN
-    - GOOGLE_ACCOUNT_TYPE
-    - GOOGLE_PRIVATE_KEY_ID
-    - GOOGLE_PRIVATE_KEY
-    - GOOGLE_CLIENT_EMAIL
-    - GOOGLE_CLIENT_ID
-    - GOOGLE_AUTH_URI
-    - GOOGLE_TOKEN_URI
-    - GOOGLE_PROJECT_ID
-    - GOOGLE_LOCATION
 
   clear:
     # Run the Solid Queue Supervisor inside the web server's Puma process to do jobs.

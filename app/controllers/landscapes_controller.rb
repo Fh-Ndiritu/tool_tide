@@ -91,7 +91,7 @@ class LandscapesController < ApplicationController
     prompt = PROMPTS["landscape_presets"][preset]
     raise "Preset prompts not found" unless prompt.present?
 
-    @landscape.landscape_requests.create(prompt:, image_engine: @image_engine, preset: preset.humanize)
+    @landscape.landscape_requests.create(prompt:, image_engine: "bria", preset: preset.humanize)
   end
 
   def set_landscape
