@@ -13,7 +13,7 @@ class ImageModificationJob < ApplicationJob
     @b64_mask_image = flip_mask_colors
 
     if @landscape_request.google_processor?
-      # gcp_inpaint
+      gcp_inpaint
     else
       bria_inpaint
     end

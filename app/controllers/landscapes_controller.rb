@@ -17,7 +17,6 @@ class LandscapesController < ApplicationController
   end
 
   def show
-
   end
 
   def edit
@@ -145,7 +144,7 @@ class LandscapesController < ApplicationController
       recent_requests = LandscapeRequest.joins(:landscape).where(
                           created_at: 24.hours.ago..,
                           image_engine: :google,
-                          landscape: {ip_address: request&.remote_ip}
+                          landscape: { ip_address: request&.remote_ip }
                           )
       if recent_requests&.count < 2
         @reverted_to_bria = (recent_requests.count == 2)
