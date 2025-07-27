@@ -5,19 +5,20 @@ class ImageModificationJob < ApplicationJob
   queue_as :default
   def perform(landscape_id)
     Rails.logger.info "Starting ImageModificationJob for Landscape ID: #{landscape_id}"
-    @landscape = Landscape.find(landscape_id)
-    @b64_input_image =  prepare_original_image_for_bria(@landscape.original_image)
 
-    @premium = true
+    @landscape = Landscape.where(id: landscape_id).includes(:landscape_requests).first
+    @b64_input_image =  prepare_original_image_for_bria(@landscape.original_image)
+    @landscape_request = @landscape.landscape_requests.last
+
     @b64_mask_image = flip_mask_colors
 
-    if @premium
-      gcp_inpaint
+    if @landscape_request.google_processor?
+      # gcp_inpaint
     else
       bria_inpaint
     end
 
-    if @landscape.modified_images.attached?
+    if @landscape_request.reload.modified_images.attached?
       ActionCable.server.broadcast(
         "landscape_channel",
         { status: "completed", landscape_id: @landscape.id }
@@ -49,13 +50,13 @@ class ImageModificationJob < ApplicationJob
     bria_response = BriaAi::Client.new.gen_fill(
       image_input: @b64_input_image,
       mask_input:  @b64_mask_image,
-      prompt: @landscape.prompt,
+      prompt: @landscape_request.prompt,
       sync: true,
       num_results: 3
     )
     process_bria_results(bria_response)
   rescue StandardError => e
-    Rails.logger.error "Image modification job failed for Landscape ID #{landscape_id}: #{e.class}: #{e.message}\n#{e.backtrace.join("\n")}"
+    Rails.logger.error "Image modification job failed for Landscape ID #{@landscape.id}: #{e.class}: #{e.message}\n#{e.backtrace.join("\n")}"
     ActionCable.server.broadcast(
       "landscape_channel",
       { error: "An unexpected error occurred during image modification: #{e.message}" }
@@ -73,13 +74,12 @@ class ImageModificationJob < ApplicationJob
       File.open(temp_path, "wb") do |file|
         file.write(img_from_b64)
       end
-      @landscape.modified_images.attach(io: File.open(temp_path), filename: "modified_image.#{extension}")
+      @landscape_request.modified_images.attach(io: File.open(temp_path), filename: "modified_image.#{extension}")
       File.delete(temp_path) if File.exist?(temp_path)
     end
   end
 
   def process_bria_results(bria_response)
-    # binding.irb
     if bria_response.success? && bria_response.body["urls"].any?
       bria_response.body["urls"].each do |url|
         next unless url.is_a?(String)
@@ -95,12 +95,11 @@ class ImageModificationJob < ApplicationJob
 
     begin
       downloaded_image = URI.parse(modified_image_url).open
-      @landscape.modified_images.attach(
+      @landscape_request.modified_images.attach(
         io: downloaded_image,
         filename: "landscaped_#{SecureRandom.hex(8)}.png",
-        content_type: downloaded_image.content_type # Infer content type
+        content_type: downloaded_image.content_type
       )
-
       @landscape.save!
     rescue OpenURI::HTTPError => e
       raise "Failed to download processed image: #{e.message}"
@@ -165,7 +164,7 @@ class ImageModificationJob < ApplicationJob
      {
       "instances": [
         {
-          "prompt": gsub_prompt(@landscape.prompt),
+          "prompt": gsub_prompt(@landscape_request.prompt),
           "referenceImages": [
             {
               "referenceType": "REFERENCE_TYPE_RAW",

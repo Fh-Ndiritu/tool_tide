@@ -138,6 +138,7 @@ html {
   color: var(--color-text-light);
 }
 
-.fancy-text {
+.fancy-text,
+.text-fancy {
   font-family: 'Comic Relief', system-ui;
 }

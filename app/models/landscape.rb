@@ -11,5 +11,10 @@ class Landscape < ApplicationRecord
   # The mask will always be smaller than what we need
   has_one_attached :mask_image_data
 
-  has_many_attached :modified_images
+  has_many :landscape_requests, dependent: :destroy
+
+
+  def modified_images
+    ActiveStorage::Attachment.where(record_id: landscape_requests.ids)
+  end
 end
