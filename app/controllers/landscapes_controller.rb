@@ -154,7 +154,7 @@ class LandscapesController < ApplicationController
 
     end
 
-    @reverted_to_bria = true
+    @reverted_to_bria = false
     @image_engine = "bria"
   end
 end
