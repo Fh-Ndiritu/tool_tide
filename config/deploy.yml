@@ -37,6 +37,7 @@ registry:
 env:
   clear:
     BASE_URL: 'https://hadaa.app'
+    GOOGLE_APPLICATION_CREDENTIALS: "google_credentials.json"
   secret:
     - RAILS_MASTER_KEY
     - MISTRAL_API_KEY
@@ -48,7 +49,6 @@ env:
     - BRIA_AI_API_TOKEN
     - GOOGLE_LOCATION
     - GOOGLE_LOCATION
-    - GOOGLE_APPLICATION_CREDENTIALS: "google_credentials.json"
 
   clear:
     # Run the Solid Queue Supervisor inside the web server's Puma process to do jobs.
