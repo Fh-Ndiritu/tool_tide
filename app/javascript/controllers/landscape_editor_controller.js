@@ -1,5 +1,6 @@
 // app/javascript/controllers/editor_controller.js
 import { Controller } from '@hotwired/stimulus';
+import consumer from 'channels/consumer';
 
 export default class extends Controller {
   static targets = [
@@ -38,6 +39,7 @@ export default class extends Controller {
   MAX_CANVAS_DISPLAY_HEIGHT = 500;
 
   connect() {
+    this.createChannels();
     console.log('Editor Controller connected.');
     this.setBrushSizeDisplay(40);
 
@@ -98,6 +100,39 @@ export default class extends Controller {
       );
     }
     this.resetEditorState();
+  }
+
+  createChannels() {
+    // Create a subscription to the LandscaperChannel
+    console.log(`************************* Connecting to LandscapeChannel for ID: ${this.landscapeIdValue}`);
+
+    this.channel = consumer.subscriptions.create(
+      {
+        channel: 'LandscapeChannel',
+        landscape_id: this.landscapeIdValue, // Pass the landscape_id as a parameter
+      },
+      {
+        connected: () => {
+          console.log(`Connected to LandscapeChannel for ID: ${this.landscapeIdValue}`);
+          // You can perform actions here after successful connection
+        },
+        disconnected: () => {
+          console.log(`Disconnected from LandscapeChannel for ID: ${this.landscapeIdValue}`);
+        },
+        received(data) {
+          console.log('Received data from LandscaperChannel:', data);
+
+          // Dispatch a custom event with the received data
+          const event = new CustomEvent('landscape:ai-data-received', {
+            detail: data,
+            bubbles: true,
+            cancelable: true,
+          });
+
+          document.dispatchEvent(event);
+        },
+      }
+    );
   }
 
   showSection(sectionName) {

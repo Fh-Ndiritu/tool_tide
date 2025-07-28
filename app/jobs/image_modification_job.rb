@@ -20,7 +20,7 @@ class ImageModificationJob < ApplicationJob
 
     if @landscape_request.reload.modified_images.attached?
       ActionCable.server.broadcast(
-        "landscape_channel",
+        "landscape_channel_#{@landscape.id}",
         { status: "completed", landscape_id: @landscape.id }
       )
     end
@@ -58,7 +58,7 @@ class ImageModificationJob < ApplicationJob
   rescue StandardError => e
     Rails.logger.error "Image modification job failed for Landscape ID #{@landscape.id}: #{e.class}: #{e.message}\n#{e.backtrace.join("\n")}"
     ActionCable.server.broadcast(
-      "landscape_channel",
+      "landscape_channel_#{@landscape.id}",
       { error: "An unexpected error occurred during image modification: #{e.message}" }
     )
   end
