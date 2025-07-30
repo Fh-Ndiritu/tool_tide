@@ -10,6 +10,5 @@ module Admin::LandscapesHelper
     else
      nil
     end
-
   end
 end
