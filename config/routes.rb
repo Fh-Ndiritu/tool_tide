@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   mount ActionCable.server => "/cable"
 
+  namespace :admin do
+    resources :landscapes, only: [:index]
+  end
+
   resources :landscapes, except: [ :destroy ] do
     collection do
       post "modify"
