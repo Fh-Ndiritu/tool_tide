@@ -4,7 +4,7 @@ class Admin::LandscapesController < ApplicationController
     if params[:day].present?
       @landscapes = Landscape.where(created_at: params[:day].to_i.days.ago.beginning_of_day..params[:day].to_i.days.ago.end_of_day)
     else
-      @landscapes = Landscape.all
+      @landscapes = Landscape.all.order(created_at: :desc)
     end
   end
 end
