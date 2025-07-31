@@ -117,15 +117,12 @@ DESTINATION_IMAGE_FORMATS = [
 ].freeze
 
 LANDSCAPE_PRESETS = {
-  "zen_minimalist" => "Serene, simple, reflective, calm.",
-  "cottage" => "Abundant, charming, relaxed, whimsical.",
-  "desert" => "Arid, sculptural, water-wise, resilient.",
-  "mediterranean" => "Fragrant, sunny, rustic, relaxed.",
-  "tropical" => "Vibrant, exotic, dense, verdant.",
-  "coastal" => "Salty, breezy, resilient, relaxed.",
-  "formal" => "Elegant, ordered, symmetrical, structured.",
-  "modern" => "Clean, minimalist, bold, structured.",
-  "countryside" => "Manicured, traditional, rolling, structured."
+  "zen" => "Serene and calm",
+  "cottage" => "Charming abundance",
+  "desert" => "Resilient and hardy",
+  "mediterranean" => "Fragrant and relaxed",
+  "tropical" => "Vibrant and lush",
+  "modern" => "Clean minimalist"
 }
 
 

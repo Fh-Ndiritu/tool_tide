@@ -119,10 +119,8 @@
          class="bg-primary text-text-light py-3 px-6 rounded-md hover:bg-text-primary transition-colors duration-200 font-bold text-center text-lg">
         Download
       </a>
-      <button data-action="click->landscape#editFurther"
-              class="bg-secondary text-text-light py-3 px-6 rounded-md hover:bg-text-secondary transition-colors duration-200 font-bold text-lg">
-        Edit Further
-      </button>
+      <%= link_to "Edit Further", edit_landscape_path(@landscape), class: "bg-secondary text-text-light py-3 px-6 rounded-md hover:bg-text-secondary transition-colors duration-200 font-bold text-lg"  %>
+
       <button data-action="click->landscape#startNewDesign"
               class="bg-neutral-300 text-neutral-800 py-3 px-6 rounded-md hover:bg-neutral-500 transition-colors duration-200 font-bold text-lg">
         Start New Design

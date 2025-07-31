@@ -4,31 +4,31 @@ import { Controller } from '@hotwired/stimulus';
 export default class extends Controller {
   static targets = ['fileInput', 'dropZone', 'progressBarContainer', 'progressBar', 'form', 'deviceWidthInput'];
 
-  // Maximum dimension for client-side image resizing BEFORE server upload
+  // Maximum dimension for client-side image resizing BEFORE server upload.
+  // Images will be resized to fit within these dimensions, maintaining aspect ratio.
+  // This is a fixed size for the uploaded image.
   MAX_UPLOAD_IMAGE_WIDTH = 1024;
-  MAX_UPLOAD_IMAGE_HEIGHT = 1000;
+  MAX_UPLOAD_IMAGE_HEIGHT = 1024;
 
   connect() {
     console.log('Upload Controller connected.');
     this.progressBarContainerTarget.classList.add('hidden'); // Ensure hidden on connect
+    // Calculate and set the canvas width for display purposes, which is submitted to the backend.
     this.deviceWidthInputTarget.value = this.calculateCanvasWidth();
   }
 
+  // Calculates the desired canvas width for display, based on device size.
+  // This value is submitted to the backend, but DOES NOT affect the image's upload resize dimensions.
   calculateCanvasWidth() {
-    // We can use a max width of 700 px
-    // If the device width is less than this, we set it to 80% of the device width
     const deviceWidth = window.innerWidth;
     let maxWidth = 0;
-    if (deviceWidth > 700 && deviceWidth < 992) {
-      maxWidth = 580;
-    } else if (deviceWidth >= 992) {
-      maxWidth = 680;
+    if (deviceWidth > 700) {
+      maxWidth = 500;
     } else {
-      maxWidth = deviceWidth * 0.8;
+      maxWidth = deviceWidth * 0.8; // 80% of device width for smaller screens
     }
-    this.MAX_UPLOAD_IMAGE_WIDTH = maxWidth;
+    // Note: this.MAX_UPLOAD_IMAGE_WIDTH is NOT updated here. It remains 1024.
     return maxWidth;
-    // return deviceWidth < 700 ? deviceWidth * 0.8 : 700; // 80% of device
   }
 
   // --- File Input Handlers ---
@@ -72,13 +72,13 @@ export default class extends Controller {
     try {
       let fileForUpload = originalFile;
 
-      // Attempt to resize image for upload if it's too large
-      // This is for optimizing the file sent to the server.
+      // Attempt to resize image for upload to the fixed MAX_UPLOAD_IMAGE_WIDTH/HEIGHT.
+      // This is for optimizing the file sent to the server to a consistent max size.
       try {
         const resizedForUploadDataURL = await this._resizeImage(
           originalFile,
-          this.MAX_UPLOAD_IMAGE_WIDTH,
-          this.MAX_UPLOAD_IMAGE_HEIGHT,
+          this.MAX_UPLOAD_IMAGE_WIDTH, // Use the fixed constant for upload resize
+          this.MAX_UPLOAD_IMAGE_HEIGHT, // Use the fixed constant for upload resize
           0.85 // Quality for JPEG/WEBP
         );
         console.log('Image successfully resized for upload.');
@@ -134,7 +134,7 @@ export default class extends Controller {
     };
   }
 
-  // --- Utility Functions (moved from original controller) ---
+  // --- Utility Functions ---
   async _resizeImage(file, maxWidth, maxHeight, quality = 0.9) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -144,26 +144,18 @@ export default class extends Controller {
           let width = image.width;
           let height = image.height;
 
+          // Only resize if the image exceeds the maxWidth or maxHeight for upload
           if (width > maxWidth || height > maxHeight) {
             const aspectRatio = width / height;
-            if (width > height) {
+
+            if (width / maxWidth > height / maxHeight) {
+              // Image is wider relative to its max allowed width for upload
               width = maxWidth;
               height = width / aspectRatio;
             } else {
+              // Image is taller relative to its max allowed height for upload
               height = maxHeight;
               width = height * aspectRatio;
-            }
-            if (width > maxWidth) {
-              // Re-check to fit within both bounds
-              const scale = maxWidth / width;
-              width *= scale;
-              height *= scale;
-            }
-            if (height > maxHeight) {
-              // Re-check to fit within both bounds
-              const scale = maxHeight / height;
-              height *= scale;
-              width *= scale;
             }
           }
 

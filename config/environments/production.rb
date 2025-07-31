@@ -88,5 +88,25 @@ Rails.application.configure do
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
 
-  config.action_cable.url = "wss://#{ENV.fetch("BASE_URL") { "hadaa.app" }.sub(/^http/, "")}/cable"
+  config.action_cable.url = "wss://#{URI.parse(ENV.fetch("BASE_URL") { 'hadaa.app' }).host}/cable"
 end
+
+#  ActiveStorage::Current::url_options = {host: 'hadaa.app'}
+#  LandscapeRequest.google_processor.where(created_at: Date.today..).map do |k|
+#   puts k.landscape.original_image.url
+#   k.modified_images.map{ |i| puts i.url }
+#   puts k.id
+#  end
+
+
+#  LandscapeRequest.google_processor.last(15).first(1).map do |k|
+#   puts k.landscape.original_image.url
+#   k.modified_images.map{ |i| puts i.url }
+#   puts k.id
+#  end
+
+#  LandscapeRequest.bria_processor.last(3).first(1).map do |k|
+#   puts k.landscape.original_image.url
+#   k.modified_images.map{ |i| puts i.url }
+#   puts k.id
+#  end

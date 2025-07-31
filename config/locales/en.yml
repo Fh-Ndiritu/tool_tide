@@ -45,6 +45,9 @@ en:
         - Click on the generate button to create your AI landscape and watch the magic happen
         - The new landscape is generated and displayed for you to download
         - We shall be adding a shopping list and a 3D view of the landscape soon
+    engines:
+      google: 'Hadaa Pro Engine'
+      bria: 'Hadaa Free Engine'
   images:
     titles:
       extract: Extract text from images, screenshots, and photos for Free
