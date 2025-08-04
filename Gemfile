@@ -110,3 +110,5 @@ gem 'googleauth'
 gem 'google-cloud-ai_platform-v1', '~> 0.35.0'
 
 gem "geocoder", "~> 1.8"
+
+gem "devise", "~> 4.9"
