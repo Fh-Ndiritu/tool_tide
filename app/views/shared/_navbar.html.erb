@@ -54,18 +54,27 @@
             href: "#faq",
             classes: "#{active_item(new_landscape_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
             ) %>
+        <% else %>
+          <%= render ButtonComponent.new(
+          text: "Text Extractor",
+          href: extract_text_images_path,
+          classes: "#{active_item(extract_text_images_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
+          ) %>
+        <%= render ButtonComponent.new(
+          text: "Image Converter",
+          href: images_path,
+          classes: "#{active_item(images_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
+          ) %>
         <% end %>
 
-      <%= render ButtonComponent.new(
-        text: "Text Extractor",
-        href: extract_text_images_path,
-        classes: "#{active_item(extract_text_images_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
-        ) %>
-      <%= render ButtonComponent.new(
-        text: "Image Converter",
-        href: images_path,
-        classes: "#{active_item(images_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
-        ) %>
+
+
+        <% if user_signed_in? %>
+          <%= button_to "Log Out", destroy_user_session_path, method: :delete, class: "flex flex-col items-center font-semibold py-2 px-2 rounded-lg cursor-pointer hover:bg-primary hover:text-light duration-200 transition-all transition-duration-300 ease-in-out gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0" %>
+        <% else %>
+          <%= link_to "Login", new_user_session_path,  class: "#{active_item(new_user_session_path)} flex flex-col items-center font-semibold py-2 px-2 rounded-lg cursor-pointer hover:bg-primary hover:text-light duration-200 transition-all transition-duration-300 ease-in-out gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0" %>
+        <% end %>
+
     </div>
   </div>
 </nav>
