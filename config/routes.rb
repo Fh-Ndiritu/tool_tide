@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   mount ActionCable.server => "/cable"
 
   namespace :admin do
-    resources :landscapes, only: [ :index ]
+    get "landscapes/:day", to: "landscapes#index"
   end
 
   resources :landscapes, except: [ :destroy ] do
