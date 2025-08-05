@@ -3,25 +3,25 @@ require "mini_magick"
 
 class ImageModificationJob < ApplicationJob
   queue_as :default
-  def perform(landscape_id, raw_mask_image_data)
+  def perform(landscape_id)
     Rails.logger.info "Starting ImageModificationJob for Landscape ID: #{landscape_id}"
-    @landscape = Landscape.find(landscape_id)
-    save_mask(raw_mask_image_data) if raw_mask_image_data.present?
-    @b64_input_image =  prepare_original_image_for_bria(@landscape.original_image)
 
-    @premium = false
+    @landscape = Landscape.where(id: landscape_id).includes(:landscape_requests).first
+    @b64_input_image =  prepare_original_image_for_bria(@landscape.original_image)
+    @landscape_request = @landscape.landscape_requests.last
+
     @b64_mask_image = flip_mask_colors
-    if @premium
+
+    if @landscape_request.google_processor?
       gcp_inpaint
     else
       bria_inpaint
     end
 
-    if @landscape.modified_image.attached?
-      original_image_url = @landscape.original_image.variant(:final).processed.url
+    if @landscape_request.reload.modified_images.attached?
       ActionCable.server.broadcast(
-        "landscape_channel",
-        { original_image_url:, modified_image_url: @landscape.modified_image.url }
+        "landscape_channel_#{@landscape.id}",
+        { status: "completed", landscape_id: @landscape.id }
       )
     end
   end
@@ -29,69 +29,61 @@ class ImageModificationJob < ApplicationJob
 
   private
 
-
   def gcp_inpaint
-    # response = fetch_imagen3_response
-    response = fetch_imagen2_response
+    # @landscape.modified_images.purge
+    response = fetch_gcp_response
     if response.is_a?(Hash) && response["predictions"].present?
-      save_b64_results(response["predictions"][0])
+      save_b64_results(response["predictions"])
     else
       Rails.logger.error "Unexpected response from GCP: #{response}"
       raise "Unexpected response from GCP"
     end
   end
 
-  def fetch_imagen3_response
-    location = ENV.fetch("GCP_LOCATION")
-    endpoint = "https://#{location}-aiplatform.googleapis.com/v1/projects/#{ ENV.fetch("GCP_PROJECT_ID")}/locations/#{location}/publishers/google/models/imagen-3.0-capability-001:predict"
+  def fetch_gcp_response
+    location = ENV.fetch("GOOGLE_LOCATION")
+    endpoint = "https://#{location}-aiplatform.googleapis.com/v1/projects/#{ ENV.fetch("GOOGLE_PROJECT_ID")}/locations/#{location}/publishers/google/models/imagen-3.0-capability-001:predict"
     Gcp::Client.new.send(endpoint, gcp_payload)
-  end
-
-  def fetch_imagen2_response
-    location = ENV.fetch("GCP_LOCATION")
-    endpoint = "https://#{location}-aiplatform.googleapis.com/v1/projects/#{ ENV.fetch("GCP_PROJECT_ID")}/locations/#{location}/publishers/google/models/imagegeneration@006:predict"
-    Gcp::Client.new.send(endpoint, gcp2_payload)
   end
 
   def bria_inpaint
     bria_response = BriaAi::Client.new.gen_fill(
       image_input: @b64_input_image,
       mask_input:  @b64_mask_image,
-      prompt: @landscape.prompt,
+      prompt: @landscape_request.prompt,
       sync: true,
-      num_results: 1
+      num_results: 3
     )
     process_bria_results(bria_response)
   rescue StandardError => e
-    Rails.logger.error "Image modification job failed for Landscape ID #{landscape_id}: #{e.class}: #{e.message}\n#{e.backtrace.join("\n")}"
+    Rails.logger.error "Image modification job failed for Landscape ID #{@landscape.id}: #{e.class}: #{e.message}\n#{e.backtrace.join("\n")}"
     ActionCable.server.broadcast(
-      "landscape_channel",
+      "landscape_channel_#{@landscape.id}",
       { error: "An unexpected error occurred during image modification: #{e.message}" }
     )
   end
 
-  def save_b64_results(b64_result)
+  def save_b64_results(predictions)
     # gcp will responnd with a hash of type and data
-    img_from_b64 = Base64.decode64(b64_result["bytesBase64Encoded"])
-    extension = b64_result["mimeType"].split("/").last
-    temp_path = Rails.root.join("tmp", "#{SecureRandom.hex(10)}.#{extension}")
-    File.open(temp_path, "wb") do |file|
-      file.write(img_from_b64)
+    predictions.each do |prediction|
+      b64_data = prediction["bytesBase64Encoded"]
+      img_from_b64 = Base64.decode64(b64_data)
+      extension = prediction["mimeType"].split("/").last
+      temp_path = Rails.root.join("tmp", "#{SecureRandom.hex(10)}.#{extension}")
+
+      File.open(temp_path, "wb") do |file|
+        file.write(img_from_b64)
+      end
+      @landscape_request.modified_images.attach(io: File.open(temp_path), filename: "modified_image.#{extension}")
+      File.delete(temp_path) if File.exist?(temp_path)
     end
-    @landscape.modified_image.attach(io: File.open(temp_path), filename: "modified_image.#{extension}")
-  ensure
-    File.delete(temp_path) if File.exist?(temp_path)
   end
 
   def process_bria_results(bria_response)
     if bria_response.success? && bria_response.body["urls"].any?
-      first_result = bria_response.body["urls"].first
-
-      if first_result.is_a?(String)
-          modified_image_url = first_result
-          download_and_save_image(modified_image_url)
-      else
-        raise BriaAi::APIError, "Bria AI response did not contain expected image output in 'urls' array."
+      bria_response.body["urls"].each do |url|
+        next unless url.is_a?(String)
+        download_and_save_image(url)
       end
     else
       raise BriaAi::APIError, "Bria AI API call failed or returned no results. Response: #{bria_response.body.inspect}"
@@ -103,12 +95,11 @@ class ImageModificationJob < ApplicationJob
 
     begin
       downloaded_image = URI.parse(modified_image_url).open
-      @landscape.modified_image.attach(
+      @landscape_request.modified_images.attach(
         io: downloaded_image,
         filename: "landscaped_#{SecureRandom.hex(8)}.png",
-        content_type: downloaded_image.content_type # Infer content type
+        content_type: downloaded_image.content_type
       )
-
       @landscape.save!
     rescue OpenURI::HTTPError => e
       raise "Failed to download processed image: #{e.message}"
@@ -119,92 +110,90 @@ class ImageModificationJob < ApplicationJob
     end
   end
 
-  def save_mask(raw_mask_image_data)
-    # Extract base64 content and decode
-    _mime_type, base64_content = raw_mask_image_data.split(",", 2)
-    decoded_mask = Base64.decode64(base64_content)
+  def apply_mask_for_transparency
+    output_path = nil
+    # output_path = Rails.root.join("tmp", "test3.png")
 
-    # Create a Tempfile for the mask
-    mask_temp_file = Tempfile.new([ "mask_data_", ".png" ], binmode: true)
-    mask_temp_file.write(decoded_mask)
-    mask_temp_file.rewind
+    unless defined?(@landscape) && @landscape.respond_to?(:original_image) && @landscape.respond_to?(:mask_image_data)
+      raise ArgumentError, "Instance variable @landscape must be set and have original_image and mask_image_data attachments."
+    end
 
-    # Attach the mask to the landscape record
-    @landscape.mask_image_data.attach(
-      io: mask_temp_file,
-      filename: "mask_#{SecureRandom.hex(8)}.png",
-      content_type: "image/png"
-    )
-    Rails.logger.info "Mask image data saved to Active Storage for Landscape ID: #{@landscape.id}"
-  rescue => e
-    Rails.logger.error "Failed to save mask_image_data for Landscape ID #{@landscape.id}: #{e.message}"
-    # For now, we'll log and continue, as the AI processing might still work even if mask saving fails.
-  ensure
-    mask_temp_file.close if mask_temp_file
-    mask_temp_file.unlink if mask_temp_file
+    begin
+      original_image_data = @landscape.original_image.variant(:final).processed.download
+      original_image = MiniMagick::Image.read(original_image_data)
+
+      mask_image_data_binary = @landscape.mask_image_data.download
+      mask_image = MiniMagick::Image.read(mask_image_data_binary)
+
+      unless original_image.dimensions == mask_image.dimensions
+        mask_image.resize "#{original_image.width}x#{original_image.height}!"
+      end
+
+      mask_image.combine_options do |c|
+        c.colorspace("Gray")
+        c.threshold("50%")
+      end
+
+      mask_image.transparent("white")
+
+      masked_image = original_image.composite(mask_image) do |c|
+        c.compose "Over"
+      end
+
+      if output_path.present?
+        masked_image.write(output_path)
+      end
+
+      Base64.strict_encode64(masked_image.to_blob)
+
+    rescue MiniMagick::Error => e
+      puts "MiniMagick Error during mask application: #{e.message}"
+      puts "Command attempted: #{e.command}" if e.respond_to?(:command)
+      raise
+    rescue StandardError => e
+      puts "An unexpected error occurred during mask application: #{e.message}"
+      puts e.backtrace.join("\n")
+      raise
+    end
   end
 
-
-  def gcp2_payload
-    {
-      "instances": [
-        {
-          "prompt": "A beautiful garden of red roses, tulips, and daisies with a green lawm and a fountain in the center",
-           "image": {
-            "bytesBase64Encoded": @b64_input_image
-           },
-           "mask": {
-              "image": {
-                "bytesBase64Encoded": @b64_mask_image.split(",", 2).last
-              }
-           }
-        }
-      ],
-      "parameters": {
-        "editConfig": {
-          "editMode": "inpainting-insert",
-          guidanceScale: 450
-        },
-        "sampleCount": 1
-      }
-    }
-  end
 
 
   def gcp_payload
-    {
+     #
+     {
       "instances": [
         {
-          "prompt": "Bright red roses in the garden",
+          "prompt": gsub_prompt(@landscape_request.prompt),
           "referenceImages": [
             {
               "referenceType": "REFERENCE_TYPE_RAW",
               "referenceId": 1,
               "referenceImage": {
-                "bytesBase64Encoded": @b64_input_image
-              }
-            },
-            {
-              "referenceType": "REFERENCE_TYPE_MASK",
-              "referenceId": 2,
-              "referenceImage": {
-                "bytesBase64Encoded":  @b64_mask_image.split(",", 2).last
-              },
-              "maskImageConfig": {
-                "maskMode": "MASK_MODE_USER_PROVIDED"
+                "bytesBase64Encoded": apply_mask_for_transparency
               }
             }
           ]
         }
       ],
       "parameters": {
-        "editConfig": {
-          "baseSteps": 35
-        },
-        "editMode": "EDIT_MODE_INPAINT_INSERTION",
-        "sampleCount": 1
+        "sampleCount": 3
       }
     }
+  end
+
+  def gsub_prompt(prompt)
+    " DO NOT MODIFY THE UNMASKED AREAS OF THE IMAGE.
+      Create a new image based on the original image, but only modify the areas defined by the black mask.
+      Use professional plant, flower and feature placements that reflect a professional and intricate landscaper at work.
+      #{prompt}
+      If doors or entrances are present, add blending pathways that match this style.
+      Use stones, lawns and pathways to improve the overall aesthetic.
+      Ensure vibrant japanese plants and colors are used to enhance the overall aesthetic.
+      Ensure photorealistic rendering of the landscape.
+      8k resolution, highly detailed, photorealistic, vibrant colors.
+      Ensure the final image is harmonious and visually appealing.
+    "
   end
 
   # This helper method now ALWAYS reads the Active Storage blob and returns its Base64 encoding.
@@ -229,14 +218,14 @@ class ImageModificationJob < ApplicationJob
 
   # GCP and Bria expect the white and black to be inverted in the mask
   def flip_mask_colors
-    blob = @landscape.mask_image_data.variant(:final).processed.blob
+    blob = @landscape.mask_image_data.blob
     begin
       # image = MiniMagick::Image.read(blob)
       image = MiniMagick::Image.read(blob.download)
       image.colorspace("Gray").threshold("50%").negate
 
       image.format "png"
-      inverted_base64 = Base64.encode64(image.to_blob)
+      inverted_base64 = Base64.strict_encode64(image.to_blob)
       "data:image/png;base64,#{inverted_base64}"
     rescue MiniMagick::Error => e
       raise "Image processing error with MiniMagick: #{e.message}. " \

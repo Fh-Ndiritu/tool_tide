@@ -138,6 +138,48 @@ html {
   color: var(--color-text-light);
 }
 
-.fancy-text {
+.fancy-text,
+.text-fancy {
   font-family: 'Comic Relief', system-ui;
+}
+.authentication {
+  color: var(--color-text-light);
+}
+.authentication h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.authentication .field label {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+.authentication .field {
+  margin: 1rem 0;
+}
+
+.authentication input {
+  padding: 5px;
+  border-radius: 3px;
+  background-color: var(--color-accent) !important;
+  border: 1px solid gray;
+  margin-top: 1rem;
+}
+.authentication input:focus {
+  outline: none;
+  ring: 0;
+  border: 1px solid var(--color-text-secondary);
+}
+
+.authentication input[type='submit'] {
+  padding: 5px 20px;
+  border-radius: 5px;
+  border: 1px solid var(--color-primary);
+}
+.authentication input[type='submit']:hover {
+  border: 1px solid gray;
+  cursor: pointer;
+}
+
+.shared_links a:hover {
+  color: var(--color-secondary);
 }
