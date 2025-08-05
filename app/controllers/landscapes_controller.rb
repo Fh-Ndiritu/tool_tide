@@ -145,7 +145,7 @@ class LandscapesController < ApplicationController
                           created_at: 24.hours.ago..,
                           image_engine: :google,
                           landscape: { ip_address: request&.remote_ip }
-                          )
+                          ).reject { |landscape_request| landscape_request.modified_images.count.zero? }
       if recent_requests&.count < 2
         @reverted_to_bria = (recent_requests.count == 2)
         @image_engine = "google"
