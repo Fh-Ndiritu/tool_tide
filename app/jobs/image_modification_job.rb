@@ -30,6 +30,7 @@ class ImageModificationJob < ApplicationJob
       "landscape_channel_#{@landscape.id}",
       { error: e.message }
     )
+    raise e.message
   end
 
 
