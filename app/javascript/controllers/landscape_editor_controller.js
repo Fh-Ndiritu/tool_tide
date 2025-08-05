@@ -446,7 +446,7 @@ export default class extends Controller {
       console.log('AI processing completed. Redirecting to landscape show page:', data.landscape_id);
       this.redirectToLandscapeShow(data.landscape_id);
     } else if (data.error) {
-      this.showMessage(`AI processing error: ${data.error}`);
+      this.showMessage(`Error: ${data.error}`);
       this.showSection('editor');
     } else {
       console.warn('AI data received but not in expected completed format or missing landscape_id.');

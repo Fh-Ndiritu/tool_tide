@@ -7,10 +7,10 @@ class ImageModificationJob < ApplicationJob
     Rails.logger.info "Starting ImageModificationJob for Landscape ID: #{landscape_id}"
 
     @landscape = Landscape.where(id: landscape_id).includes(:landscape_requests).first
+    raise "Please draw an area to style first..." unless valid_mask_data?
+
     @b64_input_image =  prepare_original_image_for_bria(@landscape.original_image)
     @landscape_request = @landscape.landscape_requests.last
-
-    @b64_mask_image = flip_mask_colors
 
     if @landscape_request.google_processor?
       gcp_inpaint
@@ -24,6 +24,12 @@ class ImageModificationJob < ApplicationJob
         { status: "completed", landscape_id: @landscape.id }
       )
     end
+  rescue StandardError => e
+    Rails.logger.error "Image modification job failed for Landscape ID #{@landscape.id}: #{e.class}: #{e.message}\n#{e.backtrace.join("\n")}"
+    ActionCable.server.broadcast(
+      "landscape_channel_#{@landscape.id}",
+      { error: e.message }
+    )
   end
 
 
@@ -47,9 +53,10 @@ class ImageModificationJob < ApplicationJob
   end
 
   def bria_inpaint
+    mask_input = flip_mask_colors
     bria_response = BriaAi::Client.new.gen_fill(
       image_input: @b64_input_image,
-      mask_input:  @b64_mask_image,
+      mask_input:,
       prompt: @landscape_request.prompt,
       sync: true,
       num_results: 3
@@ -233,5 +240,27 @@ class ImageModificationJob < ApplicationJob
     rescue => e
       raise "An unexpected error occurred during mask color flipping: #{e.message}"
     end
+  end
+
+  def valid_mask_data?
+    # we shall ensure the mask has at least 10 % black pixels
+    blob = @landscape.mask_image_data.blob
+    threshold = 10
+    return false unless blob
+    image = MiniMagick::Image.read(blob.download) do |img|
+      img.colorspace("Gray").threshold("50%")
+    end
+
+    mean = image.data.dig("channelStatistics", "gray", "mean")
+    max = image.data.dig("channelStatistics", "gray", "max")
+    return false unless mean
+
+    # Max will be 1 or 255 while mean at 0 means all black while at 1/255 means all white
+    black_percentage = (max - mean).to_f / max * 100
+    puts "Calculated non-white percentage: #{black_percentage.round(2)}%"
+    mean >= threshold
+  rescue MiniMagick::Error => e
+    Rails.logger.error "MiniMagick error while processing image: #{e.message}"
+    false
   end
 end
