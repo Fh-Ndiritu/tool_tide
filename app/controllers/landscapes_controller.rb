@@ -12,7 +12,7 @@ class LandscapesController < ApplicationController
   only: %i[create]
 
   def new
-    @landscape = Landscape.new
+    @landscape = current_user.landscapes.new
     @canvas = canvas
   end
 
@@ -68,7 +68,7 @@ class LandscapesController < ApplicationController
   private
 
   def create_landscape(original_image)
-    @landscape = Landscape.new(ip_address: request&.remote_ip)
+    @landscape = current_user.landscapes.new(ip_address: request&.remote_ip)
     @landscape.original_image.attach(original_image)
     @landscape.save
   end
@@ -95,7 +95,7 @@ class LandscapesController < ApplicationController
   end
 
   def set_landscape
-    @landscape = Landscape.find(params[:id])
+    @landscape = current_user.landscapes.find(params[:id])
     unless @landscape.original_image.attached?
       flash[:alert] = "No image found for this landscape"
       redirect_to landscapes_path
@@ -141,10 +141,9 @@ class LandscapesController < ApplicationController
     # We check if the user has more than 2 successul requests that happened in the last 24 hrs
     # IF false, we allow use of premium models
     if request&.remote_ip.present?
-      recent_requests = LandscapeRequest.joins(:landscape).where(
+      recent_requests = current_user.landscape_requests.joins(:landscape).where(
                           created_at: 24.hours.ago..,
-                          image_engine: :google,
-                          landscape: { ip_address: request&.remote_ip }
+                          image_engine: :google
                           ).reject { |landscape_request| landscape_request.modified_images.count.zero? }
       if recent_requests&.count < 2
         @reverted_to_bria = (recent_requests.count == 2)
