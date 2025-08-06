@@ -5,6 +5,6 @@ class Admin::BaseController < ApplicationController
   private
 
   def authenticate_admin
-    redirect_to root_path unless current_user.email == ENV.fetch("ADMIN_EMAIL")
+    redirect_to root_path unless current_user.admin?
   end
 end
