@@ -42,9 +42,6 @@
       <div class="lg:w-1/4 w-full p-4 flex flex-col space-y-4 lg:space-y-6">
         <div class="flex flex-wrap justify-center sm:justify-start gap-2 border-b border-neutral-300 pb-4 ">
 
-          <button data-action="click->landscape-editor#selectRectTool" class="p-2 rounded-md text-neutral-700 hover:bg-primary hover:text-text-light transition-colors duration-200" title="Rectangle Select">
-            <%= render(IconComponent.new(name: "rectangle-dashed", classes: "flex items-center justify-center text-neutral-100 cursor-pointer h-6 w-6")) %>
-          </button>
 
           <button data-action="click->landscape-editor#selectBrushTool" class="p-2 rounded-md text-neutral-700 hover:bg-primary hover:text-text-light transition-colors duration-200" title="Brush Select">
              <%= render(IconComponent.new(name: "paint-brush-household", classes: "flex items-center justify-center text-neutral-100 cursor-pointer h-6 w-6")) %>
@@ -60,12 +57,20 @@
           data-landscape-editor-target="redoButton"
           class="p-2 rounded-md text-sm text-neutral-700 hover:bg-neutral-300 transition-colors duration-200"
           title="Redo Last Undo">
-                       <%= render(IconComponent.new(name: "arrow-clockwise", classes: "flex items-center justify-center text-neutral-100 cursor-pointer h-6 w-6")) %>
+              <%= render(IconComponent.new(name: "arrow-clockwise", classes: "flex items-center justify-center text-neutral-100 cursor-pointer h-6 w-6")) %>
           </button>
 
-          <button data-action="click->landscape-editor#clearSelection" class="p-2 rounded-md text-sm text-neutral-700 hover:bg-neutral-300 transition-colors duration-200" title="Clear Selection">
-            Reset Selection
+          <button data-action="click->landscape-editor#selectRectTool" class="p-2 rounded-md text-neutral-700 hover:bg-primary hover:text-text-light transition-colors duration-200" title="Rectangle Select">
+            <%= render(IconComponent.new(name: "rectangle-dashed", classes: "flex items-center justify-center text-neutral-100 cursor-pointer h-6 w-6")) %>
           </button>
+
+          <button
+            data-action="click->landscape-editor#clearSelection"
+            class="p-2 rounded-md text-neutral-700 hover:bg-primary hover:text-text-light transition-colors duration-200"
+            title="Clear Selection">
+            <%= render(IconComponent.new(name: "x-circle", classes: "text-neutral-900 flex items-center justify-center text-neutral-100 cursor-pointer h-6 w-6")) %>
+          </button>
+
         </div>
 
         <div data-landscape-editor-target="brushSizeControl" class="hidden">
@@ -88,19 +93,22 @@
           </select>
         </div>
 
+        <%= render 'location', landscape: @landscape %>
+
         <%= form_with(url: modify_landscapes_path, method: :post, html: { data: { action: "submit->landscape-editor#submitModification", landscape_editor_target: "form" } }) do |form| %>
           <%= form.hidden_field :mask_image_data, data: { landscape_editor_target: "maskImageDataInput" } %>
           <%= form.hidden_field :preset, data: { landscape_editor_target: "presetInput" } %>
           <%= form.hidden_field :id, value: @landscape.id, data: { landscape_editor_target: "landscapeIdInput" } %>
 
           <button type="submit"
-                  class="w-full bg-primary text-text-light py-3 rounded-md hover:bg-text-primary transition-colors duration-200 font-bold text-lg">
+          data-landscape-editor-target="submitBtn"
+                  class="w-full bg-primary text-text-light py-3 rounded-md hover:bg-text-primary transition-colors duration-200 font-bold text-lg" disabled>
             Generate Landscape
           </button>
         <% end %>
 
         <button data-action="click->landscape-editor#cancelEdit"
-                class="w-full bg-neutral-300 text-neutral-800 py-3 rounded-md hover:bg-neutral-500 transition-colors duration-200 font-bold text-lg">
+                class="w-full bg-neutral-300 text-neutral-800 py-3 rounded-md hover:bg-neutral-500 transition-colors duration-200 font-bold text-lg cursor-pointer">
           Cancel
         </button>
       </div>

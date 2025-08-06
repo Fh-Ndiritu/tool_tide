@@ -24,6 +24,10 @@ export default class extends Controller {
     'landscapeIdInput', // Hidden input to pass landscape ID back to Rails
     'progressBarContainer',
     'progressBar',
+    'latitudeInput',
+    'longitudeInput',
+    'locationBtn',
+    'profileBtn',
   ];
 
   static values = {
@@ -534,5 +538,22 @@ export default class extends Controller {
     }
     this.setBrushSizeDisplay(40);
     this.updateUndoRedoButtonStates();
+  }
+
+  fetchLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(this.handleSuccess.bind(this), this.handleError.bind(this));
+    }
+  }
+
+  handleSuccess(position) {
+    const { latitude, longitude } = position.coords;
+    this.latitudeInputTarget.value = latitude;
+    this.longitudeInputTarget.value = longitude;
+    this.profileBtnTarget.click();
+  }
+
+  handleError(error) {
+    console.error(`ERROR(${error.code}): ${error.message}`);
   }
 }

@@ -10,6 +10,9 @@ Rails.application.routes.draw do
     collection do
       post "modify"
     end
+    member do
+      patch :location
+    end
   end
 
   resources :images, only: [ :create, :index ] do

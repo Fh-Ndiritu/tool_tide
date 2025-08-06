@@ -1,7 +1,7 @@
 class LandscapesController < ApplicationController
   # Protect from CSRF attacks
   skip_before_action :verify_authenticity_token, only: [ :create ]
-  before_action :set_landscape, only: %i[show edit modify]
+  before_action :set_landscape, only: %i[show edit modify location]
   before_action :check_premium, only: %i[show modify]
 
   rate_limit to: 6,
@@ -68,8 +68,32 @@ class LandscapesController < ApplicationController
   def show
   end
 
+  def location
+    if location_params.present?
+      results = Geocoder.search([ location_params[:latitude], location_params[:longitude] ])
+      current_user.update!(location_params)
+
+      current_user.update! address: results.first&.data.dig('address') if results.present?
+      @landscape.toggle!(:use_location)
+    end
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.replace(:local_location, partial: '/landscapes/location', locals: { landscape: @landscape, current_user: })
+      end
+    end
+  end
+
+  def location_params
+    params.permit(:latitude, :longitude).compact_blank.transform_values{ |v| v.to_d }
+  end
+
 
   private
+
+  def landscape_request
+    # move this to right controllers
+    @landscape_request ||= @landscape.landscape_request.last
+  end
 
   def create_landscape(original_image)
     @landscape = current_user.landscapes.new(ip_address: request&.remote_ip)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_06_110204) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_06_192525) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -54,6 +54,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_06_110204) do
     t.datetime "updated_at", null: false
     t.string "ip_address"
     t.integer "user_id"
+    t.boolean "use_location", default: false, null: false
     t.index ["user_id"], name: "index_landscapes_on_user_id"
   end
 
@@ -67,6 +68,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_06_110204) do
     t.datetime "updated_at", null: false
     t.boolean "admin", default: false
     t.string "ip_address"
+    t.decimal "latitude", precision: 10, scale: 7
+    t.decimal "longitude", precision: 10, scale: 7
+    t.json "address"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

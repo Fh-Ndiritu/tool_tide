@@ -237,3 +237,7 @@ html {
   width: auto;
   cursor: pointer;
 }
+
+.btn {
+  @apply w-auto px-5 opacity-70 bg-secondary text-text-light py-3 hover:opacity-100 transition-colors duration-300 transition-all text-base rounded-lg mt-2 mb-6 cursor-pointer;
+}

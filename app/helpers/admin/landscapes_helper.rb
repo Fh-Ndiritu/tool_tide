@@ -1,5 +1,5 @@
 module Admin::LandscapesHelper
-   def location(ip_address)
+   def location_ip(ip_address)
     # Ensure Geocoder gem is installed and configured
     # gem 'geocoder'
     # config/initializers/geocoder.rb with your API key if needed

@@ -6,4 +6,9 @@ class User < ApplicationRecord
 
   has_many :landscapes, dependent: :destroy
   has_many :landscape_requests, through: :landscapes
+
+
+  def state_address
+    "#{address['state']}, #{address['country']}"
+  end
 end
