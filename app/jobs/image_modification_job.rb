@@ -5,9 +5,9 @@ class ImageModificationJob < ApplicationJob
   queue_as :default
 
   def perform(landscape_id)
-      Rails.logger.info "Starting ImageModificationJob for Landscape ID: #{landscape_id}"
+    Rails.logger.info "Starting ImageModificationJob for Landscape ID: #{landscape_id}"
 
-      @landscape = Landscape.where(id: landscape_id).includes(:landscape_requests).first
+    @landscape = Landscape.where(id: landscape_id).includes(:landscape_requests).first
     begin
       raise "Please draw an area to style first..." unless valid_mask_data?
 
@@ -113,7 +113,7 @@ class ImageModificationJob < ApplicationJob
     rescue => e
       raise "Failed to attach processed image to record: #{e.message}"
     ensure
-      downloaded_image.close if defined?(downloaded_image)
+      downloaded_image.close if defined?(downloaded_image) && !downloaded_image.nil?
     end
   end
 
