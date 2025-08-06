@@ -254,7 +254,7 @@ class ImageModificationJob < ApplicationJob
     black_percentage = (max - mean).to_f / max * 100
     puts "Calculated non-white percentage: #{black_percentage.round(2)}%"
 
-    raise "Please draw the area to style on the image..." unless mean >= threshold
+    raise "Please draw the area to style on the image..." unless black_percentage >= threshold
   end
 
 
