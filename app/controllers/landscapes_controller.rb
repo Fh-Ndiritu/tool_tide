@@ -11,6 +11,10 @@ class LandscapesController < ApplicationController
   },
   only: %i[create]
 
+  def index
+    @landscapes = current_user.landscapes
+  end
+
   def new
     @landscape = current_user.landscapes.new
     @canvas = canvas

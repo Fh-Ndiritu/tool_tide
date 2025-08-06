@@ -68,6 +68,14 @@
         <% end %>
 
 
+        <% if user_signed_in? &&  current_user.landscapes.any? %>
+           <%= render ButtonComponent.new(
+            text: "History",
+            href: landscapes_path,
+            classes: "#{active_item(landscapes_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
+            ) %>
+        <% end %>
+
 
         <% if user_signed_in? %>
           <%= button_to "Log Out", destroy_user_session_path, method: :delete, class: "flex flex-col items-center font-semibold py-2 px-2 rounded-lg cursor-pointer hover:bg-primary hover:text-light duration-200 transition-all transition-duration-300 ease-in-out gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0" %>

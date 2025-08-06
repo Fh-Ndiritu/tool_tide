@@ -58,22 +58,7 @@
 
         <% if @landscape.modified_images.any? %>
             <% @landscape.landscape_requests.order(id: :desc).each_with_index do |request| %>
-            <% next unless request.modified_images.attached? %>
-              <div class="bg-neutral-100 shadow-sm rounded px-4">
-              <%= content_tag :h4, "#{request.preset} Style Results from #{t("landscape.engines.#{request.image_engine}")}", loading: :lazy, class: "py-4 text-accent block w-full text-center text-lg text-fancy"%>
-              <div class="grid grid-cols-1 md:grid-cols-2 md:grid-cols-3 gap-3">
-                <% request.modified_images.each_with_index do |modified_image, index| %>
-                  <div class=" mb-6 bg-neutral-50 rounded-lg shadow-sm overflow-hidden flex flex-col items-center text-center p-2">
-                    <%= image_tag url_for(modified_image.variant(resize_to_limit: [400, 400])), loading: :lazy,  alt: "AI Modified Landscape #{index + 1}", class: "max-w-full h-auto object-cover rounded-md border border-neutral-100 shadow-sm" %>
-
-                    <a href="<%= url_for(modified_image) %>" download="hadaa_ai_transformed_<%= index + 1 %>.png"
-                    class="mt-2 inline-block bg-accent hover:bg-secondary text-text-light font-bold py-2 px-3 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105"
-                      >HD Download
-                    </a>
-                  </div>
-                <% end %>
-              </div>
-              </div>
+             <%= render request, object: request %>
             <% end %>
         <% else %>
           <div class="text-center p-4">
