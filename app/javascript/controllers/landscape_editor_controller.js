@@ -394,7 +394,7 @@ export default class extends Controller {
     const landscapeId = this.landscapeIdValue;
     if (!landscapeId) {
       console.error('Landscape ID is missing for modification submission.');
-      this.showMessage('Error: Image ID not found. Please start a new design.');
+      this.showMessage(' Image ID not found. Please start a new design.');
       this.returnToNewDesign();
     }
 
@@ -430,7 +430,7 @@ export default class extends Controller {
       }
     } catch (error) {
       console.error('Error submitting modification:', error);
-      this.showMessage(`Error: ${error.message}. Please try again.`);
+      this.showMessage(` ${error.message}. Please try again.`);
       this.showSection('editor');
       if (this.hasProgressBarContainerTarget) {
         this.progressBarContainerTarget.classList.add('hidden');
@@ -446,7 +446,7 @@ export default class extends Controller {
       console.log('AI processing completed. Redirecting to landscape show page:', data.landscape_id);
       this.redirectToLandscapeShow(data.landscape_id);
     } else if (data.error) {
-      this.showMessage(`Error: ${data.error}`);
+      this.showMessage(` ${data.error}`);
       this.showSection('editor');
     } else {
       console.warn('AI data received but not in expected completed format or missing landscape_id.');

@@ -9,7 +9,7 @@ class ImageModificationJob < ApplicationJob
 
     @landscape = Landscape.where(id: landscape_id).includes(:landscape_requests).first
     begin
-      raise "Please draw an area to style first..." unless valid_mask_data?
+      validate_mask_data
 
       @b64_input_image =  prepare_original_image_for_bria(@landscape.original_image)
       @landscape_request = @landscape.landscape_requests.last
@@ -42,7 +42,7 @@ class ImageModificationJob < ApplicationJob
       save_b64_results(response["predictions"])
     else
       Rails.logger.error "Unexpected response from GCP: #{response}"
-      raise "Unexpected response from GCP"
+      raise "Unexpected response from Hadaa Pro Engine"
     end
   end
 
@@ -236,27 +236,28 @@ class ImageModificationJob < ApplicationJob
     end
   end
 
-  def valid_mask_data?
+  def validate_mask_data
     # we shall ensure the mask has at least 10 % black pixels
     blob = @landscape.mask_image_data.blob
+    raise "Please draw the area to style on the image..." unless blob
+
     threshold = 10
-    return false unless blob
     image = MiniMagick::Image.read(blob.download) do |img|
       img.colorspace("Gray").threshold("50%")
     end
 
     mean = image.data.dig("channelStatistics", "gray", "mean")
     max = image.data.dig("channelStatistics", "gray", "max")
-    return false unless mean
+    raise "Please draw the area to style on the image..." unless mean
 
     # Max will be 1 or 255 while mean at 0 means all black while at 1/255 means all white
     black_percentage = (max - mean).to_f / max * 100
     puts "Calculated non-white percentage: #{black_percentage.round(2)}%"
-    mean >= threshold
-  rescue MiniMagick::Error => e
-    Rails.logger.error "MiniMagick error while processing image: #{e.message}"
-    false
+
+    raise "Please draw the area to style on the image..." unless mean >= threshold
   end
+
+
 
   def broadcast_error(e)
     Rails.logger.error "Image modification job failed for Landscape ID #{@landscape.id}: #{e.class}: #{e.message}\n#{e.backtrace.join("\n")}"
