@@ -3,34 +3,33 @@ require "mini_magick"
 
 class ImageModificationJob < ApplicationJob
   queue_as :default
+
   def perform(landscape_id)
-    Rails.logger.info "Starting ImageModificationJob for Landscape ID: #{landscape_id}"
+      Rails.logger.info "Starting ImageModificationJob for Landscape ID: #{landscape_id}"
 
-    @landscape = Landscape.where(id: landscape_id).includes(:landscape_requests).first
-    raise "Please draw an area to style first..." unless valid_mask_data?
+      @landscape = Landscape.where(id: landscape_id).includes(:landscape_requests).first
+    begin
+      raise "Please draw an area to style first..." unless valid_mask_data?
 
-    @b64_input_image =  prepare_original_image_for_bria(@landscape.original_image)
-    @landscape_request = @landscape.landscape_requests.last
+      @b64_input_image =  prepare_original_image_for_bria(@landscape.original_image)
+      @landscape_request = @landscape.landscape_requests.last
 
-    if @landscape_request.google_processor?
-      gcp_inpaint
-    else
-      bria_inpaint
+      if @landscape_request.google_processor?
+        gcp_inpaint
+      else
+        bria_inpaint
+      end
+
+      if @landscape_request.reload.modified_images.attached?
+        ActionCable.server.broadcast(
+          "landscape_channel_#{@landscape.id}",
+          { status: "completed", landscape_id: @landscape.id }
+        )
+      end
+
+    rescue StandardError => e
+      broadcast_error(e)
     end
-
-    if @landscape_request.reload.modified_images.attached?
-      ActionCable.server.broadcast(
-        "landscape_channel_#{@landscape.id}",
-        { status: "completed", landscape_id: @landscape.id }
-      )
-    end
-  rescue StandardError => e
-    Rails.logger.error "Image modification job failed for Landscape ID #{@landscape.id}: #{e.class}: #{e.message}\n#{e.backtrace.join("\n")}"
-    ActionCable.server.broadcast(
-      "landscape_channel_#{@landscape.id}",
-      { error: e.message }
-    )
-    raise e.message
   end
 
 
@@ -263,5 +262,13 @@ class ImageModificationJob < ApplicationJob
   rescue MiniMagick::Error => e
     Rails.logger.error "MiniMagick error while processing image: #{e.message}"
     false
+  end
+
+  def broadcast_error(e)
+    Rails.logger.error "Image modification job failed for Landscape ID #{@landscape.id}: #{e.class}: #{e.message}\n#{e.backtrace.join("\n")}"
+    ActionCable.server.broadcast(
+      "landscape_channel_#{@landscape.id}",
+      { error: e.message }
+    )
   end
 end
