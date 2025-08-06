@@ -62,12 +62,6 @@ class ImageModificationJob < ApplicationJob
       num_results: 3
     )
     process_bria_results(bria_response)
-  rescue StandardError => e
-    Rails.logger.error "Image modification job failed for Landscape ID #{@landscape.id}: #{e.class}: #{e.message}\n#{e.backtrace.join("\n")}"
-    ActionCable.server.broadcast(
-      "landscape_channel_#{@landscape.id}",
-      { error: "An unexpected error occurred during image modification: #{e.message}" }
-    )
   end
 
   def save_b64_results(predictions)
