@@ -241,7 +241,7 @@ class ImageModificationJob < ApplicationJob
     blob = @landscape.mask_image_data.blob
     raise "Please draw the area to style on the image..." unless blob
 
-    threshold = 10
+    threshold = 5
     image = MiniMagick::Image.read(blob.download) do |img|
       img.colorspace("Gray").threshold("50%")
     end
