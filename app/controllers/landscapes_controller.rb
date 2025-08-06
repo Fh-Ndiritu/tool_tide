@@ -73,18 +73,18 @@ class LandscapesController < ApplicationController
       results = Geocoder.search([ location_params[:latitude], location_params[:longitude] ])
       current_user.update!(location_params)
 
-      current_user.update! address: results.first&.data.dig('address') if results.present?
+      current_user.update! address: results.first&.data.dig("address") if results.present?
       @landscape.toggle!(:use_location)
     end
     respond_to do |format|
       format.turbo_stream do
-        render turbo_stream: turbo_stream.replace(:local_location, partial: '/landscapes/location', locals: { landscape: @landscape, current_user: })
+        render turbo_stream: turbo_stream.replace(:local_location, partial: "/landscapes/location", locals: { landscape: @landscape, current_user: })
       end
     end
   end
 
   def location_params
-    params.permit(:latitude, :longitude).compact_blank.transform_values{ |v| v.to_d }
+    params.permit(:latitude, :longitude).compact_blank.transform_values { |v| v.to_d }
   end
 
 
