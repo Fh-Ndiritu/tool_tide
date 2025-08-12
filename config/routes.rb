@@ -10,6 +10,9 @@ Rails.application.routes.draw do
     collection do
       post "modify"
     end
+  end
+
+  resources :landscape_requests, only: :update do
     member do
       patch :location
     end

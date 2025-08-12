@@ -152,10 +152,13 @@ GEM
     erubis (2.7.0)
     et-orbi (1.2.11)
       tzinfo
+    event_stream_parser (1.0.0)
     faraday (2.13.2)
       faraday-net_http (>= 2.0, < 3.5)
       json
       logger
+    faraday-multipart (1.1.1)
+      multipart-post (~> 2.0)
     faraday-net_http (3.4.1)
       net-http (>= 0.5.0)
     faraday-retry (2.3.2)
@@ -304,6 +307,7 @@ GEM
     minitest (5.25.5)
     msgpack (1.8.0)
     multi_json (1.16.0)
+    multipart-post (2.4.1)
     net-http (0.6.0)
       uri
     net-imap (0.5.8)
@@ -471,6 +475,16 @@ GEM
     ruby-vips (2.2.4)
       ffi (~> 1.12)
       logger
+    ruby_llm (1.6.0)
+      base64
+      event_stream_parser (~> 1)
+      faraday (>= 1.10.0)
+      faraday-multipart (>= 1)
+      faraday-net_http (>= 1)
+      faraday-retry (>= 1)
+      marcel (~> 1.0)
+      zeitwerk (~> 2)
+    ruby_llm-schema (0.1.6)
     rubyzip (2.4.1)
     securerandom (0.4.1)
     selenium-webdriver (4.34.0)
@@ -623,6 +637,8 @@ DEPENDENCIES
   rubocop-rails-omakase
   rubocop-rspec
   ruby-vips (~> 2.2, >= 2.2.4)
+  ruby_llm (~> 1.6)
+  ruby_llm-schema (~> 0.1.6)
   selenium-webdriver
   shoulda-matchers
   simplecov

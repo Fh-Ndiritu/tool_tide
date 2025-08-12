@@ -1,7 +1,7 @@
 class LandscapesController < ApplicationController
   # Protect from CSRF attacks
   skip_before_action :verify_authenticity_token, only: [ :create ]
-  before_action :set_landscape, only: %i[show edit modify location]
+  before_action :set_landscape, only: %i[show edit modify]
   before_action :check_premium, only: %i[show modify]
 
   rate_limit to: 6,
@@ -17,18 +17,19 @@ class LandscapesController < ApplicationController
 
   def new
     @landscape = current_user.landscapes.new
-    @canvas = canvas
+    @canvas = canvas_dimensions
   end
 
   def show
   end
 
   def edit
-    @canvas = canvas
+    @canvas = canvas_dimensions
+    @landscape_request = @landscape.landscape_requests.unclaimed.last || @landscape.landscape_requests.create
   end
 
   def modify
-    create_landscape_request
+    update_landscape_request
     mask_image_data = landscape_params[:mask_image_data]
 
     if mask_image_data.blank?
@@ -41,7 +42,7 @@ class LandscapesController < ApplicationController
     # unless @landscape.mask_image_data.attached?
 
     save_mask(mask_image_data)
-    ImageModificationJob.perform_now(@landscape.id)
+    ImageModificationJob.perform_now(landscape_params[:landscape_request_id])
 
     # Respond immediately to the frontend to indicate job acceptance
     render json: { message: "Image modification request received. Processing in background." }, status: :accepted
@@ -68,25 +69,6 @@ class LandscapesController < ApplicationController
   def show
   end
 
-  def location
-    if location_params.present?
-      results = Geocoder.search([ location_params[:latitude], location_params[:longitude] ])
-      current_user.update!(location_params)
-
-      current_user.update! address: results.first&.data.dig("address") if results.present?
-      @landscape.toggle!(:use_location)
-    end
-    respond_to do |format|
-      format.turbo_stream do
-        render turbo_stream: turbo_stream.replace(:local_location, partial: "/landscapes/location", locals: { landscape: @landscape, current_user: })
-      end
-    end
-  end
-
-  def location_params
-    params.permit(:latitude, :longitude).compact_blank.transform_values { |v| v.to_d }
-  end
-
 
   private
 
@@ -101,7 +83,7 @@ class LandscapesController < ApplicationController
     @landscape.save
   end
 
-  def canvas
+  def canvas_dimensions
     return {} unless @landscape.original_responsive_image.attached?
 
     blob = @landscape.original_responsive_image.blob
@@ -110,7 +92,7 @@ class LandscapesController < ApplicationController
     { width: metadata[:width], height: metadata[:height] }
   end
 
-  def create_landscape_request
+  def update_landscape_request
     preset = landscape_params[:preset]
     raise "Please select a landscape vibe" if preset.blank?
     raise "Invalid landscape vibe selected" unless LANDSCAPE_PRESETS[preset].present?
@@ -119,19 +101,9 @@ class LandscapesController < ApplicationController
     prompt = PROMPTS["landscape_presets"][preset]
     raise "Preset prompts not found" unless prompt.present?
 
-    @landscape.landscape_requests.create(prompt:, image_engine: @image_engine, preset: preset.humanize)
-  end
-
-  def set_landscape
-    @landscape = current_user.landscapes.find(params[:id])
-    unless @landscape.original_image.attached?
-      flash[:alert] = "No image found for this landscape"
-      redirect_to landscapes_path
+    @landscape.landscape_requests.find(landscape_params[:landscape_request_id]).tap do |request|
+      request.update!(prompt:, image_engine: @image_engine, preset: preset.humanize)
     end
-  end
-
-  def landscape_params
-    params.require(:landscape).permit(:original_image, :preset, :mask_image_data)
   end
 
   def save_mask(raw_mask_image_data)
@@ -183,5 +155,17 @@ class LandscapesController < ApplicationController
 
     @reverted_to_bria = false
     @image_engine = "bria"
+  end
+
+  def set_landscape
+    @landscape = current_user.landscapes.find(params[:id])
+    unless @landscape.original_image.attached?
+      flash[:alert] = "No image found for this landscape"
+      redirect_to landscapes_path
+    end
+  end
+
+  def landscape_params
+    params.require(:landscape).permit(:original_image, :preset, :mask_image_data, :landscape_request_id)
   end
 end

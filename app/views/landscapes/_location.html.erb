@@ -1,5 +1,5 @@
  <div id="local_location" class="my-2">
-    <%= form_with(url: location_landscape_path(landscape), method: :patch) do |form| %>
+    <%= form_with(url: location_landscape_request_path(@landscape_request), method: :patch) do |form| %>
     <div class="mb-4">
         <input type="text" class="" id="latitude" name="latitude" data-landscape-editor-target="latitudeInput" hidden>
         <input type="text" class="" id="longitude" name="longitude" data-landscape-editor-target="longitudeInput" hidden>
@@ -8,11 +8,11 @@
               data-landscape-editor-target="locationCheckbox"
               data-action="change->landscape-editor#fetchLocation"
               class="form-check-input"
-              <%= 'checked' if landscape.use_location? %>>
+              <%= 'checked' if @landscape_request.use_location? %>>
         Use my local plants
       </label>
 
-      <%= tag.span "Using #{current_user.state_address}", class: "text-xs text-gray-600 block mt-2 #{ landscape.use_location? ? 'opacity-100' : 'opacity-0' }"%>
+      <%= tag.span "Using #{current_user.state_address}", class: "text-xs text-gray-600 block mt-2 #{ @landscape_request.use_location? ? 'opacity-100' : 'opacity-0' }"%>
 
       <button type="submit" data-landscape-editor-target="profileBtn"></button>
     </div>

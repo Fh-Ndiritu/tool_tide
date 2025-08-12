@@ -20,6 +20,7 @@
   <div data-controller="landscape-editor"
     data-landscape-editor-original-image-url-value="<%= @landscape.original_responsive_image.attached? ? url_for(@landscape.original_responsive_image) : '' %>"
     data-landscape-editor-landscape-id-value="<%= @landscape.id %>"
+    data-landscape-editor-landscape-request-id-value="<%= @landscape_request.id %>"
     data-editor-display-image-width-value="<%= @landscape.original_responsive_image.metadata['width'] %>"
     data-editor-display-image-height-value="<%= @landscape.original_responsive_image.metadata['height'] %>"
     data-editor-landscape-id-value="<%= @landscape.id %>"
@@ -93,7 +94,7 @@
           </select>
         </div>
 
-        <%= render 'location', landscape: @landscape %>
+        <%= render 'location', landscape: @landscape_request %>
 
         <%= form_with(url: modify_landscapes_path, method: :post, html: { data: { action: "submit->landscape-editor#submitModification", landscape_editor_target: "form" } }) do |form| %>
           <%= form.hidden_field :mask_image_data, data: { landscape_editor_target: "maskImageDataInput" } %>
@@ -102,7 +103,7 @@
 
           <button type="submit"
           data-landscape-editor-target="submitBtn"
-                  class="w-full bg-primary text-text-light py-3 rounded-md hover:bg-text-primary transition-colors duration-200 font-bold text-lg" disabled>
+                  class="w-full bg-primary text-text-light py-3 rounded-md hover:bg-text-primary transition-colors duration-200 font-bold text-lg">
             Generate Landscape
           </button>
         <% end %>

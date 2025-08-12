@@ -35,7 +35,8 @@ export default class extends Controller {
     displayImageWidth: Number,
     displayImageHeight: Number,
     landscapeId: Number,
-    modifiedImageUrl: String, // For displaying results on initial load if already processed
+    modifiedImageUrl: String,
+    landscapeRequestId: Number,
   };
 
   // Maximum dimension for client-side image resizing for CANVAS DISPLAY
@@ -402,11 +403,13 @@ export default class extends Controller {
       this.returnToNewDesign();
     }
 
+    console.log('landscapeRequestIdValue', this.landscapeRequestIdValue);
     const formData = new FormData();
     formData.append('landscape[id]', landscapeId);
     formData.append('landscape[mask_image_data]', maskDataURL);
     formData.append('landscape[preset]', preset);
     formData.append('id', landscapeId);
+    formData.append('landscape[landscape_request_id]', this.landscapeRequestIdValue);
 
     try {
       const response = await fetch(`/landscapes/modify`, {

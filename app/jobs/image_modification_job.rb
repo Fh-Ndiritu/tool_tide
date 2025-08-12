@@ -4,16 +4,15 @@ require "mini_magick"
 class ImageModificationJob < ApplicationJob
   queue_as :default
 
-  def perform(landscape_id)
-    Rails.logger.info "Starting ImageModificationJob for Landscape ID: #{landscape_id}"
+  def perform(landscape_request_id)
+    Rails.logger.info "Starting ImageModificationJob for Landscape ID: #{landscape_request_id}"
+    @landscape_request = LandscapeRequest.find(landscape_request_id)
 
-    @landscape = Landscape.where(id: landscape_id).includes(:landscape_requests).first
     begin
+      @landscape = @landscape_request.landscape
       validate_mask_data
-
+      @final_prompt = fetch_localized_prompt
       @b64_input_image =  prepare_original_image_for_bria(@landscape.original_image)
-      @landscape_request = @landscape.landscape_requests.last
-
       if @landscape_request.google_processor?
         gcp_inpaint
       else
@@ -34,6 +33,15 @@ class ImageModificationJob < ApplicationJob
 
 
   private
+
+  def fetch_localized_prompt
+
+    if @landscape_request.recommend_flowers? && @landscape_request.build_localized_prompt?
+      return @landscape_request.localized_prompt
+    end
+
+    @landscape_request.prompt
+  end
 
   def gcp_inpaint
     # @landscape.modified_images.purge
@@ -57,7 +65,7 @@ class ImageModificationJob < ApplicationJob
     bria_response = BriaAi::Client.new.gen_fill(
       image_input: @b64_input_image,
       mask_input:,
-      prompt: @landscape_request.prompt,
+      prompt: @final_prompt,
       sync: true,
       num_results: 3
     )
@@ -165,7 +173,7 @@ class ImageModificationJob < ApplicationJob
      {
       "instances": [
         {
-          "prompt": gsub_prompt(@landscape_request.prompt),
+          "prompt": gsub_prompt(@final_prompt),
           "referenceImages": [
             {
               "referenceType": "REFERENCE_TYPE_RAW",
