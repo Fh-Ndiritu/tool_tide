@@ -35,7 +35,6 @@ class ImageModificationJob < ApplicationJob
   private
 
   def fetch_localized_prompt
-
     if @landscape_request.recommend_flowers? && @landscape_request.build_localized_prompt?
       return @landscape_request.localized_prompt
     end

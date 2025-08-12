@@ -11,7 +11,7 @@ class LandscapeRequest < ApplicationRecord
 
   has_many :suggested_plants, dependent: :destroy
 
-  scope :unclaimed, ->{ where(preset: nil, image_engine: :bria, prompt: nil) }
+  scope :unclaimed, -> { where(preset: nil, image_engine: :bria, prompt: nil) }
 
   def recommend_flowers?
     return false unless authorized_to_recommend_flowers?
@@ -29,7 +29,7 @@ class LandscapeRequest < ApplicationRecord
     return false unless authorized_to_localize_prompt?
 
     response = fetch_localization_prompt
-    self.update localized_prompt: response.content['updated_prompt']
+    self.update localized_prompt: response.content["updated_prompt"]
   end
 
   private
