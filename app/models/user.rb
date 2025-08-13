@@ -9,6 +9,8 @@ class User < ApplicationRecord
 
 
   def state_address
+    return "" unless address.present?
+
     "#{address['state']}, #{address['country']}"
   end
 end
