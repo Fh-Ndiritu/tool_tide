@@ -28,6 +28,7 @@
 
     <h1 class="text-4xl font-bold text-center text-text-primary my-8"><%= t("landscape.title") %></h1>
 
+    <%= content_tag :h3, "We only modify the areas you brush/paint. Ensure the brushed region covers your garden. ", class: "py-4 flex w-full  text-text-secondary text-lg fancy-text justify-center" %>
     <div data-landscape-editor-target="editorSection" class="w-full max-w-full lg:max-w-6xl bg-white shadow-xl rounded-lg flex flex-col lg:flex-row p-4 max-md:px-0 mt-8">
       <div
         data-controller="konva-canvas"

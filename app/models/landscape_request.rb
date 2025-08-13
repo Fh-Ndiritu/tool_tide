@@ -8,6 +8,7 @@ class LandscapeRequest < ApplicationRecord
 
   enum :image_engine, [ :bria, :google ], suffix: :processor
   delegate :ip_address, to: :landscape
+  delegate :user, to: :landscape
 
   has_many :suggested_plants, dependent: :destroy
 

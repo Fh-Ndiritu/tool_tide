@@ -48,6 +48,7 @@ env:
     - GOOGLE_PROJECT_ID
     - BASE_URL
     - GOOGLE_APPLICATION_CREDENTIALS
+    - GEMINI_API_KEY
 
   clear:
     # Run the Solid Queue Supervisor inside the web server's Puma process to do jobs.
