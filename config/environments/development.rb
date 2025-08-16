@@ -83,6 +83,6 @@ Rails.application.configure do
     password:        Rails.application.credentials.dig(:smtp, :password),
     authentication:  "plain",
     enable_starttls: true,
-    open_timeout:    20,
-    read_timeout:    20 }
+    open_timeout:    5,
+    read_timeout:    5 }
 end
