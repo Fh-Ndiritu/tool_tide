@@ -104,11 +104,15 @@ gem "sitemap_generator", "~> 6.3"
 
 gem "faraday-retry", "~> 2.3"
 
+gem "googleauth"
+gem "google-cloud-ai_platform-v1", "~> 0.35.0"
 gem "mini_magick", "~> 5.2"
 gem "rdoc", "6.14.2"
-gem 'googleauth'
-gem 'google-cloud-ai_platform-v1', '~> 0.35.0'
 
 gem "geocoder", "~> 1.8"
 
 gem "devise", "~> 4.9"
+
+gem "ruby_llm", "~> 1.6"
+
+gem "ruby_llm-schema", "~> 0.1.6"

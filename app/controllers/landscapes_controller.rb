@@ -11,20 +11,25 @@ class LandscapesController < ApplicationController
   },
   only: %i[create]
 
+  def index
+    @landscapes = current_user.landscapes
+  end
+
   def new
-    @landscape = Landscape.new
-    @canvas = canvas
+    @landscape = current_user.landscapes.new
+    @canvas = canvas_dimensions
   end
 
   def show
   end
 
   def edit
-    @canvas = canvas
+    @canvas = canvas_dimensions
+    @landscape_request = @landscape.landscape_requests.unclaimed.last || @landscape.landscape_requests.create
   end
 
   def modify
-    create_landscape_request
+    update_landscape_request
     mask_image_data = landscape_params[:mask_image_data]
 
     if mask_image_data.blank?
@@ -37,7 +42,7 @@ class LandscapesController < ApplicationController
     # unless @landscape.mask_image_data.attached?
 
     save_mask(mask_image_data)
-    ImageModificationJob.perform_now(@landscape.id)
+    ImageModificationJob.perform_now(landscape_params[:landscape_request_id])
 
     # Respond immediately to the frontend to indicate job acceptance
     render json: { message: "Image modification request received. Processing in background." }, status: :accepted
@@ -67,13 +72,18 @@ class LandscapesController < ApplicationController
 
   private
 
+  def landscape_request
+    # move this to right controllers
+    @landscape_request ||= @landscape.landscape_request.last
+  end
+
   def create_landscape(original_image)
-    @landscape = Landscape.new(ip_address: request&.remote_ip)
+    @landscape = current_user.landscapes.new(ip_address: request&.remote_ip)
     @landscape.original_image.attach(original_image)
     @landscape.save
   end
 
-  def canvas
+  def canvas_dimensions
     return {} unless @landscape.original_responsive_image.attached?
 
     blob = @landscape.original_responsive_image.blob
@@ -82,7 +92,7 @@ class LandscapesController < ApplicationController
     { width: metadata[:width], height: metadata[:height] }
   end
 
-  def create_landscape_request
+  def update_landscape_request
     preset = landscape_params[:preset]
     raise "Please select a landscape vibe" if preset.blank?
     raise "Invalid landscape vibe selected" unless LANDSCAPE_PRESETS[preset].present?
@@ -91,19 +101,9 @@ class LandscapesController < ApplicationController
     prompt = PROMPTS["landscape_presets"][preset]
     raise "Preset prompts not found" unless prompt.present?
 
-    @landscape.landscape_requests.create(prompt:, image_engine: @image_engine, preset: preset.humanize)
-  end
-
-  def set_landscape
-    @landscape = Landscape.find(params[:id])
-    unless @landscape.original_image.attached?
-      flash[:alert] = "No image found for this landscape"
-      redirect_to landscapes_path
+    @landscape.landscape_requests.find(landscape_params[:landscape_request_id]).tap do |request|
+      request.update!(prompt:, image_engine: @image_engine, preset: preset.humanize)
     end
-  end
-
-  def landscape_params
-    params.require(:landscape).permit(:original_image, :preset, :mask_image_data)
   end
 
   def save_mask(raw_mask_image_data)
@@ -141,11 +141,10 @@ class LandscapesController < ApplicationController
     # We check if the user has more than 2 successul requests that happened in the last 24 hrs
     # IF false, we allow use of premium models
     if request&.remote_ip.present?
-      recent_requests = LandscapeRequest.joins(:landscape).where(
+      recent_requests = current_user.landscape_requests.joins(:landscape).where(
                           created_at: 24.hours.ago..,
-                          image_engine: :google,
-                          landscape: { ip_address: request&.remote_ip }
-                          )
+                          image_engine: :google
+                          ).reject { |landscape_request| landscape_request.modified_images.count.zero? }
       if recent_requests&.count < 2
         @reverted_to_bria = (recent_requests.count == 2)
         @image_engine = "google"
@@ -156,5 +155,17 @@ class LandscapesController < ApplicationController
 
     @reverted_to_bria = false
     @image_engine = "bria"
+  end
+
+  def set_landscape
+    @landscape = current_user.landscapes.find(params[:id])
+    unless @landscape.original_image.attached?
+      flash[:alert] = "No image found for this landscape"
+      redirect_to landscapes_path
+    end
+  end
+
+  def landscape_params
+    params.require(:landscape).permit(:original_image, :preset, :mask_image_data, :landscape_request_id)
   end
 end

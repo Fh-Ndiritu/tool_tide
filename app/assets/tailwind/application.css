@@ -145,6 +145,23 @@ html {
 .authentication {
   color: var(--color-text-light);
 }
+
+.authentication .card {
+  background-color: var(--color-primary);
+  display: flex;
+  border-radius: 25px;
+  padding: 35px;
+  @apply shadow m-auto flex flex-col justify-center items-center w-auto;
+  min-width: 30vw;
+  margin-top: 5vh;
+}
+
+.authentication form,
+.authentication .field input {
+  width: 100%;
+  text-align: left;
+}
+
 .authentication h2 {
   font-size: 1.5rem;
   font-weight: bold;
@@ -157,29 +174,70 @@ html {
   margin: 1rem 0;
 }
 
-.authentication input {
-  padding: 5px;
-  border-radius: 3px;
-  background-color: var(--color-accent) !important;
-  border: 1px solid gray;
-  margin-top: 1rem;
-}
 .authentication input:focus {
   outline: none;
   ring: 0;
   border: 1px solid var(--color-text-secondary);
 }
 
-.authentication input[type='submit'] {
-  padding: 5px 20px;
-  border-radius: 5px;
-  border: 1px solid var(--color-primary);
+.shared_links a:hover {
+  color: var(--color-secondary);
 }
-.authentication input[type='submit']:hover {
-  border: 1px solid gray;
+
+.authentication input,
+.authentication textarea,
+.authentication select,
+.authentication select option {
+  background: gainsboro !important;
+  padding: 10px 15px !important;
+  color: var(--color-text-dark) !important;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  margin-top: 0.6rem;
+  &::placeholder {
+    color: #9b9b9b !important;
+  }
+}
+
+.authentication input:focus,
+.authentication textarea:focus,
+.authentication select option:hover {
+  background: #ffffff !important;
+}
+
+.authentication :disabled {
+  background: #3d4142 !important;
+  color: #777979 !important;
+}
+
+.authentication .disabled label {
+  color: #777979;
+}
+.authentication .actions {
+  width: 100%;
+  display: flex;
+  margin-top: 2rem;
+}
+.authentication .actions input {
+  padding: 10px 32px !important;
+  border-radius: 5px !important;
+  background-color: var(--color-secondary) !important;
+  border: none;
+  color: white !important;
+  margin: auto;
+}
+.authentication .actions input:hover {
+  cursor: pointer;
+  background-color: var(--color-accent) !important;
+  transition-duration: 200ms;
+}
+
+.authentication input[type='checkbox'] {
+  width: auto;
   cursor: pointer;
 }
 
-.shared_links a:hover {
-  color: var(--color-secondary);
+.btn {
+  @apply w-auto px-5 opacity-70 bg-secondary text-text-light py-3 hover:opacity-100 transition-colors duration-300 transition-all text-base rounded-lg mt-2 mb-6 cursor-pointer;
 }

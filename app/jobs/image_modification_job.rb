@@ -3,31 +3,44 @@ require "mini_magick"
 
 class ImageModificationJob < ApplicationJob
   queue_as :default
-  def perform(landscape_id)
-    Rails.logger.info "Starting ImageModificationJob for Landscape ID: #{landscape_id}"
 
-    @landscape = Landscape.where(id: landscape_id).includes(:landscape_requests).first
-    @b64_input_image =  prepare_original_image_for_bria(@landscape.original_image)
-    @landscape_request = @landscape.landscape_requests.last
+  def perform(landscape_request_id)
+    Rails.logger.info "Starting ImageModificationJob for Landscape ID: #{landscape_request_id}"
+    @landscape_request = LandscapeRequest.find(landscape_request_id)
 
-    @b64_mask_image = flip_mask_colors
+    begin
+      @landscape = @landscape_request.landscape
+      validate_mask_data
+      @final_prompt = fetch_localized_prompt
+      @b64_input_image =  prepare_original_image_for_bria(@landscape.original_image)
+      if @landscape_request.google_processor?
+        gcp_inpaint
+      else
+        bria_inpaint
+      end
 
-    if @landscape_request.google_processor?
-      gcp_inpaint
-    else
-      bria_inpaint
-    end
+      if @landscape_request.reload.modified_images.attached?
+        ActionCable.server.broadcast(
+          "landscape_channel_#{@landscape.id}",
+          { status: "completed", landscape_id: @landscape.id }
+        )
+      end
 
-    if @landscape_request.reload.modified_images.attached?
-      ActionCable.server.broadcast(
-        "landscape_channel_#{@landscape.id}",
-        { status: "completed", landscape_id: @landscape.id }
-      )
+    rescue StandardError => e
+      broadcast_error(e)
     end
   end
 
 
   private
+
+  def fetch_localized_prompt
+    if @landscape_request.recommend_flowers? && @landscape_request.build_localized_prompt?
+      return @landscape_request.localized_prompt
+    end
+
+    @landscape_request.prompt
+  end
 
   def gcp_inpaint
     # @landscape.modified_images.purge
@@ -36,7 +49,7 @@ class ImageModificationJob < ApplicationJob
       save_b64_results(response["predictions"])
     else
       Rails.logger.error "Unexpected response from GCP: #{response}"
-      raise "Unexpected response from GCP"
+      raise "Unexpected response from Hadaa Pro Engine"
     end
   end
 
@@ -47,20 +60,15 @@ class ImageModificationJob < ApplicationJob
   end
 
   def bria_inpaint
+    mask_input = flip_mask_colors
     bria_response = BriaAi::Client.new.gen_fill(
       image_input: @b64_input_image,
-      mask_input:  @b64_mask_image,
-      prompt: @landscape_request.prompt,
+      mask_input:,
+      prompt: @final_prompt,
       sync: true,
       num_results: 3
     )
     process_bria_results(bria_response)
-  rescue StandardError => e
-    Rails.logger.error "Image modification job failed for Landscape ID #{@landscape.id}: #{e.class}: #{e.message}\n#{e.backtrace.join("\n")}"
-    ActionCable.server.broadcast(
-      "landscape_channel_#{@landscape.id}",
-      { error: "An unexpected error occurred during image modification: #{e.message}" }
-    )
   end
 
   def save_b64_results(predictions)
@@ -106,7 +114,7 @@ class ImageModificationJob < ApplicationJob
     rescue => e
       raise "Failed to attach processed image to record: #{e.message}"
     ensure
-      downloaded_image.close if defined?(downloaded_image)
+      downloaded_image.close if defined?(downloaded_image) && !downloaded_image.nil?
     end
   end
 
@@ -164,7 +172,7 @@ class ImageModificationJob < ApplicationJob
      {
       "instances": [
         {
-          "prompt": gsub_prompt(@landscape_request.prompt),
+          "prompt": gsub_prompt(@final_prompt),
           "referenceImages": [
             {
               "referenceType": "REFERENCE_TYPE_RAW",
@@ -233,5 +241,36 @@ class ImageModificationJob < ApplicationJob
     rescue => e
       raise "An unexpected error occurred during mask color flipping: #{e.message}"
     end
+  end
+
+  def validate_mask_data
+    # we shall ensure the mask has at least 10 % black pixels
+    blob = @landscape.mask_image_data.blob
+    raise "Please draw the area to style on the image..." unless blob
+
+    threshold = 5
+    image = MiniMagick::Image.read(blob.download) do |img|
+      img.colorspace("Gray").threshold("50%")
+    end
+
+    mean = image.data.dig("channelStatistics", "gray", "mean")
+    max = image.data.dig("channelStatistics", "gray", "max")
+    raise "Please draw the area to style on the image..." unless mean
+
+    # Max will be 1 or 255 while mean at 0 means all black while at 1/255 means all white
+    black_percentage = (max - mean).to_f / max * 100
+    puts "Calculated non-white percentage: #{black_percentage.round(2)}%"
+
+    raise "Please draw the area to style on the image..." unless black_percentage >= threshold
+  end
+
+
+
+  def broadcast_error(e)
+    Rails.logger.error "Image modification job failed for Landscape ID #{@landscape.id}: #{e.class}: #{e.message}\n#{e.backtrace.join("\n")}"
+    ActionCable.server.broadcast(
+      "landscape_channel_#{@landscape.id}",
+      { error: e.message }
+    )
   end
 end

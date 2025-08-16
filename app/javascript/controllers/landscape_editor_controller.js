@@ -24,6 +24,10 @@ export default class extends Controller {
     'landscapeIdInput', // Hidden input to pass landscape ID back to Rails
     'progressBarContainer',
     'progressBar',
+    'latitudeInput',
+    'longitudeInput',
+    'locationBtn',
+    'profileBtn',
   ];
 
   static values = {
@@ -31,7 +35,8 @@ export default class extends Controller {
     displayImageWidth: Number,
     displayImageHeight: Number,
     landscapeId: Number,
-    modifiedImageUrl: String, // For displaying results on initial load if already processed
+    modifiedImageUrl: String,
+    landscapeRequestId: Number,
   };
 
   // Maximum dimension for client-side image resizing for CANVAS DISPLAY
@@ -394,15 +399,17 @@ export default class extends Controller {
     const landscapeId = this.landscapeIdValue;
     if (!landscapeId) {
       console.error('Landscape ID is missing for modification submission.');
-      this.showMessage('Error: Image ID not found. Please start a new design.');
+      this.showMessage(' Image ID not found. Please start a new design.');
       this.returnToNewDesign();
     }
 
+    console.log('landscapeRequestIdValue', this.landscapeRequestIdValue);
     const formData = new FormData();
     formData.append('landscape[id]', landscapeId);
     formData.append('landscape[mask_image_data]', maskDataURL);
     formData.append('landscape[preset]', preset);
     formData.append('id', landscapeId);
+    formData.append('landscape[landscape_request_id]', this.landscapeRequestIdValue);
 
     try {
       const response = await fetch(`/landscapes/modify`, {
@@ -430,7 +437,7 @@ export default class extends Controller {
       }
     } catch (error) {
       console.error('Error submitting modification:', error);
-      this.showMessage(`Error: ${error.message}. Please try again.`);
+      this.showMessage(` ${error.message}. Please try again.`);
       this.showSection('editor');
       if (this.hasProgressBarContainerTarget) {
         this.progressBarContainerTarget.classList.add('hidden');
@@ -446,7 +453,7 @@ export default class extends Controller {
       console.log('AI processing completed. Redirecting to landscape show page:', data.landscape_id);
       this.redirectToLandscapeShow(data.landscape_id);
     } else if (data.error) {
-      this.showMessage(`AI processing error: ${data.error}`);
+      this.showMessage(` ${data.error}`);
       this.showSection('editor');
     } else {
       console.warn('AI data received but not in expected completed format or missing landscape_id.');
@@ -534,5 +541,22 @@ export default class extends Controller {
     }
     this.setBrushSizeDisplay(40);
     this.updateUndoRedoButtonStates();
+  }
+
+  fetchLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(this.handleSuccess.bind(this), this.handleError.bind(this));
+    }
+  }
+
+  handleSuccess(position) {
+    const { latitude, longitude } = position.coords;
+    this.latitudeInputTarget.value = latitude;
+    this.longitudeInputTarget.value = longitude;
+    this.profileBtnTarget.click();
+  }
+
+  handleError(error) {
+    console.error(`ERROR(${error.code}): ${error.message}`);
   }
 }

@@ -3,14 +3,13 @@
 
     <div class="pt-0">
 
-
        <% @landscapes.each do |landscape| %>
           <div class="flex gap-10 justify-between max-w-9/12 bg-gray-200 m-auto">
             <div>
-              <%= content_tag :h4, "User location: #{location(landscape.ip_address)}" %>
+              <%= content_tag :h4, "User location: #{location_ip(landscape.ip_address)}" %>
             </div>
-              <%= image_tag url_for(landscape.original_image.variant(resize_to_limit: [500, 500])), alt: "Landscape Image", class: "max-w-full h-auto max-h-96 object-cover rounded-md border border-neutral-100 shadow-sm" %>
-              <%= image_tag url_for(landscape.mask_image_data.variant(resize_to_limit: [500, 500])), class: "max-w-full h-auto max-h-96 object-cover rounded-md border border-neutral-100 shadow-sm"   if landscape.mask_image_data.attached? %>
+              <%= image_tag url_for(landscape.original_image.variant(resize_to_limit: [500, 500])), alt: "Landscape Image", class: "max-w-full h-auto max-h-96 object-cover rounded-md border border-neutral-100 shadow-sm", loading: :lazy %>
+              <%= image_tag url_for(landscape.mask_image_data.variant(resize_to_limit: [500, 500])), class: "max-w-full h-auto max-h-96 object-cover rounded-md border border-neutral-100 shadow-sm", loading: :lazy   if landscape.mask_image_data.attached? %>
           </div>
 
          <% landscape.landscape_requests.order(id: :desc).each_with_index do |request| %>
@@ -20,7 +19,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 md:grid-cols-3 gap-3">
                   <% request.modified_images.each_with_index do |modified_image, index| %>
                     <div class=" mb-6 bg-neutral-50 rounded-lg shadow-sm overflow-hidden flex flex-col items-center text-center p-2">
-                      <%= image_tag url_for(modified_image.variant(resize_to_limit: [500, 500])), alt: "AI Modified Landscape #{index + 1}", class: "max-w-full h-auto object-cover rounded-md border border-neutral-100 shadow-sm" %>
+                      <%= image_tag url_for(modified_image.variant(resize_to_limit: [500, 500])), alt: "AI Modified Landscape #{index + 1}", class: "max-w-full h-auto object-cover rounded-md border border-neutral-100 shadow-sm", loading: :lazy %>
 
                       <a href="<%= url_for(modified_image.variant(resize_to_limit: [500, 500])) %>" download="hadaa_ai_transformed_<%= index + 1 %>.png"
                       class="mt-2 inline-block bg-accent hover:bg-secondary text-text-light font-bold py-2 px-3 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105"

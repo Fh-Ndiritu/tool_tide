@@ -12,7 +12,7 @@ class Landscape < ApplicationRecord
   has_one_attached :mask_image_data
 
   has_many :landscape_requests, dependent: :destroy
-
+  belongs_to :user
 
   def modified_images
     ActiveStorage::Attachment.where(record_id: landscape_requests.ids)

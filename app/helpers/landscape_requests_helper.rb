@@ -1,0 +1,2 @@
+module LandscapeRequestsHelper
+end

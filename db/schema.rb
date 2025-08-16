@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_31_194539) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_12_201807) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -39,6 +39,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_31_194539) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "chats", force: :cascade do |t|
+    t.string "model_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "landscape_requests", force: :cascade do |t|
     t.integer "landscape_id", null: false
     t.integer "image_engine", default: 0, null: false
@@ -46,6 +52,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_31_194539) do
     t.datetime "updated_at", null: false
     t.text "prompt"
     t.string "preset"
+    t.boolean "use_location", default: false, null: false
+    t.text "localized_prompt"
     t.index ["landscape_id"], name: "index_landscape_requests_on_landscape_id"
   end
 
@@ -53,6 +61,42 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_31_194539) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "ip_address"
+    t.integer "user_id"
+    t.index ["user_id"], name: "index_landscapes_on_user_id"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.integer "chat_id", null: false
+    t.string "role"
+    t.text "content"
+    t.string "model_id"
+    t.integer "input_tokens"
+    t.integer "output_tokens"
+    t.integer "tool_call_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chat_id"], name: "index_messages_on_chat_id"
+    t.index ["tool_call_id"], name: "index_messages_on_tool_call_id"
+  end
+
+  create_table "suggested_plants", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.integer "landscape_request_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["landscape_request_id"], name: "index_suggested_plants_on_landscape_request_id"
+  end
+
+  create_table "tool_calls", force: :cascade do |t|
+    t.integer "message_id", null: false
+    t.string "tool_call_id", null: false
+    t.string "name", null: false
+    t.json "arguments", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["message_id"], name: "index_tool_calls_on_message_id"
+    t.index ["tool_call_id"], name: "index_tool_calls_on_tool_call_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -63,6 +107,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_31_194539) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "admin", default: false
+    t.string "ip_address"
+    t.decimal "latitude", precision: 10, scale: 7
+    t.decimal "longitude", precision: 10, scale: 7
+    t.json "address"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
@@ -70,4 +119,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_31_194539) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "landscape_requests", "landscapes"
+  add_foreign_key "landscapes", "users"
+  add_foreign_key "messages", "chats"
+  add_foreign_key "suggested_plants", "landscape_requests"
+  add_foreign_key "tool_calls", "messages"
 end

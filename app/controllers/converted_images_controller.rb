@@ -2,6 +2,8 @@
 # frozen_string_literal: true
 
 class ConvertedImagesController < ApplicationController
+  skip_before_action :authenticate_user!
+
   def index
     # Retrieve the paths from flash. Flash only lasts for one redirect.
     @converted_file_paths = flash[:converted_file_paths] || []
