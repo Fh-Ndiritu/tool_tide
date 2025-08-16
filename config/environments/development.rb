@@ -85,5 +85,4 @@ Rails.application.configure do
     enable_starttls: true,
     open_timeout:    5,
     read_timeout:    5 }
-
 end
