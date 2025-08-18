@@ -58,7 +58,7 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = false
 
   # Set host to be used by links generated in mailer templates.
-# config/environments/production.rb
+  # config/environments/production.rb
   config.action_mailer.default_url_options = { host: "hadaa.app", protocol: "https" }
 
 
@@ -95,3 +95,15 @@ Rails.application.configure do
     open_timeout:    5,
     read_timeout:    5 }
 end
+
+
+# mail = Mail::Message.new do
+#   from    'fhndiritu@gmail.com'
+#   to      'fhndiritu@gmail.com'
+#   subject 'Direct Console Test Email'
+#   body    'This is a test email to verify your production email configuration.'
+# end
+
+# mail.delivery_method :smtp, Rails.application.config.action_mailer.smtp_settings
+
+# mail.deliver!
