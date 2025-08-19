@@ -1,4 +1,5 @@
 require "active_support/core_ext/integer/time"
+require Rails.root.join("config", "initializers", "brevo_api_mailer.rb")
 
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
@@ -73,4 +74,11 @@ Rails.application.configure do
   config.active_job.queue_adapter = :solid_queue
   config.solid_queue.connects_to = { database: { writing: :queue } }
   config.action_controller.default_url_options = { host: "localhost", port: 3000 }
+
+  config.action_mailer.delivery_method = BrevoApiMailer
+
+  config.action_mailer.add_delivery_method :brevo_api, BrevoApiMailer, api_key: ENV.fetch('BREVO_API_KEY', nil)
+
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.default_url_options = { host: 'localhost:3000' }
 end
