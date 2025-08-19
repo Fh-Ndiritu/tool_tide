@@ -116,3 +116,5 @@ gem "devise", "~> 4.9"
 gem "ruby_llm", "~> 1.6"
 
 gem "ruby_llm-schema", "~> 0.1.6"
+
+gem "brevo-rails", "~> 1.1"

@@ -82,16 +82,4 @@ Rails.application.configure do
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
 
   config.action_cable.url = "wss://#{URI.parse(ENV.fetch("BASE_URL") { 'hadaa.app' }).host}/cable"
-
-  config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = {
-    address:         "smtp-relay.brevo.com",
-    port:            587,
-    domain:          "brevo.com",
-    user_name:       Rails.application.credentials.dig(:smtp, :user_name),
-    password:        Rails.application.credentials.dig(:smtp, :password),
-    authentication:  "plain",
-    enable_starttls: true,
-    open_timeout:    5,
-    read_timeout:    5 }
 end
