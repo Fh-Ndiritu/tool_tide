@@ -82,4 +82,12 @@ Rails.application.configure do
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
 
   config.action_cable.url = "wss://#{URI.parse(ENV.fetch("BASE_URL") { 'hadaa.app' }).host}/cable"
+
+  config.action_mailer.delivery_method = :brevo
+  config.action_mailer.brevo_settings = {
+    api_key: ENV.fetch("BREVO_API_KEY")
+  }
+
+  # Ensure to set the host for mailer URLs
+  config.action_mailer.default_url_options = { host: "hadaa.app" }
 end

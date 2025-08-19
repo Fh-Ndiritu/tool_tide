@@ -33,13 +33,5 @@ module ToolTide
                        controller_specs: true,
                        request_specs: false
     end
-
-  config.action_mailer.delivery_method = :brevo
-  config.action_mailer.brevo_settings = {
-    api_key: ENV.fetch("BREVO_API_KEY")
-  }
-
-  # Ensure to set the host for mailer URLs
-  config.action_mailer.default_url_options = { host: "hadaa.app" }
   end
 end
