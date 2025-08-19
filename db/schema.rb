@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_12_201807) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_18_150728) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -79,6 +79,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_12_201807) do
     t.index ["tool_call_id"], name: "index_messages_on_tool_call_id"
   end
 
+  create_table "payment_transactions", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "reference_id"
+    t.decimal "amount", precision: 10, scale: 2
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_payment_transactions_on_user_id"
+  end
+
   create_table "suggested_plants", force: :cascade do |t|
     t.string "name"
     t.text "description"
@@ -121,6 +130,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_12_201807) do
   add_foreign_key "landscape_requests", "landscapes"
   add_foreign_key "landscapes", "users"
   add_foreign_key "messages", "chats"
+  add_foreign_key "payment_transactions", "users"
   add_foreign_key "suggested_plants", "landscape_requests"
   add_foreign_key "tool_calls", "messages"
 end

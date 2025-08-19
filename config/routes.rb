@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  # resources :payment_transactions, only: [:index, :create]
+  post 'payment_transactions', to: 'payment_transactions#create', as: :payment_transactions
   devise_for :users
   mount ActionCable.server => "/cable"
 

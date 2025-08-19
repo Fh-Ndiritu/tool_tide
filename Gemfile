@@ -77,9 +77,9 @@ group :test do
   gem "database_cleaner-active_record"
   gem "rspec-rails", "~> 8.0.1"
   gem "selenium-webdriver"
-  gem "shoulda-matchers"
   gem "simplecov", require: false
   gem "webdrivers"
+  gem 'shoulda-matchers', '~> 6.0'
 end
 
 # Validating attached document

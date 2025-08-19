@@ -6,6 +6,7 @@ class User < ApplicationRecord
 
   has_many :landscapes, dependent: :destroy
   has_many :landscape_requests, through: :landscapes
+  has_many :payment_transactions, dependent: :nullify
 
 
   def state_address

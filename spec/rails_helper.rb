@@ -6,7 +6,6 @@
 # directory. Alternatively, in the individual `_spec.rb` files, manually
 # require only the support files necessary.
 #
-# Dir[Rails.root.join('spec', 'support', '**', '*.rb')].sort.each { |f| require f }
 
 require 'spec_helper' # Always require spec_helper first
 require 'simplecov'
@@ -14,6 +13,9 @@ SimpleCov.start 'rails' # Start SimpleCov at the very top of rails_helper.rb
 
 ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
+
+Dir[Rails.root.join('spec', 'support', '**', '*.rb')].sort.each { |f| require f }
+
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'rspec/rails'
@@ -23,6 +25,8 @@ require 'capybara/rails'
 require 'webdrivers' # Automatically downloads browser drivers
 require 'database_cleaner/active_record' # Specific for ActiveRecord
 require 'shoulda/matchers'
+
+require 'devise'
 
 # Configure Capybara for system/feature tests
 Capybara.register_driver :headless_chrome do |app|
@@ -49,7 +53,7 @@ end
 RSpec.configure do |config|
   # Uncomment this line if you are using ActiveRecord fixtures
   config.fixture_paths = [
-    Rails.root.join('spec/fixtures')
+    Rails.root.join('test/fixtures')
   ]
 
   # If you're not using ActiveRecord, or you'd prefer not to run each example in a transaction,
@@ -97,4 +101,16 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # Arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem_name")
+
+  config.include Devise::Test::ControllerHelpers, type: :controller
+  config.include Devise::Test::IntegrationHelpers, type: :request
+  config.include Devise::Test::IntegrationHelpers, type: :system
+  config.include Warden::Test::Helpers
+end
+
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    with.test_framework :rspec
+    with.library :rails
+  end
 end
