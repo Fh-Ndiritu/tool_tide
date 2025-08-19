@@ -85,9 +85,9 @@ Rails.application.configure do
 
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-    address:         "smtp.gmail.com",
+    address:         "smtp-relay.brevo.com",
     port:            587,
-    domain:          "gmail.com",
+    domain:          "brevo.com",
     user_name:       Rails.application.credentials.dig(:smtp, :user_name),
     password:        Rails.application.credentials.dig(:smtp, :password),
     authentication:  "plain",
@@ -95,15 +95,3 @@ Rails.application.configure do
     open_timeout:    5,
     read_timeout:    5 }
 end
-
-
-# mail = Mail::Message.new do
-#   from    'fhndiritu@gmail.com'
-#   to      'fhndiritu@gmail.com'
-#   subject 'Direct Console Test Email'
-#   body    'This is a test email to verify your production email configuration.'
-# end
-
-# mail.delivery_method :smtp, Rails.application.config.action_mailer.smtp_settings
-
-# mail.deliver!

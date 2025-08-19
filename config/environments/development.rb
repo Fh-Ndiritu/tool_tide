@@ -76,9 +76,9 @@ Rails.application.configure do
 
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-    address:         "smtp.gmail.com",
+    address:         "smtp-relay.brevo.com",
     port:            587,
-    domain:          "gmail.com",
+    domain:          "brevo.com",
     user_name:       Rails.application.credentials.dig(:smtp, :user_name),
     password:        Rails.application.credentials.dig(:smtp, :password),
     authentication:  "plain",
