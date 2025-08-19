@@ -85,7 +85,7 @@ Rails.application.configure do
 
   config.action_mailer.delivery_method = :brevo
   config.action_mailer.brevo_settings = {
-    api_key: ENV.fetch("BREVO_API_KEY")
+    api_key: ENV.fetch("BREVO_API_KEY", nil)
   }
 
   # Ensure to set the host for mailer URLs
