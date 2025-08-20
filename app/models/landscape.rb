@@ -14,6 +14,8 @@ class Landscape < ApplicationRecord
   has_many :landscape_requests, dependent: :destroy
   belongs_to :user
 
+  scope :non_admin, -> { joins(:user).where(user: { admin: false }) unless Rails.env.local? }
+
   def modified_images
     ActiveStorage::Attachment.where(record_id: landscape_requests.ids)
   end
