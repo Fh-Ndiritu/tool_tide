@@ -87,7 +87,7 @@ Rails.application.configure do
 
   config.action_mailer.add_delivery_method :brevo_api, BrevoApiMailer, api_key: ENV.fetch("BREVO_API_KEY", nil)
 
-  config.action_mailer.default_url_options = { host: URI.parse(ENV.fetch("BASE_URL")) { "hadaa.app" } }
+  config.action_mailer.default_url_options = { host: URI.parse(ENV.fetch("BASE_URL") { "hadaa.app" }).host }
 
   config.action_mailer.raise_delivery_errors = true
 end
