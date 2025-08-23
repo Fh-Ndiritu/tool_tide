@@ -10,7 +10,7 @@ class IconComponent < ViewComponent::Base
   end
 
   def call
-    svg_path = Rails.root.join("app", "assets", "images", "icons", "#{@name}.erb")
+    svg_path = Rails.root.join('app', 'assets', 'images', 'icons', "#{@name}.erb")
 
     if File.exist?(svg_path)
       svg_content = File.read(svg_path).html_safe

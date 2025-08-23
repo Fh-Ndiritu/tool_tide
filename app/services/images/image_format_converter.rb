@@ -28,9 +28,9 @@ module Images
     if UNSUPPORTED_RASTER_TO_VECTOR_FORMATS.include?(@target_format.downcase)
       return Result.new(
         success: false,
-        error: "Conversion failed: Converting raster images (like JPG) to vector format " \
+        error: 'Conversion failed: Converting raster images (like JPG) to vector format ' \
                "(#{@target_format.upcase}) is not directly supported by image processing libraries. " \
-               "Requires specialized vectorization."
+               'Requires specialized vectorization.'
       )
     end
 
@@ -74,11 +74,11 @@ module Images
 
     def generate_output_path(original_filename, target_format)
       # Ensure a unique filename and path to prevent overwrites
-      basename = File.basename(original_filename, ".*")
+      basename = File.basename(original_filename, '.*')
       timestamp = Time.current.to_i
       unique_filename = "#{basename}_#{timestamp}.#{target_format}"
       # Use a temporary directory for processed files
-      Rails.root.join("tmp", "conversions", unique_filename).tap do |path|
+      Rails.root.join('tmp', 'conversions', unique_filename).tap do |path|
         FileUtils.mkdir_p(path.dirname) # Ensure the directory exists
       end
     end

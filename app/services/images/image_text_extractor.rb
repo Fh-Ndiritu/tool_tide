@@ -27,7 +27,7 @@ class Images::ImageTextExtractor
     return result unless result.success?
 
     # we only need to handle our markdown on page one
-    text = kramdown_markdown(result.data["pages"][0])
+    text = kramdown_markdown(result.data['pages'][0])
 
     # we now have valid html. It needs some js libraries to display well
     Result.new(success: true, data: { text:, file_name: @image.original_filename })
@@ -40,7 +40,7 @@ class Images::ImageTextExtractor
   def resize_encode_image(uploaded_image)
     # we shall use JPEG files to keep inputs consistent
     pipeline = ImageProcessing::Vips.source(uploaded_image.tempfile)
-    tempfile = pipeline.convert("jpeg").resize_to_limit!(700, 700)
+    tempfile = pipeline.convert('jpeg').resize_to_limit!(700, 700)
     Base64.strict_encode64(tempfile.read)
   rescue StandardError => e
     raise "Error resizing and encoding image: #{e.message}"

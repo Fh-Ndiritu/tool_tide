@@ -5,7 +5,7 @@ class MistralService
   include Singleton
 
   def initialize
-    @model = "mistral-ocr-latest"
+    @model = 'mistral-ocr-latest'
     @conn = conn
   end
 
@@ -60,7 +60,7 @@ class MistralService
     {
       model: @model,
       document: {
-        type: "image_url",
+        type: 'image_url',
         image_url: "data:image/png;base64,#{base64_image}"
       },
       include_image_base64: true
@@ -69,14 +69,14 @@ class MistralService
 
   def fetch_request(payload)
     @conn.post do |req|
-      req.headers["Content-Type"] = "application/json"
-      req.headers["Authorization"] = "Bearer #{ENV['MISTRAL_API_KEY']}"
+      req.headers['Content-Type'] = 'application/json'
+      req.headers['Authorization'] = "Bearer #{ENV['MISTRAL_API_KEY']}"
       req.body = payload.to_json
     end
   end
 
   def conn
-    Faraday.new(url: "https://api.mistral.ai/v1/ocr") do |f|
+    Faraday.new(url: 'https://api.mistral.ai/v1/ocr') do |f|
       f.request :json
       f.response :json
       f.adapter Faraday.default_adapter
@@ -84,11 +84,11 @@ class MistralService
   end
 
   def write_response_to_file(response_body, json_output_file)
-    output_dir = "outputs/basic_ocr"
+    output_dir = 'outputs/basic_ocr'
     FileUtils.mkdir_p(output_dir) unless Dir.exist?(output_dir)
 
     output_path = File.join(output_dir,  json_output_file)
-    File.open(output_path, "w") do |file|
+    File.open(output_path, 'w') do |file|
       file.write(JSON.pretty_generate(response_body))
     end
     puts "OCR result written to #{output_path}"

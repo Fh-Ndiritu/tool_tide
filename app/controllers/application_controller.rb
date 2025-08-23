@@ -6,6 +6,6 @@ class ApplicationController < ActionController::Base
   private
 
   def set_active_storage_url_options
-    ActiveStorage::Current.url_options = { host: request.host, protocol: request.protocol.delete_suffix(":"), port: request.port }
+    ActiveStorage::Current.url_options = { host: request.host, protocol: request.protocol.delete_suffix(':'), port: request.port }
   end
 end

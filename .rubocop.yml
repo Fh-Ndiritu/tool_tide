@@ -9,3 +9,9 @@ inherit_gem: { rubocop-rails-omakase: rubocop.yml }
 
 Bundler/OrderedGems:
   Enabled: true
+
+Layout/SpaceBeforeFirstArg:
+  Enabled: false
+Style/StringLiterals:
+  Enabled: true
+  EnforcedStyle: double_quotes

@@ -32,7 +32,7 @@ module Markdownable
   # end
 
   def kramdown_markdown(page)
-    markdown = replace_images(page["markdown"], page["images"])
+    markdown = replace_images(page['markdown'], page['images'])
     kramdown_markdown = convert_latex_to_kramdown(markdown)
     Kramdown::Document.new(kramdown_markdown).to_html
   end
@@ -40,11 +40,11 @@ module Markdownable
   def replace_images(markdown, images)
     images.each do |image|
       # base64_image = image["image_base64"]
-      id = image["id"]
+      id = image['id']
 
       # Create an HTML image tag with the base64 encoded image
       # image_tag = "<img src='#{base64_image}' alt='OCR Image'/>"
-      image_tag = ""
+      image_tag = ''
 
       # Replace the markdown image reference with the HTML image tag
       # We shall get rid of images for now

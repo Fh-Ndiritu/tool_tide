@@ -1,14 +1,18 @@
 class PaymentTransaction < ApplicationRecord
   belongs_to :user, touch: true
 
-  validates_presence_of :reference_id, :amount
+  validates_presence_of :uuid, :amount
 
-  before_validation :set_reference_id, only: :create
+  before_validation :set_uuid, only: :create
 
+  delegate :email, to: :user
+
+  def subunit_amount
+    amount * 100
+  end
   private
 
-  def set_reference_id
-    self.reference_id = SecureRandom.hex(16)
+  def set_uuid
+    self.uuid = SecureRandom.hex(16)
   end
-
 end

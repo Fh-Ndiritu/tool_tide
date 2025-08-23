@@ -18,19 +18,19 @@ class ConvertedImagesController < ApplicationController
     # Construct the full, safe path to the temporary file
     # Security Note: File.basename(params[:filename]) is used to sanitize user input
     # and prevent path traversal, ensuring files are only served from 'tmp/conversions'.
-    file_path = Rails.root.join("tmp", "conversions", File.basename(requested_filename))
+    file_path = Rails.root.join('tmp', 'conversions', File.basename(requested_filename))
 
     if File.exist?(file_path) && File.readable?(file_path)
       # Determine content type for the browser
-      mime_type = ImageFormatHelper.mime_type_for(File.extname(file_path).delete(".")) || "application/octet-stream"
+      mime_type = ImageFormatHelper.mime_type_for(File.extname(file_path).delete('.')) || 'application/octet-stream'
 
       # Brakeman suppress: SendFile, confidence: Weak, reason: "False positive. User input is sanitized with File.basename to prevent path traversal, ensuring access is strictly within 'tmp/conversions' directory."
       send_file file_path,
                 filename: File.basename(file_path),
                 type: mime_type,
-                disposition: "attachment" # 'attachment' prompts download, 'inline' tries to display in browser
+                disposition: 'attachment' # 'attachment' prompts download, 'inline' tries to display in browser
     else
-      redirect_to converted_images_path, alert: "The requested file was not found or is no longer available."
+      redirect_to converted_images_path, alert: 'The requested file was not found or is no longer available.'
     end
   end
 end

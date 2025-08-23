@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe PaymentTransactionsController, type: :controller do
-
   fixtures :users
 
   before(:each) do
@@ -19,5 +18,4 @@ RSpec.describe PaymentTransactionsController, type: :controller do
       end
     end
   end
-
 end

@@ -10,12 +10,12 @@ class LandscapeChannel < ApplicationCable::Channel
       Rails.logger.info "Subscribed to landscape_channel_#{params[:landscape_id]}"
     else
       reject # Reject subscription if landscape_id is not provided
-      Rails.logger.warn "LandscapeChannel subscription rejected: missing landscape_id"
+      Rails.logger.warn 'LandscapeChannel subscription rejected: missing landscape_id'
     end
   end
 
   def unsubscribed
-    Rails.logger.info "Unsubscribed from landscape_channel"
+    Rails.logger.info 'Unsubscribed from landscape_channel'
   end
 
   # You can define actions that the client can call on this channel

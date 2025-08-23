@@ -14,7 +14,7 @@ class ImageOrchestratorService
     # here we shall handle the various types of conversions needed
     # for now we shall only handle text conversion
     case @conversion
-    when "text"
+    when 'text'
       Images::ImageTextExtractor.perform(@images)
     else
       Images::ImageFormatConverter.perform(@conversion, @images)

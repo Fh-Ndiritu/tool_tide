@@ -6,8 +6,8 @@ module Gcp
         access_token = generate_access_token
 
         response = Faraday.post(endpoint) do |req|
-          req.headers["Content-Type"] = "application/json"
-          req.headers["Authorization"] = "Bearer #{access_token}"
+          req.headers['Content-Type'] = 'application/json'
+          req.headers['Authorization'] = "Bearer #{access_token}"
           req.body = payload.to_json
         end
 
@@ -20,13 +20,13 @@ module Gcp
 
     def generate_access_token
       credentials = Google::Auth::ServiceAccountCredentials.make_creds(
-        json_key_io: File.open(ENV.fetch("GOOGLE_APPLICATION_CREDENTIALS")),
-        scope: "https://www.googleapis.com/auth/cloud-platform"
+        json_key_io: File.open(ENV.fetch('GOOGLE_APPLICATION_CREDENTIALS')),
+        scope: 'https://www.googleapis.com/auth/cloud-platform'
       )
 
-      access_token = credentials.fetch_access_token!["access_token"]
+      access_token = credentials.fetch_access_token!['access_token']
 
-      raise "Error: Unable to generate access token" if access_token.blank?
+      raise 'Error: Unable to generate access token' if access_token.blank?
 
       access_token
     end
