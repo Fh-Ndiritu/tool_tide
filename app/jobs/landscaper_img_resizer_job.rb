@@ -21,7 +21,7 @@ class LandscaperImgResizerJob < ApplicationJob
         # Process the image using ImageProcessing::Vips
         processed_image = ImageProcessing::Vips
                           .source(temp_file)
-                          .convert('jpeg')
+                          .convert("jpeg")
                           .resize_to_fit(max_width, nil)
                           .call
 
@@ -29,7 +29,7 @@ class LandscaperImgResizerJob < ApplicationJob
         landscape.original_responsive_image.attach(
           io: File.open(processed_image.path),
           filename: "#{original_attachment.filename.base}.jpeg", # Ensure .jpg extension
-          content_type: 'image/jpeg'
+          content_type: "image/jpeg"
         )
         landscape.original_responsive_image.blob.analyze_later
       rescue ImageProcessing::Error => e

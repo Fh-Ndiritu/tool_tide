@@ -9,7 +9,7 @@ class ButtonComponent < ViewComponent::Base
 
   attr_reader :text, :type, :svg, :href, :data, :name, :value, :svg_classes
 
-  def initialize(text: 'Submit', type: 'button', classes: '', svg: nil, href: nil, data: {}, name: '', value: '', svg_classes: '')
+  def initialize(text: "Submit", type: "button", classes: "", svg: nil, href: nil, data: {}, name: "", value: "", svg_classes: "")
     @text = text
     @type = type
     @svg = svg

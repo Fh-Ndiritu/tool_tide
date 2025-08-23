@@ -4,7 +4,7 @@ class LandscapeRequest < ApplicationRecord
   belongs_to :landscape
   has_many_attached :modified_images
 
-  has_many :active_storage_attachments, class_name: 'ActiveStorage::Attachment', as: :record
+  has_many :active_storage_attachments, class_name: "ActiveStorage::Attachment", as: :record
 
   enum :image_engine, [ :bria, :google ], suffix: :processor
   delegate :ip_address, to: :landscape
@@ -30,7 +30,7 @@ class LandscapeRequest < ApplicationRecord
     return false unless authorized_to_localize_prompt?
 
     response = fetch_localization_prompt
-    self.update localized_prompt: response.content['updated_prompt']
+    self.update localized_prompt: response.content["updated_prompt"]
   end
 
   private

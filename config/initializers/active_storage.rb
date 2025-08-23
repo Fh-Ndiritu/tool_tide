@@ -2,9 +2,9 @@
 
 if Rails.env.development? || Rails.env.test?
 Rails.application.config.active_storage.url_options = {
-  host: 'localhost',
+  host: "localhost",
   port: 3000,
-  protocol: 'http'
+  protocol: "http"
 }
 
 end

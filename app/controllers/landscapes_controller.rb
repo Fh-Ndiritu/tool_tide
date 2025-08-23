@@ -7,7 +7,7 @@ class LandscapesController < ApplicationController
   rate_limit to: 6,
   within: 1.minutes,
   with: -> {
-    redirect_to root_path, alert: 'Too many landscaping attempts! Try again later.'
+    redirect_to root_path, alert: "Too many landscaping attempts! Try again later."
   },
   only: %i[create]
 
@@ -33,7 +33,7 @@ class LandscapesController < ApplicationController
     mask_image_data = landscape_params[:mask_image_data]
 
     if mask_image_data.blank?
-      render json: { error: 'Missing required parameters.' }, status: :bad_request and return
+      render json: { error: "Missing required parameters." }, status: :bad_request and return
     end
 
     # Enqueue the AI processing job
@@ -45,7 +45,7 @@ class LandscapesController < ApplicationController
     ImageModificationJob.perform_now(landscape_params[:landscape_request_id])
 
     # Respond immediately to the frontend to indicate job acceptance
-    render json: { message: 'Image modification request received. Processing in background.' }, status: :accepted
+    render json: { message: "Image modification request received. Processing in background." }, status: :accepted
   rescue StandardError => e
     Rails.logger.error "Error in modify_image endpoint: #{e.message}"
     render json: { error: "Internal server error: #{e.message}" }, status: :internal_server_error
@@ -61,7 +61,7 @@ class LandscapesController < ApplicationController
         format.html { redirect_to edit_landscape_path(@landscape) }
       end
     else
-      flash[:alert] = 'Please upload an image'
+      flash[:alert] = "Please upload an image"
       redirect_to landscapes_path
     end
   end
@@ -94,12 +94,12 @@ class LandscapesController < ApplicationController
 
   def update_landscape_request
     preset = landscape_params[:preset]
-    raise 'Please select a landscape vibe' if preset.blank?
-    raise 'Invalid landscape vibe selected' unless LANDSCAPE_PRESETS[preset].present?
+    raise "Please select a landscape vibe" if preset.blank?
+    raise "Invalid landscape vibe selected" unless LANDSCAPE_PRESETS[preset].present?
 
     # we now fetch the prompt from prompts.yml
-    prompt = PROMPTS['landscape_presets'][preset]
-    raise 'Preset prompts not found' unless prompt.present?
+    prompt = PROMPTS["landscape_presets"][preset]
+    raise "Preset prompts not found" unless prompt.present?
 
     @landscape.landscape_requests.find(landscape_params[:landscape_request_id]).tap do |request|
       request.update!(prompt:, image_engine: @image_engine, preset: preset.humanize)
@@ -109,7 +109,7 @@ class LandscapesController < ApplicationController
   def save_mask(raw_mask_image_data)
     # Extract base64 content and decode
     # we need to resize this to match the size of the final image
-    _mime_type, base64_content = raw_mask_image_data.split(',', 2)
+    _mime_type, base64_content = raw_mask_image_data.split(",", 2)
     decoded_mask = Base64.decode64(base64_content)
 
     original_image_data = @landscape.original_image.variant(:final).processed.download
@@ -121,7 +121,7 @@ class LandscapesController < ApplicationController
       mask_image.resize "#{original_image.width}x#{original_image.height}!"
     end
 
-    mask_image.format 'png'
+    mask_image.format "png"
 
     io = StringIO.new(mask_image.to_blob)
 
@@ -129,7 +129,7 @@ class LandscapesController < ApplicationController
     @landscape.mask_image_data.attach(
       io: io,
       filename: "mask_#{SecureRandom.hex(8)}.png",
-      content_type: 'image/png'
+      content_type: "image/png"
     )
     Rails.logger.info "Mask image data saved to Active Storage for Landscape ID: #{@landscape.id}"
   rescue => e
@@ -147,20 +147,20 @@ class LandscapesController < ApplicationController
                           ).reject { |landscape_request| landscape_request.modified_images.count.zero? }
       if recent_requests&.count < 2
         @reverted_to_bria = (recent_requests.count == 2)
-        @image_engine = 'google'
+        @image_engine = "google"
         return
       end
 
     end
 
     @reverted_to_bria = false
-    @image_engine = 'bria'
+    @image_engine = "bria"
   end
 
   def set_landscape
     @landscape = current_user.landscapes.find(params[:id])
     unless @landscape.original_image.attached?
-      flash[:alert] = 'No image found for this landscape'
+      flash[:alert] = "No image found for this landscape"
       redirect_to landscapes_path
     end
   end

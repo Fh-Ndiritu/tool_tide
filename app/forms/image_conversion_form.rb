@@ -1,7 +1,7 @@
 
 # frozen_string_literal: true
 
-require 'mini_magick' # Ensure MiniMagick is available in your form object
+require "mini_magick" # Ensure MiniMagick is available in your form object
 
 class ImageConversionForm
   include ActiveModel::Model # Provides validations, errors, etc.
@@ -26,7 +26,7 @@ class ImageConversionForm
   # --- Validations ---
   validates :conversion, presence: true
   validates :source, presence: true
-  validates :images, presence: { message: 'must be selected.' } # Ensure at least one file is uploaded
+  validates :images, presence: { message: "must be selected." } # Ensure at least one file is uploaded
 
   # Custom validations for format validity using our helper
   validate :supported_conversion_format
@@ -96,7 +96,7 @@ class ImageConversionForm
     if images.present?
       images.each do |image_file|
         unless image_file.respond_to?(:path) && image_file.respond_to?(:content_type)
-          errors.add(:images, 'must be valid file uploads.')
+          errors.add(:images, "must be valid file uploads.")
           break # Stop checking if one is invalid
         end
 

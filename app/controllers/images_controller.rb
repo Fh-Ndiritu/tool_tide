@@ -17,25 +17,25 @@ class ImagesController < ApplicationController
     if @image_form.save
       respond_to do |format|
         format.turbo_stream do
-          render turbo_stream: turbo_stream.replace('results',
-                                                    partial: 'images/results_extraction',
+          render turbo_stream: turbo_stream.replace("results",
+                                                    partial: "images/results_extraction",
                                                     locals: { pages: @image_form.results }) +
-                               turbo_stream.replace('image_form',
-                                                    partial: 'images/image_extraction_form',
+                               turbo_stream.replace("image_form",
+                                                    partial: "images/image_extraction_form",
                                                     locals: {
                                                       image_form: ImageExtractionForm.new
                                                         }) +
-                               turbo_stream.replace('flash', partial: '/shared/flash')
+                               turbo_stream.replace("flash", partial: "/shared/flash")
         end
-        format.html { redirect_to converted_images_path, notice: 'Images converted successfully!' } # Redirect for non-Turbo Stream requests
+        format.html { redirect_to converted_images_path, notice: "Images converted successfully!" } # Redirect for non-Turbo Stream requests
       end
     else
       respond_to do |format|
         format.turbo_stream do
-          flash.now[:error] = @image_form.errors.full_messages.join('<br>').html_safe
-          render turbo_stream: turbo_stream.replace('flash', partial: '/shared/flash') +
-                               turbo_stream.replace('image_form',
-                                                    partial: 'images/image_extraction_form',
+          flash.now[:error] = @image_form.errors.full_messages.join("<br>").html_safe
+          render turbo_stream: turbo_stream.replace("flash", partial: "/shared/flash") +
+                               turbo_stream.replace("image_form",
+                                                    partial: "images/image_extraction_form",
                                                     locals: { image_form: @image_form }) # Re-render form with errors
         end
         format.html { render :new, status: :unprocessable_entity } # Re-render new template for HTML requests
@@ -45,7 +45,7 @@ class ImagesController < ApplicationController
 
   def new
     if @conversion == @source
-      redirect_to root_path, alert: 'Source and conversion formats cannot be the same.'
+      redirect_to root_path, alert: "Source and conversion formats cannot be the same."
     end
 
     @image_form = ImageConversionForm.new(conversion: @conversion, source: @source)
@@ -67,28 +67,28 @@ class ImagesController < ApplicationController
           # For a clear form after success, you might instantiate a new @image_form here:
           # @image_form = ImageConversionForm.new
 
-          render turbo_stream: turbo_stream.replace('results',
-                                                    partial: 'images/results_conversion',
+          render turbo_stream: turbo_stream.replace("results",
+                                                    partial: "images/results_conversion",
                                                     locals: { converted_file_paths: @image_form.conversion_results, canonical_conversion: @image_form.canonical_conversion }) +
-                               turbo_stream.replace('image_form',
-                                                    partial: 'images/image_form',
+                               turbo_stream.replace("image_form",
+                                                    partial: "images/image_form",
                                                     locals: {
                                                       image_form: ImageConversionForm.new(
                                                         source: @image_form.source,
                                                         conversion: @image_form.conversion),
                                                         supported_formats: @supported_formats }
                                                         ) +
-                               turbo_stream.replace('flash', partial: '/shared/flash')
+                               turbo_stream.replace("flash", partial: "/shared/flash")
         end
-        format.html { redirect_to converted_images_path, notice: 'Images converted successfully!' } # Redirect for non-Turbo Stream requests
+        format.html { redirect_to converted_images_path, notice: "Images converted successfully!" } # Redirect for non-Turbo Stream requests
       end
     else
       respond_to do |format|
         format.turbo_stream do
-          flash.now[:error] = @image_form.errors.full_messages.join('<br>').html_safe
-          render turbo_stream: turbo_stream.replace('flash', partial: '/shared/flash') +
-                               turbo_stream.replace('image_form',
-                                                    partial: 'images/image_form',
+          flash.now[:error] = @image_form.errors.full_messages.join("<br>").html_safe
+          render turbo_stream: turbo_stream.replace("flash", partial: "/shared/flash") +
+                               turbo_stream.replace("image_form",
+                                                    partial: "images/image_form",
                                                     locals: { image_form: @image_form, supported_formats: @supported_formats }) # Re-render form with errors
         end
         format.html { render :new, status: :unprocessable_entity } # Re-render new template for HTML requests
@@ -114,7 +114,7 @@ class ImagesController < ApplicationController
       # This ensures consistency in subsequent logic (e.g., MiniMagick calls).
       @conversion = canonical_conversion
     else
-      flash[:error] = 'Invalid conversion type. Please provide a supported image format.'
+      flash[:error] = "Invalid conversion type. Please provide a supported image format."
       redirect_to root_path
     end
   end
@@ -128,7 +128,7 @@ class ImagesController < ApplicationController
       # Store the canonical format.
       @source = canonical_source
     else
-      flash[:error] = 'Invalid source type. Please provide a supported image format.'
+      flash[:error] = "Invalid source type. Please provide a supported image format."
       redirect_to root_path
     end
   end
