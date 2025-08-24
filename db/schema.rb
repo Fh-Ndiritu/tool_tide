@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_23_180848) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_24_065003) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -43,6 +43,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_23_180848) do
     t.string "model_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "credits", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "source", default: 0, null: false
+    t.integer "amount", default: 0, null: false
+    t.integer "credit_type", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_credits_on_user_id"
   end
 
   create_table "landscape_requests", force: :cascade do |t|
@@ -94,6 +104,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_23_180848) do
     t.string "method"
     t.string "paystack_customer_id"
     t.string "currency", default: "USD"
+    t.boolean "credits_issued", default: false, null: false
     t.index ["user_id"], name: "index_payment_transactions_on_user_id"
   end
 
@@ -130,12 +141,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_23_180848) do
     t.decimal "latitude", precision: 10, scale: 7
     t.decimal "longitude", precision: 10, scale: 7
     t.json "address"
+    t.integer "pro_engine_credits"
+    t.integer "free_engine_credits"
+    t.boolean "received_daily_credits", default: false, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "credits", "users"
   add_foreign_key "landscape_requests", "landscapes"
   add_foreign_key "landscapes", "users"
   add_foreign_key "messages", "chats"

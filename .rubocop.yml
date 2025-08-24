@@ -1,17 +1,46 @@
-# Omakase Ruby styling for Rails
-inherit_gem: { rubocop-rails-omakase: rubocop.yml }
+# Inherit from the base Omakase style for a great starting point.
+inherit_gem:
+  rubocop-rails-omakase: rubocop.yml
 
-# Overwrite or add rules to create your own house style
-#
-# # Use `[a, [b, c]]` not `[ a, [ b, c ] ]`
-# Layout/SpaceInsideArrayLiteralBrackets:
-#   Enabled: false
+# =========================================================================
+# Custom House Style Overrides
+# =========================================================================
 
-Bundler/OrderedGems:
-  Enabled: true
-
+# Enforce a single space between a method name and its first argument,
+# but only when parentheses are used. This is a common and readable convention.
 Layout/SpaceBeforeFirstArg:
-  Enabled: false
+  Enabled: true
+  EnforcedStyle: space
+
+# Ensure there are no spaces immediately inside parentheses. This is the
+# standard style and prevents conflicts. Example: `(foo)`
+Layout/SpaceInsideParens:
+  Enabled: true
+  EnforcedStyle: no_space
+
+# Ensure a space after the opening brace and before the closing brace in blocks.
+# Example: `{ |arg| ... }`
+Layout/SpaceInsideBlockBraces:
+  Enabled: true
+  EnforcedStyle: space
+  EnforcedStyleForEmptyBraces: no_space # For empty blocks: `{}`, not `{ }`
+
+# Enforce a consistent style for string literals. `double_quotes` is the
+# Rails convention, especially for interpolated strings.
 Style/StringLiterals:
   Enabled: true
   EnforcedStyle: double_quotes
+
+# Ensure all gems in the Gemfile are alphabetized. This is a common
+# best practice for project maintainability.
+Bundler/OrderedGems:
+  Enabled: true
+
+# The following cops are the source of most conflicts and are often
+# best disabled to prevent infinite formatting loops, as their rules
+# can clash with other spacing cops. Disabling them leads to a more
+# stable and predictable formatter.
+Layout/SpaceAroundKeyword:
+  Enabled: false
+Style/MethodDefParentheses:
+  Enabled: false
