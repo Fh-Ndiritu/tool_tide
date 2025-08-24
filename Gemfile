@@ -106,7 +106,7 @@ gem "faraday-retry", "~> 2.3"
 
 gem "googleauth"
 gem "google-cloud-ai_platform-v1", "~> 0.35.0"
-gem "mini_magick", "~> 5.2"
+gem "mini_magick", "~> 5.3"
 gem "rdoc", "6.14.2"
 
 gem "geocoder", "~> 1.8"
