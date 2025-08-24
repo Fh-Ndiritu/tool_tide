@@ -4,11 +4,8 @@ module Admin::LandscapesHelper
     # gem 'geocoder'
     # config/initializers/geocoder.rb with your API key if needed
     result = Geocoder.search(ip_address).first
-
-    if result
+    if result.country
       "#{result&.city}, #{result&.country}"
-    else
-     nil
     end
   end
 end
