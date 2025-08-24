@@ -150,3 +150,10 @@ LOCALIZED_PROMPT_SCHEMA = {
 
   required: [ "updated_prompt" ]
 }
+
+
+DAILY_FREE_ENGINE_CREDITS = 50
+FIRST_USER_PRO_CREDITS = 30
+
+# currency credits
+PRO_CREDITS_PER_USD = 10

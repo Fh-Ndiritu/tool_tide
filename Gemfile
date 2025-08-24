@@ -77,7 +77,7 @@ group :test do
   gem "database_cleaner-active_record"
   gem "rspec-rails", "~> 8.0.1"
   gem "selenium-webdriver"
-  gem "shoulda-matchers"
+  gem "shoulda-matchers", "~> 6.0"
   gem "simplecov", require: false
   gem "webdrivers"
 end
@@ -118,3 +118,5 @@ gem "ruby_llm", "~> 1.6"
 gem "ruby_llm-schema", "~> 0.1.6"
 
 gem 'brevo'
+
+gem "dry-monads", "~> 1.9"

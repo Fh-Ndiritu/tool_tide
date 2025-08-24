@@ -3,6 +3,13 @@ class ApplicationController < ActionController::Base
   before_action :set_active_storage_url_options
   before_action :authenticate_user!
 
+  def after_sign_in_path_for(resource)
+    if resource.is_a?(User)
+      new_landscape_path
+    else
+      super
+    end
+  end
   private
 
   def set_active_storage_url_options

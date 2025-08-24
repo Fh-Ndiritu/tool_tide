@@ -107,6 +107,11 @@ html {
   color: #065f46; /* Dark green */
 }
 
+.flash-message.success {
+  background-color: #d1fae5; /* Light green */
+  color: #065f46; /* Dark green */
+}
+
 .flash-message.error,
 .flash-message.alert {
   background-color: #fee2e2; /* Light red */
