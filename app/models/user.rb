@@ -39,6 +39,6 @@ class User < ApplicationRecord
   end
 
   def received_trial_credits?
-    credits.exist?(source: :trial, credit_type: :pro_engine)
+    credits.exists?(source: :trial, credit_type: :pro_engine)
   end
 end

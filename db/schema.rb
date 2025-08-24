@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_24_065003) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_24_091208) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -104,7 +104,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_24_065003) do
     t.string "method"
     t.string "paystack_customer_id"
     t.string "currency", default: "USD"
-    t.boolean "credits_issued", default: false, null: false
+    t.boolean "credits_issued", default: false
     t.index ["user_id"], name: "index_payment_transactions_on_user_id"
   end
 
@@ -144,6 +144,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_24_065003) do
     t.integer "pro_engine_credits"
     t.integer "free_engine_credits"
     t.boolean "received_daily_credits", default: false, null: false
+    t.integer "pro_trial_credits"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

@@ -2,7 +2,7 @@
 
 class IconComponent < ViewComponent::Base
   include TailwindClasses
-  DEFAULT_CLASSES = %w[mb-1 rounded-full text-4xl flex items-center justify-center cursor-pointer duration-200]
+  DEFAULT_CLASSES = %w[rounded-full text-4xl flex items-center justify-center cursor-pointer duration-200]
 
   def initialize(name:, classes:)
     @name = name

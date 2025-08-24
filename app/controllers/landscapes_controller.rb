@@ -3,6 +3,7 @@ class LandscapesController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [ :create ]
   before_action :set_landscape, only: %i[show edit modify]
   before_action :check_premium, only: %i[show modify]
+  before_action :issue_daily_credits, only: :new
 
   rate_limit to: 6,
   within: 1.minutes,
@@ -167,5 +168,9 @@ class LandscapesController < ApplicationController
 
   def landscape_params
     params.require(:landscape).permit(:original_image, :preset, :mask_image_data, :landscape_request_id)
+  end
+
+  def issue_daily_credits
+    current_user.issue_daily_credits unless current_user.received_daily_credits?
   end
 end

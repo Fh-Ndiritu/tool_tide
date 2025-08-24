@@ -1,11 +1,8 @@
 Rails.application.routes.draw do
   # resources :payment_transactions, only: [:index, :create]
-  get "payment_transactions", to: "payment_transactions#create", as: :payment_transactions
+  get "credits", to: "home#credits", as: :credits
+  post "payment_transactions", to: "payment_transactions#create", as: :payment_transactions
   get "paystack/callback", to: "payment_transactions#callback"
-
-  resources :home, only: [ :index ] do
-    get :credits, on: :collection
-  end
 
   devise_for :users
 

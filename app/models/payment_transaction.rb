@@ -4,7 +4,6 @@ class PaymentTransaction < ApplicationRecord
   validates_presence_of :uuid, :amount
 
   before_validation :set_uuid, only: :create
-  after_update_commit :issue_credits, if: :saved_change_to_validated?
 
   delegate :email, to: :user
 
@@ -28,19 +27,19 @@ class PaymentTransaction < ApplicationRecord
     success: 8
   }, prefix: :invoice
 
-  private
-
-  def set_uuid
-    self.uuid = SecureRandom.hex(16)
-  end
-
   def issue_credits
     return unless validated? && !credits_issued?
 
     ActiveRecord::Base.transaction do
-      amount = Object.const_get("PRO_CREDITS_PER_#{currency}") * amount
+      amount = Object.const_get("PRO_CREDITS_PER_#{currency}") * self.amount
       user.credits.create!(source: :purchase, amount:, credit_type: :pro_engine)
-      credits_issued!
+      self.update credits_issued: true
     end
+  end
+
+  private
+
+  def set_uuid
+    self.uuid = SecureRandom.hex(16)
   end
 end

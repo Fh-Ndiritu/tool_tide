@@ -35,6 +35,8 @@ module Paystack
         save_event_details(payment_transaction, transaction)
         .bind { validate_successful_payment(payment_transaction, transaction) }
       end
+    rescue StandardError => e
+      Failure("#{__method__} failed: #{e.message}")
     end
 
     def save_event_details(payment_transaction, transaction)
@@ -48,6 +50,8 @@ module Paystack
       else
         Failure("!! Failed to save payment details: #{payment_transaction.errors.full_messages}")
       end
+    rescue StandardError => e
+      Failure("#{__method__} failed: #{e.message}")
     end
 
     def validate_successful_payment(payment_transaction, transaction)
@@ -56,9 +60,15 @@ module Paystack
       elsif transaction[:currency] != payment_transaction.currency
         Failure("#{transaction[:currency]} is not the expected currency of #{payment_transaction.currency}")
       else
-        payment_transaction.update validated: true
+        ActiveRecord::Base.transaction do
+          payment_transaction.update validated: true
+          payment_transaction.issue_credits
+          payment_transaction.user.update pro_trial_credits: 0
+        end
         Success(payment_transaction)
       end
+    rescue StandardError => e
+      Failure("#{__method__} failed: #{e.message}")
     end
 
     def fetch_customer(transaction)
@@ -70,6 +80,8 @@ module Paystack
       user = User.find_by(email:) || User.find_by(id: user_id)
       return Failure("User not found with ID or Email") unless user.present?
       Success(user)
+    rescue StandardError => e
+      Failure("#{__method__} failed: #{e.message}")
     end
 
 

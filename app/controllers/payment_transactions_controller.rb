@@ -6,9 +6,9 @@ class PaymentTransactionsController < ApplicationController
     # this will be triggered by a user button
     # we create our record and get a reference id
     # then send that to PayStack to initiate transaction
-    transaction = create_transaction
+    transaction = PaymentTransaction.new_transaction(current_user)
 
-    result = Paystack.initializeCheckout.perform(transaction)
+    result = Paystack::InitializeCheckout.perform(transaction)
 
     payment_url = result.value_or(transaction)&.authorization_url
     if result.failure? || payment_url.nil?
@@ -16,25 +16,19 @@ class PaymentTransactionsController < ApplicationController
       redirect_to root_path and return
     end
 
-    redirect_to payment_url, allow_other_host: true
+    redirect_to payment_url, allow_other_host: true and return
   end
 
   def callback
     redirect_to root_path, alert: "No reference Id found" unless params[:reference]
     result = Paystack::VerifyPayment.perform(params[:reference])
-
-    if result.failure?
-      redirect_to root_path, alert: "Payment Failed, please try again later" and return
+    if result.success?
+      flash[:success] =  "Payment successful!"
+    else
+      flash[:alert] =  "Payment Failed, please try again later"
     end
 
-    flash[:success] =  "Payment successful!"
-    redirect_to root_path
+    redirect_to credits_path
   end
-  private
 
-  def create_transaction
-    PaymentTransaction.create!(
- er: current_user,
-    amount: 20.00)
-  end
 end
