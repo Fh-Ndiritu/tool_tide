@@ -30,5 +30,4 @@ class PaymentTransactionsController < ApplicationController
 
     redirect_to credits_path
   end
-
 end
