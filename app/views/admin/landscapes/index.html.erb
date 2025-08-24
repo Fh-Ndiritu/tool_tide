@@ -6,7 +6,7 @@
        <% @landscapes.each do |landscape| %>
           <div class="flex gap-10 justify-between max-w-9/12 bg-gray-200 m-auto">
             <div>
-              <%= content_tag :h4, "User location: #{location_ip(landscape.ip_address)}" %>
+              <%= content_tag :h4, "User location: #{landscape.user.state_address || location_ip(landscape.ip_address)}" %>
             </div>
               <%= image_tag url_for(landscape.original_image.variant(resize_to_limit: [500, 500])), alt: "Landscape Image", class: "max-w-full h-auto max-h-96 object-cover rounded-md border border-neutral-100 shadow-sm", loading: :lazy %>
               <%= image_tag url_for(landscape.mask_image_data.variant(resize_to_limit: [500, 500])), class: "max-w-full h-auto max-h-96 object-cover rounded-md border border-neutral-100 shadow-sm", loading: :lazy   if landscape.mask_image_data.attached? %>

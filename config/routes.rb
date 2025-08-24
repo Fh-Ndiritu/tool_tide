@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   get "paystack/callback", to: "payment_transactions#callback"
 
   devise_for :users
+
   mount ActionCable.server => "/cable"
 
   namespace :admin do
