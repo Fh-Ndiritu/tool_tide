@@ -489,7 +489,7 @@ GEM
       lint_roller (~> 1.1)
       rubocop (~> 1.72, >= 1.72.1)
     ruby-progressbar (1.13.0)
-    ruby-vips (2.2.4)
+    ruby-vips (2.2.5)
       ffi (~> 1.12)
       logger
     ruby_llm (1.6.3)
@@ -656,7 +656,7 @@ DEPENDENCIES
   rubocop-performance
   rubocop-rails-omakase
   rubocop-rspec
-  ruby-vips (~> 2.2, >= 2.2.4)
+  ruby-vips (~> 2.2)
   ruby_llm (~> 1.6)
   ruby_llm-schema (~> 0.1.6)
   selenium-webdriver
