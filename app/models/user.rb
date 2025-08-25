@@ -30,6 +30,30 @@ class User < ApplicationRecord
     received_daily_credits.in?(Date.today.all_day)
   end
 
+  def afford_generation?(landscape_request)
+    case landscape_request.image_engine
+    when :bria
+      free_engine_credits >  3 * BRIA_IMAGE_COST
+    when :google
+      localization_cost = landscape_request.use_localization? ? LOCALIZED_PLANT_COST : 0
+      pro_engine_credits > (GOOGLE_IMAGE_COST * 3 + localization_cost)
+    else
+      false
+    end
+  end
+
+  def charge_prompt_localization?
+    update! pro_engine_credits: [ 0, pro_engine_credits - LOCALIZED_PLANT_COST ].max
+  end
+
+  def charge_image_generation?(landscape_request)
+    if landscape_request.google_processor?
+      update! pro_engine_credits: [ 0, pro_engine_credits - GOOGLE_IMAGE_COST ]
+    else
+      update! free_engine_credits: [ 0, free_engine_credits - BRIA_IMAGE_COST ]
+    end
+  end
+
   private
 
   def issue_free_engine_credits
@@ -39,7 +63,7 @@ class User < ApplicationRecord
 
   def issue_trial_credits
     # these are used to demo to you how the pro engine works and are only 1 time tokenss
-    credits.create!(source: :trial, amount: FIRST_USER_PRO_CREDITS, credit_type: :pro_engine)
+    credits.create!(source: :trial, amount: PRO_TRIAL_CREDITS, credit_type: :pro_engine)
   end
 
   def received_trial_credits?

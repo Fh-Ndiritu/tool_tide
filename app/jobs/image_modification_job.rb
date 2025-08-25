@@ -7,23 +7,26 @@ class ImageModificationJob < ApplicationJob
   def perform(landscape_request_id)
     Rails.logger.info "Starting ImageModificationJob for Landscape ID: #{landscape_request_id}"
     @landscape_request = LandscapeRequest.find(landscape_request_id)
-
+    @user = @landscape_request.user
     begin
       @landscape = @landscape_request.landscape
       validate_mask_data
       @final_prompt = fetch_localized_prompt
       @b64_input_image =  prepare_original_image_for_bria(@landscape.original_image)
-      if @landscape_request.google_processor?
-        gcp_inpaint
-      else
-        bria_inpaint
-      end
 
-      if @landscape_request.reload.modified_images.attached?
-        ActionCable.server.broadcast(
-          "landscape_channel_#{@landscape.id}",
-          { status: "completed", landscape_id: @landscape.id }
-        )
+      ActiveRecord::Base.transaction do
+        if @landscape_request.google_processor?
+          gcp_inpaint
+        else
+          bria_inpaint
+        end
+
+        if @landscape_request.reload.modified_images.attached? && @user.charge_image_generation?(@landscape_request)
+          ActionCable.server.broadcast(
+            "landscape_channel_#{@landscape.id}",
+            { status: "completed", landscape_id: @landscape.id }
+          )
+        end
       end
 
     rescue StandardError => e
@@ -35,9 +38,7 @@ class ImageModificationJob < ApplicationJob
   private
 
   def fetch_localized_prompt
-    if @landscape_request.recommend_flowers? && @landscape_request.build_localized_prompt?
-      return @landscape_request.localized_prompt
-    end
+    return @landscape_request.localized_prompt  if @landscape_request.build_localized_prompt?
 
     @landscape_request.prompt
   end

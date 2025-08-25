@@ -12,7 +12,7 @@
         </div>
         <h2 class="text-xl font-semibold text-neutral-700">Free Engine Credits</h2>
       </div>
-      <p class="text-4xl font-extrabold text-primary mt-2"><%= current_user.free_engine_credits %></p>
+      <p class="text-4xl font-extrabold text-primary mt-2"><%= current_user.free_engine_credits %> / <%= DAILY_FREE_ENGINE_CREDITS %></p>
       <p class="text-sm text-neutral-500 mt-1">Issued today</p>
       <p class="text-sm text-neutral-600 mt-4">Generate free landscapes using the Hadaa Free engine. Login to get free credits everyday!</p>
     </div>
@@ -26,7 +26,7 @@
           </div>
           <h2 class="text-xl font-semibold text-neutral-700">Trial Credits</h2>
         </div>
-        <p class="text-4xl font-extrabold text-accent mt-2"><%= current_user.pro_trial_credits %></p>
+        <p class="text-4xl font-extrabold text-accent mt-2"><%= current_user.pro_trial_credits %> / <%= PRO_TRIAL_CREDITS %></p>
         <p class="text-sm text-neutral-500 mt-1">Remaining</p>
         <p class="text-sm text-neutral-600 mt-4">Access the Hadaa Pro engine for a limited time to generate stunning, realistic image and customize with local plants.</p>
       </div>

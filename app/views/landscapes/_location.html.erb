@@ -1,20 +1,27 @@
- <div id="local_location" class="my-2">
+<div class="relative">
+
+  <div id="local_location"
+    class="my-2 <%= current_user.pro_engine_credits < 3 ? 'opacity-70' : '' %>"
+    data-controller="<%= current_user.pro_engine_credits < 3 ? 'credits-overlay' : '' %> "
+    data-action="<%= current_user.pro_engine_credits < 3 ? 'click->credits-overlay#redirect' : '' %>"
+  >
     <%= form_with(url: location_landscape_request_path(@landscape_request), method: :patch) do |form| %>
-    <div class="mb-4">
+      <div class="mb-4">
         <input type="text" class="" id="latitude" name="latitude" data-landscape-editor-target="latitudeInput" hidden>
         <input type="text" class="" id="longitude" name="longitude" data-landscape-editor-target="longitudeInput" hidden>
-      <label class="form-check-label">
-        <input type="checkbox"
-              data-landscape-editor-target="locationCheckbox"
-              data-action="change->landscape-editor#fetchLocation"
-              class="form-check-input"
-              <%= 'checked' if @landscape_request.use_location? %>>
-        Use my local plants
-      </label>
-
-      <%= tag.span "Using #{current_user.state_address}", class: "text-xs text-gray-600 block mt-2 #{ @landscape_request.use_location? ? 'opacity-100' : 'opacity-0' }"%>
-
-      <button type="submit" data-landscape-editor-target="profileBtn"></button>
-    </div>
-  <% end %>
+        <label class="form-check-label">
+          <input type="checkbox"
+            data-landscape-editor-target="locationCheckbox"
+            data-action="change->landscape-editor#fetchLocation"
+            class="form-check-input"
+            <%= 'checked' if @landscape_request.use_location? %>
+            <%= 'disabled' if current_user.pro_engine_credits < 3 %>>
+          Use my local plants
+        </label>
+        <%= tag.span "Using #{current_user.state_address}", class: "text-accent text-sm  block mt-2 #{ @landscape_request.use_location? ? 'opacity-100' : 'opacity-0' }"%>
+        <span class="text-gray-600 text-xs my-1 flex"> Costs <%= LOCALIZED_PLANT_COST %> Pro credits per generation</span>
+        <button type="submit" data-landscape-editor-target="profileBtn"></button>
+      </div>
+    <% end %>
+  </div>
 </div>

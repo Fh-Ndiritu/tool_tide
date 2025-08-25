@@ -14,34 +14,31 @@ class LandscapeRequest < ApplicationRecord
 
   scope :unclaimed, -> { where(preset: nil, image_engine: :bria, prompt: nil) }
 
-  def recommend_flowers?
-    return false unless authorized_to_recommend_flowers?
+  def recommend_flowers
+    return unless use_location?
+    return if suggested_plants.present?
 
-    response = fetch_plant_response
-
-    response.content.each do  |suggestion|
+    fetch_plant_response.content.each do  |suggestion|
       suggested_plants.create!(suggestion)
     end
-
-    true
   end
 
   def build_localized_prompt?
-    return false unless authorized_to_localize_prompt?
-
-    response = fetch_localization_prompt
-    self.update localized_prompt: response.content["updated_prompt"]
+    return false unless user.afford_generation?(self)
+    ActiveRecord::Base.transaction do
+      suggested_plants.destroy_all
+      recommend_flowers
+      if suggested_plants.present? && preset.present?
+        response = fetch_localization_prompt
+        self.update localized_prompt: response.content["updated_prompt"]
+        user.charge_prompt_localization?
+      else
+        false
+      end
+    end
   end
 
   private
-
-  def authorized_to_recommend_flowers?
-    suggested_plants.blank? && use_location?
-  end
-
-  def authorized_to_localize_prompt?
-    suggested_plants.present? && use_location? && preset.present?
-  end
 
   def fetch_plant_response
     chat = RubyLLM.chat
