@@ -46,7 +46,7 @@ export default class extends Controller {
   connect() {
     this.createChannels();
     console.log('Editor Controller connected.');
-    this.setBrushSizeDisplay(40);
+    this.setBrushSizeDisplay(60);
 
     // Listen for AI results (ActionCable)
     document.addEventListener('landscape:ai-data-received', this.handleAiDataReceived.bind(this));
@@ -539,7 +539,7 @@ export default class extends Controller {
     if (this.hasProgressBarContainerTarget) {
       this.progressBarContainerTarget.classList.add('hidden');
     }
-    this.setBrushSizeDisplay(40);
+    this.setBrushSizeDisplay(60);
     this.updateUndoRedoButtonStates();
   }
 

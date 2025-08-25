@@ -12,9 +12,19 @@
         </div>
         <h2 class="text-xl font-semibold text-neutral-700">Free Engine Credits</h2>
       </div>
-      <p class="text-4xl font-extrabold text-primary mt-2"><%= current_user.free_engine_credits %> / <%= DAILY_FREE_ENGINE_CREDITS %></p>
+      <p class="text-4xl font-extrabold text-primary mt-2"><span class="opacity-75"><%= current_user.free_engine_credits %></span>/<%= DAILY_FREE_ENGINE_CREDITS %></p>
       <p class="text-sm text-neutral-500 mt-1">Issued today</p>
       <p class="text-sm text-neutral-600 mt-4">Generate free landscapes using the Hadaa Free engine. Login to get free credits everyday!</p>
+
+
+     <% if current_user.pro_engine_credits.zero? %>
+        <% if current_user.free_engine_credits.positive? %>
+          <%= link_to "Try Hadaa Free Engine", new_landscape_path, class: "cute-btn primary-btn"%>
+        <% else %>
+          <%= button_to "Access Pro Engine", payment_transactions_path, data: {turbo: false}, method: :post, class: "cute-btn primary-btn"%>
+        <% end %>
+     <% end %>
+
     </div>
   </div>
 
@@ -26,9 +36,17 @@
           </div>
           <h2 class="text-xl font-semibold text-neutral-700">Trial Credits</h2>
         </div>
-        <p class="text-4xl font-extrabold text-accent mt-2"><%= current_user.pro_trial_credits %> / <%= PRO_TRIAL_CREDITS %></p>
+        <p class="text-4xl font-extrabold text-accent mt-2"><span class="opacity-75"><%= current_user.pro_trial_credits %></span>/<%= PRO_TRIAL_CREDITS %></p>
         <p class="text-sm text-neutral-500 mt-1">Remaining</p>
         <p class="text-sm text-neutral-600 mt-4">Access the Hadaa Pro engine for a limited time to generate stunning, realistic image and customize with local plants.</p>
+          <% if current_user.pro_engine_credits.zero? %>
+            <% if current_user.pro_trial_credits.positive? %>
+              <%= link_to "Test Hadaa Pro Engine", new_landscape_path, class: "cute-btn accent-btn"%>
+            <% else %>
+              <%= button_to "Unlock Pro Designer", payment_transactions_path, data: {turbo: false}, method: :post, class: "cute-btn accent-btn"%>
+            <% end %>
+          <% end %>
+
       </div>
     </div>
 
@@ -43,10 +61,16 @@
       <p class="text-4xl font-extrabold text-secondary mt-2"><%= current_user.pro_engine_credits %></p>
       <p class="text-sm text-neutral-500 mt-1">Remaining</p>
       <p class="text-sm text-neutral-600 mt-4">Use Hadaa Pro Engine to customize generations with local plants, export shopping lists, and get planting instructions.</p>
+      <% if current_user.pro_engine_credits.positive? %>
+        <%= link_to "Design your Dreams", new_landscape_path, class: "cute-btn secondary-btn"%>
+      <% else %>
+        <%= button_to "Buy Pro Credits", payment_transactions_path, data: {turbo: false}, method: :post, class: "cute-btn secondary-btn"%>
+      <% end %>
     </div>
   </div>
 
 </div>
+
 <div class="bg-gradient-to-r from-primary to-secondary text-neutral-100 rounded-xl shadow-2xl p-8 border-l-4 border-accent mt-10">
   <div class="flex items-center space-x-4 mb-4">
     <%= render(IconComponent.new(name: "sparkles", classes: "h-8 w-8 text-neutral-100 animate-pulse")) %>

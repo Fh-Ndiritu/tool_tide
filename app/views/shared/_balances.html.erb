@@ -1,0 +1,23 @@
+<div class="bg-gray-100 my-8 rounded-lg shadow-sm p-3 flex items-center justify-between mt-4 border border-transparent hover:border-gray-200 transition-all duration-200 hover:shadow-md">
+  <%= link_to credits_path, class: "flex items-center w-full no-underline text-inherit" do %>
+    <div class="flex items-center gap-2">
+      <%= render(IconComponent.new(name: "credit_card", classes: "h-5 w-5 text-gray-500")) %>
+      <span class="text-sm font-medium text-gray-700">Your Credits</span>
+    </div>
+
+    <div class="flex items-center gap-4 text-xs font-semibold text-gray-500 ml-auto">
+      <div class="flex items-center gap-1">
+        <p>Free Engine:</p>
+        <span class="text-primary"><%= current_user.free_engine_credits %></span>
+      </div>
+      <div class="flex items-center gap-1">
+        <p>Pro Trial:</p>
+        <span class="text-accent"><%= current_user.pro_trial_credits %></span>
+      </div>
+      <div class="flex items-center gap-1">
+        <p>Pro Engine:</p>
+        <span class="text-secondary"><%= current_user.pro_engine_credits %></span>
+      </div>
+    </div>
+  <% end %>
+</div>

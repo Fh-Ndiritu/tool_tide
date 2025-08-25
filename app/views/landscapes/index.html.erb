@@ -1,6 +1,6 @@
-<div class="min-h-screen bg-neutral-100  items-center justify-center w-full my-10">
-  <%# Container for the grid with relative positioning and padding for the absolute card %>
-  <%= content_tag :h4, "Explore your generations", loading: :lazy, class: "py-4 text-accent block w-full text-center text-lg text-fancy"%>
+<div class="min-h-screen bg-neutral-100  items-center justify-center container mx-auto">
+ <%= render '/shared/balances' %>
+  <%= content_tag :h4, "Explore your generations", loading: :lazy, class: "py-4 text-accent block w-full text-center text-fancy text-2xl"%>
 
   <div class="container min-md:flex justify-center flex-grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:gap-8 mx-auto md:mx-10 ">
     <%= render @landscapes %>

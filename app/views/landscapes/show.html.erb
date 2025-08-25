@@ -19,6 +19,7 @@
 <%= content_for(:main_classes, "container mx-auto px-5 flex max-w-[1200px] text-neutral-800 mt-10") %>
 
 <div class="min-h-screen bg-neutral-100  items-center justify-center w-full">
+  <%= render '/shared/balances' %>
   <div class="pb-6">
       <% if @reverted_to_bria %>
         <div class="flex w-full text-center text-secondary flex-col my-2">

@@ -16,6 +16,9 @@
 <%= content_for(:schema_description, "Use Hadaa Ai  to generate stunningly realistic, rich, and accurate landscaping images for free. Design and visualize your perfect outdoor spaces with advanced AI technology.") %>
 <%= content_for(:main_classes, "container mx-auto px-5 flex max-w-[1200px] text-neutral-800 mt-10") %>
 
+
+<%= render '/shared/balances' %>
+
 <%= turbo_frame_tag "edit_landscape" do %>
   <div data-controller="landscape-editor"
     data-landscape-editor-original-image-url-value="<%= @landscape.original_responsive_image.attached? ? url_for(@landscape.original_responsive_image) : '' %>"
@@ -24,11 +27,11 @@
     data-editor-display-image-width-value="<%= @landscape.original_responsive_image.metadata['width'] %>"
     data-editor-display-image-height-value="<%= @landscape.original_responsive_image.metadata['height'] %>"
     data-editor-landscape-id-value="<%= @landscape.id %>"
-    class="min-h-screen bg-neutral-100 flex flex-col items-center justify-center p-4 max-md:px-0 sm:p-6 lg:p-8 w-full">
+    class="bg-neutral-100 border border-neutral-200 flex flex-col  justify-center p-4 max-md:px-0 sm:p-6 lg:p-8 w-full rounded-lg">
 
-    <h1 class="text-4xl font-bold text-center text-text-primary my-8"><%= t("landscape.title") %></h1>
+    <h1 class="text-4xl font-bold text-center text-text-primary my-4"><%= t("landscape.title") %></h1>
 
-    <%= content_tag :h3, "We only modify the areas you brush/paint. Ensure the brushed region covers your garden. ", class: "py-4 flex w-full  text-text-secondary text-lg fancy-text justify-center" %>
+    <%= render 'tips' %>
     <div data-landscape-editor-target="editorSection" class="w-full max-w-full lg:max-w-6xl bg-white shadow-xl rounded-lg flex flex-col lg:flex-row p-4 max-md:px-0 mt-8">
       <div
         data-controller="konva-canvas"
@@ -43,11 +46,6 @@
       </div>
       <div class="lg:w-1/4 w-full p-4 flex flex-col space-y-4 lg:space-y-6">
         <div class="flex flex-wrap justify-center sm:justify-start gap-2 border-b border-neutral-300 pb-4 ">
-
-
-          <button data-action="click->landscape-editor#selectBrushTool" class="p-2 rounded-md text-neutral-700 hover:bg-primary hover:text-text-light transition-colors duration-200" title="Brush Select">
-             <%= render(IconComponent.new(name: "paint-brush-household", classes: "flex items-center justify-center text-neutral-100 cursor-pointer h-6 w-6")) %>
-          </button>
 
           <button data-action="click->landscape-editor#undoPaintAction" data-landscape-editor-target="undoButton"
           class="p-2 rounded-md text-sm text-neutral-700 hover:bg-neutral-300 transition-colors duration-200" title="Undo Last Action">
@@ -75,13 +73,13 @@
 
         </div>
 
-        <div data-landscape-editor-target="brushSizeControl" class="hidden">
+        <div data-landscape-editor-target="brushSizeControl">
           <label for="brush-size" class="block text-sm font-medium text-neutral-700 mb-2">Brush Size</label>
           <div class="flex items-center space-x-3">
-            <span class="text-sm text-neutral-600">20px</span>
+            <span class="text-sm text-neutral-600">small</span>
             <input type="range" id="brush-size" min="20" max="100" value="40" data-action="input->landscape-editor#updateBrushSize" class="w-full h-2 bg-neutral-300 rounded-lg appearance-none cursor-pointer accent-primary">
             <span data-landscape-editor-target="brushSizeDisplay" class="text-xs font-semibold  text-text-secondary">40px</span>
-            <span class="text-sm text-neutral-600">100px</span>
+            <span class="text-sm text-neutral-600">Large</span>
           </div>
         </div>
 
@@ -96,6 +94,7 @@
         </div>
 
         <%= render 'location', landscape: @landscape_request %>
+
 
         <%= form_with(url: modify_landscapes_path, method: :post, html: { data: { action: "submit->landscape-editor#submitModification", landscape_editor_target: "form" } }) do |form| %>
           <%= form.hidden_field :mask_image_data, data: { landscape_editor_target: "maskImageDataInput" } %>
@@ -138,15 +137,7 @@
         </button>
       </div>
     </div>
-
-    <%# Instructions Section (Remains on edit page) %>
-    <div class="justify-center items-center card bg-base-100 shadow-xl image-full my-8 p-6 rounded-lg border-dashed border-2 border-gray-300 w-full max-w-md sm:max-w-lg lg:max-w-3xl xl:max-w-4xl">
-      <h2 class="text-2xl font-semibold text-text-secondary"><%= t("landscape.instructions.title") %> </h2>
-      <ol class="list-decimal list-inside my-6 text-sm leading-relaxed">
-        <% t("landscape.instructions.steps").each do |step| %>
-          <li><%= step %></li>
-        <% end %>
-      </ol>
-    </div>
   </div>
 <% end %>
+
+<%= render 'instructions' %>

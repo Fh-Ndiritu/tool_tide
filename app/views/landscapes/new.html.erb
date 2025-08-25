@@ -18,6 +18,8 @@
 <%= content_for(:schema_description, "Use Hadaa Ai  to generate stunningly realistic, rich, and accurate landscaping images for free. Design and visualize your perfect outdoor spaces with advanced AI technology.") %>
 <%= content_for(:main_classes, "container mx-auto px-5 flex max-w-[1200px] text-neutral-800 mt-10") %>
 
+<%= render '/shared/balances' %>
+
 <%= turbo_frame_tag "landscape" do %>
 <div data-controller="landscape-uploader" class="min-h-[70vh] bg-neutral-100 flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 w-full">
 
