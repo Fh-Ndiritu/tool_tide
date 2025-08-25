@@ -111,12 +111,12 @@ gem "rdoc", "6.14.2"
 
 gem "geocoder", "~> 1.8"
 
-gem "devise", "~> 4.9"
+gem "devise", "~> 4.9", ">= 4.9.3"
 
 gem "ruby_llm", "~> 1.6"
 
 gem "ruby_llm-schema", "~> 0.1.6"
 
-gem 'brevo'
+gem "brevo"
 
 gem "dry-monads", "~> 1.9"

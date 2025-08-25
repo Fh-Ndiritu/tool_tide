@@ -12,6 +12,14 @@
 # the additional setup, and require it from the spec files that actually need
 # it.
 #
+
+RSpec.configure do |config|
+  # TODO Remove when Devise fixes https://github.com/heartcombo/devise/issues/5705
+  config.before(:each, type: :controller) do
+    Rails.application.reload_routes_unless_loaded
+  end
+end
+
 # See https://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate

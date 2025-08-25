@@ -627,7 +627,7 @@ DEPENDENCIES
   capybara
   database_cleaner-active_record
   debug
-  devise (~> 4.9)
+  devise (~> 4.9, >= 4.9.3)
   dotenv-rails
   dry-monads (~> 1.9)
   erb_lint
