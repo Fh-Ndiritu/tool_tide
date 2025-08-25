@@ -3,6 +3,7 @@ class LandscapeRequest < ApplicationRecord
 
   belongs_to :landscape
   has_many_attached :modified_images
+  has_one_attached :mask_image_data
 
   has_many :active_storage_attachments, class_name: "ActiveStorage::Attachment", as: :record
 
@@ -36,6 +37,20 @@ class LandscapeRequest < ApplicationRecord
         false
       end
     end
+  end
+
+  def set_default_image_processor!
+    # if the user has pro_engine_credits, that are enough, we assign them to google
+    # else we go with BRIA
+    localization_cost = use_location? ? LOCALIZED_PLANT_COST : 0
+    google_cost = DEFAULT_IMAGE_COUNT * GOOGLE_IMAGE_COST + localization_cost
+    image_engine = if user.pro_engine_credits > google_cost
+     :google
+    else
+      :bria
+    end
+
+    update! image_engine: image_engine
   end
 
   private

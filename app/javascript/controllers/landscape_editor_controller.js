@@ -396,8 +396,8 @@ export default class extends Controller {
       return;
     }
 
-    const landscapeId = this.landscapeIdValue;
-    if (!landscapeId) {
+    const landscapeRequestId = this.landscapeRequestIdValue;
+    if (!landscapeRequestId) {
       console.error('Landscape ID is missing for modification submission.');
       this.showMessage(' Image ID not found. Please start a new design.');
       this.returnToNewDesign();
@@ -405,15 +405,13 @@ export default class extends Controller {
 
     console.log('landscapeRequestIdValue', this.landscapeRequestIdValue);
     const formData = new FormData();
-    formData.append('landscape[id]', landscapeId);
-    formData.append('landscape[mask_image_data]', maskDataURL);
-    formData.append('landscape[preset]', preset);
-    formData.append('id', landscapeId);
-    formData.append('landscape[landscape_request_id]', this.landscapeRequestIdValue);
+    formData.append('landscape_request[id]', landscapeRequestId);
+    formData.append('landscape_request[mask_image_data]', maskDataURL);
+    formData.append('landscape_request[preset]', preset);
 
     try {
-      const response = await fetch(`/landscapes/modify`, {
-        method: 'POST',
+      const response = await fetch(`/landscape_requests/` + landscapeRequestId, {
+        method: 'PATCH',
         headers: {
           'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content,
           Accept: 'application/json',

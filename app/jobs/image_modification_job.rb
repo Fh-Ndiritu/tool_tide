@@ -123,7 +123,7 @@ class ImageModificationJob < ApplicationJob
     output_path = nil
     # output_path = Rails.root.join("tmp", "test3.png")
 
-    unless defined?(@landscape) && @landscape.respond_to?(:original_image) && @landscape.respond_to?(:mask_image_data)
+    unless defined?(@landscape) && @landscape.respond_to?(:original_image) && @landscape_request.respond_to?(:mask_image_data)
       raise ArgumentError, "Instance variable @landscape must be set and have original_image and mask_image_data attachments."
     end
 
@@ -131,7 +131,7 @@ class ImageModificationJob < ApplicationJob
       original_image_data = @landscape.original_image.variant(:final).processed.download
       original_image = MiniMagick::Image.read(original_image_data)
 
-      mask_image_data_binary = @landscape.mask_image_data.download
+      mask_image_data_binary = @landscape_request.mask_image_data.download
       mask_image = MiniMagick::Image.read(mask_image_data_binary)
 
       unless original_image.dimensions == mask_image.dimensions
@@ -227,7 +227,7 @@ class ImageModificationJob < ApplicationJob
 
   # GCP and Bria expect the white and black to be inverted in the mask
   def flip_mask_colors
-    blob = @landscape.mask_image_data.blob
+    blob = @landscape_request.mask_image_data.blob
     begin
       # image = MiniMagick::Image.read(blob)
       image = MiniMagick::Image.read(blob.download)
@@ -246,7 +246,7 @@ class ImageModificationJob < ApplicationJob
 
   def validate_mask_data
     # we shall ensure the mask has at least 10 % black pixels
-    blob = @landscape.mask_image_data.blob
+    blob = @landscape_request.mask_image_data.blob
     raise "Please draw the area to style on the image..." unless blob
 
     threshold = 5

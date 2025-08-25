@@ -162,8 +162,4 @@ PRO_CREDITS_PER_USD = 20
 BRIA_IMAGE_COST = 8
 GOOGLE_IMAGE_COST = 8
 LOCALIZED_PLANT_COST = 2
-
-
-# Cost analysis
-# You get 400 credits
-# We give you a cost of 10/image
+DEFAULT_IMAGE_COUNT=3

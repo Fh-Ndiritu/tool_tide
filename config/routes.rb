@@ -13,12 +13,12 @@ Rails.application.routes.draw do
   end
 
   resources :landscapes, except: [ :destroy ] do
-    collection do
-      post "modify"
-    end
+    # collection do
+    #   post "modify"
+    # end
   end
 
-  resources :landscape_requests, only: :update do
+  resources :landscape_requests, only: [:update, :update, :edit] do
     member do
       patch :location
     end
