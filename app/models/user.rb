@@ -26,11 +26,15 @@ class User < ApplicationRecord
     end
   end
 
+  def received_daily_credits?
+    received_daily_credits.in?(Date.today.all_day)
+  end
+
   private
 
   def issue_free_engine_credits
     credits.create(source: :daily_issuance, amount: DAILY_FREE_ENGINE_CREDITS, credit_type: :free_engine)
-    update received_daily_credits: true
+    update received_daily_credits: Time.zone.now, free_engine_credits: 0
   end
 
   def issue_trial_credits
