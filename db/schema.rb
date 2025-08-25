@@ -104,7 +104,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_25_092842) do
     t.string "method"
     t.string "paystack_customer_id"
     t.string "currency", default: "USD"
-    t.boolean "credits_issued", default: false
+    t.boolean "credits_issued", default: false, null: false
     t.index ["user_id"], name: "index_payment_transactions_on_user_id"
   end
 
@@ -141,10 +141,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_25_092842) do
     t.decimal "latitude", precision: 10, scale: 7
     t.decimal "longitude", precision: 10, scale: 7
     t.json "address"
-    t.integer "pro_engine_credits"
-    t.integer "free_engine_credits"
-    t.datetime "received_daily_credits"
-    t.integer "pro_trial_credits"
+    t.integer "pro_engine_credits", default: 0
+    t.integer "free_engine_credits", default: 0
+    t.boolean "received_daily_credits", default: false, null: false
+    t.integer "pro_trial_credits", default: 0
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
