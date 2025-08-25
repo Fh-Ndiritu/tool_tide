@@ -6,10 +6,11 @@ class ImageModificationJob < ApplicationJob
 
   def perform(landscape_request_id)
     Rails.logger.info "Starting ImageModificationJob for Landscape ID: #{landscape_request_id}"
-    @landscape_request = LandscapeRequest.find(landscape_request_id)
+    @landscape_request = LandscapeRequest.includes(landscape: :user).find(landscape_request_id)
     @user = @landscape_request.user
+    @landscape = @landscape_request.landscape
+
     begin
-      @landscape = @landscape_request.landscape
       validate_mask_data
       @final_prompt = fetch_localized_prompt
       @b64_input_image =  prepare_original_image_for_bria(@landscape.original_image)
@@ -20,8 +21,8 @@ class ImageModificationJob < ApplicationJob
         else
           bria_inpaint
         end
-
-        if @landscape_request.reload.modified_images.attached? && @user.charge_image_generation?(@landscape_request)
+        if @landscape_request.reload.modified_images.attached?
+          # && @user.charge_image_generation?(@landscape_request)
           ActionCable.server.broadcast(
             "landscape_channel_#{@landscape.id}",
             { status: "completed", landscape_id: @landscape.id }
@@ -44,7 +45,6 @@ class ImageModificationJob < ApplicationJob
   end
 
   def gcp_inpaint
-    # @landscape.modified_images.purge
     response = fetch_gcp_response
     if response.is_a?(Hash) && response["predictions"].present?
       save_b64_results(response["predictions"])
@@ -261,7 +261,6 @@ class ImageModificationJob < ApplicationJob
     # Max will be 1 or 255 while mean at 0 means all black while at 1/255 means all white
     black_percentage = (max - mean).to_f / max * 100
     puts "Calculated non-white percentage: #{black_percentage.round(2)}%"
-
     raise "Please draw the area to style on the image..." unless black_percentage >= threshold
   end
 

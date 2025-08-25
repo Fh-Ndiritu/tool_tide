@@ -6,7 +6,8 @@ class User < ApplicationRecord
 
   has_many :landscapes, dependent: :destroy
   has_many :landscape_requests, through: :landscapes
-  has_many :payment_transactions, dependent: :nullify
+  has_many :payment_transactions, dependent: :destroy
+
   has_many :credits, dependent: :destroy
 
 
@@ -48,9 +49,9 @@ class User < ApplicationRecord
 
   def charge_image_generation?(landscape_request)
     if landscape_request.google_processor?
-      update! pro_engine_credits: [ 0, pro_engine_credits - GOOGLE_IMAGE_COST ]
+      update! pro_engine_credits: [ 0, pro_engine_credits - GOOGLE_IMAGE_COST ].max
     else
-      update! free_engine_credits: [ 0, free_engine_credits - BRIA_IMAGE_COST ]
+      update! free_engine_credits: [ 0, free_engine_credits - BRIA_IMAGE_COST ].max
     end
   end
 
@@ -68,5 +69,9 @@ class User < ApplicationRecord
 
   def received_trial_credits?
     credits.exists?(source: :trial, credit_type: :pro_engine)
+  end
+
+    def nullify_payment_transactions
+    self.payment_transactions.update_all(user_id: nil)
   end
 end

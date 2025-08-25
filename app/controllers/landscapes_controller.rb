@@ -2,6 +2,7 @@ class LandscapesController < ApplicationController
   # Protect from CSRF attacks
   skip_before_action :verify_authenticity_token, only: [ :create ]
   before_action :set_landscape, only: %i[show edit]
+  before_action :set_landscape_request, only: %i[edit]
   before_action :issue_daily_credits, only: :new
 
   rate_limit to: 6,
@@ -47,7 +48,7 @@ class LandscapesController < ApplicationController
 
   private
 
-  def landscape_request
+  def set_landscape_request
     @landscape_request = @landscape.landscape_requests.unclaimed.last || @landscape.landscape_requests.create
   end
 

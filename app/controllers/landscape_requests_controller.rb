@@ -1,5 +1,5 @@
 class LandscapeRequestsController < ApplicationController
-  before_action :set_landscape_request, only: [:location, :edit, :update]
+  before_action :set_landscape_request, only: [ :location, :edit, :update ]
 
   def location
     if location_params.present?
@@ -46,7 +46,10 @@ class LandscapeRequestsController < ApplicationController
     _mime_type, base64_content = raw_mask_image_data.split(",", 2)
     decoded_mask = Base64.decode64(base64_content)
 
-    original_image_data = @landscape_request.landscape.original_image.variant(:final).processed.download
+    landscape =  @landscape_request.landscape.reload
+    raise "Original Image not found" unless landscape.original_image.attached?
+
+    original_image_data =landscape.original_image.variant(:final).processed.download
     original_image = MiniMagick::Image.read(original_image_data)
 
     mask_image = MiniMagick::Image.read(decoded_mask)
@@ -68,7 +71,7 @@ class LandscapeRequestsController < ApplicationController
     Rails.logger.info "Mask image data saved to Active Storage for Landscape ID: #{@landscape_request.id}"
 
   rescue => e
-    raise "Failed to Generate landscapes. Please try again later."
+    raise "Failed to save mask: #{e.message}"
   end
 
   def location_params
@@ -110,5 +113,4 @@ class LandscapeRequestsController < ApplicationController
       raise "The drawing on the image is invalid!"
     end
   end
-
 end
