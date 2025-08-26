@@ -33,9 +33,9 @@ class User < ApplicationRecord
 
   def afford_generation?(landscape_request)
     case landscape_request.image_engine
-    when 'bria'
+    when "bria"
       free_engine_credits >  3 * BRIA_IMAGE_COST
-    when 'google'
+    when "google"
       localization_cost = landscape_request.use_location? ? LOCALIZED_PLANT_COST : 0
       pro_engine_credits > (GOOGLE_IMAGE_COST * 3 + localization_cost)
     else

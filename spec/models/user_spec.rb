@@ -4,7 +4,7 @@ RSpec.describe User, type: :model do
   fixtures :users, :credits, :landscapes, :landscape_requests
 
   let(:user) { users(:john_doe) }
-  let(:landscape){ landscapes(:default)}
+  let(:landscape) { landscapes(:default) }
   let(:landscape_request) { landscape_requests(:bria_request) }
 
   before do
