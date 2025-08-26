@@ -2,22 +2,22 @@
 
   <div id="local_location"
   class="my-2
-          <%= current_user.pro_engine_credits < 3 ? 'opacity-70' : '' %>"
+          <%= current_user.pro_access_credits < 3 ? 'opacity-70' : '' %>"
   >
     <%= form_with(url: location_landscape_request_path(@landscape_request), method: :patch) do |form| %>
       <div class="mb-4">
         <input type="text" class="" id="latitude" name="latitude" data-landscape-editor-target="latitudeInput" hidden>
         <input type="text" class="" id="longitude" name="longitude" data-landscape-editor-target="longitudeInput" hidden>
         <label class="form-check-label"
-          data-controller="<%= current_user.pro_engine_credits < 3 ? 'credits' : '' %> "
-          data-action="<%= current_user.pro_engine_credits < 3 ? 'click->credits#purchase' : '' %>"
+          data-controller="<%= current_user.pro_access_credits < 3 ? 'credits' : '' %> "
+          data-action="<%= current_user.pro_access_credits < 3 ? 'click->credits#purchase' : '' %>"
           >
           <input type="checkbox"
             data-landscape-editor-target="locationCheckbox"
             data-action="change->landscape-editor#fetchLocation"
             class="form-check-input"
             <%= 'checked' if @landscape_request.use_location? %>
-            <%= 'disabled' if current_user.pro_engine_credits < 3 %>>
+            <%= 'disabled' if current_user.pro_access_credits < 3 %>>
           Use my local plants
         </label>
         <span class="text-gray-600 text-xs my-1 flex"> Costs <%= LOCALIZED_PLANT_COST %> Pro credits per generation</span>

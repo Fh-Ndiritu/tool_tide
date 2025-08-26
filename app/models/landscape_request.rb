@@ -5,10 +5,7 @@ class LandscapeRequest < ApplicationRecord
   has_many_attached :modified_images
   has_one_attached :mask_image_data
 
-  has_many :active_storage_attachments, class_name: "ActiveStorage::Attachment", as: :record
-
   enum :image_engine, [ :bria, :google ], suffix: :processor
-  delegate :ip_address, to: :landscape
   delegate :user, to: :landscape
 
   has_many :suggested_plants, dependent: :destroy
@@ -44,7 +41,7 @@ class LandscapeRequest < ApplicationRecord
     # else we go with BRIA
     localization_cost = use_location? ? LOCALIZED_PLANT_COST : 0
     google_cost = DEFAULT_IMAGE_COUNT * GOOGLE_IMAGE_COST + localization_cost
-    image_engine = if user.pro_engine_credits > google_cost
+    image_engine = if user.pro_access_credits > google_cost
      :google
     else
       :bria

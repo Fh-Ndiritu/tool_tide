@@ -42,22 +42,19 @@ class LandscapeRequestsController < ApplicationController
 
 def save_mask(raw_mask_image_data)
   # Log the start of the process
+  landscape = @landscape_request.landscape.reload
   Rails.logger.info "Starting save_mask for Landscape Request ID: #{@landscape_request.id}"
 
   begin
-    # Extract base64 content and decode
+    raise "Original Image not found" unless landscape.original_image.attached?
+
     _mime_type, base64_content = raw_mask_image_data.split(",", 2)
     decoded_mask = Base64.decode64(base64_content)
 
-    landscape = @landscape_request.landscape.reload
-    raise "Original Image not found" unless landscape.original_image.attached?
-
-    # Log the key step of downloading the variant
     Rails.logger.info "Original image attached. Attempting to download variant..."
-    original_image_data = landscape.original_image.variant(:to_process).processed.download
-    Rails.logger.info "Variant downloaded successfully. Size: #{original_image_data.bytesize} bytes."
+    final_variant = landscape.original_image.variant(:to_process).processed.blob
 
-    original_image = MiniMagick::Image.read(original_image_data)
+    original_image = MiniMagick::Image.read(final_variant.download)
     mask_image = MiniMagick::Image.read(decoded_mask)
 
     # Log the dimensions for comparison
@@ -79,6 +76,8 @@ def save_mask(raw_mask_image_data)
       filename: "mask_#{SecureRandom.hex(8)}.png",
       content_type: "image/png"
     )
+
+    @landscape_request.save
 
     # Log the successful completion
     Rails.logger.info "Mask image data successfully saved to Active Storage."

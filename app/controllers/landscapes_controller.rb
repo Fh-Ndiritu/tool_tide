@@ -53,7 +53,8 @@ class LandscapesController < ApplicationController
   end
 
   def create_landscape(original_image)
-    @landscape = current_user.landscapes.new(ip_address: request&.remote_ip)
+    current_user.update ip_address: request&.remote_ip
+    @landscape = current_user.landscapes.create
     @landscape.original_image.attach(original_image)
     @landscape.save
   end

@@ -8,12 +8,14 @@ class ImageModificationJob < ApplicationJob
     Rails.logger.info "Starting ImageModificationJob for Landscape ID: #{landscape_request_id}"
     @landscape_request = LandscapeRequest.includes(landscape: :user).find(landscape_request_id)
     @user = @landscape_request.user
-    @landscape = @landscape_request.landscape
+    @landscape = @landscape_request.landscape.reload
 
     begin
       validate_mask_data
       @final_prompt = fetch_localized_prompt
-      @b64_input_image =  prepare_original_image_for_bria(@landscape.original_image)
+      raise BriaAi::Error, "Original image is not attached to the landscape record with blob: #{@landscape.original_image.blob_id}." unless @landscape.original_image.attached?
+
+      @b64_input_image =  prepare_original_image_for_bria
 
       ActiveRecord::Base.transaction do
         if @landscape_request.google_processor?
@@ -21,7 +23,8 @@ class ImageModificationJob < ApplicationJob
         else
           bria_inpaint
         end
-        if @landscape_request.reload.modified_images.attached? && @user.charge_image_generation?(@landscape_request)
+        if @landscape_request.reload.modified_images.attached?
+          raise "Something went wrong... Please try again later" unless @user.charge_image_generation?(@landscape_request)
           ActionCable.server.broadcast(
             "landscape_channel_#{@landscape.id}",
             { status: "completed", landscape_id: @landscape.id }
@@ -72,18 +75,23 @@ class ImageModificationJob < ApplicationJob
   end
 
   def save_b64_results(predictions)
-    # gcp will responnd with a hash of type and data
     predictions.each do |prediction|
       b64_data = prediction["bytesBase64Encoded"]
+      next if b64_data.blank?
+
       img_from_b64 = Base64.decode64(b64_data)
       extension = prediction["mimeType"].split("/").last
-      temp_path = Rails.root.join("tmp", "#{SecureRandom.hex(10)}.#{extension}")
 
-      File.open(temp_path, "wb") do |file|
-        file.write(img_from_b64)
-      end
-      @landscape_request.modified_images.attach(io: File.open(temp_path), filename: "modified_image.#{extension}")
-      File.delete(temp_path) if File.exist?(temp_path)
+      temp_file = Tempfile.new(["modified_image", ".#{extension}"], binmode: true)
+      temp_file.write(img_from_b64)
+      temp_file.rewind
+
+      blob = ActiveStorage::Blob.create_and_upload!(
+        io: temp_file,
+        filename: "modified_image.#{extension}",
+        content_type: prediction["mimeType"]
+      )
+      @landscape_request.modified_images.attach(blob)
     end
   end
 
@@ -103,11 +111,13 @@ class ImageModificationJob < ApplicationJob
 
     begin
       downloaded_image = URI.parse(modified_image_url).open
-      @landscape_request.modified_images.attach(
+      blob = ActiveStorage::Blob.create_and_upload!(
         io: downloaded_image,
         filename: "landscaped_#{SecureRandom.hex(8)}.png",
         content_type: downloaded_image.content_type
       )
+      @landscape_request.modified_images.attach(blob)
+
       @landscape.save!
     rescue OpenURI::HTTPError => e
       raise "Failed to download processed image: #{e.message}"
@@ -120,15 +130,10 @@ class ImageModificationJob < ApplicationJob
 
   def apply_mask_for_transparency
     output_path = nil
-    # output_path = Rails.root.join("tmp", "test3.png")
-
-    unless defined?(@landscape) && @landscape.respond_to?(:original_image) && @landscape_request.respond_to?(:mask_image_data)
-      raise ArgumentError, "Instance variable @landscape must be set and have original_image and mask_image_data attachments."
-    end
 
     begin
-      original_image_data = @landscape.original_image.variant(:to_process).processed.download
-      original_image = MiniMagick::Image.read(original_image_data)
+      original_image_data = @landscape.original_image.variant(:to_process).processed
+      original_image = MiniMagick::Image.read(original_image_data.blob.download)
 
       mask_image_data_binary = @landscape_request.mask_image_data.download
       mask_image = MiniMagick::Image.read(mask_image_data_binary)
@@ -206,13 +211,9 @@ class ImageModificationJob < ApplicationJob
 
   # This helper method now ALWAYS reads the Active Storage blob and returns its Base64 encoding.
   # This makes it independent of whether Active Storage generates public, private, or localhost URLs.
-  def prepare_original_image_for_bria(original_image_attachment)
-    unless original_image_attachment.attached?
-      raise BriaAi::Error, "Original image is not attached to the landscape record."
-    end
-
+  def prepare_original_image_for_bria
     Rails.logger.info "Reading original image from Active Storage blob and encoding to Base64."
-    encoded_image_data = Base64.strict_encode64(original_image_attachment.variant(:to_process).processed.download)
+    encoded_image_data = Base64.strict_encode64(@landscape.original_image.variant(:to_process).processed.blob.download)
     Rails.logger.info "Successfully encoded Active Storage image to Base64."
     encoded_image_data
   rescue ActiveStorage::FileNotFoundError => e
