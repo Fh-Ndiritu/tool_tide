@@ -40,26 +40,37 @@ class LandscapeRequestsController < ApplicationController
 
   private
 
-  def save_mask(raw_mask_image_data)
+def save_mask(raw_mask_image_data)
+  # Log the start of the process
+  Rails.logger.info "Starting save_mask for Landscape Request ID: #{@landscape_request.id}"
+
+  begin
     # Extract base64 content and decode
-    # we need to resize this to match the size of the final image
     _mime_type, base64_content = raw_mask_image_data.split(",", 2)
     decoded_mask = Base64.decode64(base64_content)
 
-    landscape =  @landscape_request.landscape.reload
+    landscape = @landscape_request.landscape.reload
     raise "Original Image not found" unless landscape.original_image.attached?
 
-    original_image_data =landscape.original_image.variant(:final).processed.download
-    original_image = MiniMagick::Image.read(original_image_data)
+    # Log the key step of downloading the variant
+    Rails.logger.info "Original image attached. Attempting to download variant..."
+    original_image_data = landscape.original_image.variant(:to_process).processed.download
+    Rails.logger.info "Variant downloaded successfully. Size: #{original_image_data.bytesize} bytes."
 
+    original_image = MiniMagick::Image.read(original_image_data)
     mask_image = MiniMagick::Image.read(decoded_mask)
 
+    # Log the dimensions for comparison
+    Rails.logger.info "Original dimensions: #{original_image.dimensions.join('x')}"
+    Rails.logger.info "Mask dimensions: #{mask_image.dimensions.join('x')}"
+
     unless original_image.dimensions == mask_image.dimensions
+      # Use a 'warn' log level for a non-critical but important event
+      Rails.logger.warn "Mask dimensions mismatch. Resizing mask image to fit."
       mask_image.resize "#{original_image.width}x#{original_image.height}!"
     end
 
     mask_image.format "png"
-
     io = StringIO.new(mask_image.to_blob)
 
     # Attach the mask to the landscape record
@@ -68,11 +79,16 @@ class LandscapeRequestsController < ApplicationController
       filename: "mask_#{SecureRandom.hex(8)}.png",
       content_type: "image/png"
     )
-    Rails.logger.info "Mask image data saved to Active Storage for Landscape ID: #{@landscape_request.id}"
 
+    # Log the successful completion
+    Rails.logger.info "Mask image data successfully saved to Active Storage."
   rescue => e
+    # Use the 'error' log level to capture the exception message and backtrace
+    Rails.logger.error "Failed to save mask: #{e.message}"
+    Rails.logger.error e.backtrace.join("\n")
     raise "Failed to save mask: #{e.message}"
   end
+end
 
   def location_params
     params.permit(:latitude, :longitude).compact_blank.transform_values { |v| v.to_d }

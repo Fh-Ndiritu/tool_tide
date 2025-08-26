@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  # resources :payment_transactions, only: [:index, :create]
   get "credits", to: "home#credits", as: :credits
   get "paystack/callback", to: "payment_transactions#callback"
 

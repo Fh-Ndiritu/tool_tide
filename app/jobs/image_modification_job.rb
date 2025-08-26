@@ -21,8 +21,7 @@ class ImageModificationJob < ApplicationJob
         else
           bria_inpaint
         end
-        if @landscape_request.reload.modified_images.attached?
-          # && @user.charge_image_generation?(@landscape_request)
+        if @landscape_request.reload.modified_images.attached? && @user.charge_image_generation?(@landscape_request)
           ActionCable.server.broadcast(
             "landscape_channel_#{@landscape.id}",
             { status: "completed", landscape_id: @landscape.id }
@@ -128,7 +127,7 @@ class ImageModificationJob < ApplicationJob
     end
 
     begin
-      original_image_data = @landscape.original_image.variant(:final).processed.download
+      original_image_data = @landscape.original_image.variant(:to_process).processed.download
       original_image = MiniMagick::Image.read(original_image_data)
 
       mask_image_data_binary = @landscape_request.mask_image_data.download
@@ -213,7 +212,7 @@ class ImageModificationJob < ApplicationJob
     end
 
     Rails.logger.info "Reading original image from Active Storage blob and encoding to Base64."
-    encoded_image_data = Base64.strict_encode64(original_image_attachment.variant(:final).processed.download)
+    encoded_image_data = Base64.strict_encode64(original_image_attachment.variant(:to_process).processed.download)
     Rails.logger.info "Successfully encoded Active Storage image to Base64."
     encoded_image_data
   rescue ActiveStorage::FileNotFoundError => e
