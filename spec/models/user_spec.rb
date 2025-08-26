@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
+  # Load fixtures for a clean test environment
   fixtures :users, :credits, :landscapes, :landscape_requests
 
   let(:user) { users(:john_doe) }
@@ -8,7 +9,7 @@ RSpec.describe User, type: :model do
   let(:landscape_request) { landscape_requests(:bria_request) }
 
   before do
-    # Reset credit counts before each test
+    # Reset credit counts before each test to ensure a predictable state
     user.update!(
       free_engine_credits: 0,
       pro_engine_credits: 0,
@@ -133,21 +134,82 @@ RSpec.describe User, type: :model do
 
   describe '#charge_image_generation?' do
     context 'for Google engine' do
-      before { landscape_request.image_engine = 'google' }
-      it 'deducts GOOGLE_IMAGE_COST from pro_engine_credits' do
-        user.update!(pro_engine_credits: GOOGLE_IMAGE_COST + 1)
+      before do
+        landscape_request.image_engine = 'google'
+        # Stub the `modified_images` association to return a size for the test
+        allow(landscape_request).to receive_message_chain(:modified_images, :size).and_return(2)
+      end
+      it 'deducts GOOGLE_IMAGE_COST multiplied by image count from pro credits' do
+        user.update!(pro_trial_credits: GOOGLE_IMAGE_COST * 2)
         expect { user.charge_image_generation?(landscape_request) }
-          .to change { user.reload.pro_engine_credits }.by(-GOOGLE_IMAGE_COST)
+          .to change { user.reload.pro_trial_credits }.by(-(GOOGLE_IMAGE_COST * 2))
       end
     end
 
     context 'for Bria engine' do
-      before { landscape_request.image_engine = 'bria' }
-      it 'deducts BRIA_IMAGE_COST from free_engine_credits' do
-        user.update!(free_engine_credits: BRIA_IMAGE_COST + 1)
-        expect { user.charge_image_generation?(landscape_request) }
-          .to change { user.reload.free_engine_credits }.by(-BRIA_IMAGE_COST)
+      before do
+        landscape_request.image_engine = 'bria'
+        # Stub the `modified_images` association to return a size for the test
+        allow(landscape_request).to receive_message_chain(:modified_images, :size).and_return(2)
       end
+      it 'deducts BRIA_IMAGE_COST multiplied by image count from free_engine_credits' do
+        user.update!(free_engine_credits: BRIA_IMAGE_COST * 2 + 1)
+        expect { user.charge_image_generation?(landscape_request) }
+          .to change { user.reload.free_engine_credits }.by(-(BRIA_IMAGE_COST * 2))
+      end
+    end
+  end
+
+  # New tests for `pro_access_credits` and `charge_pro_cost`
+  describe '#pro_access_credits' do
+    it 'returns the sum of pro_engine and pro_trial credits' do
+      user.update!(pro_engine_credits: 5, pro_trial_credits: 10)
+      expect(user.pro_access_credits).to eq(15)
+    end
+  end
+
+  describe '#charge_pro_cost' do
+    context 'when pro_trial_credits are sufficient' do
+      before { user.update!(pro_trial_credits: 20, pro_engine_credits: 10) }
+      it 'deducts from pro_trial_credits' do
+        expect { user.charge_pro_cost(15) }.to change { user.reload.pro_trial_credits }.by(-15)
+        expect(user.pro_engine_credits).to eq(10)
+      end
+    end
+
+    context 'when pro_trial_credits are not sufficient' do
+      before { user.update!(pro_trial_credits: 5, pro_engine_credits: 10) }
+      it 'deducts from pro_trial_credits first, then pro_engine_credits' do
+        expect { user.charge_pro_cost(10) }.to change { user.reload.pro_trial_credits }.by(-5)
+        expect(user.reload.pro_engine_credits).to eq(5)
+      end
+    end
+  end
+
+  # New test for `sufficient_pro_credits?`
+  describe '#sufficient_pro_credits?' do
+    context 'when user has enough pro credits' do
+      it 'returns true' do
+        user.update!(pro_engine_credits: GOOGLE_IMAGE_COST * DEFAULT_IMAGE_COUNT)
+        expect(user.reload.sufficient_pro_credits?).to be true
+      end
+    end
+
+    context 'when user does not have enough pro credits' do
+      it 'returns false' do
+        user.update!(pro_engine_credits: GOOGLE_IMAGE_COST * DEFAULT_IMAGE_COUNT - 1)
+        expect(user.sufficient_pro_credits?).to be false
+      end
+    end
+  end
+
+  # New test for `schedule_downgrade_notification`
+  describe '#schedule_downgrade_notification' do
+    it 'sets reverted_to_free_engine to true and notified_about_pro_credits to false' do
+      user.update!(reverted_to_free_engine: false, notified_about_pro_credits: true)
+      user.schedule_downgrade_notification
+      expect(user.reverted_to_free_engine).to be true
+      expect(user.notified_about_pro_credits).to be false
     end
   end
 end

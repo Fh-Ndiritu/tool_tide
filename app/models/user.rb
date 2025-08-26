@@ -65,13 +65,13 @@ class User < ApplicationRecord
       update! pro_trial_credits: [ 0, pro_trial_credits - cost ].max
     else
       balance = cost - pro_trial_credits
-      update! pro_engine_credits: [ 0, pro_engine_credits - balance ].max
+      update! pro_engine_credits: [ 0, pro_engine_credits - balance ].max, pro_trial_credits: 0
     end
   end
 
   def sufficient_pro_credits?
     # this means you can afford the next minimum pro cost
-    pro_engine_credits > GOOGLE_IMAGE_COST * DEFAULT_IMAGE_COUNT
+    pro_engine_credits >= GOOGLE_IMAGE_COST * DEFAULT_IMAGE_COUNT
   end
 
   # We tell you are running low on premium credits, you can still user free engine or upgrade
