@@ -74,7 +74,7 @@ module Paystack
 
       return Failure("Paystack access_code or authorization_url is blank") if data[:access_code].blank? || data[:authorization_url].blank?
 
-      return Failure("Paystack reference key has changed ") if @transaction.uuid != data[:reference]
+      return Failure("Paystack reference key has changed") if @transaction.uuid != data[:reference]
 
       Success(data)
     end

@@ -20,7 +20,7 @@ class PaymentTransactionsController < ApplicationController
   end
 
   def callback
-    redirect_to root_path, alert: "No reference Id found" unless params[:reference]
+    redirect_to root_path, alert: "No reference Id found" and return unless params[:reference]
     result = Paystack::VerifyPayment.perform(params[:reference])
     if result.success?
       flash[:success] =  "Payment successful!"

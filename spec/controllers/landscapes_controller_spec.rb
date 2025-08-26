@@ -3,9 +3,10 @@
 require 'rails_helper'
 RSpec.describe LandscapesController, type: :controller do
   fixtures(:users)
-  let(:user){ users(:john_doe)}
+  let(:user) { users(:john_doe) }
+
   describe 'GET #new' do
-    it 'issues daily credits', focus: do
+    it 'issues daily credits' do
       sign_in(user)
       get :new
       user.reload
