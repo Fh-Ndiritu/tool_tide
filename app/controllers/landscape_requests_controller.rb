@@ -1,9 +1,8 @@
 class LandscapeRequestsController < ApplicationController
   before_action :set_landscape_request, only: [ :location, :edit, :update, :low_credits ]
-  before_action :handle_downgrade_notifications, only: [:edit, :update]
+  before_action :handle_downgrade_notifications, only: [ :edit, :update ]
 
   def low_credits
-
   end
 
   def location

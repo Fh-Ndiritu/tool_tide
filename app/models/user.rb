@@ -37,7 +37,7 @@ class User < ApplicationRecord
       free_engine_credits >  3 * BRIA_IMAGE_COST
     when "google"
       localization_cost = landscape_request.use_location? ? LOCALIZED_PLANT_COST : 0
-      pro_access_credits > (GOOGLE_IMAGE_COST * 3 + localization_cost)
+      pro_access_credits >= (GOOGLE_IMAGE_COST * 3 + localization_cost)
     else
       false
     end

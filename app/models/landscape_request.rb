@@ -41,7 +41,7 @@ class LandscapeRequest < ApplicationRecord
     # else we go with BRIA
     localization_cost = use_location? ? LOCALIZED_PLANT_COST : 0
     google_cost = DEFAULT_IMAGE_COUNT * GOOGLE_IMAGE_COST + localization_cost
-    image_engine = if user.pro_access_credits > google_cost
+    image_engine = if user.pro_access_credits >= google_cost
      :google
     else
       :bria
