@@ -421,21 +421,29 @@ export default class extends Controller {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to process image.');
-      }
+        console.error('AJAX submission failed:', errorData);
 
-      const responseData = await response.json();
-      console.log('AJAX submission successful:', responseData);
-
-      if (responseData.status === 'processing' || responseData.status === 'queued') {
-        console.log('AI processing queued. Waiting for ActionCable broadcast...');
+        // Check for the specific status code and error message for low credits
+        if (response.status === 401 && errorData.error.includes('low on free engine credits')) {
+          window.location.href = `/landscape_requests/${landscapeRequestId}/low_credits`;
+        } else {
+          throw new Error(errorData.error || 'Failed to process image.');
+        }
       } else {
-        // If the backend returns the final result directly (less common for AI)
-        this.handleAiDataReceived(new CustomEvent('landscape:ai-data-received', { detail: responseData }));
+        // Handling a successful response
+        const responseData = await response.json();
+        console.log('AJAX submission successful:', responseData);
+
+        if (responseData.status === 'processing' || responseData.status === 'queued') {
+          console.log('AI processing queued. Waiting for ActionCable broadcast...');
+        } else {
+          // If the backend returns the final result directly (less common for AI)
+          this.handleAiDataReceived(new CustomEvent('landscape:ai-data-received', { detail: responseData }));
+        }
       }
     } catch (error) {
       console.error('Error submitting modification:', error);
-      this.showMessage(` ${error.message}. Please try again.`);
+      this.showMessage(`${error.message}. Please try again.`);
       this.showSection('editor');
       if (this.hasProgressBarContainerTarget) {
         this.progressBarContainerTarget.classList.add('hidden');

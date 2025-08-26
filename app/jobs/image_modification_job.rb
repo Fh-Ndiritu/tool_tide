@@ -25,6 +25,9 @@ class ImageModificationJob < ApplicationJob
         end
         if @landscape_request.reload.modified_images.attached?
           raise "Something went wrong... Please try again later" unless @user.charge_image_generation?(@landscape_request)
+          if @landscape_request.google_processor?
+            @user.schedule_downgrade_notification unless @user.sufficient_pro_credits?
+          end
           ActionCable.server.broadcast(
             "landscape_channel_#{@landscape.id}",
             { status: "completed", landscape_id: @landscape.id }

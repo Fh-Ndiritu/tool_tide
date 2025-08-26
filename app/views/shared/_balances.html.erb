@@ -1,7 +1,28 @@
-<div class="bg-gray-100 my-8 rounded-lg shadow-sm p-3 flex items-center justify-between mt-4 border border-transparent hover:border-gray-200 transition-all duration-200 hover:shadow-md">
+<% if current_user.reverted_to_free_engine? && !current_user.notified_about_pro_credits? %>
+  <div class="bg-blue-100 text-blue-800 p-4 rounded-xl shadow-lg border-l-4 border-blue-500 mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-3 sm:space-y-0">
+    <div class="flex items-center space-x-3">
+      <!-- Info Icon -->
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+      </svg>
+      <div class="text-sm font-medium">
+        <span class="font-bold">Pro Credits Expired:</span> You are out of Pro Credits but can continue enjoying free generations with the Hadaa Free engine.
+      </div>
+    </div>
+    <div class="flex-shrink-0 mt-3 sm:mt-0">
+      <%= button_to "Upgrade to Pro", payment_transactions_path, data: { turbo: false }, method: :post, class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-full shadow-sm text-blue-800 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200 cursor-pointer" %>
+    </div>
+  </div>
+  <% else %>
+
+<!-- Credits Banner -->
+<div class="bg-gradient-to-r from-gray-50 to-gray-100 my-8 rounded-lg shadow-md p-4 flex items-center justify-between mt-4 border border-gray-200 transition-all duration-300 hover:shadow-lg">
   <%= link_to credits_path, class: "flex items-center w-full no-underline text-inherit" do %>
     <div class="flex items-center gap-2">
-      <%= render(IconComponent.new(name: "credit_card", classes: "h-5 w-5 text-gray-500")) %>
+      <!-- Credit Card Icon -->
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M21 4H3a2 2 0 00-2 2v12a2 2 0 002 2h18a2 2 0 002-2V6a2 2 0 00-2-2zM3 8h18V6H3v2zm18 10H3v-6h18v6z"/>
+      </svg>
       <span class="text-sm font-medium text-gray-700">Your Credits</span>
     </div>
 
@@ -21,3 +42,4 @@
     </div>
   <% end %>
 </div>
+<% end %>

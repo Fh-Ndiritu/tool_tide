@@ -69,6 +69,16 @@ class User < ApplicationRecord
     end
   end
 
+  def sufficient_pro_credits?
+    # this means you can afford the next minimum pro cost
+    pro_engine_credits > GOOGLE_IMAGE_COST * DEFAULT_IMAGE_COUNT
+  end
+
+  # We tell you are running low on premium credits, you can still user free engine or upgrade
+  def schedule_downgrade_notification
+    update!(reverted_to_free_engine: true, notified_about_pro_credits: false)
+  end
+
   private
 
   def issue_free_engine_credits

@@ -1,5 +1,10 @@
 class LandscapeRequestsController < ApplicationController
-  before_action :set_landscape_request, only: [ :location, :edit, :update ]
+  before_action :set_landscape_request, only: [ :location, :edit, :update, :low_credits ]
+  before_action :handle_downgrade_notifications, only: [:edit, :update]
+
+  def low_credits
+
+  end
 
   def location
     if location_params.present?
@@ -21,22 +26,26 @@ class LandscapeRequestsController < ApplicationController
     @landscape = @landscape_request.landscape
   end
 
-  def update
-    prompt = fetch_prompt
-    validate_mask_image
-    ActiveRecord::Base.transaction do
-      @landscape_request.update!(prompt:,  preset: landscape_request_params[:preset].humanize)
-      @landscape_request.set_default_image_processor!
-      save_mask(landscape_request_params[:mask_image_data])
-    end
-    ImageModificationJob.perform_now(@landscape_request.id)
-
-    # Respond immediately to the frontend to indicate job acceptance
-    render json: { message: "Image modification request received. Processing in background." }, status: :accepted
-  rescue StandardError => e
-    Rails.logger.error "Error in modify_image endpoint: #{e.message}"
-    render json: { error: "Internal server error: #{e.message}" }, status: :internal_server_error
+def update
+  prompt = fetch_prompt
+  validate_mask_image
+  ActiveRecord::Base.transaction do
+    @landscape_request.update!(prompt:,  preset: landscape_request_params[:preset].humanize)
+    @landscape_request.set_default_image_processor!
+    save_mask(landscape_request_params[:mask_image_data])
   end
+
+  if current_user.afford_generation?(@landscape_request)
+    ImageModificationJob.perform_now(@landscape_request.id)
+    render json: { message: "Image modification request received. Processing in background." }, status: :accepted
+  else
+    render json: { error: "You are running low on free engine credits. Please check back tomorrow for more free credits or upgrade to Pro." }, status: :unauthorized
+  end
+
+rescue StandardError => e
+  Rails.logger.error "Error in modify_image endpoint: #{e.message}"
+  render json: { error: "Internal server error: #{e.message}" }, status: :internal_server_error
+end
 
   private
 
@@ -126,6 +135,12 @@ end
 
     if mask_image_data.blank?
       raise "The drawing on the image is invalid!"
+    end
+  end
+
+  def handle_downgrade_notifications
+    if current_user.reverted_to_free_engine && !current_user.notified_about_pro_credits
+      current_user.update! notified_about_pro_credits: true
     end
   end
 end

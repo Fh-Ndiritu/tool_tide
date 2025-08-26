@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+
+  # Home routes
   get "credits", to: "home#credits", as: :credits
   get "paystack/callback", to: "payment_transactions#callback"
 
@@ -17,9 +19,10 @@ Rails.application.routes.draw do
     # end
   end
 
-  resources :landscape_requests, only: [ :update, :update, :edit ] do
+  resources :landscape_requests, only: [:update, :edit] do
     member do
       patch :location
+      get :low_credits
     end
   end
 
