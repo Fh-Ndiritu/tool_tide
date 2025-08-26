@@ -10,7 +10,7 @@ class PaymentTransaction < ApplicationRecord
   self.class.define_method :new_transaction do |user|
     create(
       user: user,
-      amount: 20.00
+      amount: DEFAULT_USD_PURCHASE_AMOUNT
     )
   end
 
