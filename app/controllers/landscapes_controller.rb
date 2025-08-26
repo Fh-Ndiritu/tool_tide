@@ -1,9 +1,11 @@
 class LandscapesController < ApplicationController
-  # Protect from CSRF attacks
+  include Notifiable
+
   skip_before_action :verify_authenticity_token, only: [ :create ]
   before_action :set_landscape, only: %i[show edit]
   before_action :set_landscape_request, only: %i[edit]
   before_action :issue_daily_credits, only: :new
+  before_action :handle_downgrade_notifications, only: [ :new, :edit, :show ]
 
   rate_limit to: 6,
   within: 1.minutes,

@@ -1,4 +1,6 @@
 class LandscapeRequestsController < ApplicationController
+  include Notifiable
+
   before_action :set_landscape_request, only: [ :location, :edit, :update, :low_credits ]
   before_action :handle_downgrade_notifications, only: [ :edit, :update ]
 
@@ -134,12 +136,6 @@ end
 
     if mask_image_data.blank?
       raise "The drawing on the image is invalid!"
-    end
-  end
-
-  def handle_downgrade_notifications
-    if current_user.reverted_to_free_engine && !current_user.notified_about_pro_credits
-      current_user.update! notified_about_pro_credits: true
     end
   end
 end
