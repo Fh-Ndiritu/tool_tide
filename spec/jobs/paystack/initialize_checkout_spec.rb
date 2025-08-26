@@ -9,7 +9,7 @@ RSpec.describe Paystack::InitializeCheckout do
   # fixtures(:payment_transactions)
   fixtures(:users)
 
-  let(:current_user){ users(:john_doe) }
+  let(:current_user) { users(:john_doe) }
   let(:transaction) { PaymentTransaction.new_transaction(current_user) }
   let(:valid_response) { { status: true, data: { access_code: 'ACC_123', authorization_url: 'https://paystack.com/authorize', reference: transaction.uuid } } }
   let(:invalid_response) { { status: false, data: {} } }
@@ -53,7 +53,7 @@ RSpec.describe Paystack::InitializeCheckout do
     end
 
     context 'when Faraday raises an error' do
-      before { allow(client).to receive(:post).and_raise(Faraday::Error.new('Faraday error', {status: 500, body: {}})) }
+      before { allow(client).to receive(:post).and_raise(Faraday::Error.new('Faraday error', { status: 500, body: {} })) }
       it 'returns Failure' do
         expect(subject.send(:fetch_checkout_code)).to be_a(Dry::Monads::Failure)
       end
@@ -98,9 +98,9 @@ RSpec.describe Paystack::InitializeCheckout do
 
     context 'when update fails' do
       before { allow(transaction).to receive(:update).and_return(false) }
-      before { allow(transaction).to receive(:errors).and_return(double(full_messages: ['Error message'])) }
+      before { allow(transaction).to receive(:errors).and_return(double(full_messages: [ 'Error message' ])) }
       it 'returns Failure' do
-        expect(subject.send(:update_payment_transaction, valid_response[:data])).to eq(Failure(['Error message']))
+        expect(subject.send(:update_payment_transaction, valid_response[:data])).to eq(Failure([ 'Error message' ]))
       end
     end
   end

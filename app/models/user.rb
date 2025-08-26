@@ -33,10 +33,10 @@ class User < ApplicationRecord
 
   def afford_generation?(landscape_request)
     case landscape_request.image_engine
-    when :bria
+    when 'bria'
       free_engine_credits >  3 * BRIA_IMAGE_COST
-    when :google
-      localization_cost = landscape_request.use_localization? ? LOCALIZED_PLANT_COST : 0
+    when 'google'
+      localization_cost = landscape_request.use_location? ? LOCALIZED_PLANT_COST : 0
       pro_engine_credits > (GOOGLE_IMAGE_COST * 3 + localization_cost)
     else
       false
@@ -69,9 +69,5 @@ class User < ApplicationRecord
 
   def received_trial_credits?
     credits.exists?(source: :trial, credit_type: :pro_engine)
-  end
-
-    def nullify_payment_transactions
-    self.payment_transactions.update_all(user_id: nil)
   end
 end

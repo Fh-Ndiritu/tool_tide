@@ -32,7 +32,7 @@ module Paystack
           amount: to_subunit(@transaction.amount),
           currency: "USD",
           reference: @transaction.uuid,
-          callback_url: ENV.fetch('PAYSTACK_CALLBACK_URL'),
+          callback_url: ENV.fetch("PAYSTACK_CALLBACK_URL"),
           metadata: {
             'user_id': @transaction.user_id,
             'tx_id': @transaction.id

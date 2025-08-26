@@ -143,7 +143,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_25_092842) do
     t.json "address"
     t.integer "pro_engine_credits", default: 0
     t.integer "free_engine_credits", default: 0
-    t.boolean "received_daily_credits", default: false, null: false
+    t.datetime "received_daily_credits"
     t.integer "pro_trial_credits", default: 0
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

@@ -1,0 +1,8 @@
+bria_request:
+  image_engine: 'bria'
+  landscape: default
+  use_location: false
+google_request:
+  image_engine: 'google'
+  landscape: default
+  use_location: false
