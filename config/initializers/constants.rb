@@ -148,7 +148,7 @@ LOCALIZED_PROMPT_SCHEMA = {
                       description: "The updated prompt with the new flowers and the concise adjectives of how they look" }
   },
 
-  required: ["updated_prompt"]
+  required: [ "updated_prompt" ]
 }
 
 DAILY_FREE_ENGINE_CREDITS = 50
