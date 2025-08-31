@@ -461,7 +461,7 @@ export default class extends Controller {
       this.redirectToLandscapeShow(data.landscape_id);
     } else if (data.message) {
       console.log('Found message', data);
-      this.processingMessage.innerHTML = data.message;
+      // this.processingMessage.innerHTML = data.message;
     } else if (data.error) {
       this.showMessage(` ${data.error}`);
       this.showSection('editor');
