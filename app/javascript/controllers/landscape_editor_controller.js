@@ -406,7 +406,7 @@ export default class extends Controller {
     console.log('landscapeRequestIdValue', this.landscapeRequestIdValue);
     const formData = new FormData();
     formData.append('landscape_request[id]', landscapeRequestId);
-    formData.append('landscape_request[mask_image_data]', maskDataURL);
+    formData.append('landscape_request[mask]', maskDataURL);
     formData.append('landscape_request[preset]', preset);
 
     try {

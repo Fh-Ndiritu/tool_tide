@@ -12,7 +12,7 @@ class ImageModificationJob < ApplicationJob
   def perform(landscape_request_id)
     @landscape_request = LandscapeRequest.includes(landscape: :user).find(landscape_request_id)
     @user = @landscape_request.user
-    @landscape = @landscape_request.landscape.reload
+    @landscape = @landscape_request.landscape
 
     prepare_image_and_prompt
 
@@ -60,10 +60,10 @@ class ImageModificationJob < ApplicationJob
   end
 
   def broadcast_error(e)
-    Rails.logger.error "Image modification job failed for Landscape ID #{@landscape.id}: #{e.class}: #{e.message}\n#{e.backtrace.join("\n")}"
+    error = e.message.include?("Please") ? e.message : "Something went wrong. We are getting a full team to look into this... just for you :) Please try again later."
     ActionCable.server.broadcast(
       "landscape_channel_#{@landscape.id}",
-      { error: "Something went wrong. We are getting a full team to look into this... just for you :) Please try again later." }
+      { error: error }
     )
   end
 

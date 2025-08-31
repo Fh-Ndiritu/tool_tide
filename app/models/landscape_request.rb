@@ -3,7 +3,7 @@ class LandscapeRequest < ApplicationRecord
 
   belongs_to :landscape
   has_many_attached :modified_images
-  has_one_attached :mask_image_data
+  has_one_attached :mask
   has_one_attached :partial_blend
   has_one_attached :full_blend
 
@@ -58,9 +58,9 @@ class LandscapeRequest < ApplicationRecord
     google_cost = DEFAULT_IMAGE_COUNT * GOOGLE_IMAGE_COST + localization_cost
     image_engine = if user.pro_access_credits >= google_cost
                      :google
-    else
+                   else
                      :bria
-    end
+                   end
 
     update! image_engine: image_engine
   end

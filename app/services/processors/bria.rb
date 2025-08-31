@@ -79,7 +79,7 @@ module Processors
 
     # Bria expects the white and black to be inverted in the mask
     def flip_mask_colors
-      blob = @landscape_request.mask_image_data.blob
+      blob = @landscape_request.mask.blob
       image = MiniMagick::Image.read(blob.download)
       image.colorspace("Gray").threshold("50%").negate
 

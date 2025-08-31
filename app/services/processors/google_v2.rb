@@ -51,7 +51,7 @@ module Processors
         img_from_b64 = Base64.decode64(b64_data)
         extension = prediction["mimeType"].split("/").last
 
-        temp_file = Tempfile.new([ "modified_image", ".#{extension}" ], binmode: true)
+        temp_file = Tempfile.new(["modified_image", ".#{extension}"], binmode: true)
         temp_file.write(img_from_b64)
         temp_file.rewind
 
@@ -69,8 +69,8 @@ module Processors
       original_image_data = @landscape.original_image.variant(:to_process).processed
       original_image = MiniMagick::Image.read(original_image_data.blob.download)
 
-      mask_image_data_binary = @landscape_request.mask_image_data.download
-      mask_image = MiniMagick::Image.read(mask_image_data_binary)
+      mask_binary = @landscape_request.mask.download
+      mask_image = MiniMagick::Image.read(mask_binary)
 
       unless original_image.dimensions == mask_image.dimensions
         mask_image.resize "#{original_image.width}x#{original_image.height}!"
