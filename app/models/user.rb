@@ -10,7 +10,6 @@ class User < ApplicationRecord
 
   has_many :credits, dependent: :destroy
 
-
   def state_address
     return "" unless address.present?
 
@@ -20,9 +19,10 @@ class User < ApplicationRecord
   # You receive free credits to use with the free engine
   # For pro engine we need to monetize it so if you have received some before we can cut you off
   def issue_daily_credits
-    ActiveRecord::Base.transaction  do
+    ActiveRecord::Base.transaction do
       issue_free_engine_credits
       return if received_trial_credits?
+
       issue_trial_credits
     end
   end
@@ -34,7 +34,7 @@ class User < ApplicationRecord
   def afford_generation?(landscape_request)
     case landscape_request.image_engine
     when "bria"
-      free_engine_credits >  3 * BRIA_IMAGE_COST
+      free_engine_credits > 3 * BRIA_IMAGE_COST
     when "google"
       localization_cost = landscape_request.use_location? ? LOCALIZED_PLANT_COST : 0
       pro_access_credits >= (GOOGLE_IMAGE_COST * 3 + localization_cost)
@@ -43,16 +43,16 @@ class User < ApplicationRecord
     end
   end
 
-  def charge_prompt_localization?
-   charge_pro_cost(LOCALIZED_PLANT_COST)
+  def charge_prompt_localization!
+    charge_pro_cost!(LOCALIZED_PLANT_COST)
   end
 
-  def charge_image_generation?(landscape_request)
+  def charge_image_generation!(landscape_request)
     if landscape_request.google_processor?
-      charge_pro_cost(GOOGLE_IMAGE_COST * landscape_request.modified_images.size)
+      charge_pro_cost!(GOOGLE_IMAGE_COST * landscape_request.modified_images.size)
     else
       cost = BRIA_IMAGE_COST * landscape_request.modified_images.size
-      update! free_engine_credits: [ 0, free_engine_credits - cost ].max
+      update! free_engine_credits: [0, free_engine_credits - cost].max
     end
   end
 
@@ -60,12 +60,12 @@ class User < ApplicationRecord
     pro_engine_credits + pro_trial_credits
   end
 
-  def charge_pro_cost(cost)
+  def charge_pro_cost!(cost)
     if pro_trial_credits >= cost
-      update! pro_trial_credits: [ 0, pro_trial_credits - cost ].max
+      update! pro_trial_credits: [0, pro_trial_credits - cost].max
     else
       balance = cost - pro_trial_credits
-      update! pro_engine_credits: [ 0, pro_engine_credits - balance ].max, pro_trial_credits: 0
+      update! pro_engine_credits: [0, pro_engine_credits - balance].max, pro_trial_credits: 0
     end
   end
 

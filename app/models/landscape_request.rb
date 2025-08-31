@@ -1,35 +1,50 @@
 class LandscapeRequest < ApplicationRecord
-  validates_presence_of :preset, :image_engine, :prompt, on: :update
+  validates :preset, :image_engine, :prompt, presence: { on: :update }
 
   belongs_to :landscape
   has_many_attached :modified_images
   has_one_attached :mask_image_data
+  has_one_attached :partial_blend
+  has_one_attached :full_blend
 
-  enum :image_engine, [ :bria, :google ], suffix: :processor
+  enum :image_engine, { bria: 0, google: 1 }, suffix: :processor
   delegate :user, to: :landscape
 
   has_many :suggested_plants, dependent: :destroy
 
   scope :unclaimed, -> { where(preset: nil, image_engine: :bria, prompt: nil) }
 
+  enum :progress, {
+    uploading: 0,
+    validating_drawing: 1,
+    suggesting_plants: 2,
+    preparing_request: 3,
+    generating_images: 4,
+    saving_results: 5,
+    processed: 6,
+    complete: 7,
+    failed: 100
+  }
+
   def recommend_flowers
     return unless use_location?
     return if suggested_plants.present?
 
-    fetch_plant_response.content.each do  |suggestion|
+    fetch_plant_response.content.each do |suggestion|
       suggested_plants.create!(suggestion)
     end
   end
 
-  def build_localized_prompt?
+  def build_localized_prompt!
     return false unless user.afford_generation?(self)
+
     ActiveRecord::Base.transaction do
       suggested_plants.destroy_all
       recommend_flowers
       if suggested_plants.present? && preset.present?
         response = fetch_localization_prompt
-        self.update localized_prompt: response.content["updated_prompt"]
-        user.charge_prompt_localization?
+        update! localized_prompt: response.content["updated_prompt"]
+        user.charge_prompt_localization!
       else
         false
       end
@@ -42,12 +57,16 @@ class LandscapeRequest < ApplicationRecord
     localization_cost = use_location? ? LOCALIZED_PLANT_COST : 0
     google_cost = DEFAULT_IMAGE_COUNT * GOOGLE_IMAGE_COST + localization_cost
     image_engine = if user.pro_access_credits >= google_cost
-     :google
-    else
-      :bria
-    end
+                     :google
+                   else
+                     :bria
+                   end
 
     update! image_engine: image_engine
+  end
+
+  def full_prompt
+    localized_prompt.presence || prompt
   end
 
   private
@@ -63,9 +82,9 @@ class LandscapeRequest < ApplicationRecord
       <example_description>
         fiery orange and red Japanese quince flowers
       <example_description>
-    ")
+    "
+    )
   end
-
 
   def fetch_localization_prompt
     chat = RubyLLM.chat
@@ -75,7 +94,7 @@ class LandscapeRequest < ApplicationRecord
        You shall update the name of flowers and how they look.
        Then return the new prompt as updated prompt
        <prompt_extract>
-       #{PROMPTS["landscape_presets"][preset.downcase]}
+       #{PROMPTS['landscape_presets'][preset.downcase]}
        </prompt_extract>
 
        <plants_and_flowers>
@@ -83,6 +102,7 @@ class LandscapeRequest < ApplicationRecord
        </plants_and_flowers>
 
        DO NOT change any other part of the prompt, or provide any commentary.
-    ")
+    "
+    )
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_26_122123) do
+ActiveRecord::Schema[8.0].define(version: 20_250_831_113_300) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -18,7 +18,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_26_122123) do
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
-    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+    t.index %w[record_type record_id name blob_id], name: "index_active_storage_attachments_uniqueness",
+                                                    unique: true
   end
 
   create_table "active_storage_blobs", force: :cascade do |t|
@@ -36,7 +37,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_26_122123) do
   create_table "active_storage_variant_records", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
-    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+    t.index %w[blob_id variation_digest], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
   create_table "chats", force: :cascade do |t|
@@ -64,6 +65,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_26_122123) do
     t.string "preset"
     t.boolean "use_location", default: false, null: false
     t.text "localized_prompt"
+    t.integer "progress"
+    t.text "error"
     t.index ["landscape_id"], name: "index_landscape_requests_on_landscape_id"
   end
 
@@ -146,6 +149,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_26_122123) do
     t.integer "pro_trial_credits", default: 0
     t.boolean "reverted_to_free_engine", default: false
     t.boolean "notified_about_pro_credits", default: false
+    t.text "error"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

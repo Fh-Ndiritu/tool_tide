@@ -1,15 +1,18 @@
 # Inherit from the base Omakase style for a great starting point.
 inherit_gem:
   rubocop-rails-omakase: rubocop.yml
-
 # =========================================================================
 # Custom House Style Overrides
 # =========================================================================
 
+require:
+  - rubocop-rails
+  - rubocop-rspec
+
 # Enforce a single space between a method name and its first argument,
 # but only when parentheses are used. This is a common and readable convention.
 Layout/SpaceBeforeFirstArg:
-  Enabled: true
+  Enabled: false
   EnforcedStyle: space
 
 # Ensure there are no spaces immediately inside parentheses. This is the
