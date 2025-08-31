@@ -77,7 +77,7 @@
       <%= render ButtonComponent.new(
         text: "History",
         href: landscapes_path,
-        classes: "#{active_item(credits_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
+        classes: "#{active_item(landscapes_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
         ) %>
     <%= button_to "Log Out", destroy_user_session_path, method: :delete, class: "nav-btn" %>
     <!--When Logged IN-->
