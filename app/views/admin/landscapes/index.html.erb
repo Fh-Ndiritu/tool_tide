@@ -25,9 +25,9 @@
           <div class="flex space-x-4 overflow-x-auto pb-4 hide-scrollbar">
 
             <%# Display mask image if available, now always taking up one slot %>
-            <% if request.mask_image_data.attached? %>
+            <% if request.mask.attached? %>
               <div class="flex-none w-1/4 max-w-xs bg-white rounded-lg shadow-md overflow-hidden flex flex-col items-center p-2 transform transition-transform duration-300 hover:scale-105">
-                <%= image_tag url_for(request.mask_image_data.variant(resize_to_limit: [400, 400])), class: "w-full h-auto object-cover rounded-md border border-neutral-300 shadow-sm", loading: :lazy %>
+                <%= image_tag url_for(request.mask.variant(resize_to_limit: [400, 400])), class: "w-full h-auto object-cover rounded-md border border-neutral-300 shadow-sm", loading: :lazy %>
                 <span class="mt-2 text-xs text-neutral-500">Mask Image</span>
               </div>
             <% end %>
