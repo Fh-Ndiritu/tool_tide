@@ -1,4 +1,5 @@
 class LandscapeRequest < ApplicationRecord
+  include LandscapeHelper
   validates :preset, :image_engine, :prompt, presence: { on: :update }
 
   belongs_to :landscape
@@ -6,6 +7,8 @@ class LandscapeRequest < ApplicationRecord
   has_one_attached :mask
   has_one_attached :partial_blend
   has_one_attached :full_blend
+
+  after_update_commit :broadcast_progress, if: :saved_change_to_progress?
 
   enum :image_engine, { bria: 0, google: 1 }, suffix: :processor
   delegate :user, to: :landscape
@@ -70,6 +73,15 @@ class LandscapeRequest < ApplicationRecord
   end
 
   private
+
+  def broadcast_progress
+    return if complete? || failed?
+
+    ActionCable.server.broadcast(
+      "landscape_channel_#{id}",
+      { status: progress, message: progress_message(progress) }
+    )
+  end
 
   def fetch_plant_response
     chat = RubyLLM.chat

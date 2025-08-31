@@ -28,6 +28,7 @@ export default class extends Controller {
     'longitudeInput',
     'locationBtn',
     'profileBtn',
+    'processingMessage',
   ];
 
   static values = {
@@ -458,6 +459,9 @@ export default class extends Controller {
     if (data.status === 'completed' && data.landscape_id) {
       console.log('AI processing completed. Redirecting to landscape show page:', data.landscape_id);
       this.redirectToLandscapeShow(data.landscape_id);
+    } else if (data.message) {
+      console.log('Found message', data);
+      this.processingMessage.innerHTML = data.message;
     } else if (data.error) {
       this.showMessage(` ${data.error}`);
       this.showSection('editor');

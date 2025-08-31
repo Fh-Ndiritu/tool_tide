@@ -60,7 +60,7 @@ class ImageModificationJob < ApplicationJob
   end
 
   def broadcast_error(e)
-    error = e.message.include?("Please") ? e.message : "Something went wrong. We are getting a full team to look into this... just for you :) Please try again later."
+    error = e.message.include?("Please") ? e.message : "Something went wrong. We are getting a full team to look into this... just for you :)"
     ActionCable.server.broadcast(
       "landscape_channel_#{@landscape.id}",
       { error: error }

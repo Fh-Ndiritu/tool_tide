@@ -9,7 +9,7 @@ class LandscapeRequestsController < ApplicationController
 
   def location
     if location_params.present?
-      results = Geocoder.search([location_params[:latitude], location_params[:longitude]])
+      results = Geocoder.search([ location_params[:latitude], location_params[:longitude] ])
       current_user.update!(location_params)
 
       current_user.update! address: results.first&.data&.dig("address") if results.present?
