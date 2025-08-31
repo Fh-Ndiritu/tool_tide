@@ -1,8 +1,8 @@
 class LandscapeRequestsController < ApplicationController
   include Notifiable
 
-  before_action :set_landscape_request, only: [ :location, :edit, :update, :low_credits ]
-  before_action :handle_downgrade_notifications, only: [ :edit, :update ]
+  before_action :set_landscape_request, only: %i[location edit update low_credits]
+  before_action :handle_downgrade_notifications, only: %i[edit update]
 
   def low_credits
   end
@@ -12,12 +12,13 @@ class LandscapeRequestsController < ApplicationController
       results = Geocoder.search([ location_params[:latitude], location_params[:longitude] ])
       current_user.update!(location_params)
 
-      current_user.update! address: results.first&.data.dig("address") if results.present?
+      current_user.update! address: results.first&.data&.dig("address") if results.present?
       @landscape_request.toggle!(:use_location)
     end
     respond_to do |format|
       format.turbo_stream do
-        render turbo_stream: turbo_stream.replace(:local_location, partial: "/landscape_requests/location", locals: { landscape_request: @landscape_request, current_user: })
+        render turbo_stream: turbo_stream.replace(:local_location, partial: "/landscape_requests/location",
+                                                                   locals: { landscape_request: @landscape_request, current_user: })
       end
     end
   end
@@ -27,77 +28,52 @@ class LandscapeRequestsController < ApplicationController
     @landscape = @landscape_request.landscape
   end
 
-def update
-  prompt = fetch_prompt
-  validate_mask_image
-  ActiveRecord::Base.transaction do
-    @landscape_request.update!(prompt:,  preset: landscape_request_params[:preset].humanize)
-    @landscape_request.set_default_image_processor!
-    save_mask(landscape_request_params[:mask_image_data])
-  end
+  def update
+    ActiveRecord::Base.transaction do
+      prompt = fetch_prompt
+      @landscape_request.update!(prompt:, preset: landscape_request_params[:preset])
+      @landscape_request.set_default_image_processor!
+      save_mask
+    end
 
-  if current_user.afford_generation?(@landscape_request)
-    ImageModificationJob.perform_now(@landscape_request.id)
-    render json: { message: "Image modification request received. Processing in background." }, status: :accepted
-  else
-    render json: { error: "You are running low on free engine credits. Please check back tomorrow for more free credits or upgrade to Pro." }, status: :unauthorized
+    if current_user.afford_generation?(@landscape_request)
+      ImageModificationJob.perform_now(@landscape_request.id)
+      render json: { message: "Image modification request received. Processing in background." }, status: :accepted
+    else
+      render json: { error: "You are running low on free engine credits. Please check back tomorrow for more free credits or upgrade to Pro." },
+             status: :unauthorized
+    end
+  rescue StandardError => e
+    render json: { error: "Internal server error: #{e.message}" }, status: :internal_server_error
   end
-
-rescue StandardError => e
-  Rails.logger.error "Error in modify_image endpoint: #{e.message}"
-  render json: { error: "Internal server error: #{e.message}" }, status: :internal_server_error
-end
 
   private
 
-def save_mask(raw_mask_image_data)
-  # Log the start of the process
-  landscape = @landscape_request.landscape.reload
-  Rails.logger.info "Starting save_mask for Landscape Request ID: #{@landscape_request.id}"
+  def save_mask
+    # Check if a mask image is present in the parameters
+    return unless landscape_request_params[:mask].present?
 
-  begin
-    raise "Original Image not found" unless landscape.original_image.attached?
+    # Extract mime type and Base64 content from the data URL
+    _mime_type, base64_content = landscape_request_params[:mask].split(",", 2)
 
-    _mime_type, base64_content = raw_mask_image_data.split(",", 2)
-    decoded_mask = Base64.decode64(base64_content)
+    # Decode the Base64 content and wrap it in a StringIO object
+    decoded_mask_data = Base64.decode64(base64_content)
+    io_object = StringIO.new(decoded_mask_data)
 
-    Rails.logger.info "Original image attached. Attempting to download variant..."
-    final_variant = landscape.original_image.variant(:to_process).processed.blob
-
-    original_image = MiniMagick::Image.read(final_variant.download)
-    mask_image = MiniMagick::Image.read(decoded_mask)
-
-    # Log the dimensions for comparison
-    Rails.logger.info "Original dimensions: #{original_image.dimensions.join('x')}"
-    Rails.logger.info "Mask dimensions: #{mask_image.dimensions.join('x')}"
-
-    unless original_image.dimensions == mask_image.dimensions
-      # Use a 'warn' log level for a non-critical but important event
-      Rails.logger.warn "Mask dimensions mismatch. Resizing mask image to fit."
-      mask_image.resize "#{original_image.width}x#{original_image.height}!"
-    end
-
-    mask_image.format "png"
-    io = StringIO.new(mask_image.to_blob)
-
-    # Attach the mask to the landscape record
-    @landscape_request.mask_image_data.attach(
-      io: io,
-      filename: "mask_#{SecureRandom.hex(8)}.png",
+    # Attach the mask directly to the landscape request record
+    @landscape_request.mask.attach(
+      io: io_object,
+      filename: "mask.png",
       content_type: "image/png"
     )
 
-    @landscape_request.save
-
-    # Log the successful completion
-    Rails.logger.info "Mask image data successfully saved to Active Storage."
-  rescue => e
-    # Use the 'error' log level to capture the exception message and backtrace
+    # Save the record
+    @landscape_request.save!
+  rescue StandardError => e
+    # Log the error and re-raise with a more descriptive message
     Rails.logger.error "Failed to save mask: #{e.message}"
-    Rails.logger.error e.backtrace.join("\n")
     raise "Failed to save mask: #{e.message}"
   end
-end
 
   def location_params
     params.permit(:latitude, :longitude).compact_blank.transform_values { |v| v.to_d }
@@ -108,7 +84,7 @@ end
   end
 
   def landscape_request_params
-    params.require(:landscape_request).permit(:preset, :mask_image_data)
+    params.require(:landscape_request).permit(:preset, :mask)
   end
 
   def canvas_dimensions
@@ -128,14 +104,7 @@ end
     # we now fetch the prompt from prompts.yml
     prompt = PROMPTS["landscape_presets"][preset]
     raise "Preset prompts not found." unless prompt.present?
+
     prompt
-  end
-
-  def validate_mask_image
-    mask_image_data = landscape_request_params[:mask_image_data]
-
-    if mask_image_data.blank?
-      raise "The drawing on the image is invalid!"
-    end
   end
 end

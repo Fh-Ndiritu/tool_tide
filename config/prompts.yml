@@ -1,11 +1,11 @@
 landscape_presets:
-  zen: |
-    Your job is to landscape the masked black area into an intricate and thoughtful landscape in a Japanese style.
-    You shall use a selection of flowers and plants including: elegant, rich pink camellia blooms, cascading purple and white wisteria clusters, vibrant, fiery orange and red Japanese quince flowers, delicate, soft pink and white cherry blossom clouds, diverse, brilliant multi-colored azalea blooms, graceful, large-flowered rhododendrons, swaying, tall green bamboo culms, lush, verdant ferns with intricate fronds, and velvet, emerald green moss carpets.
-
   cottage: |
     Your job is to landscape the masked black area into an intricate and thoughtful landscape in a Cottage style.
     You shall use a selection of flowers and plants including: cheerful, abundant pink and white rose blooms, climbing, fragrant honeysuckle vines with yellow and white flowers, vibrant, sunny yellow sunflowers with dark centers, delicate, blue and purple forget-me-nots, diverse, bright red, pink, purple, and white cosmos, graceful, tall purple and white foxgloves, fragrant, blue-purple lavender spikes, charming, mixed colorful sweet pea tendrils, and lush, varied green foliage suitable for a cottage garden.
+
+  zen: |
+    Your job is to landscape the masked black area into an intricate and thoughtful landscape in a Japanese style.
+    You shall use a selection of flowers and plants including: elegant, rich pink camellia blooms, cascading purple and white wisteria clusters, vibrant, fiery orange and red Japanese quince flowers, delicate, soft pink and white cherry blossom clouds, diverse, brilliant multi-colored azalea blooms, graceful, large-flowered rhododendrons, swaying, tall green bamboo culms, lush, verdant ferns with intricate fronds, and velvet, emerald green moss carpets.
 
   desert: |
     Your job is to landscape the masked black area into an intricate and thoughtful landscape in a Desert style.

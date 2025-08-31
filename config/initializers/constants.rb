@@ -14,7 +14,7 @@ CANONICAL_IMAGE_FORMATS = {
   "svg" => "image/svg+xml",
   "ico" => "image/x-icon",
   "psd" => "image/vnd.adobe.photoshop",
-  "raw" => "image/x-raw", # Note: raw is generic, specific raw types might be handled differently
+  "raw" => "image/x-raw", # NOTE: raw is generic, specific raw types might be handled differently
   "dng" => "image/dng",
   "cr2" => "image/x-canon-raw",
   "nef" => "image/x-nikon-raw",
@@ -69,7 +69,6 @@ FORMAT_ALIASES_MAP = {
   "xpm" => "xpm"
 }.freeze
 
-
 IMAGE_EXTRACTION_FORMATS = {
   "jpeg" => "image/jpeg",
   "png" => "image/png",
@@ -92,65 +91,65 @@ IMAGE_LANDSCAPE_FORMATS = {
   "heif" => "image/heif"
 }
 
-DESTINATION_IMAGE_FORMATS = [
-  "jpeg",
-  "png",
-  "webp",
-  "avif",
-  "heic",
-  "heif",
-  "tiff",
-  "bmp",
-  "gif",
-  "ico",
-  "psd",
-  "jp2",
-  "hdr",
-  "exr",
-  "pcx",
-  "pnm",
-  "ppm",
-  "pgm",
-  "pbm",
-  "xbm",
-  "xpm"
+DESTINATION_IMAGE_FORMATS = %w[
+  jpeg
+  png
+  webp
+  avif
+  heic
+  heif
+  tiff
+  bmp
+  gif
+  ico
+  psd
+  jp2
+  hdr
+  exr
+  pcx
+  pnm
+  ppm
+  pgm
+  pbm
+  xbm
+  xpm
 ].freeze
 
 LANDSCAPE_PRESETS = {
-  "zen" => "Serene and calm",
   "cottage" => "Charming abundance",
+  "zen" => "Serene and calm",
   "desert" => "Resilient and hardy",
   "mediterranean" => "Fragrant and relaxed",
   "tropical" => "Vibrant and lush",
   "modern" => "Clean minimalist"
 }
 
-
 PROMPTS = YAML.load_file(Rails.root.join("config", "prompts.yml"))
 
 SUGGESTED_PLANTS_SCHEMA = {
-      type: "array",
-      items: {
-        type: "object",
-        properties: {
-          name: { type: "string",  description: "English name of the plant" },
-          description: { type: "string", description: "An adjective rich sentence that mentions the colors, looks and name of flower." }
-        },
-        required: [ "name", "description" ]
-      },
+  type: "array",
+  items: {
+    type: "object",
+    properties: {
+      name: { type: "string", description: "English name of the plant" },
+      description: { type: "string",
+                     description: "An adjective rich sentence that mentions the colors, looks and name of flower." }
+    },
+    required: %w[name description]
+  },
 
-      required: [ "name", "description" ]
+  required: %w[name description]
 }
 
 LOCALIZED_PROMPT_SCHEMA = {
   type: "object",
-    properties: {
-      updated_prompt: { type: "string",  description: "The updated prompt with the new flowers and the concise adjectives of how they look" }
-    },
+  properties: {
+    updated_prompt: { type: "string",
+                      description: "The updated prompt with the new flowers and the concise adjectives of how they look" }
+  },
 
   required: [ "updated_prompt" ]
 }
-
 
 DAILY_FREE_ENGINE_CREDITS = 50
 PRO_TRIAL_CREDITS = 30
@@ -158,9 +157,9 @@ PRO_TRIAL_CREDITS = 30
 # currency credits
 PRO_CREDITS_PER_USD = 20
 
-
 BRIA_IMAGE_COST = 8
 GOOGLE_IMAGE_COST = 8
 LOCALIZED_PLANT_COST = 2
 DEFAULT_IMAGE_COUNT = 3
-DEFAULT_USD_PURCHASE_AMOUNT=BigDecimal(20)
+DEFAULT_USD_PURCHASE_AMOUNT = BigDecimal(10)
+CREDITS_INFO = "$ #{DEFAULT_USD_PURCHASE_AMOUNT.to_i} for #{(DEFAULT_USD_PURCHASE_AMOUNT * PRO_CREDITS_PER_USD).to_i} credits"

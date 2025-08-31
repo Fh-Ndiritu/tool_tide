@@ -10,6 +10,8 @@ class ApplicationController < ActionController::Base
       super
     end
   end
+
+
   private
 
   def set_active_storage_url_options
