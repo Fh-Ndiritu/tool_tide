@@ -52,7 +52,7 @@ class User < ApplicationRecord
       charge_pro_cost!(GOOGLE_IMAGE_COST * landscape_request.modified_images.size)
     else
       cost = BRIA_IMAGE_COST * landscape_request.modified_images.size
-      update! free_engine_credits: [0, free_engine_credits - cost].max
+      update! free_engine_credits: [ 0, free_engine_credits - cost ].max
     end
   end
 
@@ -62,10 +62,10 @@ class User < ApplicationRecord
 
   def charge_pro_cost!(cost)
     if pro_trial_credits >= cost
-      update! pro_trial_credits: [0, pro_trial_credits - cost].max
+      update! pro_trial_credits: [ 0, pro_trial_credits - cost ].max
     else
       balance = cost - pro_trial_credits
-      update! pro_engine_credits: [0, pro_engine_credits - balance].max, pro_trial_credits: 0
+      update! pro_engine_credits: [ 0, pro_engine_credits - balance ].max, pro_trial_credits: 0
     end
   end
 
