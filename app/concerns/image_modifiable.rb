@@ -55,4 +55,14 @@ module ImageModifiable
       Ensure the final image is harmonious and visually appealing.
     "
   end
+
+  def attach_blob(masked_image)
+    io_object = StringIO.new(masked_image.to_blob)
+
+    ActiveStorage::Blob.create_and_upload!(
+      io: io_object,
+      filename: "full_blend.png",
+      content_type: "image/png"
+    )
+  end
 end

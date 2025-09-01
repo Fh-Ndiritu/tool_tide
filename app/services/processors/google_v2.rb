@@ -77,9 +77,32 @@ module Processors
       end
 
       save_full_blend(mask_image, original_image)
+      save_partial_blend(mask_image, original_image)
       @landscape_request.save!
     rescue StandardError => e
       raise "#{__method__} failed with: #{e.message}"
+    end
+
+    def save_partial_blend(mask_image, original_image)
+      mask_image.combine_options do |c|
+        c.colorspace("Gray")
+        c.threshold("50%")
+      end
+
+     mask_image.combine_options do |c|
+      c.alpha "set"
+      c.fill "rgba(0,0,0,0.7)"
+      c.opaque "black"
+    end
+
+      # Composite the original image with the new semi-transparent mask
+      masked_image = original_image.composite(mask_image) do |c|
+        c.compose "Over"
+      end
+
+      blob = attach_blob(masked_image)
+
+      @landscape_request.partial_blend.attach(blob)
     end
 
     def save_full_blend(mask_image, original_image)
@@ -97,16 +120,6 @@ module Processors
       blob = attach_blob(masked_image)
 
       @landscape_request.full_blend.attach(blob)
-    end
-
-    def attach_blob(masked_image)
-      io_object = StringIO.new(masked_image.to_blob)
-
-      ActiveStorage::Blob.create_and_upload!(
-        io: io_object,
-        filename: "full_blend.png",
-        content_type: "image/png"
-      )
     end
 
     def gcp_payload
