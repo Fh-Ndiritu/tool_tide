@@ -81,7 +81,7 @@ class LandscapeRequestsController < ApplicationController
   end
 
   def set_landscape_request
-    @set_landscape_request ||= LandscapeRequest.includes(:landscape).find(params[:id])
+    @landscape_request = LandscapeRequest.includes(:landscape).find(params[:id])
   end
 
   def landscape_request_params
