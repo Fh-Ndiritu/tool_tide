@@ -1,6 +1,118 @@
 module ImageModifiable
   extend ActiveSupport::Concern
 
+  def save_partial_blend
+    # Get the parent landscape from the request
+    @landscape_request = LandscapeRequest.last
+    landscape = @landscape_request.landscape
+    # Drop into a debugging session at the start of the method.
+
+    # Create an array to hold our tempfiles for final cleanup.
+    tempfiles_to_clean = []
+
+    begin
+      # Read the original image and the mask image from their blobs.
+      original_image_data = landscape.original_image.variant(:to_process).processed
+      original_image = MiniMagick::Image.read(original_image_data.blob.download)
+      mask_binary = @landscape_request.mask.download
+      mask_image = MiniMagick::Image.read(mask_binary)
+
+      # Ensure the mask and original image have the same dimensions.
+      unless original_image.dimensions == mask_image.dimensions
+        mask_image.resize "#{original_image.width}x#{original_image.height}!"
+      end
+      attach_debug_blob(original_image, "original_image")
+      attach_debug_blob(mask_image, "mask_image")
+
+      # 1. Create a transparency mask for the original image.
+      alpha_mask = mask_image.dup
+      alpha_mask.combine_options do |c|
+        c.colorspace("Gray")
+        c.channel("alpha")
+        c.fx("102*(1-u)") # Makes black areas 60% opaque and white areas transparent.
+      end
+      attach_debug_blob(alpha_mask, "alpha_mask_prepared")
+
+      # Use a Tempfile for the alpha mask.
+      alpha_mask_temp = Tempfile.create([ "alpha_mask", ".png" ])
+      tempfiles_to_clean << alpha_mask_temp
+      alpha_mask.write(alpha_mask_temp.path)
+      alpha_mask_image = MiniMagick::Image.open(alpha_mask_temp.path)
+
+      # 2. Create a solid green overlay.
+      green_overlay = original_image.dup
+      green_overlay.combine_options do |c|
+        c.fill("lime")
+        c.colorize("100%")
+      end
+      attach_debug_blob(green_overlay, "green_overlay_prepared")
+
+      # 3. Create a transparency mask for the green overlay.
+      green_mask = mask_image.dup
+      green_mask.combine_options do |c|
+        c.colorspace("Gray")
+        c.negate # Invert the mask: white becomes black, black becomes white.
+        c.channel("alpha")
+        c.fx("u*255") # Makes white areas of the inverted mask opaque.
+      end
+      attach_debug_blob(green_mask, "green_mask_prepared")
+
+      # Use a Tempfile for the green mask.
+      green_mask_temp = Tempfile.create([ "green_mask", ".png" ])
+      tempfiles_to_clean << green_mask_temp
+      green_mask.write(green_mask_temp.path)
+      green_mask_image = MiniMagick::Image.open(green_mask_temp.path)
+
+      # Apply the green_mask_image object to the green_overlay.
+      green_overlay.composite(green_mask_image) do |c|
+        c.compose("CopyOpacity")
+      end
+      attach_debug_blob(green_overlay, "green_overlay_with_opacity")
+
+      # Use a Tempfile for the green overlay.
+      green_overlay_temp = Tempfile.create([ "green_overlay", ".png" ])
+      tempfiles_to_clean << green_overlay_temp
+      green_overlay.write(green_overlay_temp.path)
+      green_overlay_image = MiniMagick::Image.open(green_overlay_temp.path)
+
+      # 4. Composite the alpha mask onto the original image.
+      original_image.composite(alpha_mask_image) do |c|
+        c.compose("CopyOpacity")
+      end
+      attach_debug_blob(original_image, "original_image_alpha_blended")
+
+      # 5. Composite the green overlay on top of the original image with the alpha mask.
+      original_image.composite(green_overlay_image) do |c|
+        c.compose("Over")
+      end
+      attach_debug_blob(original_image, "final_composite")
+
+      # Save the resulting image to a blob.
+      blob = attach_blob(original_image)
+      @landscape_request.partial_blend.attach(blob)
+    rescue StandardError => e
+      Rails.logger.error "save_partial_blend failed: #{e.message}"
+      raise "Failed to create partial blend: #{e.message}"
+    ensure
+      # Clean up temporary files that were explicitly created.
+      # tempfiles_to_clean.each do |temp|
+      #   temp.unlink if temp && File.exist?(temp.path)
+      # end
+    end
+  end
+
+  # Helper method to attach an image for debugging purposes.
+  def attach_debug_blob(image_object, step_name)
+    blob_data = image_object.to_blob
+    @landscape_request.partial_blend_debugs.attach(
+      io: StringIO.new(blob_data),
+      filename: "#{step_name}.png",
+      content_type: "image/png"
+    )
+  rescue StandardError => e
+    Rails.logger.error "Failed to attach debug image '#{step_name}': #{e.message}"
+  end
+
   def validate_mask_data
     # we shall ensure the mask has at least 10 % black pixels
     blob = build_mask_blob

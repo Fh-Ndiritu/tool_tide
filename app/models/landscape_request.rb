@@ -6,6 +6,8 @@ class LandscapeRequest < ApplicationRecord
   has_many_attached :modified_images
   has_one_attached :mask
   has_one_attached :partial_blend
+
+  has_many_attached :partial_blend_debugs
   has_one_attached :full_blend
 
   after_update_commit :broadcast_progress, if: :saved_change_to_progress?
