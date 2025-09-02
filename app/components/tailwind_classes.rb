@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TailwindClasses
   OVERRIDE_GROUPS = {
     "background-color" => /^bg-/,
@@ -28,6 +30,6 @@ module TailwindClasses
     # Combine the filtered default classes with the custom classes.
     # The `|` operator performs a set union, combining unique elements from both sets.
     # Then convert to an array and join.
-    (filtered_default_set.to_set |  custom_set).join(" ")
+    (filtered_default_set.to_set | custom_set).join(" ")
   end
 end

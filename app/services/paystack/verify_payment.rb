@@ -17,8 +17,8 @@ module Paystack
       return Failure("Reference id is not present") if @reference.empty?
 
       fetch_transaction
-      .bind { |transaction| update_payment_transaction(transaction) }
-      .bind { |payment_transaction| Success(payment_transaction) }
+        .bind { |transaction| update_payment_transaction(transaction) }
+        .bind { |payment_transaction| Success(payment_transaction) }
     rescue StandardError => e
       Failure("#{self.class} failed with error: #{e.message}")
     end
@@ -33,7 +33,7 @@ module Paystack
         payment_transaction = PaymentTransaction.find_by(id: tx_id) || PaymentTransaction.new_transaction(user)
 
         save_event_details(payment_transaction, transaction)
-        .bind { validate_successful_payment(payment_transaction, transaction) }
+          .bind { validate_successful_payment(payment_transaction, transaction) }
       end
     rescue StandardError => e
       Failure("#{__method__} failed: #{e.message}")
@@ -45,7 +45,8 @@ module Paystack
         paystack_reference_id: transaction[:reference],
         paid_at: transaction[:paid_at],
         method: transaction[:channel],
-        paystack_customer_id: transaction.dig(:customer, :customer_code))
+        paystack_customer_id: transaction.dig(:customer, :customer_code)
+      )
         Success(payment_transaction)
       else
         Failure("!! Failed to save payment details: #{payment_transaction.errors.full_messages}")
@@ -78,12 +79,12 @@ module Paystack
       user_id = transaction.dig(:metadata, :user_id)
 
       user = User.find_by(email:) || User.find_by(id: user_id)
-      return Failure("User not found with ID or Email") unless user.present?
+      return Failure("User not found with ID or Email") if user.blank?
+
       Success(user)
     rescue StandardError => e
       Failure("#{__method__} failed: #{e.message}")
     end
-
 
     def fetch_transaction
       response = PAYSTACK_CLIENT.get("/transaction/verify/#{@reference}")

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # lib/bria_ai.rb
 # This file defines the BriaAi module, its configuration, custom error classes,
 # and the API client using Faraday for robust HTTP requests.
@@ -31,7 +33,7 @@ module BriaAi
       # Jobs might prefer sync: true for simplicity of immediate results.
       @default_sync_mode = false
       # Default logger outputs to STDOUT. In Rails, this would be Rails.logger.
-      @logger = Logger.new(STDOUT)
+      @logger = Logger.new($stdout)
       # Default retry options for Faraday::Retry middleware.
       @retry_options = {
         max: 3, # Maximum number of retry attempts.
@@ -46,7 +48,7 @@ module BriaAi
           # Listing them here as general network errors which retry should catch.
         ],
         # methods: Faraday::Retry::Middleware::REQUEST_METHODS, # Apply retry to all HTTP methods.
-        retry_statuses: [ 429, 503, 504 ], # Retry on these specific HTTP status codes.
+        retry_statuses: [429, 503, 504], # Retry on these specific HTTP status codes.
         # `retry_if` block allows custom logic for determining if a request should be retried.
         # Here, it leverages the default logic from Faraday::Retry for exceptions.
         retry_if: ->(env, exception) { Faraday::Retry::Middleware.retry_on_exception?(env, exception) }
@@ -96,7 +98,8 @@ module BriaAi
 
       # Ensure API token is present.
       unless @api_token
-        raise BriaAi::ConfigurationError, "Bria AI API token is not configured. Please set it via BriaAi.configure or ENV['BRIA_AI_API_TOKEN']."
+        raise BriaAi::ConfigurationError,
+              "Bria AI API token is not configured. Please set it via BriaAi.configure or ENV['BRIA_AI_API_TOKEN']."
       end
 
       # Set up the Faraday connection with necessary middleware.
@@ -171,7 +174,8 @@ module BriaAi
     # @param sync [Boolean] Optional: Whether to process synchronously (default: configured value).
     # @param seed [Integer, nil] Optional: Seed for reproducibility.
     # @return [Faraday::Response] The API response object.
-    def gen_fill(image_input:, mask_input:, prompt:, negative_prompt: nil, num_results: nil, sync: @default_sync_mode, seed: nil)
+    def gen_fill(image_input:, mask_input:, prompt:, negative_prompt: nil, num_results: nil, sync: @default_sync_mode,
+                 seed: nil)
       payload = prepare_image_input(image_input).merge(prepare_mask_input(mask_input)).merge(
         prompt: prompt,
         sync: sync
@@ -191,7 +195,7 @@ module BriaAi
       payload = prepare_image_input(image_input).merge(prepare_mask_input(mask_input))
       @connection.post("image-editing/eraser", payload)
     end
-  end # class Client
+  end
 
   # --- Custom Faraday Middleware ---
 

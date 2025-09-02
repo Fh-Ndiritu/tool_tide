@@ -1,4 +1,3 @@
-
 # frozen_string_literal: true
 
 require "mini_magick" # Ensure MiniMagick is available in your form object
@@ -47,24 +46,23 @@ class ImageConversionForm
 
     # Iterate through each uploaded image and attempt conversion
     images.each do |image_file|
-      begin
-        # Delegate the actual conversion to a service object
-        # This keeps the form object focused on form logic, not file manipulation.
-        # We'll create ImageConversionService next.
-        result = Images::ImageFormatConverter.perform(@conversion, image_file)
+      # Delegate the actual conversion to a service object
+      # This keeps the form object focused on form logic, not file manipulation.
+      # We'll create ImageConversionService next.
+      result = Images::ImageFormatConverter.perform(@conversion, image_file)
 
-        if result.success?
-          @conversion_results << result.data[:converted_file_path]
-        else
-          # Add errors specific to this file conversion failure
-          errors.add(:base, "Failed to convert #{image_file.original_filename}: #{result.error}")
-          conversion_successful = false
-        end
-      rescue => e
-        # Catch any unexpected errors during service call
-        errors.add(:base, "An unexpected error occurred during conversion of #{image_file.original_filename}: #{e.message}")
+      if result.success?
+        @conversion_results << result.data[:converted_file_path]
+      else
+        # Add errors specific to this file conversion failure
+        errors.add(:base, "Failed to convert #{image_file.original_filename}: #{result.error}")
         conversion_successful = false
       end
+    rescue StandardError => e
+      # Catch any unexpected errors during service call
+      errors.add(:base,
+                 "An unexpected error occurred during conversion of #{image_file.original_filename}: #{e.message}")
+      conversion_successful = false
     end
 
     # Return overall success status
@@ -75,37 +73,35 @@ class ImageConversionForm
 
   # Custom validation to ensure the target conversion format is supported
   def supported_conversion_format
-    if conversion.present?
-      unless ImageFormatHelper.canonical_format(conversion)
-        errors.add(:conversion, "'#{conversion}' is not a supported target format.")
-      end
-    end
+    return if conversion.blank?
+    return if ImageFormatHelper.canonical_format(conversion)
+
+    errors.add(:conversion, "'#{conversion}' is not a supported target format.")
   end
 
   # Custom validation to ensure the source format is supported
   def supported_source_format
-    if source.present?
-      unless ImageFormatHelper.canonical_format(source)
-        errors.add(:source, "'#{source}' is not a supported source format.")
-      end
-    end
+    return if source.blank?
+    return if ImageFormatHelper.canonical_format(source)
+
+    errors.add(:source, "'#{source}' is not a supported source format.")
   end
 
   # Custom validation to ensure all uploaded items are actual files and have reasonable content types
   def all_images_valid
-    if images.present?
-      images.each do |image_file|
-        unless image_file.respond_to?(:path) && image_file.respond_to?(:content_type)
-          errors.add(:images, "must be valid file uploads.")
-          break # Stop checking if one is invalid
-        end
+    return if images.blank?
 
-        # You might want to add more specific content type checks here
-        # E.g., if you only allow certain MIME types as input
-        # unless ImageFormatHelper.mime_type_for_file(image_file.content_type) # Hypothetical helper
-        #   errors.add(:images, "contains an unsupported file type: #{image_file.original_filename}")
-        # end
+    images.each do |image_file|
+      unless image_file.respond_to?(:path) && image_file.respond_to?(:content_type)
+        errors.add(:images, "must be valid file uploads.")
+        break # Stop checking if one is invalid
       end
+
+      # You might want to add more specific content type checks here
+      # E.g., if you only allow certain MIME types as input
+      # unless ImageFormatHelper.mime_type_for_file(image_file.content_type) # Hypothetical helper
+      #   errors.add(:images, "contains an unsupported file type: #{image_file.original_filename}")
+      # end
     end
   end
 end

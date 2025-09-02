@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Processors
   class Bria
     include ImageModifiable
@@ -11,7 +13,7 @@ module Processors
     end
 
     def process
-      @landscape_request.generating_images!
+      @landscape_request.generating_landscape!
       bria_response = fetch_bria_response
 
       @landscape_request.saving_results!
@@ -47,7 +49,7 @@ module Processors
     end
 
     def download_and_save_image(modified_image_url)
-      return unless modified_image_url.present?
+      return if modified_image_url.blank?
 
       begin
         downloaded_image = URI.parse(modified_image_url).open
@@ -73,7 +75,6 @@ module Processors
     rescue ActiveStorage::FileNotFoundError => e
       raise BriaAi::Error, "Original image file not found in Active Storage: #{e.message}"
     rescue StandardError => e
-      binding.irb
       raise BriaAi::Error, "An unexpected error occurred while preparing the original image for Bria AI: #{e.message}"
     end
 

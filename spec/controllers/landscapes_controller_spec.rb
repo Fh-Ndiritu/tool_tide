@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require "rails_helper"
 RSpec.describe LandscapesController, type: :controller do
   fixtures(:users)
   let(:user) { users(:john_doe) }
 
-  describe 'GET #new' do
-    it 'issues daily credits' do
+  describe "GET #new" do
+    it "issues daily credits" do
       sign_in(user)
       get :new
       user.reload

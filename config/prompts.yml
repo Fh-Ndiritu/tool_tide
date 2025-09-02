@@ -1,24 +1,126 @@
 landscape_presets:
   cottage: |
-    Your job is to landscape the masked black area into an intricate and thoughtful landscape in a Cottage style.
-    You shall use a selection of flowers and plants including: cheerful, abundant pink and white rose blooms, climbing, fragrant honeysuckle vines with yellow and white flowers, vibrant, sunny yellow sunflowers with dark centers, delicate, blue and purple forget-me-nots, diverse, bright red, pink, purple, and white cosmos, graceful, tall purple and white foxgloves, fragrant, blue-purple lavender spikes, charming, mixed colorful sweet pea tendrils, and lush, varied green foliage suitable for a cottage garden.
+    Your PRIMARY JOB is to landscape and design a neat, well-thought-out, and vibrant garden **EXCLUSIVELY within the area masked in black on the image.**
+     **ABSOLUTELY NO MODIFICATIONS SHALL BE MADE TO ANY PIXEL OUTSIDE OF THE BLACK MASKED REGION.** The existing content of the unmasked areas must be preserved **IDENTICALLY and WITHOUT ALTERATION.**
+
+     Follow these steps to provide a stunning design for the **masked area only**:
+
+     1.  **STRICTLY ENFORCE:** YOU SHALL NOT modify any other areas of the image except for the precise region marked by black paint. **The black mask is your canvas, and your canvas ONLY.**
+     2.  Analyze the unmasked areas of the image for features like doors or gates that lead into or border the black masked area.
+     3.  Design neat, ultra-modern, and chic pathways for any identified doors or gates that lead into the now-garden (previously masked) area.
+     4.  Partition the remaining black masked area further to create defined spaces for plant placement, using elements like concrete, strategic rock placement, or elegantly arranged potted plants.
+     5.  Adopt a **cottage-style design** for the garden ensuring thoughtul yet not overwhelming designs.
+     6.  Select unique, vibrant flowers that complement the existing architectural style and "language" of the house.
+     7.  Place these flowers in neat, well-landscaped designs within the designated spaces. Use shorter plants to ensure a comprehensive view of the entire design.
+     8.  Feel free to incorporate neat, manicured grass lawns where appropriate within the new garden design.
+     9.  The user may request other features, a change of plants, different flowers, etc. **ONLY use these when specifically requested to override these default instructions.**
+     10. **Carefully go through and adhere to each of these steps before making any design decisions.**
+     11. ENSURE YOU DO NOT modify anything outside the masked black area that is set aside for the garden, the user intends to use the rest of the land in other ways.
+     12. The final output must be 8k resolution, highly detailed, professional, photorealistic, and display a vibrant design.
+     13. Return a stunning, neat, and modern-looking garden, meticulously landscaped in a cottage style.
+     14. **CRITICAL:** The area painted in black **MUST be entirely replaced with the garden design.** **DO NOT return any black painted areas, shadows from the mask, or visual remnants of the original mask.**
 
   zen: |
-    Your job is to landscape the masked black area into an intricate and thoughtful landscape in a Japanese style.
-    You shall use a selection of flowers and plants including: elegant, rich pink camellia blooms, cascading purple and white wisteria clusters, vibrant, fiery orange and red Japanese quince flowers, delicate, soft pink and white cherry blossom clouds, diverse, brilliant multi-colored azalea blooms, graceful, large-flowered rhododendrons, swaying, tall green bamboo culms, lush, verdant ferns with intricate fronds, and velvet, emerald green moss carpets.
+    Your PRIMARY JOB is to landscape and design a neat, well-thought-out, and vibrant garden **EXCLUSIVELY within the area masked in black on the image.**
+    **ABSOLUTELY NO MODIFICATIONS SHALL BE MADE TO ANY PIXEL OUTSIDE OF THE BLACK MASKED REGION.** The existing content of the unmasked areas must be preserved **IDENTICALLY and WITHOUT ALTERATION.**
+
+    Follow these steps to provide a stunning design for the **masked area only**:
+
+    1.  **STRICTLY ENFORCE:** YOU SHALL NOT modify any other areas of the image except for the precise region marked by black paint. **The black mask is your canvas, and your canvas ONLY.**
+    2.  Analyze the unmasked areas of the image for features like doors or gates that lead into or border the black masked area.
+    3.  Design neat, ultra-modern, and chic pathways for any identified doors or gates that lead into the now-garden (previously masked) area.
+    4.  Partition the remaining black masked area further to create defined spaces for plant placement, using elements like concrete, strategic rock placement, or elegantly arranged potted plants.
+    5.  Adopt a **zen-style design** for the garden ensuring thoughtul yet not overwhelming designs.
+    6.  Select unique, vibrant flowers that complement the existing architectural style and "language" of the house.
+    7.  Place these flowers in neat, well-landscaped designs within the designated spaces. Use shorter plants to ensure a comprehensive view of the entire design.
+    8.  Feel free to incorporate neat, manicured grass lawns where appropriate within the new garden design.
+    9.  The user may request other features, a change of plants, different flowers, etc. **ONLY use these when specifically requested to override these default instructions.**
+    10. **Carefully go through and adhere to each of these steps before making any design decisions.**
+    11. ENSURE YOU DO NOT modify anything outside the masked black area that is set aside for the garden, the user intends to use the rest of the land in other ways.
+    12. The final output must be 8k resolution, highly detailed, professional, photorealistic, and display a vibrant design.
+    13. Return a stunning, neat, and modern-looking garden, meticulously landscaped in a zen style.
+    14. **CRITICAL:** The area painted in black **MUST be entirely replaced with the garden design.** **DO NOT return any black painted areas, shadows from the mask, or visual remnants of the original mask.**
 
   desert: |
-    Your job is to landscape the masked black area into an intricate and thoughtful landscape in a Desert style.
-    You shall use a selection of flowers and plants including: resilient, vibrant red and orange aloe blossoms, architectural, tall saguaro cacti with occasional white flowers, hardy, yellow and orange desert marigolds, delicate, purple and pink desert verbena, diverse, textured agave with potential flower stalks, sculptural, thorny barrel cacti with yellow or orange blooms, resilient, silver-grey leucophyllum (Texas Ranger) with purple flowers after rain, and various arid-adapted grasses and succulents suitable for a desert garden aesthetic, considering the need for drought tolerance and unique textures.
+    Your PRIMARY JOB is to landscape and design a neat, well-thought-out, and vibrant garden **EXCLUSIVELY within the area masked in black on the image.**
+    **ABSOLUTELY NO MODIFICATIONS SHALL BE MADE TO ANY PIXEL OUTSIDE OF THE BLACK MASKED REGION.** The existing content of the unmasked areas must be preserved **IDENTICALLY and WITHOUT ALTERATION.**
+
+    Follow these steps to provide a stunning design for the **masked area only**:
+
+    1.  **STRICTLY ENFORCE:** YOU SHALL NOT modify any other areas of the image except for the precise region marked by black paint. **The black mask is your canvas, and your canvas ONLY.**
+    2.  Analyze the unmasked areas of the image for features like doors or gates that lead into or border the black masked area.
+    3.  Design neat, ultra-modern, and chic pathways for any identified doors or gates that lead into the now-garden (previously masked) area.
+    4.  Partition the remaining black masked area further to create defined spaces for plant placement, using elements like concrete, strategic rock placement, or elegantly arranged potted plants.
+    5.  Adopt a **desert-style design** for the garden ensuring thoughtul yet not overwhelming designs.
+    6.  Select unique, vibrant flowers that complement the existing architectural style and "language" of the house.
+    7.  Place these flowers in neat, well-landscaped designs within the designated spaces. Use shorter plants to ensure a comprehensive view of the entire design.
+    8.  Feel free to incorporate neat, manicured grass lawns where appropriate within the new garden design.
+    9.  The user may request other features, a change of plants, different flowers, etc. **ONLY use these when specifically requested to override these default instructions.**
+    10. **Carefully go through and adhere to each of these steps before making any design decisions.**
+    11. ENSURE YOU DO NOT modify anything outside the masked black area that is set aside for the garden, the user intends to use the rest of the land in other ways.
+    12. The final output must be 8k resolution, highly detailed, professional, photorealistic, and display a vibrant design.
+    13. Return a stunning, neat, and modern-looking garden, meticulously landscaped in a desert style.
+    14. **CRITICAL:** The area painted in black **MUST be entirely replaced with the garden design.** **DO NOT return any black painted areas, shadows from the mask, or visual remnants of the original mask.**
 
   mediterranean: |
-    Your job is to landscape the masked black area into an intricate and thoughtful landscape in a Mediterranean style.
-    You shall use a selection of flowers and plants including: fragrant, purple lavender spikes, vibrant, multicolored bougainvillea vines, aromatic, silvery-green rosemary shrubs with blue flowers, cheerful, yellow and orange calendula blooms, diverse, sun-loving succulents like sedum and sempervivum, sculptural, silvery olive trees with small white flowers, and hardy, drought-tolerant grasses and shrubs suitable for a Mediterranean-inspired garden, considering the sunny climate and need for water-wise planting.
+    Your PRIMARY JOB is to landscape and design a neat, well-thought-out, and vibrant garden **EXCLUSIVELY within the area masked in black on the image.**
+    **ABSOLUTELY NO MODIFICATIONS SHALL BE MADE TO ANY PIXEL OUTSIDE OF THE BLACK MASKED REGION.** The existing content of the unmasked areas must be preserved **IDENTICALLY and WITHOUT ALTERATION.**
+
+    Follow these steps to provide a stunning design for the **masked area only**:
+
+    1.  **STRICTLY ENFORCE:** YOU SHALL NOT modify any other areas of the image except for the precise region marked by black paint. **The black mask is your canvas, and your canvas ONLY.**
+    2.  Analyze the unmasked areas of the image for features like doors or gates that lead into or border the black masked area.
+    3.  Design neat, ultra-modern, and chic pathways for any identified doors or gates that lead into the now-garden (previously masked) area.
+    4.  Partition the remaining black masked area further to create defined spaces for plant placement, using elements like concrete, strategic rock placement, or elegantly arranged potted plants.
+    5.  Adopt a **mediterranean-style design** for the garden ensuring thoughtul yet not overwhelming designs.
+    6.  Select unique, vibrant flowers that complement the existing architectural style and "language" of the house.
+    7.  Place these flowers in neat, well-landscaped designs within the designated spaces. Use shorter plants to ensure a comprehensive view of the entire design.
+    8.  Feel free to incorporate neat, manicured grass lawns where appropriate within the new garden design.
+    9.  The user may request other features, a change of plants, different flowers, etc. **ONLY use these when specifically requested to override these default instructions.**
+    10. **Carefully go through and adhere to each of these steps before making any design decisions.**
+    11. ENSURE YOU DO NOT modify anything outside the masked black area that is set aside for the garden, the user intends to use the rest of the land in other ways.
+    12. The final output must be 8k resolution, highly detailed, professional, photorealistic, and display a vibrant design.
+    13. Return a stunning, neat, and modern-looking garden, meticulously landscaped in a mediterranean style.
+    14. **CRITICAL:** The area painted in black **MUST be entirely replaced with the garden design.** **DO NOT return any black painted areas, shadows from the mask, or visual remnants of the original mask.**
 
   tropical: |
-    Your job is to landscape the masked black area into an intricate and thoughtful landscape in a Tropical style.
-    You shall use a selection of flowers and plants including: vibrant, large hibiscus blooms in red, pink, and orange, cascading, colorful bougainvillea vines, lush, broad-leaved monsteras and philodendrons, striking, architectural bird of paradise flowers in orange and blue, diverse, bright bromeliads with exotic foliage and blooms, tall, elegant palm trees (e.g., Areca, Foxtail), and various ferns and orchids suitable for a vibrant tropical garden, emphasizing lushness, bold colors, and exotic textures.
+    Your PRIMARY JOB is to landscape and design a neat, well-thought-out, and vibrant garden **EXCLUSIVELY within the area masked in black on the image.**
+    **ABSOLUTELY NO MODIFICATIONS SHALL BE MADE TO ANY PIXEL OUTSIDE OF THE BLACK MASKED REGION.** The existing content of the unmasked areas must be preserved **IDENTICALLY and WITHOUT ALTERATION.**
+
+    Follow these steps to provide a stunning design for the **masked area only**:
+
+    1.  **STRICTLY ENFORCE:** YOU SHALL NOT modify any other areas of the image except for the precise region marked by black paint. **The black mask is your canvas, and your canvas ONLY.**
+    2.  Analyze the unmasked areas of the image for features like doors or gates that lead into or border the black masked area.
+    3.  Design neat, ultra-modern, and chic pathways for any identified doors or gates that lead into the now-garden (previously masked) area.
+    4.  Partition the remaining black masked area further to create defined spaces for plant placement, using elements like concrete, strategic rock placement, or elegantly arranged potted plants.
+    5.  Adopt a **tropical-style design** for the garden ensuring thoughtul yet not overwhelming designs.
+    6.  Select unique, vibrant flowers that complement the existing architectural style and "language" of the house.
+    7.  Place these flowers in neat, well-landscaped designs within the designated spaces. Use shorter plants to ensure a comprehensive view of the entire design.
+    8.  Feel free to incorporate neat, manicured grass lawns where appropriate within the new garden design.
+    9.  The user may request other features, a change of plants, different flowers, etc. **ONLY use these when specifically requested to override these default instructions.**
+    10. **Carefully go through and adhere to each of these steps before making any design decisions.**
+    11. ENSURE YOU DO NOT modify anything outside the masked black area that is set aside for the garden, the user intends to use the rest of the land in other ways.
+    12. The final output must be 8k resolution, highly detailed, professional, photorealistic, and display a vibrant design.
+    13. Return a stunning, neat, and modern-looking garden, meticulously landscaped in a tropical style.
+    14. **CRITICAL:** The area painted in black **MUST be entirely replaced with the garden design.** **DO NOT return any black painted areas, shadows from the mask, or visual remnants of the original mask.**
 
   modern: |
-    Your job is to landscape the masked black area into an intricate and thoughtful landscape in a Modern style.
-    You shall use a selection of flowers and plants including: architectural, structural agave plants, sleek, tall snake plants (Sansevieria), bold, dark-leaved phormiums, minimalist, upright horsetail reeds (Equisetum), striking, large bird of paradise plants, clean-lined, uniform boxwood hedges, and various succulents with interesting forms, suitable for a contemporary modern garden, focusing on strong lines, varied textures, and a sophisticated, uncluttered aesthetic.
+    Your PRIMARY JOB is to landscape and design a neat, well-thought-out, and vibrant garden **EXCLUSIVELY within the area masked in black on the image.**
+    **ABSOLUTELY NO MODIFICATIONS SHALL BE MADE TO ANY PIXEL OUTSIDE OF THE BLACK MASKED REGION.** The existing content of the unmasked areas must be preserved **IDENTICALLY and WITHOUT ALTERATION.**
+
+    Follow these steps to provide a stunning design for the **masked area only**:
+
+    1.  **STRICTLY ENFORCE:** YOU SHALL NOT modify any other areas of the image except for the precise region marked by black paint. **The black mask is your canvas, and your canvas ONLY.**
+    2.  Analyze the unmasked areas of the image for features like doors or gates that lead into or border the black masked area.
+    3.  Design neat, ultra-modern, and chic pathways for any identified doors or gates that lead into the now-garden (previously masked) area.
+    4.  Partition the remaining black masked area further to create defined spaces for plant placement, using elements like concrete, strategic rock placement, or elegantly arranged potted plants.
+    5.  Adopt a **meodern-style design** for the garden ensuring thoughtul yet not overwhelming designs.
+    6.  Select unique, vibrant flowers that complement the existing architectural style and "language" of the house.
+    7.  Place these flowers in neat, well-landscaped designs within the designated spaces. Use shorter plants to ensure a comprehensive view of the entire design.
+    8.  Feel free to incorporate neat, manicured grass lawns where appropriate within the new garden design.
+    9.  The user may request other features, a change of plants, different flowers, etc. **ONLY use these when specifically requested to override these default instructions.**
+    10. **Carefully go through and adhere to each of these steps before making any design decisions.**
+    11. ENSURE YOU DO NOT modify anything outside the masked black area that is set aside for the garden, the user intends to use the rest of the land in other ways.
+    12. The final output must be 8k resolution, highly detailed, professional, photorealistic, and display a vibrant design.
+    13. Return a stunning, neat, and modern-looking garden, meticulously landscaped in a meodern style.
+    14. **CRITICAL:** The area painted in black **MUST be entirely replaced with the garden design.** **DO NOT return any black painted areas, shadows from the mask, or visual remnants of the original mask.**

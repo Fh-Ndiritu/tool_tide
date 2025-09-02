@@ -16,6 +16,7 @@
 <%= content_for(:schema_description, "Use Hadaa Ai  to generate stunningly realistic, rich, and accurate landscaping images for free. Design and visualize your perfect outdoor spaces with advanced AI technology.") %>
 <%= content_for(:main_classes, "container mx-auto px-5 flex max-w-[1200px] text-neutral-800 mt-10") %>
 
+<%= turbo_stream_from dom_id(@landscape_request) %>
 
 <%= render '/shared/balances' %>
 
@@ -32,6 +33,8 @@
     <h1 class="text-4xl font-bold text-center text-text-primary my-4"><%= t("landscape.title") %></h1>
 
     <%= render 'tips' %>
+
+    <%= link_to 'View Results', landscape_path(@landscape), data: {turbo: false}, class: 'cute-btn secondary-btn max-w-[300px] flex m-auto' if @landscape.modified_images.present?  %>
     <div data-landscape-editor-target="editorSection" class="w-full max-w-full lg:max-w-6xl bg-white shadow-xl rounded-lg flex flex-col lg:flex-row p-4 max-md:px-0 mt-8">
       <div
         data-controller="konva-canvas"
@@ -46,7 +49,6 @@
       </div>
       <div class="lg:w-1/4 w-full p-4 flex flex-col space-y-4 lg:space-y-6">
         <div class="flex flex-wrap justify-center sm:justify-start gap-2 border-b border-neutral-300 pb-4 ">
-
           <button data-action="click->landscape-editor#undoPaintAction" data-landscape-editor-target="undoButton"
           class="p-2 rounded-md text-sm text-neutral-700 hover:bg-neutral-300 transition-colors duration-200" title="Undo Last Action">
                       <%= render(IconComponent.new(name: "arrow-counter-clockwise", classes: "flex items-center justify-center text-neutral-100 cursor-pointer h-6 w-6")) %>
@@ -92,7 +94,7 @@
           </select>
         </div>
 
-        <%= render 'location', landscape: @landscape_request %>
+        <%#= render 'location', landscape: @landscape_request %>
 
 
         <%= form_with(url: landscapes_path, method: :patch, html: { data: { action: "submit->landscape-editor#submitModification", landscape_editor_target: "form" } }) do |form| %>
@@ -102,7 +104,7 @@
 
           <button type="submit"
           data-landscape-editor-target="submitBtn"
-                  class="w-full bg-primary text-text-light py-3 rounded-md hover:bg-text-primary transition-colors duration-200 font-bold text-lg">
+                  class="cute-btn accent-btn">
             Generate Landscape
           </button>
         <% end %>
@@ -113,17 +115,7 @@
         </button>
       </div>
     </div>
-
-    <%# Loading Section (shared between edit and show if needed, but typically only on edit during processing) %>
-    <div data-landscape-editor-target="loadingSection" class="hidden fixed inset-0 bg-neutral-100 bg-opacity-75 flex flex-col items-center justify-center z-50">
-      <div class="inline-block h-12 w-12 animate-spin rounded-full border-4 border-solid border-current border-e-transparent text-primary" role="status">
-        <span class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">Loading...</span>
-      </div>
-      <p class="text-xl text-text-dark mt-4" data-landscape-editor-target="processingMessage">Generating your new landscape...</p>
-      <div data-landscape-editor-target="progressBarContainer" class="w-64 h-2 bg-neutral-300 rounded-full mt-4 hidden">
-        <div data-landscape-editor-target="progressBar" class="bg-primary h-2 rounded-full" style="width: 0%;"></div>
-      </div>
-    </div>
+    <%= render partial: 'loader', locals: {landscape_request: @landscape_request} %>
 
     <%# Result Section (Simplified for redirect message) %>
     <div data-landscape-editor-target="resultSection" class="hidden w-full max-w-full lg:max-w-6xl bg-white shadow-xl rounded-lg p-6 sm:p-8 mt-8">

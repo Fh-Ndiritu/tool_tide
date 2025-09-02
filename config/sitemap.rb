@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Set the host name for URL creation
 SitemapGenerator::Sitemap.default_host = "https://hadaa.app/"
 
@@ -29,15 +31,15 @@ SitemapGenerator::Sitemap.create do
   #  <% DESTINATION_IMAGE_FORMATS.each do |conversion| %>
 
   # add all image manipulation paths
-  CANONICAL_IMAGE_FORMATS.keys.each do |source|
+  CANONICAL_IMAGE_FORMATS.each_key do |source|
     DESTINATION_IMAGE_FORMATS.each do |conversion|
       next if source == conversion
+
       add new_images_path(source, conversion)
     end
   end
 
   add extract_text_images_path
 end
-
 
 # rake sitemap:refresh:no_ping

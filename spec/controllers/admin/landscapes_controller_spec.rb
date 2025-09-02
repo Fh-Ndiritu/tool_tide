@@ -1,4 +1,3 @@
-require 'rails_helper'
+# frozen_string_literal: true
 
-RSpec.describe Admin::LandscapesController, type: :controller do
-end
+require "rails_helper"

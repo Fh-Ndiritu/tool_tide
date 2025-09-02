@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
@@ -11,7 +13,7 @@ class User < ApplicationRecord
   has_many :credits, dependent: :destroy
 
   def state_address
-    return "" unless address.present?
+    return "" if address.blank?
 
     "#{address['state']}, #{address['country']}"
   end
@@ -28,7 +30,7 @@ class User < ApplicationRecord
   end
 
   def received_daily_credits?
-    received_daily_credits.in?(Date.today.all_day)
+    received_daily_credits.in?(Time.zone.today.all_day)
   end
 
   def afford_generation?(landscape_request)
@@ -52,7 +54,7 @@ class User < ApplicationRecord
       charge_pro_cost!(GOOGLE_IMAGE_COST * landscape_request.modified_images.size)
     else
       cost = BRIA_IMAGE_COST * landscape_request.modified_images.size
-      update! free_engine_credits: [ 0, free_engine_credits - cost ].max
+      update! free_engine_credits: [0, free_engine_credits - cost].max
     end
   end
 
@@ -62,10 +64,10 @@ class User < ApplicationRecord
 
   def charge_pro_cost!(cost)
     if pro_trial_credits >= cost
-      update! pro_trial_credits: [ 0, pro_trial_credits - cost ].max
+      update! pro_trial_credits: [0, pro_trial_credits - cost].max
     else
       balance = cost - pro_trial_credits
-      update! pro_engine_credits: [ 0, pro_engine_credits - balance ].max, pro_trial_credits: 0
+      update! pro_engine_credits: [0, pro_engine_credits - balance].max, pro_trial_credits: 0
     end
   end
 

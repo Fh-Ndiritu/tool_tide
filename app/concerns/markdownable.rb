@@ -60,8 +60,8 @@ module Markdownable
     text = text.gsub(/\$(.*?)\$/, '$$\1$$')
 
     # Convert block LaTeX expressions: \[...\] to $$...$$ and ensure they are on separate lines
-    text.gsub(/\\\[(.*?)\\\]/) do |match|
-      "\n$$\n#{$1.strip}\n$$\n"
+    text.gsub(/\\\[(.*?)\\\]/) do |_match|
+      "\n$$\n#{::Regexp.last_match(1).strip}\n$$\n"
     end
 
     text

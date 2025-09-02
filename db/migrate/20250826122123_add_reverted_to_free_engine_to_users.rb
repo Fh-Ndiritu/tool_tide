@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddRevertedToFreeEngineToUsers < ActiveRecord::Migration[8.0]
   def change
     add_column :users, :reverted_to_free_engine, :boolean, default: false

@@ -1,0 +1,13 @@
+<%= turbo_frame_tag 'loader' do %>
+  <%# Loading Section (shared between edit and show if needed, but typically only on edit during processing) %>
+<div data-landscape-editor-target="loadingSection" class="<%= 'hidden' if ['failed', 'complete'].include? landscape_request.progress %> fixed inset-0 bg-neutral-100 bg-opacity-75 flex flex-col items-center justify-center z-50">
+  <div class="inline-block h-12 w-12 animate-spin rounded-full border-4 border-solid border-current border-e-transparent text-primary" role="status">
+    <span class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">Loading...</span>
+  </div>
+  <p class="text-xl text-text-dark mt-4" data-landscape-editor-target="processingMessage"> <%= progress_message(landscape_request.progress) %></p>
+  <div data-landscape-editor-target="progressBarContainer" class="w-64 h-2 bg-neutral-300 rounded-full mt-4 hidden">
+    <div data-landscape-editor-target="progressBar" class="bg-primary h-2 rounded-full" style="width: 0%;"></div>
+  </div>
+</div>
+<% end %>
+

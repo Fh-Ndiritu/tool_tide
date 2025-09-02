@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class LandscapeRequest < ApplicationRecord
   include LandscapeHelper
   validates :preset, :image_engine, :prompt, presence: { on: :update }
@@ -24,10 +26,12 @@ class LandscapeRequest < ApplicationRecord
     validating_drawing: 1,
     suggesting_plants: 2,
     preparing_request: 3,
-    generating_images: 4,
-    saving_results: 5,
-    processed: 6,
-    complete: 7,
+    generating_landscape: 4,
+    changing_angles: 5,
+    generating_drone_view: 6,
+    saving_results: 7,
+    processed: 8,
+    complete: 9,
     failed: 100
   }
 
@@ -63,9 +67,9 @@ class LandscapeRequest < ApplicationRecord
     google_cost = DEFAULT_IMAGE_COUNT * GOOGLE_IMAGE_COST + localization_cost
     image_engine = if user.pro_access_credits >= google_cost
                      :google
-    else
+                   else
                      :bria
-    end
+                   end
 
     update! image_engine: image_engine
   end
@@ -77,12 +81,8 @@ class LandscapeRequest < ApplicationRecord
   private
 
   def broadcast_progress
-    return if complete? || failed?
-
-    ActionCable.server.broadcast(
-      "landscape_channel_#{id}",
-      { status: progress, message: progress_message(progress) }
-    )
+    broadcast_replace_to("landscape_request_#{id}", target: "loader", partial: "landscape_requests/loader",
+                                                    locals: { landscape_request: self })
   end
 
   def fetch_plant_response

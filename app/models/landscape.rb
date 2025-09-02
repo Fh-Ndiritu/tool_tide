@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class Landscape < ApplicationRecord
   has_one_attached :original_image do |attachable|
-    attachable.variant :to_process, resize_to_limit: [ 1024, 1024 ]
+    attachable.variant :to_process, resize_to_limit: [1024, 1024]
   end
 
   # this is manually resized to match the size of the browser window

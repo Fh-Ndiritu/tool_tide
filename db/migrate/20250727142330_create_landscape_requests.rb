@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateLandscapeRequests < ActiveRecord::Migration[8.0]
   def change
     create_table :landscape_requests do |t|

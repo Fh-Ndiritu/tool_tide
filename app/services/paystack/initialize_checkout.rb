@@ -15,10 +15,10 @@ module Paystack
 
     def perform
       verify_transaction
-      .bind { fetch_checkout_code }
-      .bind { |checkout_content| validate_data(checkout_content) }
-      .bind { |valid_data| update_payment_transaction(valid_data) }
-      .bind { Success(@transaction.reload) }
+        .bind { fetch_checkout_code }
+        .bind { |checkout_content| validate_data(checkout_content) }
+        .bind { |valid_data| update_payment_transaction(valid_data) }
+        .bind { Success(@transaction.reload) }
     rescue StandardError => e
       Failure("Paystack Checkout failed: #{e.message}")
     end
@@ -37,7 +37,7 @@ module Paystack
             'user_id': @transaction.user_id,
             'tx_id': @transaction.id
           }
-      }.to_json
+        }.to_json
       end
       content = JSON.parse(response.body, symbolize_names: true)
       Success(content)
@@ -53,11 +53,12 @@ module Paystack
       # this is already an initialized transaction
       return Failure("Transaction already has an access code") if @transaction.access_code.present?
 
-      return Failure("Amount or reference id is missing") unless @transaction.amount.to_i.positive? && @transaction.uuid.present?
+      unless @transaction.amount.to_i.positive? && @transaction.uuid.present?
+        return Failure("Amount or reference id is missing")
+      end
 
       Success(true)
     end
-
 
     def update_payment_transaction(data)
       if @transaction.update(access_code: data[:access_code], authorization_url: data[:authorization_url])
@@ -67,12 +68,13 @@ module Paystack
       end
     end
 
-
     def validate_data(content)
       data = content[:data]
       return Failure("PayStack Status is not true") if content[:status] != true
 
-      return Failure("Paystack access_code or authorization_url is blank") if data[:access_code].blank? || data[:authorization_url].blank?
+      if data[:access_code].blank? || data[:authorization_url].blank?
+        return Failure("Paystack access_code or authorization_url is blank")
+      end
 
       return Failure("Paystack reference key has changed") if @transaction.uuid != data[:reference]
 
@@ -82,8 +84,8 @@ module Paystack
     def client
       @client ||= Faraday.new(
         url: ENV.fetch("PAYSTACK_BASE_URL"),
-        headers:  { "Content-Type" => "application/json" }
-        ) do |conn|
+        headers: { "Content-Type" => "application/json" }
+      ) do |conn|
         conn.request :authorization, "Bearer", ENV.fetch("PAYSTACK_API_KEY")
         conn.response :raise_error
       end

@@ -410,6 +410,12 @@ export default class extends Controller {
     formData.append('landscape_request[mask]', maskDataURL);
     formData.append('landscape_request[preset]', preset);
 
+    // Reconnect the channel before the request to ensure it's active
+    if (this.channel) {
+      this.channel.unsubscribe();
+    }
+    this.createChannels();
+
     try {
       const response = await fetch(`/landscape_requests/` + landscapeRequestId, {
         method: 'PATCH',
@@ -435,10 +441,13 @@ export default class extends Controller {
         const responseData = await response.json();
         console.log('AJAX submission successful:', responseData);
 
-        if (responseData.status === 'processing' || responseData.status === 'queued') {
+        if (responseData.status === 'completed' && responseData.landscape_id) {
+          console.log('Backend returned a completed status. Redirecting immediately.');
+          this.redirectToLandscapeShow(responseData.landscape_id);
+        } else if (responseData.status === 'processing' || responseData.status === 'queued') {
           console.log('AI processing queued. Waiting for ActionCable broadcast...');
         } else {
-          // If the backend returns the final result directly (less common for AI)
+          // If the backend returns a final result directly (less common for AI)
           this.handleAiDataReceived(new CustomEvent('landscape:ai-data-received', { detail: responseData }));
         }
       }
@@ -448,6 +457,12 @@ export default class extends Controller {
       this.showSection('editor');
       if (this.hasProgressBarContainerTarget) {
         this.progressBarContainerTarget.classList.add('hidden');
+      }
+      // Re-establishing the channel in the catch block is a good practice
+      // to ensure the next attempt will have a valid channel.
+      if (this.channel) {
+        this.channel.unsubscribe();
+        this.createChannels();
       }
     }
   }

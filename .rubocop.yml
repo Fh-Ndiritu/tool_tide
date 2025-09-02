@@ -1,6 +1,6 @@
 # Inherit from the base Omakase style for a great starting point.
-inherit_gem:
-  rubocop-rails-omakase: rubocop.yml
+# inherit_gem:
+#   rubocop-rails-omakase: rubocop.yml
 # =========================================================================
 # Custom House Style Overrides
 # =========================================================================

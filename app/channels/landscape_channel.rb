@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # app/channels/landscape_channel.rb
 class LandscapeChannel < ApplicationCable::Channel
   def subscribed
@@ -25,6 +27,5 @@ class LandscapeChannel < ApplicationCable::Channel
     Rails.logger.info "Received data for landscape_channel_#{params[:landscape_id]}: #{data.inspect}"
     # Example: If clients can send messages, you might process them here
     # and then broadcast back to this specific stream:
-    # ActionCable.server.broadcast("landscape_channel_#{params[:landscape_id]}", { message: "Processed: #{data['text']}" })
   end
 end
