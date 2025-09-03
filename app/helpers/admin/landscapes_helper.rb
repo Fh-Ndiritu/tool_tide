@@ -7,7 +7,7 @@ module Admin
       # gem 'geocoder'
       # config/initializers/geocoder.rb with your API key if needed
       result = Geocoder.search(ip_address).first
-      return unless result.country
+      return unless result&.country
 
       "#{result&.city}, #{result&.country}"
     end
