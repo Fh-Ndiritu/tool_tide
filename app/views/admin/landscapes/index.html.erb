@@ -12,7 +12,7 @@
           <%= image_tag url_for(landscape.original_image.variant(resize_to_limit: [200, 200])), alt: "Original Landscape Image", class: "w-full h-full object-cover", loading: :lazy %>
         </div>
         <%# Location below the circular image %>
-        <%= content_tag :p, "Location: #{landscape.user.state_address.presence || "Rungiri, Kiambu County, Kenya"}", class: "mt-4 text-sm text-neutral-700 font-medium text-center" %>
+        <%= content_tag :p, "Location: #{landscape.user.state_address.presence || location_ip(landscape.ip_address)}", class: "mt-4 text-sm text-neutral-700 font-medium text-center" %>
       </div>
 
       <%# Container for the landscape requests and their modified images %>
