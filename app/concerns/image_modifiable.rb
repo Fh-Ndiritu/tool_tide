@@ -36,7 +36,7 @@ module ImageModifiable
       attach_debug_blob(alpha_mask, "alpha_mask_prepared")
 
       # Use a Tempfile for the alpha mask.
-      alpha_mask_temp = Tempfile.create(["alpha_mask", ".png"])
+      alpha_mask_temp = Tempfile.create([ "alpha_mask", ".png" ])
       tempfiles_to_clean << alpha_mask_temp
       alpha_mask.write(alpha_mask_temp.path)
       alpha_mask_image = MiniMagick::Image.open(alpha_mask_temp.path)
@@ -60,7 +60,7 @@ module ImageModifiable
       attach_debug_blob(green_mask, "green_mask_prepared")
 
       # Use a Tempfile for the green mask.
-      green_mask_temp = Tempfile.create(["green_mask", ".png"])
+      green_mask_temp = Tempfile.create([ "green_mask", ".png" ])
       tempfiles_to_clean << green_mask_temp
       green_mask.write(green_mask_temp.path)
       green_mask_image = MiniMagick::Image.open(green_mask_temp.path)
@@ -72,7 +72,7 @@ module ImageModifiable
       attach_debug_blob(green_overlay, "green_overlay_with_opacity")
 
       # Use a Tempfile for the green overlay.
-      green_overlay_temp = Tempfile.create(["green_overlay", ".png"])
+      green_overlay_temp = Tempfile.create([ "green_overlay", ".png" ])
       tempfiles_to_clean << green_overlay_temp
       green_overlay.write(green_overlay_temp.path)
       green_overlay_image = MiniMagick::Image.open(green_overlay_temp.path)
