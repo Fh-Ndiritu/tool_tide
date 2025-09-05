@@ -5,8 +5,8 @@ require "mini_magick"
 
 class ImageModificationJob < ApplicationJob
   queue_as :default
-
   include ImageModifiable
+  include ErrorHandler
 
   # we validate mask
   # we generate custom prompts
@@ -19,16 +19,14 @@ class ImageModificationJob < ApplicationJob
 
     prepare_image_and_prompt
 
-    @landscape_request.generating_landscape!
-    ActiveRecord::Base.transaction do
-      if @landscape_request.google_processor?
-        Processors::GoogleV2.perform(@landscape_request.id)
-      else
-        Processors::Bria.perform(@landscape_request.id)
-      end
-      charge_user if @landscape_request.reload.processed?
-      broadcast_success
+    @landscape_request.preparing_request!
+    if @landscape_request.google_processor?
+      Processors::GoogleV2.perform(@landscape_request.id)
+    else
+      Processors::Bria.perform(@landscape_request.id)
     end
+    charge_user if @landscape_request.reload.processed?
+    broadcast_success
   rescue StandardError => e
     @landscape_request.update progress: :failed, error: e.message
     broadcast_error(e)
@@ -66,7 +64,7 @@ class ImageModificationJob < ApplicationJob
   end
 
   def broadcast_error(error)
-    message = error.message.include?("Draw") ? e.message : "Something went wrong. Try submitting again..."
+    message = displayable_error?(error) ? error.message : "Something went wrong. Try submitting again..."
     ActionCable.server.broadcast(
       "landscape_channel_#{@landscape.id}",
       { error: message }

@@ -118,7 +118,7 @@ module ImageModifiable
   def validate_mask_data
     # we shall ensure the mask has at least 10 % black pixels
     blob = build_mask_blob
-    raise "Please draw the area to style on the image..." unless blob
+    raise I18n.t("permitted_errors.missing_drawing") unless blob
 
     threshold = 5
     image = MiniMagick::Image.read(blob.download) do |img|
@@ -128,12 +128,12 @@ module ImageModifiable
     mean = image.data.dig("channelStatistics", "gray", "mean")
     max = image.data.dig("channelStatistics", "gray", "max")
 
-    raise "Please draw the area to style on the image..." unless mean
+    raise I18n.t("permitted_errors.missing_drawing") unless mean
 
     # Max will be 1 or 255 while mean at 0 means all black while at 1/255 means all white
     black_percentage = (max - mean).to_f / max * 100
 
-    raise "Please draw the area to style on the image..." unless black_percentage >= threshold
+    raise I18n.t("permitted_errors.missing_drawing") unless black_percentage >= threshold
   end
 
   def build_mask_blob

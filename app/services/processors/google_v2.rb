@@ -19,12 +19,14 @@ module Processors
 
       raise "Image blend not found" unless @landscape_request.reload.full_blend.attached?
 
-      generate_initial_landscape.then { |response| save_response(response) }
+      @landscape_request.generating_landscape!
+      try_google_request(:generate_initial_landscape)
+
       @landscape_request.changing_angles!
-      generate_rotated_landscape.then { |response| save_response(response) }
+      try_google_request(:generate_rotated_landscape)
 
       @landscape_request.generating_drone_view!
-      generate_aerial_landscape.then { |response| save_response(response) }
+      try_google_request(:generate_aerial_landscape)
       @landscape_request.processed!
     rescue StandardError => e
       raise "Google Processor failed with: #{e.message}"
@@ -32,10 +34,19 @@ module Processors
 
     private
 
-    def save_response(response)
-      validate_response(response)
-      data = response.dig("candidates", 0, "content", "parts", 1, "inlineData")
-      save_b64_results(data)
+    def try_google_request(method)
+      max_retries = 3
+      retries = 0
+
+      begin
+        save_response(send(method))
+      rescue StandardError => e
+        Rails.logger.info("GCP failed #{method} with: #{e.message}")
+        retries += 1
+        raise "Max retries reached for #{method}" if retries > max_retries
+
+        save_response(send(method))
+      end
     end
 
     def generate_initial_landscape
@@ -53,9 +64,19 @@ module Processors
       fetch_gcp_response(payload)
     end
 
+    def save_response(response)
+      validate_response(response)
+      data = response.dig("candidates", 0, "content", "parts", 1, "inlineData")
+      save_b64_results(data)
+    end
+
     def validate_response(response)
-      raise "Invalid Response" unless response.is_a?(Hash) && response.dig("candidates", 0, "content", "parts", 1,
-                                                                           "inlineData").present?
+      return if response.is_a?(Hash)
+
+      image = response.dig("candidates", 0, "content", "parts", 1, "inlineData")
+      return if image.present?
+
+      raise "Image is missing in API response"
     end
 
     def gcp_payload(prompt, image)

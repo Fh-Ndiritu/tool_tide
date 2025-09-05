@@ -1,43 +1,36 @@
 <% if landscape.modified_images.any? %>
   <div class="relative w-70 h-70 my-6 rounded-lg shadow-lg overflow-hidden group  hover:opacity-95 bg-black mx-auto md:mx-0">
-
     <%# The background image fills the entire container, with a hover effect. %>
     <%= link_to landscape_path(landscape), class: "block w-full h-full" do %>
       <%= image_tag landscape.modified_images.first.variant(resize_to_limit: [400, 400]), class: "w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-110", loading: :lazy %>
     <% end %>
-
     <%# Absolute Top Content: Title and Date %>
     <div class="absolute top-0 left-0 right-0 p-4 bg-gradient-to-b from-black/50 to-transparent text-white">
       <h4 class="text-lg font-bold">
         <%= landscape.landscape_requests.count %> Generations
       </h4>
       <p class="text-sm opacity-90">
-        Done <%= time_ago_in_words(landscape.created_at)%> ago
+        Done <%= time_ago_in_words(landscape.created_at) %> ago
       </p>
     </div>
-
     <%# Absolute Bottom Content: Show button and Icons %>
     <div class="absolute bottom-0 left-0 right-0 p-4 flex justify-between items-center bg-gradient-to-t from-black/50 to-transparent">
-
       <%# Show button %>
       <%= link_to "Show", landscape_path(landscape), class: "text-black px-4 py-2 rounded-full text-sm font-semibold transition-colors duration-300
       bg-secondary text-text-light transition duration-300 ease-in-out transform hover:bg-accent group-hover:opacity-100" %>
-
       <%# Icons on the right %>
       <div class="flex space-x-3 text-white cursor-default">
         <%# Icon 1 (Example: a share icon) %>
         <button class="text-xs w-10 h-10 bg-black/50 rounded-full hover:bg-black/80 transition-colors duration-300 relative cursor-default">
-           <%= tag.span landscape.landscape_requests.google_processor.count, class: "text-white absolute -top-0 left-1/2 -translate-x-1/2 rounded-full text-xs h-4 font-bold" %>
-           <%= render(IconComponent.new(name: "king", classes: "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2")) %>
+          <%= tag.span landscape.landscape_requests.google_processor.count, class: "text-white absolute -top-0 left-1/2 -translate-x-1/2 rounded-full text-xs h-4 font-bold" %>
+          <%= render(IconComponent.new(name: "king", classes: "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2")) %>
         </button>
-
         <%# Icon 2 (Example: a delete icon) %>
         <button class="text-xs w-10 h-10 bg-black/50 rounded-full hover:bg-black/80 transition-colors duration-300 relative cursor-default">
-           <%= tag.span landscape.landscape_requests.bria_processor.count, class: "text-white absolute -top-0 left-1/2 -translate-x-1/2 rounded-full text-xs h-4 font-bold" %>
-           <%= render(IconComponent.new(name: "leaf", classes: "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2")) %>
+          <%= tag.span landscape.landscape_requests.bria_processor.count, class: "text-white absolute -top-0 left-1/2 -translate-x-1/2 rounded-full text-xs h-4 font-bold" %>
+          <%= render(IconComponent.new(name: "leaf", classes: "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2")) %>
         </button>
       </div>
-
     </div>
   </div>
 <% end %>
