@@ -1,10 +1,8 @@
 <%# Main container for all landscapes %>
 <div class="w-full max-w-7xl mx-auto p-4 md:p-8">
-
   <% @landscapes.each do |landscape| %>
     <%# Container for each landscape entry, now styled with theme colors %>
     <div class="mb-12 p-6 border-2 border-primary-300 rounded-2xl overflow-hidden shadow-2xl bg-white transition-all duration-300 transform hover:-translate-y-1 hover:shadow-primary">
-
       <%# Compact header with original image and location %>
       <div class="flex flex-col items-center mb-8">
         <%# Original image as a perfect circle profile picture %>
@@ -15,30 +13,25 @@
         <%= content_tag :p, "Location: #{landscape.user.state_address.presence || location_ip(landscape.ip_address)}", class: "mt-4 text-sm text-neutral-700 font-medium text-center" %>
         <%= content_tag :h6, "Landscape Id #{landscape.id}" %>
       </div>
-
       <%# Container for the landscape requests and their modified images %>
       <% landscape.landscape_requests.order(id: :desc).each_with_index do |request| %>
         <% next unless request.modified_images.attached? %>
         <div class="bg-neutral-100 p-4 border-t border-neutral-300 mt-4 pt-6 rounded-lg">
           <%= content_tag :h3, "#{request.preset} Style Results from #{t("landscape.engines.#{request.image_engine}")}", class: "mb-6 text-center text-xl font-bold text-text-dark" %>
-
           <%# Flex container for a single, scrollable line of 4 items %>
           <div class="flex space-x-4 overflow-x-auto pb-4 hide-scrollbar">
-
             <%# Display mask image if available, now always taking up one slot %>
             <% if request.mask.attached? %>
-              <div class="flex-none w-1/4 max-w-xs bg-white rounded-lg shadow-md overflow-hidden flex flex-col items-center p-2 transform transition-transform duration-300 hover:scale-105">
-                <%= image_tag url_for(request.mask.variant(resize_to_limit: [400, 400])), class: "w-full h-auto object-cover rounded-md border border-neutral-300 shadow-sm", loading: :lazy %>
+              <div class="flex-none w-1/4 min-w-[150px] max-w-xs bg-white rounded-lg shadow-md overflow-hidden flex flex-col items-center p-2 transform transition-transform duration-300 hover:scale-105">
+                <%= image_tag url_for(request.mask.variant(resize_to_limit: [400, 400])), class: "w-full min-w-[150px] h-auto min-h-[150px] object-cover rounded-md border border-neutral-300 shadow-sm", loading: :lazy %>
                 <span class="mt-2 text-xs text-neutral-500">Mask Image</span>
               </div>
             <% end %>
-
             <% request.modified_images.each_with_index do |modified_image, index| %>
-              <div class="flex-none w-1/4 max-w-xs bg-white rounded-lg shadow-md overflow-hidden flex flex-col items-center p-2 transform transition-transform duration-300 hover:scale-105">
-                <%= image_tag url_for(modified_image.variant(resize_to_limit: [400, 400])), alt: "AI Modified Landscape #{index + 1}", class: "w-full h-auto object-cover rounded-md border border-neutral-300 shadow-sm", loading: :lazy %>
-
+              <div class="flex-none w-1/4 min-w-[150px] max-w-xs bg-white rounded-lg shadow-md overflow-hidden flex flex-col items-center p-2 transform transition-transform duration-300 hover:scale-105">
+                <%= image_tag url_for(modified_image.variant(resize_to_limit: [400, 400])), alt: "AI Modified Landscape #{index + 1}", class: "w-full min-w-[150px] h-auto min-h-[150px] object-cover rounded-md border border-neutral-300 shadow-sm", loading: :lazy %>
                 <a href="<%= url_for(modified_image.variant(resize_to_limit: [500, 500])) %>" download="hadaa_ai_transformed_<%= index + 1 %>.png"
-                   class="cute-btn btn btn-accent">
+                   class="px-2 py-1 cute-btn btn btn-accent">
                   Download
                 </a>
               </div>
@@ -48,34 +41,4 @@
       <% end %>
     </div>
   <% end %>
-
 </div>
-
-<%# Custom CSS to hide scrollbar and define theme colors %>
-<style>
-.hide-scrollbar::-webkit-scrollbar {
-    display: none;
-}
-.hide-scrollbar {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
-}
-
-/* Tailwind CSS classes using theme properties */
-.border-primary-300 {
-  border-color: var(--color-primary);
-  border-opacity: 0.3;
-}
-.shadow-primary {
-  box-shadow: 0 10px 15px -3px rgba(63, 81, 181, 0.1), 0 4px 6px -2px rgba(63, 81, 181, 0.05);
-}
-.text-accent { color: var(--color-accent); }
-.text-text-dark { color: var(--color-text-dark); }
-.text-text-light { color: var(--color-text-light); }
-.text-neutral-700 { color: var(--color-neutral-700); }
-.bg-primary { background-color: var(--color-primary); }
-.hover\:bg-primary:hover { background-color: var(--color-primary); }
-.bg-secondary { background-color: var(--color-secondary); }
-.hover\:bg-secondary:hover { background-color: var(--color-secondary); }
-.border-accent { border-color: var(--color-accent); }
-</style>
