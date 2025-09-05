@@ -17,7 +17,7 @@ class LandscapesController < ApplicationController
              only: %i[create]
 
   def index
-    @landscapes = current_user.landscapes
+    @landscapes = current_user.complete_landscapes
   end
 
   def new

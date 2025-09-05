@@ -26,6 +26,7 @@ class ImageModificationJob < ApplicationJob
       Processors::Bria.perform(@landscape_request.id)
     end
     charge_user if @landscape_request.reload.processed?
+    @landscape_request.complete!
     broadcast_success
   rescue StandardError => e
     @landscape_request.update progress: :failed, error: e.message

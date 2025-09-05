@@ -81,6 +81,10 @@ class User < ApplicationRecord
     update!(reverted_to_free_engine: true, notified_about_pro_credits: false)
   end
 
+  def complete_landscapes
+    landscapes.joins(:landscape_requests).where(landscape_requests: { progress: [:processed, :complete] }).distinct
+  end
+
   private
 
   def issue_free_engine_credits
