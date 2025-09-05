@@ -29,7 +29,7 @@ module LandscapeRequestsHelper
   end
 
   def image_label(engine, index)
-    return "4k Download" if engine != 'google'
+    return "4k Download" if engine != "google"
 
     case index
     when 0
