@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Processors
   class GoogleV2
     include ImageModifiable
@@ -13,17 +15,18 @@ module Processors
 
     def process
       # we expect mask validations to be done ealier
-      @landscape_request.preparing_request!
       apply_mask_for_transparency
 
       raise "Image blend not found" unless @landscape_request.reload.full_blend.attached?
 
-      @landscape_request.generating_images!
-      response = fetch_gcp_response
-      validate_response(response)
+      @landscape_request.generating_landscape!
+      try_google_request(:generate_initial_landscape)
 
-      @landscape_request.saving_results!
-      save_b64_results(response["predictions"])
+      @landscape_request.changing_angles!
+      try_google_request(:generate_rotated_landscape)
+
+      @landscape_request.generating_drone_view!
+      try_google_request(:generate_aerial_landscape)
       @landscape_request.processed!
     rescue StandardError => e
       raise "Google Processor failed with: #{e.message}"
@@ -31,38 +34,140 @@ module Processors
 
     private
 
-    def validate_response(response)
-      return if response.is_a?(Hash) && response["predictions"].present?
+    def try_google_request(method)
+      max_retries = 3
+      retries = 0
 
-      raise "Response is invalid"
-    end
+      begin
+        save_response(send(method))
+      rescue StandardError => e
+        Rails.logger.info("GCP failed #{method} with: #{e.message}")
+        retries += 1
+        raise "Max retries reached for #{method}" if retries > max_retries
 
-    def fetch_gcp_response
-      location = ENV.fetch("GOOGLE_LOCATION")
-      endpoint = "https://#{location}-aiplatform.googleapis.com/v1/projects/#{ENV.fetch('GOOGLE_PROJECT_ID')}/locations/#{location}/publishers/google/models/imagen-3.0-capability-001:predict"
-      Gcp::Client.new.send(endpoint, gcp_payload)
-    end
-
-    def save_b64_results(predictions)
-      predictions.each do |prediction|
-        b64_data = prediction["bytesBase64Encoded"]
-        next if b64_data.blank?
-
-        img_from_b64 = Base64.decode64(b64_data)
-        extension = prediction["mimeType"].split("/").last
-
-        temp_file = Tempfile.new([ "modified_image", ".#{extension}" ], binmode: true)
-        temp_file.write(img_from_b64)
-        temp_file.rewind
-
-        blob = ActiveStorage::Blob.create_and_upload!(
-          io: temp_file,
-          filename: "modified_image.#{extension}",
-          content_type: prediction["mimeType"]
-        )
-        @landscape_request.modified_images.attach(blob)
-        @landscape_request.save!
+        save_response(send(method))
       end
+    end
+
+    def generate_initial_landscape
+      payload = gcp_payload(initial_landscape_prompt, @landscape_request.full_blend).to_json
+      fetch_gcp_response(payload)
+    end
+
+    def generate_rotated_landscape
+      payload = gcp_payload(rotated_landscape_prompt, @landscape_request.modified_images.last).to_json
+      fetch_gcp_response(payload)
+    end
+
+    def generate_aerial_landscape
+      payload = gcp_payload(aerial_landscape_prompt, @landscape_request.modified_images.first).to_json
+      fetch_gcp_response(payload)
+    end
+
+    def save_response(response)
+      validate_response(response)
+      data = response.dig("candidates", 0, "content", "parts", 1, "inlineData")
+      save_b64_results(data)
+    end
+
+    def validate_response(response)
+      return if response.is_a?(Hash)
+
+      image = response.dig("candidates", 0, "content", "parts", 1, "inlineData")
+      return if image.present?
+
+      raise "Image is missing in API response"
+    end
+
+    def gcp_payload(prompt, image)
+      {
+        "contents" => [
+          {
+            "parts" => [
+              {
+                "text" => prompt
+
+              },
+              {
+                "inline_data" => {
+                  "mime_type" => "image/jpeg",
+                  "data" => Base64.strict_encode64(image.download)
+                }
+              }
+            ]
+          }
+        ]
+      }
+    end
+
+    def initial_landscape_prompt
+      @landscape_request.prompt
+    end
+
+    def rotated_landscape_prompt
+      "Given this 8k highly detailed image of a landscaped garden compound, move the camera 120% horizontally to view the garden from a different angle.
+    Ensure you do not add details that are outside the scope of the house, garden and compound. Return a highly resolution and professional looking angle."
+    end
+
+    def aerial_landscape_prompt
+      "Given this image design of a well landscaped garden compound, change the perspective an aerial drone view to show the garden landscaping from above.
+    Focus on the details of the garden and show the house in the periphery from above. This is an aerial view from a DJI drone perspective."
+    end
+
+    def fetch_gcp_response(payload)
+      endpoint = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent"
+
+      # Use Faraday to make the API request.
+      conn = Faraday.new(
+        url: endpoint,
+        headers: {
+          "Content-Type" => "application/json",
+          "x-goog-api-key" => ENV["GEMINI_API_KEY"]
+        }
+      )
+
+      begin
+        response = conn.post("") do |req|
+          # Send the JSON payload generated by the gcp_payload method
+          req.body = payload
+        end
+
+        # Check if the HTTP request was successful (status code 200).
+        unless response.status == 200
+          Rails.logger.error "GCP request failed with status #{response.status}: #{response.body}"
+          raise "API call failed with status #{response.status}"
+        end
+
+        JSON.parse(response.body)
+      rescue Faraday::Error => e
+        Rails.logger.error "Faraday connection error: #{e.message}"
+        raise "Failed to connect to GCP API: #{e.message}"
+      rescue JSON::ParserError => e
+        Rails.logger.error "Failed to parse JSON response: #{e.message}"
+        raise "Invalid response from GCP API: #{e.message}"
+      end
+    end
+
+    def save_b64_results(prediction)
+      # predictions.each do |prediction|
+      b64_data = prediction["data"]
+      return if b64_data.blank?
+
+      img_from_b64 = Base64.decode64(b64_data)
+      extension = prediction["mimeType"].split("/").last
+
+      temp_file = Tempfile.new([ "modified_image", ".#{extension}" ], binmode: true)
+      temp_file.write(img_from_b64)
+      temp_file.rewind
+
+      blob = ActiveStorage::Blob.create_and_upload!(
+        io: temp_file,
+        filename: "modified_image.#{extension}",
+        content_type: prediction["mimeType"]
+      )
+      @landscape_request.modified_images.attach(blob)
+      @landscape_request.save!
+      # end
     end
 
     def apply_mask_for_transparency
@@ -97,38 +202,6 @@ module Processors
       blob = attach_blob(masked_image)
 
       @landscape_request.full_blend.attach(blob)
-    end
-
-    def attach_blob(masked_image)
-      io_object = StringIO.new(masked_image.to_blob)
-
-      ActiveStorage::Blob.create_and_upload!(
-        io: io_object,
-        filename: "full_blend.png",
-        content_type: "image/png"
-      )
-    end
-
-    def gcp_payload
-      {
-        "instances": [
-          {
-            "prompt": gsub_prompt(@landscape_request.full_prompt),
-            "referenceImages": [
-              {
-                "referenceType": "REFERENCE_TYPE_RAW",
-                "referenceId": 1,
-                "referenceImage": {
-                  "bytesBase64Encoded": Base64.strict_encode64(@landscape_request.full_blend.download)
-                }
-              }
-            ]
-          }
-        ],
-        "parameters": {
-          "sampleCount": 3
-        }
-      }
     end
   end
 end

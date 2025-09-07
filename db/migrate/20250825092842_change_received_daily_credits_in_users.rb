@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ChangeReceivedDailyCreditsInUsers < ActiveRecord::Migration[8.0]
   def change
     change_column :users, :received_daily_credits, :datetime

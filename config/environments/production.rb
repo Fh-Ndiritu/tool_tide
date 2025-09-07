@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
@@ -34,8 +36,8 @@ Rails.application.configure do
   # config.ssl_options = { redirect: { exclude: ->(request) { request.path == "/up" } } }
 
   # Log to STDOUT with the current request id as a default log tag.
-  config.log_tags = [ :request_id ]
-  config.logger   = ActiveSupport::TaggedLogging.logger(STDOUT)
+  config.log_tags = [:request_id]
+  config.logger   = ActiveSupport::TaggedLogging.logger($stdout)
 
   # Change to "debug" to log everything (including potentially personally-identifiable information!)
   config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
@@ -61,7 +63,6 @@ Rails.application.configure do
   # config/environments/production.rb
   config.action_mailer.default_url_options = { host: "hadaa.app", protocol: "https" }
 
-
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
   config.i18n.fallbacks = true
@@ -70,7 +71,7 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   # Only use :id for inspections in production.
-  config.active_record.attributes_for_inspect = [ :id ]
+  config.active_record.attributes_for_inspect = [:id]
 
   # Enable DNS rebinding protection and other `Host` header attacks.
   # config.hosts = [
@@ -81,13 +82,13 @@ Rails.application.configure do
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
 
-  config.action_cable.url = "wss://#{URI.parse(ENV.fetch("BASE_URL") { 'hadaa.app' }).host}/cable"
+  config.action_cable.url = "wss://#{URI.parse(ENV.fetch('BASE_URL', 'hadaa.app')).host}/cable"
 
   config.action_mailer.delivery_method = BrevoApiMailer
 
   config.action_mailer.add_delivery_method :brevo_api, BrevoApiMailer, api_key: ENV.fetch("BREVO_API_KEY", nil)
 
-  config.action_mailer.default_url_options = { host: URI.parse(ENV.fetch("BASE_URL") { "hadaa.app" }).host }
+  config.action_mailer.default_url_options = { host: URI.parse(ENV.fetch("BASE_URL", "hadaa.app")).host }
 
   config.action_mailer.raise_delivery_errors = true
 end

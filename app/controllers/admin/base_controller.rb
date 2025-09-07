@@ -1,10 +1,14 @@
-class Admin::BaseController < ApplicationController
-  before_action :authenticate_user!
-  before_action :authenticate_admin
+# frozen_string_literal: true
 
-  private
+module Admin
+  class BaseController < ApplicationController
+    before_action :authenticate_user!
+    before_action :authenticate_admin
 
-  def authenticate_admin
-    redirect_to root_path unless current_user.admin?
+    private
+
+    def authenticate_admin
+      redirect_to root_path unless current_user.admin?
+    end
   end
 end

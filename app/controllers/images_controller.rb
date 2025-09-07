@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 class ImagesController < ApplicationController
   skip_before_action :authenticate_user!
-  before_action :validate_source, only: [ :new ]
-  before_action :validate_conversion, only: [ :new ]
-
+  before_action :validate_source, only: [:new]
+  before_action :validate_conversion, only: [:new]
 
   def index
     @converted_file_paths = flash[:converted_file_paths] || []
@@ -24,10 +25,13 @@ class ImagesController < ApplicationController
                                                     partial: "images/image_extraction_form",
                                                     locals: {
                                                       image_form: ImageExtractionForm.new
-                                                        }) +
+                                                    }) +
                                turbo_stream.replace("flash", partial: "/shared/flash")
         end
-        format.html { redirect_to converted_images_path, notice: "Images converted successfully!" } # Redirect for non-Turbo Stream requests
+        # Redirect for non-Turbo Stream requests
+        format.html do
+          redirect_to converted_images_path, notice: "Images converted successfully!"
+        end
       end
     else
       respond_to do |format|
@@ -44,9 +48,7 @@ class ImagesController < ApplicationController
   end
 
   def new
-    if @conversion == @source
-      redirect_to root_path, alert: "Source and conversion formats cannot be the same."
-    end
+    redirect_to root_path, alert: "Source and conversion formats cannot be the same." if @conversion == @source
 
     @image_form = ImageConversionForm.new(conversion: @conversion, source: @source)
   end
@@ -69,18 +71,23 @@ class ImagesController < ApplicationController
 
           render turbo_stream: turbo_stream.replace("results",
                                                     partial: "images/results_conversion",
-                                                    locals: { converted_file_paths: @image_form.conversion_results, canonical_conversion: @image_form.canonical_conversion }) +
+                                                    locals: { converted_file_paths: @image_form.conversion_results,
+                                                              canonical_conversion: @image_form.canonical_conversion }) +
                                turbo_stream.replace("image_form",
                                                     partial: "images/image_form",
                                                     locals: {
                                                       image_form: ImageConversionForm.new(
                                                         source: @image_form.source,
-                                                        conversion: @image_form.conversion),
-                                                        supported_formats: @supported_formats }
-                                                        ) +
+                                                        conversion: @image_form.conversion
+                                                      ),
+                                                      supported_formats: @supported_formats
+                                                    }) +
                                turbo_stream.replace("flash", partial: "/shared/flash")
         end
-        format.html { redirect_to converted_images_path, notice: "Images converted successfully!" } # Redirect for non-Turbo Stream requests
+        # Redirect for non-Turbo Stream requests
+        format.html do
+          redirect_to converted_images_path, notice: "Images converted successfully!"
+        end
       end
     else
       respond_to do |format|
@@ -100,7 +107,7 @@ class ImagesController < ApplicationController
 
   def image_extraction_params
     # we need to filter out blank images
-    params.require(:image_extraction_form).permit().merge(images: params[:image_extraction_form][:images].reject { |img| img.blank? })
+    params.require(:image_extraction_form).permit.merge(images: params[:image_extraction_form][:images].reject(&:blank?))
   end
 
   def validate_conversion
@@ -137,6 +144,6 @@ class ImagesController < ApplicationController
     params.require(:image_conversion_form).permit(
       :conversion,
       :source
-    ).merge(images: params[:image_conversion_form][:images].reject { |img| img.blank? })
+    ).merge(images: params[:image_conversion_form][:images].reject(&:blank?))
   end
 end

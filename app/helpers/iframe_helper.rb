@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # app/helpers/iframe_helper.rb
 module IframeHelper
   def render_iframe_html(text:, file_name:)

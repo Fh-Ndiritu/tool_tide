@@ -1,4 +1,3 @@
-
 # frozen_string_literal: true
 
 # this returns boolean and instance value of [results array of [pages hash {with :text and :filename}]]
@@ -41,24 +40,23 @@ class ImageExtractionForm
 
     # Iterate through each uploaded image and attempt conversion
     images.each do |image_file|
-      begin
-        # Delegate the actual conversion to a service object
-        # This keeps the form object focused on form logic, not file manipulation.
-        # We'll create ImageConversionService next.
-        result = Images::ImageTextExtractor.perform(image_file)
+      # Delegate the actual conversion to a service object
+      # This keeps the form object focused on form logic, not file manipulation.
+      # We'll create ImageConversionService next.
+      result = Images::ImageTextExtractor.perform(image_file)
 
-        if result.success?
-          @results << result.data
-        else
-          # Add errors specific to this file conversion failure
-          errors.add(:base, "Failed to convert #{image_file.original_filename}: #{result.error}")
-          conversion_successful = false
-        end
-      rescue => e
-        # Catch any unexpected errors during service call
-        errors.add(:base, "An unexpected error occurred during conversion of #{image_file.original_filename}: #{e.message}")
+      if result.success?
+        @results << result.data
+      else
+        # Add errors specific to this file conversion failure
+        errors.add(:base, "Failed to convert #{image_file.original_filename}: #{result.error}")
         conversion_successful = false
       end
+    rescue StandardError => e
+      # Catch any unexpected errors during service call
+      errors.add(:base,
+                 "An unexpected error occurred during conversion of #{image_file.original_filename}: #{e.message}")
+      conversion_successful = false
     end
 
     # Return overall success status
@@ -66,19 +64,20 @@ class ImageExtractionForm
   end
 
   private
+
   # Custom validation to ensure all uploaded items are actual files and have reasonable content types
   def all_images_valid
-    if images.present?
-      images.each do |image_file|
-        unless image_file.respond_to?(:path) && image_file.respond_to?(:content_type)
-          errors.add(:images, "must be valid file uploads.")
-          break # Stop checking if one is invalid
-        end
-        source = image_file.content_type
-        unless ImageFormatHelper.extractable_format?(source)
-          errors.add(:source, "'#{source}' is not a supported source format.")
-          break
-        end
+    return if images.blank?
+
+    images.each do |image_file|
+      unless image_file.respond_to?(:path) && image_file.respond_to?(:content_type)
+        errors.add(:images, "must be valid file uploads.")
+        break # Stop checking if one is invalid
+      end
+      source = image_file.content_type
+      unless ImageFormatHelper.extractable_format?(source)
+        errors.add(:source, "'#{source}' is not a supported source format.")
+        break
       end
     end
   end

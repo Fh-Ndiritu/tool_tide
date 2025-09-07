@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class LandscapesController < ApplicationController
   include Notifiable
 
@@ -5,25 +7,24 @@ class LandscapesController < ApplicationController
   before_action :set_landscape, only: %i[show edit]
   before_action :set_landscape_request, only: %i[edit]
   before_action :issue_daily_credits, only: :new
-  before_action :handle_downgrade_notifications, only: [ :new, :edit, :show ]
+  before_action :handle_downgrade_notifications, only: %i[new edit show]
 
   rate_limit to: 6,
-  within: 1.minutes,
-  with: -> {
-    redirect_to root_path, alert: "Too many landscaping attempts! Try again later."
-  },
-  only: %i[create]
+             within: 1.minute,
+             with: lambda {
+               redirect_to root_path, alert: "Too many landscaping attempts! Try again later."
+             },
+             only: %i[create]
 
   def index
-    @landscapes = current_user.landscapes
+    @landscapes = current_user.complete_landscapes
   end
 
   def new
     @landscape = current_user.landscapes.new
   end
 
-  def show
-  end
+  def show; end
 
   def edit
     redirect_to edit_landscape_request_path(@landscape_request)
@@ -44,9 +45,7 @@ class LandscapesController < ApplicationController
     end
   end
 
-  def show
-  end
-
+  def show; end
 
   private
 
@@ -63,10 +62,10 @@ class LandscapesController < ApplicationController
 
   def set_landscape
     @landscape = current_user.landscapes.find(params[:id])
-    unless @landscape.original_image.attached?
-      flash[:alert] = "No image found for this landscape"
-      redirect_to landscapes_path
-    end
+    return if @landscape.original_image.attached?
+
+    flash[:alert] = "No image found for this landscape"
+    redirect_to landscapes_path
   end
 
   def issue_daily_credits

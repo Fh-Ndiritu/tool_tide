@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Landscape < ApplicationRecord
   has_one_attached :original_image do |attachable|
     attachable.variant :to_process, resize_to_limit: [ 1024, 1024 ]
@@ -12,7 +14,21 @@ class Landscape < ApplicationRecord
 
   scope :non_admin, -> { joins(:user).where(user: { admin: false }) unless Rails.env.local? }
 
-  def modified_images
-    ActiveStorage::Attachment.where(record_id: landscape_requests.ids)
+  def display_cover
+    # we can use the original image
+    cover = original_image
+    completed_requests = landscape_requests.complete
+    if completed_requests.any?
+      cover = completed_requests.last.modified_images.last
+    end
+    cover
+  end
+
+  def completed_requests?
+    landscape_requests.complete.any?
+  end
+
+  def completed_requests
+    landscape_requests.complete
   end
 end

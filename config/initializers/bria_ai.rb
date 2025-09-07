@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # config/initializers/bria_ai.rb
 
 require "bria_ai"

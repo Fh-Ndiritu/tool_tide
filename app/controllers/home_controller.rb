@@ -1,9 +1,9 @@
+# frozen_string_literal: true
+
 class HomeController < ApplicationController
-  skip_before_action :authenticate_user!, only: [ :index ]
+  skip_before_action :authenticate_user!, only: [:index]
 
-  def index
-  end
+  def index; end
 
-  def credits
-  end
+  def credits; end
 end

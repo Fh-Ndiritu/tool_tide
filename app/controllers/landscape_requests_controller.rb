@@ -1,15 +1,16 @@
+# frozen_string_literal: true
+
 class LandscapeRequestsController < ApplicationController
   include Notifiable
 
   before_action :set_landscape_request, only: %i[location edit update low_credits]
   before_action :handle_downgrade_notifications, only: %i[edit update]
 
-  def low_credits
-  end
+  def low_credits; end
 
   def location
     if location_params.present?
-      results = Geocoder.search([ location_params[:latitude], location_params[:longitude] ])
+      results = Geocoder.search([location_params[:latitude], location_params[:longitude]])
       current_user.update!(location_params)
 
       current_user.update! address: results.first&.data&.dig("address") if results.present?
@@ -51,7 +52,7 @@ class LandscapeRequestsController < ApplicationController
 
   def save_mask
     # Check if a mask image is present in the parameters
-    return unless landscape_request_params[:mask].present?
+    return if landscape_request_params[:mask].blank?
 
     # Extract mime type and Base64 content from the data URL
     _mime_type, base64_content = landscape_request_params[:mask].split(",", 2)
@@ -76,11 +77,11 @@ class LandscapeRequestsController < ApplicationController
   end
 
   def location_params
-    params.permit(:latitude, :longitude).compact_blank.transform_values { |v| v.to_d }
+    params.permit(:latitude, :longitude).compact_blank.transform_values(&:to_d)
   end
 
   def set_landscape_request
-    @landscape_request ||= LandscapeRequest.includes(:landscape).find(params[:id])
+    @landscape_request = LandscapeRequest.includes(:landscape).find(params[:id])
   end
 
   def landscape_request_params
@@ -99,11 +100,11 @@ class LandscapeRequestsController < ApplicationController
   def fetch_prompt
     preset = landscape_request_params[:preset]
     raise "Please select a landscape vibe." if preset.blank?
-    raise "Invalid landscape vibe selected." unless LANDSCAPE_PRESETS[preset].present?
+    raise "Invalid landscape vibe selected." if LANDSCAPE_PRESETS[preset].blank?
 
     # we now fetch the prompt from prompts.yml
     prompt = PROMPTS["landscape_presets"][preset]
-    raise "Preset prompts not found." unless prompt.present?
+    raise "Preset prompts not found." if prompt.blank?
 
     prompt
   end

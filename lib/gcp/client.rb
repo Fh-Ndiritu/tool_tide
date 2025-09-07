@@ -3,17 +3,17 @@
 module Gcp
   class Client
     def send(endpoint, payload)
-        access_token = generate_access_token
+      access_token = generate_access_token
 
-        response = Faraday.post(endpoint) do |req|
-          req.headers["Content-Type"] = "application/json"
-          req.headers["Authorization"] = "Bearer #{access_token}"
-          req.body = payload.to_json
-        end
+      response = Faraday.post(endpoint) do |req|
+        req.headers["Content-Type"] = "application/json"
+        req.headers["Authorization"] = "Bearer #{access_token}"
+        req.body = payload.to_json
+      end
 
-        raise "Faraday Error: #{response.status} - #{response.body}" unless response.success?
+      raise "Faraday Error: #{response.status} - #{response.body}" unless response.success?
 
-        JSON.parse(response.body)
+      JSON.parse(response.body)
     end
 
     private

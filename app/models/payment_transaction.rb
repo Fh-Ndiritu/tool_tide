@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class PaymentTransaction < ApplicationRecord
   belongs_to :user, touch: true
 
-  validates_presence_of :uuid, :amount
+  validates :uuid, :amount, presence: true
 
   before_validation :set_uuid, only: :create
 
@@ -33,7 +35,7 @@ class PaymentTransaction < ApplicationRecord
     ActiveRecord::Base.transaction do
       amount = Object.const_get("PRO_CREDITS_PER_#{currency}") * self.amount
       user.credits.create!(source: :purchase, amount:, credit_type: :pro_engine)
-      self.update credits_issued: true
+      update credits_issued: true
       user.update reverted_to_free_engine: false, notified_about_pro_credits: false
     end
   end

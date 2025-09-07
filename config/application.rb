@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative "boot"
 
 require "rails/all"
@@ -7,14 +9,14 @@ Bundler.require(*Rails.groups)
 
 module ToolTide
   class Application < Rails::Application
-    Rails.root.join("config", "initializers", "brevo_api_mailer.rb")
+    Rails.root.join("config/initializers/brevo_api_mailer.rb")
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 8.0
 
     config.before_configuration do
       # this initializer is required very early in the boot process in the environment settings
       # we can move it elsewhere to avoid double initialization but that should be memoized already
-      require Rails.root.join("config", "initializers", "brevo_api_mailer.rb")
+      require Rails.root.join("config/initializers/brevo_api_mailer.rb")
     end
 
     # Please, add to the `ignore` list any other `lib` subdirectories that do

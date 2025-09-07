@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module LandscapeHelper
   def progress_message(progress)
     case progress

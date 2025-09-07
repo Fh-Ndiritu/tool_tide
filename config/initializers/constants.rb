@@ -80,7 +80,7 @@ IMAGE_EXTRACTION_FORMATS = {
   "bmp" => "image/bmp",
   "gif" => "image/gif",
   "svg" => "image/svg+xml"
-}
+}.freeze
 
 IMAGE_LANDSCAPE_FORMATS = {
   "jpeg" => "image/jpeg",
@@ -89,7 +89,7 @@ IMAGE_LANDSCAPE_FORMATS = {
   "avif" => "image/avif",
   "heic" => "image/heic",
   "heif" => "image/heif"
-}
+}.freeze
 
 DESTINATION_IMAGE_FORMATS = %w[
   jpeg
@@ -122,9 +122,9 @@ LANDSCAPE_PRESETS = {
   "mediterranean" => "Fragrant and relaxed",
   "tropical" => "Vibrant and lush",
   "modern" => "Clean minimalist"
-}
+}.freeze
 
-PROMPTS = YAML.load_file(Rails.root.join("config", "prompts.yml"))
+PROMPTS = YAML.load_file(Rails.root.join("config/prompts.yml"))
 
 SUGGESTED_PLANTS_SCHEMA = {
   type: "array",
@@ -139,7 +139,7 @@ SUGGESTED_PLANTS_SCHEMA = {
   },
 
   required: %w[name description]
-}
+}.freeze
 
 LOCALIZED_PROMPT_SCHEMA = {
   type: "object",
@@ -148,11 +148,11 @@ LOCALIZED_PROMPT_SCHEMA = {
                       description: "The updated prompt with the new flowers and the concise adjectives of how they look" }
   },
 
-  required: [ "updated_prompt" ]
-}
+  required: ["updated_prompt"]
+}.freeze
 
 DAILY_FREE_ENGINE_CREDITS = 50
-PRO_TRIAL_CREDITS = 30
+PRO_TRIAL_CREDITS = 60
 
 # currency credits
 PRO_CREDITS_PER_USD = 20
@@ -162,4 +162,4 @@ GOOGLE_IMAGE_COST = 8
 LOCALIZED_PLANT_COST = 2
 DEFAULT_IMAGE_COUNT = 3
 DEFAULT_USD_PURCHASE_AMOUNT = BigDecimal(10)
-CREDITS_INFO = "$ #{DEFAULT_USD_PURCHASE_AMOUNT.to_i} for #{(DEFAULT_USD_PURCHASE_AMOUNT * PRO_CREDITS_PER_USD).to_i} credits"
+CREDITS_INFO = "$ #{DEFAULT_USD_PURCHASE_AMOUNT.to_i} for #{(DEFAULT_USD_PURCHASE_AMOUNT * PRO_CREDITS_PER_USD).to_i} credits".freeze

@@ -1,8 +1,15 @@
+# frozen_string_literal: true
+
 # app/jobs/image_modification_job.rb
 require "mini_magick"
 
 class ImageModificationJob < ApplicationJob
   queue_as :default
+  include ImageModifiable
+  include ErrorHandler
+
+  # we validate mask
+  # we generate custom prompts
 
   include ImageModifiable
 
@@ -13,18 +20,19 @@ class ImageModificationJob < ApplicationJob
     @landscape_request = LandscapeRequest.includes(landscape: :user).find(landscape_request_id)
     @user = @landscape_request.user
     @landscape = @landscape_request.landscape
+    @landscape_request.update progress: :uploading, error: nil
 
     prepare_image_and_prompt
 
-    ActiveRecord::Base.transaction do
-      if @landscape_request.google_processor?
-        Processors::GoogleV2.perform(@landscape_request.id)
-      else
-        Processors::Bria.perform(@landscape_request.id)
-      end
-      charge_user if @landscape_request.reload.processed?
-      broadcast_success
+    @landscape_request.preparing_request!
+    if @landscape_request.google_processor?
+      Processors::GoogleV2.perform(@landscape_request.id)
+    else
+      Processors::Bria.perform(@landscape_request.id)
     end
+    charge_user if @landscape_request.reload.processed?
+    @landscape_request.complete!
+    broadcast_success
   rescue StandardError => e
     @landscape_request.update progress: :failed, error: e.message
     broadcast_error(e)
@@ -42,10 +50,12 @@ class ImageModificationJob < ApplicationJob
 
     @landscape_request.suggesting_plants!
     fetch_localized_prompt
+    @landscape_request.preparing_request!
   end
 
   def fetch_localized_prompt
-    return if !@landscape_request.use_location? || @landscape_request.localized_prompt.present?
+    return unless @landscape_request.use_location?
+    return if @landscape_request.localized_prompt.present?
 
     @landscape_request.suggesting_plants!
     @landscape_request.build_localized_prompt!
@@ -59,11 +69,11 @@ class ImageModificationJob < ApplicationJob
     @user.schedule_downgrade_notification unless @user.sufficient_pro_credits?
   end
 
-  def broadcast_error(e)
-    error = e.message.include?("Please") ? e.message : "Something went wrong. We are getting a full team to look into this... just for you :)"
+  def broadcast_error(error)
+    message = displayable_error?(error) ? error.message : "Something went wrong. Try submitting again..."
     ActionCable.server.broadcast(
       "landscape_channel_#{@landscape.id}",
-      { error: error }
+      { error: message }
     )
   end
 

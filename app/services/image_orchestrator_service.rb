@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 class ImageOrchestratorService
-  def initialize(conversion, source, images, *args)
+  def initialize(conversion, source, images, *_args)
     @images = images
     @conversion = conversion
     @source = source
   end
+
   def self.perform(*args)
     new(*args).perform
   end
@@ -19,7 +20,6 @@ class ImageOrchestratorService
     else
       Images::ImageFormatConverter.perform(@conversion, @images)
     end
-
   rescue StandardError => e
     Result.new(success: false, error: "Error performing image conversion: #{e.message}")
   end

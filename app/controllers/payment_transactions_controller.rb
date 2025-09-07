@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 class PaymentTransactionsController < ApplicationController
-  def index
-  end
+  def index; end
 
   def create
     # this will be triggered by a user button
@@ -21,11 +22,12 @@ class PaymentTransactionsController < ApplicationController
 
   def callback
     redirect_to root_path, alert: "No reference Id found" and return unless params[:reference]
+
     result = Paystack::VerifyPayment.perform(params[:reference])
     if result.success?
-      flash[:success] =  "Payment successful!"
+      flash[:success] = "Payment successful!"
     else
-      flash[:alert] =  "Payment Failed, please try again later"
+      flash[:alert] = "Payment Failed, please try again later"
     end
 
     redirect_to credits_path

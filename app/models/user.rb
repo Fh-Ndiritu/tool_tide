@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
@@ -11,7 +13,7 @@ class User < ApplicationRecord
   has_many :credits, dependent: :destroy
 
   def state_address
-    return "" unless address.present?
+    return "" if address.blank?
 
     "#{address['state']}, #{address['country']}"
   end
@@ -28,7 +30,7 @@ class User < ApplicationRecord
   end
 
   def received_daily_credits?
-    received_daily_credits.in?(Date.today.all_day)
+    received_daily_credits.in?(Time.zone.today.all_day)
   end
 
   def afford_generation?(landscape_request)
@@ -77,6 +79,10 @@ class User < ApplicationRecord
   # We tell you are running low on premium credits, you can still user free engine or upgrade
   def schedule_downgrade_notification
     update!(reverted_to_free_engine: true, notified_about_pro_credits: false)
+  end
+
+  def complete_landscapes
+    landscapes.joins(:landscape_requests).where(landscape_requests: { progress: [ :processed, :complete ] }).distinct
   end
 
   private

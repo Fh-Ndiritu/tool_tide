@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Migration for creating messages table with references to chats and tool_calls
 class CreateMessages < ActiveRecord::Migration[8.0]
   def change

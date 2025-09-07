@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Credit < ApplicationRecord
   belongs_to :user
   after_create_commit :update_user_credits

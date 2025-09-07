@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
   # Home routes
   get "credits", to: "home#credits", as: :credits
@@ -12,20 +14,20 @@ Rails.application.routes.draw do
     get "landscapes/:day", to: "landscapes#index"
   end
 
-  resources :landscapes, except: [ :destroy ] do
+  resources :landscapes, except: [:destroy] do
     # collection do
     #   post "modify"
     # end
   end
 
-  resources :landscape_requests, only: [ :update, :edit ] do
+  resources :landscape_requests, only: %i[update edit] do
     member do
       patch :location
       get :low_credits
     end
   end
 
-  resources :images, only: [ :create, :index ] do
+  resources :images, only: %i[create index] do
     collection do
       get ":source/:conversion", to: "new", as: "new"
       get "extract_text"
@@ -45,10 +47,10 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "home#index"
 
-
   # New resource for showing/downloading converted images
-  resources :converted_images, only: [ :index ] do
+  resources :converted_images, only: [:index] do
     # Route for downloading a specific file by its unique identifier (e.g., filename)
-    get "download/:filename", on: :collection, to: "converted_images#download", as: :download_file, constraints: { filename: /.*/ }
+    get "download/:filename", on: :collection, to: "converted_images#download", as: :download_file,
+                              constraints: { filename: /.*/ }
   end
 end
