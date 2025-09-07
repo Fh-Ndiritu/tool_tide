@@ -120,3 +120,6 @@ gem "ruby_llm-schema", "~> 0.1.6"
 gem "brevo"
 
 gem "dry-monads", "~> 1.9"
+
+gem "sentry-rails"
+gem "sentry-ruby"
