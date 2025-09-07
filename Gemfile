@@ -116,7 +116,7 @@ gem "devise", "~> 4.9", ">= 4.9.3"
 
 gem "ruby_llm", "~> 1.6"
 
-gem "ruby_llm-schema", "~> 0.1.6"
+gem "ruby_llm-schema", "~> 0.2.1"
 
 gem "brevo"
 
