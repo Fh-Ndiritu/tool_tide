@@ -11,6 +11,11 @@ class ImageModificationJob < ApplicationJob
   # we validate mask
   # we generate custom prompts
 
+  include ImageModifiable
+
+  # we validate mask
+  # we generate custom prompts
+
   def perform(landscape_request_id)
     @landscape_request = LandscapeRequest.includes(landscape: :user).find(landscape_request_id)
     @user = @landscape_request.user
