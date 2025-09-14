@@ -1,18 +1,17 @@
 <section id="pricing" class="py-16 md:py-24  text-neutral-800">
   <div class="container mx-auto px-6">
-     <h2 class="text-center text-4xl md:text-5xl font-bold mb-12 leading-tight">
+    <h2 class="text-center text-4xl md:text-5xl font-bold mb-12 leading-tight">
       Pricing
     </h2>
     <div class="lg:grid lg:grid-cols-2 lg:gap-12 mb-16">
-
       <div class="p-8 max-md:mb-6 md:p-12 bg-neutral-300 rounded-2xl shadow-xl text-neutral-900 transform transition duration-500 hover:scale-103">
         <div class="">
           <h3 class="text-2xl md:text-3xl font-bold mb-4 text-text-secondary">
-            Free for life!
+            Free for use
           </h3>
           <p class="text-base md:text-lg leading-relaxed text-neutral-800">
             At Hadaa Ai, we believe in making creativity accessible to everyone.
-            That is why we offer a <b>completely free</b> plan without signup or login requirements.
+            That is why we offer a <b> free</b> plan without credit card requirements.
             Explore with no barriers!
           </p>
           <%= render ButtonComponent.new(
@@ -22,8 +21,6 @@
           ) %>
         </div>
       </div>
-
-
       <div class="p-8 max-md:mb-6 md:p-12 bg-neutral-300 rounded-2xl shadow-xl text-neutral-900 transform transition duration-500 hover:scale-103">
         <div class="">
           <h3 class="text-2xl md:text-3xl font-bold mb-4 text-text-accent">
@@ -39,9 +36,7 @@
           ) %>
         </div>
       </div>
-
     </div>
-
     <div class="text-center mt-24 b text-neutral-800 py-16 px-6">
       <h3 class="text-3xl md:text-4xl font-bold mb-6 fancy-text">
         Ready to Transform Your Outdoor Space?
@@ -49,13 +44,11 @@
       <p class="text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
         Join thousands of users who are reimagining their gardens with Hadaa Ai Landscaper. Experience the future of landscape design – precise, personalized, and effortlessly beautiful.
       </p>
-
-       <%= render ButtonComponent.new(
+      <%= render ButtonComponent.new(
         text: "Bring your ideas to life",
       href: new_user_registration_path,
       classes: "mt-4 inline-block bg-accent hover:bg-secondary text-text-light font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105"
       ) %>
     </div>
-
   </div>
 </section>
