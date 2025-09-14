@@ -129,9 +129,12 @@ module Processors
           "x-goog-api-key" => ENV["GEMINI_API_KEY"]
         }
       ) do |f|
-        f.options.open_timeout = 10
-        f.options.timeout = 60
-        f.options.read_timeout = 60
+        # Time to wait for the connection to open
+        f.options.open_timeout = 30
+        # Total time for the request to complete
+        f.options.timeout = 120
+        # Time to wait for a read to complete
+        f.options.read_timeout = 120
       end
     end
   end
