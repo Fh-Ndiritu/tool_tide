@@ -1,0 +1,15 @@
+<%= form_with model: canva, local: false, data: {canvas_target: 'form'} do |form| %>
+  <% if canva.errors.any? %>
+    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
+      <h2><%= pluralize(canva.errors.count, "error") %> prohibited this canva from being saved:</h2>
+      <ul class="list-disc ml-6">
+        <% canva.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <%= form.file_field :image, data: { action: "change->canvas#handleFileChange", canvas_target: "fileInput" } , class: "hidden", accept: "image/*" %>
+  <%#= form.hidden_field :device_width, data: { canvas_target: "deviceWidthInput" } %>
+  <%= form.submit "Upload", class: "hidden" %>
+<% end %>

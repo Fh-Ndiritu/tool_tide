@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  resources :canvas, shallow: true do
+    resources :mask_requests
+  end
   # Home routes
   get "credits", to: "home#credits", as: :credits
   get "paystack/callback", to: "payment_transactions#callback"
