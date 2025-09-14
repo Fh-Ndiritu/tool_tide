@@ -19,6 +19,7 @@ landscape_presets:
      12. The final output must be 8k resolution, highly detailed, professional, photorealistic, and display a vibrant design.
      13. Return a stunning, neat, and modern-looking garden, meticulously landscaped in a cottage style.
      14. **CRITICAL:** The area painted in black **MUST be entirely replaced with the garden design.** **DO NOT return any black painted areas, shadows from the mask, or visual remnants of the original mask.**
+    YOU SHALL include the image in your response!
 
   zen: |
     Your PRIMARY JOB is to landscape and design a neat, well-thought-out, and vibrant garden **EXCLUSIVELY within the area masked in black on the image.**
@@ -40,10 +41,7 @@ landscape_presets:
     12. The final output must be 8k resolution, highly detailed, professional, photorealistic, and display a vibrant design.
     13. Return a stunning, neat, and modern-looking garden, meticulously landscaped in a zen style.
     14. **CRITICAL:** The area painted in black **MUST be entirely replaced with the garden design.** **DO NOT return any black painted areas, shadows from the mask, or visual remnants of the original mask.**
-
-  zen: |
-    Your job is to landscape the masked black area into an intricate and thoughtful landscape in a Japanese style.
-    You shall use a selection of flowers and plants including: elegant, rich pink camellia blooms, cascading purple and white wisteria clusters, vibrant, fiery orange and red Japanese quince flowers, delicate, soft pink and white cherry blossom clouds, diverse, brilliant multi-colored azalea blooms, graceful, large-flowered rhododendrons, swaying, tall green bamboo culms, lush, verdant ferns with intricate fronds, and velvet, emerald green moss carpets.
+    YOU SHALL include the image in your response!
 
   desert: |
     Your PRIMARY JOB is to landscape and design a neat, well-thought-out, and vibrant garden **EXCLUSIVELY within the area masked in black on the image.**
@@ -65,6 +63,7 @@ landscape_presets:
     12. The final output must be 8k resolution, highly detailed, professional, photorealistic, and display a vibrant design.
     13. Return a stunning, neat, and modern-looking garden, meticulously landscaped in a desert style.
     14. **CRITICAL:** The area painted in black **MUST be entirely replaced with the garden design.** **DO NOT return any black painted areas, shadows from the mask, or visual remnants of the original mask.**
+    YOU SHALL include the image in your response!
 
   mediterranean: |
     Your PRIMARY JOB is to landscape and design a neat, well-thought-out, and vibrant garden **EXCLUSIVELY within the area masked in black on the image.**
@@ -86,6 +85,7 @@ landscape_presets:
     12. The final output must be 8k resolution, highly detailed, professional, photorealistic, and display a vibrant design.
     13. Return a stunning, neat, and modern-looking garden, meticulously landscaped in a mediterranean style.
     14. **CRITICAL:** The area painted in black **MUST be entirely replaced with the garden design.** **DO NOT return any black painted areas, shadows from the mask, or visual remnants of the original mask.**
+    YOU SHALL include the image in your response!
 
   tropical: |
     Your PRIMARY JOB is to landscape and design a neat, well-thought-out, and vibrant garden **EXCLUSIVELY within the area masked in black on the image.**
@@ -107,6 +107,7 @@ landscape_presets:
     12. The final output must be 8k resolution, highly detailed, professional, photorealistic, and display a vibrant design.
     13. Return a stunning, neat, and modern-looking garden, meticulously landscaped in a tropical style.
     14. **CRITICAL:** The area painted in black **MUST be entirely replaced with the garden design.** **DO NOT return any black painted areas, shadows from the mask, or visual remnants of the original mask.**
+    YOU SHALL include the image in your response!
 
   modern: |
     Your PRIMARY JOB is to landscape and design a neat, well-thought-out, and vibrant garden **EXCLUSIVELY within the area masked in black on the image.**
@@ -128,3 +129,4 @@ landscape_presets:
     12. The final output must be 8k resolution, highly detailed, professional, photorealistic, and display a vibrant design.
     13. Return a stunning, neat, and modern-looking garden, meticulously landscaped in a meodern style.
     14. **CRITICAL:** The area painted in black **MUST be entirely replaced with the garden design.** **DO NOT return any black painted areas, shadows from the mask, or visual remnants of the original mask.**
+    YOU SHALL include the image in your response!

@@ -27,8 +27,13 @@ class MaskRequestsController < ApplicationController
 
     respond_to do |format|
       if @mask_request.save
+        @mask_request.validate_mask
+        if @mask_request.reload.validated?
+          format.html { redirect_to edit_mask_request_path(@mask_request), notice: "Select presets" }
+        else
         format.html { redirect_to @mask_request, notice: "Mask request was successfully created." }
         format.json { render :show, status: :created, location: @mask_request }
+        end
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @mask_request.errors, status: :unprocessable_entity }
