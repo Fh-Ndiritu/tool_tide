@@ -7,10 +7,6 @@ class ImageModificationJob < ApplicationJob
   queue_as :default
   include ImageModifiable
   include ErrorHandler
-
-  # we validate mask
-  # we generate custom prompts
-
   include ImageModifiable
 
   # we validate mask

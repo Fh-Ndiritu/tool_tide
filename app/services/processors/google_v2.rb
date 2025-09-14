@@ -25,8 +25,8 @@ module Processors
       @landscape_request.changing_angles!
       try_google_request(:generate_rotated_landscape)
 
-      # @landscape_request.generating_drone_view!
-      # try_google_request(:generate_aerial_landscape)
+      @landscape_request.generating_drone_view!
+      try_google_request(:generate_aerial_landscape)
       @landscape_request.processed!
     rescue StandardError => e
       raise "Google Processor failed with: #{e.message}"
