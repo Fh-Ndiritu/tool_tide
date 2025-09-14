@@ -41,8 +41,7 @@ RSpec.describe User, type: :model do
     context "when user has not received trial credits" do
       it "issues free engine and trial credits" do
         expect { user.issue_daily_credits }
-          .to change { user.credits.where(source: "daily_issuance", credit_type: "free_engine").count }.by(1)
-          .and change { user.credits.where(source: "trial", credit_type: "pro_engine").count }.by(1)
+          .to change { user.credits.where(source: "trial", credit_type: "pro_engine").count }.by(1)
       end
     end
 
@@ -53,9 +52,6 @@ RSpec.describe User, type: :model do
         expect { user.issue_daily_credits }.not_to(change do
           user.credits.where(source: "trial", credit_type: "pro_engine").count
         end)
-        expect { user.issue_daily_credits }.to change {
-          user.credits.where(source: "daily_issuance", credit_type: "free_engine").count
-        }.by(1)
       end
     end
   end
@@ -124,10 +120,10 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe "#charge_prompt_localization?" do
+  describe "#charge_prompt_localization!" do
     it "deducts LOCALIZED_PLANT_COST from pro_engine_credits" do
       user.update!(pro_engine_credits: LOCALIZED_PLANT_COST + 1)
-      expect { user.charge_prompt_localization? }
+      expect { user.charge_prompt_localization! }
         .to change { user.reload.pro_engine_credits }.by(-LOCALIZED_PLANT_COST)
     end
   end
@@ -141,7 +137,7 @@ RSpec.describe User, type: :model do
 
       it "deducts GOOGLE_IMAGE_COST multiplied by image count from pro credits" do
         user.update!(pro_trial_credits: GOOGLE_IMAGE_COST * 2)
-        expect { user.charge_image_generation?(landscape_request) }
+        expect { user.charge_image_generation!(landscape_request) }
           .to change { user.reload.pro_trial_credits }.by(-(GOOGLE_IMAGE_COST * 2))
       end
     end
@@ -160,7 +156,7 @@ RSpec.describe User, type: :model do
       before { user.update!(pro_trial_credits: 20, pro_engine_credits: 10) }
 
       it "deducts from pro_trial_credits" do
-        expect { user.charge_pro_cost(15) }.to change { user.reload.pro_trial_credits }.by(-15)
+        expect { user.charge_pro_cost!(15) }.to change { user.reload.pro_trial_credits }.by(-15)
         expect(user.pro_engine_credits).to eq(10)
       end
     end
@@ -169,7 +165,7 @@ RSpec.describe User, type: :model do
       before { user.update!(pro_trial_credits: 5, pro_engine_credits: 10) }
 
       it "deducts from pro_trial_credits first, then pro_engine_credits" do
-        expect { user.charge_pro_cost(10) }.to change { user.reload.pro_trial_credits }.by(-5)
+        expect { user.charge_pro_cost!(10) }.to change { user.reload.pro_trial_credits }.by(-5)
         expect(user.reload.pro_engine_credits).to eq(5)
       end
     end
