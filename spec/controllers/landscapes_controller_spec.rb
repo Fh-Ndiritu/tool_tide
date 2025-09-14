@@ -10,7 +10,6 @@ RSpec.describe LandscapesController, type: :controller do
       sign_in(user)
       get :new
       user.reload
-      expect(user.free_engine_credits).to eq(DAILY_FREE_ENGINE_CREDITS)
       expect(user.pro_engine_credits).to eq(0)
       expect(user.pro_trial_credits).to eq(PRO_TRIAL_CREDITS)
     end

@@ -4,13 +4,13 @@ class LandscapeRequestsController < ApplicationController
   include Notifiable
 
   before_action :set_landscape_request, only: %i[location edit update low_credits]
-  before_action :handle_downgrade_notifications, only: %i[edit update]
+  # before_action :handle_downgrade_notifications, only: %i[edit update]
 
   def low_credits; end
 
   def location
     if location_params.present?
-      results = Geocoder.search([location_params[:latitude], location_params[:longitude]])
+      results = Geocoder.search([ location_params[:latitude], location_params[:longitude] ])
       current_user.update!(location_params)
 
       current_user.update! address: results.first&.data&.dig("address") if results.present?
@@ -33,7 +33,6 @@ class LandscapeRequestsController < ApplicationController
     ActiveRecord::Base.transaction do
       prompt = fetch_prompt
       @landscape_request.update!(prompt:, preset: landscape_request_params[:preset])
-      @landscape_request.set_default_image_processor!
       save_mask
     end
 

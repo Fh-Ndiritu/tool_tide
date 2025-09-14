@@ -22,21 +22,5 @@ RSpec.describe Credit, type: :model do
         end.to change { user.reload.pro_trial_credits }.by(5)
       end
     end
-
-    context "when credit is for free_engine" do
-      it "increments user.free_engine_credits" do
-        expect do
-          described_class.create(user: user, credit_type: :free_engine, source: :daily_issuance, amount: 1)
-        end.to change { user.reload.free_engine_credits }.by(1)
-      end
-    end
-
-    context "when credit is for pro_engine but not purchase or trial" do
-      it "increments user.free_engine_credits" do
-        expect do
-          described_class.create(user: user, credit_type: :pro_engine, source: :daily_issuance, amount: 2)
-        end.to change { user.reload.free_engine_credits }.by(2)
-      end
-    end
   end
 end

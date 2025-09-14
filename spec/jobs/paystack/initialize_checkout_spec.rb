@@ -109,11 +109,11 @@ RSpec.describe Paystack::InitializeCheckout do
 
     context "when update fails" do
       before do
-        allow(transaction).to receive_messages(update: false, errors: double(full_messages: ["Error message"]))
+        allow(transaction).to receive_messages(update: false, errors: double(full_messages: [ "Error message" ]))
       end
 
       it "returns Failure" do
-        expect(subject.send(:update_payment_transaction, valid_response[:data])).to eq(Failure(["Error message"]))
+        expect(subject.send(:update_payment_transaction, valid_response[:data])).to eq(Failure([ "Error message" ]))
       end
     end
   end

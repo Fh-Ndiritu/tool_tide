@@ -148,16 +148,14 @@ LOCALIZED_PROMPT_SCHEMA = {
                       description: "The updated prompt with the new flowers and the concise adjectives of how they look" }
   },
 
-  required: ["updated_prompt"]
+  required: [ "updated_prompt" ]
 }.freeze
 
-DAILY_FREE_ENGINE_CREDITS = 50
 PRO_TRIAL_CREDITS = 60
 
 # currency credits
 PRO_CREDITS_PER_USD = 20
 
-BRIA_IMAGE_COST = 8
 GOOGLE_IMAGE_COST = 8
 LOCALIZED_PLANT_COST = 2
 DEFAULT_IMAGE_COUNT = 3

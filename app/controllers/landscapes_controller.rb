@@ -17,7 +17,7 @@ class LandscapesController < ApplicationController
              only: %i[create]
 
   def index
-    @landscapes = current_user.complete_landscapes
+    @landscapes = current_user.complete_landscapes.order(created_at: :desc)
   end
 
   def new

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 20_250_831_113_300) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_14_080448) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -58,7 +58,6 @@ ActiveRecord::Schema[8.0].define(version: 20_250_831_113_300) do
 
   create_table "landscape_requests", force: :cascade do |t|
     t.integer "landscape_id", null: false
-    t.integer "image_engine", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "prompt"
@@ -144,7 +143,6 @@ ActiveRecord::Schema[8.0].define(version: 20_250_831_113_300) do
     t.decimal "longitude", precision: 10, scale: 7
     t.json "address"
     t.integer "pro_engine_credits", default: 0
-    t.integer "free_engine_credits", default: 0
     t.datetime "received_daily_credits"
     t.integer "pro_trial_credits", default: 0
     t.boolean "reverted_to_free_engine", default: false

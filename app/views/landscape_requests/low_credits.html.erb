@@ -1,58 +1,46 @@
 <!-- This is the main container for the card, using Tailwind for centering and styling -->
 <div class="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-  <% if @landscape_request.bria_processor? %>
-    <!-- Card for the Bria Processor -->
-    <div class="bg-white p-8 rounded-2xl shadow-xl max-w-lg w-full transform transition-transform duration-300 hover:scale-105">
-      <div class="flex flex-col items-center text-center mb-6">
-        <!-- Icon or illustration for Bria Processor -->
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-emerald-500 mb-4" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-        </svg>
-        <h2 class="text-3xl font-extrabold text-gray-900 mb-2">Running Low on Free Credits</h2>
-        <p class="text-gray-600 leading-relaxed">
-          You are running low on free engine credits. Check back tomorrow for more free credits, or unlock unlimited power with Pro Credits.
-        </p>
-      </div>
-
-      <!-- The new "Pro Credits" section with features and CTA button -->
-      <div class="bg-gradient-to-r from-primary to-secondary text-neutral-100 rounded-xl shadow-2xl p-8 border-l-4 border-accent mt-10">
-        <div class="flex items-center space-x-4 mb-4">
-          <%= render(IconComponent.new(name: "sparkles", classes: "h-8 w-8 text-neutral-100 animate-pulse")) %>
-          <h2 class="text-2xl font-bold">Unlock More with Pro Credits</h2>
-        </div>
-
-        <p class="text-lg text-green-500 mt-1 font-bold my-3"><%= CREDITS_INFO %></p>
-
-        <p class="mb-6">
-          Go beyond the basics and unlock the full potential of our platform. Pro Credits give you access to our premium features.
-        </p>
-
-        <ul class="space-y-3 mb-8">
-          <li class="flex items-center space-x-3">
-            <%= render(IconComponent.new(name: "check", classes: "h-5 w-5 text-neutral-100")) %>
-            <span>More realistic and accurate generations</span>
-          </li>
-          <li class="flex items-center space-x-3">
-            <%= render(IconComponent.new(name: "check", classes: "h-5 w-5 text-neutral-100")) %>
-            <span>Use local plants available in your area to generate designs.</span>
-          </li>
-          <li class="flex items-center space-x-3">
-            <%= render(IconComponent.new(name: "check", classes: "h-5 w-5 text-neutral-100")) %>
-            <span>Make designs on architectural drawings, sketches, aerial shots and more</span>
-          </li>
-          <li class="flex items-center space-x-3">
-            <%= render(IconComponent.new(name: "check", classes: "h-5 w-5 text-neutral-100")) %>
-            <span>Generate shopping lists for your designs</span>
-          </li>
-          <li class="flex items-center space-x-3">
-            <%= render(IconComponent.new(name: "check", classes: "h-5 w-5 text-neutral-100")) %>
-            <span>Generate planting and maintenance guides</span>
-          </li>
-        </ul>
-
-        <%= button_to "Purchase Pro Credits", payment_transactions_path, data: {turbo: false}, method: :post, class: " cursor-pointer inline-block bg-neutral-100 text-primary font-bold py-3 px-8 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 hover:bg-neutral-200" %>
-      </div>
+  <div class="bg-white p-8 rounded-2xl shadow-xl max-w-lg w-full transform transition-transform duration-300 hover:scale-105">
+    <div class="flex flex-col items-center text-center mb-6">
+      <!-- Icon or illustration for Bria Processor -->
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-emerald-500 mb-4" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+      </svg>
+      <h2 class="text-3xl font-extrabold text-gray-900 mb-2">Running Low on Credits</h2>
     </div>
-
-  <% end %>
+    <!-- The new "Pro Credits" section with features and CTA button -->
+    <div class="bg-gradient-to-r from-primary to-secondary text-neutral-100 rounded-xl shadow-2xl p-8 border-l-4 border-accent mt-10">
+      <div class="flex items-center space-x-4 mb-4">
+        <%= render(IconComponent.new(name: "sparkles", classes: "h-8 w-8 text-neutral-100 animate-pulse")) %>
+        <h2 class="text-2xl font-bold">Unlock More with Pro Credits</h2>
+      </div>
+      <p class="text-lg text-green-500 mt-1 font-bold my-3"><%= CREDITS_INFO %></p>
+      <p class="mb-6">
+        Go beyond the basics and unlock the full potential of our platform. Pro Credits give you access to our premium features.
+      </p>
+      <ul class="space-y-3 mb-8">
+        <li class="flex items-center space-x-3">
+          <%= render(IconComponent.new(name: "check", classes: "h-5 w-5 text-neutral-100")) %>
+          <span>More realistic and accurate generations</span>
+        </li>
+        <li class="flex items-center space-x-3">
+          <%= render(IconComponent.new(name: "check", classes: "h-5 w-5 text-neutral-100")) %>
+          <span>Use local plants available in your area to generate designs.</span>
+        </li>
+        <li class="flex items-center space-x-3">
+          <%= render(IconComponent.new(name: "check", classes: "h-5 w-5 text-neutral-100")) %>
+          <span>Make designs on architectural drawings, sketches, aerial shots and more</span>
+        </li>
+        <li class="flex items-center space-x-3">
+          <%= render(IconComponent.new(name: "check", classes: "h-5 w-5 text-neutral-100")) %>
+          <span>Generate shopping lists for your designs</span>
+        </li>
+        <li class="flex items-center space-x-3">
+          <%= render(IconComponent.new(name: "check", classes: "h-5 w-5 text-neutral-100")) %>
+          <span>Generate planting and maintenance guides</span>
+        </li>
+      </ul>
+      <%= button_to "Purchase Pro Credits", payment_transactions_path, data: {turbo: false}, method: :post, class: " cursor-pointer inline-block bg-neutral-100 text-primary font-bold py-3 px-8 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 hover:bg-neutral-200" %>
+    </div>
+  </div>
 </div>

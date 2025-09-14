@@ -25,20 +25,27 @@ class ImageModificationJob < ApplicationJob
     prepare_image_and_prompt
 
     @landscape_request.preparing_request!
-    if @landscape_request.google_processor?
-      Processors::GoogleV2.perform(@landscape_request.id)
-    else
-      Processors::Bria.perform(@landscape_request.id)
-    end
-    charge_user if @landscape_request.reload.processed?
-    @landscape_request.complete!
-    broadcast_success
+    @landscape_request.modified_images.map(&:purge)
+    Processors::GoogleV2.perform(@landscape_request.id)
+    charge_usage_and_broadcast
   rescue StandardError => e
     @landscape_request.update progress: :failed, error: e.message
-    broadcast_error(e)
+    if @landscape_request.reload.modified_images.any?
+      charge_usage_and_broadcast
+    else
+      broadcast_error(e)
+    end
   end
 
   private
+
+  def charge_usage_and_broadcast
+    if @landscape_request.reload.modified_images.any?
+      @user.charge_image_generation!(@landscape_request)
+      @landscape_request.complete!
+      broadcast_success
+    end
+  end
 
   def prepare_image_and_prompt
     unless @landscape.original_image.attached?
@@ -59,14 +66,6 @@ class ImageModificationJob < ApplicationJob
 
     @landscape_request.suggesting_plants!
     @landscape_request.build_localized_prompt!
-  end
-
-  def charge_user
-    @user.charge_image_generation!(@landscape_request)
-
-    return unless @landscape_request.google_processor?
-
-    @user.schedule_downgrade_notification unless @user.sufficient_pro_credits?
   end
 
   def broadcast_error(error)

@@ -21,8 +21,6 @@ class Credit < ApplicationRecord
       user.increment!(:pro_engine_credits, amount)
     elsif pro_engine? && trial?
       user.increment!(:pro_trial_credits, amount)
-    else
-      user.increment!(:free_engine_credits, amount)
     end
   end
 end

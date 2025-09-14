@@ -17,7 +17,7 @@
       <% landscape.landscape_requests.order(id: :desc).each_with_index do |request| %>
         <% next unless request.modified_images.attached? %>
         <div class="bg-neutral-100 p-4 border-t border-neutral-300 mt-4 pt-6 rounded-lg">
-          <%= content_tag :h3, "#{request.preset} Style Results from #{t("landscape.engines.#{request.image_engine}")}", class: "mb-6 text-center text-xl font-bold text-text-dark" %>
+          <%= content_tag :h3, "#{request.preset} Style Results from Hadaa Pro Engine}", class: "mb-6 text-center text-xl font-bold text-text-dark" %>
           <%# Flex container for a single, scrollable line of 4 items %>
           <div class="flex space-x-4 overflow-x-auto pb-4 hide-scrollbar">
             <%# Display mask image if available, now always taking up one slot %>

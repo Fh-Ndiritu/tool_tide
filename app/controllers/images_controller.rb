@@ -2,8 +2,8 @@
 
 class ImagesController < ApplicationController
   skip_before_action :authenticate_user!
-  before_action :validate_source, only: [:new]
-  before_action :validate_conversion, only: [:new]
+  before_action :validate_source, only: [ :new ]
+  before_action :validate_conversion, only: [ :new ]
 
   def index
     @converted_file_paths = flash[:converted_file_paths] || []

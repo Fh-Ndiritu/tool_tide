@@ -22,7 +22,6 @@ class User < ApplicationRecord
   # For pro engine we need to monetize it so if you have received some before we can cut you off
   def issue_daily_credits
     ActiveRecord::Base.transaction do
-      issue_free_engine_credits
       return if received_trial_credits?
 
       issue_trial_credits
@@ -34,15 +33,8 @@ class User < ApplicationRecord
   end
 
   def afford_generation?(landscape_request)
-    case landscape_request.image_engine
-    when "bria"
-      free_engine_credits > 3 * BRIA_IMAGE_COST
-    when "google"
-      localization_cost = landscape_request.use_location? ? LOCALIZED_PLANT_COST : 0
-      pro_access_credits >= (GOOGLE_IMAGE_COST * 3 + localization_cost)
-    else
-      false
-    end
+    localization_cost = landscape_request.use_location? ? LOCALIZED_PLANT_COST : 0
+    pro_access_credits >= (GOOGLE_IMAGE_COST * 3 + localization_cost)
   end
 
   def charge_prompt_localization!
@@ -50,12 +42,7 @@ class User < ApplicationRecord
   end
 
   def charge_image_generation!(landscape_request)
-    if landscape_request.google_processor?
-      charge_pro_cost!(GOOGLE_IMAGE_COST * landscape_request.modified_images.size)
-    else
-      cost = BRIA_IMAGE_COST * landscape_request.modified_images.size
-      update! free_engine_credits: [ 0, free_engine_credits - cost ].max
-    end
+    charge_pro_cost!(GOOGLE_IMAGE_COST * landscape_request.modified_images.size)
   end
 
   def pro_access_credits
@@ -86,11 +73,6 @@ class User < ApplicationRecord
   end
 
   private
-
-  def issue_free_engine_credits
-    credits.create(source: :daily_issuance, amount: DAILY_FREE_ENGINE_CREDITS, credit_type: :free_engine)
-    update received_daily_credits: Time.zone.now, free_engine_credits: 0
-  end
 
   def issue_trial_credits
     # these are used to demo to you how the pro engine works and are only 1 time tokenss

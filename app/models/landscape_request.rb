@@ -2,7 +2,7 @@
 
 class LandscapeRequest < ApplicationRecord
   include LandscapeHelper
-  validates :preset, :image_engine, :prompt, presence: { on: :update }
+  validates :preset, :prompt, presence: { on: :update }
 
   belongs_to :landscape
   has_many_attached :modified_images
@@ -14,12 +14,11 @@ class LandscapeRequest < ApplicationRecord
 
   after_update_commit :broadcast_progress, if: :saved_change_to_progress?
 
-  enum :image_engine, { bria: 0, google: 1 }, suffix: :processor
   delegate :user, to: :landscape
 
   has_many :suggested_plants, dependent: :destroy
 
-  scope :unclaimed, -> { where(preset: nil, image_engine: :bria, prompt: nil) }
+  scope :unclaimed, -> { where(preset: nil, prompt: nil) }
 
   enum :progress, {
     uploading: 0,
@@ -58,20 +57,6 @@ class LandscapeRequest < ApplicationRecord
         false
       end
     end
-  end
-
-  def set_default_image_processor!
-    # if the user has pro_engine_credits, that are enough, we assign them to google
-    # else we go with BRIA
-    localization_cost = use_location? ? LOCALIZED_PLANT_COST : 0
-    google_cost = DEFAULT_IMAGE_COUNT * GOOGLE_IMAGE_COST + localization_cost
-    image_engine = if user.pro_access_credits >= google_cost
-                     :google
-                   else
-                     :bria
-                   end
-
-    update! image_engine: image_engine
   end
 
   def full_prompt

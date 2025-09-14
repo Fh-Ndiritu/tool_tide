@@ -18,19 +18,6 @@
       <%# Show button %>
       <%= link_to "Show", landscape_path(landscape), class: "text-black px-4 py-2 rounded-full text-sm font-semibold transition-colors duration-300
       bg-secondary text-text-light transition duration-300 ease-in-out transform hover:bg-accent group-hover:opacity-100" %>
-      <%# Icons on the right %>
-      <div class="flex space-x-3 text-white cursor-default">
-        <%# Icon 1 (Example: a share icon) %>
-        <button class="text-xs w-10 h-10 bg-black/50 rounded-full hover:bg-black/80 transition-colors duration-300 relative cursor-default">
-          <%= tag.span landscape.landscape_requests.google_processor.count, class: "text-white absolute -top-0 left-1/2 -translate-x-1/2 rounded-full text-xs h-4 font-bold" %>
-          <%= render(IconComponent.new(name: "king", classes: "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2")) %>
-        </button>
-        <%# Icon 2 (Example: a delete icon) %>
-        <button class="text-xs w-10 h-10 bg-black/50 rounded-full hover:bg-black/80 transition-colors duration-300 relative cursor-default">
-          <%= tag.span landscape.landscape_requests.bria_processor.count, class: "text-white absolute -top-0 left-1/2 -translate-x-1/2 rounded-full text-xs h-4 font-bold" %>
-          <%= render(IconComponent.new(name: "leaf", classes: "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2")) %>
-        </button>
-      </div>
     </div>
   </div>
 </div>

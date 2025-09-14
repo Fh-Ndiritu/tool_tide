@@ -8,12 +8,11 @@ RSpec.describe User, type: :model do
 
   let(:user) { users(:john_doe) }
   let(:landscape) { landscapes(:default) }
-  let(:landscape_request) { landscape_requests(:bria_request) }
+  let(:landscape_request) { landscape_requests(:default) }
 
   before do
     # Reset credit counts before each test to ensure a predictable state
     user.update!(
-      free_engine_credits: 0,
       pro_engine_credits: 0,
       pro_trial_credits: 0,
       received_daily_credits: Date.yesterday
@@ -80,29 +79,8 @@ RSpec.describe User, type: :model do
   end
 
   describe "#afford_generation?" do
-    context "for Bria engine" do
-      before { landscape_request.image_engine = "bria" }
-
-      context "when user has enough free credits" do
-        before { user.update!(free_engine_credits: 4 * BRIA_IMAGE_COST) }
-
-        it "returns true" do
-          expect(user.afford_generation?(landscape_request)).to be true
-        end
-      end
-
-      context "when user does not have enough free credits" do
-        before { user.update!(free_engine_credits: 2 * BRIA_IMAGE_COST) }
-
-        it "returns false" do
-          expect(user.afford_generation?(landscape_request)).to be false
-        end
-      end
-    end
-
     context "for Google engine" do
       before do
-        landscape_request.image_engine = "google"
         landscape_request.use_location = false
       end
 
@@ -125,7 +103,6 @@ RSpec.describe User, type: :model do
 
     context "for Google engine with localization" do
       before do
-        landscape_request.image_engine = "google"
         landscape_request.use_location = true
       end
 
@@ -158,7 +135,6 @@ RSpec.describe User, type: :model do
   describe "#charge_image_generation?" do
     context "for Google engine" do
       before do
-        landscape_request.image_engine = "google"
         # Stub the `modified_images` association to return a size for the test
         allow(landscape_request).to receive_message_chain(:modified_images, :size).and_return(2)
       end
@@ -167,20 +143,6 @@ RSpec.describe User, type: :model do
         user.update!(pro_trial_credits: GOOGLE_IMAGE_COST * 2)
         expect { user.charge_image_generation?(landscape_request) }
           .to change { user.reload.pro_trial_credits }.by(-(GOOGLE_IMAGE_COST * 2))
-      end
-    end
-
-    context "for Bria engine" do
-      before do
-        landscape_request.image_engine = "bria"
-        # Stub the `modified_images` association to return a size for the test
-        allow(landscape_request).to receive_message_chain(:modified_images, :size).and_return(2)
-      end
-
-      it "deducts BRIA_IMAGE_COST multiplied by image count from free_engine_credits" do
-        user.update!(free_engine_credits: BRIA_IMAGE_COST * 2 + 1)
-        expect { user.charge_image_generation?(landscape_request) }
-          .to change { user.reload.free_engine_credits }.by(-(BRIA_IMAGE_COST * 2))
       end
     end
   end

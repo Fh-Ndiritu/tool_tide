@@ -1,33 +1,6 @@
-<div class="container mx-auto p-4">
-
+<div class="container mx-auto p-4 w-full lg:w-9/12">
   <h1 class="text-3xl font-bold mb-6 text-neutral-800 my-8 w-full text-center">Your Credits</h1>
-
-<div class="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 mb-8">
-
-  <div class="bg-neutral-100 rounded-xl shadow-lg p-6 flex-1 flex flex-col justify-between border border-primary">
-    <div>
-      <div class="flex items-center space-x-3 mb-4 gap-2">
-        <div class="bg-primary text-neutral-100 p-2 rounded-full shadow-inner m-0">
-          <%= render(IconComponent.new(name: "grain-slash", classes: "h-6 w-6")) %>
-        </div>
-        <h2 class="text-xl font-semibold text-neutral-700">Free Engine Credits</h2>
-      </div>
-      <p class="text-4xl font-extrabold text-primary mt-2"><span class="opacity-75"><%= current_user.free_engine_credits %></span>/<%= DAILY_FREE_ENGINE_CREDITS %></p>
-      <p class="text-sm text-neutral-500 mt-1">Issued today</p>
-      <p class="text-sm text-neutral-600 mt-4">Generate free landscapes using the Hadaa Free engine. Login to get free credits everyday!</p>
-
-
-     <% if current_user.pro_engine_credits.zero? %>
-        <% if current_user.free_engine_credits.positive? %>
-          <%= link_to "Try Hadaa Free Engine", new_landscape_path, class: "cute-btn primary-btn"%>
-        <% else %>
-          <%= button_to "Access Pro Engine", payment_transactions_path, data: {turbo: false}, method: :post, class: "cute-btn primary-btn"%>
-        <% end %>
-     <% end %>
-
-    </div>
-  </div>
-
+  <div class="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 mb-8">
     <div class="bg-neutral-100 rounded-xl shadow-lg p-6 flex-1 flex flex-col justify-between border border-accent">
       <div>
         <div class="flex items-center space-x-3 mb-4 gap-2">
@@ -39,75 +12,66 @@
         <p class="text-4xl font-extrabold text-accent mt-2"><span class="opacity-75"><%= current_user.pro_trial_credits %></span>/<%= PRO_TRIAL_CREDITS %></p>
         <p class="text-sm text-neutral-500 mt-1">Remaining</p>
         <p class="text-sm text-neutral-600 mt-4">Access the Hadaa Pro engine for a limited time to generate stunning, realistic image and customize with local plants.</p>
-          <% if current_user.pro_engine_credits.zero? %>
-            <% if current_user.pro_trial_credits.positive? %>
-              <%= link_to "Test Hadaa Pro Engine", new_landscape_path, class: "cute-btn accent-btn"%>
-            <% else %>
-              <%= button_to "Unlock Pro Designer", payment_transactions_path, data: {turbo: false}, method: :post, class: "cute-btn accent-btn"%>
-            <% end %>
+        <% if current_user.pro_engine_credits.zero? %>
+          <% if current_user.pro_trial_credits.positive? %>
+            <%= link_to "Test Hadaa Pro Engine", new_landscape_path, class: "cute-btn accent-btn"%>
+          <% else %>
+            <%= button_to "Unlock Pro Designer", payment_transactions_path, data: {turbo: false}, method: :post, class: "cute-btn accent-btn"%>
           <% end %>
-
+        <% end %>
       </div>
     </div>
-
-  <div class="bg-neutral-100 rounded-xl shadow-lg p-6 flex-1 flex flex-col justify-between border border-secondary">
-    <div>
-      <div class="flex items-center space-x-3 mb-4 gap-2">
-        <div class="bg-secondary text-neutral-100 p-2 rounded-full shadow-inner m-0">
-          <%= render(IconComponent.new(name: "crown", classes: "h-6 w-6")) %>
+    <div class="bg-neutral-100 rounded-xl shadow-lg p-6 flex-1 flex flex-col justify-between border border-secondary">
+      <div>
+        <div class="flex items-center space-x-3 mb-4 gap-2">
+          <div class="bg-secondary text-neutral-100 p-2 rounded-full shadow-inner m-0">
+            <%= render(IconComponent.new(name: "crown", classes: "h-6 w-6")) %>
+          </div>
+          <h2 class="text-xl font-semibold text-neutral-700">Pro Credits</h2>
         </div>
-        <h2 class="text-xl font-semibold text-neutral-700">Pro Credits</h2>
+        <p class="text-4xl font-extrabold text-secondary mt-2"><%= current_user.pro_engine_credits %></p>
+        <p class="text-sm text-neutral-500 mt-1">Remaining</p>
+        <p class="text-lg text-green-500 mt-1 font-bold"><%= CREDITS_INFO %></p>
+        <p class="text-sm text-neutral-600 mt-4">Use Hadaa Pro Engine to customize generations with local plants, export shopping lists, and get planting instructions.</p>
+        <% if current_user.pro_engine_credits.positive? %>
+          <%= link_to "Design your Dreams", new_landscape_path, class: "cute-btn secondary-btn"%>
+        <% else %>
+          <%= button_to "Buy Pro Credits", payment_transactions_path, data: {turbo: false}, method: :post, class: "cute-btn secondary-btn"%>
+        <% end %>
       </div>
-      <p class="text-4xl font-extrabold text-secondary mt-2"><%= current_user.pro_engine_credits %></p>
-      <p class="text-sm text-neutral-500 mt-1">Remaining</p>
-      <p class="text-lg text-green-500 mt-1 font-bold"><%= CREDITS_INFO %></p>
-      <p class="text-sm text-neutral-600 mt-4">Use Hadaa Pro Engine to customize generations with local plants, export shopping lists, and get planting instructions.</p>
-      <% if current_user.pro_engine_credits.positive? %>
-        <%= link_to "Design your Dreams", new_landscape_path, class: "cute-btn secondary-btn"%>
-      <% else %>
-        <%= button_to "Buy Pro Credits", payment_transactions_path, data: {turbo: false}, method: :post, class: "cute-btn secondary-btn"%>
-      <% end %>
     </div>
   </div>
-
-</div>
-
-<div class="bg-gradient-to-r from-primary to-secondary text-neutral-100 rounded-xl shadow-2xl p-8 border-l-4 border-accent mt-10">
-  <div class="flex items-center space-x-4 mb-4">
-    <%= render(IconComponent.new(name: "sparkles", classes: "h-8 w-8 text-neutral-100 animate-pulse")) %>
-    <h2 class="text-2xl font-bold">Unlock More with Pro Credits</h2>
+  <div class="bg-gradient-to-r from-primary to-secondary text-neutral-100 rounded-xl shadow-2xl p-8 border-l-4 border-accent mt-10">
+    <div class="flex items-center space-x-4 mb-4">
+      <%= render(IconComponent.new(name: "sparkles", classes: "h-8 w-8 text-neutral-100 animate-pulse")) %>
+      <h2 class="text-2xl font-bold">Unlock More with Pro Credits</h2>
+    </div>
+    <p class="text-lg text-green-500 mt-1 font-bold my-3"><%= CREDITS_INFO %></p>
+    <p class="mb-6">
+      Go beyond the basics and unlock the full potential of our platform. Pro Credits give you access to our premium features.
+    </p>
+    <ul class="space-y-3 mb-8">
+      <li class="flex items-center space-x-3">
+        <%= render(IconComponent.new(name: "check", classes: "h-5 w-5 text-neutral-100")) %>
+        <span>More realistic and accurate generations</span>
+      </li>
+      <li class="flex items-center space-x-3">
+        <%= render(IconComponent.new(name: "check", classes: "h-5 w-5 text-neutral-100")) %>
+        <span>Use local plants available in your area to generate designs.</span>
+      </li>
+      <li class="flex items-center space-x-3">
+        <%= render(IconComponent.new(name: "check", classes: "h-5 w-5 text-neutral-100")) %>
+        <span>Make designs on architectural drawings, sketches, aerial shots and more</span>
+      </li>
+      <li class="flex items-center space-x-3">
+        <%= render(IconComponent.new(name: "check", classes: "h-5 w-5 text-neutral-100")) %>
+        <span>Generate shopping lists for your designs</span>
+      </li>
+      <li class="flex items-center space-x-3">
+        <%= render(IconComponent.new(name: "check", classes: "h-5 w-5 text-neutral-100")) %>
+        <span>Generate planting and maintenance guides</span>
+      </li>
+    </ul>
+    <%= button_to "Purchase Pro Credits", payment_transactions_path, data: {turbo: false}, method: :post, class: " cursor-pointer inline-block bg-neutral-100 text-primary font-bold py-3 px-8 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 hover:bg-neutral-200" %>
   </div>
-
-  <p class="text-lg text-green-500 mt-1 font-bold my-3"><%= CREDITS_INFO %></p>
-
-  <p class="mb-6">
-    Go beyond the basics and unlock the full potential of our platform. Pro Credits give you access to our premium features.
-  </p>
-
-  <ul class="space-y-3 mb-8">
-    <li class="flex items-center space-x-3">
-      <%= render(IconComponent.new(name: "check", classes: "h-5 w-5 text-neutral-100")) %>
-      <span>More realistic and accurate generations</span>
-    </li>
-    <li class="flex items-center space-x-3">
-      <%= render(IconComponent.new(name: "check", classes: "h-5 w-5 text-neutral-100")) %>
-      <span>Use local plants available in your area to generate designs.</span>
-    </li>
-    <li class="flex items-center space-x-3">
-      <%= render(IconComponent.new(name: "check", classes: "h-5 w-5 text-neutral-100")) %>
-      <span>Make designs on architectural drawings, sketches, aerial shots and more</span>
-    </li>
-    <li class="flex items-center space-x-3">
-      <%= render(IconComponent.new(name: "check", classes: "h-5 w-5 text-neutral-100")) %>
-      <span>Generate shopping lists for your designs</span>
-    </li>
-    <li class="flex items-center space-x-3">
-      <%= render(IconComponent.new(name: "check", classes: "h-5 w-5 text-neutral-100")) %>
-      <span>Generate planting and maintenance guides</span>
-    </li>
-  </ul>
-
-  <%= button_to "Purchase Pro Credits", payment_transactions_path, data: {turbo: false}, method: :post, class: " cursor-pointer inline-block bg-neutral-100 text-primary font-bold py-3 px-8 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 hover:bg-neutral-200" %>
-</div>
-
 </div>

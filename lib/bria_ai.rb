@@ -48,7 +48,7 @@ module BriaAi
           # Listing them here as general network errors which retry should catch.
         ],
         # methods: Faraday::Retry::Middleware::REQUEST_METHODS, # Apply retry to all HTTP methods.
-        retry_statuses: [429, 503, 504], # Retry on these specific HTTP status codes.
+        retry_statuses: [ 429, 503, 504 ], # Retry on these specific HTTP status codes.
         # `retry_if` block allows custom logic for determining if a request should be retried.
         # Here, it leverages the default logic from Faraday::Retry for exceptions.
         retry_if: ->(env, exception) { Faraday::Retry::Middleware.retry_on_exception?(env, exception) }
