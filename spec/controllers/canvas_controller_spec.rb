@@ -24,7 +24,6 @@ require 'rails_helper'
 # `rails-controller-testing` gem.
 
 RSpec.describe CanvasController, type: :controller do
-
   # This should return the minimal set of attributes required to create a valid
   # Canva. As you add validations to Canva, be sure to
   # adjust the attributes here as well.
@@ -52,7 +51,7 @@ RSpec.describe CanvasController, type: :controller do
   describe "GET #show" do
     it "returns a success response" do
       canva = Canva.create! valid_attributes
-      get :show, params: {id: canva.to_param}, session: valid_session
+      get :show, params: { id: canva.to_param }, session: valid_session
       expect(response).to be_successful
     end
   end
@@ -67,7 +66,7 @@ RSpec.describe CanvasController, type: :controller do
   describe "GET #edit" do
     it "returns a success response" do
       canva = Canva.create! valid_attributes
-      get :edit, params: {id: canva.to_param}, session: valid_session
+      get :edit, params: { id: canva.to_param }, session: valid_session
       expect(response).to be_successful
     end
   end
@@ -76,19 +75,19 @@ RSpec.describe CanvasController, type: :controller do
     context "with valid params" do
       it "creates a new Canva" do
         expect {
-          post :create, params: {canva: valid_attributes}, session: valid_session
+          post :create, params: { canva: valid_attributes }, session: valid_session
         }.to change(Canva, :count).by(1)
       end
 
       it "redirects to the created canva" do
-        post :create, params: {canva: valid_attributes}, session: valid_session
+        post :create, params: { canva: valid_attributes }, session: valid_session
         expect(response).to redirect_to(Canva.last)
       end
     end
 
     context "with invalid params" do
       it "renders a response with 422 status (i.e. to display the 'new' template)" do
-        post :create, params: {canva: invalid_attributes}, session: valid_session
+        post :create, params: { canva: invalid_attributes }, session: valid_session
         expect(response).to have_http_status(:unprocessable_content)
       end
     end
@@ -102,14 +101,14 @@ RSpec.describe CanvasController, type: :controller do
 
       it "updates the requested canva" do
         canva = Canva.create! valid_attributes
-        put :update, params: {id: canva.to_param, canva: new_attributes}, session: valid_session
+        put :update, params: { id: canva.to_param, canva: new_attributes }, session: valid_session
         canva.reload
         skip("Add assertions for updated state")
       end
 
       it "redirects to the canva" do
         canva = Canva.create! valid_attributes
-        put :update, params: {id: canva.to_param, canva: new_attributes}, session: valid_session
+        put :update, params: { id: canva.to_param, canva: new_attributes }, session: valid_session
         expect(response).to redirect_to(canva)
       end
     end
@@ -117,7 +116,7 @@ RSpec.describe CanvasController, type: :controller do
     context "with invalid params" do
       it "renders a response with 422 status (i.e. to display the 'edit' template)" do
         canva = Canva.create! valid_attributes
-        put :update, params: {id: canva.to_param, canva: invalid_attributes}, session: valid_session
+        put :update, params: { id: canva.to_param, canva: invalid_attributes }, session: valid_session
         expect(response).to have_http_status(:unprocessable_content)
       end
     end
@@ -127,15 +126,14 @@ RSpec.describe CanvasController, type: :controller do
     it "destroys the requested canva" do
       canva = Canva.create! valid_attributes
       expect {
-        delete :destroy, params: {id: canva.to_param}, session: valid_session
+        delete :destroy, params: { id: canva.to_param }, session: valid_session
       }.to change(Canva, :count).by(-1)
     end
 
     it "redirects to the canvas list" do
       canva = Canva.create! valid_attributes
-      delete :destroy, params: {id: canva.to_param}, session: valid_session
+      delete :destroy, params: { id: canva.to_param }, session: valid_session
       expect(response).to redirect_to(canvas_url)
     end
   end
-
 end

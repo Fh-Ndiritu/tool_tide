@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_14_145134) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_14_154125) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -88,6 +88,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_14_145134) do
     t.integer "progress"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "canva_id", null: false
+    t.index ["canva_id"], name: "index_mask_requests_on_canva_id"
   end
 
   create_table "messages", force: :cascade do |t|
@@ -172,6 +174,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_14_145134) do
   add_foreign_key "credits", "users"
   add_foreign_key "landscape_requests", "landscapes"
   add_foreign_key "landscapes", "users"
+  add_foreign_key "mask_requests", "canvas"
   add_foreign_key "messages", "chats"
   add_foreign_key "payment_transactions", "users"
   add_foreign_key "suggested_plants", "landscape_requests"
