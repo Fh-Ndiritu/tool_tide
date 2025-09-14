@@ -44,7 +44,7 @@ class MaskRequestsController < ApplicationController
   # PATCH/PUT /mask_requests/1 or /mask_requests/1.json
   def update
     respond_to do |format|
-      if @mask_request.update(mask_request_params)
+      if @mask_request.update(preset_params)
         format.html { redirect_to @mask_request, notice: "Mask request was successfully updated.", status: :see_other }
         format.json { render :show, status: :ok, location: @mask_request }
       else
@@ -77,5 +77,9 @@ class MaskRequestsController < ApplicationController
 
     def set_canva
       @canva = Canva.find(params[:canva_id])
+    end
+
+    def preset_params
+      params.expect(mask_request: [ :preset ])
     end
 end

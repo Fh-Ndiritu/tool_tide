@@ -13,6 +13,9 @@ class MaskRequest < ApplicationRecord
   belongs_to :canva
   delegate :image, to: :canva
 
+  validate :preset_prompt, on: :update
+  after_update_commit :generate_designs, if: :saved_change_to_preset?
+
   enum :progress, {
     uploading: 0,
     validating: 1,
@@ -47,6 +50,15 @@ class MaskRequest < ApplicationRecord
   end
 
   private
+
+  def preset_prompt
+    return unless preset.present?
+
+    prompt = YAML.load_file(Rails.root.join("config/prompts.yml")).dig("landscape_presets", preset)
+    errors.add(:preset, "does not exist") unless prompt.present?
+
+    self.prompt = prompt
+  end
 
   def generate_designs
     return unless mask.attached?
