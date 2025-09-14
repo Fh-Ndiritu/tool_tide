@@ -13,6 +13,9 @@ class PaymentTransactionsController < ApplicationController
 
     payment_url = result.value_or(transaction)&.authorization_url
     if result.failure? || payment_url.nil?
+      msg = "Checkout failed: #{result}"
+      Sentry.capture_message(msg)
+      Rails.logger.info msg
       flash[:alert] = "An error occured, please try again later"
       redirect_to root_path and return
     end
