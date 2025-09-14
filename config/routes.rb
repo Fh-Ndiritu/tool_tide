@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  resources :text_editors
   # Home routes
   get "credits", to: "home#credits", as: :credits
   get "paystack/callback", to: "payment_transactions#callback"
@@ -14,7 +15,7 @@ Rails.application.routes.draw do
     get "landscapes/:day", to: "landscapes#index"
   end
 
-  resources :landscapes, except: [:destroy] do
+  resources :landscapes, except: [ :destroy ] do
     # collection do
     #   post "modify"
     # end
@@ -48,7 +49,7 @@ Rails.application.routes.draw do
   root "home#index"
 
   # New resource for showing/downloading converted images
-  resources :converted_images, only: [:index] do
+  resources :converted_images, only: [ :index ] do
     # Route for downloading a specific file by its unique identifier (e.g., filename)
     get "download/:filename", on: :collection, to: "converted_images#download", as: :download_file,
                               constraints: { filename: /.*/ }

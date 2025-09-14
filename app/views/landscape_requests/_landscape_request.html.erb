@@ -4,14 +4,16 @@
     <div class="grid grid-cols-1 md:grid-cols-2 md:grid-cols-3 gap-3">
       <% landscape_request.modified_images.each_with_index do |modified_image, index| %>
         <div class=" mb-6 bg-neutral-50 rounded-lg shadow-sm overflow-hidden flex flex-col items-center text-center p-2">
-          <%= image_tag url_for(modified_image.variant(resize_to_limit: [400, 400])), loading: :lazy,  alt: "AI Modified Landscape #{index + 1}", class: "max-w-full h-auto object-cover rounded-md border border-neutral-100 shadow-sm" %>
-          <a href="<%= url_for(modified_image) %>" download="hadaa_ai_transformed_<%= index + 1 %>.png"
-          class="cute-btn narrow-btn secondary-btn flex flex-inline gap-1 items-center group text-base"
-          title="download"
-          >
-            <%= image_label(landscape_request.image_engine, index) %>
-            <%= render(IconComponent.new(name: "download", classes: "h-5 w-5 hidden group-hover:flex")) %>
-          </a>
+          <%= image_tag url_for(modified_image.variant(resize_to_limit: [400, 400])), loading: :lazy,  alt: "AI Modified Landscape #{index + 1}", class: "w-full h-auto object-cover rounded-md border border-neutral-100 shadow-sm" %>
+          <div class="flex justify-between w-full">
+            <a href="<%= url_for(modified_image) %>" download="hadaa_ai_transformed_<%= index + 1 %>.png"
+            class="cute-btn narrow-btn secondary-btn flex flex-inline gap-1 items-center group text-base  opacity-65 hover:opacity-100"
+            aria-label="Download image"
+            >
+              <%= render(IconComponent.new(name: "download", classes: "h-5 w-5 ")) %>
+            </a>
+            <%= link_to "Edit with text", new_text_editor_path(blob_id: modified_image.blob.signed_id), class: "!px-3 !py-1 cute-btn secondary-btn opacity-65 hover:opacity-100 " %>
+          </div>
         </div>
       <% end %>
     </div>

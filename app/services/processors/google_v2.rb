@@ -42,6 +42,7 @@ module Processors
         save_response(send(method))
       rescue StandardError => e
         Rails.logger.info("GCP failed #{method} with: #{e.message}")
+        Sentry.capture_message("GCP failed #{method} with: #{e.message}")
         retries += 1
         raise "Max retries reached for #{method}" if retries > max_retries
 
@@ -76,7 +77,7 @@ module Processors
       image = response.dig("candidates", 0, "content", "parts", 1, "inlineData")
       return if image.present?
 
-      raise "Image is missing in API response"
+      raise "Image is missing in API response. Response was: #{response}"
     end
 
     def gcp_payload(prompt, image)
@@ -101,17 +102,20 @@ module Processors
     end
 
     def initial_landscape_prompt
-      @landscape_request.prompt
+      prompt = @landscape_request.prompt
+      prompt + "YOU MUST INCLUDE THE EDITED IMAGE IN YOUR RESPONSE."
     end
 
     def rotated_landscape_prompt
       "Given this 8k highly detailed image of a landscaped garden compound, move the camera 120% horizontally to view the garden from a different angle.
-    Ensure you do not add details that are outside the scope of the house, garden and compound. Return a highly resolution and professional looking angle."
+      Ensure you do not add details that are outside the scope of the house, garden and compound. Return a highly resolution and professional looking angle.
+      YOU MUST INCLUDE THE EDITED IMAGE IN YOUR RESPONSE."
     end
 
     def aerial_landscape_prompt
       "Given this image design of a well landscaped garden compound, change the perspective an aerial drone view to show the garden landscaping from above.
-    Focus on the details of the garden and show the house in the periphery from above. This is an aerial view from a DJI drone perspective."
+      Focus on the details of the garden and show the house in the periphery from above. This is an aerial view from a DJI drone perspective.
+      YOU MUST INCLUDE THE EDITED IMAGE IN YOUR RESPONSE."
     end
 
     def fetch_gcp_response(payload)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 20_250_831_113_300) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_07_154414) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -18,8 +18,7 @@ ActiveRecord::Schema[8.0].define(version: 20_250_831_113_300) do
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
-    t.index %w[record_type record_id name blob_id], name: "index_active_storage_attachments_uniqueness",
-                                                    unique: true
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
 
   create_table "active_storage_blobs", force: :cascade do |t|
@@ -37,7 +36,7 @@ ActiveRecord::Schema[8.0].define(version: 20_250_831_113_300) do
   create_table "active_storage_variant_records", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
-    t.index %w[blob_id variation_digest], name: "index_active_storage_variant_records_uniqueness", unique: true
+    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
   create_table "chats", force: :cascade do |t|
@@ -119,6 +118,14 @@ ActiveRecord::Schema[8.0].define(version: 20_250_831_113_300) do
     t.index ["landscape_request_id"], name: "index_suggested_plants_on_landscape_request_id"
   end
 
+  create_table "text_editors", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.text "prompt"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_text_editors_on_user_id"
+  end
+
   create_table "tool_calls", force: :cascade do |t|
     t.integer "message_id", null: false
     t.string "tool_call_id", null: false
@@ -162,5 +169,6 @@ ActiveRecord::Schema[8.0].define(version: 20_250_831_113_300) do
   add_foreign_key "messages", "chats"
   add_foreign_key "payment_transactions", "users"
   add_foreign_key "suggested_plants", "landscape_requests"
+  add_foreign_key "text_editors", "users"
   add_foreign_key "tool_calls", "messages"
 end
