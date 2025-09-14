@@ -180,4 +180,73 @@ module ImageModifiable
       content_type: "image/png"
     )
   end
+
+  def initial_landscape_prompt
+    @landscape_request.prompt
+  end
+
+  def rotated_landscape_prompt
+    "Given this 8k highly detailed image of a landscaped garden compound, move the camera 120% horizontally to view the garden from a different angle.
+  Ensure you do not add details that are outside the scope of the house, garden and compound. Return a highly resolution and professional looking angle."
+  end
+
+  def aerial_landscape_prompt
+    "Given this image design of a well landscaped garden compound, change the perspective an aerial drone view to show the garden landscaping from above.
+  Focus on the details of the garden and show the house in the periphery from above. This is an aerial view from a DJI drone perspective."
+  end
+
+
+    def save_b64_results(prediction)
+      b64_data = prediction["data"]
+      return if b64_data.blank?
+
+      img_from_b64 = Base64.decode64(b64_data)
+      extension = prediction["mimeType"].split("/").last
+
+      temp_file = Tempfile.new([ "modified_image", ".#{extension}" ], binmode: true)
+      temp_file.write(img_from_b64)
+      temp_file.rewind
+
+      blob = ActiveStorage::Blob.create_and_upload!(
+        io: temp_file,
+        filename: "modified_image.#{extension}",
+        content_type: prediction["mimeType"]
+      )
+      @landscape_request.modified_images.attach(blob)
+      @landscape_request.save!
+    end
+
+    def apply_mask_for_transparency
+      original_image_data = @landscape.original_image.variant(:to_process).processed
+      original_image = MiniMagick::Image.read(original_image_data.blob.download)
+
+      mask_binary = @landscape_request.mask.download
+      mask_image = MiniMagick::Image.read(mask_binary)
+
+      unless original_image.dimensions == mask_image.dimensions
+        mask_image.resize "#{original_image.width}x#{original_image.height}!"
+      end
+
+      save_full_blend(mask_image, original_image)
+      @landscape_request.save!
+    rescue StandardError => e
+      raise "#{__method__} failed with: #{e.message}"
+    end
+
+        def save_full_blend(mask_image, original_image)
+      mask_image.combine_options do |c|
+        c.colorspace("Gray")
+        c.threshold("50%")
+      end
+
+      mask_image.transparent("white")
+
+      masked_image = original_image.composite(mask_image) do |c|
+        c.compose "Over"
+      end
+
+      blob = attach_blob(masked_image)
+
+      @landscape_request.full_blend.attach(blob)
+    end
 end
