@@ -1,0 +1,50 @@
+<% content_for :title, "New mask request" %>
+<div data-controller="mask-request"
+    data-mask-request-image-url-value="<%= @mask_request.image.attached? ? url_for(@mask_request.image) : '' %>"
+    class="bg-neutral-100 border border-neutral-200 flex flex-col  justify-center p-4 max-md:px-0 sm:p-6 lg:p-8 w-full rounded-lg">
+  <h1 class="text-4xl font-bold text-center text-text-primary my-4"><%= t("landscape.title") %></h1>
+  <div data-mask-request-target="editorSection" class="w-full max-w-full lg:max-w-6xl bg-white shadow-xl rounded-lg flex flex-col lg:flex-row p-4 max-md:px-0 mt-8">
+    <div
+        data-controller="konva-canvas"
+        data-konva-canvas-target="canvasContainer"
+        data-mask-request-target="konvaCanvasWrapper"
+        data-konva-canvas-image-url-value="<%= @mask_request.image.attached? ? url_for(@mask_request.image) : '' %>"
+        data-konva-canvas-display-width-value="500"
+        data-konva-canvas-display-height-value="400"
+        data-konva-canvas-brush-size-value="40"
+        class="bg-neutral-100 flex text-black items-center justify-center relative overflow-hidden rounded-md"
+      >
+    </div>
+    <div class="lg:w-1/4 w-full p-4 flex flex-col space-y-4 lg:space-y-6">
+      <div class="flex flex-wrap justify-center sm:justify-start gap-2 border-b border-neutral-300 pb-4 ">
+        <button data-action="click->mask-request#undoPaintAction" data-mask-request-target="undoButton"
+          class="p-2 rounded-md text-sm text-neutral-700 hover:bg-neutral-300 transition-colors duration-200" title="Undo Last Action">
+          <%= render(IconComponent.new(name: "arrow-counter-clockwise", classes: "flex items-center justify-center text-neutral-100 cursor-pointer h-6 w-6")) %>
+        </button>
+        <button
+          data-action="click->mask-request#redoPaintAction"
+          data-mask-request-target="redoButton"
+          class="p-2 rounded-md text-sm text-neutral-700 hover:bg-neutral-300 transition-colors duration-200"
+          title="Redo Last Undo">
+          <%= render(IconComponent.new(name: "arrow-clockwise", classes: "flex items-center justify-center text-neutral-100 cursor-pointer h-6 w-6")) %>
+        </button>
+        <button
+            data-action="click->mask-request#clearSelection"
+          class="p-2 rounded-md text-neutral-700 hover:bg-primary hover:text-text-light transition-colors duration-200"
+          title="Clear Selection">
+          <%= render(IconComponent.new(name: "x-circle", classes: "text-neutral-900 flex items-center justify-center text-neutral-100 cursor-pointer h-6 w-6")) %>
+        </button>
+      </div>
+      <div data-mask-request-target="brushSizeControl">
+        <label for="brush-size" class="block text-sm font-medium text-neutral-700 mb-2">Brush Size</label>
+        <div class="flex items-center space-x-3">
+          <span class="text-sm text-neutral-600">small</span>
+          <input type="range" id="brush-size" min="20" max="100" value="40" data-action="input->mask-request#updateBrushSize" class="w-full h-2 bg-neutral-300 rounded-lg appearance-none cursor-pointer accent-primary">
+          <span data-mask-request-target="brushSizeDisplay" class="text-xs font-semibold  text-text-secondary">40px</span>
+          <span class="text-sm text-neutral-600">Large</span>
+        </div>
+      </div>
+      <%= render "form", mask_request: @mask_request, canva: @canva %>
+    </div>
+  </div>
+</div>

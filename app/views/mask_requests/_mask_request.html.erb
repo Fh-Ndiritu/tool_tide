@@ -1,0 +1,28 @@
+<div id="<%= dom_id mask_request %>" class="w-full sm:w-auto my-5 space-y-5">
+  <div>
+    <strong class="block font-medium mb-1">Mask:</strong>
+    <%= link_to mask_request.mask.filename, mask_request.mask, class: "text-gray-700 underline hover:no-underline" if mask_request.mask.attached? %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Original image:</strong>
+    <%= link_to mask_request.image.filename, mask_request.image, class: "text-gray-700 underline hover:no-underline" if mask_request.image.attached? %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Results:</strong>
+    <% mask_request.results.each do |result| %>
+      <div><%= link_to result.filename, result, class: "text-gray-700 underline hover:no-underline" %></div>
+    <% end %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Device width:</strong>
+    <%= mask_request.device_width %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Error msg:</strong>
+    <%= mask_request.error_msg %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Progress:</strong>
+    <%= mask_request.progress %>
+  </div>
+</div>

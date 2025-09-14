@@ -1,0 +1,7 @@
+<% content_for :title, "Editing mask request" %>
+<div class="md:w-2/3 w-full">
+  <h1 class="font-bold text-4xl">Editing mask request</h1>
+  <%= render "form", mask_request: @mask_request %>
+  <%= link_to "Show this mask request", @mask_request, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+  <%= link_to "Back to mask requests", canva_mask_requests_path(@mask_request.canva), class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+</div>
