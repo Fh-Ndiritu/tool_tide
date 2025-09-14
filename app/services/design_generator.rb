@@ -34,6 +34,8 @@ class DesignGenerator
 
     @mask_request.drone!
     drone_view
+    @mask_request.processed!
+    charge_generation
   end
 
   def rotate_view

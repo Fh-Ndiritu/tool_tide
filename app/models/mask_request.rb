@@ -1,13 +1,11 @@
 class MaskRequest < ApplicationRecord
   include Designable
   has_one_attached :mask
-  has_one_attached :final_mask
 
   has_one_attached :main_view
   has_one_attached :rotated_view
   has_one_attached :drone_view
 
-  has_one_attached :responsive_image
   has_one_attached :overlay
 
   belongs_to :canva
@@ -49,6 +47,14 @@ class MaskRequest < ApplicationRecord
     validated!
   end
 
+  def copy
+    request = self.dup
+    request.progress = :validated
+    request.mask.attach mask.blob
+    request.overlay.attach overlay.blob
+    request.save!
+    request
+  end
   private
 
   def preset_prompt

@@ -19,6 +19,11 @@ class MaskRequestsController < ApplicationController
   # GET /mask_requests/1/edit
   def edit
     @canva = @mask_request.canva
+    if @mask_request.preset.present? && @mask_request.main_view.attached?
+      # we don't need to update this, we can create a copy and work on that
+      request = @mask_request.copy
+      redirect_to edit_mask_request_path(request) if request.persisted?
+    end
   end
 
   # POST /mask_requests or /mask_requests.json

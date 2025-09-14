@@ -56,11 +56,11 @@ module Designable
   def save_gcp_results(response)
     return unless response.is_a?(Hash)
 
-    image = response.dig("candidates", 0, "content", "parts", 1, "inlineData")
+    data = response.dig("candidates", 0, "content", "parts").try(:last)
 
-    return unless image.present?
+    image = data["inlineData"]
 
-    return if image["data"].blank?
+    return if image.blank? || image["data"].blank?
 
     img_from_b64 = Base64.decode64(image["data"])
     extension = image["mimeType"].split("/").last
@@ -74,5 +74,12 @@ module Designable
       filename: "modified_image.#{extension}",
       content_type: image["mimeType"]
     )
+  end
+
+  def charge_generation
+    @mask_request.reload
+    image_count = [ @mask_request.main_view.attached?, @mask_request.rotated_view.attached?, @mask_request.drone_view.attached? ].count(true)
+    @mask_request.canva.user.charge_pro_cost!(GOOGLE_IMAGE_COST * image_count)
+    @mask_request.complete!
   end
 end
