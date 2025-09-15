@@ -7,6 +7,25 @@ export default class extends Controller {
   MAX_UPLOAD_IMAGE_WIDTH = 1024;
   MAX_UPLOAD_IMAGE_HEIGHT = 1024;
 
+  connect() {
+    this.deviceWidthInputTarget.value = this.calculateCanvasWidth();
+  }
+
+  // Calculates the desired canvas width for display, based on device size.
+  // This value is submitted to the backend, but DOES NOT affect the image's upload resize dimensions.
+
+  calculateCanvasWidth() {
+    const deviceWidth = window.innerWidth;
+    let maxWidth = 0;
+    if (deviceWidth > 700) {
+      maxWidth = 500;
+    } else {
+      maxWidth = deviceWidth * 0.8; // 80% of device width for smaller screens
+    }
+
+    return maxWidth;
+  }
+
   // --- File Input Handlers ---
   triggerFileInput() {
     this.fileInputTarget.click();

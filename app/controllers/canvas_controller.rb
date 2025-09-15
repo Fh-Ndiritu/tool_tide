@@ -65,6 +65,6 @@ class CanvasController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def canva_params
-      params.expect(canva: [ :user_id, :image ]).merge(user: current_user)
+      params.expect(canva: [ :user_id, :image, :device_width ]).merge(user: current_user)
     end
 end

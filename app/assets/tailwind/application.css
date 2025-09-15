@@ -267,3 +267,63 @@ html {
 .nav-btn {
   @apply inline-flex items-center justify-center font-semibold py-2 px-4 rounded-lg cursor-pointer hover:text-white hover:bg-secondary duration-200 transition-all gap-2 text-neutral-900;
 }
+/* In your custom CSS file */
+/* This CSS must be accompanied by the JavaScript to set the --fill-percentage variable */
+.slider-funnel-track {
+  --fill-percentage: 0%;
+  --track-color: var(--color-neutral-300);
+  --thumb-color: var(--color-accent);
+  --selected-color: var(--color-text-accent);
+}
+
+.slider-funnel-track::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 0.25rem;
+  cursor: pointer;
+  border-radius: 9999px;
+  background: linear-gradient(
+    to right,
+    var(--selected-color) var(--fill-percentage),
+    var(--track-color) var(--fill-percentage)
+  );
+}
+
+.slider-funnel-track::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  border: 2px solid var(--thumb-color);
+  height: 1.25rem;
+  width: 1.25rem;
+  border-radius: 9999px;
+  background: white;
+  cursor: pointer;
+
+  /* Use transform to scale the thumb based on the fill percentage */
+  transform: scale(calc(1 + (var(--fill-percentage) / 100) * 0.75));
+
+  /* Center the thumb vertically */
+  margin-top: calc(-0.625rem + 0.125rem);
+}
+
+.slider-funnel-track::-moz-range-track {
+  width: 100%;
+  height: 0.25rem;
+  cursor: pointer;
+  border-radius: 9999px;
+  background: linear-gradient(
+    to right,
+    var(--selected-color) var(--fill-percentage),
+    var(--track-color) var(--fill-percentage)
+  );
+}
+
+.slider-funnel-track::-moz-range-thumb {
+  border: 2px solid var(--thumb-color);
+  height: 1.25rem;
+  width: 1.25rem;
+  border-radius: 9999px;
+  background: white;
+  cursor: pointer;
+
+  /* Use transform for Firefox as well */
+  transform: scale(calc(1 + (var(--fill-percentage) / 100) * 0.75));
+}

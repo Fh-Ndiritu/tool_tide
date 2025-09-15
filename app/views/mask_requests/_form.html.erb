@@ -12,10 +12,9 @@
   <div class="my-5 hidden">
     <%= form.file_field :mask,  class:"block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", data: {mask_request_target: 'mask'} %>
   </div>
-  <%= form.hidden_field :device_width, data: { canvas_target: "deviceWidthInput" } %>
   <div class="flex w-full justify-between">
     <button type="submit" class="btn cute-btn" data-mask-request-target="submit" hidden>Submit</button>
     <button data-action="mask-request#insertMask" class="btn cute-btn">Submit</button>
-    <button data-action="mask-request#cancelEdit" class="btn cute-btn primary-btn">Cancel</button>
+    <%= link_to "Cancel", new_canva_path, class: "btn cute-btn primary-btn" %>
   </div>
 <% end %>

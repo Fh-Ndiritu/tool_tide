@@ -10,6 +10,7 @@ class MaskRequest < ApplicationRecord
 
   belongs_to :canva
   delegate :image, to: :canva
+  delegate :drawable_image, to: :canva
 
   validate :preset_prompt, on: :update
   after_update_commit :generate_designs, if: :saved_change_to_preset?
@@ -55,6 +56,11 @@ class MaskRequest < ApplicationRecord
     request.save!
     request
   end
+
+  def dimensions
+    drawable_image.metadata
+  end
+
   private
 
   def preset_prompt

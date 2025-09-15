@@ -2,25 +2,6 @@ import { Controller } from '@hotwired/stimulus';
 
 // Connects to data-controller="mask-request"
 export default class extends Controller {
-  connect() {
-    this.deviceWidthInputTarget.value = this.calculateCanvasWidth();
-  }
-
-  // Calculates the desired canvas width for display, based on device size.
-  // This value is submitted to the backend, but DOES NOT affect the image's upload resize dimensions.
-
-  calculateCanvasWidth() {
-    const deviceWidth = window.innerWidth;
-    let maxWidth = 0;
-    if (deviceWidth > 700) {
-      maxWidth = 500;
-    } else {
-      maxWidth = deviceWidth * 0.8; // 80% of device width for smaller screens
-    }
-
-    return maxWidth;
-  }
-
   static targets = [
     'editorSection',
     'loadingSection',
@@ -210,13 +191,26 @@ export default class extends Controller {
 
   updateBrushSize(event) {
     const size = parseInt(event.target.value, 10);
+
     const konvaController = this.application.getControllerForElementAndIdentifier(
       this.konvaCanvasWrapperTarget,
       'konva-canvas'
     );
+
     if (konvaController) {
       konvaController.brushSizeValue = size;
     }
+
+    const slider = event.target;
+    const min = parseInt(slider.min, 10);
+    const max = parseInt(slider.max, 10);
+
+    // Calculate the fill percentage once
+    const fillPercentage = ((size - min) / (max - min)) * 100;
+
+    // Set a single CSS variable to control everything
+    slider.style.setProperty('--fill-percentage', `${fillPercentage}%`);
+
     this.setBrushSizeDisplay(size);
   }
 
