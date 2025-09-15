@@ -1,5 +1,7 @@
 class MaskRequest < ApplicationRecord
   include Designable
+  include ActionView::RecordIdentifier
+
   has_one_attached :mask
 
   has_one_attached :main_view
@@ -13,7 +15,11 @@ class MaskRequest < ApplicationRecord
   delegate :drawable_image, to: :canva
 
   validate :preset_prompt, on: :update
+
+  after_create_commit :validate_mask
   after_update_commit :generate_designs, if: :saved_change_to_preset?
+  after_update_commit :broadcast_progress, if: :saved_change_to_progress?
+  after_update_commit :broadcast_errors, if: :saved_change_to_error_msg?
 
   enum :progress, {
     uploading: 0,
@@ -62,6 +68,15 @@ class MaskRequest < ApplicationRecord
   end
 
   private
+
+  def broadcast_progress
+    broadcast_replace_to(dom_id(self), target: "loader", partial: "layouts/shared/loader", locals: { mask_request: self })
+  end
+
+  def broadcast_errors
+    return
+    broadcast_update_to(dom_id(self), target: "errors", partial: "layouts/shared/errors", locals: { mask_request: self }) if error_msg.present?
+  end
 
   def preset_prompt
     return unless preset.present?

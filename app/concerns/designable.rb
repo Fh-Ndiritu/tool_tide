@@ -11,13 +11,20 @@ module Designable
     )
   end
 
-  def fetch_gcp_response(payload)
+def fetch_gcp_response(payload, max_retries = 3)
+  retries = 0
+  begin
     response = @connection.post("") do |req|
       req.body = payload.to_json
     end
-
     JSON.parse(response.body)
+  rescue Faraday::ConnectionFailed, Faraday::TimeoutError => e
+    Rails.logger.warn("Request failed: #{e.message}. Retrying... (#{retries + 1}/#{max_retries})")
+    retries += 1
+    retry if retries < max_retries
+    raise
   end
+end
 
 
   def gcp_payload(prompt:, image:)

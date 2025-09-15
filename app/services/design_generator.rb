@@ -15,6 +15,9 @@ class DesignGenerator
     main_view
 
     generate_secondary_views
+
+  rescue Faraday::ServerError => e
+    @mask_request.update error_msg: e.message, progress: :failed
   end
 
   private
