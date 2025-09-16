@@ -30,8 +30,10 @@ module ApplicationHelper
       "Failed"
     when "retrying"
       "Retrying"
-    when 'mask_invalid'
+    when "mask_invalid"
       "Invalid Drawing"
+    when 'overlaying'
+      "Analyzing Garden Area"
     else
       "Loading ..."
     end

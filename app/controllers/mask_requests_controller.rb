@@ -42,7 +42,7 @@ class MaskRequestsController < ApplicationController
           format.html { redirect_to edit_mask_request_path(@mask_request),  status: :see_other }
         end
       else
-        format.html { render :new, status: :unprocessable_entity}   and return
+        format.html { render :new, status: :unprocessable_entity }   and return
       end
     end
   end
@@ -51,11 +51,10 @@ class MaskRequestsController < ApplicationController
   def update
     respond_to do |format|
       if @mask_request.update(preset_params)
-        format.html { redirect_to @mask_request, notice: "Mask request was successfully updated.", status: :see_other }
-        format.json { render :show, status: :ok, location: @mask_request }
+        DesignGeneratorJob.perform_now(@mask_request.id)
+        format.html { redirect_to @mask_request, notice: "Design Generated!.", status: :see_other }
       else
         format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @mask_request.errors, status: :unprocessable_entity }
       end
     end
   end

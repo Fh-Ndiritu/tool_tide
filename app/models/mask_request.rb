@@ -15,8 +15,6 @@ class MaskRequest < ApplicationRecord
   delegate :drawable_image, to: :canva
 
   validate :preset_prompt, on: :update
-
-  after_update_commit :generate_designs, if: :saved_change_to_preset?
   after_update_commit :broadcast_progress, if: :saved_change_to_progress?
 
   enum :progress, {
@@ -31,7 +29,8 @@ class MaskRequest < ApplicationRecord
     complete: 8,
     failed: 9,
     retying: 10,
-    mask_invalid: 11
+    mask_invalid: 11,
+    overlaying: 12
   }
 
   def purge_views
@@ -53,10 +52,41 @@ class MaskRequest < ApplicationRecord
     drawable_image.metadata
   end
 
+  def resize_mask
+    original_image = MiniMagick::Image.read(image.blob.download)
+    mask_file = MiniMagick::Image.read(mask.blob.download)
+    return if original_image.dimensions == mask_file.dimensions
+
+    mask_file.resize "#{original_image.width}x#{original_image.height}!"
+    io_object = StringIO.new(mask_file.to_blob)
+
+    blob = ActiveStorage::Blob.create_and_upload!(
+      io: io_object,
+      filename: "final_mask.png",
+      content_type: "image/png"
+    )
+   mask.attach(blob)
+   save!
+  end
+
+  def overlay_mask
+    original_image = MiniMagick::Image.read(image.blob.download)
+
+    mask_binary = mask.download
+    mask_image = MiniMagick::Image.read(mask_binary)
+
+    unless original_image.dimensions == mask_image.dimensions
+      mask_image.resize "#{original_image.width}x#{original_image.height}!"
+    end
+
+    save_overlay(mask_image, original_image)
+    save!
+  end
+
   private
 
   def broadcast_progress
-    Turbo::StreamsChannel.broadcast_replace_to(dom_id(canva), target: "loader", partial: "layouts/shared/loader", locals: { mask_request: self })
+    Turbo::StreamsChannel.broadcast_replace_to(canva, target: "loader", partial: "layouts/shared/loader", locals: { mask_request: self })
   end
 
   def preset_prompt
@@ -67,12 +97,6 @@ class MaskRequest < ApplicationRecord
 
     self.prompt = prompt
   end
-
-  def generate_designs
-    return unless mask.attached?
-    DesignGenerator.perform(self)
-  end
-
 
   def save_overlay(mask_image, original_image)
     mask_image.combine_options do |c|

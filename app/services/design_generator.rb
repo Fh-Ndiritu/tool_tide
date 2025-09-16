@@ -12,7 +12,12 @@ class DesignGenerator
 
   def generate
     @mask_request.preparing!
+    @mask_request.update user_error: nil
     @mask_request.purge_views
+
+    @mask_request.resize_mask
+
+    @mask_request.overlaying!
     @mask_request.overlay_mask
 
     @mask_request.main_view!
@@ -21,7 +26,7 @@ class DesignGenerator
     generate_secondary_views
 
   rescue Faraday::ServerError => e
-    @mask_request.update error_msg: e.message, progress: :failed
+    @mask_request.update error_msg: e.message, progress: :failed, user_error: "Something went wrong, try changing the style"
   end
 
   private
@@ -44,6 +49,8 @@ class DesignGenerator
 
     @mask_request.processed!
     charge_generation
+  rescue StandardError => e
+    @mask_request.update error_msg: e.message
   end
 
   def rotate_view
@@ -83,21 +90,4 @@ class DesignGenerator
       f.options.read_timeout = 120
     end
   end
-
-  # def resize_mask
-  #   original_image = MiniMagick::Image.read(image.blob.download)
-  #   mask_file = MiniMagick::Image.read(mask.blob.download)
-  #   return if original_image.dimensions == mask_file.dimensions
-
-  #   mask_file.resize "#{original_image.width}x#{original_image.height}!"
-  #   io_object = StringIO.new(mask_file.to_blob)
-
-  #   blob = ActiveStorage::Blob.create_and_upload!(
-  #     io: io_object,
-  #     filename: "final_mask.png",
-  #     content_type: "image/png"
-  #   )
-  #  mask.attach(blob)
-  #  save!
-  # end
 end

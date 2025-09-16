@@ -1,7 +1,8 @@
 <% content_for :title, "Editing mask request" %>
-<!-- Main page container -->
-<div class="flex flex-col items-center min-h-screen bg-neutral-300">
-  <!-- Main card container -->
+<%= turbo_stream_from @mask_request.canva %>
+<div class="flex w-full flex-col items-center min-h-screen bg-neutral-300" data-controller="loader">
+  <%= render partial: "layouts/shared/loader", locals: { mask_request: @maskmask_request, klasses: "hidden" } %>
+  <%= render 'shared/balances' %>
   <div class="md:w-9/12 w-full bg-neutral-100 p-8 md:p-12 rounded-2xl shadow-2xl my-8">
     <!-- Title Section -->
     <div class="mb-8 flex flex-col w-full items-center text-center">
@@ -14,7 +15,7 @@
       <div class="grid grid-cols-2 gap-12 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-3">
         <% LANDSCAPE_PRESETS.each do |preset, description| %>
           <!-- Link for each preset, styled as a card -->
-          <%= link_to mask_request_path(@mask_request, mask_request: {preset: preset}), data: { turbo_method: :patch }, class: "block p-4 bg-neutral-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1" do %>
+          <%= button_to mask_request_path(@mask_request, mask_request: {preset: preset}), method: :patch, data: { turbo_method: :patch, action: "loader#showLoader" }, class: "block p-4 bg-neutral-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer" do %>
             <div class="flex flex-col items-center text-center">
               <%= image_tag("presets/cottage.jpg", class: "w-full h-auto object-contain rounded-lg mb-4") %>
               <div class="font-semibold text-lg text-text-dark mb-1">
