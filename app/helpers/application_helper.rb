@@ -32,7 +32,7 @@ module ApplicationHelper
       "Retrying"
     when "mask_invalid"
       "Invalid Drawing"
-    when 'overlaying'
+    when "overlaying"
       "Analyzing Garden Area"
     else
       "Loading ..."

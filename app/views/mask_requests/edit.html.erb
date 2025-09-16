@@ -12,7 +12,7 @@
     <!-- Presets Grid -->
     <div class="mb-8">
       <!-- Grid container for all presets -->
-      <div class="grid grid-cols-2 gap-12 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-3">
+      <div class="grid grid-cols-2 gap-2 md:gap-12 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-3">
         <% LANDSCAPE_PRESETS.each do |preset, description| %>
           <!-- Link for each preset, styled as a card -->
           <%= button_to mask_request_path(@mask_request, mask_request: {preset: preset}), method: :patch, data: { turbo_method: :patch, action: "loader#showLoader" }, class: "block p-4 bg-neutral-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer" do %>

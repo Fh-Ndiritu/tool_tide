@@ -26,7 +26,8 @@ class DesignGenerator
     generate_secondary_views
 
   rescue Faraday::ServerError => e
-    @mask_request.update error_msg: e.message, progress: :failed, user_error: "Something went wrong, try changing the style"
+    user_error = e.is_a?(Faraday::ServerError) ? "We are having some downtime, try again later ..." : "Something went wrong, try a different style."
+    @mask_request.update error_msg: e.message, progress: :failed, user_error:
   end
 
   private
