@@ -1,16 +1,16 @@
-<% content_for :title, "New Design" %>
-<%= turbo_stream_from @mask_request.canva %>
-<%= render partial: "layouts/shared/loader", locals: { mask_request: @maskmask_request, klasses: "hidden" } %>
-<% @canvas_dimensions = capture do
+  <% @canvas_dimensions = capture do
       concat 'data-konva-canvas-display-width-value='
       concat @mask_request.dimensions[:width]
       concat ' data-konva-canvas-display-height-value='
       concat @mask_request.dimensions[:height]
     end
 %>
-<div data-controller="mask-request"
+<% content_for :title, "New Design" %>
+<%= turbo_stream_from "canva_#{@mask_request.canva.id}" %>
+<div data-controller="mask-request loader"
      data-mask-request-image-url-value="<%= @mask_request.image.attached? ? url_for(@mask_request.drawable_image) : '' %>"
      class="min-h-screen bg-neutral-100 flex items-center justify-center p-4 sm:p-6 lg:p-8 font-sans text-text-dark">
+  <%= render partial: "layouts/shared/loader", locals: { mask_request: @maskmask_request, klasses: "hidden" } %>
   <div class="w-full max-w-full lg:max-w-6xl bg-white rounded-2xl shadow-2xl overflow-hidden p-6 sm:p-8 border border-neutral-300">
     <h1 class="text-4xl sm:text-3xl font-extrabold text-text-primary text-center mb-8 tracking-wide">Draw Areas to Modify</h1>
     <div data-mask-request-target="editorSection" class="flex flex-col lg:flex-row gap-8">

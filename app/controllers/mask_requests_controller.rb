@@ -32,9 +32,17 @@ class MaskRequestsController < ApplicationController
 
     respond_to do |format|
       if @mask_request.save
-        format.html { render head :no_content }  and return
+        MaskValidatorJob.perform_now(@mask_request.id)
+        @mask_request.reload
+        if @mask_request.user_error.present?
+          flash[:alert] = @mask_request.user_error
+          @mask_request.destroy
+          format.html { redirect_to new_canva_mask_request_path(@mask_request.canva),  status: :see_other }
+        else
+          format.html { redirect_to edit_mask_request_path(@mask_request),  status: :see_other }
+        end
       else
-        format.html { render :new, status: :unprocessable_entity }   and return
+        format.html { render :new, status: :unprocessable_entity}   and return
       end
     end
   end
@@ -70,7 +78,7 @@ class MaskRequestsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def mask_request_params
-      params.expect(mask_request: [ :mask, :original_image, :device_width, :error_msg, :progress, results: [] ])
+      params.expect(mask_request: [ :mask, :original_image, :device_width, :error_msg, :progress, results: [], progess: 0 ])
     end
 
     def set_canva

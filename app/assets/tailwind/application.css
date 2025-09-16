@@ -84,8 +84,8 @@ html {
   transform: translateX(-50%);
   width: auto;
   max-width: 80vw;
-  min-width: 300px;
-  z-index: 9999;
+  min-width: 60vw;
+  z-index: 40;
   opacity: 0.9;
 }
 

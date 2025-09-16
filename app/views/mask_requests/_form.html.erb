@@ -13,7 +13,7 @@
     <%= form.file_field :mask,  class:"block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", data: {mask_request_target: 'mask'} %>
   </div>
   <div class="flex w-full justify-between">
-    <button type="submit" class="btn cute-btn" data-mask-request-target="submit" data-turbo="true" hidden>Submit</button>
+    <button type="submit" class="btn cute-btn" data-action="loader#showLoader" data-mask-request-target="submit" data-turbo="true" hidden>Submit</button>
     <button data-action="mask-request#insertMask" class="btn cute-btn">Submit</button>
     <%= link_to "Cancel", new_canva_path, class: "btn cute-btn primary-btn" %>
   </div>

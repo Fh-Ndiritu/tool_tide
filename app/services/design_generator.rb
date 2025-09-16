@@ -11,6 +11,10 @@ class DesignGenerator
   end
 
   def generate
+    @mask_request.preparing!
+    @mask_request.purge_views
+    @mask_request.overlay_mask
+
     @mask_request.main_view!
     main_view
 
@@ -37,6 +41,7 @@ class DesignGenerator
 
     @mask_request.drone!
     drone_view
+
     @mask_request.processed!
     charge_generation
   end
@@ -78,4 +83,21 @@ class DesignGenerator
       f.options.read_timeout = 120
     end
   end
+
+  # def resize_mask
+  #   original_image = MiniMagick::Image.read(image.blob.download)
+  #   mask_file = MiniMagick::Image.read(mask.blob.download)
+  #   return if original_image.dimensions == mask_file.dimensions
+
+  #   mask_file.resize "#{original_image.width}x#{original_image.height}!"
+  #   io_object = StringIO.new(mask_file.to_blob)
+
+  #   blob = ActiveStorage::Blob.create_and_upload!(
+  #     io: io_object,
+  #     filename: "final_mask.png",
+  #     content_type: "image/png"
+  #   )
+  #  mask.attach(blob)
+  #  save!
+  # end
 end
