@@ -1,7 +1,7 @@
 class Canva < ApplicationRecord
   belongs_to :user
   has_one_attached :image do |attachable|
-    attachable.variant(:api_image, resize_to_limit: [1024, 1024])
+    attachable.variant(:api_image, resize_to_limit: [ 1024, 1024 ])
   end
   has_many :mask_requests
 
