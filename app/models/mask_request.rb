@@ -53,11 +53,11 @@ class MaskRequest < ApplicationRecord
   end
 
   def resize_mask
-    original_image = MiniMagick::Image.read(image.blob.download)
+    api_image = MiniMagick::Image.read(canva.api_image_blob.download)
     mask_file = MiniMagick::Image.read(mask.blob.download)
-    return if original_image.dimensions == mask_file.dimensions
+    return if api_image.dimensions == mask_file.dimensions
 
-    mask_file.resize "#{original_image.width}x#{original_image.height}!"
+    mask_file.resize "#{api_image.width}x#{api_image.height}!"
     io_object = StringIO.new(mask_file.to_blob)
 
     blob = ActiveStorage::Blob.create_and_upload!(
@@ -70,16 +70,16 @@ class MaskRequest < ApplicationRecord
   end
 
   def overlay_mask
-    original_image = MiniMagick::Image.read(image.blob.download)
+    api_image = MiniMagick::Image.read(canva.api_image_blob.download)
 
     mask_binary = mask.download
     mask_image = MiniMagick::Image.read(mask_binary)
 
-    unless original_image.dimensions == mask_image.dimensions
-      mask_image.resize "#{original_image.width}x#{original_image.height}!"
+    unless api_image.dimensions == mask_image.dimensions
+      mask_image.resize "#{api_image.width}x#{api_image.height}!"
     end
 
-    save_overlay(mask_image, original_image)
+    save_overlay(mask_image, api_image)
     save!
   end
 
@@ -98,7 +98,7 @@ class MaskRequest < ApplicationRecord
     self.prompt = prompt
   end
 
-  def save_overlay(mask_image, original_image)
+  def save_overlay(mask_image, api_image)
     mask_image.combine_options do |c|
       c.colorspace("Gray")
       c.threshold("50%")
@@ -106,7 +106,7 @@ class MaskRequest < ApplicationRecord
 
     mask_image.transparent("white")
 
-    masked_image = original_image.composite(mask_image) do |c|
+    masked_image = api_image.composite(mask_image) do |c|
       c.compose "Over"
     end
 
