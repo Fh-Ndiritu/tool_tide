@@ -19,10 +19,12 @@ class MaskRequestsController < ApplicationController
   # GET /mask_requests/1/edit
   def edit
     @canva = @mask_request.canva
-    if @mask_request.preset.present? && @mask_request.main_view.attached?
+    if params[:manual].present?
       # we don't need to update this, we can create a copy and work on that
       request = @mask_request.copy
       redirect_to edit_mask_request_path(request) if request.persisted?
+    elsif @mask_request.failed? || @mask_request.complete?
+      redirect_to mask_request_path(@mask_request.id)
     end
   end
 
@@ -51,8 +53,8 @@ class MaskRequestsController < ApplicationController
   def update
     respond_to do |format|
       if @mask_request.update(preset_params)
-        DesignGeneratorJob.perform_now(@mask_request.id)
-        format.html { redirect_to @mask_request, status: :see_other }
+        DesignGeneratorJob.perform_later(@mask_request.id)
+        format.html { head :no_content }
       else
         format.html { render :edit, status: :unprocessable_entity }
       end

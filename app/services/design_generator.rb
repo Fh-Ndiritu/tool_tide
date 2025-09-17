@@ -11,8 +11,7 @@ class DesignGenerator
   end
 
   def generate
-    @mask_request.preparing!
-    @mask_request.update user_error: nil
+    @mask_request.update user_error: nil, error_msg: nil, progress: :preparing
     @mask_request.purge_views
 
     @mask_request.resize_mask
