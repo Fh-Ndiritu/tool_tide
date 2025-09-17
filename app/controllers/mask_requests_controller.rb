@@ -20,11 +20,11 @@ class MaskRequestsController < ApplicationController
   # GET /mask_requests/1/edit
   def edit
     @canva = @mask_request.canva
-    redirect_to low_credits_path and return unless @canva.user.afford_generation?
     if params[:manual].present?
+      redirect_to low_credits_path and return unless @canva.user.afford_generation?
       # we don't need to update this, we can create a copy and work on that
       request = @mask_request.copy
-      redirect_to edit_mask_request_path(request) if request.persisted?
+      redirect_to edit_mask_request_path(request)
     elsif @mask_request.failed? || @mask_request.complete?
       redirect_to mask_request_path(@mask_request.id)
     end
