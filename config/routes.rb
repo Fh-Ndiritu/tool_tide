@@ -2,6 +2,7 @@
 
 Rails.application.routes.draw do
   get :low_credits, to: "credits#low"
+
   resources :canvas, shallow: true do
     resources :mask_requests
   end
@@ -18,13 +19,6 @@ Rails.application.routes.draw do
   namespace :admin do
   end
 
-  resources :images, only: %i[create index] do
-    collection do
-      get ":source/:conversion", to: "new", as: "new"
-      get "extract_text"
-      post "extract"
-    end
-  end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -37,11 +31,4 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root "home#index"
-
-  # New resource for showing/downloading converted images
-  resources :converted_images, only: [ :index ] do
-    # Route for downloading a specific file by its unique identifier (e.g., filename)
-    get "download/:filename", on: :collection, to: "converted_images#download", as: :download_file,
-                              constraints: { filename: /.*/ }
-  end
 end
