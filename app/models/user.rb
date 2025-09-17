@@ -6,8 +6,6 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  has_many :landscapes, dependent: :destroy
-  has_many :landscape_requests, through: :landscapes
   has_many :payment_transactions, dependent: :destroy
 
   has_many :canvas
@@ -31,7 +29,6 @@ class User < ApplicationRecord
   end
 
   def afford_generation?
-    # localization_cost = landscape_request.use_location? ? LOCALIZED_PLANT_COST : 0
     pro_access_credits >= (GOOGLE_IMAGE_COST * 3)
   end
 

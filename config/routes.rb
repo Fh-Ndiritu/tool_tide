@@ -16,19 +16,6 @@ Rails.application.routes.draw do
   mount ActionCable.server => "/cable"
 
   namespace :admin do
-    get "landscapes/:day", to: "landscapes#index"
-  end
-
-  resources :landscapes, except: [ :destroy ] do
-    # collection do
-    #   post "modify"
-    # end
-  end
-
-  resources :landscape_requests, only: %i[update edit] do
-    member do
-      patch :location
-    end
   end
 
   resources :images, only: %i[create index] do

@@ -82,15 +82,6 @@ IMAGE_EXTRACTION_FORMATS = {
   "svg" => "image/svg+xml"
 }.freeze
 
-IMAGE_LANDSCAPE_FORMATS = {
-  "jpeg" => "image/jpeg",
-  "png" => "image/png",
-  "webp" => "image/webp",
-  "avif" => "image/avif",
-  "heic" => "image/heic",
-  "heif" => "image/heif"
-}.freeze
-
 DESTINATION_IMAGE_FORMATS = %w[
   jpeg
   png
