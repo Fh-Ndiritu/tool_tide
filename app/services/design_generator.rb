@@ -3,7 +3,6 @@ class DesignGenerator
 
   def initialize(mask_request)
     @mask_request = mask_request
-    @connection = connection
   end
 
   def self.perform(*args)
@@ -74,11 +73,12 @@ class DesignGenerator
   end
 
   def connection
+    keys = ENV["GEMINI_API_KEYS"].split("__")
     Faraday.new(
       url: "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent",
       headers: {
         "Content-Type" => "application/json",
-        "x-goog-api-key" => ENV["GEMINI_API_KEY"]
+        "x-goog-api-key" => Rails.env.development? ? keys.first : sample.sample
       }
     ) do |f|
       f.response :raise_error

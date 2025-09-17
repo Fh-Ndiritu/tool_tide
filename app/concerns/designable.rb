@@ -14,7 +14,7 @@ module Designable
 def fetch_gcp_response(payload, max_retries = 3)
   retries = 0
   begin
-    response = @connection.post("") do |req|
+    response = connection.post("") do |req|
       req.body = payload.to_json
     end
     JSON.parse(response.body)
