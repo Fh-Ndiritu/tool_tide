@@ -11,20 +11,38 @@ module Designable
     )
   end
 
-def fetch_gcp_response(payload, max_retries = 3)
-  retries = 0
-  begin
-    response = connection.post("") do |req|
-      req.body = payload.to_json
+  def gcp_connection
+    Faraday.new(
+      url: "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent",
+      headers: {
+        "Content-Type" => "application/json",
+        "x-goog-api-key" => Rails.env.development? ?  ENV["GEMINI_API_KEY"] : ENV["GEMINI_API_KEYS"].split("__").sample
+      }
+    ) do |f|
+      f.response :raise_error
+      # Time to wait for the connection to open
+      f.options.open_timeout = 30
+      # Total time for the request to complete
+      f.options.timeout = 120
+      # Time to wait for a read to complete
+      f.options.read_timeout = 120
     end
-    JSON.parse(response.body)
-  rescue Faraday::ConnectionFailed, Faraday::TimeoutError => e
-    Rails.logger.warn("Request failed: #{e.message}. Retrying... (#{retries + 1}/#{max_retries})")
-    retries += 1
-    retry if retries < max_retries
-    raise
   end
-end
+
+  def fetch_gcp_response(payload, max_retries = 3)
+    retries = 0
+    begin
+      response = gcp_connection.post("") do |req|
+        req.body = payload.to_json
+      end
+      JSON.parse(response.body)
+    rescue Faraday::ConnectionFailed, Faraday::TimeoutError => e
+      Rails.logger.warn("Request failed: #{e.message}. Retrying... (#{retries + 1}/#{max_retries})")
+      retries += 1
+      retry if retries < max_retries
+      raise
+    end
+  end
 
 
   def gcp_payload(prompt:, image:)

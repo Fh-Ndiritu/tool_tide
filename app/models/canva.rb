@@ -3,7 +3,7 @@ class Canva < ApplicationRecord
   has_one_attached :image do |attachable|
     attachable.variant(:api_image, resize_to_limit: [ 1024, 1024 ])
   end
-  has_many :mask_requests
+  has_many :mask_requests, dependent: :destroy
 
   def drawable_image
     variant = image.variant(resize_to_limit: [ device_width, device_width ]).processed
