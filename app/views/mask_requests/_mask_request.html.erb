@@ -15,7 +15,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
       <% if mask_request.overlay.attached? %>
         <div class="group relative overflow-hidden rounded-xl shadow-lg transition-all duration-500 transform hover:scale-105">
-          <%= image_tag(mask_request.overlay, class: "w-full h-72 object-cover transition-transform duration-500 group-hover:scale-110") %>
+          <%= image_tag(mask_request.overlay.variant(resize_to_limit: [300, 300]), loading: :lazy, class: "w-full h-72 object-cover transition-transform duration-500 group-hover:scale-110") %>
           <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-70"></div>
           <div class="absolute bottom-4 left-4 right-4 text-white">
             <p class="text-lg font-bold">Your Space</p>
@@ -24,7 +24,7 @@
       <% end %>
       <% if mask_request.main_view.attached? %>
         <div class="group relative overflow-hidden rounded-xl shadow-lg transition-all duration-500 transform hover:scale-105">
-          <%= image_tag(mask_request.main_view, class: "w-full h-72 object-cover transition-transform duration-500 group-hover:scale-110") %>
+          <%= image_tag(mask_request.main_view.variant(resize_to_limit: [300, 300]), loading: :lazy, class: "w-full h-72 object-cover transition-transform duration-500 group-hover:scale-110") %>
           <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-70"></div>
           <div class="absolute bottom-4 left-4 right-4 text-white">
             <p class="text-lg font-bold">Main Shot</p>
@@ -41,7 +41,7 @@
       <% end %>
       <% if mask_request.rotated_view.attached? %>
         <div class="group relative overflow-hidden rounded-xl shadow-lg transition-all duration-500 transform hover:scale-105">
-          <%= image_tag(mask_request.rotated_view, class: "w-full h-72 object-cover transition-transform duration-500 group-hover:scale-110") %>
+          <%= image_tag(mask_request.rotated_view.variant(resize_to_limit: [300, 300]), loading: :lazy, class: "w-full h-72 object-cover transition-transform duration-500 group-hover:scale-110") %>
           <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-70"></div>
           <div class="absolute bottom-4 left-4 right-4 text-white">
             <p class="text-lg font-bold">Rotated View</p>
@@ -58,7 +58,7 @@
       <% end %>
       <% if mask_request.drone_view.attached? %>
         <div class="group relative overflow-hidden rounded-xl shadow-lg transition-all duration-500 transform hover:scale-105">
-          <%= image_tag(mask_request.drone_view, class: "w-full h-72 object-cover transition-transform duration-500 group-hover:scale-110") %>
+          <%= image_tag(mask_request.drone_view.variant(resize_to_limit: [300, 300]), loading: :lazy, class: "w-full h-72 object-cover transition-transform duration-500 group-hover:scale-110") %>
           <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-70"></div>
           <div class="absolute bottom-4 left-4 right-4 text-white">
             <p class="text-lg font-bold">Drone Shot</p>

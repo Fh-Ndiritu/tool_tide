@@ -3,7 +3,7 @@ class CanvasController < ApplicationController
 
   # GET /canvas or /canvas.json
   def index
-    @canvas = Canva.joins(:mask_requests).where(mask_requests: { progress: :complete }).includes(:mask_requests)
+    @canvas = current_user.canvas.joins(:mask_requests).where(mask_requests: { progress: :complete }).includes(:mask_requests)
   end
 
   # GET /canvas/1 or /canvas/1.json

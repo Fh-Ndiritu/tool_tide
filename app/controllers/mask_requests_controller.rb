@@ -4,7 +4,7 @@ class MaskRequestsController < ApplicationController
 
   # GET /mask_requests or /mask_requests.json
   def index
-    @mask_requests = MaskRequest.all
+    @mask_requests = current_user.mask_requests
   end
 
   # GET /mask_requests/1 or /mask_requests/1.json
