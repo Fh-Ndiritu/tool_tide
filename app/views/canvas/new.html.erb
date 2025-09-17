@@ -1,6 +1,7 @@
 <%#= render '/shared/balances' %>
 <%#= render '/landscapes/downgrade_notification' %>
 <div data-controller="canvas" class="min-h-[70vh] bg-neutral-100 flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 w-full">
+  <%= render 'shared/balances' %>
   <h1 class="text-4xl font-bold text-center text-text-primary my-8">Bring your Landscape to life!</h1>
   <div data-canvas-target="uploadSection" class="w-full max-w-md sm:max-w-lg lg:max-w-3xl bg-white shadow-xl rounded-lg p-6 sm:p-8 text-center">
     <h2 class="text-xl sm:text-2xl font-semibold text-text-dark mb-4">Upload Your Yard Photo</h2>

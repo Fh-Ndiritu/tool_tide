@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  get :low_credits, to: "credits#low"
   resources :canvas, shallow: true do
     resources :mask_requests
   end
@@ -27,7 +28,6 @@ Rails.application.routes.draw do
   resources :landscape_requests, only: %i[update edit] do
     member do
       patch :location
-      get :low_credits
     end
   end
 
