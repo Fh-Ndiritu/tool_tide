@@ -24,6 +24,9 @@ class DesignGenerator
 
     generate_secondary_views
 
+    @mask_request.processed!
+    charge_generation
+
   rescue Faraday::ServerError => e
     user_error = e.is_a?(Faraday::ServerError) ? "We are having some downtime, try again later ..." : "Something went wrong, try a different style."
     @mask_request.update error_msg: e.message, progress: :failed, user_error:
@@ -46,9 +49,6 @@ class DesignGenerator
 
     @mask_request.drone!
     drone_view
-
-    @mask_request.processed!
-    charge_generation
   rescue StandardError => e
     @mask_request.update error_msg: e.message
   end
