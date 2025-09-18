@@ -25,10 +25,12 @@ export default class extends Controller {
   calculateCanvasWidth() {
     const deviceWidth = window.innerWidth;
     let maxWidth = 0;
-    if (deviceWidth > 700) {
+    if (deviceWidth > 1100) {
+      maxWidth = 600;
+    } else if (deviceWidth > 700) {
       maxWidth = 500;
     } else {
-      maxWidth = deviceWidth * 0.8; // 80% of device width for smaller screens
+      maxWidth = deviceWidth - 40; // 80% of device width for smaller screens
     }
 
     return maxWidth;

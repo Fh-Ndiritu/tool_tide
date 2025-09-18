@@ -29,6 +29,10 @@ export default class extends Controller {
     'profileBtn',
     'processingMessage',
     'submit',
+    'brushRange',
+    'thumb',
+    'fill',
+    'display',
   ];
 
   static values = {
@@ -42,7 +46,7 @@ export default class extends Controller {
   MAX_CANVAS_DISPLAY_HEIGHT = 500;
 
   connect() {
-    this.setBrushSizeDisplay(60);
+    this.setBrushSize(60);
 
     // Listen for custom events from the konva-canvas controller
     if (this.hasKonvaCanvasWrapperTarget) {
@@ -63,18 +67,6 @@ export default class extends Controller {
     }
     {
       console.error('Editor Controller connected without image data or a landscape ID.');
-    }
-  }
-
-  setBrushSizeDisplay(size) {
-    if (this.hasBrushSizeControlTarget) {
-      const brushSizeInput = this.brushSizeControlTarget.querySelector('#brush-size');
-      if (brushSizeInput) {
-        brushSizeInput.value = size;
-      }
-    }
-    if (this.hasBrushSizeDisplayTarget) {
-      this.brushSizeDisplayTarget.textContent = `${size}px`;
     }
   }
 
@@ -191,7 +183,10 @@ export default class extends Controller {
 
   updateBrushSize(event) {
     const size = parseInt(event.target.value, 10);
+    this.setBrushSize(size);
+  }
 
+  setBrushSize(size) {
     const konvaController = this.application.getControllerForElementAndIdentifier(
       this.konvaCanvasWrapperTarget,
       'konva-canvas'
@@ -201,17 +196,19 @@ export default class extends Controller {
       konvaController.brushSizeValue = size;
     }
 
-    const slider = event.target;
-    const min = parseInt(slider.min, 10);
-    const max = parseInt(slider.max, 10);
+    const min = parseInt(this.brushRangeTarget.min, 10);
+    const max = parseInt(this.brushRangeTarget.max, 10);
 
-    // Calculate the fill percentage once
-    const fillPercentage = ((size - min) / (max - min)) * 100;
+    const fillPercentage = (size - min) / (max - min);
+    const thumbSize = 10 + ((size - min) / (max - min)) * 15;
+    const fillWidth = `${fillPercentage * 100}%`;
+    const thumbLeft = `calc(${fillPercentage * 100}% + (${15 - 5}px) * ${fillPercentage} - 5px)`;
 
-    // Set a single CSS variable to control everything
-    slider.style.setProperty('--fill-percentage', `${fillPercentage}%`);
+    this.fillTarget.style.width = fillWidth;
+    this.thumbTarget.style.left = thumbLeft;
+    this.thumbTarget.style.setProperty('--thumb-size', `${thumbSize}px`);
 
-    this.setBrushSizeDisplay(size);
+    this.brushSizeDisplayTarget.textContent = `${size}px`;
   }
 
   clearSelection() {

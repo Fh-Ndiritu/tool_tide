@@ -107,7 +107,7 @@ DESTINATION_IMAGE_FORMATS = %w[
 ].freeze
 
 LANDSCAPE_PRESETS = {
-  "cottage" => "Charming abundance",
+  "cottage" => "Charming vibe",
   "zen" => "Serene and calm",
   "desert" => "Resilient and hardy",
   "mediterranean" => "Fragrant and relaxed",
