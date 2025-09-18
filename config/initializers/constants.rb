@@ -117,32 +117,7 @@ LANDSCAPE_PRESETS = {
 
 PROMPTS = YAML.load_file(Rails.root.join("config/prompts.yml"))
 
-SUGGESTED_PLANTS_SCHEMA = {
-  type: "array",
-  items: {
-    type: "object",
-    properties: {
-      name: { type: "string", description: "English name of the plant" },
-      description: { type: "string",
-                     description: "An adjective rich sentence that mentions the colors, looks and name of flower." }
-    },
-    required: %w[name description]
-  },
-
-  required: %w[name description]
-}.freeze
-
-LOCALIZED_PROMPT_SCHEMA = {
-  type: "object",
-  properties: {
-    updated_prompt: { type: "string",
-                      description: "The updated prompt with the new flowers and the concise adjectives of how they look" }
-  },
-
-  required: [ "updated_prompt" ]
-}.freeze
-
-PRO_TRIAL_CREDITS = 60
+PRO_TRIAL_CREDITS = 30
 
 # currency credits
 PRO_CREDITS_PER_USD = 20
