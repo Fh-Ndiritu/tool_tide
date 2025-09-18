@@ -16,7 +16,7 @@ module Designable
       url: "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent",
       headers: {
         "Content-Type" => "application/json",
-        "x-goog-api-key" => Rails.env.development? ?  ENV["GEMINI_API_KEY"] : ENV["GEMINI_API_KEYS"].split("__").sample
+        "x-goog-api-key" => ENV["GEMINI_API_KEYS"].split("__").sample
       }
     ) do |f|
       f.response :raise_error

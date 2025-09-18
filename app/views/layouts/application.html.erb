@@ -89,7 +89,7 @@
     <%= Sentry.get_trace_propagation_meta.html_safe %>
   </head>
   <body data-controller="loader">
-    <%= render partial: "layouts/shared/loader", locals: { record: @maskmask_request, klasses: "hidden" } %>
+    <%= render partial: "layouts/shared/loader", locals: { record: nil, klasses: "hidden" } %>
     <%= render "shared/navbar" %>
     <main class="
       <%= content_for(:main_classes) %>
