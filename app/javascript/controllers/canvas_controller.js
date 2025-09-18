@@ -2,7 +2,15 @@
 import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
-  static targets = ['fileInput', 'dropZone', 'progressBarContainer', 'progressBar', 'form', 'deviceWidthInput'];
+  static targets = [
+    'fileInput',
+    'dropZone',
+    'progressBarContainer',
+    'progressBar',
+    'form',
+    'deviceWidthInput',
+    'canvaSubmit',
+  ];
 
   MAX_UPLOAD_IMAGE_WIDTH = 1024;
   MAX_UPLOAD_IMAGE_HEIGHT = 1024;
@@ -104,7 +112,7 @@ export default class extends Controller {
 
       // Automatically submit the form once the file input is updated.
       // This will trigger a Rails redirect or Turbo Stream response to the editor view.
-      this.formTarget.submit();
+      this.canvaSubmitTarget.click();
     } catch (error) {
       console.error('File processing for upload failed:', error);
       this.showMessage(`File processing failed: ${error.message}. Please try again.`);

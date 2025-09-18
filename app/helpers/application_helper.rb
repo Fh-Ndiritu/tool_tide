@@ -35,7 +35,7 @@ module ApplicationHelper
     when "overlaying"
       "Analyzing Garden Area"
     else
-      "Loading ..."
+      "Just a moment 🧘"
     end
   end
 end

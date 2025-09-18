@@ -11,5 +11,5 @@
   <% end %>
   <%= form.hidden_field :device_width, data: { canvas_target: "deviceWidthInput" } %>
   <%= form.file_field :image, data: { action: "change->canvas#handleFileChange", canvas_target: "fileInput" } , class: "hidden", accept: "image/*" %>
-  <%= form.submit "Upload", class: "hidden" %>
+  <%= form.submit "Upload", class: "hidden", data: {action: 'loader#showLoader', canvas_target: 'canvaSubmit'} %>
 <% end %>
