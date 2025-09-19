@@ -6,7 +6,7 @@
       </h3>
       <h4 class="text-base text-secondary"><%= mask_request.user_error %></h4>
     </div>
-    <div class="flex flex-wrap items-center gap-2" data-controller="turbo-method">
+    <div class="flex flex-wrap justify-between gap-2" data-controller="turbo-method">
       <%= link_to "Brush Edit", new_canva_mask_request_path(mask_request.canva), class: "max-sm:!text-sm cute-btn secondary-btn" %>
       <%= link_to "New Design", new_canva_path, class: "max-sm:!text-sm cute-btn primary-btn" %>
       <%= link_to "Change Style", edit_mask_request_path(mask_request, manual: true), class: "max-sm:!text-sm cute-btn accent-btn" %>

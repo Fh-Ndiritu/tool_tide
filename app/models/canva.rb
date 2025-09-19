@@ -6,7 +6,7 @@ class Canva < ApplicationRecord
   has_many :mask_requests, dependent: :destroy
 
   def drawable_image
-    variant = image.variant(resize_to_limit: [ device_width, device_width ]).processed
+    variant = image.variant(resize_to_limit: [ device_width, nil ]).processed
     blob = variant.image.blob
     blob.analyze unless blob.analyzed?
     blob
