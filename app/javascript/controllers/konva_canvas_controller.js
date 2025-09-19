@@ -3,7 +3,7 @@ import { Controller } from '@hotwired/stimulus';
 
 const GREEN_COLOR = 'rgba(100 245 3 / 0.5)';
 const MASK_COLOR = 'rgba(100, 245, 3, 1)';
-const DEFAULT_MASK = 'rgba(12, 12, 12, 0.2)';
+const DEFAULT_MASK = 'rgba(12, 12, 12, 0)';
 const CURSOR_COLOR = 'aqua'; // New constant for the cursor color
 
 export default class extends Controller {
@@ -541,59 +541,6 @@ export default class extends Controller {
     }
   }
 
-  _convertGreenToBlack(canvas, context) {
-    const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-    const data = imageData.data;
-
-    const baseColor = { r: 100, g: 245, b: 3, a: 0.5 };
-    const backgroundR = 12;
-    const backgroundG = 12;
-    const backgroundB = 12;
-    const backgroundA = 0.2;
-
-    const r_target = Math.round(baseColor.r * baseColor.a + backgroundR * (1 - baseColor.a));
-    const g_target = Math.round(baseColor.g * baseColor.a + backgroundG * (1 - baseColor.a));
-    const b_target = Math.round(baseColor.b * baseColor.a + backgroundB * (1 - baseColor.a));
-    const a_target = Math.round(baseColor.a * 255 + backgroundA * 255 * (1 - baseColor.a));
-
-    const background_rgb = { r: backgroundR, g: backgroundG, b: backgroundB };
-
-    for (let i = 0; i < data.length; i += 4) {
-      const r = data[i];
-      const g = data[i + 1];
-      const b = data[i + 2];
-      const a = data[i + 3];
-
-      const isGreen =
-        Math.abs(r - r_target) < 10 &&
-        Math.abs(g - g_target) < 10 &&
-        Math.abs(b - b_target) < 10 &&
-        Math.abs(a - a_target) < 10;
-      const isDefault =
-        Math.abs(r - background_rgb.r) < 10 &&
-        Math.abs(g - background_rgb.g) < 10 &&
-        Math.abs(b - background_rgb.b) < 10;
-
-      if (isGreen) {
-        data[i] = 0;
-        data[i + 1] = 0;
-        data[i + 2] = 0;
-        data[i + 3] = 255;
-      } else if (isDefault) {
-        data[i] = 255;
-        data[i + 1] = 255;
-        data[i + 2] = 255;
-        data[i + 3] = 255;
-      } else {
-        data[i] = 255;
-        data[i + 1] = 255;
-        data[i + 2] = 255;
-        data[i + 3] = 255;
-      }
-    }
-    context.putImageData(imageData, 0, 0);
-  }
-
   destroyKonva() {
     if (this.stage) {
       this.stage.destroy();
@@ -642,8 +589,6 @@ export default class extends Controller {
       originalWidth,
       originalHeight
     );
-
-    this._convertGreenToBlack(finalMaskCanvas, finalMaskContext);
 
     return finalMaskCanvas.toDataURL('image/png');
   }

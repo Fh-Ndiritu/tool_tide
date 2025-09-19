@@ -54,19 +54,26 @@ class MaskRequest < ApplicationRecord
 
   def resize_mask
     api_image = MiniMagick::Image.read(canva.api_image_blob.download)
-    mask_file = MiniMagick::Image.read(mask.blob.download)
-    return if api_image.dimensions == mask_file.dimensions
+    mask_image = MiniMagick::Image.read(mask.blob.download)
 
-    mask_file.resize "#{api_image.width}x#{api_image.height}!"
-    io_object = StringIO.new(mask_file.to_blob)
+    mask_image.resize "#{api_image.width}x#{api_image.height}!"
 
+    # Then modify the colors and alpha channel
+    mask_image.combine_options do |c|
+      c.colorspace "Gray" # Convert to grayscale
+      c.threshold "50%" # Ensure it's a binary image
+      c.transparent "white" # Make the white background transparent
+    end
+
+    # Create a new blob and attach it
+    io_object = StringIO.new(mask_image.to_blob)
     blob = ActiveStorage::Blob.create_and_upload!(
       io: io_object,
       filename: "final_mask.png",
       content_type: "image/png"
     )
-   mask.attach(blob)
-   save!
+    mask.attach(blob)
+    save!
   end
 
   def overlay_mask
