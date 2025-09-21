@@ -33,6 +33,12 @@ class MaskRequest < ApplicationRecord
     overlaying: 12
   }
 
+  enum :visibility, {
+    personal: 0,
+    everyone: 1,
+    hidden: 2
+  }
+
   def purge_views
     main_view.purge
     rotated_view.purge
@@ -87,6 +93,10 @@ class MaskRequest < ApplicationRecord
 
     save_overlay(mask_image, api_image)
     save!
+  end
+
+  def face_image
+    [ main_view.presence, rotated_view.presence, drone_view.presence ].compact.sample
   end
 
   private

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  get :explore, to: "mask_requests#explore"
   get :low_credits, to: "credits#low"
 
   resources :canvas, shallow: true do
