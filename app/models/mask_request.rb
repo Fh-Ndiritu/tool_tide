@@ -58,12 +58,11 @@ class MaskRequest < ApplicationRecord
 
     mask_image.resize "#{api_image.width}x#{api_image.height}!"
 
-    # Then modify the colors and alpha channel
     mask_image.combine_options do |c|
-      c.colorspace "Gray" # Convert to grayscale
-      c.threshold "50%" # Ensure it's a binary image
-      c.transparent "white" # Make the white background transparent
+      c.fuzz "10%" # Allow for slight variations in white
+      c.transparent "white" # Make white transparent
     end
+
 
     # Create a new blob and attach it
     io_object = StringIO.new(mask_image.to_blob)
@@ -111,18 +110,18 @@ class MaskRequest < ApplicationRecord
 
   def save_overlay(mask_image, api_image)
     mask_image.combine_options do |c|
-      c.colorspace("Gray")
-      c.threshold("50%")
+      c.transparent "white"  # Make white transparent
     end
 
-    mask_image.transparent("white")
-
+    # Composite the mask over the target image
     masked_image = api_image.composite(mask_image) do |c|
-      c.compose "Over"
+      c.compose "Over"  # Overlay the mask
+      c.gravity "Center" # Align the mask with the target image
     end
 
     blob = upload_blob(masked_image)
 
     overlay.attach(blob)
+    save!
   end
 end

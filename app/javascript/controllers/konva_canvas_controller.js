@@ -572,12 +572,12 @@ export default class extends Controller {
 
     const originalWidth = this.imageNode.image().naturalWidth;
     const originalHeight = this.imageNode.image().naturalHeight;
-
     const finalMaskCanvas = document.createElement('canvas');
     finalMaskCanvas.width = originalWidth;
     finalMaskCanvas.height = originalHeight;
     const finalMaskContext = finalMaskCanvas.getContext('2d');
 
+    // Draw the original mask onto the new canvas
     finalMaskContext.drawImage(
       this.maskContext.canvas,
       0,
@@ -590,6 +590,36 @@ export default class extends Controller {
       originalHeight
     );
 
+    // Get the pixel data from the canvas
+    const imageData = finalMaskContext.getImageData(0, 0, originalWidth, originalHeight);
+    const data = imageData.data;
+
+    // Loop through each pixel
+    for (let i = 0; i < data.length; i += 4) {
+      const r = data[i];
+      const g = data[i + 1];
+      const b = data[i + 2];
+
+      // Check if the pixel is green (green channel is dominant)
+      if (g > 100 && g > r && g > b) {
+        // Convert green to true violet (#7F00FF)
+        data[i] = 127; // R (true violet)
+        data[i + 1] = 0; // G (true violet)
+        data[i + 2] = 255; // B (true violet)
+        data[i + 3] = 255; // Alpha (fully opaque)
+      } else {
+        // Convert everything else to white
+        data[i] = 255; // R
+        data[i + 1] = 255; // G
+        data[i + 2] = 255; // B
+        data[i + 3] = 255; // Alpha (fully opaque)
+      }
+    }
+
+    // Put the modified pixel data back onto the canvas
+    finalMaskContext.putImageData(imageData, 0, 0);
+
+    // Return the modified canvas as a data URL
     return finalMaskCanvas.toDataURL('image/png');
   }
 }

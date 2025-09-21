@@ -13,10 +13,12 @@ class DesignGenerator
     @mask_request.update user_error: nil, error_msg: nil, progress: :preparing
     @mask_request.purge_views
 
-    @mask_request.resize_mask
+    unless @mask_request.overlay.attached?
+      @mask_request.resize_mask
 
-    @mask_request.overlaying!
-    @mask_request.overlay_mask
+      @mask_request.overlaying!
+      @mask_request.overlay_mask
+    end
 
     @mask_request.main_view!
     main_view

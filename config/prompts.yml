@@ -1,132 +1,132 @@
 landscape_presets:
   cottage: |
-    Your PRIMARY JOB is to landscape and design a neat, well-thought-out, and vibrant garden **EXCLUSIVELY within the area masked in black on the image.**
-     **ABSOLUTELY NO MODIFICATIONS SHALL BE MADE TO ANY PIXEL OUTSIDE OF THE BLACK MASKED REGION.** The existing content of the unmasked areas must be preserved **IDENTICALLY and WITHOUT ALTERATION.**
+    Your PRIMARY JOB is to landscape and design a neat, well-thought-out, and vibrant garden **EXCLUSIVELY within the area masked in violet on the image.**
+     **ABSOLUTELY NO MODIFICATIONS SHALL BE MADE TO ANY PIXEL OUTSIDE OF THE violet MASKED REGION.** The existing content of the unmasked areas must be preserved **IDENTICALLY and WITHOUT ALTERATION.**
 
      Follow these steps to provide a stunning design for the **masked area only**:
 
-     1.  **STRICTLY ENFORCE:** YOU SHALL NOT modify any other areas of the image except for the precise region marked by black paint. **The black mask is your canvas, and your canvas ONLY.**
-     2.  Analyze the unmasked areas of the image for features like doors or gates that lead into or border the black masked area.
+     1.  **STRICTLY ENFORCE:** YOU SHALL NOT modify any other areas of the image except for the precise region marked by violet paint. **The violet mask is your canvas, and your canvas ONLY.**
+     2.  Analyze the unmasked areas of the image for features like doors or gates that lead into or border the violet masked area.
      3.  Design neat, ultra-modern, and chic pathways for any identified doors or gates that lead into the now-garden (previously masked) area.
-     4.  Partition the remaining black masked area further to create defined spaces for plant placement, using elements like concrete, strategic rock placement, or elegantly arranged potted plants.
+     4.  Partition the remaining violet masked area further to create defined spaces for plant placement, using elements like concrete, strategic rock placement, or elegantly arranged potted plants.
      5.  Adopt a **cottage-style design** for the garden ensuring thoughtul yet not overwhelming designs.
      6.  Select unique, vibrant flowers that complement the existing architectural style and "language" of the house.
      7.  Place these flowers in neat, well-landscaped designs within the designated spaces. Use shorter plants to ensure a comprehensive view of the entire design.
      8.  Feel free to incorporate neat, manicured grass lawns where appropriate within the new garden design.
      9.  The user may request other features, a change of plants, different flowers, etc. **ONLY use these when specifically requested to override these default instructions.**
      10. **Carefully go through and adhere to each of these steps before making any design decisions.**
-     11. ENSURE YOU DO NOT modify anything outside the masked black area that is set aside for the garden, the user intends to use the rest of the land in other ways.
+     11. ENSURE YOU DO NOT modify anything outside the masked violet area that is set aside for the garden, the user intends to use the rest of the land in other ways.
      12. The final output must be 8k resolution, highly detailed, professional, photorealistic, and display a vibrant design.
      13. Return a stunning, neat, and modern-looking garden, meticulously landscaped in a cottage style.
-     14. **CRITICAL:** The area painted in black **MUST be entirely replaced with the garden design.** **DO NOT return any black painted areas, shadows from the mask, or visual remnants of the original mask.**
+     14. **CRITICAL:** The area painted in violet **MUST be entirely replaced with the garden design.** **DO NOT return any violet painted areas, shadows from the mask, or visual remnants of the original mask.**
     YOU SHALL include the image in your response!
 
   zen: |
-    Your PRIMARY JOB is to landscape and design a neat, well-thought-out, and vibrant garden **EXCLUSIVELY within the area masked in black on the image.**
-    **ABSOLUTELY NO MODIFICATIONS SHALL BE MADE TO ANY PIXEL OUTSIDE OF THE BLACK MASKED REGION.** The existing content of the unmasked areas must be preserved **IDENTICALLY and WITHOUT ALTERATION.**
+    Your PRIMARY JOB is to landscape and design a neat, well-thought-out, and vibrant garden **EXCLUSIVELY within the area masked in violet on the image.**
+    **ABSOLUTELY NO MODIFICATIONS SHALL BE MADE TO ANY PIXEL OUTSIDE OF THE violet MASKED REGION.** The existing content of the unmasked areas must be preserved **IDENTICALLY and WITHOUT ALTERATION.**
 
     Follow these steps to provide a stunning design for the **masked area only**:
 
-    1.  **STRICTLY ENFORCE:** YOU SHALL NOT modify any other areas of the image except for the precise region marked by black paint. **The black mask is your canvas, and your canvas ONLY.**
-    2.  Analyze the unmasked areas of the image for features like doors or gates that lead into or border the black masked area.
+    1.  **STRICTLY ENFORCE:** YOU SHALL NOT modify any other areas of the image except for the precise region marked by violet paint. **The violet mask is your canvas, and your canvas ONLY.**
+    2.  Analyze the unmasked areas of the image for features like doors or gates that lead into or border the violet masked area.
     3.  Design neat, ultra-modern, and chic pathways for any identified doors or gates that lead into the now-garden (previously masked) area.
-    4.  Partition the remaining black masked area further to create defined spaces for plant placement, using elements like concrete, strategic rock placement, or elegantly arranged potted plants.
+    4.  Partition the remaining violet masked area further to create defined spaces for plant placement, using elements like concrete, strategic rock placement, or elegantly arranged potted plants.
     5.  Adopt a **zen-style design** for the garden ensuring thoughtul yet not overwhelming designs.
     6.  Select unique, vibrant flowers that complement the existing architectural style and "language" of the house.
     7.  Place these flowers in neat, well-landscaped designs within the designated spaces. Use shorter plants to ensure a comprehensive view of the entire design.
     8.  Feel free to incorporate neat, manicured grass lawns where appropriate within the new garden design.
     9.  The user may request other features, a change of plants, different flowers, etc. **ONLY use these when specifically requested to override these default instructions.**
     10. **Carefully go through and adhere to each of these steps before making any design decisions.**
-    11. ENSURE YOU DO NOT modify anything outside the masked black area that is set aside for the garden, the user intends to use the rest of the land in other ways.
+    11. ENSURE YOU DO NOT modify anything outside the masked violet area that is set aside for the garden, the user intends to use the rest of the land in other ways.
     12. The final output must be 8k resolution, highly detailed, professional, photorealistic, and display a vibrant design.
     13. Return a stunning, neat, and modern-looking garden, meticulously landscaped in a zen style.
-    14. **CRITICAL:** The area painted in black **MUST be entirely replaced with the garden design.** **DO NOT return any black painted areas, shadows from the mask, or visual remnants of the original mask.**
+    14. **CRITICAL:** The area painted in violet **MUST be entirely replaced with the garden design.** **DO NOT return any violet painted areas, shadows from the mask, or visual remnants of the original mask.**
     YOU SHALL include the image in your response!
 
   desert: |
-    Your PRIMARY JOB is to landscape and design a neat, well-thought-out, and vibrant garden **EXCLUSIVELY within the area masked in black on the image.**
-    **ABSOLUTELY NO MODIFICATIONS SHALL BE MADE TO ANY PIXEL OUTSIDE OF THE BLACK MASKED REGION.** The existing content of the unmasked areas must be preserved **IDENTICALLY and WITHOUT ALTERATION.**
+    Your PRIMARY JOB is to landscape and design a neat, well-thought-out, and vibrant garden **EXCLUSIVELY within the area masked in violet on the image.**
+    **ABSOLUTELY NO MODIFICATIONS SHALL BE MADE TO ANY PIXEL OUTSIDE OF THE violet MASKED REGION.** The existing content of the unmasked areas must be preserved **IDENTICALLY and WITHOUT ALTERATION.**
 
     Follow these steps to provide a stunning design for the **masked area only**:
 
-    1.  **STRICTLY ENFORCE:** YOU SHALL NOT modify any other areas of the image except for the precise region marked by black paint. **The black mask is your canvas, and your canvas ONLY.**
-    2.  Analyze the unmasked areas of the image for features like doors or gates that lead into or border the black masked area.
+    1.  **STRICTLY ENFORCE:** YOU SHALL NOT modify any other areas of the image except for the precise region marked by violet paint. **The violet mask is your canvas, and your canvas ONLY.**
+    2.  Analyze the unmasked areas of the image for features like doors or gates that lead into or border the violet masked area.
     3.  Design neat, ultra-modern, and chic pathways for any identified doors or gates that lead into the now-garden (previously masked) area.
-    4.  Partition the remaining black masked area further to create defined spaces for plant placement, using elements like concrete, strategic rock placement, or elegantly arranged potted plants.
+    4.  Partition the remaining violet masked area further to create defined spaces for plant placement, using elements like concrete, strategic rock placement, or elegantly arranged potted plants.
     5.  Adopt a **desert-style design** for the garden ensuring thoughtul yet not overwhelming designs.
     6.  Select unique, vibrant flowers that complement the existing architectural style and "language" of the house.
     7.  Place these flowers in neat, well-landscaped designs within the designated spaces. Use shorter plants to ensure a comprehensive view of the entire design.
     8.  Feel free to incorporate neat, manicured grass lawns where appropriate within the new garden design.
     9.  The user may request other features, a change of plants, different flowers, etc. **ONLY use these when specifically requested to override these default instructions.**
     10. **Carefully go through and adhere to each of these steps before making any design decisions.**
-    11. ENSURE YOU DO NOT modify anything outside the masked black area that is set aside for the garden, the user intends to use the rest of the land in other ways.
+    11. ENSURE YOU DO NOT modify anything outside the masked violet area that is set aside for the garden, the user intends to use the rest of the land in other ways.
     12. The final output must be 8k resolution, highly detailed, professional, photorealistic, and display a vibrant design.
     13. Return a stunning, neat, and modern-looking garden, meticulously landscaped in a desert style.
-    14. **CRITICAL:** The area painted in black **MUST be entirely replaced with the garden design.** **DO NOT return any black painted areas, shadows from the mask, or visual remnants of the original mask.**
+    14. **CRITICAL:** The area painted in violet **MUST be entirely replaced with the garden design.** **DO NOT return any violet painted areas, shadows from the mask, or visual remnants of the original mask.**
     YOU SHALL include the image in your response!
 
   mediterranean: |
-    Your PRIMARY JOB is to landscape and design a neat, well-thought-out, and vibrant garden **EXCLUSIVELY within the area masked in black on the image.**
-    **ABSOLUTELY NO MODIFICATIONS SHALL BE MADE TO ANY PIXEL OUTSIDE OF THE BLACK MASKED REGION.** The existing content of the unmasked areas must be preserved **IDENTICALLY and WITHOUT ALTERATION.**
+    Your PRIMARY JOB is to landscape and design a neat, well-thought-out, and vibrant garden **EXCLUSIVELY within the area masked in violet on the image.**
+    **ABSOLUTELY NO MODIFICATIONS SHALL BE MADE TO ANY PIXEL OUTSIDE OF THE violet MASKED REGION.** The existing content of the unmasked areas must be preserved **IDENTICALLY and WITHOUT ALTERATION.**
 
     Follow these steps to provide a stunning design for the **masked area only**:
 
-    1.  **STRICTLY ENFORCE:** YOU SHALL NOT modify any other areas of the image except for the precise region marked by black paint. **The black mask is your canvas, and your canvas ONLY.**
-    2.  Analyze the unmasked areas of the image for features like doors or gates that lead into or border the black masked area.
+    1.  **STRICTLY ENFORCE:** YOU SHALL NOT modify any other areas of the image except for the precise region marked by violet paint. **The violet mask is your canvas, and your canvas ONLY.**
+    2.  Analyze the unmasked areas of the image for features like doors or gates that lead into or border the violet masked area.
     3.  Design neat, ultra-modern, and chic pathways for any identified doors or gates that lead into the now-garden (previously masked) area.
-    4.  Partition the remaining black masked area further to create defined spaces for plant placement, using elements like concrete, strategic rock placement, or elegantly arranged potted plants.
+    4.  Partition the remaining violet masked area further to create defined spaces for plant placement, using elements like concrete, strategic rock placement, or elegantly arranged potted plants.
     5.  Adopt a **mediterranean-style design** for the garden ensuring thoughtul yet not overwhelming designs.
     6.  Select unique, vibrant flowers that complement the existing architectural style and "language" of the house.
     7.  Place these flowers in neat, well-landscaped designs within the designated spaces. Use shorter plants to ensure a comprehensive view of the entire design.
     8.  Feel free to incorporate neat, manicured grass lawns where appropriate within the new garden design.
     9.  The user may request other features, a change of plants, different flowers, etc. **ONLY use these when specifically requested to override these default instructions.**
     10. **Carefully go through and adhere to each of these steps before making any design decisions.**
-    11. ENSURE YOU DO NOT modify anything outside the masked black area that is set aside for the garden, the user intends to use the rest of the land in other ways.
+    11. ENSURE YOU DO NOT modify anything outside the masked violet area that is set aside for the garden, the user intends to use the rest of the land in other ways.
     12. The final output must be 8k resolution, highly detailed, professional, photorealistic, and display a vibrant design.
     13. Return a stunning, neat, and modern-looking garden, meticulously landscaped in a mediterranean style.
-    14. **CRITICAL:** The area painted in black **MUST be entirely replaced with the garden design.** **DO NOT return any black painted areas, shadows from the mask, or visual remnants of the original mask.**
+    14. **CRITICAL:** The area painted in violet **MUST be entirely replaced with the garden design.** **DO NOT return any violet painted areas, shadows from the mask, or visual remnants of the original mask.**
     YOU SHALL include the image in your response!
 
   tropical: |
-    Your PRIMARY JOB is to landscape and design a neat, well-thought-out, and vibrant garden **EXCLUSIVELY within the area masked in black on the image.**
-    **ABSOLUTELY NO MODIFICATIONS SHALL BE MADE TO ANY PIXEL OUTSIDE OF THE BLACK MASKED REGION.** The existing content of the unmasked areas must be preserved **IDENTICALLY and WITHOUT ALTERATION.**
+    Your PRIMARY JOB is to landscape and design a neat, well-thought-out, and vibrant garden **EXCLUSIVELY within the area masked in violet on the image.**
+    **ABSOLUTELY NO MODIFICATIONS SHALL BE MADE TO ANY PIXEL OUTSIDE OF THE violet MASKED REGION.** The existing content of the unmasked areas must be preserved **IDENTICALLY and WITHOUT ALTERATION.**
 
     Follow these steps to provide a stunning design for the **masked area only**:
 
-    1.  **STRICTLY ENFORCE:** YOU SHALL NOT modify any other areas of the image except for the precise region marked by black paint. **The black mask is your canvas, and your canvas ONLY.**
-    2.  Analyze the unmasked areas of the image for features like doors or gates that lead into or border the black masked area.
+    1.  **STRICTLY ENFORCE:** YOU SHALL NOT modify any other areas of the image except for the precise region marked by violet paint. **The violet mask is your canvas, and your canvas ONLY.**
+    2.  Analyze the unmasked areas of the image for features like doors or gates that lead into or border the violet masked area.
     3.  Design neat, ultra-modern, and chic pathways for any identified doors or gates that lead into the now-garden (previously masked) area.
-    4.  Partition the remaining black masked area further to create defined spaces for plant placement, using elements like concrete, strategic rock placement, or elegantly arranged potted plants.
+    4.  Partition the remaining violet masked area further to create defined spaces for plant placement, using elements like concrete, strategic rock placement, or elegantly arranged potted plants.
     5.  Adopt a **tropical-style design** for the garden ensuring thoughtul yet not overwhelming designs.
     6.  Select unique, vibrant flowers that complement the existing architectural style and "language" of the house.
     7.  Place these flowers in neat, well-landscaped designs within the designated spaces. Use shorter plants to ensure a comprehensive view of the entire design.
     8.  Feel free to incorporate neat, manicured grass lawns where appropriate within the new garden design.
     9.  The user may request other features, a change of plants, different flowers, etc. **ONLY use these when specifically requested to override these default instructions.**
     10. **Carefully go through and adhere to each of these steps before making any design decisions.**
-    11. ENSURE YOU DO NOT modify anything outside the masked black area that is set aside for the garden, the user intends to use the rest of the land in other ways.
+    11. ENSURE YOU DO NOT modify anything outside the masked violet area that is set aside for the garden, the user intends to use the rest of the land in other ways.
     12. The final output must be 8k resolution, highly detailed, professional, photorealistic, and display a vibrant design.
     13. Return a stunning, neat, and modern-looking garden, meticulously landscaped in a tropical style.
-    14. **CRITICAL:** The area painted in black **MUST be entirely replaced with the garden design.** **DO NOT return any black painted areas, shadows from the mask, or visual remnants of the original mask.**
+    14. **CRITICAL:** The area painted in violet **MUST be entirely replaced with the garden design.** **DO NOT return any violet painted areas, shadows from the mask, or visual remnants of the original mask.**
     YOU SHALL include the image in your response!
 
   modern: |
-    Your PRIMARY JOB is to landscape and design a neat, well-thought-out, and vibrant garden **EXCLUSIVELY within the area masked in black on the image.**
-    **ABSOLUTELY NO MODIFICATIONS SHALL BE MADE TO ANY PIXEL OUTSIDE OF THE BLACK MASKED REGION.** The existing content of the unmasked areas must be preserved **IDENTICALLY and WITHOUT ALTERATION.**
+    Your PRIMARY JOB is to landscape and design a neat, well-thought-out, and vibrant garden **EXCLUSIVELY within the area masked in violet on the image.**
+    **ABSOLUTELY NO MODIFICATIONS SHALL BE MADE TO ANY PIXEL OUTSIDE OF THE violet MASKED REGION.** The existing content of the unmasked areas must be preserved **IDENTICALLY and WITHOUT ALTERATION.**
 
     Follow these steps to provide a stunning design for the **masked area only**:
 
-    1.  **STRICTLY ENFORCE:** YOU SHALL NOT modify any other areas of the image except for the precise region marked by black paint. **The black mask is your canvas, and your canvas ONLY.**
-    2.  Analyze the unmasked areas of the image for features like doors or gates that lead into or border the black masked area.
+    1.  **STRICTLY ENFORCE:** YOU SHALL NOT modify any other areas of the image except for the precise region marked by violet paint. **The violet mask is your canvas, and your canvas ONLY.**
+    2.  Analyze the unmasked areas of the image for features like doors or gates that lead into or border the violet masked area.
     3.  Design neat, ultra-modern, and chic pathways for any identified doors or gates that lead into the now-garden (previously masked) area.
-    4.  Partition the remaining black masked area further to create defined spaces for plant placement, using elements like concrete, strategic rock placement, or elegantly arranged potted plants.
+    4.  Partition the remaining violet masked area further to create defined spaces for plant placement, using elements like concrete, strategic rock placement, or elegantly arranged potted plants.
     5.  Adopt a **meodern-style design** for the garden ensuring thoughtul yet not overwhelming designs.
     6.  Select unique, vibrant flowers that complement the existing architectural style and "language" of the house.
     7.  Place these flowers in neat, well-landscaped designs within the designated spaces. Use shorter plants to ensure a comprehensive view of the entire design.
     8.  Feel free to incorporate neat, manicured grass lawns where appropriate within the new garden design.
     9.  The user may request other features, a change of plants, different flowers, etc. **ONLY use these when specifically requested to override these default instructions.**
     10. **Carefully go through and adhere to each of these steps before making any design decisions.**
-    11. ENSURE YOU DO NOT modify anything outside the masked black area that is set aside for the garden, the user intends to use the rest of the land in other ways.
+    11. ENSURE YOU DO NOT modify anything outside the masked violet area that is set aside for the garden, the user intends to use the rest of the land in other ways.
     12. The final output must be 8k resolution, highly detailed, professional, photorealistic, and display a vibrant design.
     13. Return a stunning, neat, and modern-looking garden, meticulously landscaped in a meodern style.
-    14. **CRITICAL:** The area painted in black **MUST be entirely replaced with the garden design.** **DO NOT return any black painted areas, shadows from the mask, or visual remnants of the original mask.**
+    14. **CRITICAL:** The area painted in violet **MUST be entirely replaced with the garden design.** **DO NOT return any violet painted areas, shadows from the mask, or visual remnants of the original mask.**
     YOU SHALL include the image in your response!
