@@ -24,17 +24,17 @@
         <%= render ButtonComponent.new(
           text: "How it Works",
           href: "#how_it_works",
-          classes: "#{active_item(new_landscape_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
+          classes: "#{active_item(root_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
           ) %>
         <%= render ButtonComponent.new(
           text: "Pricing",
           href: "#pricing",
-          classes: "#{active_item(new_landscape_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
+          classes: " gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
           ) %>
         <%= render ButtonComponent.new(
           text: "FAQ",
           href: "#faq",
-          classes: "#{active_item(new_landscape_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
+          classes: " gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
           ) %>
       <% else %>
         <%= render ButtonComponent.new(
@@ -47,18 +47,9 @@
       <!--Global Links-->
       <%= render ButtonComponent.new(
         text: "AI Landscaper",
-        href: new_landscape_path,
-        classes: "#{active_item(new_landscape_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
+        href: new_canva_path,
+        classes: "#{active_item(new_canva_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
         ) %>
-      <div data-controller="dropdown" class="relative flex-col flex justify-center">
-        <button type="button" data-action="dropdown#toggle click@window->dropdown#hide" class="<%= active_item(images_path) || active_item(extract_text_images_path) %> nav-btn">
-          Extraction Features
-        </button>
-        <div data-dropdown-target="menu" class="hidden md:absolute top-full left-0 md:mt-2 py-2 md:w-48 bg-accent px-3 rounded-md shadow-lg z-20">
-          <%= link_to "Text Extractor", extract_text_images_path, class: "#{active_item(extract_text_images_path)} my-2 block nav-btn w-full" %>
-          <%= link_to "Image Converter", images_path, class: "#{active_item(images_path)} my-2 block nav-btn w-full" %>
-        </div>
-      </div>
       <!--Global Links-->
       <!--When Logged IN -->
       <% if user_signed_in? %>
@@ -69,12 +60,13 @@
         ) %>
         <%= render ButtonComponent.new(
         text: "History",
-        href: landscapes_path,
-        classes: "#{active_item(landscapes_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
+        href: canvas_path,
+        classes: "#{active_item(canvas_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
         ) %>
         <%= button_to "Log Out", destroy_user_session_path, method: :delete, class: "nav-btn" %>
         <!--When Logged IN-->
       <% else %>
+        <%= link_to "Sign Up", new_user_registration_path,  class: "#{active_item(new_user_registration_path)} nav-btn" %>
         <%= link_to "Login", new_user_session_path,  class: "#{active_item(new_user_session_path)} nav-btn" %>
       <% end %>
     </div>

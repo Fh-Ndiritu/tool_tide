@@ -6,9 +6,9 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  has_many :landscapes, dependent: :destroy
-  has_many :landscape_requests, through: :landscapes
   has_many :payment_transactions, dependent: :destroy
+
+  has_many :canvas, dependent: :destroy
 
   has_many :credits, dependent: :destroy
 
@@ -28,21 +28,8 @@ class User < ApplicationRecord
     end
   end
 
-  def received_daily_credits?
-    received_daily_credits.in?(Time.zone.today.all_day)
-  end
-
-  def afford_generation?(landscape_request)
-    localization_cost = landscape_request.use_location? ? LOCALIZED_PLANT_COST : 0
-    pro_access_credits >= (GOOGLE_IMAGE_COST * 3 + localization_cost)
-  end
-
-  def charge_prompt_localization!
-    charge_pro_cost!(LOCALIZED_PLANT_COST)
-  end
-
-  def charge_image_generation!(landscape_request)
-    charge_pro_cost!(GOOGLE_IMAGE_COST * landscape_request.modified_images.size)
+  def afford_generation?
+    pro_access_credits >= (GOOGLE_IMAGE_COST * 3)
   end
 
   def pro_access_credits
@@ -61,15 +48,6 @@ class User < ApplicationRecord
   def sufficient_pro_credits?
     # this means you can afford the next minimum pro cost
     pro_engine_credits >= GOOGLE_IMAGE_COST * DEFAULT_IMAGE_COUNT
-  end
-
-  # We tell you are running low on premium credits, you can still user free engine or upgrade
-  def schedule_downgrade_notification
-    update!(reverted_to_free_engine: true, notified_about_pro_credits: false)
-  end
-
-  def complete_landscapes
-    landscapes.joins(:landscape_requests).where(landscape_requests: { progress: [ :processed, :complete ] }).distinct
   end
 
   private

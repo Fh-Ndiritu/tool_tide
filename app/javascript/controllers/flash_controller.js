@@ -19,7 +19,7 @@ export default class extends Controller {
             flashContainer.style.display = 'none'; // Hide the entire #flash element when empty
           }
         }, 500); // Fully remove after fade-out
-      }, 40000); // 5-second delay for auto-dismiss
+      }, 4000); // 4-second delay for auto-dismiss
 
       const closeButton = message.querySelector('.close-button');
       if (closeButton) {

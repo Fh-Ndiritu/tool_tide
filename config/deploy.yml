@@ -37,7 +37,6 @@ registry:
 env:
   secret:
     - RAILS_MASTER_KEY
-    - MISTRAL_API_KEY
     - DO_USERNAME
     - REGISTRY_NAME
     - APP_NAME
@@ -49,6 +48,7 @@ env:
     - BASE_URL
     - GOOGLE_APPLICATION_CREDENTIALS
     - GEMINI_API_KEY
+    - GEMINI_API_KEYS
     - BREVO_API_KEY
     - PAYSTACK_BASE_URL
     - PAYSTACK_API_KEY

@@ -4,7 +4,7 @@ class IconComponent < ViewComponent::Base
   include TailwindClasses
   DEFAULT_CLASSES = %w[rounded-full text-4xl flex items-center justify-center cursor-pointer duration-200].freeze
 
-  def initialize(name:, classes:)
+  def initialize(name:, classes: "")
     @name = name
     @classes = merge_classes(classes)
   end

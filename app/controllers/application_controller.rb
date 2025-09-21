@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
 
   def after_sign_in_path_for(resource)
     if resource.is_a?(User)
-      new_landscape_path
+      new_canva_path
     else
       super
     end

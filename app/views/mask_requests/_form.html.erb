@@ -1,0 +1,20 @@
+<%= form_with(model: defined?(canva) ? [canva, mask_request] : mask_request, class: "contents") do |form| %>
+  <% if mask_request.errors.any? %>
+    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
+      <h2><%= pluralize(mask_request.errors.count, "error") %> prohibited this mask_request from being saved:</h2>
+      <ul class="list-disc ml-6">
+        <% mask_request.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="my-5 hidden">
+    <%= form.file_field :mask,  class:"block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", data: {mask_request_target: 'mask'} %>
+  </div>
+  <div class="flex w-full justify-between">
+    <button type="submit" class="btn cute-btn" data-action="loader#showLoader" data-mask-request-target="submit" data-turbo="true" hidden>Submit</button>
+    <%= link_to "Cancel", new_canva_path, class: "!bg-neutral-500 btn  cute-btn " %>
+    <button data-action="mask-request#insertMask" class="btn cute-btn accent-btn">Submit</button>
+  </div>
+<% end %>

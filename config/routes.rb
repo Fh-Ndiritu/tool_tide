@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  get :low_credits, to: "credits#low"
+
+  resources :canvas, shallow: true do
+    resources :mask_requests
+  end
+
   # Home routes
   get "credits", to: "home#credits", as: :credits
   get "paystack/callback", to: "payment_transactions#callback"
@@ -11,29 +17,8 @@ Rails.application.routes.draw do
   mount ActionCable.server => "/cable"
 
   namespace :admin do
-    get "landscapes/:day", to: "landscapes#index"
   end
 
-  resources :landscapes, except: [ :destroy ] do
-    # collection do
-    #   post "modify"
-    # end
-  end
-
-  resources :landscape_requests, only: %i[update edit] do
-    member do
-      patch :location
-      get :low_credits
-    end
-  end
-
-  resources :images, only: %i[create index] do
-    collection do
-      get ":source/:conversion", to: "new", as: "new"
-      get "extract_text"
-      post "extract"
-    end
-  end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -46,11 +31,4 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root "home#index"
-
-  # New resource for showing/downloading converted images
-  resources :converted_images, only: [ :index ] do
-    # Route for downloading a specific file by its unique identifier (e.g., filename)
-    get "download/:filename", on: :collection, to: "converted_images#download", as: :download_file,
-                              constraints: { filename: /.*/ }
-  end
 end
