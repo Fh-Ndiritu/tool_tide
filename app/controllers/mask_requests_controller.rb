@@ -9,8 +9,8 @@ class MaskRequestsController < ApplicationController
   end
 
   def explore
-    canva_ids = Canva.joins(:user).where(user: { admin: true }).select(:id)
-    @mask_requests = MaskRequest.complete.personal.order(id: :desc).where(canva_id: canva_ids)
+    # canva_ids = Canva.joins(:user).where(user: { admin: true }).select(:id)
+    @mask_requests = MaskRequest.complete.everyone.order(id: :desc).limit(40)
   end
 
   # GET /mask_requests/1 or /mask_requests/1.json

@@ -13,6 +13,7 @@ class MaskRequest < ApplicationRecord
   belongs_to :canva
   delegate :image, to: :canva
   delegate :drawable_image, to: :canva
+  delegate :user, to: :canva
 
   validate :preset_prompt, on: :update
   after_update_commit :broadcast_progress, if: :saved_change_to_progress?
