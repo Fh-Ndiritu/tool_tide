@@ -342,3 +342,7 @@ html {
 .grid-item--height2 {
   height: 140px;
 }
+
+input[type='checkbox'] {
+  accent-color: #dc2626; /* Red-600, matches your text-red-600 */
+}

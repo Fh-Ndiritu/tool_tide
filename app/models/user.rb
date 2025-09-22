@@ -12,6 +12,8 @@ class User < ApplicationRecord
 
   has_many :credits, dependent: :destroy
 
+  validates :privacy_policy, acceptance: { message: "must be accepted." }
+
   def state_address
     return "" if address.blank?
 

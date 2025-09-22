@@ -3,6 +3,7 @@
 class ApplicationController < ActionController::Base
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   before_action :set_active_storage_url_options
+  before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :authenticate_user!
 
   def after_sign_in_path_for(resource)
@@ -14,6 +15,10 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.permit(:sign_up, keys: [ :privacy_policy ])
+  end
 
   def set_active_storage_url_options
     ActiveStorage::Current.url_options = { host: request.host, protocol: request.protocol.delete_suffix(":"), port: request.port }

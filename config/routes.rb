@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  get "privacy-policy", to: "pages#privacy_policy"
+  get "contact_us", to: "pages#contact_us"
   get :explore, to: "mask_requests#explore"
   get :low_credits, to: "credits#low"
 
