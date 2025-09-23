@@ -6,7 +6,7 @@
         Results for <%= mask_request.preset.humanize %> Style Design
       </h3>
       <h4 class="text-base text-secondary"><%= mask_request.user_error %></h4>
-      <h4 class="text-base text-secondary"> Trial Generation: <%= mask_request.trial_generation %></h4>
+      <h4 class="text-base text-secondary"> Can be public: <%= mask_request.trial_generation? || mask_request.user.admin? %></h4>
     </div>
     <div class="flex flex-wrap justify-start gap-2" data-controller="turbo-method">
       <% if mask_request.everyone? %>
