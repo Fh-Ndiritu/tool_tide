@@ -17,6 +17,7 @@ class MaskRequest < ApplicationRecord
 
   validate :preset_prompt, on: :update
   after_update_commit :broadcast_progress, if: :saved_change_to_progress?
+  default_scope -> { order(created_at: :desc) }
 
   enum :progress, {
     uploading: 0,
@@ -36,8 +37,7 @@ class MaskRequest < ApplicationRecord
 
   enum :visibility, {
     personal: 0,
-    everyone: 1,
-    hidden: 2
+    everyone: 1
   }
 
   def purge_views

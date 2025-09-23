@@ -1,0 +1,78 @@
+<div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12
+" id="<%= dom_id(mask_request) %>">
+  <div class="<%= mask_request.everyone? ? "bg-red-100 ": "bg-green-100 "  %> rounded-2xl shadow-2xl border border-gray-200 p-3 space-y-4">
+    <div class="flex flex-col max-sm:items-center md:justify-between">
+      <h3 class="text-xl font-extrabold leading-tight text-neutral-900">
+        Results for <%= mask_request.preset.humanize %> Style Design
+      </h3>
+      <h4 class="text-base text-secondary"><%= mask_request.user_error %></h4>
+      <h4 class="text-base text-secondary"> Trial Generation: <%= mask_request.trial_generation %></h4>
+    </div>
+    <div class="flex flex-wrap justify-start gap-2" data-controller="turbo-method">
+      <% if mask_request.everyone? %>
+        <%= button_to "Hide from public", admin_mask_requests_toggle_display_path(id: mask_request.id), class: "max-sm:!text-sm cute-btn secondary-btn" %>
+      <% else %>
+        <%= button_to "List on Explore", admin_mask_requests_toggle_display_path(id: mask_request.id), class: "max-sm:!text-sm cute-btn primary-btn" %>
+      <% end %>
+    </div>
+    <hr class="border-t border-neutral-300">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+      <% if mask_request.main_view.attached? %>
+        <div class="group relative overflow-hidden rounded-sm shadow-lg transition-all duration-500 transform hover:scale-105">
+          <%= image_tag(mask_request.main_view.variant(resize_to_limit: [500, 500]), loading: :lazy, class: "w-full max-h-[400px] object-cover transition-transform duration-500 group-hover:scale-110") %>
+          <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-70"></div>
+          <div class="absolute bottom-4 left-4 right-4 text-white">
+            <p class="text-lg font-bold">Main Shot</p>
+          </div>
+          <div class="absolute bottom-4 right-4 z-10 flex space-x-3">
+            <%= link_to rails_blob_path(mask_request.main_view, disposition: :attachment), class: "h-8 w-8 flex items-center justify-center rounded-full bg-accent text-white shadow-xl backdrop-blur-md transition-all duration-300 transform hover:scale-110 hover:bg-secondary active:scale-95" do %>
+              <%= render(IconComponent.new(classes: "h-6 w-6", name: "download")) %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+      <% if mask_request.rotated_view.attached? %>
+        <div class="group relative overflow-hidden rounded-sm shadow-lg transition-all duration-500 transform hover:scale-105">
+          <%= image_tag(mask_request.rotated_view.variant(resize_to_limit: [500, 500]), loading: :lazy, class: "w-full max-h-[400px] object-cover transition-transform duration-500 group-hover:scale-110") %>
+          <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-70"></div>
+          <div class="absolute bottom-4 left-4 right-4 text-white">
+            <p class="text-lg font-bold">Rotated View</p>
+          </div>
+          <div class="absolute bottom-4 right-4 z-10 flex space-x-3">
+            <%= link_to rails_blob_path(mask_request.rotated_view, disposition: :attachment), class: "h-8 w-8 flex items-center justify-center rounded-full bg-accent text-white shadow-xl backdrop-blur-md transition-all duration-300 transform hover:scale-110 hover:bg-secondary active:scale-95" do %>
+              <%= render(IconComponent.new(classes: "h-6 w-6", name: "download")) %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+      <% if mask_request.drone_view.attached? %>
+        <div class="group relative overflow-hidden rounded-sm shadow-lg transition-all duration-500 transform hover:scale-105">
+          <%= image_tag(mask_request.drone_view.variant(resize_to_limit: [500, 500]), loading: :lazy, class: "w-full max-h-[400px] object-cover transition-transform duration-500 group-hover:scale-110") %>
+          <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-70"></div>
+          <div class="absolute bottom-4 left-4 right-4 text-white">
+            <p class="text-lg font-bold">Drone Shot</p>
+          </div>
+          <div class="absolute bottom-4 right-4 z-10 flex space-x-3">
+            <%= link_to rails_blob_path(mask_request.drone_view, disposition: :attachment), class: "h-8 w-8 flex items-center justify-center rounded-full bg-accent text-white shadow-xl backdrop-blur-md transition-all duration-300 transform hover:scale-110 hover:bg-secondary active:scale-95" do %>
+              <%= render(IconComponent.new(classes: "h-6 w-6", name: "download")) %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+      <% if mask_request.overlay.attached? %>
+        <div class="group relative overflow-hidden rounded-sm shadow-lg transition-all duration-500 transform hover:scale-105">
+          <%= image_tag(mask_request.overlay.variant(resize_to_limit: [500, 500]), loading: :lazy, class: "w-full max-h-[400px] object-cover transition-transform duration-500 group-hover:scale-110") %>
+          <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-70"></div>
+          <div class="absolute bottom-4 left-4 right-4 text-white">
+            <p class="text-lg font-bold">Overlay Image</p>
+          </div>
+          <div class="absolute bottom-4 right-4 z-10 flex space-x-3">
+            <%= link_to rails_blob_path(mask_request.overlay, disposition: :attachment), class: "h-8 w-8 flex items-center justify-center rounded-full bg-accent text-white shadow-xl backdrop-blur-md transition-all duration-300 transform hover:scale-110 hover:bg-secondary active:scale-95" do %>
+              <%= render(IconComponent.new(classes: "h-6 w-6", name: "download")) %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
