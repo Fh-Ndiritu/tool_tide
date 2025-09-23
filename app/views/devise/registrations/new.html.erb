@@ -40,6 +40,23 @@
           </button>
         </div>
       </div>
+      <div class="flex items-start mt-6 align-middle">
+        <div class="flex items-center h-3 align-middle">
+          <%= f.check_box :privacy_policy, {
+          required: true,
+          class: "focus:ring-red-500 h-4 w-4 text-red-600 border-gray-500 rounded-sm",
+          data: { action: "change->checkbox#toggle" }
+        }, 'true', 'false' %>
+        </div>
+        <div class="ml-3 text-sm">
+          <label for="privacy-policy" class="font-medium text-gray-200">
+            I have read and agree to the
+            <a href="/privacy-policy" class="text-secondary hover:text-white hover:underline">
+              Privacy Policy
+            </a>.
+          </label>
+        </div>
+      </div>
       <div class="actions">
         <%= f.submit "Sign up" %>
       </div>

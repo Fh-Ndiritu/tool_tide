@@ -104,7 +104,11 @@ module Designable
   def charge_generation
     @mask_request.reload
     image_count = [ @mask_request.main_view.attached?, @mask_request.rotated_view.attached?, @mask_request.drone_view.attached? ].count(true)
-    @mask_request.canva.user.charge_pro_cost!(GOOGLE_IMAGE_COST * image_count)
-    @mask_request.complete!
+
+    cost = GOOGLE_IMAGE_COST * image_count
+    trial_generation = @mask_request.user.pro_trial_credits >= cost
+
+    @mask_request.canva.user.charge_pro_cost!(cost)
+    @mask_request.update(progress: :complete, trial_generation:)
   end
 end

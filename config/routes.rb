@@ -1,6 +1,15 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  namespace :admin do
+    get "mask_requests/index"
+    get "mask_requests/edit"
+    post "mask_requests/toggle_display"
+  end
+
+  get "privacy-policy", to: "pages#privacy_policy"
+  get "contact_us", to: "pages#contact_us"
+  get :explore, to: "mask_requests#explore"
   get :low_credits, to: "credits#low"
 
   resources :canvas, shallow: true do
@@ -16,8 +25,6 @@ Rails.application.routes.draw do
 
   mount ActionCable.server => "/cable"
 
-  namespace :admin do
-  end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

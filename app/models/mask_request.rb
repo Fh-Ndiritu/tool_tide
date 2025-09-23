@@ -13,9 +13,11 @@ class MaskRequest < ApplicationRecord
   belongs_to :canva
   delegate :image, to: :canva
   delegate :drawable_image, to: :canva
+  delegate :user, to: :canva
 
   validate :preset_prompt, on: :update
   after_update_commit :broadcast_progress, if: :saved_change_to_progress?
+  default_scope -> { order(created_at: :desc) }
 
   enum :progress, {
     uploading: 0,
@@ -31,6 +33,11 @@ class MaskRequest < ApplicationRecord
     retying: 10,
     mask_invalid: 11,
     overlaying: 12
+  }
+
+  enum :visibility, {
+    personal: 0,
+    everyone: 1
   }
 
   def purge_views
@@ -87,6 +94,10 @@ class MaskRequest < ApplicationRecord
 
     save_overlay(mask_image, api_image)
     save!
+  end
+
+  def face_image
+    [ main_view.presence, rotated_view.presence, drone_view.presence ].compact.sample
   end
 
   private
