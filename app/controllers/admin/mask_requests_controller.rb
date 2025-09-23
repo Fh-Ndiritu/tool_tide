@@ -3,6 +3,8 @@ class Admin::MaskRequestsController < ApplicationController
   def index
     @mask_requests = if params[:day].present?
       MaskRequest.complete.where(created_at: params[:day].to_i.days.ago.all_day)
+    elsif params[:id]
+      MaskRequest.complete.joins(:canva).where(canva: { user_id: params[:id] })
     else
       MaskRequest.complete.where(created_at: Time.zone.today.all_day)
     end
