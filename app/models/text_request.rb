@@ -14,17 +14,16 @@ class TextRequest < ApplicationRecord
     attachable.variant(:juxtaposed, resize_to_limit: [ 400, nil ])
   end
 
-
   enum :progress, {
     uploading: 0,
     validating: 1,
     validated: 2,
     preparing: 3,
     generating: 4,
-    processed: 7,
-    complete: 8,
-    failed: 9,
-    retying: 10
+    processed: 5,
+    complete: 6,
+    failed: 7,
+    retying: 8
   }
 
   enum :visibility, {
