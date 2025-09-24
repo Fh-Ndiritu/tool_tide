@@ -90,7 +90,7 @@ gem "faraday", "~> 2.13"
 
 gem "kramdown", "~> 2.5"
 
-gem "hexapdf", "~> 1.3"
+gem "hexapdf", "~> 1.4"
 # Bot prevention
 gem "rack-attack"
 gem "recaptcha"

@@ -267,7 +267,7 @@ GEM
       google-protobuf (>= 3.18, < 5.a)
       googleapis-common-protos (~> 1.7.0)
       grpc (~> 1.41)
-    hexapdf (1.4.0)
+    hexapdf (1.4.1)
       cmdparse (~> 3.0, >= 3.0.3)
       geom2d (~> 0.4, >= 0.4.1)
       openssl (>= 2.2.1)
@@ -642,7 +642,7 @@ DEPENDENCIES
   geocoder (~> 1.8)
   google-cloud-ai_platform-v1 (~> 1.23.0)
   googleauth
-  hexapdf (~> 1.3)
+  hexapdf (~> 1.4)
   image_processing (~> 1.2)
   importmap-rails
   jbuilder
