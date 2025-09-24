@@ -124,3 +124,5 @@ gem "dry-monads", "~> 1.9"
 
 gem "sentry-rails"
 gem "sentry-ruby"
+
+gem "ancestry", "~> 4.3"

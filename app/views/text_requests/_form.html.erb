@@ -1,0 +1,57 @@
+<%= form_with(model: text_request, class: "contents") do |form| %>
+  <% if text_request.errors.any? %>
+    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
+      <h2><%= pluralize(text_request.errors.count, "error") %> prohibited this text_request from being saved:</h2>
+
+      <ul class="list-disc ml-6">
+        <% text_request.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="my-5">
+    <%= form.label :original_image %>
+    <%= form.file_field :original_image, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": text_request.errors[:original_image].none?, "border-red-400 focus:outline-red-600": text_request.errors[:original_image].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :prompt %>
+    <%= form.textarea :prompt, rows: 4, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": text_request.errors[:prompt].none?, "border-red-400 focus:outline-red-600": text_request.errors[:prompt].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :progress %>
+    <%= form.number_field :progress, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": text_request.errors[:progress].none?, "border-red-400 focus:outline-red-600": text_request.errors[:progress].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :user_error %>
+    <%= form.text_field :user_error, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": text_request.errors[:user_error].none?, "border-red-400 focus:outline-red-600": text_request.errors[:user_error].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :visibility %>
+    <%= form.number_field :visibility, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": text_request.errors[:visibility].none?, "border-red-400 focus:outline-red-600": text_request.errors[:visibility].any?}] %>
+  </div>
+
+  <div class="my-5 flex items-center gap-2">
+    <%= form.label :trial_generation %>
+    <%= form.checkbox :trial_generation, class: ["block shadow-sm rounded-md border order-first h-5 w-5", {"border-gray-400 focus:outline-blue-600": text_request.errors[:trial_generation].none?, "border-red-400 focus:outline-red-600": text_request.errors[:trial_generation].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :user_id %>
+    <%= form.text_field :user_id, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": text_request.errors[:user_id].none?, "border-red-400 focus:outline-red-600": text_request.errors[:user_id].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :ancestry %>
+    <%= form.text_field :ancestry, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": text_request.errors[:ancestry].none?, "border-red-400 focus:outline-red-600": text_request.errors[:ancestry].any?}] %>
+  </div>
+
+  <div class="inline">
+    <%= form.submit class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
+  </div>
+<% end %>

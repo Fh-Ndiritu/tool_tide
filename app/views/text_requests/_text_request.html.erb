@@ -1,0 +1,34 @@
+<div id="<%= dom_id text_request %>" class="w-full sm:w-auto my-5 space-y-5">
+  <div>
+    <strong class="block font-medium mb-1">Original image:</strong>
+    <%= link_to text_request.original_image.filename, text_request.original_image, class: "text-gray-700 underline hover:no-underline" if text_request.original_image.attached? %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Prompt:</strong>
+    <%= text_request.prompt %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Progress:</strong>
+    <%= text_request.progress %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">User error:</strong>
+    <%= text_request.user_error %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Visibility:</strong>
+    <%= text_request.visibility %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Trial generation:</strong>
+    <%= text_request.trial_generation? ? "Yes" : "No" %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">User:</strong>
+    <%= text_request.user_id %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Ancestry:</strong>
+    <%= text_request.ancestry %>
+  </div>
+</div>

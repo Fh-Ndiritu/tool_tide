@@ -16,6 +16,8 @@ module ApplicationHelper
       "Verified"
     when "preparing"
       "Preparing request"
+    when "generating"
+      "Making Changes"
     when "main_view"
       "Curating the Main View"
     when "rotating"

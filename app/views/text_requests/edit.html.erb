@@ -1,0 +1,81 @@
+<% content_for :title, "AI Image Generator" %>
+<%= content_for :body_classes, " lg:overflow-y-hidden" %>
+<%= turbo_stream_from @text_request %>
+<div id="<%= dom_id(@text_request) %>">
+  <%= form_with(model: @text_request, class: "h-screen flex flex-col md:flex-row bg-gray-900 text-text-light overflow-hidden ") do |form| %>
+    <div class="w-full h-full max-w-[1000px] mx-auto flex flex-col md:flex-row overflow-hidden">
+      <main class="lg:flex-1 flex flex-col items-center justify-start p-4 md:p-8 md:pb-12 bg-neutral-800 overflow-y-auto">
+        <div class="w-full lg:h-full max-w-[700px] flex flex-col">
+          <div class="lg:h-[60%] min-h-[400px] w-full flex-shrink-0 flex items-center justify-center">
+            <div class="relative w-full h-full rounded-lg overflow-hidden border-4 border-neutral-700 shadow-2xl flex items-center">
+              <% if @text_request.original_image.attached? %>
+                <div class="absolute inset-0 z-0">
+                  <%= image_tag @text_request.original_image, class: "w-full h-full object-cover" %>
+                  <div class="absolute inset-0 backdrop-blur-xl bg-black/30"></div>
+                </div>
+                <div class="relative m-auto !w-[400px] h-auto flex z-10 juxtapose" data-startingposition="80">
+                  <% if @text_request.result_image.attached? %>
+                    <%= image_tag @text_request.result_image.variant(:juxtaposed), class: "w-[400px] object-contain", data: {label: "After"} %>
+                  <% else %>
+                    <%= image_tag @text_request.original_image.variant(:juxtaposed), class: "w-[400px] object-contain", data: {label: "After"} %>
+                  <% end %>
+                  <%= image_tag @text_request.original_image.variant(:juxtaposed), class: "w-[400px] object-contain", data: {label: "Before"} %>
+                </div>
+              <% else %>
+                <div class="absolute inset-0 w-full h-full bg-neutral-700 flex items-center justify-center">
+                  <div class="flex flex-col items-center justify-center text-center">
+                    <p class="relative text-neutral-500">Generate an image in the AI landscaper to get started.</p>
+                    <%= link_to "Generate New Image", new_canva_path, class: "btn cute-btn" %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+          <div class="lg:h-[40%] w-full flex-shrink-0 flex flex-col shadow-md rounded-lg">
+            <% if @text_request.original_image.attached? %>
+              <div class="my-3 mt-5">
+                <%= form.label :prompt, "Image Prompt", class: "block mb-2 text-sm font-medium" %>
+                <%= form.text_area :prompt, rows: 3, placeholder: "Change to a zen style with a fountain and a Japanese peach tree.", class: "w-full p-3 rounded-lg bg-neutral-700 text-text-light border-4 border-neutral-500 focus:outline-none focus:border-text-primary focus:ring-2 focus:ring-text-primary resize-none transition-colors duration-200" %>
+              </div>
+              <div class="mt-1 pb-2 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0 sm:space-x-4">
+                <%= form.submit "Generate", data: {action: "loader#showLoader"},  class: "w-full sm:w-auto bg-primary text-text-light px-4 py-2 rounded-full font-bold hover:bg-text-primary transition-colors duration-200 cursor-pointer" %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </main>
+      <div class="w-full flex-shrink-0 md:hidden px-4 pt-2 pb-4 bg-neutral-800">
+        <h2 class="text-xl font-bold mb-4 text-text-primary">History</h2>
+        <span class="py-1 text-sm text-neutral-300">Click to resume editing</span>
+        <div id="history-list-mobile" class="flex flex-row space-x-4 overflow-x-auto pt-2 pb-4">
+          <% (1..4).each do |i| %>
+            <div class="relative w-40 flex-shrink-0 aspect-video rounded-lg overflow-hidden">
+              <img src="https://picsum.photos/id/<%= i %>/200/200" alt="History item <%= i %>" class="w-full h-full object-cover">
+              <div class="absolute inset-0 bg-black opacity-80 flex flex-col justify-end p-2 text-text-light">
+                <p class="text-xs font-semibold whitespace-nowrap overflow-hidden text-ellipsis">A long description of the image generation...</p>
+                <p class="text-[10px] text-neutral-300 mt-1">2 minutes ago</p>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      <aside class="w-full md:w-1/4 p-4 bg-neutral-800 hidden md:flex flex-col">
+        <h2 class="text-xl font-bold mb-4 text-text-primary">History</h2>
+        <span class="py-1 text-sm text-neutral-300">Click to resume editing</span>
+        <div id="history-list-desktop" class="space-y-4 flex-1 overflow-y-auto">
+          <% (1..4).each do |i| %>
+            <div class="relative w-full aspect-video rounded-lg overflow-hidden">
+              <img src="https://picsum.photos/id/<%= i %>/200/200" alt="History item <%= i %>" class="w-full h-full object-cover">
+              <div class="absolute inset-0 bg-black opacity-80 flex flex-col justify-end p-2 text-text-light">
+                <p class="text-xs font-semibold whitespace-nowrap overflow-hidden text-ellipsis">A long description of the image generation...</p>
+                <p class="text-[10px] text-neutral-300 mt-1">2 minutes ago</p>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </aside>
+    </div>
+  <% end %>
+</div>
+<script src="https://cdn.knightlab.com/libs/juxtapose/latest/js/juxtapose.min.js"></script>
+<link rel="stylesheet" href="https://cdn.knightlab.com/libs/juxtapose/latest/css/juxtapose.css">

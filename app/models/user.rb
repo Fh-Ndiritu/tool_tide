@@ -11,6 +11,7 @@ class User < ApplicationRecord
   has_many :canvas, dependent: :destroy
 
   has_many :credits, dependent: :destroy
+  has_many :text_requests, dependent: :destroy
 
   validates :privacy_policy, acceptance: { message: "must be accepted." }
 
