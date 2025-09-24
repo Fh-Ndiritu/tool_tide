@@ -38,11 +38,11 @@ class TextRequest < ApplicationRecord
     TextEditor.perform(self)
   end
 
-  def broadcast_progress
-     if failed? || complete?
-    broadcast_refresh_to(self)
-     else
-      Turbo::StreamsChannel.broadcast_replace_to(self, target: "loader", partial: "layouts/shared/loader", locals: { record: self })
-     end
+def broadcast_progress
+  if failed? || complete?
+    Turbo::StreamsChannel.broadcast_refresh_to(self)
+  else
+    Turbo::StreamsChannel.broadcast_replace_to(self, target: "loader", partial: "layouts/shared/loader", locals: { record: self })
   end
+end
 end

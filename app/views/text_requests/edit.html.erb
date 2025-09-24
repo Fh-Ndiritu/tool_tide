@@ -1,4 +1,4 @@
-<% content_for :title, "AI Image Generator" %>
+<% content_for :title, progress_message(@text_request.progress) %>
 <%= content_for :body_classes, " lg:overflow-y-hidden" %>
 <%= turbo_stream_from @text_request %>
 <div id="<%= dom_id(@text_request) %>">

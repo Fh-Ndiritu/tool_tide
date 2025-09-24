@@ -17,7 +17,6 @@ class TextEditor
     @text_request.processed!
     charge_generation
 
-
   rescue Faraday::ServerError => e
     user_error = e.is_a?(Faraday::ServerError) ? "We are having some downtime, try again later ..." : "Something went wrong, try a different style."
     @text_request.update error_msg: e.message, progress: :failed, user_error:
@@ -37,11 +36,14 @@ class TextEditor
   end
 
   def charge_generation
-    return unless @text_request.reload.result_image.attached?
-    cost = GOOGLE_IMAGE_COST * 1
-    trial_generation = @text_request.user.pro_trial_credits >= cost
+    if @text_request.reload.result_image.attached?
+      cost = GOOGLE_IMAGE_COST * 1
+      trial_generation = @text_request.user.pro_trial_credits >= cost
 
-    @text_request.user.charge_pro_cost!(cost)
-    @text_request.update(progress: :complete, trial_generation:)
+      @text_request.user.charge_pro_cost!(cost)
+      @text_request.update!(progress: :complete, trial_generation:)
+    else
+      @text_request.update!(progress: :failed, error_msg: "Result not found")
+    end
   end
 end
