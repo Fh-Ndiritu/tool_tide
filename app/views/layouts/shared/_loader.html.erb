@@ -1,5 +1,5 @@
 <div id="loader" class="z-50">
-  <div data-loader-target="loader" class="<%= klasses if defined?(klasses) %> inset-0 bg-black opacity-85 flex flex-col items-center justify-center z-50">
+  <div data-loader-target="loader" class="<%= klasses if defined?(klasses) %>  inset-0 bg-black opacity-85 flex flex-col items-center justify-center z-50">
     <div class="inline-block h-12 w-12  group-[&.embed]:h-6 group-[&.embed]:w-6 animate-spin rounded-full border-4 border-solid border-current border-e-transparent text-white" role="status">
     </div>
     <p class="text-xl group-[&.embed]:text-sm text-white mt-4" data-loader-target="processingMessage"> <%= progress_message(record.try(:progress)) %></p>

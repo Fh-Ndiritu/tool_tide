@@ -23,7 +23,7 @@
       <p class="text-xs font-semibold whitespace-nowrap overflow-hidden text-ellipsis"><%= text_request.prompt %></p>
       <p class="text-[10px] text-neutral-300 mt-1"><%= time_ago_in_words(text_request.updated_at) %> ago</p>
     </div>
-    <% unless text_request.complete? %>
+    <% if text_request.in_progress? %>
       <%= render partial: "layouts/shared/loader", locals: { record: text_request, klasses: " group embed absolute !opacity-75 z-1 w-full h-full" } %>
     <% end %>
   </div>

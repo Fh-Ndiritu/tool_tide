@@ -8,6 +8,7 @@ class TextRequest < ApplicationRecord
 
   default_scope -> { order(created_at: :desc) }
 
+
   scope :complete_or_in_progress, -> {
     where.not(progress: [ :uploading, :failed, :retrying ])
   }
@@ -36,6 +37,10 @@ class TextRequest < ApplicationRecord
     personal: 0,
     everyone: 1
   }
+
+  def in_progress?
+    progress_before_type_cast.in?(self.class.progresses["validating"]...self.class.progresses["complete"])
+  end
 
   private
 

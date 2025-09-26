@@ -1,8 +1,8 @@
 <% content_for :title, "Canvas" %>
 <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 container">
   <div class="flex items-center justify-between mb-8">
-    <h1 class="text-3xl md:text-4xl font-extrabold text-neutral-900">
-      Your Generations
+    <h1 class="text-2xl font-extrabold text-primary flex text-center m-auto">
+      Click an image to open start editing designs with Text
     </h1>
   </div>
   <div id="canvas" class="grid grid-cols-1 gap-6 md:gap-8 ">
@@ -13,10 +13,11 @@
         <% end %>
       </div>
     <% else %>
-      <div class="text-center my-16 p-8 bg-white rounded-xl shadow-md">
-        <p class="text-lg text-gray-500">
+      <div class="text-center my-16 p-8 bg-white rounded-xl shadow-md flex-col items-center">
+        <p class="text-lg text-gray-500 ">
           No Designs found. Start a new project to see your designs here.
         </p>
+        <%= link_to "Start new Project", new_canva_path, class: "btn cute-btn "  %>
       </div>
     <% end %>
   </div>

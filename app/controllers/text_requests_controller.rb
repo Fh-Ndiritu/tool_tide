@@ -1,10 +1,10 @@
 class TextRequestsController < ApplicationController
-  before_action :set_text_request, only: %i[ show edit update destroy ]
+  before_action :set_text_request, only: %i[ show update ]
 
   # GET /text_requests or /text_requests.json
   def index
     @text_requests = current_user.text_requests.complete_or_in_progress
-    @current_request = @text_requests.find_by(id: params[:current_request]) || @text_requests.first
+    @current_request = current_user.text_requests.find_by(id: params[:current_request]) || @text_requests.first
   end
 
   # GET /text_requests/1 or /text_requests/1.json
@@ -19,27 +19,9 @@ class TextRequestsController < ApplicationController
       request.original_image.attach(blob)
       request.save!
     end
-    redirect_to edit_text_request_path(@text_request)
+    redirect_to text_requests_path(current_request: @text_request.id)
   end
 
-  # GET /text_requests/1/edit
-  def edit
-  end
-
-  # POST /text_requests or /text_requests.json
-  def create
-    @text_request = TextRequest.new(text_request_params)
-
-    respond_to do |format|
-      if @text_request.save
-        format.html { redirect_to @text_request, notice: "Text request was successfully created." }
-        format.json { render :show, status: :created, location: @text_request }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @text_request.errors, status: :unprocessable_entity }
-      end
-    end
-  end
 
   # PATCH/PUT /text_requests/1 or /text_requests/1.json
   def update
@@ -52,7 +34,7 @@ class TextRequestsController < ApplicationController
         request.save
       end
 
-      redirect_to text_requests_path(current_request: child) and return
+      redirect_to text_requests_path(current_request: child.id) and return
     end
 
     respond_to do |format|
@@ -62,7 +44,7 @@ class TextRequestsController < ApplicationController
           render turbo_stream: turbo_stream.refresh
         end
       else
-        format.html { render :edit, status: :unprocessable_entity }
+        format.html { render :show, status: :unprocessable_entity }
       end
     end
   end

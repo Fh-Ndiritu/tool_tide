@@ -11,7 +11,7 @@ module ApplicationHelper
     when "uploading"
       "Uploading Image"
     when "validating"
-      "Validating drawing"
+      "Validating image"
     when "validated"
       "Verified"
     when "preparing"

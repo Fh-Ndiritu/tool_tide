@@ -9,7 +9,7 @@
                 <%= image_tag text_request.original_image, class: "w-full md:h-full object-cover" %>
                 <div class="absolute inset-0 backdrop-blur-xl bg-black/30"></div>
               </div>
-              <% unless text_request.complete? %>
+              <% if text_request.in_progress? %>
                 <%= render partial: "layouts/shared/loader", locals: { record: text_request, klasses: " group embed absolute w-full h-full z-1" } %>
               <% end %>
               <div class="relative m-auto !w-[400px] h-auto flex z-10 juxtapose" data-startingposition="90">

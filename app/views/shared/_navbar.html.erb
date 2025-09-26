@@ -71,14 +71,14 @@
         classes: "#{active_item(new_canva_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
         ) %>
         <%= render ButtonComponent.new(
+        text: "Landscape with Text",
+        href: canvas_path,
+        classes: "#{active_item(canvas_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
+        ) %>
+        <%= render ButtonComponent.new(
         text: "Credits Balance",
         href: credits_path,
         classes: "#{active_item(credits_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
-        ) %>
-        <%= render ButtonComponent.new(
-        text: "Text Landscaper",
-        href: canvas_path,
-        classes: "#{active_item(canvas_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
         ) %>
         <%= button_to "Log Out", destroy_user_session_path, method: :delete, class: "nav-btn" %>
         <!--When Logged IN-->
