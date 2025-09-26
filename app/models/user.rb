@@ -35,6 +35,10 @@ class User < ApplicationRecord
     pro_access_credits >= (GOOGLE_IMAGE_COST * 3)
   end
 
+  def afford_text_editing?
+    pro_access_credits >= GOOGLE_IMAGE_COST
+  end
+
   def pro_access_credits
     pro_engine_credits + pro_trial_credits
   end

@@ -13,6 +13,8 @@ class TextRequestsController < ApplicationController
 
   # GET /text_requests/new
   def new
+     redirect_to low_credits_path and return unless current_user.afford_text_editing?
+
     blob = ActiveStorage::Blob.find_signed(params[:signed_blob_id])
     redirect_to canvas_path, alert: "Image was not found!" and return if blob.blank?
     @text_request = current_user.text_requests.new.tap do |request|
@@ -25,7 +27,9 @@ class TextRequestsController < ApplicationController
 
   # PATCH/PUT /text_requests/1 or /text_requests/1.json
   def update
-    # if we get an update request for a text_request which already has a result image
+     # if we get an update request for a text_request which already has a result image
+     redirect_to low_credits_path and return unless current_user.afford_text_editing?
+
     if @text_request.result_image.attached? && text_request_params[:prompt].present?
       child = @text_request.children
       .new(text_request_params.merge(user: current_user))
