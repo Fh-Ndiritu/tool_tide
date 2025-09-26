@@ -9,9 +9,11 @@
                 <%= image_tag text_request.original_image, class: "w-full md:h-full object-cover" %>
                 <div class="absolute inset-0 backdrop-blur-xl bg-black/30"></div>
               </div>
-              <% if text_request.in_progress? %>
-                <%= render partial: "layouts/shared/loader", locals: { record: text_request, klasses: " group embed absolute w-full h-full z-1" } %>
-              <% end %>
+              <div id="loader_overlay">
+                <% if text_request.in_progress? %>
+                  <%= render partial: "layouts/shared/loader", locals: { record: text_request, klasses: " group embed absolute w-full h-full z-1" } %>
+                <% end %>
+              </div>
               <div class="relative m-auto !w-[400px] h-auto flex z-10 juxtapose" data-startingposition="90">
                 <% if text_request.result_image.attached? %>
                   <%= image_tag text_request.result_image.variant(:juxtaposed), class: "w-[400px] object-contain", data: {label: "After"} %>
@@ -41,7 +43,7 @@
               class: "max-sm:!w-full cute-btn accent-btn"
               %>
               <% if text_request.result_image.attached? %>
-                <%= link_to "HD Download",  rails_blob_path(text_request.result_image), class: "max-sm:!w-full cute-btn secondary-btn" %>
+                <%= link_to "HD Download",  rails_blob_path(text_request.result_image, disposition: :attachment), class: "max-sm:!w-full cute-btn secondary-btn" %>
               <% end %>
             </div>
           <% end %>

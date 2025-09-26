@@ -53,7 +53,7 @@ def broadcast_progress
   if failed? || complete?
     Turbo::StreamsChannel.broadcast_refresh_to("#{user.id}_text_requests")
   else
-    Turbo::StreamsChannel.broadcast_update_to("#{user.id}_text_requests", target: "current_text_request", partial: "text_requests/form", locals: { text_request: self })
+    Turbo::StreamsChannel.broadcast_update_to("#{user.id}_text_requests", target: "loader_overlay", partial: "layouts/shared/loader", locals: { record: self, klasses: " group embed absolute w-full h-full z-1" })
   end
 end
 end
