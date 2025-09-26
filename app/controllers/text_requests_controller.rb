@@ -3,7 +3,8 @@ class TextRequestsController < ApplicationController
 
   # GET /text_requests or /text_requests.json
   def index
-    @text_requests = TextRequest.all
+    @text_requests = current_user.text_requests.complete
+    @current_request = @text_requests.find_by(id: params[:current_request]) || @text_requests.first
   end
 
   # GET /text_requests/1 or /text_requests/1.json
@@ -43,7 +44,17 @@ class TextRequestsController < ApplicationController
   # PATCH/PUT /text_requests/1 or /text_requests/1.json
   def update
     # if we get an update request for a text_request which already has a result image
-    # we fork it and make edits on new instance
+    if @text_request.result_image.attached? && text_request_params[:prompt].present?
+      child = @text_request.children
+      .new(text_request_params.merge(user: current_user))
+      .tap do |request|
+        request.original_image.attach(@text_request.result_image.blob)
+        request.save
+      end
+
+      redirect_to edit_text_request_path(child) and return
+    end
+
     respond_to do |format|
       if @text_request.update(text_request_params)
         format.html { redirect_to @text_request, notice: "Text request was successfully updated.", status: :see_other }

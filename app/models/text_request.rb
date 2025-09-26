@@ -5,6 +5,7 @@ class TextRequest < ApplicationRecord
   has_ancestry
   after_update_commit :generate_edit, if: :saved_change_to_prompt?
   after_update_commit :broadcast_progress, if: :saved_change_to_progress?
+  default_scope -> { order(created_at: :desc) }
 
   has_one_attached :original_image do |attachable|
     attachable.variant(:juxtaposed, resize_to_limit: [ 400, nil ])
