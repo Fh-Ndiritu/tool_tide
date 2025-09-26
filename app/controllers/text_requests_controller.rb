@@ -31,8 +31,7 @@ class TextRequestsController < ApplicationController
      redirect_to low_credits_path and return unless current_user.afford_text_editing?
 
     if @text_request.result_image.attached? && text_request_params[:prompt].present?
-      child = @text_request.children
-      .new(text_request_params.merge(user: current_user))
+      child = @text_request.children.new(text_request_params.merge(user: current_user))
       .tap do |request|
         request.original_image.attach(@text_request.result_image.blob)
         request.save
@@ -40,12 +39,16 @@ class TextRequestsController < ApplicationController
 
       redirect_to text_requests_path(current_request: child.id) and return
     elsif @text_request.update(text_request_params)
-        format.html { redirect_to @text_request, notice: "Text request was successfully updated.", status: :see_other }
-        format.turbo_stream do
-          render turbo_stream: turbo_stream.refresh
-        end
+       respond_to do |format|
+         format.html { redirect_to @text_request, notice: "Text request was successfully updated.", status: :see_other }
+          format.turbo_stream do
+            render turbo_stream: turbo_stream.refresh
+          end
+       end
     else
+      respond_to do |format|
         format.html { render :show, status: :unprocessable_entity }
+      end
     end
   end
 
