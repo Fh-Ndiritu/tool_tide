@@ -1,6 +1,6 @@
 <% content_for :title, "AI Landscapes Dashboard" %>
 <%= content_for :body_classes, " lg:overflow-y-hidden" %>
-<%= turbo_stream_from "text_requests" %>
+<%= turbo_stream_from "#{current_user.id}_text_requests" %>
 <div class="h-[88vh] flex flex-col md:flex-row bg-gray-900 text-text-light">
   <div class="w-full max-w-[1000px] mx-auto flex flex-col md:flex-row max-md:py-10" >
     <main class="w-full flex-shrink-0 flex flex-col items-center justify-start p-4 md:p-8 md:pb-12 bg-neutral-800 lg:flex-1 md:overflow-y-auto">

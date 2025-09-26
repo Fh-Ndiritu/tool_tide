@@ -9,7 +9,7 @@ module ApplicationHelper
   def progress_message(progress)
     case progress
     when "uploading"
-      "Uploading Images"
+      "Uploading Image"
     when "validating"
       "Validating drawing"
     when "validated"
@@ -17,7 +17,7 @@ module ApplicationHelper
     when "preparing"
       "Preparing request"
     when "generating"
-      "Making Changes"
+      "Editing Image"
     when "main_view"
       "Curating the Main View"
     when "rotating"

@@ -10,7 +10,7 @@
                 <div class="absolute inset-0 backdrop-blur-xl bg-black/30"></div>
               </div>
               <% unless text_request.complete? %>
-                <%= render partial: "layouts/shared/loader", locals: { record: nil, klasses: " group embed absolute w-full h-full z-1" } %>
+                <%= render partial: "layouts/shared/loader", locals: { record: text_request, klasses: " group embed absolute w-full h-full z-1" } %>
               <% end %>
               <div class="relative m-auto !w-[400px] h-auto flex z-10 juxtapose" data-startingposition="90">
                 <% if text_request.result_image.attached? %>

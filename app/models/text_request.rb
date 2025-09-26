@@ -46,9 +46,9 @@ class TextRequest < ApplicationRecord
 
 def broadcast_progress
   if failed? || complete?
-    Turbo::StreamsChannel.broadcast_refresh_to(self)
+    Turbo::StreamsChannel.broadcast_refresh_to("#{user.id}_text_requests")
   else
-    Turbo::StreamsChannel.broadcast_replace_to(self, target: "loader", partial: "layouts/shared/loader", locals: { record: self })
+    Turbo::StreamsChannel.broadcast_update_to("#{user.id}_text_requests", target: "current_text_request", partial: "text_requests/form", locals: { text_request: self })
   end
 end
 end
