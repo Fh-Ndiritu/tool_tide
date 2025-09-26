@@ -5,11 +5,10 @@
     <%= render partial: 'text_requests/text_request_preview', collection: @text_requests, as: :text_request %>
   </div>
 </div>
-<%# Desktop History: Remains a sidebar with internal scrolling. %>
-<aside class="w-full md:w-1/4 p-4 bg-neutral-800 hidden md:flex flex-col">
-  <h2 class="text-xl font-bold mb-4 text-text-primary">History</h2>
+<aside class="w-full h-full md:w-1/4 p-4 bg-neutral-800 hidden md:flex flex-col">
+  <h2 class="text-xl font-bold mb-4 text-text-accent">History</h2>
   <span class="py-1 text-sm text-neutral-300">Click to resume editing</span>
-  <div id="history-list-desktop" class="space-y-4 flex-1 overflow-y-auto">
+  <div id="history-list-desktop" class="space-y-4 flex-1 overflow-y-auto  px-1">
     <%= render partial: 'text_requests/text_request_preview', collection: @text_requests, as: :text_request %>
   </div>
 </aside>

@@ -3,7 +3,7 @@ class TextRequestsController < ApplicationController
 
   # GET /text_requests or /text_requests.json
   def index
-    @text_requests = current_user.text_requests.complete
+    @text_requests = current_user.text_requests
     @current_request = @text_requests.find_by(id: params[:current_request]) || @text_requests.first
   end
 
@@ -52,13 +52,15 @@ class TextRequestsController < ApplicationController
         request.save
       end
 
-      redirect_to edit_text_request_path(child) and return
+      redirect_to text_requests_path(current_request: child) and return
     end
 
     respond_to do |format|
       if @text_request.update(text_request_params)
         format.html { redirect_to @text_request, notice: "Text request was successfully updated.", status: :see_other }
-        format.turbo_stream { head :ok }
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.refresh
+        end
       else
         format.html { render :edit, status: :unprocessable_entity }
       end

@@ -1,11 +1,8 @@
 <% content_for :title, "AI Landscapes Dashboard" %>
 <%= content_for :body_classes, " lg:overflow-y-hidden" %>
 <%= turbo_stream_from "text_requests" %>
-<%# 💡 FIX 1: Use min-h-screen to ensure background covers screen, but allow content to push past it. Removed overflow-hidden to allow main page scroll. %>
-<div class="min-h-screen flex flex-col md:flex-row bg-gray-900 text-text-light">
-  <%# Removed h-full and overflow-hidden here as well to allow flow on mobile %>
+<div class="h-[88vh] flex flex-col md:flex-row bg-gray-900 text-text-light">
   <div class="w-full max-w-[1000px] mx-auto flex flex-col md:flex-row max-md:py-10" >
-    <%# Main Content Area: Removed flex-1 on mobile. On mobile, we want this section to take only the space it needs. %>
     <main class="w-full flex-shrink-0 flex flex-col items-center justify-start p-4 md:p-8 md:pb-12 bg-neutral-800 lg:flex-1 md:overflow-y-auto">
       <div id="current_text_request" class="w-full max-w-[700px] flex flex-col">
         <%= render 'text_requests/form', text_request: @current_request %>

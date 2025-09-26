@@ -5,7 +5,12 @@ class TextRequest < ApplicationRecord
   has_ancestry
   after_update_commit :generate_edit, if: :saved_change_to_prompt?
   after_update_commit :broadcast_progress, if: :saved_change_to_progress?
+
   default_scope -> { order(created_at: :desc) }
+
+  scope :complete_or_in_progress, -> {
+    where.not(progress: [ :uploading, :failed, :retrying ])
+  }
 
   has_one_attached :original_image do |attachable|
     attachable.variant(:juxtaposed, resize_to_limit: [ 400, nil ])
@@ -35,7 +40,8 @@ class TextRequest < ApplicationRecord
   private
 
   def generate_edit
-    TextEditor.perform(self)
+    validating!
+    TextEditorJob.perform_later(id)
   end
 
 def broadcast_progress

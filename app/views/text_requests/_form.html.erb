@@ -1,6 +1,6 @@
-  <%= form_with(model: text_request, class: "md:h-screen flex flex-col md:flex-row  text-text-light overflow-hidden ") do |form| %>
+<%= form_with(model: text_request, class: "flex flex-col md:flex-row text-text-light overflow-auto ") do |form| %>
   <div class="w-full md:h-full max-w-[1000px] mx-auto flex flex-col md:flex-row overflow-hidden">
-    <main class="lg:flex-1 flex flex-col items-center justify-start p-4 md:p-8 md:pb-12 bg-neutral-800 overflow-y-auto">
+    <main class="lg:flex-1 flex flex-col items-center justify-start p-4 md:p-8 md:pb-12 bg-neutral-800">
       <div class="w-full lg:md:h-full max-w-[700px] flex flex-col">
         <div class="lg:h-[60%] md:min-h-[400px] w-full flex-shrink-0 flex items-center justify-center">
           <div class="relative w-full md:h-full rounded-lg overflow-hidden shadow-2xl flex items-center">
@@ -9,6 +9,9 @@
                 <%= image_tag text_request.original_image, class: "w-full md:h-full object-cover" %>
                 <div class="absolute inset-0 backdrop-blur-xl bg-black/30"></div>
               </div>
+              <% unless text_request.complete? %>
+                <%= render partial: "layouts/shared/loader", locals: { record: nil, klasses: " group embed absolute w-full h-full z-1" } %>
+              <% end %>
               <div class="relative m-auto !w-[400px] h-auto flex z-10 juxtapose" data-startingposition="90">
                 <% if text_request.result_image.attached? %>
                   <%= image_tag text_request.result_image.variant(:juxtaposed), class: "w-[400px] object-contain", data: {label: "After"} %>
@@ -27,14 +30,16 @@
             <% end %>
           </div>
         </div>
-        <div class="lg:h-[40%] w-full flex-shrink-0 flex flex-col md:shadow-md rounded-lg">
+        <div class="lg:h-[40%] w-full flex-shrink-0 flex flex-col">
           <% if text_request.original_image.attached? %>
             <div class="my-3 mt-5">
               <%= form.label :prompt, "Image Prompt", class: "block mb-2 text-sm font-medium" %>
-              <%= form.text_area :prompt, rows: 3, placeholder: "Change to a zen style with a fountain and a Japanese peach tree.", class: "w-full p-3 rounded-lg bg-neutral-700 text-text-light border-4 border-neutral-500 focus:outline-none focus:border-text-primary focus:ring-2 focus:ring-text-primary resize-none transition-colors duration-200" %>
+              <%= form.text_area :prompt, rows: 3, placeholder: "Add spaced out outdoor garden yellow lights along the paths and then convert the image to a night view.", class: "w-full p-3 rounded-lg bg-neutral-700 text-text-light border-4 border-neutral-500 focus:outline-none focus:border-text-primary focus:ring-2 focus:ring-text-primary resize-none transition-colors duration-200" %>
             </div>
             <div class="mt-1 pb-2 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0 sm:space-x-4">
-              <%= form.submit "Generate", data: {action: "loader#showLoader"},  class: "w-full sm:w-auto bg-primary text-text-light px-4 py-2 rounded-full font-bold hover:bg-text-primary transition-colors duration-200 cursor-pointer" %>
+              <%= form.submit "Generate",
+              class: "w-full sm:w-auto bg-accent text-text-light px-4 py-2 rounded-full font-bold hover:bg-text-primary transition-colors duration-200 cursor-pointer"
+              %>
             </div>
           <% end %>
         </div>

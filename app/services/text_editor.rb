@@ -1,8 +1,8 @@
 class TextEditor
   include Designable
 
-  def initialize(text_request)
-    @text_request = text_request
+  def initialize(id)
+    @text_request = TextRequest.find(id)
   end
 
   def self.perform(*args)
