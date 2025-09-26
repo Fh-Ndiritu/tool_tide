@@ -39,17 +39,13 @@ class TextRequestsController < ApplicationController
       end
 
       redirect_to text_requests_path(current_request: child.id) and return
-    end
-
-    respond_to do |format|
-      if @text_request.update(text_request_params)
+    elsif @text_request.update(text_request_params)
         format.html { redirect_to @text_request, notice: "Text request was successfully updated.", status: :see_other }
         format.turbo_stream do
           render turbo_stream: turbo_stream.refresh
         end
-      else
+    else
         format.html { render :show, status: :unprocessable_entity }
-      end
     end
   end
 

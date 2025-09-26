@@ -38,12 +38,10 @@
             </div>
             <div class="mt-1 pb-2 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0 sm:space-x-4">
               <%= form.submit "Generate",
-              class: "w-full sm:w-auto bg-accent text-text-light px-4 py-2 rounded-full font-bold hover:bg-text-primary transition-colors duration-200 cursor-pointer"
+              class: "max-sm:!w-full cute-btn accent-btn"
               %>
               <% if text_request.result_image.attached? %>
-                <%= link_to rails_blob_path(text_request.result_image, disposition: :attachment), class: "w-full sm:w-auto bg-secondary text-text-light px-4 py-2 rounded-full font-bold hover:bg-text-primary transition-colors duration-200 cursor-pointer" do %>
-                  Download
-                <% end %>
+                <%= link_to "HD Download",  rails_blob_path(text_request.result_image), class: "max-sm:!w-full cute-btn secondary-btn" %>
               <% end %>
             </div>
           <% end %>
