@@ -3,7 +3,7 @@ class TextRequest < ApplicationRecord
 
   belongs_to :user
   has_ancestry
-  after_update_commit :generate_edit, if: :saved_change_to_prompt?
+  after_save_commit :generate_edit, if: :saved_change_to_prompt?
   after_update_commit :broadcast_progress, if: :saved_change_to_progress?
 
   default_scope -> { order(created_at: :desc) }

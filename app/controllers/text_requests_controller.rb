@@ -3,7 +3,7 @@ class TextRequestsController < ApplicationController
 
   # GET /text_requests or /text_requests.json
   def index
-    @text_requests = current_user.text_requests
+    @text_requests = current_user.text_requests.complete_or_in_progress
     @current_request = @text_requests.find_by(id: params[:current_request]) || @text_requests.first
   end
 
