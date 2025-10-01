@@ -11,7 +11,7 @@
     <div class="w-full flex justify-center">
       <div class="w-full max-w-6xl columns-2 sm:columns-3 md:columns-4 gap-4 md:gap-6">
         <% # The array is iterated twice in the original code, retaining that structure %>
-        <% [@mask_requests, @mask_requests].flatten.each_with_index do |request, index| %>
+        <% [@mask_requests].flatten.each_with_index do |request, index| %>
           <% if image = request.face_image %>
             <div class="mb-4 md:mb-6 break-inside-avoid">
               <div class="rounded-xl shadow-2xl overflow-hidden cursor-pointer
