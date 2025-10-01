@@ -3,7 +3,9 @@
 class HomeController < ApplicationController
   skip_before_action :authenticate_user!, only: [ :index ]
 
-  def index; end
+  def index
+    @mask_requests = MaskRequest.complete.everyone.order(id: :desc).limit(20)
+  end
 
   def credits; end
 end
