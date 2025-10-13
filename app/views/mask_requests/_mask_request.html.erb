@@ -6,10 +6,13 @@
       </h3>
       <h4 class="text-base text-secondary"><%= mask_request.user_error %></h4>
     </div>
-    <div class="flex flex-wrap justify-between gap-2" data-controller="turbo-method">
+    <div class="flex flex-wrap justify-between md:justify-start gap-2" data-controller="turbo-method">
       <%= link_to "Brush Edit", new_canva_mask_request_path(mask_request.canva), class: "max-sm:!text-sm cute-btn secondary-btn" %>
       <%= link_to "New Design", new_canva_path, class: "max-sm:!text-sm cute-btn primary-btn" %>
       <%= link_to "Change Style", edit_mask_request_path(mask_request, manual: true), class: "max-sm:!text-sm cute-btn accent-btn" %>
+      <% if current_user.admin? %>
+        <%= link_to "Text Edit", new_text_request_path(signed_blob_id:  mask_request.main_view.blob.signed_id), class: "max-sm:!text-sm cute-btn accent-btn" %>
+      <% end %>
     </div>
     <hr class="border-t border-neutral-300">
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
@@ -24,46 +27,46 @@
             <%= link_to rails_blob_path(mask_request.main_view, disposition: :attachment), class: "h-8 w-8 flex items-center justify-center rounded-full bg-accent text-white shadow-xl backdrop-blur-md transition-all duration-300 transform hover:scale-110 hover:bg-secondary active:scale-95" do %>
               <%= render(IconComponent.new(classes: "h-6 w-6", name: "download")) %>
             <% end %>
-            <%#= link_to "#", class: "h-8 w-8 flex items-center justify-center rounded-full bg-accent text-white shadow-xl backdrop-blur-md transition-all duration-300 transform hover:scale-110 hover:bg-secondary active:scale-95" do %>
-              <%#= render(IconComponent.new(classes: "h-6 w-6", name: "pencil")) %>
-              <%# end %>
-            </div>
-          </div>
-        <% end %>
-        <% if mask_request.rotated_view.attached? %>
-          <div class="group relative overflow-hidden rounded-sm shadow-lg transition-all duration-500 transform hover:scale-105">
-            <%= image_tag(mask_request.rotated_view.variant(resize_to_limit: [500, 500]), loading: :lazy, class: "w-full max-h-[400px] object-cover transition-transform duration-500 group-hover:scale-110") %>
-            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-70"></div>
-            <div class="absolute bottom-4 left-4 right-4 text-white">
-              <p class="text-lg font-bold">Rotated View</p>
-            </div>
-            <div class="absolute bottom-4 right-4 z-10 flex space-x-3">
-              <%= link_to rails_blob_path(mask_request.rotated_view, disposition: :attachment), class: "h-8 w-8 flex items-center justify-center rounded-full bg-accent text-white shadow-xl backdrop-blur-md transition-all duration-300 transform hover:scale-110 hover:bg-secondary active:scale-95" do %>
-                <%= render(IconComponent.new(classes: "h-6 w-6", name: "download")) %>
-              <% end %>
-              <%#= link_to "#", class: "h-8 w-8 flex items-center justify-center rounded-full bg-accent text-white shadow-xl backdrop-blur-md transition-all duration-300 transform hover:scale-110 hover:bg-secondary active:scale-95" do %>
-                <%#= render(IconComponent.new(classes: "h-6 w-6", name: "pencil")) %>
-                <%# end %>
-              </div>
-            </div>
-          <% end %>
-          <% if mask_request.drone_view.attached? %>
-            <div class="group relative overflow-hidden rounded-sm shadow-lg transition-all duration-500 transform hover:scale-105">
-              <%= image_tag(mask_request.drone_view.variant(resize_to_limit: [500, 500]), loading: :lazy, class: "w-full max-h-[400px] object-cover transition-transform duration-500 group-hover:scale-110") %>
-              <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-70"></div>
-              <div class="absolute bottom-4 left-4 right-4 text-white">
-                <p class="text-lg font-bold">Drone Shot</p>
-              </div>
-              <div class="absolute bottom-4 right-4 z-10 flex space-x-3">
-                <%= link_to rails_blob_path(mask_request.drone_view, disposition: :attachment), class: "h-8 w-8 flex items-center justify-center rounded-full bg-accent text-white shadow-xl backdrop-blur-md transition-all duration-300 transform hover:scale-110 hover:bg-secondary active:scale-95" do %>
-                  <%= render(IconComponent.new(classes: "h-6 w-6", name: "download")) %>
-                <% end %>
-                <%#= link_to "#", class: "h-8 w-8 flex items-center justify-center rounded-full bg-accent text-white shadow-xl backdrop-blur-md transition-all duration-300 transform hover:scale-110 hover:bg-secondary active:scale-95" do %>
-                  <%#= render(IconComponent.new(classes: "h-6 w-6", name: "pencil")) %>
-                  <%# end %>
-                </div>
-              </div>
+            <%= link_to new_text_request_path(signed_blob_id:  mask_request.main_view.blob.signed_id), class: "h-8 w-8 flex items-center justify-center rounded-full bg-accent text-white shadow-xl backdrop-blur-md transition-all duration-300 transform hover:scale-110 hover:bg-secondary active:scale-95" do %>
+              <%= render(IconComponent.new(classes: "h-6 w-6", name: "pencil")) %>
             <% end %>
           </div>
         </div>
-      </div>
+      <% end %>
+      <% if mask_request.rotated_view.attached? %>
+        <div class="group relative overflow-hidden rounded-sm shadow-lg transition-all duration-500 transform hover:scale-105">
+          <%= image_tag(mask_request.rotated_view.variant(resize_to_limit: [500, 500]), loading: :lazy, class: "w-full max-h-[400px] object-cover transition-transform duration-500 group-hover:scale-110") %>
+          <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-70"></div>
+          <div class="absolute bottom-4 left-4 right-4 text-white">
+            <p class="text-lg font-bold">Rotated View</p>
+          </div>
+          <div class="absolute bottom-4 right-4 z-10 flex space-x-3">
+            <%= link_to rails_blob_path(mask_request.rotated_view, disposition: :attachment), class: "h-8 w-8 flex items-center justify-center rounded-full bg-accent text-white shadow-xl backdrop-blur-md transition-all duration-300 transform hover:scale-110 hover:bg-secondary active:scale-95" do %>
+              <%= render(IconComponent.new(classes: "h-6 w-6", name: "download")) %>
+            <% end %>
+            <%= link_to new_text_request_path(signed_blob_id:  mask_request.rotated_view.blob.signed_id), class: "h-8 w-8 flex items-center justify-center rounded-full bg-accent text-white shadow-xl backdrop-blur-md transition-all duration-300 transform hover:scale-110 hover:bg-secondary active:scale-95" do %>
+              <%= render(IconComponent.new(classes: "h-6 w-6", name: "pencil")) %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+      <% if mask_request.drone_view.attached? %>
+        <div class="group relative overflow-hidden rounded-sm shadow-lg transition-all duration-500 transform hover:scale-105">
+          <%= image_tag(mask_request.drone_view.variant(resize_to_limit: [500, 500]), loading: :lazy, class: "w-full max-h-[400px] object-cover transition-transform duration-500 group-hover:scale-110") %>
+          <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-70"></div>
+          <div class="absolute bottom-4 left-4 right-4 text-white">
+            <p class="text-lg font-bold">Drone Shot</p>
+          </div>
+          <div class="absolute bottom-4 right-4 z-10 flex space-x-3">
+            <%= link_to rails_blob_path(mask_request.drone_view, disposition: :attachment), class: "h-8 w-8 flex items-center justify-center rounded-full bg-accent text-white shadow-xl backdrop-blur-md transition-all duration-300 transform hover:scale-110 hover:bg-secondary active:scale-95" do %>
+              <%= render(IconComponent.new(classes: "h-6 w-6", name: "download")) %>
+            <% end %>
+            <%= link_to new_text_request_path(signed_blob_id:  mask_request.drone_view.blob.signed_id), class: "h-8 w-8 flex items-center justify-center rounded-full bg-accent text-white shadow-xl backdrop-blur-md transition-all duration-300 transform hover:scale-110 hover:bg-secondary active:scale-95" do %>
+              <%= render(IconComponent.new(classes: "h-6 w-6", name: "pencil")) %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

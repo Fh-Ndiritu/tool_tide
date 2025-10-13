@@ -106,7 +106,7 @@ class MaskRequest < ApplicationRecord
     if failed? || complete?
       Turbo::StreamsChannel.broadcast_refresh_to(canva, target: "styles")
     else
-    Turbo::StreamsChannel.broadcast_replace_to(canva, target: "loader", partial: "layouts/shared/loader", locals: { record: self })
+    Turbo::StreamsChannel.broadcast_replace_to(canva, target: "loader", partial: "layouts/shared/loader", locals: { record: self, klasses: "fixed " })
     end
   end
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_24_150748) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_26_114544) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -140,6 +140,21 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_24_150748) do
     t.index ["landscape_request_id"], name: "index_suggested_plants_on_landscape_request_id"
   end
 
+  create_table "text_requests", force: :cascade do |t|
+    t.text "prompt"
+    t.integer "progress"
+    t.string "user_error"
+    t.integer "visibility"
+    t.boolean "trial_generation"
+    t.integer "user_id", null: false
+    t.string "ancestry"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "error_msg"
+    t.index ["ancestry"], name: "index_text_requests_on_ancestry"
+    t.index ["user_id"], name: "index_text_requests_on_user_id"
+  end
+
   create_table "tool_calls", force: :cascade do |t|
     t.integer "message_id", null: false
     t.string "tool_call_id", null: false
@@ -180,7 +195,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_24_150748) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "canvas", "users"
   add_foreign_key "credits", "users"
@@ -190,5 +204,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_24_150748) do
   add_foreign_key "messages", "chats"
   add_foreign_key "payment_transactions", "users"
   add_foreign_key "suggested_plants", "landscape_requests"
+  add_foreign_key "text_requests", "users"
   add_foreign_key "tool_calls", "messages"
 end

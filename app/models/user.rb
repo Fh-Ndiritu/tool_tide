@@ -11,6 +11,7 @@ class User < ApplicationRecord
   has_many :canvas, dependent: :destroy
 
   has_many :credits, dependent: :destroy
+  has_many :text_requests, dependent: :destroy
 
   validates :privacy_policy, acceptance: { message: "must be accepted." }
 
@@ -32,6 +33,10 @@ class User < ApplicationRecord
 
   def afford_generation?
     pro_access_credits >= (GOOGLE_IMAGE_COST * 3)
+  end
+
+  def afford_text_editing?
+    pro_access_credits >= GOOGLE_IMAGE_COST
   end
 
   def pro_access_credits

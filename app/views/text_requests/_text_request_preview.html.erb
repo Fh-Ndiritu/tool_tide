@@ -1,0 +1,30 @@
+<%
+@status_class =
+   if  @current_request.id == text_request.id
+  'border-accent '
+  elsif text_request.complete?
+  'border-neutral-300 '
+  else
+  'border-text-secondary '
+  end
+  %>
+<%= link_to text_requests_path(current_request: text_request.id) do %>
+  <div class="<%= @status_class %> relative my-4 w-40 md:w-full flex-shrink-0 aspect-video rounded-lg overflow-hidden border-2  hover:border-text-accent transition-colors duration-200 cursor-pointer">
+    <% if text_request.result_image.attached? %>
+      <%= image_tag text_request.result_image.variant(resize_to_limit: [120, 120]), alt: text_request.prompt, class: "w-full h-full object-cover" %>
+    <% elsif text_request.original_image.attached? %>
+      <%= image_tag text_request.original_image.variant(resize_to_limit: [120, 120]), alt: text_request.prompt, class: "w-full h-full object-cover" %>
+    <% else %>
+      <div class="w-full h-full bg-neutral-700 flex items-center justify-center text-xs text-neutral-400">
+        <p>No Image</p>
+      </div>
+    <% end %>
+    <div class="absolute inset-0 bg-black opacity-70 flex flex-col justify-end p-2 text-text-light">
+      <p class="text-xs font-semibold whitespace-nowrap overflow-hidden text-ellipsis"><%= text_request.prompt %></p>
+      <p class="text-[10px] text-neutral-300 mt-1"><%= time_ago_in_words(text_request.updated_at) %> ago</p>
+    </div>
+    <% if text_request.in_progress? %>
+      <%= render partial: "layouts/shared/loader", locals: { record: text_request, klasses: "group embed absolute !opacity-75 z-1 w-full h-full" } %>
+    <% end %>
+  </div>
+<% end %>

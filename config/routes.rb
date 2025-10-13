@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  resources :text_requests, except: [ :destroy, :create, :edit ]
+
   namespace :admin do
     get "mask_requests/index"
     get "mask_requests/edit"

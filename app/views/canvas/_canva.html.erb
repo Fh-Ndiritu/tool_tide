@@ -1,7 +1,6 @@
-<!--<div id="<%#= dom_id canva %>">-->
 <% canva.mask_requests.complete.order(created_at: :desc).each do |mask_request| %>
   <% if mask_request.main_view.attached? %>
-    <div class="group relative overflow-hidden rounded-sm shadow-lg transition-all duration-500 transform hover:scale-105">
+    <%= link_to mask_request_path(mask_request), class: "group relative block overflow-hidden rounded-sm shadow-lg transition-all duration-500 transform hover:scale-105" do %>
       <% image = mask_request.main_view.presence || mask_request.rotated_view.presence || mask_request.drone_view.presence %>
       <%= image_tag(image.variant(resize_to_limit: [200, 200]), loading: :lazy, class: "w-full max-h-[200px] object-cover transition-transform duration-500 group-hover:scale-110") %>
       <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-70"></div>
@@ -10,12 +9,11 @@
           <%= time_ago_in_words(mask_request.created_at) %> Ago
         </p>
       </div>
-      <div class="absolute bottom-4 right-4 z-10 flex space-x-3">
-        <%= link_to mask_request_path(mask_request), class: "h-8 w-8 flex items-center justify-center rounded-full bg-accent text-white shadow-xl backdrop-blur-md transition-all duration-300 transform hover:scale-110 hover:bg-secondary active:scale-95" do %>
+      <div class="absolute bottom-4 right-4 z-10 flex">
+        <div class="h-8 w-8 flex items-center justify-center rounded-full bg-accent/80 text-white shadow-xl backdrop-blur-sm">
           <%= render(IconComponent.new(classes: "h-6 w-6", name: "eye")) %>
-        <% end %>
+        </div>
       </div>
-    </div>
+    <% end %>
   <% end %>
 <% end %>
-<!--</div>-->

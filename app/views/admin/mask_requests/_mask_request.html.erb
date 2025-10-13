@@ -1,18 +1,26 @@
+<% @main_color =  if mask_request.user.admin? && mask_request.personal?
+'bg-blue-100 '
+ elsif mask_request.everyone?
+'bg-red-100 '
+ else
+  'bg-green-100 '
+ end %>
 <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12
 " id="<%= dom_id(mask_request) %>">
-  <div class="<%= mask_request.everyone? ? "bg-red-100 ": "bg-green-100 "  %> rounded-2xl shadow-2xl border border-gray-200 p-3 space-y-4">
+  <div class="<%=  @main_color %> rounded-2xl shadow-2xl border border-gray-200 p-3 space-y-4">
     <div class="flex flex-col max-sm:items-center md:justify-between">
       <h3 class="text-xl font-extrabold leading-tight text-neutral-900">
         Results for <%= mask_request.preset.humanize %> Style Design
       </h3>
       <h4 class="text-base text-secondary"><%= mask_request.user_error %></h4>
-      <h4 class="text-base text-secondary"> Can be public: <%= mask_request.trial_generation? || mask_request.user.admin? %></h4>
     </div>
     <div class="flex flex-wrap justify-start gap-2" data-controller="turbo-method">
-      <% if mask_request.everyone? %>
-        <%= button_to "Hide from public", admin_mask_requests_toggle_display_path(id: mask_request.id), class: "max-sm:!text-sm cute-btn secondary-btn" %>
-      <% else %>
-        <%= button_to "List on Explore", admin_mask_requests_toggle_display_path(id: mask_request.id), class: "max-sm:!text-sm cute-btn primary-btn" %>
+      <% if mask_request.trial_generation? || mask_request.user.admin? %>
+        <% if mask_request.everyone? %>
+          <%= button_to "Hide from public", admin_mask_requests_toggle_display_path(id: mask_request.id), class: "max-sm:!text-sm cute-btn secondary-btn" %>
+        <% else %>
+          <%= button_to "List on Explore", admin_mask_requests_toggle_display_path(id: mask_request.id), class: "max-sm:!text-sm cute-btn primary-btn" %>
+        <% end %>
       <% end %>
     </div>
     <hr class="border-t border-neutral-300">
