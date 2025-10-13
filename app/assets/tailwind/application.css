@@ -139,8 +139,8 @@ html {
 
 .flash-message.error,
 .flash-message.alert {
-  background-color: #fee2e2; /* Light red */
-  color: #b91c1c; /* Dark red */
+  background-color: #b32727; /* Light red */
+  color: #ffffff; /* Dark red */
 }
 
 .flash-message.info {

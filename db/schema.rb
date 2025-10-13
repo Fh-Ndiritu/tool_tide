@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_26_114544) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_13_142518) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -61,6 +61,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_26_114544) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_credits_on_user_id"
+  end
+
+  create_table "generation_taggings", force: :cascade do |t|
+    t.integer "tag_id", null: false
+    t.string "generation_type", null: false
+    t.integer "generation_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["generation_type", "generation_id"], name: "index_generation_taggings_on_generation"
+    t.index ["tag_id", "generation_id", "generation_type"], name: "idx_on_tag_id_generation_id_generation_type_9189069e36", unique: true
+    t.index ["tag_id"], name: "index_generation_taggings_on_tag_id"
   end
 
   create_table "landscape_requests", force: :cascade do |t|
@@ -140,6 +151,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_26_114544) do
     t.index ["landscape_request_id"], name: "index_suggested_plants_on_landscape_request_id"
   end
 
+  create_table "tags", force: :cascade do |t|
+    t.integer "tag_class"
+    t.text "title"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "slug"
+  end
+
   create_table "text_requests", force: :cascade do |t|
     t.text "prompt"
     t.integer "progress"
@@ -198,6 +217,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_26_114544) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "canvas", "users"
   add_foreign_key "credits", "users"
+  add_foreign_key "generation_taggings", "tags"
   add_foreign_key "landscape_requests", "landscapes"
   add_foreign_key "landscapes", "users"
   add_foreign_key "mask_requests", "canvas"

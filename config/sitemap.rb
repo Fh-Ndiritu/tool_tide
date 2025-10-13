@@ -27,19 +27,15 @@ SitemapGenerator::Sitemap.create do
   #     add article_path(article), :lastmod => article.updated_at
   #   end
 
-  # <% CANONICAL_IMAGE_FORMATS.keys.each do |source| %>
-  #  <% DESTINATION_IMAGE_FORMATS.each do |conversion| %>
+  EVENTS.each do |event_name|
+    # Convert the event name to a URL-friendly slug (e.g., "Diwali" -> "diwali")
+    # You'll need to define a method or gem to handle the slugging in a real app,
+    # but for a simple example:
+    slug = event_name.downcase.gsub(/[^a-z0-9\s-]/, "").gsub(/\s+/, "-")
 
-  # add all image manipulation paths
-  CANONICAL_IMAGE_FORMATS.each_key do |source|
-    DESTINATION_IMAGE_FORMATS.each do |conversion|
-      next if source == conversion
-
-      add new_images_path(source, conversion)
-    end
+    # This assumes a route like /events/:slug (e.g., /events/diwali)
+    add "/events/#{slug}", changefreq: "weekly", priority: 0.8
   end
-
-  add extract_text_images_path
 end
 
 # rake sitemap:refresh:no_ping
