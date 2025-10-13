@@ -14,11 +14,15 @@ if Rails.env.development?
   Tag.destroy_all
   EVENTS.each do |name|
     tag = Tag.create!(tag_class: :event, title: name)
-    TextRequest.joins(:user).where(user: { admin: true }).limit(50).sample(2).each do |text_request|
+    id = GenerationTagging.where(generation_type: 'TextRequest').pluck(:generation_id)
+    TextRequest.complete.where.not(id:).joins(:user).where(user: { admin: true }).limit(50).sample(2).each do |text_request|
+      next unless text_request.result_image.attached?
+
       text_request.generation_taggings.create!(tag:)
     end
 
-    MaskRequest.joins(canva: :user).where(user: { admin: true }).limit(50).sample(2).each do |mask_request|
+    MaskRequest.everyone.complete.limit(50).sample(2).each do |mask_request|
+      next unless mask_request.main_view.attached?
       mask_request.generation_taggings.create!(tag:)
     end
   end
