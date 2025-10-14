@@ -1,0 +1,2 @@
+module SeasonTagsHelper
+end

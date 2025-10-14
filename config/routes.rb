@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  scope "/seasons" do
+    get ":slug", to: "season_tags#show", as: :season_tag, onstraints: { slug: /[a-z0-9\-\_]+/ }
+  end
+
   scope "/events" do
     get ":slug", to: "event_tags#show", as: :event_tag, constraints: { slug: /[a-z0-9\-\_]+/ }
   end

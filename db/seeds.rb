@@ -27,4 +27,18 @@ if Rails.env.development?
     end
   end
 
+  SEASONS.each do |name|
+    tag = Tag.create!(tag_class: :season, title: name)
+    TextRequest.complete.joins(:user).where(user: { admin: true }).limit(50).sample(2).each do |text_request|
+      next unless text_request.result_image.attached?
+
+      text_request.generation_taggings.create!(tag:)
+    end
+
+    MaskRequest.everyone.complete.limit(50).sample(2).each do |mask_request|
+      next unless mask_request.main_view.attached?
+      mask_request.generation_taggings.create!(tag:)
+    end
+  end
+
 end

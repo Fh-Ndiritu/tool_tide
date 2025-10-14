@@ -1,50 +1,59 @@
-<% content_for :head do %>
-  <title><%= @event_tag.seo_title %></title>
-  <meta name="description" content="<%= @event_tag.seo_description %>">
-  <%= tag.link rel: 'canonical', href: event_tag_url(@event_tag.slug) %>
+<% content_for :title do %>
+  <%= @tag.seo_title %>
+<% end %>
 
-  <meta property="og:title" content="<%= @event_tag.seo_title %>">
-  <meta property="og:description" content="<%= @event_tag.seo_description %>">
+<% content_for :description do %>
+  <%= @tag.seo_description %>
+<% end %>
+
+<% content_for :canonical_url do %>
+  <%= event_tag_url(@tag.slug) %>
+<% end %>
+
+<% content_for :head do %>
+  <meta property="og:title" content="<%= @tag.seo_title %>">
+  <meta property="og:description" content="<%= @tag.seo_description %>">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="<%= event_tag_url(@event_tag.slug) %>">
+  <meta property="og:url" content="<%= event_tag_url(@tag.slug) %>">
   <meta property="og:image" content="<%= @mask_requests.first&.main_view.presence || asset_url('hadaa_og.jpg') %>">
+
+  <meta name="twitter:title" content="<%= @tag.seo_title %>">
+  <meta name="twitter:description" content="<%= @tag.seo_description %>">
+  <meta name="twitter:url" content="<%= event_tag_url(@tag.slug) %>">
+  <meta name="twitter:image" content="<%= @mask_requests.first&.main_view.presence || asset_url('hadaa_og.jpg') %>">
 
   <%= tag.script type: "application/ld+json" do %>
     {
-    "@context": "https://schema.org",
-    "@type": "CollectionPage",
-    "name": "<%= @event_tag.title %> Landscaping Ideas",
-    "description": "<%= @event_tag.seo_description %>",
-    "url": "<%= event_tag_url(@event_tag.slug) %>",
-    "mainEntity": {
-    "@type": "ItemList",
-    "itemListElement": [
-    <% @mask_requests.each_with_index do |mask_request, index| %>
-      {
-      "@type": "CreativeWork",
-      "name": "Generated <%=  @event_tag.title %> Landscaping Design <%= index + 1 %>",
-      "url": "<%= mask_request_url(mask_request) %>",
-      "image": "<%= rails_blob_url(mask_request.main_view, only_full_url: true) %>",
-      "author": {
-      "@type": "Organization",
-      "name": "Hadaa AI Community"
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": "<%= @tag.title %> Landscaping Ideas",
+      "description": "<%= @tag.seo_description %>",
+      "url": "<%= event_tag_url(@tag.slug) %>",
+      "mainEntity": {
+        "@type": "ItemList",
+        "itemListElement": [
+          <%
+            # Combine mask_requests and text_requests for a single JSON array
+            all_requests = @mask_requests.map { |mr| { request: mr, type: :mask } } +
+                           @text_requests.map { |tr| { request: tr, type: :text } }
+          %>
+          <% all_requests.each_with_index do |item, index| %>
+            <% request = item[:request] %>
+            <% is_mask = item[:type] == :mask %>
+
+            {
+              "@type": "CreativeWork",
+              "name": "Generated <%= @tag.title %> Landscaping Design <%= index + 1 %>",
+              "url": "<%= is_mask ? mask_request_url(request) : text_request_url(request) %>",
+              "image": "<%= is_mask ? rails_blob_url(request.main_view, only_full_url: true) : rails_blob_url(request.result_image, only_full_url: true) %>",
+              "author": {
+                "@type": "Organization",
+                "name": "Hadaa AI Community"
+              }
+            }<%= index == all_requests.count - 1 ? '' : ',' %>
+          <% end %>
+        ]
       }
-      }<%= (index == @mask_requests.count - 1 && @text_requests.empty?) ? '' : ',' %>
-    <% end %>
-    <% @text_requests.each_with_index do |text_request, index| %>
-      {
-      "@type": "CreativeWork",
-      "name": "Generated <%=  @event_tag.title %> Landscaping Design <%= index + 1 %>",
-      "url": "<%= text_request_url(text_request) %>",
-      "image": "<%= rails_blob_url(text_request.result_image, only_full_url: true) %>",
-      "author": {
-      "@type": "Organization",
-      "name": "Hadaa AI Community"
-      }
-      }<%= (index == @text_requests.count - 1) ? '' : ',' %>
-    <% end %>
-    ]
-    }
     }
   <% end %>
 <% end %>
@@ -54,10 +63,10 @@
 
     <header class="text-center mb-10">
       <h1 class="text-5xl font-extrabold tracking-tight text-text-dark mb-4">
-        Best <span class="text-accent"><%= @event_tag.title %></span> Landscaping Designs
+        Best <span class="text-accent"><%= @tag.title %></span> Landscaping Designs
       </h1>
       <div class="max-w-3xl mx-auto text-xl text-neutral-700">
-        <%= raw unique_intro_content(@event_tag) %>
+        <%= raw unique_intro_content(@tag) %>
       </div>
     </header>
 
@@ -69,7 +78,7 @@
       <% @text_requests.each do |text_request| %>
         <div class="group relative bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 ease-in-out transform hover:-translate-y-1 overflow-hidden border-2 border-primary/20 cursor-pointer">
           <%= link_to text_request_path(text_request), class: "block" do %>
-            <%= image_tag text_request.result_image.variant(resize_to_limit: [220, 220]),
+            <%= image_tag text_request.result_image.variant(resize_to_limit: [280, 280]),
                 alt: text_request.prompt.truncate(100),
                 class: 'object-cover w-full aspect-square  group-hover:opacity-90 transition-opacity'
             %>
@@ -89,8 +98,8 @@
       <% @mask_requests.each do |mask_request| %>
         <div class="group relative bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 ease-in-out transform hover:-translate-y-1 overflow-hidden cursor-pointer">
           <%= link_to mask_request_path(mask_request), class: "block" do %>
-            <%= image_tag mask_request.main_view.variant(resize_to_limit: [220, 220]),
-                alt: "AI Landscaping design for #{@event_tag.title }",
+            <%= image_tag mask_request.main_view.variant(resize_to_limit: [280, 280]),
+                alt: "AI Landscaping design for #{@tag.title }",
                 class: "object-cover w-full aspect-square transition-opacity duration-300 group-hover:opacity-90"
             %>
             <div class="absolute inset-0 bg-gradient-to-t from-neutral-900/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
@@ -108,7 +117,7 @@
     <%# --- CTA SECTION (The Conversion Target) --- %>
     <section class="mt-16 p-10 bg-primary rounded-2xl shadow-xl text-center text-text-light">
       <h3 class="text-3xl font-extrabold mb-3">Don't Just Admire, Design!</h3>
-      <p class="text-xl mb-8 font-light">Bring your vision to life with our AI. Start creating your own <%= @event_tag.title %> masterpiece now.</p>
+      <p class="text-xl mb-8 font-light">Bring your vision to life with our AI. Start creating your own <%= @tag.title %> masterpiece now.</p>
       <%= link_to "Start Designing Now! 🚀", new_canva_path,
           class: "inline-flex items-center px-8 py-4 border border-transparent text-lg font-bold rounded-full shadow-lg text-primary bg-text-light hover:bg-neutral-100 transition duration-300 transform hover:scale-105"
       %>
@@ -118,7 +127,7 @@
     <div class="mt-16 pt-8 border-t border-neutral-300">
       <h4 class="text-2xl font-bold text-neutral-800 mb-4">Explore Related Ideas</h4>
       <div class="flex flex-wrap gap-3">
-        <% @event_tag.related_tags_list.each do |tag| %>
+        <% @tag.related_tags_list.each do |tag| %>
           <%= link_to "#{tag.title} ideas", event_tag_path(slug: tag.slug),
               class: "px-4 py-2 text-sm font-medium rounded-full bg-neutral-300 text-neutral-700 hover:bg-accent/20 hover:text-accent transition duration-150"
           %>

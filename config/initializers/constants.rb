@@ -140,6 +140,8 @@ EVENTS = [
   "Lantern Festival (Yuan Xiao Jie)"
 ]
 
+SEASONS = [ "Summer", "Winter", "Autumn", "Spring" ]
+
 PROMPTS = YAML.load_file(Rails.root.join("config/prompts.yml"))
 
 PRO_TRIAL_CREDITS = 30
