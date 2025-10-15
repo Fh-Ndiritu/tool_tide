@@ -28,23 +28,21 @@ SitemapGenerator::Sitemap.create do
   #   end
 
   EVENTS.each do |event_name|
-    # Convert the event name to a URL-friendly slug (e.g., "Diwali" -> "diwali")
-    # You'll need to define a method or gem to handle the slugging in a real app,
-    # but for a simple example:
     slug = event_name.downcase.gsub(/[^a-z0-9\s-]/, "").gsub(/\s+/, "-")
 
-    # This assumes a route like /events/:slug (e.g., /events/diwali)
     add "/events/#{slug}", changefreq: "weekly", priority: 0.8
   end
 
   SEASONS.each do |season|
-    # Convert the event name to a URL-friendly slug (e.g., "Diwali" -> "diwali")
-    # You'll need to define a method or gem to handle the slugging in a real app,
-    # but for a simple example:
     slug = season.downcase.gsub(/[^a-z0-9\s-]/, "").gsub(/\s+/, "-")
 
-    # This assumes a route like /events/:slug (e.g., /events/diwali)
     add "/seasons/#{slug}", changefreq: "weekly", priority: 0.8
+  end
+
+  Location.find_each do |location|
+    slug = location.name.downcase.gsub(/[^a-z0-9\s-]/, "").gsub(/\s+/, "-")
+
+    add "/designs/#{slug}", changefreq: "weekly", priority: 0.8
   end
 end
 
