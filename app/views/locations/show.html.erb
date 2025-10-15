@@ -1,0 +1,193 @@
+<%# The SEO blocks remain the same and are correct. %>
+<% content_for :title do %>
+  <%= "AI Landscaping Designs in #{@location.name}, #{@location.country_code}" %>
+<% end %>
+
+<% content_for :description do %>
+  <%= "Explore the best user-generated AI landscaping and garden design ideas for a property in #{@location.name}, #{@location.admin_name.presence || @location.country_code}. Get inspiration and design your own masterpiece with Hadaa AI." %>
+<% end %>
+
+<% content_for :canonical_url do %>
+  <%= location_url(@location) %>
+<% end %>
+
+<% content_for :head do %>
+  <%# --- Open Graph (Facebook/LinkedIn) --- %>
+  <meta property="og:title" content="<%= content_for(:title) %>">
+  <meta property="og:description" content="<%= content_for(:description) %>">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="<%= location_url(@location) %>">
+  <meta
+    property="og:image"
+    content="<%= @mask_requests.first&.main_view.presence || asset_url('hadaa_og.jpg') %>"
+  >
+
+  <%# --- Twitter Cards --- %>
+  <meta name="twitter:title" content="<%= content_for(:title) %>">
+  <meta name="twitter:description" content="<%= content_for(:description) %>">
+  <meta name="twitter:url" content="<%= location_url(@location) %>">
+  <meta
+    name="twitter:image"
+    content="<%= @mask_requests.first&.main_view.presence || asset_url('hadaa_og.jpg') %>"
+  >
+
+  <%= tag.script type: "application/ld+json" do %>
+    { "@context": "https://schema.org", "@type": "CollectionPage", "name": "
+    <%= @location.name %>
+    Landscaping Ideas", "description": "
+    <%= @location.seo_description %>
+    ", "url": "
+    <%= event_tag_url(@location.slug) %>
+    ", "mainEntity": { "@type": "ItemList", "itemListElement": [
+    <%
+            all_requests = @mask_requests.map { |mr| { request: mr, type: :mask } } +
+                           @text_requests.map { |tr| { request: tr, type: :text } } %>
+    <% all_requests.each_with_index do |item, index| %>
+      <% request = item[:request] %>
+      <% is_mask = item[:type] == :mask %>
+      { "@type": "CreativeWork", "name": "Generated
+      <%= @location.name %>
+      Landscaping Design
+      <%= index + 1 %>
+      ", "url": "
+      <%= is_mask ? mask_request_url(request) : text_request_url(request) %>
+      ", "image": "
+       <% if is_mask %>
+        <%= rails_blob_url(request.main_view, only_full_url: true) if request.main_view.attached? %>
+      <% else %>
+        <%= rails_blob_url(request.result_image, only_full_url: true) if request.result_image.attached? %>
+      <% end %>
+      ", "author": { "@type": "Organization", "name": "Hadaa AI Community" } }
+      <%= index == all_requests.count - 1 ? '' : ',' %>
+    <% end %>
+    ] } }
+  <% end %>
+<% end %>
+
+<main class="bg-gray-50 min-h-screen"> <%# Very light, clean background %>
+  <div class="container mx-auto py-16 px-4 sm:px-6 lg:px-8 max-w-7xl">
+
+    <%# --- HEADER SECTION --- %>
+    <header class="text-center mb-16">
+      <h1 class="text-3xl md:text-6xl font-extrabold tracking-tight text-gray-900 mb-4">
+        Best <span class="text-secondary">Landscaping</span> Designs in <span class="text-secondary"><%= @location.name %></span>
+      </h1>
+      <div class="max-w-4xl mx-auto text-xl text-gray-600 font-light">
+        Explore top-rated, AI-generated garden and outdoor living ideas tailored for properties in <b><%= @location.name %>, <%= @location.admin_name.presence || @location.country_code %></b>. Find your next landscaping project!
+      </div>
+    </header>
+
+    <div class="space-y-16"> <%# Main container for consistent vertical flow %>
+
+      <%# --- SEO Paragraph and Divider --- %>
+      <div class="mx-auto text-lg text-gray-700 leading-relaxed  border-b pb-8 border-gray-200">
+        <%= generate_location_seo_paragraph(@location) %>
+      </div>
+
+      <%# --- Content Grid 1: Text Prompts --- %>
+      <h2 class="text-3xl font-bold text-gray-800 border-l-4 border-secondary pl-4 mb-8">Mask Brush Designs</h2>
+
+      <div class="grid grid-cols-2 md:grid-cols-4  gap-8">
+        <% @text_requests.each do |text_request| %>
+          <div
+            class="
+              group relative bg-white rounded-xl shadow-lg hover:shadow-xl
+              transition-all duration-300 ease-in-out transform
+              hover:-translate-y-1 overflow-hidden border border-gray-100
+              cursor-pointer
+            "
+          >
+            <%= link_to text_request_path(text_request), class: "block" do %>
+              <%= image_tag text_request.result_image.variant(resize_to_limit: [280, 280]),
+                  alt: "AI Landscaping Idea in #{@location.name}: #{text_request.prompt.truncate(100)}",
+                  class: 'object-cover w-full aspect-square group-hover:opacity-95 transition-opacity' if text_request.result_image.attached? %>
+
+              <div class="p-3 bg-white">
+                <p class="text-sm font-semibold text-gray-800 leading-snug">
+                  <%= text_request.prompt.truncate(40, separator: ' ', omission: '...') %>
+                </p>
+                <span
+                  class="
+                    text-xs text-emerald-500 font-medium mt-1 block
+                    group-hover:text-emerald-700 transition-colors
+                  "
+                >
+                  View Details &rarr;
+                </span>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+
+      <%# --- Content Grid 2: Mask Requests (Original Images) --- %>
+      <h2 class="text-3xl font-bold text-gray-800 border-l-4 border-secondary pl-4 pt-4 mt-8 mb-8">Text Designs</h2>
+
+      <div class="grid grid-cols-2 md:grid-cols-4  gap-8">
+        <% @mask_requests.each do |mask_request| %>
+          <div
+            class="
+              group relative bg-white rounded-xl shadow-lg hover:shadow-xl
+              transition-all duration-300 ease-in-out transform
+              hover:-translate-y-1 overflow-hidden border border-gray-100
+              cursor-pointer
+            "
+          >
+            <%= link_to mask_request_path(mask_request), class: "block" do %>
+              <%= image_tag mask_request.main_view.variant(resize_to_limit: [280, 280]),
+                  alt: "AI Landscaping design for #{@location.name}",
+                  class: "object-cover w-full aspect-square transition-opacity duration-300 group-hover:opacity-90" if mask_request.main_view.attached?  %>
+              <div
+                class="
+                  absolute inset-0 bg-gradient-to-t from-gray-900/60
+                  to-transparent opacity-0 group-hover:opacity-100
+                  transition-opacity flex items-end p-4
+                "
+              >
+                <span class="text-white text-sm font-semibold">View Design</span>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+
+        <% if @mask_requests.empty? && @text_requests.empty? %>
+          <p class="text-gray-500 sm:col-span-full text-center py-12 text-xl font-light border-2 border-dashed border-gray-300 rounded-xl">
+            No designs found for this location yet.
+            <b>Be the first</b>
+            to start the trend on Hadaa AI!
+          </p>
+        <% end %>
+      </div>
+
+      <%# --- CTA SECTION (The Conversion Target) --- %>
+      <section
+        class="
+          mt-20 p-4 md:p-12 bg-gray-700 rounded-2xl shadow-2xl text-center
+          text-white
+        "
+      > <%# Strong, inviting green for the CTA %>
+        <h3 class="text-4xl font-extrabold mb-4">Don't Just Admire, Design!</h3>
+
+        <p class="text-xl mb-10 font-light max-w-3xl mx-auto">
+          Bring your vision to life with our AI. Start creating your own <b><%= @location.name %></b> masterpiece now.
+        </p>
+
+        <%= link_to "Start Designing Now! 🚀", new_canva_path,
+            class: "inline-flex items-center px-10 py-4 border-2 border-white text-lg font-bold rounded-full shadow-lg text-emerald-600 bg-white hover:bg-emerald-50 transition duration-300 transform hover:scale-105" %> <%# High contrast button: White on Emerald %>
+      </section>
+
+      <%# --- INTERNAL LINKING SECTION --- %>
+      <div class="mt-16 pt-8 border-t border-gray-200">
+        <h4 class="text-2xl font-bold text-gray-800 mb-4">
+          Explore Related Locations
+        </h4>
+        <div class="flex flex-wrap gap-3">
+          <% @location.related_locations.each do |location| %>
+            <%= link_to "<b class='text-emerald-600'>#{location.admin_name}</b> gardens".html_safe, location_path(slug: location.slug),
+                class: "px-4 py-2 text-sm rounded-full bg-emerald-50 text-gray-700 hover:bg-emerald-100 border border-emerald-200 transition duration-150" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

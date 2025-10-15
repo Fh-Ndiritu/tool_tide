@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_13_142518) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_15_160842) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -92,6 +92,24 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_13_142518) do
     t.datetime "updated_at", null: false
     t.integer "user_id"
     t.index ["user_id"], name: "index_landscapes_on_user_id"
+  end
+
+  create_table "locations", force: :cascade do |t|
+    t.string "name"
+    t.string "location_type"
+    t.integer "lat"
+    t.integer "lng"
+    t.string "country_code"
+    t.string "iso3"
+    t.string "admin_name"
+    t.string "capital"
+    t.integer "population"
+    t.string "external_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "slug"
+    t.index ["country_code"], name: "index_locations_on_country_code"
+    t.index ["location_type"], name: "index_locations_on_location_type"
   end
 
   create_table "mask_requests", force: :cascade do |t|

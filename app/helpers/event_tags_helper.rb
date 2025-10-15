@@ -10,11 +10,6 @@ module EventTagsHelper
     when "season"
       # FIXED: Markdown (**) replaced with HTML (<b>)
       "Discover the latest trends for <b>#{tag.title}</b>! Browse <b>#{project_count}</b> curated design projects, perfect for capturing the spirit of the season. Find inspiration for cozy indoor décor, seasonal color palettes, and outdoor transformations. <b>Don't just decorate—design.</b> Upload your favorite #{tag.title} project today!"
-
-    when "location"
-      # FIXED: Markdown (**) replaced with HTML (<b>)
-      "Explore the best of local design in <b>#{tag.title}</b>! We feature <b>#{project_count}</b> unique, community-sourced design ideas from creators right here in #{tag.title}. See how local style is shaping homes and public spaces. <b>Be part of the local movement!</b> Share your own #{tag.title}-inspired project."
-
     else
       # General fallback content
       "Welcome to the Hadaa design hub! Explore <b>#{project_count}</b> incredible projects and designs shared by our vibrant community. Find inspiration across all categories, and don't forget to contribute your own creative vision!"
