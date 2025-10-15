@@ -1,11 +1,11 @@
 <%# app/views/shared/_dynamic_iframe_content.html.erb %>
 
 <%# This partial expects a local variable `html_snippet` %>
+
 <h2 style="color: #3f51b5;margin:auto;text-align: center;font-size: 1rem;">
-  *** Results for Image
-  <em style="color: #f047a4;">`<%= file_name %>`</em>
-  Starts Here ***
-  </h2>
+  *** Results for Image <em style="color: #f047a4;">`  <%= file_name %>`</em> Starts Here ***
+</h2>
+
 <%= html_snippet.html_safe %>
 
 <%#
@@ -13,10 +13,16 @@
   you can put it here using content_for blocks,
   which will then be yielded in the iframe_content.html.erb layout.
 %>
+
 <% content_for :iframe_head_js do %>
-  <!--<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>-->
-  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script> -->
+  <script
+    id="MathJax-script"
+    async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+  ></script>
 <% end %>
+
 <% content_for :iframe_body_js do %>
   <script>
     // JavaScript specific to this embedded content

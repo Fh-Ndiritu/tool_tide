@@ -1,43 +1,145 @@
 <!DOCTYPE html>
+
 <html>
   <head>
-    <!--# we perform SEO optization-->
-    <title><%= content_for(:title) || "Hadaa - Your Hub for Free Online Image, Video, & Text Tools" %></title>
-    <meta name="description" content="<%= content_for(:description) || "Hadaa offers a comprehensive suite of free online tools: convert images, extract text from photos, resize videos, and much more. Fast, secure, and user-friendly." %>">
-    <meta name="keywords" content="<%= content_for(:keywords) || "online tools, free tools, image converter, video converter, text extractor, OCR, image to text, video resize, Hadaa" %>">
-    <meta name="robots" content="<%= content_for(:robots) || "index, follow" %>">
-    <link rel="canonical" href="<%= content_for(:canonical_url) || request.original_url.split('?').first %>">
-    <meta property="og:type" content="<%= content_for(:og_type) || "website" %>">
-    <meta property="og:url" content="<%= content_for(:og_url) || request.original_url.split('?').first %>">
-    <meta property="og:title" content="<%= content_for(:og_title) || content_for(:title) || "Hadaa - Free Online Image, Video, & Text Tools" %>">
-    <meta property="og:description" content="<%= content_for(:og_description) || content_for(:description) || "Hadaa offers a comprehensive suite of free online tools: convert images, extract text from photos, resize videos, and much more. Fast, secure, and user-friendly." %>">
-    <meta property="og:image" content="<%= content_for(:og_image) || asset_path("hadaa_og.jpg") %>">
+    <!-- # we perform SEO optization -->
+    <title>
+      <%= content_for(:title) || "Hadaa - Your Hub for Free Online Image, Video, & Text Tools" %>
+    </title>
+
+    <meta
+      name="description"
+      content="<%= content_for(:description) || "Hadaa offers a comprehensive suite of free online tools: convert images, extract text from photos, resize videos, and much more. Fast, secure, and user-friendly." %>"
+    >
+
+    <meta
+      name="keywords"
+      content="<%= content_for(:keywords) || "online tools, free tools, image converter, video converter, text extractor, OCR, image to text, video resize, Hadaa" %>"
+    >
+
+    <meta
+      name="robots"
+      content="<%= content_for(:robots) || "index, follow" %>"
+    >
+
+    <link
+      rel="canonical"
+      href="<%= content_for(:canonical_url) || request.original_url.split('?').first %>"
+    >
+
+    <meta
+      property="og:type"
+      content="<%= content_for(:og_type) || "website" %>"
+    >
+
+    <meta
+      property="og:url"
+      content="<%= content_for(:og_url) || request.original_url.split('?').first %>"
+    >
+
+    <meta
+      property="og:title"
+      content="<%= content_for(:og_title) || content_for(:title) || "Hadaa - Free Online Image, Video, & Text Tools" %>"
+    >
+
+    <meta
+      property="og:description"
+      content="<%= content_for(:og_description) || content_for(:description) || "Hadaa offers a comprehensive suite of free online tools: convert images, extract text from photos, resize videos, and much more. Fast, secure, and user-friendly." %>"
+    >
+
+    <meta
+      property="og:image"
+      content="<%= content_for(:og_image) || asset_path("hadaa_og.jpg") %>"
+    >
+
     <% if content_for(:og_image_alt).present? %>
       <meta property="og:image:alt" content="<%= content_for(:og_image_alt) %>">
     <% end %>
-    <meta name="twitter:card" content="<%= content_for(:twitter_card) || "summary_large_image" %>">
-    <meta name="twitter:site" content="<%= content_for(:twitter_site) || "@Hadaa" %>">
-    <meta name="twitter:creator" content="<%= content_for(:twitter_creator) || "@Hadaa" %>">
-    <meta name="twitter:url" content="<%= content_for(:twitter_url) || request.original_url.split('?').first %>">
-    <meta name="twitter:title" content="<%= content_for(:twitter_title) || content_for(:title) || "Hadaa - Free Online Image, Video, & Text Tools" %>">
-    <meta name="twitter:description" content="<%= content_for(:twitter_description) || content_for(:description) || "Hadaa offers a comprehensive suite of free online tools: convert images, extract text from photos, resize videos, and much more. Fast, secure, and user-friendly." %>">
-    <meta name="twitter:image" content="<%= content_for(:twitter_image) || asset_path("hadaa_og.jpg") %>">
+
+    <meta
+      name="twitter:card"
+      content="<%= content_for(:twitter_card) || "summary_large_image" %>"
+    >
+
+    <meta
+      name="twitter:site"
+      content="<%= content_for(:twitter_site) || "@Hadaa" %>"
+    >
+
+    <meta
+      name="twitter:creator"
+      content="<%= content_for(:twitter_creator) || "@Hadaa" %>"
+    >
+
+    <meta
+      name="twitter:url"
+      content="<%= content_for(:twitter_url) || request.original_url.split('?').first %>"
+    >
+
+    <meta
+      name="twitter:title"
+      content="<%= content_for(:twitter_title) || content_for(:title) || "Hadaa - Free Online Image, Video, & Text Tools" %>"
+    >
+
+    <meta
+      name="twitter:description"
+      content="<%= content_for(:twitter_description) || content_for(:description) || "Hadaa offers a comprehensive suite of free online tools: convert images, extract text from photos, resize videos, and much more. Fast, secure, and user-friendly." %>"
+    >
+
+    <meta
+      name="twitter:image"
+      content="<%= content_for(:twitter_image) || asset_path("hadaa_og.jpg") %>"
+    >
+
     <%= action_cable_meta_tag %>
     <% if content_for(:twitter_image_alt).present? %>
-      <meta name="twitter:image:alt" content="<%= content_for(:twitter_image_alt) %>">
+      <meta
+        name="twitter:image:alt"
+        content="<%= content_for(:twitter_image_alt) %>"
+      >
     <% end %>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
+
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Comic+Relief:wght@400;700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Comic+Relief:wght@400;700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    >
+
     <%# Assuming favicons are placed in app/assets/images/favicon/ or public/favicon/ %>
-    <link rel="apple-touch-icon" sizes="180x180" href="<%= asset_path("favicon/apple-touch-icon.png") %>">
-    <link rel="icon" type="image/png" sizes="32x32" href="<%= asset_path("favicon/favicon-32x32.png") %>">
-    <link rel="icon" type="image/png" sizes="16x16" href="<%= asset_path("favicon/favicon-16x16.png") %>">
-    <!--<link rel="manifest" href="<%#= asset_path("site.webmanifest") %>"> <%# Often placed in public/ for web app manifest %>-->
-    <!--<link rel="mask-icon" href="<%#= asset_path("favicon/safari-pinned-tab.svg") %>" color="#5bbad5"> <%# For Safari pinned tabs %>-->
-    <meta name="msapplication-TileColor" content="#da532c"> <%# For Windows tiles %>
-    <meta name="theme-color" content="#ffffff"> <%# <% For browser UI on Android/Chrome %>
-    <link rel="shortcut icon" href="<%= asset_path("favicon/favicon.ico") %>"> <%# Fallback for older browsers, often a multi-res ICO %>
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="<%= asset_path("favicon/apple-touch-icon.png") %>"
+    >
+
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="<%= asset_path("favicon/favicon-32x32.png") %>"
+    >
+
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="<%= asset_path("favicon/favicon-16x16.png") %>"
+    >
+
+    <!-- <link rel="manifest" href="<%#= asset_path("site.webmanifest") %>"> <%# Often placed in public/ for web app manifest %> -->
+    <!-- <link rel="mask-icon" href="<%#= asset_path("favicon/safari-pinned-tab.svg") %>" color="#5bbad5"> <%# For Safari pinned tabs %> -->
+    <meta name="msapplication-TileColor" content="#da532c">
+
+    <%# For Windows tiles %>
+    <meta name="theme-color" content="#ffffff">
+
+    <%# <% For browser UI on Android/Chrome %>
+    <link rel="shortcut icon" href="<%= asset_path("favicon/favicon.ico") %>">
+
+    <%# Fallback for older browsers, often a multi-res ICO %>
     <%# Dynamic Schema Markup %>
     <% if content_for?(:schema_markup) %>
       <%= yield :schema_markup %>
@@ -58,17 +160,22 @@
         }
       </script>
     <% end %>
+
     <meta name="viewport" content="width=device-width,initial-scale=1">
+
     <meta name="apple-mobile-web-app-capable" content="yes">
+
     <meta name="mobile-web-app-capable" content="yes">
+
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= yield :head %>
     <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-    <!--    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
+    <%# = tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+    <!--
+  <link rel="icon" href="/icon.png" type="image/png">
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/icon.png">
 -->
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
@@ -76,8 +183,13 @@
     <% if content_for?(:head) %>
       <%= yield :head %>
     <% end %>
+
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ESX8FF1NG8"></script>
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-ESX8FF1NG8"
+    ></script>
+
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
@@ -85,19 +197,17 @@
 
       gtag('config', 'G-ESX8FF1NG8');
     </script>
+
     <script src="https://unpkg.com/konva@9/konva.min.js"></script>
+
     <%= Sentry.get_trace_propagation_meta.html_safe %>
   </head>
   <body data-controller="loader">
     <%= render partial: "layouts/shared/loader", locals: { record: nil, klasses: "hidden fixed" } %>
     <%= render "shared/navbar" %>
-    <main class="
-      <%= content_for(:main_classes) %>
-    ">
+    <main class="<%= content_for(:main_classes) %>">
       <div id="flash" data-controller="flash"><%= render "shared/flash" %></div>
-      <div class="w-full m-auto block">
-        <%= yield %>
-      </div>
+      <div class="w-full m-auto block"><%= yield %></div>
     </main>
   </body>
 </html>

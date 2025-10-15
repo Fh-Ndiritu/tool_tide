@@ -12,55 +12,60 @@
 
 <% content_for :head do %>
   <meta property="og:title" content="<%= @tag.seo_title %>">
+
   <meta property="og:description" content="<%= @tag.seo_description %>">
+
   <meta property="og:type" content="website">
+
   <meta property="og:url" content="<%= event_tag_url(@tag.slug) %>">
-  <meta property="og:image" content="<%= @mask_requests.first&.main_view.presence || asset_url('hadaa_og.jpg') %>">
+
+  <meta
+    property="og:image"
+    content="<%= @mask_requests.first&.main_view.presence || asset_url('hadaa_og.jpg') %>"
+  >
 
   <meta name="twitter:title" content="<%= @tag.seo_title %>">
+
   <meta name="twitter:description" content="<%= @tag.seo_description %>">
+
   <meta name="twitter:url" content="<%= event_tag_url(@tag.slug) %>">
-  <meta name="twitter:image" content="<%= @mask_requests.first&.main_view.presence || asset_url('hadaa_og.jpg') %>">
+
+  <meta
+    name="twitter:image"
+    content="<%= @mask_requests.first&.main_view.presence || asset_url('hadaa_og.jpg') %>"
+  >
 
   <%= tag.script type: "application/ld+json" do %>
-    {
-      "@context": "https://schema.org",
-      "@type": "CollectionPage",
-      "name": "<%= @tag.title %> Landscaping Ideas",
-      "description": "<%= @tag.seo_description %>",
-      "url": "<%= event_tag_url(@tag.slug) %>",
-      "mainEntity": {
-        "@type": "ItemList",
-        "itemListElement": [
-          <%
-            # Combine mask_requests and text_requests for a single JSON array
+    { "@context": "https://schema.org", "@type": "CollectionPage", "name": "
+    <%= @tag.title %>
+    Landscaping Ideas", "description": "
+    <%= @tag.seo_description %>
+    ", "url": "
+    <%= event_tag_url(@tag.slug) %>
+    ", "mainEntity": { "@type": "ItemList", "itemListElement": [
+    <% # Combine mask_requests and text_requests for a single JSON array
             all_requests = @mask_requests.map { |mr| { request: mr, type: :mask } } +
-                           @text_requests.map { |tr| { request: tr, type: :text } }
-          %>
-          <% all_requests.each_with_index do |item, index| %>
-            <% request = item[:request] %>
-            <% is_mask = item[:type] == :mask %>
-
-            {
-              "@type": "CreativeWork",
-              "name": "Generated <%= @tag.title %> Landscaping Design <%= index + 1 %>",
-              "url": "<%= is_mask ? mask_request_url(request) : text_request_url(request) %>",
-              "image": "<%= is_mask ? rails_blob_url(request.main_view, only_full_url: true) : rails_blob_url(request.result_image, only_full_url: true) %>",
-              "author": {
-                "@type": "Organization",
-                "name": "Hadaa AI Community"
-              }
-            }<%= index == all_requests.count - 1 ? '' : ',' %>
-          <% end %>
-        ]
-      }
-    }
+                           @text_requests.map { |tr| { request: tr, type: :text } } %>
+    <% all_requests.each_with_index do |item, index| %>
+      <% request = item[:request] %>
+      <% is_mask = item[:type] == :mask %>
+      { "@type": "CreativeWork", "name": "Generated
+      <%= @tag.title %>
+      Landscaping Design
+      <%= index + 1 %>
+      ", "url": "
+      <%= is_mask ? mask_request_url(request) : text_request_url(request) %>
+      ", "image": "
+      <%= is_mask ? rails_blob_url(request.main_view, only_full_url: true) : rails_blob_url(request.result_image, only_full_url: true) %>
+      ", "author": { "@type": "Organization", "name": "Hadaa AI Community" } }
+      <%= index == all_requests.count - 1 ? '' : ',' %>
+    <% end %>
+    ] } }
   <% end %>
 <% end %>
 
 <main class="bg-neutral-100 min-h-screen">
   <div class="container mx-auto py-12 px-4 sm:px-6 lg:px-8">
-
     <header class="text-center mb-10">
       <h1 class="text-5xl font-extrabold tracking-tight text-text-dark mb-4">
         Best <span class="text-accent"><%= @tag.title %></span> Landscaping Designs
@@ -72,22 +77,31 @@
 
     <hr class="mb-10 border-neutral-300">
 
-    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4  lg:grid-cols-5 gap-6">
-
-
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
       <% @text_requests.each do |text_request| %>
-        <div class="group relative bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 ease-in-out transform hover:-translate-y-1 overflow-hidden border-2 border-primary/20 cursor-pointer">
+        <div
+          class="
+            group relative bg-white rounded-xl shadow-md hover:shadow-xl
+            transition-all duration-300 ease-in-out transform
+            hover:-translate-y-1 overflow-hidden border-2 border-primary/20
+            cursor-pointer
+          "
+        >
           <%= link_to text_request_path(text_request), class: "block" do %>
             <%= image_tag text_request.result_image.variant(resize_to_limit: [280, 280]),
                 alt: text_request.prompt.truncate(100),
-                class: 'object-cover w-full aspect-square  group-hover:opacity-90 transition-opacity'
-            %>
+                class: 'object-cover w-full aspect-square  group-hover:opacity-90 transition-opacity' %>
 
             <div class="p-4 bg-white">
               <p class="text-base font-medium text-text-dark leading-snug">
                 <%= text_request.prompt.truncate(45, separator: ' ', omission: '...') %>
               </p>
-              <span class="text-sm text-secondary font-semibold mt-1 block group-hover:text-text-secondary transition-colors">
+              <span
+                class="
+                  text-sm text-secondary font-semibold mt-1 block
+                  group-hover:text-text-secondary transition-colors
+                "
+              >
                 Tap to view full idea
               </span>
             </div>
@@ -96,13 +110,24 @@
       <% end %>
 
       <% @mask_requests.each do |mask_request| %>
-        <div class="group relative bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 ease-in-out transform hover:-translate-y-1 overflow-hidden cursor-pointer">
+        <div
+          class="
+            group relative bg-white rounded-xl shadow-md hover:shadow-xl
+            transition-all duration-300 ease-in-out transform
+            hover:-translate-y-1 overflow-hidden cursor-pointer
+          "
+        >
           <%= link_to mask_request_path(mask_request), class: "block" do %>
             <%= image_tag mask_request.main_view.variant(resize_to_limit: [280, 280]),
                 alt: "AI Landscaping design for #{@tag.title }",
-                class: "object-cover w-full aspect-square transition-opacity duration-300 group-hover:opacity-90"
-            %>
-            <div class="absolute inset-0 bg-gradient-to-t from-neutral-900/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                class: "object-cover w-full aspect-square transition-opacity duration-300 group-hover:opacity-90" %>
+            <div
+              class="
+                absolute inset-0 bg-gradient-to-t from-neutral-900/50
+                to-transparent opacity-0 group-hover:opacity-100
+                transition-opacity flex items-end p-4
+              "
+            >
               <span class="text-text-light text-sm font-semibold">View Design</span>
             </div>
           <% end %>
@@ -110,27 +135,40 @@
       <% end %>
 
       <% if @mask_requests.empty? && @text_requests.empty? %>
-        <p class="text-neutral-500 sm:col-span-4 text-center py-10">No user-generated designs or ideas found for this tag yet. <b>Be the first</b> to start the trend on Hadaa AI!</p>
+        <p class="text-neutral-500 sm:col-span-4 text-center py-10">
+          No user-generated designs or ideas found for this tag yet.
+          <b>Be the first</b>
+          to start the trend on Hadaa AI!
+        </p>
       <% end %>
     </div>
 
     <%# --- CTA SECTION (The Conversion Target) --- %>
-    <section class="mt-16 p-10 bg-primary rounded-2xl shadow-xl text-center text-text-light">
+    <section
+      class="
+        mt-16 p-10 bg-primary rounded-2xl shadow-xl text-center
+        text-text-light
+      "
+    >
       <h3 class="text-3xl font-extrabold mb-3">Don't Just Admire, Design!</h3>
-      <p class="text-xl mb-8 font-light">Bring your vision to life with our AI. Start creating your own <%= @tag.title %> masterpiece now.</p>
+
+      <p class="text-xl mb-8 font-light">
+        Bring your vision to life with our AI. Start creating your own <%= @tag.title %> masterpiece now.
+      </p>
+
       <%= link_to "Start Designing Now! 🚀", new_canva_path,
-          class: "inline-flex items-center px-8 py-4 border border-transparent text-lg font-bold rounded-full shadow-lg text-primary bg-text-light hover:bg-neutral-100 transition duration-300 transform hover:scale-105"
-      %>
+          class: "inline-flex items-center px-8 py-4 border border-transparent text-lg font-bold rounded-full shadow-lg text-primary bg-text-light hover:bg-neutral-100 transition duration-300 transform hover:scale-105" %>
     </section>
 
     <%# --- INTERNAL LINKING SECTION --- %>
     <div class="mt-16 pt-8 border-t border-neutral-300">
-      <h4 class="text-2xl font-bold text-neutral-800 mb-4">Explore Related Ideas</h4>
+      <h4 class="text-2xl font-bold text-neutral-800 mb-4">
+        Explore Related Ideas
+      </h4>
       <div class="flex flex-wrap gap-3">
         <% @tag.related_tags_list.each do |tag| %>
           <%= link_to "#{tag.title} ideas", event_tag_path(slug: tag.slug),
-              class: "px-4 py-2 text-sm font-medium rounded-full bg-neutral-300 text-neutral-700 hover:bg-accent/20 hover:text-accent transition duration-150"
-          %>
+              class: "px-4 py-2 text-sm font-medium rounded-full bg-neutral-300 text-neutral-700 hover:bg-accent/20 hover:text-accent transition duration-150" %>
         <% end %>
       </div>
     </div>

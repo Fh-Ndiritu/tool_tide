@@ -1,20 +1,42 @@
-<div class="flex flex-col items-center justify-center py-16 px-4 sm:px-6 lg:px-8 bg-gray-900">
+<div
+  class="
+    flex flex-col items-center justify-center py-16 px-4 sm:px-6 lg:px-8
+    bg-gray-900
+  "
+>
   <div class="max-w-2xl text-center">
-    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-gray-900 dark:text-white">
+    <h1
+      class="
+        text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight
+        text-gray-900 dark:text-white
+      "
+    >
       What others are building
     </h1>
+
     <p class="mt-4 text-lg text-gray-600 dark:text-gray-400">
-      Find inspiration from a gallery of amazing projects created by our community. Explore the possibilities and see how to transform your landscape using Hadaa Ai Landscaper. The best results are often obtained by drawing precise areas you wish to modify.
+      Find inspiration from a gallery of amazing projects created by our
+      community. Explore the possibilities and see how to transform your
+      landscape using Hadaa Ai Landscaper. The best results are often obtained
+      by drawing precise areas you wish to modify.
     </p>
+
     <div class="mt-8">
       <%= link_to "Try now, no card required", new_user_registration_path, class:"inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-full shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
     </div>
   </div>
+
   <div class="flex flex-wrap -mx-2 py-12 md:px-6">
     <% @mask_requests.each_with_index do |request, index| %>
       <% if image = request.face_image %>
         <div class="px-2 max-w-1/2 sm:max-w-[350px] mb-4">
-          <div class="rounded-lg shadow-md overflow-hidden transition-transform duration-300 ease-in-out hover:scale-[1.05] hover:z-10 relative hover:shadow-2xl hover:shadow-secondary">
+          <div
+            class="
+              rounded-lg shadow-md overflow-hidden transition-transform
+              duration-300 ease-in-out hover:scale-[1.05] hover:z-10
+              relative hover:shadow-2xl hover:shadow-secondary
+            "
+          >
             <%= image_tag image.variant(resize_to_limit: [300, 300]), loading: index < 10 ? :eager : :lazy, alt: "Landscaping result", title: "#{request.preset.humanize} Style Design" %>
             <%= content_tag :h4, "#{request.preset.humanize} Style", class: "flex w-fit items-center absolute bottom-2 left-1/2 -translate-x-1/2 bg-black bg-opacity-50 text-white text-xs font-semibold px-3 py-1 rounded-full text-center" %>
           </div>
@@ -24,7 +46,13 @@
     <% @mask_requests.each_with_index do |request, index| %>
       <% if image = request.face_image %>
         <div class="px-2 max-w-1/2 sm:max-w-[350px] mb-4">
-          <div class="rounded-lg shadow-md overflow-hidden transition-transform duration-300 ease-in-out hover:scale-[1.05] hover:z-10 relative hover:shadow-2xl hover:shadow-secondary">
+          <div
+            class="
+              rounded-lg shadow-md overflow-hidden transition-transform
+              duration-300 ease-in-out hover:scale-[1.05] hover:z-10
+              relative hover:shadow-2xl hover:shadow-secondary
+            "
+          >
             <%= image_tag image.variant(resize_to_limit: [300, 300]), loading: index < 10 ? :eager : :lazy, alt: "Landscaping result", title: "#{request.preset.humanize} Style Design" %>
             <%= content_tag :h4, "#{request.preset.humanize} Style", class: "flex w-fit items-center absolute bottom-2 left-1/2 -translate-x-1/2 bg-black bg-opacity-50 text-white text-xs font-semibold px-3 py-1 rounded-full text-center" %>
           </div>
@@ -32,8 +60,14 @@
       <% end %>
     <% end %>
   </div>
+
   <div class="max-w-2xl text-center">
-    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-gray-900 dark:text-white fancy-text">
+    <h1
+      class="
+        text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight
+        text-gray-900 dark:text-white fancy-text
+      "
+    >
       Bring your ideas to life
     </h1>
     <div class="mt-8">

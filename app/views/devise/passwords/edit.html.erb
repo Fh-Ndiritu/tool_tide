@@ -1,18 +1,32 @@
 <div class="flex authentication">
   <div class="card">
     <h2>Change your password?</h2>
+
     <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
       <%= render "devise/shared/error_messages", resource: resource %>
       <%= f.hidden_field :reset_password_token %>
       <div class="field">
-        <%= f.label :password, "New password" %><br>
+        <%= f.label :password, "New password" %>
+        <br>
+
         <% if @minimum_password_length %>
-          <em>(<%= @minimum_password_length %> characters minimum)</em><br>
+          <em>(<%= @minimum_password_length %> characters minimum)</em>
+          <br>
         <% end %>
-        <div class="flex flex-inline relative p-0 mt-4" data-controller="password-visibility">
-          <%= f.password_field :password,autofocus: true, autocomplete: "new-password", class:"pr-5 !m-0 ", data: {password_visibility_target: 'input'},  placeholder: "New Password"  %>
-          <button type="button" data-action="password-visibility#toggle" class="absolute h-full right-5 top-1/2 -translate-y-1/2 !text-gray-400
-">
+
+        <div
+          class="flex flex-inline relative p-0 mt-4"
+          data-controller="password-visibility"
+        >
+          <%= f.password_field :password,autofocus: true, autocomplete: "new-password", class:"pr-5 !m-0 ", data: {password_visibility_target: 'input'},  placeholder: "New Password" %>
+          <button
+            type="button"
+            data-action="password-visibility#toggle"
+            class="
+              absolute h-full right-5 top-1/2 -translate-y-1/2
+              !text-gray-400
+            "
+          >
             <span data-password-visibility-target="icon">
               <%= render(IconComponent.new(name: "eye", classes: "h-2 w-6")) %>
             </span>
@@ -22,12 +36,24 @@
           </button>
         </div>
       </div>
+
       <div class="field">
-        <%= f.label :password_confirmation, "Confirm new password" %><br>
-        <div class="flex flex-inline relative p-0 mt-4" data-controller="password-visibility">
-          <%= f.password_field :password_confirmation,autocomplete: "new-password", class:"pr-5 !m-0 ", data: {password_visibility_target: 'input'},  placeholder: "New Password"  %>
-          <button type="button" data-action="password-visibility#toggle" class="absolute h-full right-5 top-1/2 -translate-y-1/2 !text-gray-400
-">
+        <%= f.label :password_confirmation, "Confirm new password" %>
+        <br>
+
+        <div
+          class="flex flex-inline relative p-0 mt-4"
+          data-controller="password-visibility"
+        >
+          <%= f.password_field :password_confirmation,autocomplete: "new-password", class:"pr-5 !m-0 ", data: {password_visibility_target: 'input'},  placeholder: "New Password" %>
+          <button
+            type="button"
+            data-action="password-visibility#toggle"
+            class="
+              absolute h-full right-5 top-1/2 -translate-y-1/2
+              !text-gray-400
+            "
+          >
             <span data-password-visibility-target="icon">
               <%= render(IconComponent.new(name: "eye", classes: "h-2 w-6")) %>
             </span>
@@ -37,10 +63,10 @@
           </button>
         </div>
       </div>
-      <div class="actions">
-        <%= f.submit "Change my password" %>
-      </div>
+
+      <div class="actions"><%= f.submit "Change my password" %></div>
     <% end %>
+
     <div class="shared_links flex gap-3 text-white my-6">
       <%= render "devise/shared/links" %>
     </div>

@@ -1,28 +1,27 @@
 <% if @href.present? %>
   <!-- Render as link -->
-  <a href="<%= @href %>"
-  <%= @data.map { |key, value| "data-#{key}=\"#{value}\"" }.join(' ') %>
-    class="<%= @classes %>">
-      <% if @svg %>
-        <%= render(IconComponent.new(name: @svg, classes: @svg_classes)) %>
+  <a
+    href="<%= @href %>"
+    <%= @data.map { |key, value| "data-#{key}=\"#{value}\"" }.join(' ') %>
+    class="<%= @classes %>"
+  >
+    <% if @svg %>
+      <%= render(IconComponent.new(name: @svg, classes: @svg_classes)) %>
     <% end %>
     <!-- Button Text -->
-    <span>
-      <%= @text %>
-    </span>
+    <span><%= @text %></span>
   </a>
 <% else %>
   <!-- Render as button -->
-  <button type="<%= @type %>"
+  <button
+    type="<%= @type %>"
     class="<%= @classes %>"
-      <%= @data.map { |key, value| "data-#{key}=\"#{value}\"" }.join(' ') %>
-    >
+    <%= @data.map { |key, value| "data-#{key}=\"#{value}\"" }.join(' ') %>
+  >
     <% if @svg %>
-        <%= render(IconComponent.new(name: @svg, classes: @svg_classes)) %>
+      <%= render(IconComponent.new(name: @svg, classes: @svg_classes)) %>
     <% end %>
     <!-- Button Text -->
-    <span>
-      <%= @text %>
-    </span>
+    <span><%= @text %></span>
   </button>
 <% end %>
