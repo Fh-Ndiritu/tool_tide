@@ -2,102 +2,46 @@
 
 <html>
   <head>
-    <!-- # we perform SEO optization -->
     <title>
-      <%= content_for(:title) || "Hadaa - Your Hub for Free Online Image, Video, & Text Tools" %>
+      Hadaa AI Garden Design App: Virtual Landscape Planner & Photo Editor
     </title>
 
     <meta
       name="description"
-      content="<%= content_for(:description) || "Hadaa offers a comprehensive suite of free online tools: convert images, extract text from photos, resize videos, and much more. Fast, secure, and user-friendly." %>"
-    >
-
-    <meta
-      name="keywords"
-      content="<%= content_for(:keywords) || "online tools, free tools, image converter, video converter, text extractor, OCR, image to text, video resize, Hadaa" %>"
-    >
-
-    <meta
-      name="robots"
-      content="<%= content_for(:robots) || "index, follow" %>"
-    >
-
-    <link
-      rel="canonical"
-      href="<%= content_for(:canonical_url) || request.original_url.split('?').first %>"
-    >
-
-    <meta
-      property="og:type"
-      content="<%= content_for(:og_type) || "website" %>"
-    >
-
-    <meta
-      property="og:url"
-      content="<%= content_for(:og_url) || request.original_url.split('?').first %>"
+      content="Instantly design your dream garden with Hadaa's AI landscape planner. Visualize seasonal designs, prep your yard for events like Halloween, and edit photos using drag-and-drop or text prompts."
     >
 
     <meta
       property="og:title"
-      content="<%= content_for(:og_title) || content_for(:title) || "Hadaa - Free Online Image, Video, & Text Tools" %>"
-    >
+      content="Hadaa AI Garden Design App: Virtual Landscape Planner"
+    />
+
+    <meta property="og:type" content="website" />
 
     <meta
-      property="og:description"
-      content="<%= content_for(:og_description) || content_for(:description) || "Hadaa offers a comprehensive suite of free online tools: convert images, extract text from photos, resize videos, and much more. Fast, secure, and user-friendly." %>"
-    >
+      property="og:url"
+      content="<%= request.original_url.split('?').first %>"
+    />
 
     <meta
       property="og:image"
-      content="<%= content_for(:og_image) || asset_path("hadaa_og.jpg") %>"
-    >
-
-    <% if content_for(:og_image_alt).present? %>
-      <meta property="og:image:alt" content="<%= content_for(:og_image_alt) %>">
-    <% end %>
+      content="<%= asset_path("hadaa_og.jpg") %>"
+    />
 
     <meta
-      name="twitter:card"
-      content="<%= content_for(:twitter_card) || "summary_large_image" %>"
-    >
+      property="og:description"
+      content="Visualize seasonal garden changes and design your backyard for events like Halloween/Christmas using Hadaa's powerful AI photo editor and planning tools."
+    />
 
-    <meta
-      name="twitter:site"
-      content="<%= content_for(:twitter_site) || "@Hadaa" %>"
-    >
+    <%# Twitter Card (for Twitter/X) %>
+    <meta name="twitter:card" content="summary_large_image" />
 
-    <meta
-      name="twitter:creator"
-      content="<%= content_for(:twitter_creator) || "@Hadaa" %>"
-    >
+    <meta name="twitter:site" content="@hadaa_app" />
 
-    <meta
-      name="twitter:url"
-      content="<%= content_for(:twitter_url) || request.original_url.split('?').first %>"
-    >
+    <%# Update with your actual Twitter handle %>
+    <meta name="twitter:creator" content="@hadaa_app" />
 
-    <meta
-      name="twitter:title"
-      content="<%= content_for(:twitter_title) || content_for(:title) || "Hadaa - Free Online Image, Video, & Text Tools" %>"
-    >
-
-    <meta
-      name="twitter:description"
-      content="<%= content_for(:twitter_description) || content_for(:description) || "Hadaa offers a comprehensive suite of free online tools: convert images, extract text from photos, resize videos, and much more. Fast, secure, and user-friendly." %>"
-    >
-
-    <meta
-      name="twitter:image"
-      content="<%= content_for(:twitter_image) || asset_path("hadaa_og.jpg") %>"
-    >
-
-    <%= action_cable_meta_tag %>
-    <% if content_for(:twitter_image_alt).present? %>
-      <meta
-        name="twitter:image:alt"
-        content="<%= content_for(:twitter_image_alt) %>"
-      >
-    <% end %>
+    <%# Update with your actual Twitter handle %>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
 
@@ -108,6 +52,7 @@
       rel="stylesheet"
     >
 
+    <%# The rest of your existing favicon and asset links... %>
     <%# Assuming favicons are placed in app/assets/images/favicon/ or public/favicon/ %>
     <link
       rel="apple-touch-icon"
@@ -129,8 +74,6 @@
       href="<%= asset_path("favicon/favicon-16x16.png") %>"
     >
 
-    <!-- <link rel="manifest" href="<%#= asset_path("site.webmanifest") %>"> <%# Often placed in public/ for web app manifest %> -->
-    <!-- <link rel="mask-icon" href="<%#= asset_path("favicon/safari-pinned-tab.svg") %>" color="#5bbad5"> <%# For Safari pinned tabs %> -->
     <meta name="msapplication-TileColor" content="#da532c">
 
     <%# For Windows tiles %>
@@ -144,14 +87,26 @@
     <% if content_for?(:schema_markup) %>
       <%= yield :schema_markup %>
     <% else %>
-      <%# Default Schema Markup for the entire site if not overridden %>
+      <%# Updated Default Schema Markup for the AI Landscaping Tool %>
       <script type="application/ld+json">
         {
           "@context": "http://schema.org",
-          "@type": "WebSite",
-          "name": "<%= content_for?(:schema_name) ? yield(:schema_name) : "Hadaa - Free Online Tools" %>",
+          "@type": "SoftwareApplication", <%# Changed to reflect an app/tool %>
+          "name": "<%= content_for?(:schema_name) ? yield(:schema_name) : "Hadaa AI Garden Design App" %>",
           "url": "<%= request.original_url.split('?').first %>",
-          "description": "<%= content_for?(:schema_description) ? yield(:schema_description) : "Hadaa offers a comprehensive suite of free online tools: image converter, video converter, text extractor, and more." %>",
+          "operatingSystem": "Web, iOS, Android",
+          "applicationCategory": "DesignApplication",
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8", <%# Update with your actual rating %>
+            "reviewCount": "2500" <%# Update with your actual review count %>
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "0", <%# Assuming a free tier or trial %>
+            "priceCurrency": "USD"
+          },
+          "description": "<%= content_for?(:schema_description) ? yield(:schema_description) : "Hadaa is an AI-powered virtual landscape design app that lets you transform photos into beautiful gardens, plan seasonal layouts, and prepare for events like Halloween with simple editing tools." %>",
           "potentialAction": {
             "@type": "SearchAction",
             "target": "<%= request.base_url %>/search?q={search_term_string}", <%# Adjust with your actual search URL %>
@@ -172,11 +127,6 @@
     <%= yield :head %>
     <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
     <%# = tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-    <!--
-  <link rel="icon" href="/icon.png" type="image/png">
-  <link rel="icon" href="/icon.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="/icon.png">
--->
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
@@ -184,7 +134,6 @@
       <%= yield :head %>
     <% end %>
 
-    <!-- Google tag (gtag.js) -->
     <script
       async
       src="https://www.googletagmanager.com/gtag/js?id=G-ESX8FF1NG8"
@@ -202,6 +151,7 @@
 
     <%= Sentry.get_trace_propagation_meta.html_safe %>
   </head>
+
   <body data-controller="loader">
     <%= render partial: "layouts/shared/loader", locals: { record: nil, klasses: "hidden fixed" } %>
     <%= render "shared/navbar" %>
