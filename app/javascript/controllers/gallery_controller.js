@@ -1,41 +1,38 @@
 import { Controller } from '@hotwired/stimulus';
 
-// Use a static property to ensure the modal is initialized only once,
-// regardless of how many GalleryController instances exist.
-let globalModalInitialized = false;
+// Removed: let globalModalInitialized = false;
 
 export default class GalleryController extends Controller {
-  // Remove staticTargets, as the modal will not be a child of this controller instance's element.
-  static targets = [];
-  // Keep imagesValue, as this is unique data for each gallery instance.
+  // 1. Declare modalContainer as a static target
+  // The modal element MUST be a child of this controller's scope and have data-gallery-target="modalContainer"
+  static targets = ['modalContainer', 'modalImage', 'modalTitle'];
   static values = { images: Array };
 
   // --- Swiping properties (unchanged) ---
   swipeThreshold = 50;
   startX = 0;
 
-  // Global references (shared or set dynamically)
-  // These will be initialized in initializeModal
-  modalContainer = null;
-  modalImageTarget = null;
-  modalTitleTarget = null;
+  // Local references (no longer initialized globally)
+  currentIndex = 0;
 
   connect() {
     this.currentIndex = 0;
 
-    // 1. Initialize the single, shared modal structure
-    this.initializeModal();
+    // Check if the modal structure is present within this controller's scope
+    if (this.hasModalContainerTarget) {
+      // 1. Set the local reference
+      this.modalContainer = this.modalContainerTarget;
 
-    // 2. Attach listeners to the modal once it's available
-    if (this.modalContainer) {
-      // --- Manual click handler setup (Only bind once per controller instance) ---
+      // 2. We now use modalImageTarget and modalTitleTarget directly from Stimulus,
+      // so no need to querySelector for them here!
+
+      // --- Manual click handler setup ---
       if (!this._boundHandleClicks) {
         this._boundHandleClicks = this.handleClicks.bind(this);
       }
-      // Note: The click listener must remain attached to the modal, not the controller's element.
       this.modalContainer.addEventListener('click', this._boundHandleClicks);
 
-      // --- Swiping: Attach listeners to the container that holds the image (Only bind once per controller instance) ---
+      // --- Swiping: Attach listeners to the container that holds the image ---
       if (!this._boundTouchStart) {
         this._boundTouchStart = this.handleTouchStart.bind(this);
       }
@@ -49,6 +46,17 @@ export default class GalleryController extends Controller {
         imageContainer.addEventListener('touchstart', this._boundTouchStart, { passive: true });
         imageContainer.addEventListener('touchend', this._boundTouchEnd, { passive: true });
       }
+
+      // Check if inner targets are present (though Stimulus usually handles this gracefully)
+      if (!this.hasModalImageTarget || !this.hasModalTitleTarget) {
+        console.warn(
+          '⚠️ WARNING: Gallery controller found modal container but is missing inner modalImage or modalTitle targets.'
+        );
+      }
+    } else {
+      console.warn(
+        '⚠️ WARNING: Gallery controller connected but modal target (modalContainer) not found in its scope.'
+      );
     }
 
     console.log('🖼️ Gallery Controller connected.', {
@@ -57,33 +65,7 @@ export default class GalleryController extends Controller {
     });
   }
 
-  // Ensures global modal elements are found and stored only ONCE.
-  initializeModal() {
-    if (globalModalInitialized) {
-      // If already initialized, just set local references
-      const globalModal = document.getElementById('gallery-modal');
-      if (globalModal) {
-        this.modalContainer = globalModal;
-        this.modalImageTarget = globalModal.querySelector('[data-gallery-target="modalImage"]');
-        this.modalTitleTarget = globalModal.querySelector('[data-gallery-target="modalTitle"]');
-      }
-      return;
-    }
-
-    // First time initialization
-    const modalElement = document.getElementById('gallery-modal');
-    if (modalElement) {
-      this.modalContainer = modalElement;
-      this.modalImageTarget = modalElement.querySelector('[data-gallery-target="modalImage"]');
-      this.modalTitleTarget = modalElement.querySelector('[data-gallery-target="modalTitle"]');
-
-      // IMPORTANT: Mark as initialized so other controllers skip this heavy lookup.
-      globalModalInitialized = true;
-      console.log('⚙️ Single Modal Structure Initialized.');
-    } else {
-      console.error('❌ ERROR: Could not find single modal element with ID "gallery-modal".');
-    }
-  }
+  // Removed: initializeModal()
 
   disconnect() {
     // We only remove the instance-specific event listeners
@@ -97,6 +79,10 @@ export default class GalleryController extends Controller {
     if (imageContainer) {
       imageContainer.removeEventListener('touchstart', this._boundTouchStart);
       imageContainer.removeEventListener('touchend', this._boundTouchEnd);
+    }
+    // Clean up keydown listener
+    if (this._boundNavigate) {
+      document.removeEventListener('keydown', this._boundNavigate);
     }
   }
 
@@ -162,7 +148,7 @@ export default class GalleryController extends Controller {
     }
   }
 
-  // Closes the modal and re-enables scrolling (Unchanged)
+  // Closes the modal and re-enables scrolling
   close(event) {
     if (event) event.preventDefault();
 
@@ -173,7 +159,14 @@ export default class GalleryController extends Controller {
 
       console.log('❌ Action: close. Modal hidden.');
     } else {
-      console.warn('❌ Action: close failed. Modal container not found.');
+      // Use standard Stimulus target check if modalContainer wasn't set locally
+      if (this.hasModalContainerTarget) {
+        this.modalContainerTarget.classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+        document.removeEventListener('keydown', this._boundNavigate);
+      } else {
+        console.warn('❌ Action: close failed. Modal container not found in scope.');
+      }
     }
   }
 
@@ -191,7 +184,7 @@ export default class GalleryController extends Controller {
     this.updateModalContent();
   }
 
-  // Shows the modal, disables scrolling, and sets the content (Unchanged)
+  // Shows the modal, disables scrolling, and sets the content
   showModal() {
     if (this.modalContainer) {
       this.modalContainer.classList.remove('hidden');
@@ -205,46 +198,46 @@ export default class GalleryController extends Controller {
       console.log(`✅ Action: showModal. Displaying image ${this.currentIndex}`);
       this.updateModalContent();
     } else {
-      console.error('❌ Action: showModal failed. Modal container not found.');
+      console.error('❌ Action: showModal failed. Modal container not found in scope.');
     }
   }
 
   // Updates the modal's image source and title based on the current index
   updateModalContent() {
-    console.group(`🔄 Update Modal Content (Index: ${this.currentIndex})`); // Grouping start
+    console.group(`🔄 Update Modal Content (Index: ${this.currentIndex})`);
 
     const currentImage = this.imagesValue[this.currentIndex];
 
     if (!currentImage) {
       console.error(`🚨 ERROR: updateModalContent failed. Image data missing for index ${this.currentIndex}.`);
-      console.groupEnd(); // Grouping end
+      console.groupEnd();
       return;
     }
 
-    // 💡 NEW DEBUG LOG: Check the entire object being processed
-    console.log('Data Object:', currentImage);
-    console.log('Image URL:', currentImage.url);
+    // 💡 Using Stimulus targets directly now: this.modalImageTarget, this.modalTitleTarget
 
-    if (this.modalImageTarget) {
+    // Check for image data and load
+    if (this.hasModalImageTarget) {
       this.modalImageTarget.src = currentImage.url;
-      // 💡 NEW DEBUG LOG: Confirm the target element type and src attribute
+
+      console.log('Data Object:', currentImage);
       console.log(
         `📷 Target type: ${this.modalImageTarget.tagName}. Src set to: ${currentImage.url.substring(0, 50)}...`
       );
 
-      // If the URL is set but the image doesn't show, check the console for a network error (404/CORS)
       this.modalImageTarget.onerror = () => {
         console.error(`🚨 IMAGE LOAD FAILED for URL: ${currentImage.url}`);
       };
     } else {
-      console.warn('⚠️ Update: modalImage element not found. Cannot set source.');
+      console.warn('⚠️ Update: modalImage target not found in scope. Cannot set source.');
     }
 
-    if (this.modalTitleTarget) {
+    // Check for title data and load
+    if (this.hasModalTitleTarget) {
       this.modalTitleTarget.textContent = currentImage.title;
       console.log('Title set to:', currentImage.title);
     }
 
-    console.groupEnd(); // Grouping end
+    console.groupEnd();
   }
 }
