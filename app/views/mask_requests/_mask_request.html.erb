@@ -32,7 +32,7 @@
       views = [mask_request.main_view, mask_request.rotated_view, mask_request.drone_view].compact.select(&:attached?)
 
       gallery_data = views.map.with_index do |view, index|
-        { url: rails_blob_path(view), title: view.name.humanize, index: index }
+        { url: rails_blob_path(view), title: "#{index+1}. #{view.name.humanize}", index: index }
       end
     %>
 
@@ -55,7 +55,6 @@
           <a
             href="<%= full_url %>"
             data-action="gallery#open"
-            data-gallery-index-param="<%= index %>"
             class="block"
           >
             <%= image_tag(view.variant(resize_to_limit: [500, 500]), loading: :lazy, class: "w-full max-h-[400px] object-cover transition-transform duration-500 group-hover:scale-[1.02]") %>
@@ -71,9 +70,12 @@
             <p class="text-sm font-medium opacity-80"><%= view.name.humanize %></p>
           </div>
 
-          <%# Download/Edit links need z-index 20 to be clickable over the anchor tag %>
           <div class="absolute bottom-3 right-4 z-20 flex space-x-2">
-            <%= link_to rails_blob_path(view, disposition: :attachment), class: "icon-btn bg-white/20 hover:bg-white/40 text-white" do %>
+            <%= link_to "#", class: "icon-btn bg-secondary/40 hover:bg-secondary/70 text-white" do %>
+              <%= render(IconComponent.new(classes: "h-5 w-5", name: "eye")) %>
+            <% end %>
+
+            <%= link_to rails_blob_path(view, disposition: :attachment), class: "icon-btn bg-accent-secondary/40 hover:bg-accent-secondary/70 text-white" do %>
               <%= render(IconComponent.new(classes: "h-5 w-5", name: "download")) %>
             <% end %>
             <%= link_to new_text_request_path(signed_blob_id:  view.blob.signed_id), class: "icon-btn bg-accent/90 hover:bg-accent text-white" do %>
@@ -85,5 +87,3 @@
     </div>
   </div>
 </div>
-
-<%= render 'mask_requests/gallery_modal' %>
