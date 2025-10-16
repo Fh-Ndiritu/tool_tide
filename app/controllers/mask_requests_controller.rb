@@ -1,11 +1,11 @@
 class MaskRequestsController < ApplicationController
   before_action :set_mask_request, only: %i[ show edit update destroy ]
-  before_action :set_canva, only: %i[new index create]
+  before_action :set_canva, only: %i[new create]
   skip_before_action :authenticate_user!, only: :explore
 
   # GET /mask_requests or /mask_requests.json
   def index
-    @mask_requests = current_user.mask_requests
+    @mask_requests = MaskRequest.complete.joins(canva: :user).where(users: { id: current_user.id })
   end
 
   def explore

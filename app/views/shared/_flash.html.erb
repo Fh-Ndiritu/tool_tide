@@ -1,6 +1,6 @@
-<div id="flash" data-controller="flash" class="flex m-auto mt-4 justify-center">
+<div id="flash" data-controller="flash" class="flex m-auto justify-center">
   <% flash.each do |type, message| %>
-    <div class="flash-message <%= type %> flex p-2 rounded-md">
+    <div class="flash-message <%= type %> mt-4 flex p-2 rounded-md">
       <%= message %>
     </div>
   <% end %>

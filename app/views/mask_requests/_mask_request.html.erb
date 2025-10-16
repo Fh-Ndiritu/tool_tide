@@ -1,4 +1,4 @@
-<div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+<div class="container mx-auto py-4">
   <div
     class="
       bg-white rounded-2xl shadow-2xl border border-gray-100 p-6 sm:p-8
@@ -7,8 +7,8 @@
   >
     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
       <div class="flex flex-col">
-        <h3 class="text-2xl md:text-4xl font-extrabold leading-tight text-secondary">
-          Results for <%= mask_request.preset.humanize %> Style Design
+        <h3 class="text-xl md:text-4xl font-extrabold leading-tight text-secondary">
+          Results for <span class="text-accent"><%= mask_request.preset.humanize %></span> Style Design
         </h3>
         <h4 class="text-base font-medium text-gray-500"><%= mask_request.user_error %></h4>
       </div>
@@ -16,102 +16,67 @@
       </div>
 
     <div
-      class="flex flex-wrap justify-start gap-3"
+      class="flex flex-wrap max-sm:justify-center gap-3"
       data-controller="turbo-method"
     >
-      <%= link_to "Brush Edit", new_canva_mask_request_path(mask_request.canva), class: "cute-btn btn-secondary" %>
-      <%= link_to "New Design", new_canva_path, class: "cute-btn btn-primary" %>
-      <%= link_to "Change Style", edit_mask_request_path(mask_request, manual: true), class: "cute-btn !bg-accent-secondary !text-gray-800" %>
-      <%= link_to "Text Edit", new_text_request_path(signed_blob_id:  mask_request.main_view.blob.signed_id), class: "cute-btn btn-accent" %>
+      <%= link_to "Brush Edit", new_canva_mask_request_path(mask_request.canva), class: "!max-w-[45%] cute-btn btn-secondary " %>
+      <%= link_to "New Design", new_canva_path, class: "!max-w-[45%] cute-btn btn-primary " %>
+      <%= link_to "Change Style", edit_mask_request_path(mask_request, manual: true), class: "!max-w-[45%] cute-btn !bg-accent-secondary !text-gray-800 " %>
+      <%= link_to "Text Edit", new_text_request_path(signed_blob_id:  mask_request.main_view.blob.signed_id), class: "!max-w-[45%] cute-btn btn-accent " %>
     </div>
 
     <hr class="border-t border-neutral-200">
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-      <% if mask_request.main_view.attached? %>
+    <%
+      # Collect all attached views and map their necessary data for the Stimulus controller
+      views = [mask_request.main_view, mask_request.rotated_view, mask_request.drone_view].compact.select(&:attached?)
+
+      gallery_data = views.map.with_index do |view, index|
+        { url: rails_blob_path(view), title: view.name.humanize, index: index }
+      end
+    %>
+
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
+      data-controller="gallery"
+      <%# FIX: Removed `raw()` and used `j()` to correctly escape the JSON for the HTML attribute context %>
+      data-gallery-images-value="<%= gallery_data.to_json %>"
+      data-gallery-modal-target="#gallery-modal" <%# Target ID for JS to find %>
+    >
+      <% views.each_with_index do |view, index| %>
+        <% full_url = rails_blob_path(view) %>
         <div
           class="
-            group relative overflow-hidden rounded-lg shadow-xl
+            group relative overflow-hidden rounded-lg shadow-xl cursor-pointer
             transition-all duration-300 transform hover:-translate-y-1 hover:shadow-2xl
           "
         >
-          <%= image_tag(mask_request.main_view.variant(resize_to_limit: [500, 500]), loading: :lazy, class: "w-full max-h-[400px] object-cover transition-transform duration-500 group-hover:scale-[1.02]") %>
-          <div
-            class="
-              absolute inset-0 bg-gradient-to-t from-black/80 via-transparent
-              to-transparent
-            "
-          ></div>
+          <%# Clickable element for the gallery. We pass the index using params. %>
+          <a
+            href="<%= full_url %>"
+            data-action="gallery#open"
+            data-gallery-index-param="<%= index %>"
+            class="block"
+          >
+            <%= image_tag(view.variant(resize_to_limit: [500, 500]), loading: :lazy, class: "w-full max-h-[400px] object-cover transition-transform duration-500 group-hover:scale-[1.02]") %>
+            <div
+              class="
+                absolute inset-0 bg-gradient-to-t from-black/80 via-transparent
+                to-transparent
+              "
+            ></div>
+          </a>
 
-          <div class="absolute bottom-3 left-4 right-4 text-white">
-            <p class="text-sm font-medium opacity-80">Main Shot</p>
+          <div class="absolute bottom-3 left-4 right-4 text-white pointer-events-none">
+            <p class="text-sm font-medium opacity-80"><%= view.name.humanize %></p>
           </div>
 
-          <div class="absolute bottom-3 right-4 z-10 flex space-x-2">
-            <%= link_to rails_blob_path(mask_request.main_view, disposition: :attachment), class: "icon-btn bg-white/20 hover:bg-white/40 text-white" do %>
+          <%# Download/Edit links need z-index 20 to be clickable over the anchor tag %>
+          <div class="absolute bottom-3 right-4 z-20 flex space-x-2">
+            <%= link_to rails_blob_path(view, disposition: :attachment), class: "icon-btn bg-white/20 hover:bg-white/40 text-white" do %>
               <%= render(IconComponent.new(classes: "h-5 w-5", name: "download")) %>
             <% end %>
-            <%= link_to new_text_request_path(signed_blob_id:  mask_request.main_view.blob.signed_id), class: "icon-btn bg-accent/90 hover:bg-accent text-white" do %>
-              <%= render(IconComponent.new(classes: "h-5 w-5", name: "pencil")) %>
-            <% end %>
-          </div>
-        </div>
-      <% end %>
-
-      <% if mask_request.rotated_view.attached? %>
-        <div
-          class="
-            group relative overflow-hidden rounded-lg shadow-xl
-            transition-all duration-300 transform hover:-translate-y-1 hover:shadow-2xl
-          "
-        >
-          <%= image_tag(mask_request.rotated_view.variant(resize_to_limit: [500, 500]), loading: :lazy, class: "w-full max-h-[400px] object-cover transition-transform duration-500 group-hover:scale-[1.02]") %>
-          <div
-            class="
-              absolute inset-0 bg-gradient-to-t from-black/80 via-transparent
-              to-transparent
-            "
-          ></div>
-
-          <div class="absolute bottom-3 left-4 right-4 text-white">
-            <p class="text-sm font-medium opacity-80">Rotated View</p>
-          </div>
-
-          <div class="absolute bottom-3 right-4 z-10 flex space-x-2">
-            <%= link_to rails_blob_path(mask_request.rotated_view, disposition: :attachment), class: "icon-btn bg-white/20 hover:bg-white/40 text-white" do %>
-              <%= render(IconComponent.new(classes: "h-5 w-5", name: "download")) %>
-            <% end %>
-            <%= link_to new_text_request_path(signed_blob_id:  mask_request.rotated_view.blob.signed_id), class: "icon-btn bg-accent/90 hover:bg-accent text-white" do %>
-              <%= render(IconComponent.new(classes: "h-5 w-5", name: "pencil")) %>
-            <% end %>
-          </div>
-        </div>
-      <% end %>
-
-      <% if mask_request.drone_view.attached? %>
-        <div
-          class="
-            group relative overflow-hidden rounded-lg shadow-xl
-            transition-all duration-300 transform hover:-translate-y-1 hover:shadow-2xl
-          "
-        >
-          <%= image_tag(mask_request.drone_view.variant(resize_to_limit: [500, 500]), loading: :lazy, class: "w-full max-h-[400px] object-cover transition-transform duration-500 group-hover:scale-[1.02]") %>
-          <div
-            class="
-              absolute inset-0 bg-gradient-to-t from-black/80 via-transparent
-              to-transparent
-            "
-          ></div>
-
-          <div class="absolute bottom-3 left-4 right-4 text-white">
-            <p class="text-sm font-medium opacity-80">Drone Shot</p>
-          </div>
-
-          <div class="absolute bottom-3 right-4 z-10 flex space-x-2">
-            <%= link_to rails_blob_path(mask_request.drone_view, disposition: :attachment), class: "icon-btn bg-white/20 hover:bg-white/40 text-white" do %>
-              <%= render(IconComponent.new(classes: "h-5 w-5", name: "download")) %>
-            <% end %>
-            <%= link_to new_text_request_path(signed_blob_id:  mask_request.drone_view.blob.signed_id), class: "icon-btn bg-accent/90 hover:bg-accent text-white" do %>
+            <%= link_to new_text_request_path(signed_blob_id:  view.blob.signed_id), class: "icon-btn bg-accent/90 hover:bg-accent text-white" do %>
               <%= render(IconComponent.new(classes: "h-5 w-5", name: "pencil")) %>
             <% end %>
           </div>
@@ -120,3 +85,5 @@
     </div>
   </div>
 </div>
+
+<%= render 'mask_requests/gallery_modal' %>
