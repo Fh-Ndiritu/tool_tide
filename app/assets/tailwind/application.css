@@ -1,9 +1,11 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-primary: #3f51b5;
-  --color-secondary: #f047a4;
-  --color-accent: #00bcd4;
+  --color-primary: #5c6bc0;
+  --color-secondary: #e91e63;
+  --color-accent: #00acc1;
+  --color-cta-bg: #8c9eff;
+  --color-accent-secondary: #d1cbfc;
 
   --color-neutral-100: #fafafa;
   --color-neutral-300: #e0e0e0;
@@ -104,7 +106,7 @@ html {
 
 #flash {
   position: fixed;
-  top: 8vh;
+  top: 4vh;
   left: 50%;
   transform: translateX(-50%);
   width: auto;
@@ -139,8 +141,8 @@ html {
 
 .flash-message.error,
 .flash-message.alert {
-  background-color: #fee2e2; /* Light red */
-  color: #b91c1c; /* Dark red */
+  background-color: #b32727; /* Light red */
+  color: #ffffff; /* Dark red */
 }
 
 .flash-message.info {

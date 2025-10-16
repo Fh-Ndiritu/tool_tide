@@ -1,9 +1,27 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  scope "/designs" do
+    get ":slug", to: "locations#show", as: :location, constraints: { slug: /[a-z0-9\-\_]+/ }
+  end
+  scope "/seasons" do
+    get ":slug", to: "season_tags#show", as: :season_tag, constraints: { slug: /[a-z0-9\-\_]+/ }
+  end
+
+  scope "/events" do
+    get ":slug", to: "event_tags#show", as: :event_tag, constraints: { slug: /[a-z0-9\-\_]+/ }
+  end
+
+  resources :event_tags, only: [] do
+    member do
+      get :show
+    end
+  end
+
   resources :text_requests, except: [ :destroy, :create, :edit ]
 
   namespace :admin do
+    resources :tags, only: :create
     get "mask_requests/index"
     get "mask_requests/edit"
     post "mask_requests/toggle_display"

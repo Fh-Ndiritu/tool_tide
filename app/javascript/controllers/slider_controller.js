@@ -14,18 +14,25 @@ export default class extends Controller {
   // Flag to enable/disable drag functionality
   enableDrag = false;
 
+  // INFINITE SCROLL PROPERTIES
+  loopBuffer = 3; // Number of items to clone at the start and end for the loop effect
+  isLooping = false; // Flag to prevent re-entry during the scroll jump
+  originalItemCount = 0;
+
   connect() {
+    this.setupInfiniteScroll(); // NEW: Setup cloning and initial positioning
     this.updateVisibility();
     window.addEventListener('resize', this.updateVisibility.bind(this));
+    window.addEventListener('resize', this.handleResize.bind(this)); // Use a dedicated resize handler
 
     this.startAutoplay();
 
     // Determine if drag should be enabled
     this.checkIfDragShouldBeEnabled();
-    window.addEventListener('resize', this.checkIfDragShouldBeEnabled.bind(this)); // Re-check on resize
 
     // Add event listeners for autoplay reset (user interaction)
     this.trackTarget.addEventListener('scroll', this.resetAutoplay.bind(this));
+    this.trackTarget.addEventListener('scroll', this.checkLoopBoundary.bind(this)); // NEW: Check boundaries on scroll
 
     // Add drag event listeners conditionally based on enableDrag
     if (this.enableDrag) {
@@ -35,37 +42,152 @@ export default class extends Controller {
 
   disconnect() {
     window.removeEventListener('resize', this.updateVisibility.bind(this));
+    window.removeEventListener('resize', this.handleResize.bind(this));
+
     this.stopAutoplay();
     clearTimeout(this.resetTimeout);
 
     this.trackTarget.removeEventListener('scroll', this.resetAutoplay.bind(this));
+    this.trackTarget.removeEventListener('scroll', this.checkLoopBoundary.bind(this));
 
     if (this.enableDrag) {
       this.removeDragListeners();
     }
 
-    window.removeEventListener('resize', this.checkIfDragShouldBeEnabled.bind(this));
     window.removeEventListener('mouseup', this.globalEndDrag.bind(this));
     window.removeEventListener('touchend', this.globalEndDrag.bind(this));
   }
 
+  handleResize() {
+    // Re-check drag status and reset infinite scroll structure on resize
+    this.checkIfDragShouldBeEnabled();
+
+    // To properly reset the loop, we need to strip and re-add clones.
+    // For simplicity, we just reload the loop logic.
+    this.removeLoopClones();
+    this.setupInfiniteScroll();
+  }
+
+  // --- INFINITE SCROLL LOGIC ---
+
+  setupInfiniteScroll() {
+    const track = this.trackTarget;
+    const items = Array.from(track.children);
+    this.originalItemCount = items.length;
+
+    // 1. Remove any existing clones (important for resize/reconnect)
+    this.removeLoopClones();
+
+    // 2. Clone the start and end for seamless looping
+    const clonesEnd = items.slice(0, this.loopBuffer).map((item) => item.cloneNode(true));
+    const clonesStart = items.slice(-this.loopBuffer).map((item) => item.cloneNode(true));
+
+    // 3. Add 'is-clone' class for identification
+    [...clonesStart, ...clonesEnd].forEach((clone) => clone.classList.add('is-clone', 'snap-start'));
+
+    // 4. Prepend clones of the end items to the start
+    clonesStart.reverse().forEach((clone) => track.prepend(clone));
+
+    // 5. Append clones of the start items to the end
+    clonesEnd.forEach((clone) => track.appendChild(clone));
+
+    // 6. Set initial scroll position to skip the prepended clones
+    const initialScrollPosition = this.getScrollAmount() * this.loopBuffer;
+    track.scrollLeft = initialScrollPosition;
+  }
+
+  removeLoopClones() {
+    Array.from(this.trackTarget.children)
+      .filter((child) => child.classList.contains('is-clone'))
+      .forEach((clone) => clone.remove());
+  }
+
+  checkLoopBoundary() {
+    if (this.isLooping) return;
+
+    const track = this.trackTarget;
+    const scrollAmount = this.getScrollAmount();
+    const currentScrollLeft = track.scrollLeft;
+
+    const totalWidth = scrollAmount * (this.originalItemCount + 2 * this.loopBuffer);
+    const startOffset = scrollAmount * this.loopBuffer;
+    const endOffset = totalWidth - scrollAmount * this.loopBuffer;
+
+    if (currentScrollLeft <= 0.01) {
+      // User scrolled past the start clones
+      this.isLooping = true;
+      // Jump to the equivalent position at the end of the real items
+      track.scrollLeft = endOffset - track.clientWidth;
+      this.isLooping = false;
+    } else if (currentScrollLeft + track.clientWidth >= endOffset) {
+      // User scrolled into the end clones
+      this.isLooping = true;
+      // Jump back to the equivalent position at the start of the real items
+      track.scrollLeft = startOffset;
+      this.isLooping = false;
+    }
+  }
+
+  // --- EXISTING UTILITY METHODS (Modified for Infinite Scroll) ---
+
+  startAutoplay() {
+    this.stopAutoplay();
+    this.autoplayInterval = setInterval(() => {
+      if (!this.isDragging) {
+        // Use the existing 'next' method which handles the loop boundary
+        this.next(true);
+      }
+    }, 4000);
+  }
+
+  next(fromAutoplay = false) {
+    if (!fromAutoplay) this.stopAutoplay();
+
+    const track = this.trackTarget;
+    const scrollAmount = this.getScrollAmount();
+
+    track.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+
+    // Handle loop boundary for buttons/user interaction (optional, checkLoopBoundary usually covers it)
+    if (!fromAutoplay) this.resetAutoplay();
+  }
+
+  prev() {
+    this.stopAutoplay();
+    const track = this.trackTarget;
+    const scrollAmount = this.getScrollAmount();
+    track.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+    this.resetAutoplay();
+  }
+
+  getScrollAmount() {
+    const track = this.trackTarget;
+    // Find the first ORIGINAL item, skipping prepended clones
+    const firstItem = Array.from(track.children).find((child) => !child.classList.contains('is-clone'));
+
+    if (!firstItem) return 0;
+
+    const trackStyle = getComputedStyle(track);
+    // Use parseFloat to handle values like '8px' or '1rem'
+    const gap = parseFloat(trackStyle.gap || '0');
+
+    const itemWidth = firstItem.offsetWidth;
+
+    // The scroll amount is the width of one item plus the gap
+    return itemWidth + gap;
+  }
+
+  // --- DRAG/TOUCH HANDLERS (Unchanged) ---
+
   checkIfDragShouldBeEnabled() {
-    // Option 1: Feature Detection (touch support)
     const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-
-    // Option 2: Media Query (screen width often indicates mobile/tablet)
-    // You can adjust these breakpoints to match your CSS breakpoints for mobile/tablet
-    const isMobileOrTabletScreen = window.matchMedia('(max-width: 1024px)').matches; // Example: screens up to 1024px wide
-
-    // Combine conditions: enable drag if it's a touch device AND within typical mobile/tablet screen size
+    const isMobileOrTabletScreen = window.matchMedia('(max-width: 1024px)').matches;
     const shouldEnable = hasTouch && isMobileOrTabletScreen;
 
     if (shouldEnable && !this.enableDrag) {
-      // If drag should be enabled and currently isn't, add listeners
       this.enableDrag = true;
       this.addDragListeners();
     } else if (!shouldEnable && this.enableDrag) {
-      // If drag should be disabled and currently is, remove listeners
       this.enableDrag = false;
       this.removeDragListeners();
     }
@@ -84,7 +206,6 @@ export default class extends Controller {
     this.trackTarget.addEventListener('touchmove', this.drag.bind(this), { passive: false });
 
     // Global listeners for ending drag if mouse/touch goes off the element
-    // These should always be on window if drag is enabled, regardless of where drag ends
     window.addEventListener('mouseup', this.globalEndDrag.bind(this));
     window.addEventListener('touchend', this.globalEndDrag.bind(this));
   }
@@ -95,33 +216,12 @@ export default class extends Controller {
     this.trackTarget.removeEventListener('mouseup', this.endDrag.bind(this));
     this.trackTarget.removeEventListener('mousemove', this.drag.bind(this));
 
-    this.trackTarget.removeEventListener('touchstart', this.startTouch.bind(this), { passive: true });
-    this.trackTarget.removeEventListener('touchend', this.endDrag.bind(this), { passive: true });
-    this.trackTarget.removeEventListener('touchmove', this.drag.bind(this), { passive: false });
+    this.trackTarget.removeEventListener('touchstart', this.startTouch.bind(this));
+    this.trackTarget.removeEventListener('touchend', this.endDrag.bind(this));
+    this.trackTarget.removeEventListener('touchmove', this.drag.bind(this));
 
     window.removeEventListener('mouseup', this.globalEndDrag.bind(this));
     window.removeEventListener('touchend', this.globalEndDrag.bind(this));
-  }
-
-  startAutoplay() {
-    this.stopAutoplay();
-    this.autoplayInterval = setInterval(() => {
-      if (!this.isDragging) {
-        const track = this.trackTarget;
-        const currentScrollLeft = track.scrollLeft;
-        const scrollWidth = track.scrollWidth;
-        const clientWidth = track.clientWidth;
-        const scrollAmount = this.getScrollAmount();
-
-        const atEnd = currentScrollLeft + clientWidth >= scrollWidth - 1;
-
-        if (atEnd) {
-          track.scrollTo({ left: 0, behavior: 'smooth' });
-        } else {
-          track.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-        }
-      }
-    }, 4000);
   }
 
   stopAutoplay() {
@@ -141,11 +241,8 @@ export default class extends Controller {
     }, 3000);
   }
 
-  // --- Drag/Touch Handlers ---
-
   startDrag(e) {
-    if (!this.enableDrag) return; // Only proceed if drag is enabled
-
+    if (!this.enableDrag) return;
     this.isDragging = true;
     this.trackTarget.style.cursor = 'grabbing';
     this.startX = (e.touches ? e.touches[0].pageX : e.pageX) - this.trackTarget.offsetLeft;
@@ -154,30 +251,28 @@ export default class extends Controller {
   }
 
   startTouch(e) {
-    if (!this.enableDrag) return; // Only proceed if drag is enabled
-
+    if (!this.enableDrag) return;
     this.startX = e.touches[0].pageX - this.trackTarget.offsetLeft;
     this.scrollLeft = this.trackTarget.scrollLeft;
     this.stopAutoplay();
   }
 
   endDrag() {
-    if (!this.enableDrag) return; // Only proceed if drag is enabled
-
+    if (!this.enableDrag) return;
     this.isDragging = false;
     this.trackTarget.style.cursor = 'grab';
     this.resetAutoplay();
   }
 
   globalEndDrag() {
-    if (!this.enableDrag) return; // Only proceed if drag is enabled
+    if (!this.enableDrag) return;
     if (this.isDragging) {
       this.endDrag();
     }
   }
 
   drag(e) {
-    if (!this.enableDrag) return; // Only proceed if drag is enabled
+    if (!this.enableDrag) return;
 
     const currentX = (e.touches ? e.touches[0].pageX : e.pageX) - this.trackTarget.offsetLeft;
     const distanceX = Math.abs(currentX - this.startX);
@@ -190,48 +285,15 @@ export default class extends Controller {
       if (this.isDragging) {
         e.preventDefault();
       } else {
-        return; // Allow default scrolling if not dragging slider
+        return;
       }
     } else {
-      // For mouse events
       if (!this.isDragging) return;
       e.preventDefault();
     }
 
     const walk = (currentX - this.startX) * 1.5;
     this.trackTarget.scrollLeft = this.scrollLeft - walk;
-  }
-
-  // --- Navigation & Utility ---
-
-  prev() {
-    this.stopAutoplay();
-    const track = this.trackTarget;
-    const scrollAmount = this.getScrollAmount();
-    track.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-    this.resetAutoplay();
-  }
-
-  next() {
-    this.stopAutoplay();
-    const track = this.trackTarget;
-    const scrollAmount = this.getScrollAmount();
-    track.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-    this.resetAutoplay();
-  }
-
-  getScrollAmount() {
-    const track = this.trackTarget;
-    const firstItem = track.firstElementChild;
-
-    if (!firstItem) return 0;
-
-    const trackStyle = getComputedStyle(track);
-    const gap = parseFloat(trackStyle.gap || '0');
-
-    const itemWidth = firstItem.offsetWidth;
-
-    return itemWidth + gap;
   }
 
   updateVisibility() {

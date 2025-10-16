@@ -2,21 +2,36 @@
   <div class="card">
     <%= content_tag :h3, "We are adding accounts to help preserve your work.", class: "py-4 flex w-full  text-white text-sm fancy-text justify-center" %>
     <h2>Sign up, it's Free!</h2>
+
     <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
       <%= render "devise/shared/error_messages", resource: resource %>
       <div class="field">
-        <%= f.label :email %><br>
+        <%= f.label :email %>
+        <br>
+
         <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "Email" %>
       </div>
-      <div class="field" >
+
+      <div class="field">
         <%= f.label :password %>
         <% if @minimum_password_length %>
           <em>(<%= @minimum_password_length %> characters minimum)</em>
-        <% end %><br>
-        <div class="flex flex-inline relative p-0 mt-4" data-controller="password-visibility">
-          <%= f.password_field :password, autocomplete: "new-password", class:"pr-5 !m-0 ", data: {password_visibility_target: 'input'},  placeholder: "Password"  %>
-          <button type="button" data-action="password-visibility#toggle" class="absolute h-full right-5 top-1/2 -translate-y-1/2 !text-gray-400
-">
+        <% end %>
+        <br>
+
+        <div
+          class="flex flex-inline relative p-0 mt-4"
+          data-controller="password-visibility"
+        >
+          <%= f.password_field :password, autocomplete: "new-password", class:"pr-5 !m-0 ", data: {password_visibility_target: 'input'},  placeholder: "Password" %>
+          <button
+            type="button"
+            data-action="password-visibility#toggle"
+            class="
+              absolute h-full right-5 top-1/2 -translate-y-1/2
+              !text-gray-400
+            "
+          >
             <span data-password-visibility-target="icon">
               <%= render(IconComponent.new(name: "eye", classes: "h-2 w-6")) %>
             </span>
@@ -26,11 +41,24 @@
           </button>
         </div>
       </div>
+
       <div class="field">
-        <%= f.label :password_confirmation %><br>
-        <div class="flex flex-inline relative p-0 mt-4" data-controller="password-visibility">
-          <%= f.password_field :password_confirmation, autocomplete: "new-password", class:"pr-5 !m-0 ", data: {password_visibility_target: 'input'},  placeholder: "Confirm Password"  %>
-          <button type="button" data-action="password-visibility#toggle" class="absolute h-full right-5 top-1/2 -translate-y-1/2 !text-gray-400">
+        <%= f.label :password_confirmation %>
+        <br>
+
+        <div
+          class="flex flex-inline relative p-0 mt-4"
+          data-controller="password-visibility"
+        >
+          <%= f.password_field :password_confirmation, autocomplete: "new-password", class:"pr-5 !m-0 ", data: {password_visibility_target: 'input'},  placeholder: "Confirm Password" %>
+          <button
+            type="button"
+            data-action="password-visibility#toggle"
+            class="
+              absolute h-full right-5 top-1/2 -translate-y-1/2
+              !text-gray-400
+            "
+          >
             <span data-password-visibility-target="icon">
               <%= render(IconComponent.new(name: "eye", classes: "h-2 w-6")) %>
             </span>
@@ -40,6 +68,7 @@
           </button>
         </div>
       </div>
+
       <div class="flex items-start mt-6 align-middle">
         <div class="flex items-center h-3 align-middle">
           <%= f.check_box :privacy_policy, {
@@ -51,16 +80,20 @@
         <div class="ml-3 text-sm">
           <label for="privacy-policy" class="font-medium text-gray-200">
             I have read and agree to the
-            <a href="/privacy-policy" class="text-secondary hover:text-white hover:underline">
+            <a
+              href="/privacy-policy"
+              class="text-secondary hover:text-white hover:underline"
+            >
               Privacy Policy
-            </a>.
+            </a>
+            .
           </label>
         </div>
       </div>
-      <div class="actions">
-        <%= f.submit "Sign up" %>
-      </div>
+
+      <div class="actions"><%= f.submit "Sign up" %></div>
     <% end %>
+
     <div class="shared_links flex gap-3 text-white my-6">
       <%= render "devise/shared/links" %>
     </div>

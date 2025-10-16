@@ -1,0 +1,50 @@
+<%# app/views/tags/_form.html.erb (The form rendering the input fields) %>
+
+<div
+  data-controller="tags"
+  data-tags-tag-class-outlet-value="<%= Tag.tag_classes.keys.first %>"
+  class="
+    p-6 bg-neutral-100 border border-neutral-300 rounded-xl shadow-lg
+    **h-full**
+  "
+>
+  <%= form_with(model: Tag.new, url: admin_tags_path, data: { turbo: false }) do |form| %>
+    <% if defined?(mask_request) %>
+      <%= form.hidden_field :mask_request_id, value: mask_request.id %>
+    <% end %>
+    <div class="space-y-5">
+      <h3
+        class="
+          text-lg font-semibold text-text-dark border-b border-neutral-300
+          pb-2 mb-4
+        "
+      >
+        Add New Tag
+      </h3>
+
+      <div>
+        <%= form.label :tag_class, class: "block text-sm font-semibold text-text-dark mb-1" %>
+        <%= form.select :tag_class,
+            Tag.tag_classes.keys.map { |key| [key.humanize, key] },
+            { prompt: 'Select a Tag Class' },
+            data: {
+              action: "tags#updateTagType",
+              tags_target: "tagClass"
+            },
+            class: "appearance-none mt-1 block w-full px-3 py-2 text-base border-neutral-300 text-text-dark rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition duration-150 ease-in-out" %>
+      </div>
+
+      <div data-tags-target="titleGroup" class="hidden">
+        <%= form.label :title, class: "block text-sm font-semibold text-text-dark mb-1" %>
+        <%= form.text_field :title,
+            placeholder: "Enter value for selected tag...",
+            class: "block w-full px-3 py-2 text-base shadow-sm border-neutral-300 text-text-dark rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition duration-150 ease-in-out",
+            data: { tags_target: "titleInput" } %>
+      </div>
+
+      <%= form.submit "Add Tag",
+          class: "cute-btn accent-btn",
+          data: { action: "tags#submit" } %>
+    </div>
+  <% end %>
+</div>

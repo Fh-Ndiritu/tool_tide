@@ -2,6 +2,9 @@ class MaskRequest < ApplicationRecord
   include Designable
   include ActionView::RecordIdentifier
 
+  has_many :generation_taggings, as: :generation
+  has_many :tags, through: :generation_taggings
+
   has_one_attached :mask
 
   has_one_attached :main_view
