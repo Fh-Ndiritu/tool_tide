@@ -3,10 +3,8 @@
   data-controller="navbar"
 >
   <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
-
     <!-- TOP ROW (LOGO | HAMBURGER | PROFILE - Mobile View) -->
     <div class="w-full flex items-center mb-0 md:mb-0 relative">
-
       <!-- 1. Logo (Always Left) -->
       <div class="flex-shrink-0">
         <%= link_to root_path, class: "flex items-center" do %>
@@ -16,9 +14,11 @@
 
       <% if user_signed_in? %>
         <!-- LOGGED IN (Mobile): Hamburger Centered, Profile Right -->
-
         <!-- Hamburger Centered (Absolute) -->
-        <div class="md:hidden absolute left-1/2 -translate-x-1/2" data-action="click->navbar#toggleMenu">
+        <div
+          class="md:hidden absolute left-1/2 -translate-x-1/2"
+          data-action="click->navbar#toggleMenu"
+        >
           <%= render ButtonComponent.new(
                 text: "",
                 classes: "bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
@@ -26,7 +26,6 @@
                 svg_classes: "bg-transparent h-6 w-6 text-neutral-900",
                 ) %>
         </div>
-
         <!-- Profile Dropdown Right (Flex ml-auto) -->
         <div class="ml-auto md:hidden">
           <div data-controller="dropdown" class="relative">
@@ -44,18 +43,19 @@
               data-dropdown-target="menu"
               data-dropdown-hidden-class="hidden"
               class="
-                hidden absolute right-0 mt-3 w-56 bg-accent-secondary rounded-lg shadow-lg p-2 z-50 ring-1 ring-gray-300
+                hidden absolute right-0 mt-3 w-56 bg-accent-secondary
+                rounded-lg shadow-lg p-2 z-50 ring-1 ring-gray-300
               "
             >
               <!-- Links inside mobile dropdown close the dropdown on click -->
               <%= link_to "Credits Balance", credits_path, class: "block px-3 py-2 text-sm text-neutral-900 rounded-lg transition duration-150 hover:bg-secondary hover:text-white", data: { action: "click->dropdown#hide" } %>
               <%= link_to "Contact Support", contact_us_path, class: "block px-3 py-2 text-sm text-neutral-900 rounded-lg transition duration-150 hover:bg-secondary hover:text-white", data: { action: "click->dropdown#hide" } %>
               <div class="border-t border-gray-200 my-2"></div>
+
               <%= button_to "Log Out", destroy_user_session_path, method: :delete, class: "w-full text-left block px-3 py-2 text-sm text-red-600 rounded-lg transition duration-150 hover:bg-red-600 hover:text-white", data: { action: "click->dropdown#hide" } %>
             </div>
           </div>
         </div>
-
       <% else %>
         <!-- LOGGED OUT (Mobile): Hamburger Right (Flex ml-auto) -->
         <div class="ml-auto md:hidden" data-action="click->navbar#toggleMenu">
@@ -68,6 +68,7 @@
         </div>
       <% end %>
     </div>
+
     <!-- END TOP ROW -->
 
     <!-- NAVIGATION LINKS (Full menu hidden on mobile, toggled open via hamburger) -->
@@ -110,13 +111,6 @@
           ) %>
       <% end %>
 
-      <%= render ButtonComponent.new(
-        text: "Explore",
-        href: explore_path,
-        classes: "#{active_item(explore_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
-        data: { action: "click->navbar#toggleMenu" }
-        ) %>
-
       <% if user_signed_in? %>
         <% if current_user.admin? %>
           <%= render ButtonComponent.new(
@@ -127,18 +121,23 @@
           ) %>
         <% end %>
         <%= render ButtonComponent.new(
-        text: "AI Landscaper",
+        text: "Mask Editor",
         href: new_canva_path,
         classes: "#{active_item(new_canva_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
         data: { action: "click->navbar#toggleMenu" }
         ) %>
         <%= render ButtonComponent.new(
-        text: "Landscape with Text",
+        text: "Mask Edits",
         href: canvas_path,
         classes: "#{active_item(canvas_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
         data: { action: "click->navbar#toggleMenu" }
         ) %>
-
+        <%= render ButtonComponent.new(
+        text: "Explore",
+        href: explore_path,
+        classes: "#{active_item(explore_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
+        data: { action: "click->navbar#toggleMenu" }
+        ) %>
         <!-- PROFILE DROPDOWN (Desktop only - Hidden on mobile) -->
         <div data-controller="dropdown" class="relative hidden md:block">
           <!-- Dropdown Trigger (Avatar Placeholder) -->
@@ -158,24 +157,31 @@
             data-dropdown-target="menu"
             data-dropdown-hidden-class="hidden"
             class="
-              hidden absolute right-0 mt-3 w-56 bg-accent-secondary rounded-lg shadow-lg p-2 z-50 ring-1 ring-gray-300
+              hidden absolute right-0 mt-3 w-56 bg-accent-secondary
+              rounded-lg shadow-lg p-2 z-50 ring-1 ring-gray-300
             "
           >
             <!-- Links inside desktop dropdown close the dropdown on click -->
             <%= link_to "Credits Balance", credits_path, class: "block px-3 py-2 text-sm text-neutral-900 rounded-lg transition duration-150 hover:bg-secondary hover:text-white", data: { action: "click->dropdown#hide" } %>
             <%= link_to "Contact Support", contact_us_path, class: "block px-3 py-2 text-sm text-neutral-900 rounded-lg transition duration-150 hover:bg-secondary hover:text-white", data: { action: "click->dropdown#hide" } %>
             <div class="border-t border-gray-200 my-2"></div>
+
             <%= button_to "Log Out", destroy_user_session_path, method: :delete, class: "w-full text-left block px-3 py-2 text-sm text-red-600 rounded-lg transition duration-150 hover:bg-red-600 hover:text-white", data: { action: "click->dropdown#hide" } %>
           </div>
         </div>
       <% else %>
+        <%= render ButtonComponent.new(
+        text: "Explore",
+        href: explore_path,
+        classes: "#{active_item(explore_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
+        data: { action: "click->navbar#toggleMenu" }
+        ) %>
         <%= render ButtonComponent.new(
           text: "Contact",
           href: contact_us_path,
           classes: "#{active_item(contact_us_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
           data: { action: "click->navbar#toggleMenu" }
           ) %>
-
         <%= link_to "Sign Up", new_user_registration_path, class: "#{active_item(new_user_registration_path)} text-neutral-900 hover:bg-secondary hover:text-white px-3 py-2 rounded-lg transition duration-150", data: { action: "click->navbar#toggleMenu" } %>
         <%= link_to "Login", new_user_session_path, class: "#{active_item(new_user_session_path)} text-neutral-900 hover:bg-secondary hover:text-white px-3 py-2 rounded-lg transition duration-150", data: { action: "click->navbar#toggleMenu" } %>
       <% end %>

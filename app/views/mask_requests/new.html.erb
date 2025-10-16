@@ -14,7 +14,7 @@
   data-mask-request-image-url-value="<%= @mask_request.image.attached? ? url_for(@mask_request.drawable_image) : '' %>"
   class="
     h-auto bg-neutral-100 flex flex-col items-center justify-center p-2
-    sm:p-6 lg:p-8 font-sans text-text-dark max-w-[1100px] m-auto
+    sm:p-6 lg:p-8 font-sans text-text-dark w-full sm:max-w-lg lg:max-w-5xl m-auto
   "
 >
   <%= render 'shared/balances' %>
@@ -141,4 +141,6 @@
       </div>
     </div>
   </div>
+
+  <%= render 'shared/guide' %>
 </div>

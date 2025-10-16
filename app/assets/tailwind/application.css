@@ -2,7 +2,7 @@
 
 @theme {
   --color-primary: #5c6bc0;
-  --color-secondary: #e91e63;
+  --color-secondary: #f23faf;
   --color-accent: #00acc1;
   --color-cta-bg: #8c9eff;
   --color-accent-secondary: #d1cbfc;
@@ -277,22 +277,53 @@ html {
 .narrow-btn {
   @apply px-4 py-2;
 }
+/* Custom Button Base - Refined for general use */
 .cute-btn {
-  @apply inline-flex items-center justify-center w-auto rounded-full px-6 py-3 font-semibold text-lg text-white
-         shadow-lg transform transition-all duration-200 hover:scale-105 active:scale-95 my-3 cursor-pointer text-center;
+  /* Default: Slightly smaller than your original for better integration on pages */
+  @apply inline-flex items-center justify-center w-auto text-center
+         rounded-lg px-4 py-2 font-semibold text-sm
+         shadow-md transform transition-all duration-300 cursor-pointer;
 
+  /* Standard Interactive Feedback */
+  @apply hover:scale-[1.03] active:scale-[.98] hover:shadow-lg;
+
+  /* Mobile/Small Screen Adjustment: Ensure buttons stack and are slightly larger */
   @media (max-width: 580px) {
-    @apply px-3 py-2;
+    /* Use w-full on mobile for better tap targets, increased padding */
+    @apply w-full text-base px-6 py-3;
   }
 }
-.secondary-btn {
-  @apply bg-pink-400 hover:bg-primary;
+
+/* Secondary Button: Less critical, neutral action */
+.secondary-btn,
+.btn-secondary {
+  @apply bg-gray-500 text-white hover:opacity-90;
 }
-.accent-btn {
-  @apply bg-accent hover:bg-secondary;
+
+/* Accent Button: Unique, feature-specific action */
+.accent-btn,
+.btn-accent {
+  @apply bg-accent text-white hover:opacity-90;
 }
-.primary-btn {
-  @apply bg-primary hover:bg-secondary;
+
+/* Primary Button: Main action */
+.primary-btn,
+.btn-primary {
+  @apply bg-primary text-white hover:opacity-90;
+}
+
+/* Outline/Alternative Action */
+.btn-outline {
+  @apply border border-gray-300 text-gray-700 bg-white hover:bg-gray-50;
+}
+
+/* Icon Button Style on Image Cards */
+.icon-btn {
+  /* Size and Shape */
+  @apply h-8 w-8 flex items-center justify-center rounded-full shadow-lg;
+
+  /* Interaction and transition (from previous step) */
+  @apply backdrop-blur-sm transition-all duration-300 transform hover:scale-[1.05] active:scale-[.98];
 }
 
 .nav-btn {

@@ -1,47 +1,41 @@
-<%# = render '/shared/balances' %>
-
-<%# = render '/landscapes/downgrade_notification' %>
-
 <div
   data-controller="canvas"
   class="
-    min-h-[70vh] bg-neutral-100 flex flex-col items-center justify-center
+    min-h-[70vh] bg-neutral-100 flex flex-col items-center
     p-4 sm:p-6 lg:p-8 w-full
   "
 >
-  <div class="w-full md:w-7/12"><%= render 'shared/balances' %></div>
+  <div class="w-full sm:max-w-lg lg:max-w-5xl">
+    <%= render 'shared/balances' %>
 
-  <h1 class="text-2xl md:text-4xl font-bold text-center text-text-primary my-8">
-    Bring your Landscape to life!
-  </h1>
-
-  <div
-    data-canvas-target="uploadSection"
-    class="
-      w-full max-w-md sm:max-w-lg lg:max-w-3xl bg-white shadow-xl rounded-lg
-      p-2 sm:p-8 text-center
-    "
-  >
-    <h2 class="text-xl sm:text-2xl font-semibold text-text-dark mb-4">
-      Upload Your Yard Photo
-    </h2>
+    <br>
     <div
-      data-action="dragover->canvas#dragOver dragleave->canvas#dragLeave drop->canvas#drop click->canvas#triggerFileInput"
-      data-canvas-target="dropZone"
-      class="
-        flex min-h-[200px] gap-6 border-2 border-dashed border-neutral-300
-        rounded-lg p-8 sm:p-12 items-center text-center text-neutral-500
-        hover:border-primary hover:bg-neutral-100 transition-colors
-        duration-200 cursor-pointer
-      "
+      data-canvas-target="uploadSection"
+      class="bg-primary shadow-xl rounded-lg p-2 sm:p-8 text-center"
     >
-      <div class="flex w-full md:w-9/12 items-center gap-4 justify-center">
-        <%= render(IconComponent.new(name: "upload", classes: "h-6 w-6 -mb-1")) %>
-        <p class="mt-2 text-sm sm:text-base">
-          Drag & drop an image or click to upload
-        </p>
+      <h1 class="text-2xl md:text-4xl font-bold text-center text-white my-8">
+        Bring your Landscape to life!
+      </h1>
+      <div
+        data-action="dragover->canvas#dragOver dragleave->canvas#dragLeave drop->canvas#drop click->canvas#triggerFileInput"
+        data-canvas-target="dropZone"
+        class="
+          flex min-h-[200px] gap-6 border-2 border-dashed border-accent
+          rounded-lg p-8 sm:p-12 items-center text-center text-neutral-300
+          hover:bg-accent transition-colors
+          duration-200 cursor-pointer
+        "
+      >
+        <div class="flex w-full md:w-9/12 items-center gap-4 justify-center">
+          <%= render(IconComponent.new(name: "upload", classes: "h-6 w-6 -mb-2")) %>
+          <p class="mt-2 text-xl fancy-text">
+            Drag & drop an image or click to upload
+          </p>
+        </div>
+        <%= render 'form', canva: @canva %>
       </div>
-      <%= render 'form', canva: @canva %>
     </div>
+
+    <%= render 'shared/guide' %>
   </div>
 </div>
