@@ -105,15 +105,9 @@ html {
 }
 
 #flash {
-  position: fixed;
-  top: 4vh;
-  left: 50%;
-  transform: translateX(-50%);
+  position: relative;
   width: auto;
-  max-width: 80vw;
-  min-width: 60vw;
-  z-index: 40;
-  opacity: 0.9;
+  max-width: 90vw;
 }
 
 .flash-message {
@@ -141,7 +135,7 @@ html {
 
 .flash-message.error,
 .flash-message.alert {
-  background-color: #b32727; /* Light red */
+  background-color: #ec5454; /* Light red */
   color: #ffffff; /* Dark red */
 }
 

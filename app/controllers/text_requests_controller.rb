@@ -5,6 +5,7 @@ class TextRequestsController < ApplicationController
   def index
     @text_requests = current_user.text_requests.complete_or_in_progress
     @current_request = current_user.text_requests.find_by(id: params[:current_request]) || @text_requests.first
+    redirect_to new_canva_path, alert: "Create a brush landscape to start text editing" if @current_request.blank?
   end
 
   # GET /text_requests/1 or /text_requests/1.json
