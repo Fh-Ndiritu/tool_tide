@@ -11,6 +11,8 @@
   <%= form_with(model: Tag.new, url: admin_tags_path, data: { turbo: false }) do |form| %>
     <% if defined?(mask_request) %>
       <%= form.hidden_field :mask_request_id, value: mask_request.id %>
+    <% elsif defined?(text_request) %>
+      <%= form.hidden_field :text_request_id, value: text_request.id %>
     <% end %>
     <div class="space-y-5">
       <h3

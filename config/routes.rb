@@ -22,9 +22,10 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :tags, only: :create
-    get "mask_requests/index"
-    get "mask_requests/edit"
+    resources :text_requests, only: [ :index, :edit ]
+    resources :mask_requests, only: [ :index, :edit ]
     post "mask_requests/toggle_display"
+    post "text_requests/toggle_display"
   end
 
   get "privacy-policy", to: "pages#privacy_policy"

@@ -1,0 +1,46 @@
+<div
+  class="grid gap-8 p-4 bg-white rounded-xl shadow-lg border border-gray-200"
+  data-controller="turbo-method"
+>
+  <h4 class="text-xl font-bold text-neutral-800 border-b pb-3 mb-0">Admin Management</h4>
+
+  <div class="grid md:grid-cols-2 gap-8">
+
+    <%# COLUMN 1: TAG FORM %>
+    <div class="space-y-4">
+      <h5 class="text-lg font-semibold text-neutral-700">Add New Tag</h5>
+      <%# NOTE: We must pass 'text_request' as 'mask_request' for the existing tags partials %>
+      <%= render 'admin/tags/form', text_request: text_request %>
+    </div>
+
+    <%# COLUMN 2: CURRENT TAGS & VISIBILITY TOGGLE %>
+    <div class="space-y-4">
+
+      <%# VISIBILITY TOGGLE %>
+      <div>
+        <% if text_request.everyone? %>
+          <%= button_to "Hide from public (Current: EXPLORE)",
+            admin_text_requests_toggle_display_path(id: text_request.id), data: {turbo: false},
+            class: "w-full cute-btn secondary-btn bg-red-500 hover:bg-red-600" %>
+        <% elsif text_request.user.admin? || text_request.trial_generation? %>
+          <%= button_to "List on Explore (Current: PRIVATE)",
+            admin_text_requests_toggle_display_path(id: text_request.id), data: {turbo: false},
+            class: "w-full cute-btn primary-btn bg-green-500 hover:bg-green-600" %>
+        <% end %>
+      </div>
+
+      <%# CURRENT TAGS LIST %>
+      <h5 class="text-lg font-semibold text-neutral-700 pt-3 border-t border-gray-200">Current Tags</h5>
+      <div
+        id="text_request_tags"
+        class="flex flex-wrap gap-2 min-h-[40px] p-2 bg-neutral-50 rounded border border-neutral-300"
+      >
+        <% if text_request.tags.any? %>
+          <%= render partial: 'admin/tags/tag', collection: text_request.tags %>
+        <% else %>
+          <p class="text-sm text-neutral-700 italic">No tags have been added yet.</p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,6 +1,6 @@
 <nav
   class="px-4 shadow-md bg-accent-secondary <%= 'sticky top-0 z-50' unless user_signed_in? %>"
-  data-controller="navbar"
+  data-controller="navbar dropdown"
 >
   <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
     <!-- TOP ROW (LOGO | HAMBURGER | PROFILE - Mobile View) -->
@@ -17,7 +17,7 @@
         <!-- Hamburger Centered (Absolute) -->
         <div
           class="md:hidden absolute left-1/2 -translate-x-1/2"
-          data-action="click->navbar#toggleMenu"
+          data-action="click->navbar#toggleMenu click->dropdown#toggle"
         >
           <%= render ButtonComponent.new(
                 text: "",
@@ -28,7 +28,7 @@
         </div>
         <!-- Profile Dropdown Right (Flex ml-auto) -->
         <div class="ml-auto md:hidden">
-          <div data-controller="dropdown" class="relative">
+          <div  class="relative">
             <button
               data-action="dropdown#toggle"
               class="
@@ -81,7 +81,6 @@
         md:space-x-4 md:min-w-8/12
       "
     >
-      <%# All links in this section now explicitly trigger the menu close on click %>
 
       <% if active_item(root_path).present? && !user_signed_in? %>
         <%= render ButtonComponent.new(
@@ -114,12 +113,20 @@
       <% if user_signed_in? %>
         <% if current_user.admin? %>
           <%= render ButtonComponent.new(
-           text: "Generations",
-           href: admin_mask_requests_index_path,
-           classes: "#{active_item(admin_mask_requests_index_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
+           text: "Users/MaskEdits",
+           href: admin_mask_requests_path,
+           classes: "#{active_item(admin_mask_requests_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
+           data: { action: "click->navbar#toggleMenu" }
+          ) %>
+
+          <%= render ButtonComponent.new(
+           text: "Users/TextEdits",
+           href: admin_text_requests_path,
+           classes: "#{active_item(admin_text_requests_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
            data: { action: "click->navbar#toggleMenu" }
           ) %>
         <% end %>
+
         <%= render ButtonComponent.new(
         text: "Mask Editor",
         href: new_canva_path,

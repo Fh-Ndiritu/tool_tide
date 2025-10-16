@@ -24,6 +24,10 @@ class TextRequest < ApplicationRecord
     attachable.variant(:juxtaposed, resize_to_limit: [ 400, nil ])
   end
 
+  scope :by_user, ->(user_id) { where(user_id: user_id) }
+  scope :by_admin, ->() { joins(:user).where(users: { admin: true }) }
+  scope :by_visibility, ->(visibility) { where(visibility: visibility) }
+
   enum :progress, {
     uploading: 0,
     validating: 1,
