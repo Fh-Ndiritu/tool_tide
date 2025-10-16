@@ -21,7 +21,7 @@
 
   <meta
     property="og:image"
-    content="<%= @mask_requests.first&.main_view.presence || asset_url('hadaa_og.jpg') %>"
+    content="<%= @mask_requests.first&.main_view.presence || asset_url('hadaa.png') %>"
   >
 
   <meta name="twitter:title" content="<%= @tag.seo_title %>">
@@ -32,7 +32,7 @@
 
   <meta
     name="twitter:image"
-    content="<%= @mask_requests.first&.main_view.presence || asset_url('hadaa_og.jpg') %>"
+    content="<%= @mask_requests.first&.main_view.presence || asset_url('hadaa.png') %>"
   >
 
   <%= tag.script type: "application/ld+json" do %>
@@ -43,8 +43,7 @@
     ", "url": "
     <%= event_tag_url(@tag.slug) %>
     ", "mainEntity": { "@type": "ItemList", "itemListElement": [
-    <%
-            all_requests = @mask_requests.map { |mr| { request: mr, type: :mask } } +
+    <% all_requests = @mask_requests.map { |mr| { request: mr, type: :mask } } +
                            @text_requests.map { |tr| { request: tr, type: :text } } %>
     <% all_requests.each_with_index do |item, index| %>
       <% request = item[:request] %>

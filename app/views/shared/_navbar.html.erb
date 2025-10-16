@@ -1,9 +1,12 @@
-<nav class="p-4 shadow-md bg-accent" data-controller="navbar">
+<nav
+  class="px-4 shadow-md bg-accent-secondary <%= 'sticky top-0 z-50' unless user_signed_in? %>"
+  data-controller="navbar"
+>
   <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
-    <div class="w-full flex justify-between items-center mb-4 md:mb-0">
+    <div class="w-full flex justify-between items-center mb-0 md:mb-0">
       <div class="flex-shrink-0">
         <%= link_to root_path, class: "flex items-center" do %>
-          <%= image_tag "hadaa.jpg", alt: "Hadaa", class:"h-18 w-18 rounded-full mr-2" %>
+          <%= image_tag "hadaa.png", alt: "Hadaa", class:"h-22 w-22 rounded-full mr-2" %>
         <% end %>
       </div>
       <div class="md:hidden" data-action="click->navbar#toggleMenu">
@@ -25,7 +28,6 @@
         md:space-x-4 md:min-w-8/12
       "
     >
-      <!-- On HomePage -->
       <% if active_item(root_path).present?  && !user_signed_in? %>
         <%= render ButtonComponent.new(
           text: "How it Works",
@@ -50,8 +52,6 @@
           ) %>
       <% end %>
 
-      <!-- ON HomePage -->
-      <!-- Global Links -->
       <%= render ButtonComponent.new(
         text: "Explore",
         href: explore_path,
@@ -62,8 +62,6 @@
         href: contact_us_path,
         classes: "#{active_item(contact_us_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
         ) %>
-      <!-- Global Links -->
-      <!-- When Logged IN -->
       <% if user_signed_in? %>
         <% if current_user.admin? %>
           <%= render ButtonComponent.new(
@@ -88,7 +86,6 @@
         classes: "#{active_item(credits_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
         ) %>
         <%= button_to "Log Out", destroy_user_session_path, method: :delete, class: "nav-btn" %>
-        <!-- When Logged IN -->
       <% else %>
         <%= link_to "Sign Up", new_user_registration_path,  class: "#{active_item(new_user_registration_path)} nav-btn" %>
         <%= link_to "Login", new_user_session_path,  class: "#{active_item(new_user_session_path)} nav-btn" %>
