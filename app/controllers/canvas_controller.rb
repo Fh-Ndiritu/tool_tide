@@ -1,23 +1,9 @@
 class CanvasController < ApplicationController
-  before_action :set_canva, only: %i[ show edit update destroy ]
-  before_action :issue_daily_credits, only: :new
-
-  # GET /canvas or /canvas.json
-  def index
-    @canvas = current_user.canvas.joins(:mask_requests).where(mask_requests: { progress: :complete }).includes(:mask_requests).order(created_at: :desc)
-  end
-
-  # GET /canvas/1 or /canvas/1.json
-  def show
-  end
+  before_action :set_canva, only: %i[ show update destroy ]
 
   # GET /canvas/new
   def new
     @canva = Canva.new
-  end
-
-  # GET /canvas/1/edit
-  def edit
   end
 
   # POST /canvas or /canvas.json
@@ -67,9 +53,5 @@ class CanvasController < ApplicationController
     # Only allow a list of trusted parameters through.
     def canva_params
       params.expect(canva: [ :user_id, :image, :device_width ]).merge(user: current_user)
-    end
-
-    def issue_daily_credits
-      current_user.issue_daily_credits unless current_user.received_daily_credits?
     end
 end

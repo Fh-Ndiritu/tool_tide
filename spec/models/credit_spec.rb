@@ -14,13 +14,5 @@ RSpec.describe Credit, type: :model do
         end.to change { user.reload.pro_engine_credits }.by(10)
       end
     end
-
-    context "when credit is for pro_engine and trial source" do
-      it "increments user.pro_trial_credits" do
-        expect do
-          described_class.create(user: user, credit_type: :pro_engine, source: :trial, amount: 5)
-        end.to change { user.reload.pro_trial_credits }.by(5)
-      end
-    end
   end
 end

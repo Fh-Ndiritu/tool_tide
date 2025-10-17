@@ -2,7 +2,9 @@
 john_doe:
   email: john@doe.com
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
+  pro_engine_credits: 30
 
 jane_doe:
   email: jane@doe.com
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
+  pro_engine_credits: 30

@@ -19,8 +19,6 @@ class Credit < ApplicationRecord
   def update_user_credits
     if pro_engine? && purchase?
       user.increment!(:pro_engine_credits, amount)
-    elsif pro_engine? && trial?
-      user.increment!(:pro_trial_credits, amount)
     end
   end
 end

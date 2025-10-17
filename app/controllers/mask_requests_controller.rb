@@ -25,6 +25,7 @@ class MaskRequestsController < ApplicationController
 
   # GET /mask_requests/1/edit
   def edit
+    # binding.irb
     @canva = @mask_request.canva
     if params[:manual].present?
       redirect_to low_credits_path and return unless @canva.user.afford_generation?
@@ -87,7 +88,7 @@ class MaskRequestsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def mask_request_params
-      params.expect(mask_request: [ :mask, :original_image, :device_width, :error_msg, :progress, results: [], progess: 0 ])
+      params.expect(mask_request: [ :mask, :device_width, :error_msg, :progress, results: [], progess: 0 ])
     end
 
     def set_canva

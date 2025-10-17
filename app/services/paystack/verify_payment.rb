@@ -64,7 +64,6 @@ module Paystack
         ActiveRecord::Base.transaction do
           payment_transaction.update validated: true
           payment_transaction.issue_credits
-          payment_transaction.user.update pro_trial_credits: 0
         end
         Success(payment_transaction)
       end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_15_160842) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_17_125750) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -218,7 +218,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_15_160842) do
     t.json "address"
     t.integer "pro_engine_credits", default: 0
     t.datetime "received_daily_credits"
-    t.integer "pro_trial_credits", default: 0
     t.boolean "reverted_to_free_engine", default: false
     t.boolean "notified_about_pro_credits", default: false
     t.text "error"

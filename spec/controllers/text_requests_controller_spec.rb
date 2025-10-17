@@ -24,9 +24,17 @@ require 'rails_helper'
 # `rails-controller-testing` gem.
 
 RSpec.describe TextRequestsController, type: :controller do
-  # This should return the minimal set of attributes required to create a valid
-  # TextRequest. As you add validations to TextRequest, be sure to
-  # adjust the attributes here as well.
+    # This should return the minimal set of attributes required to create a valid
+    # TextRequest. As you add validations to TextRequest, be sure to
+    # adjust the attributes here as well.
+    fixtures(:users)
+    let(:user) { users(:john_doe) }
+
+    before do
+      sign_in(user)
+      allow(controller).to receive(:current_user).and_return(user)
+    end
+
   let(:valid_attributes) {
     skip("Add a hash of attributes valid for your model")
   }
@@ -59,7 +67,7 @@ RSpec.describe TextRequestsController, type: :controller do
   describe "GET #new" do
     it "returns a success response" do
       get :new, params: {}, session: valid_session
-      expect(response).to be_successful
+      expect(response).to redirect_to(canvas_path)
     end
   end
 
