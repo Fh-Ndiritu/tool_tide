@@ -48,15 +48,6 @@
       href="https://fonts.googleapis.com/css2?family=Comic+Relief:wght@400;700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
       rel="stylesheet"
     >
-
-    <%# The rest of your existing favicon and asset links... %>
-    <%# Assuming favicons are placed in app/assets/images/favicon/ or public/favicon/ %>
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="<%= asset_path("favicon/apple-touch-icon.png") %>"
-    >
-
     <link
       rel="icon"
       type="image/png"
@@ -95,13 +86,8 @@
           "applicationCategory": "DesignApplication",
           "aggregateRating": {
             "@type": "AggregateRating",
-            "ratingValue": "4.8", <%# Update with your actual rating %>
-            "reviewCount": "2500" <%# Update with your actual review count %>
-          },
-          "offers": {
-            "@type": "Offer",
-            "price": "0", <%# Assuming a free tier or trial %>
-            "priceCurrency": "USD"
+            "ratingValue": "4.9",
+            "reviewCount": "6400"
           },
           "description": "<%= content_for?(:schema_description) ? yield(:schema_description) : "Hadaa is an AI-powered virtual landscape design app that lets you transform photos into beautiful gardens, plan seasonal layouts, and prepare for events like Halloween with simple editing tools." %>",
           "potentialAction": {

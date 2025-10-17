@@ -3,9 +3,7 @@
   data-controller="navbar dropdown"
 >
   <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
-    <!-- TOP ROW (LOGO | HAMBURGER | PROFILE - Mobile View) -->
     <div class="w-full flex items-center mb-0 md:mb-0 relative">
-      <!-- 1. Logo (Always Left) -->
       <div class="flex-shrink-0">
         <%= link_to root_path, class: "flex items-center" do %>
           <%= image_tag "hadaa.png", alt: "Hadaa", class:"h-22 w-22 rounded-full mr-2" %>
@@ -13,11 +11,9 @@
       </div>
 
       <% if user_signed_in? %>
-        <!-- LOGGED IN (Mobile): Hamburger Centered, Profile Right -->
-        <!-- Hamburger Centered (Absolute) -->
         <div
           class="md:hidden absolute left-1/2 -translate-x-1/2"
-          data-action="click->navbar#toggleMenu click->dropdown#toggle"
+          data-action="click->navbar#toggleMenu"
         >
           <%= render ButtonComponent.new(
                 text: "",
@@ -26,7 +22,6 @@
                 svg_classes: "bg-transparent h-6 w-6 text-neutral-900",
                 ) %>
         </div>
-        <!-- Profile Dropdown Right (Flex ml-auto) -->
         <div class="ml-auto md:hidden">
           <div  class="relative">
             <button
@@ -47,7 +42,6 @@
                 rounded-lg shadow-lg p-2 z-50 ring-1 ring-gray-300
               "
             >
-              <!-- Links inside mobile dropdown close the dropdown on click -->
               <%= link_to "Credits Balance", credits_path, class: "block px-3 py-2 text-sm text-neutral-900 rounded-lg transition duration-150 hover:bg-secondary hover:text-white", data: { action: "click->dropdown#hide" } %>
               <%= link_to "Contact Support", contact_us_path, class: "block px-3 py-2 text-sm text-neutral-900 rounded-lg transition duration-150 hover:bg-secondary hover:text-white", data: { action: "click->dropdown#hide" } %>
               <div class="border-t border-gray-200 my-2"></div>
@@ -57,7 +51,6 @@
           </div>
         </div>
       <% else %>
-        <!-- LOGGED OUT (Mobile): Hamburger Right (Flex ml-auto) -->
         <div class="ml-auto md:hidden" data-action="click->navbar#toggleMenu">
           <%= render ButtonComponent.new(
                 text: "",
@@ -69,9 +62,6 @@
       <% end %>
     </div>
 
-    <!-- END TOP ROW -->
-
-    <!-- NAVIGATION LINKS (Full menu hidden on mobile, toggled open via hamburger) -->
     <div
       id="navigation-links"
       data-navbar-target="navigationLinks"
@@ -151,9 +141,7 @@
         classes: "#{active_item(explore_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
         data: { action: "click->navbar#toggleMenu" }
         ) %>
-        <!-- PROFILE DROPDOWN (Desktop only - Hidden on mobile) -->
         <div data-controller="dropdown" class="relative hidden md:block">
-          <!-- Dropdown Trigger (Avatar Placeholder) -->
           <button
             data-action="dropdown#toggle"
             class="
@@ -165,7 +153,6 @@
             <span class="font-bold text-lg"><%= current_user.email[..1].upcase %></span>
           </button>
 
-          <!-- Dropdown Menu -->
           <div
             data-dropdown-target="menu"
             data-dropdown-hidden-class="hidden"
@@ -174,7 +161,6 @@
               rounded-lg shadow-lg p-2 z-50 ring-1 ring-gray-300
             "
           >
-            <!-- Links inside desktop dropdown close the dropdown on click -->
             <%= link_to "Credits Balance", credits_path, class: "block px-3 py-2 text-sm text-neutral-900 rounded-lg transition duration-150 hover:bg-secondary hover:text-white", data: { action: "click->dropdown#hide" } %>
             <%= link_to "Contact Support", contact_us_path, class: "block px-3 py-2 text-sm text-neutral-900 rounded-lg transition duration-150 hover:bg-secondary hover:text-white", data: { action: "click->dropdown#hide" } %>
             <div class="border-t border-gray-200 my-2"></div>
@@ -195,8 +181,18 @@
           classes: "#{active_item(contact_us_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
           data: { action: "click->navbar#toggleMenu" }
           ) %>
-        <%= link_to "Sign Up", new_user_registration_path, class: "#{active_item(new_user_registration_path)} text-neutral-900 hover:bg-secondary hover:text-white px-3 py-2 rounded-lg transition duration-150", data: { action: "click->navbar#toggleMenu" } %>
-        <%= link_to "Login", new_user_session_path, class: "#{active_item(new_user_session_path)} text-neutral-900 hover:bg-secondary hover:text-white px-3 py-2 rounded-lg transition duration-150", data: { action: "click->navbar#toggleMenu" } %>
+        <%= render ButtonComponent.new(
+          text: "Sign Up",
+          href: new_user_registration_path,
+          classes: "#{active_item(new_user_registration_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0 font-bold",
+          data: { action: "click->navbar#toggleMenu" }
+          ) %>
+        <%= render ButtonComponent.new(
+          text: "Login",
+          href: new_user_session_path,
+          classes: "#{active_item(new_user_session_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0 font-bold",
+          data: { action: "click->navbar#toggleMenu" }
+          ) %>
       <% end %>
     </div>
   </div>

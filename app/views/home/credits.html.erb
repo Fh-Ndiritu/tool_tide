@@ -1,122 +1,68 @@
 <div class="container mx-auto p-4 w-full lg:w-9/12">
-  <h1 class="text-3xl font-bold mb-6 text-neutral-800 my-8 w-full text-center">
-    Your Credits
+  <h1 class="text-3xl font-extrabold mb-10 text-neutral-800 mt-8 w-full text-center">
+    Your <span class="text-secondary">Credit</span> Balance
   </h1>
 
-  <div class="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 mb-8">
+  <div class="flex flex-col mb-12">
     <div
       class="
-        bg-neutral-100 rounded-xl shadow-lg p-6 flex-1 flex flex-col
-        justify-between border border-accent
+        bg-accent-secondary text-neutral-900 rounded-2xl shadow-2xl p-8 border-4 border-secondary
+        transition-all duration-300 hover:shadow-secondary/50 hover:scale-[1.01]
       "
     >
-      <div>
-        <div class="flex items-center space-x-3 mb-4 gap-2">
-          <div class="bg-accent text-neutral-100 p-2 rounded-full shadow-inner m-0">
-            <%= render(IconComponent.new(name: "hour-glass", classes: "h-6 w-6")) %>
-          </div>
-          <h2 class="text-xl font-semibold text-neutral-700">Trial Credits</h2>
+      <div class="flex items-center space-x-3 mb-6">
+        <div class="bg-secondary text-neutral-100 p-3 rounded-full shadow-lg m-0">
+          <%= render(IconComponent.new(name: "crown", classes: "h-7 w-7")) %>
         </div>
-
-        <p class="text-4xl font-extrabold text-accent mt-2">
-          <span class="opacity-75"><%= current_user.pro_trial_credits %></span>/<%= PRO_TRIAL_CREDITS %>
-        </p>
-
-        <p class="text-sm text-neutral-500 mt-1">Remaining</p>
-
-        <p class="text-sm text-neutral-600 mt-4">
-          Access the Hadaa Pro engine for a limited time to generate stunning,
-          realistic image and customize with local plants.
-        </p>
-
-        <% if current_user.pro_engine_credits.zero? %>
-          <% if current_user.pro_trial_credits.positive? %>
-            <%= link_to "Test Hadaa Pro Engine", new_canva_path, class: "cute-btn accent-btn" %>
-          <% else %>
-            <%= button_to "Unlock Pro Designer", payment_transactions_path, data: {turbo: false}, method: :post, class: "cute-btn accent-btn" %>
-          <% end %>
-        <% end %>
+        <h2 class="text-2xl font-bold text-neutral-900 ml-2">Your Usage Credits</h2>
       </div>
-    </div>
-    <div
-      class="
-        bg-neutral-100 rounded-xl shadow-lg p-6 flex-1 flex flex-col
-        justify-between border border-secondary
-      "
-    >
-      <div>
-        <div class="flex items-center space-x-3 mb-4 gap-2">
-          <div class="bg-secondary text-neutral-100 p-2 rounded-full shadow-inner m-0">
-            <%= render(IconComponent.new(name: "crown", classes: "h-6 w-6")) %>
-          </div>
-          <h2 class="text-xl font-semibold text-neutral-700">Pro Credits</h2>
-        </div>
 
-        <p class="text-4xl font-extrabold text-secondary mt-2">
-          <%= current_user.pro_engine_credits %>
-        </p>
+      <p class="text-6xl font-extrabold text-accent mt-4 leading-tight">
+        <%= current_user.pro_engine_credits %>
+      </p>
 
-        <p class="text-sm text-neutral-500 mt-1">Remaining</p>
+      <p class="text-lg text-neutral-700 mt-2">
+        Remaining credits for all AI design features.
+      </p>
 
-        <p class="text-lg text-green-500 mt-1 font-bold"><%= CREDITS_INFO %></p>
+      <p class="text-md text-green-700 mt-3 font-semibold">
+        <b><%= CREDITS_INFO %></b>
+      </p>
 
-        <p class="text-sm text-neutral-600 mt-4">
-          Use Hadaa Pro Engine to customize generations with local plants,
-          export shopping lists, and get planting instructions.
-        </p>
+      <hr class="border-t border-neutral-300 my-8">
+
+      <h3 class="text-2xl font-extrabold mb-4 text-secondary">
+        Access Premium Features
+      </h3>
+
+      <ul class="space-y-4 mb-8">
+        <li class="flex items-start space-x-3">
+          <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 text-accent flex-shrink-0 mt-0.5")) %>
+          <span class="font-semibold text-neutral-900">More realistic and accurate generations</span>
+        </li>
+        <li class="flex items-start space-x-3">
+          <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 text-accent flex-shrink-0 mt-0.5")) %>
+          <span class="font-semibold text-neutral-900">Design with <b>local plants</b> available in your area.</span>
+        </li>
+        <li class="flex items-start space-x-3">
+          <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 text-accent flex-shrink-0 mt-0.5")) %>
+          <span class="font-semibold text-neutral-900">Generate <b>comprehensive shopping lists</b> for your materials.</span>
+        </li>
+        <li class="flex items-start space-x-3">
+          <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 text-accent flex-shrink-0 mt-0.5")) %>
+          <span class="font-semibold text-neutral-900">Get planting and maintenance guides for your final design.</span>
+        </li>
+      </ul>
+
+      <div class="max-sm:flex-col flex space-y-6 w-full justify-between items-center pt-4 border-t border-neutral-300 mt-4">
+
+        <%= button_to "Top Up Credits", payment_transactions_path, data: {turbo: false}, method: :post, class: "cursor-pointer inline-block bg-secondary text-white font-bold py-3 px-8 rounded-full shadow-xl transition-all duration-300 transform hover:scale-[1.03] hover:bg-cta-bg/90 ring-4 ring-cta-bg/50" %>
 
         <% if current_user.pro_engine_credits.positive? %>
-          <%= link_to "Design your Dreams", new_canva_path, class: "cute-btn secondary-btn" %>
-        <% else %>
-          <%= button_to "Buy Pro Credits", payment_transactions_path, data: {turbo: false}, method: :post, class: "cute-btn secondary-btn" %>
+          <%= link_to "Go to Design Editor", new_canva_path, class: "cursor-pointer inline-block bg-primary text-neutral-100 font-bold py-3 px-8 rounded-full shadow-lg transition-all duration-300 transform hover:scale-[1.03] hover:bg-secondary/90 ring-4 ring-secondary/50" %>
         <% end %>
       </div>
+
     </div>
-  </div>
-
-  <div
-    class="
-      bg-gradient-to-r from-primary to-secondary text-neutral-100 rounded-xl
-      shadow-2xl p-8 border-l-4 border-accent mt-10
-    "
-  >
-    <div class="flex items-center space-x-4 mb-4">
-      <%= render(IconComponent.new(name: "sparkles", classes: "h-8 w-8 text-neutral-100 animate-pulse")) %>
-      <h2 class="text-2xl font-bold">Unlock More with Pro Credits</h2>
-    </div>
-
-    <p class="text-lg text-green-500 mt-1 font-bold my-3">
-      <%= CREDITS_INFO %>
-    </p>
-
-    <p class="mb-6">
-      Go beyond the basics and unlock the full potential of our platform. Pro
-      Credits give you access to our premium features.
-    </p>
-
-    <ul class="space-y-3 mb-8">
-      <li class="flex items-center space-x-3">
-        <%= render(IconComponent.new(name: "check", classes: "h-5 w-5 text-neutral-100")) %>
-        <span>More realistic and accurate generations</span>
-      </li>
-      <li class="flex items-center space-x-3">
-        <%= render(IconComponent.new(name: "check", classes: "h-5 w-5 text-neutral-100")) %>
-        <span>Use local plants available in your area to generate designs.</span>
-      </li>
-      <li class="flex items-center space-x-3">
-        <%= render(IconComponent.new(name: "check", classes: "h-5 w-5 text-neutral-100")) %>
-        <span>Make designs on architectural drawings, sketches, aerial shots and more</span>
-      </li>
-      <li class="flex items-center space-x-3">
-        <%= render(IconComponent.new(name: "check", classes: "h-5 w-5 text-neutral-100")) %>
-        <span>Generate shopping lists for your designs</span>
-      </li>
-      <li class="flex items-center space-x-3">
-        <%= render(IconComponent.new(name: "check", classes: "h-5 w-5 text-neutral-100")) %>
-        <span>Generate planting and maintenance guides</span>
-      </li>
-    </ul>
-
-    <%= button_to "Purchase Pro Credits", payment_transactions_path, data: {turbo: false}, method: :post, class: " cursor-pointer inline-block bg-neutral-100 text-primary font-bold py-3 px-8 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 hover:bg-neutral-200" %>
   </div>
 </div>

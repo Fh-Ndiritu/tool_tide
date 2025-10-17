@@ -1,28 +1,24 @@
-<% content_for(:title, "Free AI Landscaping Design Tool | Generate Realistic Garden Images - Hadaa Ai ") %>
+<% content_for(:title, "AI Landscaping Design Tool | Generate Dream Garden Images - Hadaa Ai") %>
 
-<% content_for(:description, "Unleash your creativity with Hadaa Ai , the FREE online tool that generates stunning, rich, and lifelike landscaping images from your ideas. Design your dream garden, visualize outdoor spaces, and create beautiful, accurate landscape designs instantly.") %>
+<% content_for(:description, "Unleash your creativity with Hadaa Ai. Purchase usage credits to generate stunning, rich, and lifelike landscaping images from your ideas. Design your dream garden, visualize outdoor spaces, and create beautiful, accurate landscape designs instantly.") %>
 
-<% content_for(:keywords, "free landscaping tool, AI landscaping design, generate garden images, realistic landscape design, online landscaping tool, visualize outdoor spaces, garden planner, landscape creator, AI garden generator, lifelike landscaping, accurate landscaping images, custom landscape design, Hadaa Ai ") %>
+<% content_for(:keywords, "AI landscaping design, generate garden images, realistic landscape design, online landscaping tool, visualize outdoor spaces, garden planner, landscape creator, AI garden generator, lifelike landscaping, accurate landscaping images, custom landscape design, Hadaa Ai, pay-as-you-go") %>
 
-<%# Open Graph (Social Media Sharing) %>
+<% content_for(:og_title, "Hadaa Ai | AI Tool for Realistic Landscaping Images") %>
 
-<% content_for(:og_title, "Hadaa Ai  | Free AI Tool for Realistic Landscaping Images") %>
+<% content_for(:og_description, "Transform your landscaping visions into reality with Hadaa Ai! Purchase credits to generate beautiful, accurate, and lifelike garden designs. Perfect for homeowners, designers, and enthusiasts.") %>
 
-<% content_for(:og_description, "Transform your landscaping visions into reality with Hadaa Ai ! Generate beautiful, accurate, and lifelike garden designs for free. Perfect for homeowners, designers, and enthusiasts.") %>
+<% content_for(:og_image_alt, "Screenshot of Hadaa Ai generating a beautiful, realistic garden image") %>
 
-<% content_for(:og_image_alt, "Screenshot of Hadaa Ai  generating a beautiful, realistic garden image") %>
+<% content_for(:twitter_title, "Design Your Dream Garden with AI Landscape Tool") %>
 
-<%# Twitter Card (Social Media Sharing) %>
+<% content_for(:twitter_description, "Get instant, lifelike landscaping images with Hadaa Ai, your AI-powered garden design tool. Start designing with an affordable credit purchase.") %>
 
-<% content_for(:twitter_title, "Design Your Dream Garden FREE | Landscape AI") %>
+<% content_for(:twitter_image_alt, "Vibrant AI-generated landscaping image created by Hadaa Ai") %>
 
-<% content_for(:twitter_description, "Get instant, lifelike landscaping images with Hadaa Ai , your free AI-powered garden design tool. Visualize outdoor spaces with rich, accurate detail.") %>
+<%= content_for(:schema_name, "Hadaa Ai - AI Landscaping Image Generator") %>
 
-<% content_for(:twitter_image_alt, "Vibrant AI-generated landscaping image created by Hadaa Ai ") %>
-
-<%= content_for(:schema_name, "Hadaa Ai  - Free AI Landscaping Image Generator") %>
-
-<%= content_for(:schema_description, "Use Hadaa Ai  to generate stunningly realistic, rich, and accurate landscaping images for free. Design and visualize your perfect outdoor spaces with advanced AI technology.") %>
+<%= content_for(:schema_description, "Use Hadaa Ai to generate stunningly realistic, rich, and accurate landscaping images for your outdoor space. Purchase credits for advanced AI design technology.") %>
 
 <%= content_for(:main_classes, "mx-0 pl-0 pr-0 max-w-[100vw] block") %>
 
@@ -68,12 +64,12 @@
     >
       <b>Upload. Brush. Transform.</b>
       Get photorealistic designs, smart plant recommendations, and a complete
-      shopping list—all for free.
+      shopping list. Purchase credits and start designing instantly.
     </p>
 
     <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
       <%= render ButtonComponent.new(
-          text: "Start Free Trial (No Credit Card)",
+          text: "Start Designing Today",
           href: new_user_registration_path,
           classes: "w-full sm:w-auto flex-shrink-0 bg-accent-secondary py-4 px-10 rounded-full shadow-3xl shadow-secondary/50 transition duration-300 transform hover:scale-105 border-white hover:border-primary hover:bg-white/10 text-black hover:text-white font-semibold py-4 px-10 rounded-full transition duration-300 transform hover:scale-[1.02]"
       ) %>
@@ -163,7 +159,7 @@
       </h3>
       <br>
 
-      <%= link_to "Try now, it's free!", new_user_registration_path, class:"bg-accent hover:bg-accent/80 text-black font-extrabold text-xl py-5 px-12 rounded-full shadow-[0_10px_40px_-10px_rgba(0,172,193,1)] transition duration-300 ease-in-out transform hover:scale-[1.15]" %>
+      <%= link_to "Start Designing Now", new_user_registration_path, class:"bg-accent hover:bg-accent/80 text-black font-extrabold text-xl py-5 px-12 rounded-full shadow-[0_10px_40px_-10px_rgba(0,172,193,1)] transition duration-300 ease-in-out transform hover:scale-[1.15]" %>
     </div>
   </div>
 </section>
@@ -449,9 +445,9 @@
   </div>
   <div class="flex mt-20 w-full justify-center px-4">
     <%= render ButtonComponent.new(
-        text: "Generate Your First Design - It's FREE!",
-      href: new_user_registration_path,
-      classes: "bg-accent hover:bg-accent/80 text-black font-extrabold text-xl py-5 px-12 rounded-full shadow-[0_10px_40px_-10px_rgba(0,172,193,1)] transition duration-300 ease-in-out transform hover:scale-[1.15]"
+        text: "Start Designing Now",
+        href: new_user_registration_path,
+        classes: "bg-accent hover:bg-accent/80 text-black font-extrabold text-xl py-5 px-12 rounded-full shadow-[0_10px_40px_-10px_rgba(0,172,193,1)] transition duration-300 ease-in-out transform hover:scale-[1.15]"
       ) %>
   </div>
 </section>
@@ -481,18 +477,11 @@
           "
           data-action="click->accordion#toggle"
         >
-          Is Hadaa AI Landscaper Free? (No Credit Card?)
+          What is the pricing model for Hadaa AI Landscaper?
         </h3>
         <div>
           <p class="text-base text-neutral-300 leading-relaxed mt-3">
-            Yes! Hadaa offers a
-            <b>Free Trial</b>
-            with
-            <b>no credit card required</b>
-            to start. You get multiple
-            <b>AI designs</b>
-            and essential features to test the power of our landscape design
-            platform.
+            Hadaa operates on a simple, transparent <b>Pay-As-You-Go credit system</b>. To begin, you purchase your first pack: <b>$10 for 200 Usage Credits</b>. You simply buy more credits when you need them.
           </p>
         </div>
       </div>
@@ -632,7 +621,7 @@
         </h3>
         <div>
           <p class="text-base text-neutral-300 leading-relaxed mt-3">
-            For paid plans, yes! Our
+            Yes! This feature is included in your credit purchase. Our
             <b>Seasonal Preview</b>
             feature allows you to visualize your design through all four
             seasons, ensuring you plan for continuous beauty and know what to
@@ -645,142 +634,67 @@
 </section>
 
 <section id="pricing" class="py-16 md:py-32 bg-gray-100 text-gray-900">
-  <div class="container mx-auto px-6 max-w-7xl">
+  <div class="container mx-auto px-6 max-w-3xl">
     <h2 class="text-center text-4xl md:text-6xl font-extrabold mb-4 leading-tight">
-      Pay-As-You-Go. <span class="text-accent">Design on Demand.</span>
+      Simple Pricing. <span class="text-accent">Design on Demand.</span>
     </h2>
 
     <p class="text-center text-xl md:text-2xl max-w-3xl mx-auto mb-16 text-gray-600">
-      Get started with <b>free credits</b>&nbsp;to test all features. Purchase more only when you need them.
+      Our entire platform is built on a transparent <b>Pay-As-You-Go</b> credit system. Get instant access to every feature with your first credit purchase.
     </p>
 
-    <div class="lg:grid lg:grid-cols-3 lg:gap-8">
-      <div
+    <div
         class="
-          p-8 md:p-10 mb-8 lg:mb-0 bg-white rounded-3xl shadow-xl
-          border-4 border-gray-200 text-gray-900 transform transition
-          duration-500 hover:scale-[1.05] hover:border-accent hover:shadow-accent/30
+          p-8 md:p-12 mb-8 lg:mb-0 bg-white rounded-3xl shadow-2xl
+          border-4 border-primary text-gray-900 transform transition
+          duration-500 hover:scale-[1.03] hover:border-accent hover:shadow-accent/50
         "
       >
         <div class="text-center">
           <h3 class="text-3xl font-bold mb-2 text-primary">
-            Starter Credits
+            Starter Credit Pack
           </h3>
 
-          <p class="text-5xl font-extrabold mb-6">Free</p>
+          <p class="text-5xl font-extrabold mb-1 leading-none text-accent">
+            $10
+          </p>
+          <p class="text-xl font-bold mb-6 text-gray-600">
+            For 200 Usage Credits
+          </p>
 
-          <p class="text-lg leading-relaxed mb-8 text-gray-600">
-            Sign up now to receive your <b>initial free credit balance</b>. No card needed!
+          <p class="text-lg leading-relaxed mb-8 text-gray-800">
+            This one-time purchase is your key to instant, high-fidelity AI landscape design. <b>No subscription required.</b>
           </p>
 
           <%= render ButtonComponent.new(
-            text: "Get Your Free Credits!",
+            text: "Unlock All Features for $10",
             href: new_user_registration_path,
-            classes: "w-full inline-block bg-accent hover:bg-accent/80 text-white font-extrabold py-4 px-8 rounded-full shadow-lg shadow-accent/50 transition duration-300 transform hover:scale-[1.05]"
+            classes: "w-auto inline-block bg-accent hover:bg-accent/80 text-black font-extrabold py-4 px-8 rounded-full shadow-lg shadow-accent/50 transition duration-300 transform hover:scale-[1.05]"
             ) %>
-          <ul class="text-left mt-8 space-y-3 text-sm text-gray-800">
-            <li class="flex items-center">
-              <%= render(IconComponent.new(name: "check", classes: "h-5 w-5 mr-3 text-accent")) %>
-              <b>Trial Credits Included</b>
-              &nbsp;(e.g., 5 Generations)
+          <ul class="text-left mt-10 space-y-3 text-base text-gray-800">
+            <li class="flex items-start">
+              <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-3 mt-0.5 text-primary flex-shrink-0")) %>
+              <span><b>200 Credits</b> to start (e.g., approx. 40-50 high-res generations)</span>
             </li>
-            <li class="flex items-center">
-              <%= render(IconComponent.new(name: "check", classes: "h-5 w-5 mr-3 text-accent")) %>
-              <b>Unlimited</b>
-              &nbsp;Downloads
+            <li class="flex items-start">
+              <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-3 mt-0.5 text-primary flex-shrink-0")) %>
+              Full access to the&nbsp;<b>Mask & Text Editor</b>
             </li>
-            <li class="flex items-center">
-              <%= render(IconComponent.new(name: "check", classes: "h-5 w-5 mr-3 text-accent")) %>
-              Access to the
-              <b>&nbsp;Mask & Text Editor</b>
+            <li class="flex items-start">
+              <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-3 mt-0.5 text-primary flex-shrink-0")) %>
+              <b>Unlimited High-Resolution Downloads</b>
             </li>
-            <li class="flex items-center">
-              <%= render(IconComponent.new(name: "check", classes: "h-5 w-5 mr-3 text-accent")) %>
-              <b>Location-Aware Plant</b>
-              &nbsp;testing
+            <li class="flex items-start">
+              <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-3 mt-0.5 text-primary flex-shrink-0")) %>
+              Location-Aware Plant Recommendations & Shopping Lists
             </li>
-            <li class="flex items-center text-gray-500">
-              <%= render(IconComponent.new(name: "x-circle", classes: "h-5 w-5 mr-3 text-gray-500")) %>
-              Bulk Credit Discounts
+            <li class="flex items-start">
+              <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-3 mt-0.5 text-primary flex-shrink-0")) %>
+              <b>Pay-As-You-Go:</b>&nbsp;Purchase more credits at any time.
             </li>
           </ul>
         </div>
       </div>
-      <div
-        class="
-          lg:col-span-2 p-8 md:p-12 mb-8 lg:mb-0 bg-primary/10 rounded-3xl
-          shadow-xl border-4 border-primary text-gray-900 transform transition
-          duration-500 hover:scale-[1.02] hover:shadow-primary/30 relative
-        "
-      >
-        <div
-          class="
-            absolute top-0 right-0 -mt-4 -mr-4 bg-primary text-white text-sm
-            font-bold px-4 py-1 rounded-full shadow-lg shadow-primary/50
-          "
-        >
-          Best Value
-        </div>
-        <div class="lg:grid lg:grid-cols-12 lg:gap-12 items-start">
-          <div class="lg:col-span-5 flex flex-col justify-between h-full">
-            <div class="mb-8 lg:mb-12 text-center lg:text-left">
-              <h3 class="text-3xl font-bold mb-1 text-primary">
-                Pro Credit Bundles
-              </h3>
-
-              <p class="text-5xl font-extrabold mb-4 leading-none">
-                Buy Packs
-              </p>
-
-              <p class="text-lg leading-relaxed text-gray-600">
-                Purchase credits in discounted bundles to continue your
-                high-fidelity design work.
-              </p>
-            </div>
-            <div class="mt-auto">
-              <%= render ButtonComponent.new(
-        text: "View Credit Bundles",
-        href: new_user_registration_path,
-        classes: "w-full inline-block bg-secondary hover:bg-secondary/80 text-white font-extrabold py-4 px-8 rounded-full shadow-lg shadow-secondary/50 transition duration-300 transform hover:scale-[1.05]"
-        ) %>
-            </div>
-          </div>
-          <div
-            class="
-              lg:col-span-7 mt-8 lg:mt-0 lg:pl-6 border-t lg:border-t-0
-              lg:border-l border-gray-300
-            "
-          >
-            <ul class="text-left space-y-4 text-base text-gray-800">
-              <li class="flex items-start text-primary font-bold">
-                <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-3 mt-0.5 text-primary flex-shrink-0")) %>
-                <span><b>Access to Premium AI Models</b></span>
-              </li>
-              <li class="flex items-start text-gray-800">
-                <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-3 mt-0.5 text-primary flex-shrink-0")) %>
-                <span><b>Seasonal Previews</b> (4 Seasons)</span>
-              </li>
-              <li class="flex items-start text-gray-800">
-                <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-3 mt-0.5 text-primary flex-shrink-0")) %>
-                <span><b>Unlimited High-Resolution Downloads</b> (Essential for printing)</span>
-              </li>
-              <li class="flex items-start text-gray-800">
-                <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-3 mt-0.5 text-primary flex-shrink-0")) %>
-                <span>Detailed <b>Shopping Lists</b> & Guides</span>
-              </li>
-              <li class="flex items-start text-gray-800">
-                <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-3 mt-0.5 text-primary flex-shrink-0")) %>
-                <span>Discounted Credit Pricing in Bundles</span>
-              </li>
-              <li class="flex items-start text-gray-800">
-                <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-3 mt-0.5 text-primary flex-shrink-0")) %>
-                <span>Commercial Usage Rights (where applicable)</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
 
     <div class="text-center mt-24 text-gray-900 py-16 px-6 border-t border-gray-300">
       <h3 class="text-3xl md:text-4xl font-extrabold mb-6">
@@ -793,15 +707,13 @@
           text-gray-600
         "
       >
-        Join thousands of users who are reimagining their gardens with Hadaa Ai
-        Landscaper. Experience the future of landscape design—precise,
-        personalized, and effortlessly beautiful.
+        Your design journey starts with one simple purchase. Join thousands of users who are reimagining their gardens with Hadaa Ai Landscaper.
       </p>
 
       <%= render ButtonComponent.new(
-        text: "Bring your ideas to life",
+        text: "Get Credits and Start Designing",
         href: new_user_registration_path,
-        classes: "mt-4 inline-block bg-accent hover:bg-accent/80 text-white font-extrabold py-4 px-10 rounded-full shadow-lg shadow-accent/50 transition duration-300 ease-in-out transform hover:scale-105"
+        classes: "mt-4 inline-block bg-accent hover:bg-accent/80 text-black font-extrabold py-4 px-10 rounded-full shadow-lg shadow-accent/50 transition duration-300 ease-in-out transform hover:scale-105"
         ) %>
     </div>
   </div>
