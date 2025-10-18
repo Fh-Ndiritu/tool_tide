@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_17_125750) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_17_173451) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -112,6 +112,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_17_125750) do
     t.index ["location_type"], name: "index_locations_on_location_type"
   end
 
+  create_table "mask_request_plants", force: :cascade do |t|
+    t.integer "mask_request_id", null: false
+    t.integer "plant_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "quantity"
+    t.index ["mask_request_id"], name: "index_mask_request_plants_on_mask_request_id"
+    t.index ["plant_id"], name: "index_mask_request_plants_on_plant_id"
+  end
+
   create_table "mask_requests", force: :cascade do |t|
     t.integer "device_width"
     t.string "error_msg"
@@ -124,6 +134,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_17_125750) do
     t.string "user_error"
     t.integer "visibility", default: 0
     t.boolean "trial_generation", default: false
+    t.text "features"
+    t.text "feature_prompt"
     t.index ["canva_id"], name: "index_mask_requests_on_canva_id"
   end
 
@@ -158,6 +170,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_17_125750) do
     t.string "currency", default: "USD"
     t.boolean "credits_issued", default: false, null: false
     t.index ["user_id"], name: "index_payment_transactions_on_user_id"
+  end
+
+  create_table "plants", force: :cascade do |t|
+    t.string "english_name"
+    t.string "description"
+    t.string "full_size"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "size"
   end
 
   create_table "suggested_plants", force: :cascade do |t|
@@ -237,6 +258,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_17_125750) do
   add_foreign_key "generation_taggings", "tags"
   add_foreign_key "landscape_requests", "landscapes"
   add_foreign_key "landscapes", "users"
+  add_foreign_key "mask_request_plants", "mask_requests"
+  add_foreign_key "mask_request_plants", "plants"
   add_foreign_key "mask_requests", "canvas"
   add_foreign_key "messages", "chats"
   add_foreign_key "payment_transactions", "users"

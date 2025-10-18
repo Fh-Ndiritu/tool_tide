@@ -5,6 +5,9 @@ class MaskRequest < ApplicationRecord
   has_many :generation_taggings, as: :generation
   has_many :tags, through: :generation_taggings
 
+  has_many :mask_request_plants, dependent: :destroy
+  has_many :plants, through: :mask_request_plants
+
   has_one_attached :mask
 
   has_one_attached :main_view
@@ -22,21 +25,22 @@ class MaskRequest < ApplicationRecord
   after_update_commit :broadcast_progress, if: :saved_change_to_progress?
   default_scope -> { order(created_at: :desc) }
 
-  enum :progress, {
-    uploading: 0,
-    validating: 1,
-    validated: 2,
-    preparing: 3,
-    main_view: 4,
-    rotating: 5,
-    drone: 6,
-    processed: 7,
-    complete: 8,
-    failed: 9,
-    retying: 10,
-    mask_invalid: 11,
-    overlaying: 12
-  }
+enum :progress, {
+  uploading: 0,
+  validating: 10,
+  validated: 20,
+  preparing: 30,
+  main_view: 40,
+  plants: 41,
+  rotating: 50,
+  drone: 60,
+  processed: 70,
+  complete: 8,
+  failed: 90,
+  retying: 100,
+  mask_invalid: 110,
+  overlaying: 120
+}
 
   enum :visibility, {
     personal: 0,
