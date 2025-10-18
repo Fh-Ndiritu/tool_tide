@@ -9,10 +9,8 @@ class GardenFeatureSchema < RubyLLM::Schema
       end
     end
 
-    array :other_features, description: "A markdown list of a description other features to include. Keep it concise" do
-      string :feature_description
-    end
-end
+    string :other_features, description: "A markdown unordered list of a description other design features to include."
+  end
 end
 
 class DesignGenerator

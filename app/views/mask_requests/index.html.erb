@@ -19,7 +19,7 @@
 </div>
   <div id="mask_requests" class="min-w-full space-y-4 md:space-y-6">
     <% if @mask_requests.any? %>
-      <%= render partial: 'mask_requests/mask_request', collection: @mask_requests %>
+      <%= render partial: 'mask_requests/mask_request', collection: @mask_requests, locals: {compact: true} %>
     <% else %>
       <div class="text-center my-10 p-8 bg-gray-50 rounded-lg border border-dashed border-gray-300">
         <p class="text-lg text-gray-500">No design results have been created yet. Start a new project!</p>

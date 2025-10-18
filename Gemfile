@@ -126,3 +126,5 @@ gem "sentry-rails"
 gem "sentry-ruby"
 
 gem "ancestry", "~> 4.3"
+
+gem "redcarpet", "~> 3.6"

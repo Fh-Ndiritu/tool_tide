@@ -1,4 +1,4 @@
-<div class="container mx-auto py-4">
+<div class="container mx-auto py-4 <%= 'compact' if defined?(compact) %>">
   <div
     class="
       bg-white rounded-2xl shadow-2xl border border-gray-100 p-6 sm:p-8
@@ -17,12 +17,13 @@
 
     <div
       class="flex flex-wrap max-sm:justify-center gap-3"
-      data-controller="turbo-method"
     >
-      <%= link_to "Brush Edit", new_canva_mask_request_path(mask_request.canva), class: "!max-w-[45%] cute-btn btn-secondary " %>
-      <%= link_to "New Design", new_canva_path, class: "!max-w-[45%] cute-btn btn-primary " %>
-      <%= link_to "Change Style", edit_mask_request_path(mask_request, manual: true), class: "!max-w-[45%] cute-btn !bg-accent-secondary !text-gray-800 " %>
-      <%= link_to "Text Edit", new_text_request_path(signed_blob_id:  mask_request.main_view.blob.signed_id), class: "!max-w-[45%] cute-btn btn-accent " %>
+      <%# MOBILE OPTIMIZATION: Use w-[48%] to allow two buttons per row on mobile (48% + 48% + gap) %>
+      <%= link_to "Brush Edit", new_canva_mask_request_path(mask_request.canva), class: "max-sm:!max-w-[45%] cute-btn btn-secondary " %>
+      <%= link_to "New Design", new_canva_path, class: "max-sm:!max-w-[45%] cute-btn btn-primary "  unless defined?(compact) %>
+      <%= link_to "Change Style", edit_mask_request_path(mask_request, manual: true), class: "max-sm:!max-w-[45%] cute-btn !bg-accent-secondary !text-gray-800 " %>
+      <%= link_to "Text Edit", new_text_request_path(signed_blob_id:  mask_request.main_view.blob.signed_id), class: "max-sm:!max-w-[45%] cute-btn btn-accent " %>
+      <%= link_to "Show", mask_request_path(mask_request), class: "max-sm:!max-w-[45%] cute-btn !bg-cta-bg " if defined?(compact)%>
     </div>
 
     <hr class="border-t border-neutral-200">
@@ -39,16 +40,20 @@
     <div
       class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
       data-controller="gallery"
-      <%# FIX: Removed `raw()` and used `j()` to correctly escape the JSON for the HTML attribute context %>
       data-gallery-images-value="<%= gallery_data.to_json %>"
-      data-gallery-modal-target="#gallery-modal" <%# Target ID for JS to find %>
+      data-gallery-modal-target="#gallery-modal"
     >
       <% views.each_with_index do |view, index| %>
         <% full_url = rails_blob_path(view) %>
+
+        <%# MOBILE OPTIMIZATION: Hide all but the first image (index 0) on small screens %>
         <div
           class="
             group relative overflow-hidden rounded-lg shadow-xl cursor-pointer
             transition-all duration-300 transform hover:-translate-y-1 hover:shadow-2xl
+            <% if index > 0 %>
+              hidden sm:block
+            <% end %>
           "
         >
           <%# Clickable element for the gallery. We pass the index using params. %>
@@ -57,7 +62,8 @@
             data-action="gallery#open"
             class="block"
           >
-            <%= image_tag(view.variant(resize_to_limit: [500, 500]), loading: :lazy, class: "w-full max-h-[400px] object-cover transition-transform duration-500 group-hover:scale-[1.02]") %>
+            <%# MOBILE OPTIMIZATION: Limit image height more strictly on mobile (default is h-auto on grid-cols-1) %>
+            <%= image_tag(view.variant(resize_to_limit: [500, 500]), loading: :lazy, class: "w-full max-h-[250px] sm:max-h-[400px] object-cover transition-transform duration-500 group-hover:scale-[1.02]") %>
             <div
               class="
                 absolute inset-0 bg-gradient-to-t from-black/80 via-transparent
@@ -71,8 +77,9 @@
           </div>
 
           <div class="absolute bottom-3 right-4 z-20 flex space-x-2">
+            <%# MOBILE OPTIMIZATION: Added max-h-[250px] to image tag above %>
             <%= link_to "#", class: "icon-btn bg-secondary/40 hover:bg-secondary/70 text-white" do %>
-              <%= render(IconComponent.new(classes: "h-5 w-5", name: "eye")) %>
+              <%= render(IconComponent.new(classes: "h-5 w-5", name: "expand")) %>
             <% end %>
 
             <%= link_to rails_blob_path(view, disposition: :attachment), class: "icon-btn bg-accent-secondary/40 hover:bg-accent-secondary/70 text-white" do %>
@@ -86,6 +93,70 @@
       <% end %>
       <%= render 'mask_requests/gallery_modal' %>
     </div>
+
+
+
+
+
+<% if mask_request.plants.present? && !defined?(compact) %>
+  <div class="planting_and_design_guide space-y-8">
+
+    <section>
+      <h3 class="text-3xl font-bold text-gray-800 border-b-2 border-accent pb-2 mb-6">
+        🏡 Design & Feature Breakdown
+      </h3>
+
+      <div class="prose max-w-none text-gray-700">
+        <%= raw markdown(mask_request.features) %>
+      </div>
+    </section>
+
+    <hr class="border-t border-neutral-200">
+        <section>
+      <h3 class="text-3xl font-bold text-gray-800 border-b-2 border-accent pb-2 mb-6">
+        🌱 Planting Guide: Suggested Varieties
+      </h3>
+
+
+      <div class="space-y-6">
+        <% mask_request.mask_request_plants.each do |mp| %>
+          <div class="bg-gray-50 p-5 rounded-xl shadow-md border border-gray-100">
+
+            <div class="flex items-start space-x-3 mb-2">
+              <span class="text-xl font-extrabold text-accent">
+                <%= mp.quantity %>x
+              </span>
+              <h4 class="text-xl font-semibold text-secondary leading-tight">
+                <%= mp.plant.english_name %>
+              </h4>
+            </div>
+
+            <dl class="space-y-1 text-gray-700 ml-6">
+              <div class="flex">
+                <dt class="w-1/4 font-medium text-sm text-gray-500">
+                  Description:
+                </dt>
+                <dd class="w-3/4 text-sm">
+                  <%= mp.plant.description %>
+                </dd>
+              </div>
+
+              <div class="flex">
+                <dt class="w-1/4 font-medium text-sm text-gray-500">
+                  Max Size:
+                </dt>
+                <dd class="w-3/4 text-sm font-semibold text-secondary">
+                  Will be **<%= mp.plant.size %> ft** (width x height)
+                </dd>
+              </div>
+            </dl>
+          </div>
+        <% end %>
+      </div>
+    </section>
+
+  </div>
+<% end %>
+
   </div>
 </div>
-
