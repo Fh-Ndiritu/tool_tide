@@ -13,6 +13,7 @@
 if Rails.env.development?
   Tag.destroy_all
   EVENTS.each do |name|
+    next if Tag.exists?(tag_class: :event, title: name)
     tag = Tag.create!(tag_class: :event, title: name)
     id = GenerationTagging.where(generation_type: 'TextRequest').pluck(:generation_id)
     TextRequest.complete.where.not(id:).joins(:user).where(user: { admin: true }).limit(50).sample(2).each do |text_request|
