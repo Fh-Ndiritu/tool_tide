@@ -84,9 +84,21 @@
 
 <section
   id="explore-fomo"
-  class="py-20 bg-neutral-900 text-white overflow-hidden"
+  class="py-10 bg-neutral-900 text-white overflow-hidden"
 >
   <div class="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+    <div class="flex space-x-4 mb-6 py-6 overflow-x-auto snap-x snap-mandatory px-4 sm:justify-center sm:space-x-8 sm:overflow-visible sm:snap-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div class="flex-shrink-0 snap-center">
+        <%= link_to "Christmas Ideas", event_tag_path(slug: 'christmas'), class: "transition-all duration-200 text-lg font-semibold px-6 py-2 rounded-full whitespace-nowrap bg-primary/20 text-primary border border-primary shadow-lg shadow-primary/20" %>
+      </div>
+      <div class="flex-shrink-0 snap-center">
+        <%= link_to "Halloween Ideas", event_tag_path(slug: 'halloween'), class: "transition-all duration-200 text-lg font-medium px-6 py-2 rounded-full whitespace-nowrap text-neutral-300 hover:text-text-light hover:bg-neutral-800" %>
+      </div>
+      <div class="flex-shrink-0 snap-center">
+        <%= link_to "Winter Ideas", season_tag_path(slug: 'winter'), class: "transition-all duration-200 text-lg font-medium px-6 py-2 rounded-full whitespace-nowrap text-neutral-300 hover:text-text-light hover:bg-neutral-800" %>
+      </div>
+    </div>
+
     <div class="text-center mb-16">
       <h2
         class="
@@ -107,6 +119,9 @@
 
     <div class="w-full flex justify-center">
       <div class="w-full max-w-6xl columns-2 sm:columns-3 md:columns-4 gap-4 md:gap-6">
+
+        <%= render partial: 'text_request', collection: @text_requests %>
+
         <% @mask_requests.each_with_index do |request, index| %>
           <% if image = request.face_image %>
             <div class="mb-4 md:mb-6 break-inside-avoid">
@@ -125,7 +140,7 @@
                 <h4
                   class="
                     flex w-fit items-center absolute top-3 right-3
-                    bg-secondary text-white text-sm font-bold px-3 py-1
+                    bg-<%= ['cta-bg', 'accent', 'secondary'].sample %> text-white text-sm font-bold px-3 py-1
                     rounded-full opacity-90 transition duration-300
                     group-hover:opacity-100 ring-1 ring-black/30
                   "
@@ -150,6 +165,8 @@
             </div>
           <% end %>
         <% end %>
+
+
       </div>
     </div>
 
@@ -633,7 +650,7 @@
   </div>
 </section>
 
-<section id="pricing" class="py-16 md:py-32 bg-gray-100 text-gray-900">
+<section id="pricing" class="py-16 md:py-32 bg-gray-200 text-gray-900">
   <div class="container mx-auto px-6 max-w-3xl">
     <h2 class="text-center text-4xl md:text-6xl font-extrabold mb-4 leading-tight">
       Simple Pricing. <span class="text-accent">Design on Demand.</span>
@@ -645,7 +662,7 @@
 
     <div
         class="
-          p-8 md:p-12 mb-8 lg:mb-0 bg-white rounded-3xl shadow-2xl
+          p-8 md:p-12 mb-8 lg:mb-0 bg-gray-100 rounded-3xl shadow-2xl
           border-4 border-primary text-gray-900 transform transition
           duration-500 hover:scale-[1.03] hover:border-accent hover:shadow-accent/50
         "

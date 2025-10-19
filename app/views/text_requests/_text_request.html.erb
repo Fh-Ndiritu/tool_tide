@@ -1,0 +1,30 @@
+<% @text_requests.each do |text_request| %>
+        <div
+          class="
+            group relative bg-green-100  rounded-xl shadow-md hover:shadow-xl
+            transition-all duration-300 ease-in-out transform
+            hover:-translate-y-1 overflow-hidden border-2 border-primary/20
+            cursor-pointer
+          "
+        >
+          <%= link_to text_request_path(text_request), class: "block" do %>
+            <%= image_tag text_request.result_image.variant(resize_to_limit: [280, 280]),
+                alt: text_request.prompt.truncate(100),
+                class: 'object-cover w-full aspect-square  group-hover:opacity-90 transition-opacity' %>
+
+            <div class="p-4 ">
+              <p class="text-sm font-normal text-secondary leading-snug line-clamp-1">
+                <%= text_request.prompt.truncate(45, separator: ' ', omission: '...') %>
+              </p>
+              <span
+                class="
+                  text-sm text-primary font-semibold mt-1 block
+                  group-hover:text-text-accent transition-colors
+                "
+              >
+                Tap to view full idea
+              </span>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
