@@ -1,5 +1,6 @@
 class TextRequestsController < ApplicationController
   before_action :set_text_request, only: %i[ show update ]
+  before_action :authorize_user, only: %i[ update destroy ]
 
   # GET /text_requests or /text_requests.json
   def index
@@ -65,6 +66,13 @@ class TextRequestsController < ApplicationController
   end
 
   private
+
+    def authorize_user
+      return if current_user == @text_request.user
+
+      redirect_to new_canva_path, notice: "You don't have access to modify" and return
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_text_request
       @text_request = TextRequest.find(params.expect(:id))

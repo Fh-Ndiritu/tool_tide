@@ -84,7 +84,7 @@
       <% @text_requests.each do |text_request| %>
         <div
           class="
-            group relative bg-white rounded-xl shadow-md hover:shadow-xl
+            group relative bg-green-100  rounded-xl shadow-md hover:shadow-xl
             transition-all duration-300 ease-in-out transform
             hover:-translate-y-1 overflow-hidden border-2 border-primary/20
             cursor-pointer
@@ -95,14 +95,14 @@
                 alt: text_request.prompt.truncate(100),
                 class: 'object-cover w-full aspect-square  group-hover:opacity-90 transition-opacity' %>
 
-            <div class="p-4 bg-white">
-              <p class="text-base font-medium text-text-dark leading-snug">
+            <div class="p-4 ">
+              <p class="text-sm font-normal text-secondary leading-snug line-clamp-1">
                 <%= text_request.prompt.truncate(45, separator: ' ', omission: '...') %>
               </p>
               <span
                 class="
-                  text-sm text-secondary font-semibold mt-1 block
-                  group-hover:text-text-secondary transition-colors
+                  text-sm text-primary font-semibold mt-1 block
+                  group-hover:text-text-accent transition-colors
                 "
               >
                 Tap to view full idea
@@ -115,7 +115,7 @@
       <% @mask_requests.each do |mask_request| %>
         <div
           class="
-            group relative bg-white rounded-xl shadow-md hover:shadow-xl
+            group relative bg-blue-100 rounded-xl shadow-md hover:shadow-xl
             transition-all duration-300 ease-in-out transform
             hover:-translate-y-1 overflow-hidden cursor-pointer
           "
@@ -126,12 +126,10 @@
                 class: "object-cover w-full aspect-square transition-opacity duration-300 group-hover:opacity-90" %>
             <div
               class="
-                absolute inset-0 bg-gradient-to-t from-neutral-900/50
-                to-transparent opacity-0 group-hover:opacity-100
-                transition-opacity flex items-end p-4
+                absolute inset-0  flex items-end p-4
               "
             >
-              <span class="text-text-light text-sm font-semibold">View Design</span>
+              <span class="text-accent text-sm font-semibold hover:text-text-secondary">View Design</span>
             </div>
           <% end %>
         </div>

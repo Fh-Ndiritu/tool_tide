@@ -6,7 +6,7 @@ class Admin::MaskRequestsController < ApplicationController
     elsif params[:id]
       MaskRequest.complete.joins(:canva).where(canva: { user_id: params[:id] })
     elsif params[:admin]
-      MaskRequest.complete.joins(:canva).where(canva: { admin: params[:admin] })
+      MaskRequest.complete.joins(canva: :user).where(user: { admin: true })
     elsif params[:visibility]
       MaskRequest.complete.where(visibility: params[:visibility])
     else

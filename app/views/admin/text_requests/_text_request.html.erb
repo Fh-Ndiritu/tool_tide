@@ -19,8 +19,8 @@
   ">
 
     <% if text_request.result_image.attached? %>
-      <div class="w-full h-40 overflow-hidden rounded-lg border border-gray-300 shadow-md mb-3">
-        <%= image_tag(text_request.result_image.variant(resize_to_fill: [400, 160]),
+      <div class="w-full h-50 overflow-hidden rounded-lg border border-gray-300 shadow-md mb-3">
+        <%= image_tag(text_request.result_image.variant(resize_to_fill: [400, 200]),
             loading: :lazy,
             class: "w-full h-full object-cover",
             alt: "Result image for request #{text_request.id}") %>
