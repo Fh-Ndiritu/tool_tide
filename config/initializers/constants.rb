@@ -124,19 +124,13 @@ EVENTS = [
   "Christmas",
   "New Years Celebration",
   "Winter Wonderland",
-  "Valentine's Day",
-  "St. Patrick's Day",
   "Easter",
   "Mother's Day",
   "Earth Day",
   "Diwali (Festival of Lights)",
   "Lunar New Year (Spring Festival)",
-  "Día de Muertos (Day of the Dead)",
-  "Carnival (Rio/Venice/Mardi Gras)",
   "Holi (Festival of Colors)",
   "Harbin Ice and Snow Festival",
-  "AgitÁgueda (Umbrella Sky Project)",
-  "Cherry Blossom Festivals (Hanami)",
   "Lantern Festival (Yuan Xiao Jie)"
 ]
 
