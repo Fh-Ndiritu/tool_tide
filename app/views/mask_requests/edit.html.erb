@@ -3,51 +3,46 @@
 <%= turbo_stream_from @mask_request.canva %>
 
 <div
-  class="flex w-full flex-col items-center min-h-screen bg-neutral-300 p-2 "
+  class="flex w-full flex-col items-center min-h-screen bg-neutral-300 p-2"
   id="styles"
 >
-<div class="w-full sm:max-w-lg lg:max-w-5xl">
-  <%= render 'shared/balances' %>
+  <div class="w-full sm:max-w-lg lg:max-w-5xl">
+    <%= render 'shared/balances' %>
 
-  <div
-    class="
-      bg-neutral-100 p-3 sm:p-8 md:p-12 rounded-2xl
-      shadow-2xl my-8
-    "
-  >
-    <!-- Title Section -->
-    <div class="mb-8 flex flex-col w-full items-center text-center">
-      <h3 class="text-3xl font-extrabold text-text-dark mb-2">
-        Select your style
-      </h3>
-      <p class="text-lg text-neutral-700">You can change this later.</p>
-    </div>
+    <div class="bg-neutral-100 p-3 sm:p-8 md:p-12 rounded-2xl shadow-2xl my-8">
+      <!-- Title Section -->
+      <div class="mb-8 flex flex-col w-full items-center text-center">
+        <h3 class="text-3xl font-extrabold text-text-dark mb-2">
+          Select your style
+        </h3>
+        <p class="text-lg text-neutral-700">You can change this later.</p>
+      </div>
 
-    <!-- Presets Grid -->
-    <div class="mb-8">
-      <!-- Grid container for all presets -->
-      <div
-        class="
-          grid grid-cols-2 gap-3 md:gap-12 sm:grid-cols-2 lg:grid-cols-3
-          2xl:grid-cols-3
-        "
-      >
-        <% LANDSCAPE_PRESETS.each do |preset, description| %>
-          <!-- Link for each preset, styled as a card -->
-          <%= button_to mask_request_path(@mask_request, mask_request: {preset: preset}), method: :patch, data: { turbo_method: :patch, action: "loader#showLoader" },
+      <!-- Presets Grid -->
+      <div class="mb-8">
+        <!-- Grid container for all presets -->
+        <div
+          class="
+            grid grid-cols-2 gap-3 md:gap-12 sm:grid-cols-2 lg:grid-cols-3
+            2xl:grid-cols-3
+          "
+        >
+          <% LANDSCAPE_PRESETS.each do |preset, description| %>
+            <!-- Link for each preset, styled as a card -->
+            <%= button_to mask_request_path(@mask_request, mask_request: {preset: preset}), method: :patch, data: { turbo_method: :patch, action: "loader#showLoader" },
           class: "block max-sm:mb-4 p-2 md:p-4 bg-neutral-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer" do %>
-            <div class="flex flex-col items-center text-center">
-              <%= image_tag("presets/#{preset}.png", class: "w-full h-auto object-contain rounded-lg mb-4") %>
-              <div class="font-semibold text-lg text-text-dark mb-1">
-                <%= preset.humanize %>
-              </div>
+              <div class="flex flex-col items-center text-center">
+                <%= image_tag("presets/#{preset}.png", class: "w-full h-auto object-contain rounded-lg mb-4") %>
+                <div class="font-semibold text-lg text-text-dark mb-1">
+                  <%= preset.humanize %>
+                </div>
 
-              <div class="text-sm text-neutral-500"><%= description %></div>
-            </div>
+                <div class="text-sm text-neutral-500"><%= description %></div>
+              </div>
+            <% end %>
           <% end %>
-        <% end %>
+        </div>
       </div>
     </div>
   </div>
-</div>
 </div>

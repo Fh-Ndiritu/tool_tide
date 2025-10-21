@@ -95,11 +95,7 @@
             <%= image_tag mask_request.main_view.variant(resize_to_limit: [280, 280]),
                 alt: "AI Landscaping design for #{@tag.title }",
                 class: "object-cover w-full aspect-square transition-opacity duration-300 group-hover:opacity-90" %>
-            <div
-              class="
-                absolute inset-0  flex items-end p-4
-              "
-            >
+            <div class="absolute inset-0 flex items-end p-4">
               <span class="text-accent text-sm font-semibold hover:text-text-secondary">View Design</span>
             </div>
           <% end %>

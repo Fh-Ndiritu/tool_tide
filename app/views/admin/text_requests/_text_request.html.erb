@@ -1,4 +1,5 @@
 <%# admin/text_requests/_text_request.html.erb %>
+
 <% text_request ||= text_request %>
 
 <% @main_color =  if text_request.user.admin? && text_request.personal?
@@ -9,17 +10,20 @@
   'bg-green-100 '
  end %>
 
-<div
-  class="group relative"
-  id="<%= dom_id(text_request, :summary) %>"
->
-  <div class="
-    <%= @main_color %> rounded-xl shadow-lg border border-gray-200 p-4
-    h-full flex flex-col justify-between transition-shadow duration-300 group-hover:shadow-2xl
-  ">
-
+<div class="group relative" id="<%= dom_id(text_request, :summary) %>">
+  <div
+    class="
+      <%= @main_color %> rounded-xl shadow-lg border border-gray-200 p-4
+      h-full flex flex-col justify-between transition-shadow duration-300 group-hover:shadow-2xl
+    "
+  >
     <% if text_request.result_image.attached? %>
-      <div class="w-full h-50 overflow-hidden rounded-lg border border-gray-300 shadow-md mb-3">
+      <div
+        class="
+          w-full h-50 overflow-hidden rounded-lg border border-gray-300
+          shadow-md mb-3
+        "
+      >
         <%= image_tag(text_request.result_image.variant(resize_to_fill: [400, 200]),
             loading: :lazy,
             class: "w-full h-full object-cover",
@@ -32,12 +36,15 @@
         Request #<%= text_request.id %>
       </h3>
 
-      <p class="text-sm text-secondary mt-1 line-clamp-2" title="<%= text_request.prompt %>">
-          <%= text_request.prompt.truncate(80) %>
+      <p
+        class="text-sm text-secondary mt-1 line-clamp-2"
+        title="<%= text_request.prompt %>"
+      >
+        <%= text_request.prompt.truncate(80) %>
       </p>
 
       <p class="text-sm text-neutral-600 mt-2">
-          Tags: <%= text_request.tags.map(&:title).join(', ') if text_request.tags.any? %>
+        Tags: <%= text_request.tags.map(&:title).join(', ') if text_request.tags.any? %>
       </p>
     </div>
 
@@ -46,6 +53,5 @@
         data: { turbo_frame: "modal" },
         class: "w-full text-center cute-btn primary-btn" %>
     </div>
-
   </div>
 </div>

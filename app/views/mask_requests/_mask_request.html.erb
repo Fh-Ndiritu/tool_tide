@@ -8,33 +8,32 @@
     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
       <div class="flex flex-col">
         <h3 class="text-xl md:text-4xl font-extrabold leading-tight text-secondary">
-          Results for <span class="text-accent"><%= mask_request.preset.humanize %></span> Style Design
+          Results for
+          <span class="text-accent"><%= mask_request.preset.humanize %></span>
+          Style Design
         </h3>
-        <h4 class="text-base font-medium text-gray-500"><%= mask_request.user_error %></h4>
+        <h4 class="text-base font-medium text-gray-500">
+          <%= mask_request.user_error %>
+        </h4>
       </div>
+    </div>
 
-      </div>
-
-    <div
-      class="flex flex-wrap max-sm:justify-center gap-3"
-    >
+    <div class="flex flex-wrap max-sm:justify-center gap-3">
       <%= link_to "Brush Edit", new_canva_mask_request_path(mask_request.canva), class: "!max-w-[45%] cute-btn btn-secondary " %>
       <%= link_to "New Design", new_canva_path, class: "!max-w-[45%] cute-btn btn-primary "  unless defined?(compact) %>
       <%= link_to "Change Style", edit_mask_request_path(mask_request, manual: true), class: "!max-w-[45%] cute-btn !bg-accent-secondary !text-gray-800 " %>
       <%= link_to "Text Edit", new_text_request_path(signed_blob_id:  mask_request.main_view.blob.signed_id), class: "!max-w-[45%] cute-btn btn-accent " %>
-      <%= link_to "Show", mask_request_path(mask_request), class: "!max-w-[45%] cute-btn !bg-cta-bg " if defined?(compact)%>
+      <%= link_to "Show", mask_request_path(mask_request), class: "!max-w-[45%] cute-btn !bg-cta-bg " if defined?(compact) %>
     </div>
 
     <hr class="border-t border-neutral-200">
 
-    <%
-      # Collect all attached views and map their necessary data for the Stimulus controller
+    <% # Collect all attached views and map their necessary data for the Stimulus controller
       views = [mask_request.main_view, mask_request.rotated_view, mask_request.drone_view].compact.select(&:attached?)
 
       gallery_data = views.map.with_index do |view, index|
         { url: rails_blob_path(view), title: "#{index+1}. #{view.name.humanize}", index: index }
-      end
-    %>
+      end %>
 
     <div
       class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
@@ -45,14 +44,12 @@
       <% views.each_with_index do |view, index| %>
         <% full_url = rails_blob_path(view) %>
 
-        <%
-          # Conditional class to hide auxiliary images on mobile *only* if 'compact' is defined
+        <% # Conditional class to hide auxiliary images on mobile *only* if 'compact' is defined
           auxiliary_image_class = if defined?(compact) && index > 0
                                     'hidden sm:block'
                                   else
                                     ''
-                                  end
-        %>
+                                  end %>
 
         <div
           class="
@@ -62,23 +59,21 @@
           "
         >
           <%# Clickable element for the gallery. We pass the index using params. %>
-          <a
-            href="<%= full_url %>"
-            data-action="gallery#open"
-            class="block"
-          >
+          <a href="<%= full_url %>" data-action="gallery#open" class="block">
             <%# MOBILE OPTIMIZATION: Limit image height to 250px on mobile, reverting to 400px on small screens and up %>
             <%= image_tag(view.variant(resize_to_limit: [500, 500]), loading: :lazy, class: "w-full max-h-[250px] sm:max-h-[400px] object-cover transition-transform duration-500 group-hover:scale-[1.02]") %>
             <div
               class="
-                absolute inset-0 bg-gradient-to-t from-black/80 via-transparent
-                to-transparent
+                absolute inset-0 bg-gradient-to-t from-black/80
+                via-transparent to-transparent
               "
             ></div>
           </a>
 
           <div class="absolute bottom-3 left-4 right-4 text-white pointer-events-none">
-            <p class="text-sm font-medium opacity-80"><%= view.name.humanize %></p>
+            <p class="text-sm font-medium opacity-80">
+              <%= view.name.humanize %>
+            </p>
           </div>
 
           <div class="absolute bottom-3 right-4 z-20 flex space-x-2">
@@ -99,70 +94,77 @@
       <%= render 'mask_requests/gallery_modal' %>
     </div>
 
+    <%# The planting and design guide section is conditionally rendered if 'compact' is not defined %>
+    <% if mask_request.plants.present? && !defined?(compact) %>
+      <div class="planting_and_design_guide space-y-8">
+        <section>
+          <h3
+            class="
+              text-3xl font-bold text-gray-800 border-b-2 border-accent pb-2
+              mb-6
+            "
+          >
+            🏡 Design & Feature Breakdown
+          </h3>
 
-<%# The planting and design guide section is conditionally rendered if 'compact' is not defined %>
-<% if mask_request.plants.present? && !defined?(compact) %>
-<div class="planting_and_design_guide space-y-8">
-
-  <section>
-    <h3 class="text-3xl font-bold text-gray-800 border-b-2 border-accent pb-2 mb-6">
-      🏡 Design & Feature Breakdown
-    </h3>
-
-    <div class="prose max-w-none text-gray-700">
-      <%= raw markdown(mask_request.features) %>
-    </div>
-  </section>
-
-  <hr class="border-t border-neutral-200">
-      <section>
-    <h3 class="text-3xl font-bold text-gray-800 border-b-2 border-accent pb-2 mb-6">
-      🌱 Planting Guide: Suggested Varieties
-    </h3>
-
-
-    <div class="space-y-6">
-      <% mask_request.mask_request_plants.each do |mp| %>
-        <div class="bg-gray-50 p-5 rounded-xl shadow-md border border-gray-100">
-
-          <div class="flex items-start space-x-3 mb-2">
-            <span class="text-xl font-extrabold text-accent">
-              <%= mp.quantity %>x
-            </span>
-            <h4 class="text-lg md:text-xl font-semibold text-secondary leading-tight">
-              <%= format_plant_name(mp.plant.english_name) %>
-            </h4>
+          <div class="prose max-w-none text-gray-700">
+            <%= raw markdown(mask_request.features) %>
           </div>
+        </section>
 
-          <dl class="space-y-1 text-gray-700 ml-6">
+        <hr class="border-t border-neutral-200">
 
-            <%# OPTIMIZATION: Use flex-col (vertical) on mobile, flex-row (horizontal) on small screens and up %>
-            <div class="flex flex-col sm:flex-row">
-              <dt class="sm:w-1/4 font-medium text-sm text-gray-500 pr-2">
-                Description:
-              </dt>
-              <dd class="sm:w-3/4 text-sm">
-                <%= mp.plant.description %>
-              </dd>
-            </div>
+        <section>
+          <h3
+            class="
+              text-3xl font-bold text-gray-800 border-b-2 border-accent pb-2
+              mb-6
+            "
+          >
+            🌱 Planting Guide: Suggested Varieties
+          </h3>
 
-            <%# OPTIMIZATION: Use flex-col (vertical) on mobile, flex-row (horizontal) on small screens and up %>
-            <div class="flex flex-col sm:flex-row">
-              <dt class="sm:w-1/4 font-medium text-sm text-gray-500 pr-2">
-                Max Size:
-              </dt>
-              <dd class="sm:w-3/4 text-sm font-semibold text-accent">
-                Will be **<%= mp.plant.size %> ft** (width x height)
-              </dd>
-            </div>
-          </dl>
-        </div>
-      <% end %>
-    </div>
-  </section>
+          <div class="space-y-6">
+            <% mask_request.mask_request_plants.each do |mp| %>
+              <div class="bg-gray-50 p-5 rounded-xl shadow-md border border-gray-100">
+                <div class="flex items-start space-x-3 mb-2">
+                  <span class="text-xl font-extrabold text-accent"><%= mp.quantity %>x</span>
+                  <h4
+                    class="
+                      text-lg md:text-xl font-semibold text-secondary
+                      leading-tight
+                    "
+                  >
+                    <%= format_plant_name(mp.plant.english_name) %>
+                  </h4>
+                </div>
 
-</div>
-<% end %>
+                <dl class="space-y-1 text-gray-700 ml-6">
+                  <%# OPTIMIZATION: Use flex-col (vertical) on mobile, flex-row (horizontal) on small screens and up %>
+                  <div class="flex flex-col sm:flex-row">
+                    <dt class="sm:w-1/4 font-medium text-sm text-gray-500 pr-2">
+                      Description:
+                    </dt>
+                    <dd class="sm:w-3/4 text-sm">
+                      <%= mp.plant.description %>
+                    </dd>
+                  </div>
 
+                  <%# OPTIMIZATION: Use flex-col (vertical) on mobile, flex-row (horizontal) on small screens and up %>
+                  <div class="flex flex-col sm:flex-row">
+                    <dt class="sm:w-1/4 font-medium text-sm text-gray-500 pr-2">
+                      Max Size:
+                    </dt>
+                    <dd class="sm:w-3/4 text-sm font-semibold text-accent">
+                      Will be **<%= mp.plant.size %> ft** (width x height)
+                    </dd>
+                  </div>
+                </dl>
+              </div>
+            <% end %>
+          </div>
+        </section>
+      </div>
+    <% end %>
   </div>
 </div>

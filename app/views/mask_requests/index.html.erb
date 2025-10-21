@@ -1,28 +1,52 @@
 <% content_for :title, "Your Design Library" %>
 
-<div class="container mx-auto  w-full px-4 sm:max-w-lg lg:max-w-5xl mt-4">
+<div class="container mx-auto w-full px-4 sm:max-w-lg lg:max-w-5xl mt-4">
   <div
-  class="
-    my-8 p-4 md:p-6 bg-blue-50 border-l-4 border-blue-400 rounded-lg
-    text-blue-900 shadow-md flex items-start space-x-4
-  "
->
-  <div class="flex-shrink-0 pt-1">
-    <svg class="h-6 w-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+    class="
+      my-8 p-4 md:p-6 bg-blue-50 border-l-4 border-blue-400 rounded-lg
+      text-blue-900 shadow-md flex items-start space-x-4
+    "
+  >
+    <div class="flex-shrink-0 pt-1">
+      <svg
+        class="h-6 w-6 text-blue-500"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+        ></path>
+      </svg>
+    </div>
+    <div>
+      <h3 class="text-lg font-bold">New Feature: Text Editor!</h3>
+      <p class="mt-1 text-sm text-blue-800">
+        You can now edit any design result directly. Look for the
+        <strong>"Text Edit" button</strong>
+        next to each design to instantly jump into the new
+        <strong>Text Editor</strong>
+        and customize your images.
+      </p>
+    </div>
   </div>
-  <div>
-    <h3 class="text-lg font-bold">New Feature: Text Editor!</h3>
-    <p class="mt-1 text-sm text-blue-800">
-      You can now edit any design result directly. Look for the <strong>"Text Edit" button</strong> next to each design to instantly jump into the new <strong>Text Editor</strong> and customize your images.
-    </p>
-  </div>
-</div>
   <div id="mask_requests" class="min-w-full space-y-4 md:space-y-6">
     <% if @mask_requests.any? %>
       <%= render partial: 'mask_requests/mask_request', collection: @mask_requests, locals: {compact: true} %>
     <% else %>
-      <div class="text-center my-10 p-8 bg-gray-50 rounded-lg border border-dashed border-gray-300">
-        <p class="text-lg text-gray-500">No design results have been created yet. Start a new project!</p>
+      <div
+        class="
+          text-center my-10 p-8 bg-gray-50 rounded-lg border border-dashed
+          border-gray-300
+        "
+      >
+        <p class="text-lg text-gray-500">
+          No design results have been created yet. Start a new project!
+        </p>
         <%= link_to "Start New Design", new_canva_path, class: "cute-btn btn-primary mt-4" %>
       </div>
     <% end %>

@@ -48,6 +48,7 @@
       href="https://fonts.googleapis.com/css2?family=Comic+Relief:wght@400;700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
       rel="stylesheet"
     >
+
     <link
       rel="icon"
       type="image/png"
@@ -138,7 +139,7 @@
   <body data-controller="loader">
     <%= render partial: "layouts/shared/loader", locals: { record: nil, klasses: "hidden fixed" } %>
     <%= render "shared/navbar" %>
-   <%= render "shared/flash" %>
+    <%= render "shared/flash" %>
     <main class="<%= content_for(:main_classes) %>">
       <div class="w-full m-auto block"><%= yield %></div>
     </main>

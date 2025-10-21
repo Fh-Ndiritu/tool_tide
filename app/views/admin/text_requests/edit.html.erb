@@ -19,26 +19,32 @@
       data-action="click->modal#closeBackground"
     >
       <div
-        class="relative w-full max-w-4xl mx-auto rounded-xl shadow-3xl transform transition-all duration-300 scale-100"
+        class="
+          relative w-full max-w-4xl mx-auto rounded-xl shadow-3xl transform
+          transition-all duration-300 scale-100
+        "
         data-action="click->modal#stop:stopPropagation"
       >
         <button
-            data-action="modal#close"
-            class="absolute top-3 right-4 z-50 text-secondary hover:opacity-70 transition"
+          data-action="modal#close"
+          class="
+            absolute top-3 right-4 z-50 text-secondary hover:opacity-70
+            transition
+          "
         >
-            <%= render(IconComponent.new(classes: "h-8 w-8", name: "x-circle")) %>
+          <%= render(IconComponent.new(classes: "h-8 w-8", name: "x-circle")) %>
         </button>
 
         <div class="<%= @main_color %> rounded-2xl p-6 space-y-8">
-            <header class="pb-4 border-b border-gray-300">
-                <h3 class="text-2xl font-extrabold leading-tight text-neutral-900">
-                    Editing Request #<%= text_request.id %>
-                </h3>
-            </header>
+          <header class="pb-4 border-b border-gray-300">
+            <h3 class="text-2xl font-extrabold leading-tight text-neutral-900">
+              Editing Request #<%= text_request.id %>
+            </h3>
+          </header>
 
-            <% if text_request.trial_generation? || text_request.user.admin? %>
-              <%= render 'admin_controls', text_request: text_request %>
-            <% end %>
+          <% if text_request.trial_generation? || text_request.user.admin? %>
+            <%= render 'admin_controls', text_request: text_request %>
+          <% end %>
         </div>
       </div>
     </div>

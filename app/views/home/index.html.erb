@@ -87,13 +87,21 @@
   class="py-10 bg-neutral-900 text-white overflow-hidden"
 >
   <div class="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-    <div class="flex space-x-4 mb-6 py-6 overflow-x-auto snap-x snap-mandatory px-4 sm:justify-center sm:space-x-8 sm:overflow-visible sm:snap-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+    <div
+      class="
+        flex space-x-4 mb-6 py-6 overflow-x-auto snap-x snap-mandatory px-4
+        sm:justify-center sm:space-x-8 sm:overflow-visible sm:snap-none
+        [scrollbar-width:none] [&::-webkit-scrollbar]:hidden
+      "
+    >
       <div class="flex-shrink-0 snap-center">
         <%= link_to "Christmas Ideas", event_tag_path(slug: 'christmas'), class: "transition-all duration-200 text-lg font-semibold px-6 py-2 rounded-full whitespace-nowrap bg-primary/20 text-primary border border-primary shadow-lg shadow-primary/20" %>
       </div>
+
       <div class="flex-shrink-0 snap-center">
         <%= link_to "Halloween Ideas", event_tag_path(slug: 'halloween'), class: "transition-all duration-200 text-lg font-medium px-6 py-2 rounded-full whitespace-nowrap text-neutral-300 hover:text-text-light hover:bg-neutral-800" %>
       </div>
+
       <div class="flex-shrink-0 snap-center">
         <%= link_to "Winter Ideas", season_tag_path(slug: 'winter'), class: "transition-all duration-200 text-lg font-medium px-6 py-2 rounded-full whitespace-nowrap text-neutral-300 hover:text-text-light hover:bg-neutral-800" %>
       </div>
@@ -119,7 +127,6 @@
 
     <div class="w-full flex justify-center">
       <div class="w-full max-w-6xl columns-2 sm:columns-3 md:columns-4 gap-4 md:gap-6">
-
         <%= render partial: 'text_request', collection: @text_requests %>
 
         <% @mask_requests.each_with_index do |request, index| %>
@@ -165,8 +172,6 @@
             </div>
           <% end %>
         <% end %>
-
-
       </div>
     </div>
 
@@ -498,7 +503,11 @@
         </h3>
         <div>
           <p class="text-base text-neutral-300 leading-relaxed mt-3">
-            Hadaa operates on a simple, transparent <b>Pay-As-You-Go credit system</b>. To begin, you purchase your first pack: <b>$10 for 200 Usage Credits</b>. You simply buy more credits when you need them.
+            Hadaa operates on a simple, transparent
+            <b>Pay-As-You-Go credit system</b>
+            . To begin, you purchase your first pack:
+            <b>$10 for 200 Usage Credits</b>
+            . You simply buy more credits when you need them.
           </p>
         </div>
       </div>
@@ -657,61 +666,69 @@
     </h2>
 
     <p class="text-center text-xl md:text-2xl max-w-3xl mx-auto mb-16 text-gray-600">
-      Our entire platform is built on a transparent <b>Pay-As-You-Go</b> credit system. Get instant access to every feature with your first credit purchase.
+      Our entire platform is built on a transparent
+      <b>Pay-As-You-Go</b>
+      credit system. Get instant access to every feature with your first credit
+      purchase.
     </p>
 
     <div
-        class="
-          p-8 md:p-12 mb-8 lg:mb-0 bg-gray-100 rounded-3xl shadow-2xl
-          border-4 border-primary text-gray-900 transform transition
-          duration-500 hover:scale-[1.03] hover:border-accent hover:shadow-accent/50
-        "
-      >
-        <div class="text-center">
-          <h3 class="text-3xl font-bold mb-2 text-primary">
-            Starter Credit Pack
-          </h3>
+      class="
+        p-8 md:p-12 mb-8 lg:mb-0 bg-gray-100 rounded-3xl shadow-2xl
+        border-4 border-primary text-gray-900 transform transition
+        duration-500 hover:scale-[1.03] hover:border-accent hover:shadow-accent/50
+      "
+    >
+      <div class="text-center">
+        <h3 class="text-3xl font-bold mb-2 text-primary">
+          Starter Credit Pack
+        </h3>
 
-          <p class="text-5xl font-extrabold mb-1 leading-none text-accent">
-            $10
-          </p>
-          <p class="text-xl font-bold mb-6 text-gray-600">
-            For 200 Usage Credits
-          </p>
+        <p class="text-5xl font-extrabold mb-1 leading-none text-accent">
+          $10
+        </p>
 
-          <p class="text-lg leading-relaxed mb-8 text-gray-800">
-            This one-time purchase is your key to instant, high-fidelity AI landscape design. <b>No subscription required.</b>
-          </p>
+        <p class="text-xl font-bold mb-6 text-gray-600">
+          For 200 Usage Credits
+        </p>
 
-          <%= render ButtonComponent.new(
+        <p class="text-lg leading-relaxed mb-8 text-gray-800">
+          This one-time purchase is your key to instant, high-fidelity AI
+          landscape design.
+          <b>No subscription required.</b>
+        </p>
+
+        <%= render ButtonComponent.new(
             text: "Unlock All Features for $10",
             href: new_user_registration_path,
             classes: "w-auto inline-block bg-accent hover:bg-accent/80 text-black font-extrabold py-4 px-8 rounded-full shadow-lg shadow-accent/50 transition duration-300 transform hover:scale-[1.05]"
             ) %>
-          <ul class="text-left mt-10 space-y-3 text-base text-gray-800">
-            <li class="flex items-start">
-              <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-3 mt-0.5 text-primary flex-shrink-0")) %>
-              <span><b>200 Credits</b> to start (e.g., approx. 40-50 high-res generations)</span>
-            </li>
-            <li class="flex items-start">
-              <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-3 mt-0.5 text-primary flex-shrink-0")) %>
-              Full access to the&nbsp;<b>Mask & Text Editor</b>
-            </li>
-            <li class="flex items-start">
-              <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-3 mt-0.5 text-primary flex-shrink-0")) %>
-              <b>Unlimited High-Resolution Downloads</b>
-            </li>
-            <li class="flex items-start">
-              <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-3 mt-0.5 text-primary flex-shrink-0")) %>
-              Location-Aware Plant Recommendations & Shopping Lists
-            </li>
-            <li class="flex items-start">
-              <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-3 mt-0.5 text-primary flex-shrink-0")) %>
-              <b>Pay-As-You-Go:</b>&nbsp;Purchase more credits at any time.
-            </li>
-          </ul>
-        </div>
+        <ul class="text-left mt-10 space-y-3 text-base text-gray-800">
+          <li class="flex items-start">
+            <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-3 mt-0.5 text-primary flex-shrink-0")) %>
+            <span><b>200 Credits</b> to start (e.g., approx. 40-50 high-res generations)</span>
+          </li>
+          <li class="flex items-start">
+            <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-3 mt-0.5 text-primary flex-shrink-0")) %>
+            Full access to the&nbsp;
+            <b>Mask & Text Editor</b>
+          </li>
+          <li class="flex items-start">
+            <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-3 mt-0.5 text-primary flex-shrink-0")) %>
+            <b>Unlimited High-Resolution Downloads</b>
+          </li>
+          <li class="flex items-start">
+            <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-3 mt-0.5 text-primary flex-shrink-0")) %>
+            Location-Aware Plant Recommendations & Shopping Lists
+          </li>
+          <li class="flex items-start">
+            <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-3 mt-0.5 text-primary flex-shrink-0")) %>
+            <b>Pay-As-You-Go:</b>
+            &nbsp;Purchase more credits at any time.
+          </li>
+        </ul>
       </div>
+    </div>
 
     <div class="text-center mt-24 text-gray-900 py-16 px-6 border-t border-gray-300">
       <h3 class="text-3xl md:text-4xl font-extrabold mb-6">
@@ -724,7 +741,8 @@
           text-gray-600
         "
       >
-        Your design journey starts with one simple purchase. Join thousands of users who are reimagining their gardens with Hadaa Ai Landscaper.
+        Your design journey starts with one simple purchase. Join thousands of
+        users who are reimagining their gardens with Hadaa Ai Landscaper.
       </p>
 
       <%= render ButtonComponent.new(

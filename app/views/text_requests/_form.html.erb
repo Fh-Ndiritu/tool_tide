@@ -75,7 +75,7 @@
               "
             >
               <%= form.submit "Generate",
-              class: "max-sm:!w-full cute-btn accent-btn" if current_user == text_request.user%>
+              class: "max-sm:!w-full cute-btn accent-btn" if current_user == text_request.user %>
 
               <% if current_user == text_request.user && text_request.result_image.attached? %>
                 <%= link_to "HD Download",  rails_blob_path(text_request.result_image, disposition: :attachment), class: "max-sm:!w-full cute-btn secondary-btn" %>

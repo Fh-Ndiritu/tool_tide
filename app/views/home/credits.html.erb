@@ -14,7 +14,9 @@
         <div class="bg-secondary text-neutral-100 p-3 rounded-full shadow-lg m-0">
           <%= render(IconComponent.new(name: "crown", classes: "h-7 w-7")) %>
         </div>
-        <h2 class="text-2xl font-bold text-neutral-900 ml-2">Your Usage Credits</h2>
+        <h2 class="text-2xl font-bold text-neutral-900 ml-2">
+          Your Usage Credits
+        </h2>
       </div>
 
       <p class="text-6xl font-extrabold text-accent mt-4 leading-tight">
@@ -28,6 +30,12 @@
       <p class="text-md text-green-700 mt-3 font-semibold">
         <b><%= CREDITS_INFO %></b>
       </p>
+
+      <% if defined?(current_user) && current_user.pro_engine_credits.positive? %>
+        <div class="flex justify-start mb-4 pt-4">
+          <%= link_to "Go to Design Editor →", new_canva_path, class: "text-lg font-semibold text-primary hover:text-secondary transition-colors duration-200" %>
+        </div>
+      <% end %>
 
       <hr class="border-t border-neutral-300 my-8">
 
@@ -46,7 +54,9 @@
         </li>
         <li class="flex items-start space-x-3">
           <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 text-accent flex-shrink-0 mt-0.5")) %>
-          <span class="font-semibold text-neutral-900">Generate <b>comprehensive shopping lists</b> for your materials.</span>
+          <span class="font-semibold text-neutral-900">
+            Generate <b>comprehensive shopping lists</b> for your materials.
+          </span>
         </li>
         <li class="flex items-start space-x-3">
           <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 text-accent flex-shrink-0 mt-0.5")) %>
@@ -54,15 +64,33 @@
         </li>
       </ul>
 
-      <div class="max-sm:flex-col flex space-y-6 w-full justify-between items-center pt-4 border-t border-neutral-300 mt-4">
+      <%# --- START: PAYMENT SECURITY & TOP-UP BLOCK --- %>
+      <div class="bg-gray-100 p-4 rounded-lg border border-gray-300">
+        <div class="flex items-start space-x-3">
+          <span class="text-xl pt-0.5 text-secondary">🛡️</span>
+          <div class="mb-6">
+            <h4 class="text-sm font-bold text-neutral-900 mb-1 uppercase">
+              Secure & Trusted Payment
+            </h4>
+            <p class="text-neutral-700 text-sm">
+              Your payment is secure.
+              <b>Paystack, a Stripe Company</b>
+              , uses bank-grade
+              <b>PCI DSS standards</b>
+              , ensuring we
+              <b>never store</b>
+              your credit card details.
+            </p>
+          </div>
+        </div>
 
-        <%= button_to "Top Up Credits", payment_transactions_path, data: {turbo: false}, method: :post, class: "cursor-pointer inline-block bg-secondary text-white font-bold py-3 px-8 rounded-full shadow-xl transition-all duration-300 transform hover:scale-[1.03] hover:bg-cta-bg/90 ring-4 ring-cta-bg/50" %>
-
-        <% if current_user.pro_engine_credits.positive? %>
-          <%= link_to "Go to Design Editor", new_canva_path, class: "cursor-pointer inline-block bg-primary text-neutral-100 font-bold py-3 px-8 rounded-full shadow-lg transition-all duration-300 transform hover:scale-[1.03] hover:bg-secondary/90 ring-4 ring-secondary/50" %>
-        <% end %>
+        <div class="flex w-full justify-center pt-4 border-t border-neutral-300 mt-4">
+          <%# The remaining primary action: Top Up Credits %>
+          <%= button_to "Top Up Credits", payment_transactions_path, data: {turbo: false}, method: :post, class: "cursor-pointer inline-block bg-secondary text-white font-bold py-3 px-8 rounded-full shadow-xl transition-all duration-300 transform hover:scale-[1.03] hover:bg-cta-bg/90 ring-4 ring-cta-bg/50" %>
+        </div>
       </div>
 
+      <%# --- END: PAYMENT SECURITY & TOP-UP BLOCK --- %>
     </div>
   </div>
 </div>
