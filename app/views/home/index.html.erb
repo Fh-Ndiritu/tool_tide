@@ -1,3 +1,5 @@
+<%# START: SEO/Metadata Definitions %>
+
 <% content_for(:title, "AI Landscaping Design Tool | Generate Dream Garden Images - Hadaa Ai") %>
 
 <% content_for(:description, "Unleash your creativity with Hadaa Ai. Purchase usage credits to generate stunning, rich, and lifelike landscaping images from your ideas. Design your dream garden, visualize outdoor spaces, and create beautiful, accurate landscape designs instantly.") %>
@@ -21,6 +23,10 @@
 <%= content_for(:schema_description, "Use Hadaa Ai to generate stunningly realistic, rich, and accurate landscaping images for your outdoor space. Purchase credits for advanced AI design technology.") %>
 
 <%= content_for(:main_classes, "mx-0 pl-0 pr-0 max-w-[100vw] block") %>
+
+<%# END: SEO/Metadata Definitions %>
+
+<%# START: Hero Section %>
 
 <section
   class="
@@ -68,25 +74,35 @@
     </p>
 
     <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+      <%# START: ButtonComponent - Start Designing Today %>
       <%= render ButtonComponent.new(
           text: "Start Designing Today",
           href: new_user_registration_path,
           classes: "w-full sm:w-auto flex-shrink-0 bg-accent-secondary py-4 px-10 rounded-full shadow-3xl shadow-secondary/50 transition duration-300 transform hover:scale-105 border-white hover:border-primary hover:bg-white/10 text-black hover:text-white font-semibold py-4 px-10 rounded-full transition duration-300 transform hover:scale-[1.02]"
       ) %>
+      <%# END: ButtonComponent - Start Designing Today %>
+
+      <%# START: ButtonComponent - View 10K+ User Designs %>
       <%= render ButtonComponent.new(
           text: "View 10K+ User Designs",
           href: explore_path,
           classes: "w-full sm:w-auto flex-shrink-0 border-2 border-white hover:border-primary hover:bg-white/10 text-white font-semibold py-4 px-10 rounded-full transition duration-300 transform hover:scale-[1.02]"
       ) %>
+      <%# END: ButtonComponent - View 10K+ User Designs %>
     </div>
   </div>
 </section>
+
+<%# END: Hero Section %>
+
+<%# START: Explore/FOMO Section %>
 
 <section
   id="explore-fomo"
   class="py-10 bg-neutral-900 text-white overflow-hidden"
 >
   <div class="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+    <%# START: Tag Navigation/Filter %>
     <div
       class="
         flex space-x-4 mb-6 py-6 overflow-x-auto snap-x snap-mandatory px-4
@@ -107,6 +123,9 @@
       </div>
     </div>
 
+    <%# END: Tag Navigation/Filter %>
+
+    <%# START: Design Grid/Gallery %>
     <div class="text-center mb-16">
       <h2
         class="
@@ -127,8 +146,11 @@
 
     <div class="w-full flex justify-center">
       <div class="w-full max-w-6xl columns-2 sm:columns-3 md:columns-4 gap-4 md:gap-6">
+        <%# START: Partial - text_request (Text-to-Image Designs) %>
         <%= render partial: 'text_request', collection: @text_requests %>
+        <%# END: Partial - text_request (Text-to-Image Designs) %>
 
+        <%# START: Mask Requests (Image-to-Image Designs) %>
         <% @mask_requests.each_with_index do |request, index| %>
           <% if image = request.face_image %>
             <div class="mb-4 md:mb-6 break-inside-avoid">
@@ -162,18 +184,24 @@
                     w-8/12
                   "
                 >
+                  <%# START: ButtonComponent - Design Details %>
                   <%= render ButtonComponent.new(
                     text: "Design Details 🔒",
                     href: explore_path(request),
                     classes: "bg-black/70 text-white text-sm font-bold py-2 px-4 rounded-full shadow-lg ring-2 ring-white/70 hover:bg-black/90"
                   ) %>
+                  <%# END: ButtonComponent - Design Details %>
                 </div>
               </div>
             </div>
           <% end %>
         <% end %>
+
+        <%# END: Mask Requests (Image-to-Image Designs) %>
       </div>
     </div>
+
+    <%# END: Design Grid/Gallery %>
 
     <div class="text-center mt-20">
       <h3 class="text-3xl font-bold mb-6 text-primary drop-shadow">
@@ -181,11 +209,17 @@
       </h3>
       <br>
 
+      <%# START: Call to Action Button - Start Designing Now %>
       <%= link_to "Start Designing Now", new_user_registration_path, class:"bg-accent hover:bg-accent/80 text-black font-extrabold text-xl py-5 px-12 rounded-full shadow-[0_10px_40px_-10px_rgba(0,172,193,1)] transition duration-300 ease-in-out transform hover:scale-[1.15]" %>
+      <%# END: Call to Action Button - Start Designing Now %>
     </div>
   </div>
 </section>
 
+<%# END: Explore/FOMO Section %>
+
+<%# START: How It Works Section (Stimulus Slider) %>
+<%# START: How It Works Section (Stimulus Slider) %>
 <section id="how_it_works" class="py-16 bg-gray-800 text-white">
   <div class="mx-auto px-6 max-w-7xl">
     <h2
@@ -207,11 +241,13 @@
       photorealistic plan in minutes.
     </p>
 
-    <div data-controller="slider" class="relative">
+    <%# START: Steps Slider (Stimulus Controller) %>
+    <div data-controller="slider" class="relative px-0">
+      <%# START: Slider Navigation Buttons - Hid on Mobile, Shown on SM/MD/LG %>
       <button
         data-action="slider#prev"
         class="
-          absolute -left-5 md:-left-8 top-1/2 cursor-pointer
+         block absolute -left-5 md:-left-8 top-1/2 cursor-pointer
           -translate-y-1/2 bg-primary hover:bg-secondary text-white p-4
           rounded-full shadow-xl z-20 transition duration-300 hover:scale-[1.1]
         "
@@ -235,7 +271,7 @@
       <button
         data-action="slider#next"
         class="
-          absolute -right-5 md:-right-8 top-1/2 cursor-pointer
+         block absolute -right-5 md:-right-8 top-1/2 cursor-pointer
           -translate-y-1/2 bg-primary hover:bg-secondary text-white p-4
           rounded-full shadow-xl z-20 transition duration-300 hover:scale-[1.1]
         "
@@ -256,56 +292,22 @@
         </svg>
       </button>
 
+      <%# END: Slider Navigation Buttons %>
+
+      <%# START: Slide Track and Individual Steps - FINAL FIX APPLIED HERE %>
       <div
         data-slider-target="track"
         class="
-          flex overflow-hidden scroll-smooth snap-x snap-mandatory gap-6
-          lg:gap-8
+          flex overflow-x-auto scroll-smooth snap-x snap-mandatory gap-6 w-full pb-4
+          pl-4/pr-6
+          [scrollbar-width:none] [&::-webkit-scrollbar]:hidden
         "
       >
-        <div
-          class="
-            flex-shrink-0 w-full md:w-1/2 lg:w-1/3 p-2 snap-start flex
-            flex-col
-          "
-        >
-          <div
-            class="
-              bg-neutral-900 rounded-2xl shadow-2xl border-4
-              border-transparent hover:border-accent transform
-              hover:scale-[1.03] transition duration-500 group flex-grow p-1
-            "
-          >
-            <div
-              class="relative h-72 bg-cover bg-center rounded-t-xl rounded-b-none"
-              style="background-image: url('<%= image_url('how_it_works/upload.webp') %>');"
-            >
-              <div
-                class="
-                  absolute inset-0 bg-neutral-900/70 flex items-center
-                  justify-center
-                "
-              >
-                <span class="text-7xl font-extrabold text-accent drop-shadow-lg">1</span>
-              </div>
-            </div>
-            <div class="p-7">
-              <h3 class="text-3xl font-bold mb-3 text-secondary">
-                Upload Your Photo
-              </h3>
-              <p class="text-base text-neutral-300 leading-relaxed">
-                Take or upload a photo of your area. Hadaa instantly uses it as
-                the canvas for your
-                <b>AI design</b>
-                .
-              </p>
-            </div>
-          </div>
-        </div>
 
+        <%# Step 1: Upload Your Photo %>
         <div
           class="
-            flex-shrink-0 w-full md:w-1/2 lg:w-1/3 p-2 snap-start flex
+            flex-shrink-0 w-full md:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-1.333rem)] md:p-2 snap-center flex
             flex-col
           "
         >
@@ -322,11 +324,57 @@
             >
               <div
                 class="
-                  absolute inset-0 bg-neutral-900/70 flex items-center
+                  absolute inset-0 bg-neutral-900/50 flex items-center
                   justify-center
                 "
               >
-                <span class="text-7xl font-extrabold text-accent drop-shadow-lg">2</span>
+                <span class="text-5xl font-extrabold text-accent drop-shadow-lg">1</span>
+              </div>
+            </div>
+            <div class="p-7">
+              <h3 class="text-3xl font-bold mb-3 text-secondary">
+                Upload Your Photo
+              </h3>
+              <p class="text-base text-neutral-300 leading-relaxed">
+                Take or upload a photo of your area. Hadaa instantly uses it as
+                the canvas for your
+                <b>AI design</b>
+                .
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <%# End: Step 1 %>
+
+        <%# Step 2: Brush to Modify %>
+        <div
+          class="
+            flex-shrink-0 w-full md:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-1.333rem)] p-2 snap-center flex
+            flex-col
+          "
+        >
+          <div
+            class="
+              bg-neutral-900 rounded-2xl shadow-2xl border-4
+              border-transparent hover:border-accent transform
+              hover:scale-[1.03] transition duration-500 group flex-grow p-1
+            "
+          >
+            <div
+              class="
+                relative h-72 bg-contain bg-center rounded-t-xl
+                rounded-b-none
+              "
+              style="background-image: url('<%= image_url('how_it_works/draw.png') %>');"
+            >
+              <div
+                class="
+                  absolute inset-0 bg-neutral-900/50 flex items-center
+                  justify-center
+                "
+              >
+                <span class="text-5xl font-extrabold text-accent drop-shadow-lg">2</span>
               </div>
             </div>
             <div class="p-7">
@@ -334,18 +382,18 @@
                 Brush to Modify
               </h3>
               <p class="text-base text-neutral-300 leading-relaxed">
-                Use our
-                <b>intuitive brush tool</b>
-                to draw directly over areas you want to change, like grass,
-                concrete, or hedges.
+                Use our <b>intuitive brush tool</b> to highlight only the areas you want us to modify.
               </p>
             </div>
           </div>
         </div>
 
+        <%# End: Step 2 %>
+
+        <%# Step 3: Select your Vibe (Style) %>
         <div
           class="
-            flex-shrink-0 w-full md:w-1/2 lg:w-1/3 p-2 snap-start flex
+            flex-shrink-0 w-full md:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-1.333rem)] p-2 snap-center flex
             flex-col
           "
         >
@@ -358,33 +406,34 @@
           >
             <div
               class="relative h-72 bg-cover bg-center rounded-t-xl rounded-b-none"
-              style="background-image: url('<%= image_url('how_it_works/text_edit.webp') %>');"
+              style="background-image: url('<%= image_url('how_it_works/select_style.png') %>');"
             >
               <div
                 class="
-                  absolute inset-0 bg-neutral-900/70 flex items-center
+                  absolute inset-0 bg-neutral-900/50 flex items-center
                   justify-center
                 "
               >
-                <span class="text-7xl font-extrabold text-accent drop-shadow-lg">3</span>
+                <span class="text-5xl font-extrabold text-accent drop-shadow-lg">3</span>
               </div>
             </div>
             <div class="p-7">
               <h3 class="text-3xl font-bold mb-3 text-secondary">
-                Edit with Text 🤯
+                Select your Vibe
               </h3>
               <p class="text-base text-neutral-300 leading-relaxed">
-                <b>Refine your vision</b>
-                with text prompts. Tell the AI: "Change the lawn to river stone"
-                or "Add a cottage garden style."
+                <b>Choose a style</b> from our collection of SOTA curated designs.
               </p>
             </div>
           </div>
         </div>
 
+        <%# End: Step 3 %>
+
+        <%# Step 4: Hadaa Magic (Results) %>
         <div
           class="
-            flex-shrink-0 w-full md:w-1/2 lg:w-1/3 p-2 snap-start flex
+            flex-shrink-0 w-full md:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-1.333rem)] p-2 snap-center flex
             flex-col
           "
         >
@@ -397,34 +446,34 @@
           >
             <div
               class="relative h-72 bg-cover bg-center rounded-t-xl rounded-b-none"
-              style="background-image: url('<%= image_url('how_it_works/get_design.webp') %>');"
+              style="background-image: url('<%= image_url('how_it_works/results.png') %>');"
             >
               <div
                 class="
-                  absolute inset-0 bg-neutral-900/70 flex items-center
+                  absolute inset-0 bg-neutral-900/50 flex items-center
                   justify-center
                 "
               >
-                <span class="text-7xl font-extrabold text-accent drop-shadow-lg">4</span>
+                <span class="text-5xl font-extrabold text-accent drop-shadow-lg">4</span>
               </div>
             </div>
             <div class="p-7">
               <h3 class="text-3xl font-bold mb-3 text-secondary">
-                Instant AI Design
+                Hadaa Magic
               </h3>
               <p class="text-base text-neutral-300 leading-relaxed">
-                Get a
-                <b>stunning, photorealistic</b>
-                design based on your inputs and selected style. Experiment until
-                it's perfect!
+                Get <b>stunning transformations</b> of your space with even a drone shot included.
               </p>
             </div>
           </div>
         </div>
 
+        <%# End: Step 4 %>
+
+        <%# Step 5: Planting Guide (Shopping List) %>
         <div
           class="
-            flex-shrink-0 w-full md:w-1/2 lg:w-1/3 p-2 snap-start flex
+            flex-shrink-0 w-full md:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-1.333rem)] p-2 snap-center flex
             flex-col
           "
         >
@@ -441,38 +490,87 @@
             >
               <div
                 class="
-                  absolute inset-0 bg-neutral-900/70 flex items-center
+                  absolute inset-0 bg-neutral-900/50 flex items-center
                   justify-center
                 "
               >
-                <span class="text-7xl font-extrabold text-accent drop-shadow-lg">5</span>
+                <span class="text-5xl font-extrabold text-accent drop-shadow-lg">5</span>
               </div>
             </div>
             <div class="p-7">
               <h3 class="text-3xl font-bold mb-3 text-secondary">
-                Get the Action Plan
+                Planting Guide
               </h3>
               <p class="text-base text-neutral-300 leading-relaxed">
-                Receive a
-                <b>comprehensive shopping list</b>
-                and
-                <b>easy-to-follow instructions</b>
-                to bring your final design to life.
+                Receive a <b>shopping list</b> and <b>planting guide</b> to bring your final design to life.
               </p>
             </div>
           </div>
         </div>
+
+        <%# End: Step 5 %>
+
+        <%# Step 6: Text Editor (Extra Feature) %>
+        <div
+          class="
+            flex-shrink-0 w-full md:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-1.333rem)] p-2 snap-center flex
+            flex-col
+          "
+        >
+          <div
+            class="
+              bg-neutral-900 rounded-2xl shadow-2xl border-4
+              border-transparent hover:border-accent transform
+              hover:scale-[1.03] transition duration-500 group flex-grow p-1
+            "
+          >
+            <div
+              class="relative h-72 bg-cover bg-center rounded-t-xl rounded-b-none"
+              style="background-image: url('<%= image_url('how_it_works/text_editor.png') %>');"
+            >
+              <div
+                class="
+                  absolute inset-0 bg-neutral-900/30 flex items-center
+                  justify-center
+                "
+              >
+                <span class="text-5xl font-extrabold text-accent drop-shadow-lg">6</span>
+              </div>
+            </div>
+            <div class="p-7">
+              <h3 class="text-3xl font-bold mb-3 text-secondary">
+                Take the Wheel!
+              </h3>
+              <p class="text-base text-neutral-300 leading-relaxed">
+                Transform <b>your results</b> further with our clever, intuitive and adherent text editing model.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <%# End: Step 6 %>
       </div>
+
+      <%# END: Slide Track and Individual Steps %>
     </div>
+
+    <%# END: Steps Slider (Stimulus Controller) %>
   </div>
   <div class="flex mt-20 w-full justify-center px-4">
+    <%# START: Call to Action Button - Start Designing Now %>
     <%= render ButtonComponent.new(
         text: "Start Designing Now",
         href: new_user_registration_path,
         classes: "bg-accent hover:bg-accent/80 text-black font-extrabold text-xl py-5 px-12 rounded-full shadow-[0_10px_40px_-10px_rgba(0,172,193,1)] transition duration-300 ease-in-out transform hover:scale-[1.15]"
       ) %>
+    <%# END: Call to Action Button - Start Designing Now %>
   </div>
 </section>
+<%# END: How It Works Section (Stimulus Slider) %>
+
+<%# END: How It Works Section (Stimulus Slider) %>
+
+<%# START: FAQ Section %>
 
 <section id="faq" class="py-16 md:py-32 bg-gray-800 text-white">
   <div class="container mx-auto px-6 max-w-6xl">
@@ -485,6 +583,7 @@
       Frequently Asked Questions
     </h2>
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
+      <%# START: FAQ Item 1 - Pricing Model %>
       <div
         class="
           bg-neutral-900 rounded-xl shadow-2xl p-6 border-l-4 border-primary
@@ -512,6 +611,9 @@
         </div>
       </div>
 
+      <%# END: FAQ Item 1 - Pricing Model %>
+
+      <%# START: FAQ Item 2 - What is Hadaa %>
       <div
         class="
           bg-neutral-900 rounded-xl shadow-2xl p-6 border-l-4 border-accent
@@ -543,6 +645,9 @@
         </div>
       </div>
 
+      <%# END: FAQ Item 2 - What is Hadaa %>
+
+      <%# START: FAQ Item 3 - Text Editing %>
       <div
         class="
           bg-neutral-900 rounded-xl shadow-2xl p-6 border-l-4 border-primary
@@ -571,6 +676,9 @@
         </div>
       </div>
 
+      <%# END: FAQ Item 3 - Text Editing %>
+
+      <%# START: FAQ Item 4 - Plant Recommendations %>
       <div
         class="
           bg-neutral-900 rounded-xl shadow-2xl p-6 border-l-4 border-accent
@@ -601,6 +709,9 @@
         </div>
       </div>
 
+      <%# END: FAQ Item 4 - Plant Recommendations %>
+
+      <%# START: FAQ Item 5 - Shopping List %>
       <div
         class="
           bg-neutral-900 rounded-xl shadow-2xl p-6 border-l-4 border-primary
@@ -629,6 +740,9 @@
         </div>
       </div>
 
+      <%# END: FAQ Item 5 - Shopping List %>
+
+      <%# START: FAQ Item 6 - Seasonal Changes %>
       <div
         class="
           bg-neutral-900 rounded-xl shadow-2xl p-6 border-l-4 border-accent
@@ -655,9 +769,15 @@
           </p>
         </div>
       </div>
+
+      <%# END: FAQ Item 6 - Seasonal Changes %>
     </div>
   </div>
 </section>
+
+<%# END: FAQ Section %>
+
+<%# START: Pricing Section %>
 
 <section id="pricing" class="py-16 md:py-32 bg-gray-200 text-gray-900">
   <div class="container mx-auto px-6 max-w-3xl">
@@ -672,6 +792,7 @@
       purchase.
     </p>
 
+    <%# START: Pricing Card %>
     <div
       class="
         p-8 md:p-12 mb-8 lg:mb-0 bg-gray-100 rounded-3xl shadow-2xl
@@ -698,11 +819,15 @@
           <b>No subscription required.</b>
         </p>
 
+        <%# START: ButtonComponent - Unlock All Features %>
         <%= render ButtonComponent.new(
             text: "Unlock All Features for $10",
             href: new_user_registration_path,
             classes: "w-auto inline-block bg-accent hover:bg-accent/80 text-black font-extrabold py-4 px-8 rounded-full shadow-lg shadow-accent/50 transition duration-300 transform hover:scale-[1.05]"
             ) %>
+        <%# END: ButtonComponent - Unlock All Features %>
+
+        <%# START: Feature List %>
         <ul class="text-left mt-10 space-y-3 text-base text-gray-800">
           <li class="flex items-start">
             <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-3 mt-0.5 text-primary flex-shrink-0")) %>
@@ -727,8 +852,12 @@
             &nbsp;Purchase more credits at any time.
           </li>
         </ul>
+
+        <%# END: Feature List %>
       </div>
     </div>
+
+    <%# END: Pricing Card %>
 
     <div class="text-center mt-24 text-gray-900 py-16 px-6 border-t border-gray-300">
       <h3 class="text-3xl md:text-4xl font-extrabold mb-6">
@@ -745,11 +874,15 @@
         users who are reimagining their gardens with Hadaa Ai Landscaper.
       </p>
 
+      <%# START: Call to Action Button - Get Credits %>
       <%= render ButtonComponent.new(
         text: "Get Credits and Start Designing",
         href: new_user_registration_path,
         classes: "mt-4 inline-block bg-accent hover:bg-accent/80 text-black font-extrabold py-4 px-10 rounded-full shadow-lg shadow-accent/50 transition duration-300 ease-in-out transform hover:scale-105"
         ) %>
+      <%# END: Call to Action Button - Get Credits %>
     </div>
   </div>
 </section>
+
+<%# END: Pricing Section %>
