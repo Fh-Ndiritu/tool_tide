@@ -6,7 +6,7 @@
       hover:scale-[1.05] hover:shadow-accent/70 hover:shadow-2xl relative group
     "
   >
-    <%= image_tag url_for(text_request.result_image.variant(resize_to_limit: [200, 200])),
+    <%= image_tag url_for(text_request.result_image.variant(resize_to_limit: [350, 350])),
                     loading: :lazy,
                     alt: text_request.prompt.truncate(100),
                     title: text_request.prompt.truncate(20),
