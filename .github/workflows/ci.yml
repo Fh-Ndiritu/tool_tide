@@ -98,7 +98,7 @@ jobs:
           # (RSpec typically picks up spec/system tests automatically when running `rspec` from the root)
 
       - name: Keep screenshots from failed system tests
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: failure()
         with:
           name: screenshots
