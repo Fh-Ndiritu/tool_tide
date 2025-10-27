@@ -30,7 +30,7 @@
           <%= link_to "Brush Edit", new_canva_mask_request_path(mask_request.canva), class: "cute-btn btn-secondary" %>
           <%= link_to "New Design", new_canva_path, class: "cute-btn btn-primary" %>
           <%= link_to "Change Style", edit_mask_request_path(mask_request, manual: true), class: "cute-btn !bg-accent-secondary !text-gray-800" %>
-          <%= link_to "Text Edit", new_text_request_path(signed_blob_id:  mask_request.main_view.blob.signed_id), class: "cute-btn btn-accent" %>
+          <%= link_to "Prompt Edit", new_text_request_path(signed_blob_id:  mask_request.main_view.blob.signed_id), class: "cute-btn btn-accent" %>
         </div>
 
         <hr class="border-t border-neutral-200">

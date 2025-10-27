@@ -22,7 +22,7 @@
       <%= link_to "Brush Edit", new_canva_mask_request_path(mask_request.canva), class: "!max-w-[45%] cute-btn btn-secondary " %>
       <%= link_to "New Design", new_canva_path, class: "!max-w-[45%] cute-btn btn-primary "  unless defined?(compact) %>
       <%= link_to "Change Style", edit_mask_request_path(mask_request, manual: true), class: "!max-w-[45%] cute-btn !bg-accent-secondary !text-gray-800 " %>
-      <%= link_to "Text Edit", new_text_request_path(signed_blob_id:  mask_request.main_view.blob.signed_id), class: "!max-w-[45%] cute-btn btn-accent " %>
+      <%= link_to "Ai Editor", new_text_request_path(signed_blob_id:  mask_request.main_view.blob.signed_id), class: "!max-w-[45%] cute-btn btn-accent " %>
       <%= link_to "Show", mask_request_path(mask_request), class: "!max-w-[45%] cute-btn !bg-cta-bg " if defined?(compact) %>
     </div>
 
