@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe FavoritesController, type: :controller do
-
   describe "GET #create" do
     it "returns http success" do
       get :create
@@ -15,5 +14,4 @@ RSpec.describe FavoritesController, type: :controller do
       expect(response).to have_http_status(:success)
     end
   end
-
 end
