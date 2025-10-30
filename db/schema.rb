@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_17_173451) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_30_172743) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -61,6 +61,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_17_173451) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_credits_on_user_id"
+  end
+
+  create_table "favorites", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "favoritable_type", null: false
+    t.integer "favoritable_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "liked"
+    t.index ["favoritable_type", "favoritable_id"], name: "index_favorites_on_favoritable"
+    t.index ["user_id"], name: "index_favorites_on_user_id"
   end
 
   create_table "generation_taggings", force: :cascade do |t|
@@ -255,6 +266,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_17_173451) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "canvas", "users"
   add_foreign_key "credits", "users"
+  add_foreign_key "favorites", "users"
   add_foreign_key "generation_taggings", "tags"
   add_foreign_key "landscape_requests", "landscapes"
   add_foreign_key "landscapes", "users"

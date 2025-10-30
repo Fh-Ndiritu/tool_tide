@@ -1,0 +1,45 @@
+<% turbo_frame_id ||= "favorite_#{favoritable.to_global_id.to_param}" %>
+
+<%= turbo_frame_tag turbo_frame_id do %>
+  <div class="flex items-center">
+    <% if favorite && favorite.liked? %>
+
+      <%# STATE: LIKED (Green button active) %>
+      <%# Action: DELETE /favorites/:id (Unset vote) %>
+      <%= button_to favorite, method: :delete, data: { turbo_frame: turbo_frame_id }, class: "icon-btn bg-green-500 hover:bg-gray-300 transition duration-150 rounded-full p-3 shadow-lg" do %>
+        <%= render(IconComponent.new(classes: "h-6 w-6 text-white fill-current", name: "thumbs_up")) %>
+      <% end %>
+
+      <%# Action: POST /favorites (Change to Dislike) %>
+      <%= button_to favorites_path(favoritable_type: favoritable.class.name, favoritable_id: favoritable.id, vote_type: 'dislike'), method: :post, data: { turbo_frame: turbo_frame_id }, class: "icon-btn bg-gray-200 hover:bg-red-500 transition duration-150 rounded-full p-3 shadow-lg ml-2" do %>
+        <%= render(IconComponent.new(classes: "h-6 w-6 text-gray-700 stroke-current", name: "thumbs_down")) %>
+      <% end %>
+
+    <% elsif favorite && !favorite.liked? %>
+
+      <%# Action: POST /favorites (Change to Like) %>
+      <%= button_to favorites_path(favoritable_type: favoritable.class.name, favoritable_id: favoritable.id, vote_type: 'like'), method: :post, data: { turbo_frame: turbo_frame_id }, class: "icon-btn bg-gray-200 hover:bg-green-500 transition duration-150 rounded-full p-3 shadow-lg" do %>
+        <%= render(IconComponent.new(classes: "h-6 w-6 text-gray-700 stroke-current", name: "thumbs_up")) %>
+      <% end %>
+
+      <%# STATE: DISLIKED (Red button active) %>
+      <%# Action: DELETE /favorites/:id (Unset vote) %>
+      <%= button_to favorite, method: :delete, data: { turbo_frame: turbo_frame_id }, class: "icon-btn bg-red-500 hover:bg-gray-300 transition duration-150 rounded-full p-3 shadow-lg ml-2" do %>
+        <%= render(IconComponent.new(classes: "h-6 w-6 text-white fill-current", name: "thumbs_down")) %>
+      <% end %>
+
+    <% else %>
+
+      <%# STATE: DEFAULT/NEUTRAL (No vote exists) %>
+      <%# Action: POST /favorites (Create Like) %>
+      <%= button_to favorites_path(favoritable_type: favoritable.class.name, favoritable_id: favoritable.id, vote_type: 'like'), method: :post, data: { turbo_frame: turbo_frame_id }, class: "icon-btn bg-gray-200 hover:bg-green-500 transition duration-150 rounded-full p-3 shadow-lg" do %>
+        <%= render(IconComponent.new(classes: "h-6 w-6 text-secondary stroke-current", name: "thumbs_up")) %>
+      <% end %>
+
+      <%# Action: POST /favorites (Create Dislike) %>
+      <%= button_to favorites_path(favoritable_type: favoritable.class.name, favoritable_id: favoritable.id, vote_type: 'dislike'), method: :post, data: { turbo_frame: turbo_frame_id }, class: "icon-btn bg-gray-200 hover:bg-red-500 transition duration-150 rounded-full p-3 shadow-lg ml-2" do %>
+        <%= render(IconComponent.new(classes: "h-6 w-6 text-secondary stroke-current", name: "thumbs_down")) %>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>

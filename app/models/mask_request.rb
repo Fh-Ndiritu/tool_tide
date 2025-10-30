@@ -7,6 +7,8 @@ class MaskRequest < ApplicationRecord
 
   has_many :mask_request_plants, dependent: :destroy
   has_many :plants, through: :mask_request_plants
+  has_many :favorites, as: :favoritable, dependent: :destroy
+  has_many :favorited_by_users, through: :favorites, source: :user
 
   has_one_attached :mask
 

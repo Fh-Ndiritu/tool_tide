@@ -16,6 +16,15 @@
           <%= mask_request.user_error %>
         </h4>
       </div>
+
+      <% favorite = current_user.favorites.find_by(favoritable: mask_request) %>
+
+      <div class="flex-shrink-0">
+        <%= render 'favorites/favorite_button',
+          favoritable: mask_request,
+          favorite: favorite
+        %>
+      </div>
     </div>
 
     <div class="flex flex-wrap max-sm:justify-center gap-3">
@@ -28,8 +37,7 @@
 
     <hr class="border-t border-neutral-200">
 
-    <% # Collect all attached views and map their necessary data for the Stimulus controller
-      views = [mask_request.main_view, mask_request.rotated_view, mask_request.drone_view].compact.select(&:attached?)
+    <% views = [mask_request.main_view, mask_request.rotated_view, mask_request.drone_view].compact.select(&:attached?)
 
       gallery_data = views.map.with_index do |view, index|
         { url: rails_blob_path(view), title: "#{index+1}. #{view.name.humanize}", index: index }
@@ -44,8 +52,7 @@
       <% views.each_with_index do |view, index| %>
         <% full_url = rails_blob_path(view) %>
 
-        <% # Conditional class to hide auxiliary images on mobile *only* if 'compact' is defined
-          auxiliary_image_class = if defined?(compact) && index > 0
+        <% auxiliary_image_class = if defined?(compact) && index > 0
                                     'hidden sm:block'
                                   else
                                     ''
@@ -58,9 +65,7 @@
             <%= auxiliary_image_class %>
           "
         >
-          <%# Clickable element for the gallery. We pass the index using params. %>
           <a href="<%= full_url %>" data-action="gallery#open" class="block">
-            <%# MOBILE OPTIMIZATION: Limit image height to 250px on mobile, reverting to 400px on small screens and up %>
             <%= image_tag(view.variant(resize_to_limit: [500, 500]), loading: :lazy, class: "w-full max-h-[250px] sm:max-h-[400px] object-cover transition-transform duration-500 group-hover:scale-[1.02]") %>
             <div
               class="
@@ -94,7 +99,6 @@
       <%= render 'mask_requests/gallery_modal' %>
     </div>
 
-    <%# The planting and design guide section is conditionally rendered if 'compact' is not defined %>
     <% if mask_request.plants.present? && !defined?(compact) %>
       <div class="planting_and_design_guide space-y-8">
         <section>
@@ -140,7 +144,6 @@
                 </div>
 
                 <dl class="space-y-1 text-gray-700 ml-6">
-                  <%# OPTIMIZATION: Use flex-col (vertical) on mobile, flex-row (horizontal) on small screens and up %>
                   <div class="flex flex-col sm:flex-row">
                     <dt class="sm:w-1/4 font-medium text-sm text-gray-500 pr-2">
                       Description:
@@ -150,7 +153,6 @@
                     </dd>
                   </div>
 
-                  <%# OPTIMIZATION: Use flex-col (vertical) on mobile, flex-row (horizontal) on small screens and up %>
                   <div class="flex flex-col sm:flex-row">
                     <dt class="sm:w-1/4 font-medium text-sm text-gray-500 pr-2">
                       Max Size:
