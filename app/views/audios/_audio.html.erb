@@ -1,0 +1,105 @@
+<% compact_mode = defined?(compact) && compact %>
+
+<% if compact_mode %>
+  <!-- ============================================== -->
+  <!-- COMPACT MODE (Used on Index Page) -->
+  <!-- The parent element (in index.html.erb) handles the main card and link styling.
+       This partial only provides the content structure for the flex row. -->
+  <!-- ============================================== -->
+
+  <div class="flex items-center w-full min-w-0">
+    <!-- Icon indicating audio status -->
+    <% if audio.audio_file.attached? %>
+      <div class="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-primary rounded-full shadow-md text-text-light mr-4">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
+        </svg>
+      </div>
+    <% else %>
+      <div class="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-red-400 rounded-full shadow-md text-text-light mr-4">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1zM9 14a1 1 0 112 0 1 1 0 01-2 0z" clip-rule="evenodd" />
+        </svg>
+      </div>
+    <% end %>
+
+    <!-- Content and Style Prompt -->
+    <div class="min-w-0">
+      <!-- Content (2 line-clamp) -->
+      <pre class="whitespace-pre-wrap text-sm text-neutral-900 font-semibold leading-snug line-clamp-2">
+        <%= audio.content %>
+      </pre>
+
+      <!-- Style Prompt (1 line-clamp) -->
+      <p class="text-xs text-text-secondary leading-snug line-clamp-1 mt-0.5">
+        <span class="text-neutral-700 font-bold mr-1">Prompt:</span> <%= audio.style_prompt.presence || 'N/A' %>
+      </p>
+    </div>
+  </div>
+
+<% else %>
+  <!-- ============================================== -->
+  <!-- DETAILED MODE (Used on Show Page) -->
+  <!-- This partial renders the complete, styled page content on the show view. -->
+  <!-- ============================================== -->
+
+  <div id="<%= dom_id audio %>" class="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+    <div class="space-y-6 w-full p-6 sm:p-10 bg-white shadow-2xl rounded-xl border border-neutral-300">
+
+      <!-- Navigation Links -->
+      <div class="pt-6  flex flex-col sm:flex-row justify-center gap-3">
+        <%= link_to "Edit this audio", edit_audio_path(audio),
+          class: "sm:flex-1 text-center rounded-lg px-4 py-2 bg-accent-secondary hover:bg-neutral-300 text-primary inline-block font-medium transition duration-200 shadow-sm hover:shadow-md" %>
+
+        <%= link_to "Back to audios", audios_path,
+          class: "sm:flex-1 text-center rounded-lg px-4 py-2 bg-accent-secondary hover:bg-neutral-300 text-primary inline-block font-medium transition duration-200 shadow-sm hover:shadow-md" %>
+      </div>
+
+      <h1 class="text-3xl font-extrabold text-neutral-900 mb-6 border-b pb-3">
+        Audio Generation Details
+      </h1>
+
+      <!-- Record Metadata -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Content -->
+        <div class="p-4 bg-neutral-100 rounded-lg border border-neutral-300">
+          <strong class="block font-semibold text-sm text-neutral-700 mb-1">Content:</strong>
+          <!-- Use pre-wrap for multi-line content -->
+          <pre class="whitespace-pre-wrap text-sm text-neutral-900 leading-relaxed"><%= audio.content %></pre>
+        </div>
+
+        <!-- Style Prompt -->
+        <div class="p-4 bg-neutral-100 rounded-lg border border-neutral-300">
+          <strong class="block font-semibold text-sm text-neutral-700 mb-1">Style Prompt:</strong>
+          <p class="text-sm text-neutral-900 leading-relaxed"><%= audio.style_prompt.presence || 'N/A' %></p>
+        </div>
+      </div>
+
+      <!-- Audio Player and Download Section -->
+      <% if audio.audio_file.attached? %>
+        <div class="pt-6 border-t border-neutral-300 space-y-4">
+          <h2 class="text-xl font-bold text-text-primary">Playback & Download</h2>
+
+          <!-- Detailed Audio Player -->
+          <div class="flex justify-center p-4 bg-accent-secondary rounded-lg shadow-md">
+            <audio controls class="w-full">
+              <source src="<%= url_for(audio.audio_file) %>" type="<%= audio.audio_file.content_type %>">
+              Your browser does not support the audio element.
+            </audio>
+          </div>
+
+          <!-- Download Button -->
+          <div class="text-center">
+            <%= link_to "Download Audio", url_for(audio.audio_file), download: audio.audio_file.filename,
+              class: "inline-flex items-center justify-center rounded-lg px-6 py-3 bg-cta-bg hover:bg-primary text-text-light text-lg font-bold shadow-lg transition duration-200 ease-in-out cursor-pointer hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-primary focus:ring-opacity-50" %>
+          </div>
+        </div>
+      <% else %>
+        <div class="pt-4 text-center p-4 bg-red-100 text-red-700 rounded-lg border border-red-300">
+          <p class="font-medium">Audio file not yet attached or an error occurred during generation.</p>
+        </div>
+      <% end %>
+
+    </div>
+  </div>
+<% end %>
