@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_02_135701) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_02_174922) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -41,10 +41,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_02_135701) do
 
   create_table "audios", force: :cascade do |t|
     t.json "content"
-    t.json "style_prompt"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "single_speaker", default: true
+    t.string "error_msg"
   end
 
   create_table "canvas", force: :cascade do |t|

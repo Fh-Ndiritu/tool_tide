@@ -24,7 +24,6 @@ require 'rails_helper'
 # `rails-controller-testing` gem.
 
 RSpec.describe AudiosController, type: :controller do
-
   # This should return the minimal set of attributes required to create a valid
   # Audio. As you add validations to Audio, be sure to
   # adjust the attributes here as well.
@@ -52,7 +51,7 @@ RSpec.describe AudiosController, type: :controller do
   describe "GET #show" do
     it "returns a success response" do
       audio = Audio.create! valid_attributes
-      get :show, params: {id: audio.to_param}, session: valid_session
+      get :show, params: { id: audio.to_param }, session: valid_session
       expect(response).to be_successful
     end
   end
@@ -67,7 +66,7 @@ RSpec.describe AudiosController, type: :controller do
   describe "GET #edit" do
     it "returns a success response" do
       audio = Audio.create! valid_attributes
-      get :edit, params: {id: audio.to_param}, session: valid_session
+      get :edit, params: { id: audio.to_param }, session: valid_session
       expect(response).to be_successful
     end
   end
@@ -76,19 +75,19 @@ RSpec.describe AudiosController, type: :controller do
     context "with valid params" do
       it "creates a new Audio" do
         expect {
-          post :create, params: {audio: valid_attributes}, session: valid_session
+          post :create, params: { audio: valid_attributes }, session: valid_session
         }.to change(Audio, :count).by(1)
       end
 
       it "redirects to the created audio" do
-        post :create, params: {audio: valid_attributes}, session: valid_session
+        post :create, params: { audio: valid_attributes }, session: valid_session
         expect(response).to redirect_to(Audio.last)
       end
     end
 
     context "with invalid params" do
       it "renders a response with 422 status (i.e. to display the 'new' template)" do
-        post :create, params: {audio: invalid_attributes}, session: valid_session
+        post :create, params: { audio: invalid_attributes }, session: valid_session
         expect(response).to have_http_status(:unprocessable_content)
       end
     end
@@ -102,14 +101,14 @@ RSpec.describe AudiosController, type: :controller do
 
       it "updates the requested audio" do
         audio = Audio.create! valid_attributes
-        put :update, params: {id: audio.to_param, audio: new_attributes}, session: valid_session
+        put :update, params: { id: audio.to_param, audio: new_attributes }, session: valid_session
         audio.reload
         skip("Add assertions for updated state")
       end
 
       it "redirects to the audio" do
         audio = Audio.create! valid_attributes
-        put :update, params: {id: audio.to_param, audio: new_attributes}, session: valid_session
+        put :update, params: { id: audio.to_param, audio: new_attributes }, session: valid_session
         expect(response).to redirect_to(audio)
       end
     end
@@ -117,7 +116,7 @@ RSpec.describe AudiosController, type: :controller do
     context "with invalid params" do
       it "renders a response with 422 status (i.e. to display the 'edit' template)" do
         audio = Audio.create! valid_attributes
-        put :update, params: {id: audio.to_param, audio: invalid_attributes}, session: valid_session
+        put :update, params: { id: audio.to_param, audio: invalid_attributes }, session: valid_session
         expect(response).to have_http_status(:unprocessable_content)
       end
     end
@@ -127,15 +126,14 @@ RSpec.describe AudiosController, type: :controller do
     it "destroys the requested audio" do
       audio = Audio.create! valid_attributes
       expect {
-        delete :destroy, params: {id: audio.to_param}, session: valid_session
+        delete :destroy, params: { id: audio.to_param }, session: valid_session
       }.to change(Audio, :count).by(-1)
     end
 
     it "redirects to the audios list" do
       audio = Audio.create! valid_attributes
-      delete :destroy, params: {id: audio.to_param}, session: valid_session
+      delete :destroy, params: { id: audio.to_param }, session: valid_session
       expect(response).to redirect_to(audios_url)
     end
   end
-
 end

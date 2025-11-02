@@ -1,141 +1,245 @@
 # frozen_string_literal: true
 
-require "net/http"
-require "uri"
-require "json"
-require "base64"
-require "googleauth" # Assumed to be installed in a Rails environment
 
-# Service object to interact with the Google Text-to-Speech API (using Gemini model).
-# This service is initialized with an Audio record and performs generation and attachment.
 class GeminiTts
   API_URL = "https://texttospeech.googleapis.com/v1/text:synthesize".freeze
   TOKEN_SCOPE = [ "https://www.googleapis.com/auth/cloud-platform" ].freeze
+  SAMPLE_RATE = 24000
+  CHANNELS = 1
+  BITS_PER_SAMPLE = 16
+  BLOCK_ALIGN = CHANNELS * BITS_PER_SAMPLE / 8
+  BYTE_RATE = SAMPLE_RATE * BITS_PER_SAMPLE / 8
 
-  # Map internal speaker aliases to actual IDs from environment variables.
+  # Define long timeouts for the API call
+  LONG_READ_TIMEOUT_SECONDS = 90
+  LONG_OPEN_TIMEOUT_SECONDS = 10
+
+  # A simple map for voice IDs (assuming this is defined elsewhere or should be here)
+  # NOTE: This map is required for the logic in `build_single_speaker_payload` and `create_speaker_batches`
   VOICE_MAP = {
-    default: ENV.fetch("DEFAULT_SPEAKER", "Puck"),
-    secondary: ENV.fetch("SECONDARY_SPEAKER", "Schedar"),
-    tertiary: ENV.fetch("TERTIARY_SPEAKER", "Iapetus")
+    Huria: "en-us-Wavenet-I",
+    SpeakerB: "en-us-Wavenet-A"
   }.freeze
 
-  # @param audio_record [Audio] The Rails Audio record instance.
+  # Initializes the service with an Audio record and sets project configuration.
   def initialize(audio_record)
     @audio = audio_record
     @project_id = ENV["GOOGLE_PROJECT_ID"]
+    @access_token = nil
   end
 
-  # Main method to construct the payload, call the API, and ATTACH the audio.
-  # This is the single public responsibility of the service.
-  # @return [Boolean] true on success (generation and attachment), false on failure.
+  # Executes the full TTS workflow: calls the API, saves the audio, and handles critical failure logging.
   def perform
     tts_result = call
 
     if tts_result[:success]
-      # --- CRITICAL: ATTACHMENT BEFORE RETURN ---
-      # Attach the generated audio file using Active Storage.
       @audio.audio_file.attach(
         io: StringIO.new(tts_result[:audio_data]),
         filename: "tts_#{@audio.id}_#{Time.now.to_i}.wav",
         content_type: "audio/wav"
       )
-      # Log success and return true only after the attachment is complete.
       Rails.logger.info "GeminiTTS Success: Audio attached to Audio ID #{@audio.id}."
       true
     else
-      # Update the record or log the error
       Rails.logger.error "GeminiTTS Error for Audio ID #{@audio.id}: #{tts_result[:error]}"
       false
     end
+  rescue => e
+    Rails.logger.error "GeminiTTS Fatal Error for Audio ID #{@audio.id}: #{e.message}"
+    raise e
   end
 
-  # Executes the speech synthesis request and returns the raw result hash.
-  # This helper method separates the API communication from the attachment logic.
+  # Orchestrates the TTS process: gets the token, iterates content blocks, calls the API, and stitches audio.
   def call
     unless @project_id && !@project_id.empty?
-      return { success: false, error: "Configuration Error: 'GOOGLE_PROJECT_ID' environment variable must be set." }
+      error_msg = "Configuration Error: 'GOOGLE_PROJECT_ID' environment variable must be set."
+      @audio.update(error_msg: error_msg)
+      raise error_msg
     end
 
     begin
-      access_token = get_access_token
-      @payload = build_payload # Build payload based on @audio attributes
-      response_data = synthesize_speech(access_token)
+      @access_token = get_access_token
+      raw_audio_parts = []
 
-      audio_content_b64 = response_data.dig("audioContent")
+      content_blocks = JSON.parse(@audio.content)
 
-      unless audio_content_b64
-        return { success: false, error: "API Response Error: Could not find 'audioContent'. Response: #{response_data.to_json}" }
+      content_blocks.each_with_index do |block, block_index|
+        style_prompt = block["style_prompt"].presence
+        turns = block["turns"]
+
+        unless turns.is_a?(Array) && turns.any?
+          Rails.logger.warn "Content Block #{block_index} skipped: 'turns' is empty or invalid."
+          next
+        end
+
+        if @audio.single_speaker
+          full_text = turns.map { |t| t["text"] }.join(" ")
+
+          Rails.logger.info "Processing TTS block #{block_index + 1}/#{content_blocks.size} in single-speaker mode."
+
+          payload = build_single_speaker_payload(full_text, style_prompt)
+          response_data = synthesize_speech(payload)
+
+          audio_content_b64 = response_data.dig("audioContent")
+          unless audio_content_b64
+            raise "API Response Error (Single Speaker, Block #{block_index}): Could not find 'audioContent'. Response: #{response_data.to_json}"
+          end
+          raw_audio_parts << Base64.decode64(audio_content_b64)
+
+        else
+          batches = create_speaker_batches(turns)
+
+          batches.each_with_index do |batch, batch_index|
+            Rails.logger.info "Processing TTS block #{block_index + 1}/#{content_blocks.size}, batch #{batch_index + 1}/#{batches.size} with speakers: #{batch[:speakers].map(&:to_s).join(', ')}"
+
+            payload = build_multi_speaker_payload(batch[:turns], style_prompt)
+            response_data = synthesize_speech(payload)
+
+            audio_content_b64 = response_data.dig("audioContent")
+            unless audio_content_b64
+              raise "API Response Error (Multi Speaker, Block #{block_index}, Batch #{batch_index}): Could not find 'audioContent'. Response: #{response_data.to_json}"
+            end
+
+            raw_audio_parts << Base64.decode64(audio_content_b64)
+          end
+        end
       end
 
-      raw_audio = Base64.decode64(audio_content_b64)
+      stitched_pcm = raw_audio_parts.join
+      final_wav_data = pcm_to_wav(stitched_pcm)
 
-      { success: true, audio_data: raw_audio }
+      { success: true, audio_data: final_wav_data }
 
+    rescue JSON::ParserError => e
+      error_msg = "Content parsing failed. Ensure content is valid JSON (array of hashes): #{e.message}"
+      @audio.update(error_msg: error_msg)
+      raise e
     rescue StandardError => e
-      { success: false, error: "TTS Processing Error: #{e.message}" }
+      error_msg = "TTS Processing Error: #{e.message}"
+      @audio.update(error_msg: error_msg)
+      raise e
     end
   end
 
-  private
+  # Constructs a WAV header and prepends it to the raw PCM audio data.
+  def pcm_to_wav(raw_pcm_data)
+    data_size = raw_pcm_data.bytesize
+    file_size = data_size + 36
 
-  # Dynamically builds the API payload based on the Audio record's attributes.
-  def build_payload
-    if @audio.single_speaker
-      build_single_speaker_payload
-    else
-      build_multi_speaker_payload
-    end
+    header = []
+
+    header << "RIFF"
+    header << [ file_size ].pack("V")
+    header << "WAVE"
+
+    header << "fmt "
+    header << [ 16 ].pack("V")
+    header << [ 1 ].pack("v")
+    header << [ CHANNELS ].pack("v")
+    header << [ SAMPLE_RATE ].pack("V")
+    header << [ BYTE_RATE ].pack("V")
+    header << [ BLOCK_ALIGN ].pack("v")
+    header << [ BITS_PER_SAMPLE ].pack("v")
+
+    header << "data"
+    header << [ data_size ].pack("V")
+
+    header.join + raw_pcm_data
   end
 
-  # --- Payload Builders ---
+  # Splits conversation turns into batches, ensuring each batch contains a maximum of two unique speakers for the multi-speaker API.
+  def create_speaker_batches(turns)
+    batches = []
+    current_batch_turns = []
+    current_batch_speakers = Set.new
 
-  # Builds the payload for a single-speaker request.
-  def build_single_speaker_payload
-    # Content and style_prompt are simple strings in the single-speaker case.
-    voice_id = VOICE_MAP[:default] # Use default for single speaker
+    turns.each do |turn|
+      speaker = turn["speaker"].to_sym
+
+      unless VOICE_MAP.key?(speaker)
+        raise ArgumentError, "Invalid speaker key '#{speaker}' in content. Must be one of the known speaker keys."
+      end
+
+      if current_batch_speakers.include?(speaker)
+        current_batch_turns << turn
+
+      elsif current_batch_speakers.size == 2
+        batches << { speakers: current_batch_speakers.to_a, turns: current_batch_turns }
+        current_batch_speakers = Set.new([ speaker ])
+        current_batch_turns = [ turn ]
+
+      else
+        current_batch_speakers.add(speaker)
+        current_batch_turns << turn
+      end
+    end
+
+    if current_batch_turns.any?
+      batches << { speakers: current_batch_speakers.to_a, turns: current_batch_turns }
+    end
+
+    if batches.empty?
+      raise ArgumentError, "Content block has no turns after parsing."
+    end
+
+    batches
+  end
+
+  # Constructs the JSON payload for a single-speaker synthesis request.
+  def build_single_speaker_payload(full_text, style_prompt)
+    voice_id = VOICE_MAP[:Huria]
 
     {
       input: {
-        text: @audio.content,
-        prompt: @audio.style_prompt
+        text: full_text,
+        prompt: style_prompt
       }.compact,
       voice: {
         languageCode: "en-us",
         name: voice_id,
-        model_name: "gemini-2.5-flash-tts"
+        modelName: "gemini-2.5-flash-tts"
       },
       audioConfig: {
         audioEncoding: "LINEAR16",
-        sampleRateHertz: 24000
+        sampleRateHertz: SAMPLE_RATE
       }
     }
   end
 
-  # Builds the payload for a multi-speaker request.
-  def build_multi_speaker_payload
-    # The content field is assumed to hold an array of turns in JSONB format:
-    # Example: [{ "speaker": "default", "text": "..." }, { "speaker": "secondary", "text": "..." }]
-    turns = @audio.content
-    style_prompt = @audio.style_prompt
+  # Constructs the JSON payload for a multi-speaker synthesis request (one batch).
+  def build_multi_speaker_payload(turns, style_prompt)
+    style_prompt_val = style_prompt.presence
+    unique_speaker_keys = turns.map { |t| t["speaker"].to_sym }.uniq
 
-    # 1. Build the multiSpeakerMarkup turns
-    markup_turns = turns.map do |turn|
-      speaker_alias = turn["speaker"].to_s.capitalize
-      { speaker: speaker_alias, text: turn["text"] }
+    if unique_speaker_keys.size == 1
+      dummy_speaker = (VOICE_MAP.keys.to_a - unique_speaker_keys.to_a).first
+      unless dummy_speaker
+        raise "Internal Error: VOICE_MAP must contain at least two entries to use a dummy speaker."
+      end
+      unique_speaker_keys << dummy_speaker
     end
 
-    # 2. Collect unique speaker aliases and their IDs (from VOICE_MAP)
-    unique_speaker_keys = turns.map { |t| t["speaker"].to_sym }.uniq
+    unless unique_speaker_keys.size == 2
+      raise ArgumentError, "Internal batching error: Expected exactly two speakers in payload, got #{unique_speaker_keys.size}."
+    end
+
+    markup_turns = turns.map do |turn|
+      { speaker: turn["speaker"].to_s, text: turn["text"] }
+    end
+
     speaker_configs = unique_speaker_keys.map do |key|
       voice_id = VOICE_MAP[key]
-      raise ArgumentError, "Invalid speaker key in content: #{key}" unless voice_id
-      { speakerAlias: key.to_s.capitalize, speakerId: voice_id }
+
+      unless voice_id
+        raise "Internal Error: Could not find voice ID for speaker key #{key}"
+      end
+
+      { speakerAlias: key.to_s, speakerId: voice_id }
     end
 
-    # The multi-speaker payload structure
     {
       input: {
-        prompt: style_prompt,
+        prompt: style_prompt_val,
         multiSpeakerMarkup: { turns: markup_turns }
       }.compact,
       voice: {
@@ -145,14 +249,12 @@ class GeminiTts
       },
       audioConfig: {
         audioEncoding: "LINEAR16",
-        sampleRateHertz: 24000
+        sampleRateHertz: SAMPLE_RATE
       }
     }
   end
 
-  # --- Authentication and API Helpers ---
-
-  # Generates an OAuth 2.0 Access Token from a Service Account JSON file.
+  # Fetches a Google OAuth 2.0 access token using credentials from the environment.
   def get_access_token
     credentials_path = ENV["GOOGLE_APPLICATION_CREDENTIALS"]
     unless credentials_path && !credentials_path.empty?
@@ -172,28 +274,35 @@ class GeminiTts
     raise "Authentication setup incomplete: The 'google-auth' gem is required to use 'Google::Auth::ServiceAccountCredentials'."
   end
 
-  # Performs the Text-to-Speech API request.
-  def synthesize_speech(access_token)
-    uri = URI(API_URL)
-    http = Net::HTTP.new(uri.host, uri.port)
-    http.use_ssl = true
+  # Performs the HTTP request to the Google Text-to-Speech API.
+  def synthesize_speech(payload)
+    # 1. Create a Faraday connection instance
+    conn = Faraday.new(url: API_URL) do |faraday|
+      # 2. Set request headers which are constant for this API
+      faraday.headers["Content-Type"] = "application/json"
+      faraday.headers["Authorization"] = "Bearer #{@access_token}"
+      faraday.headers["x-goog-user-project"] = @project_id
 
-    request = Net::HTTP::Post.new(uri.path, "Content-Type" => "application/json")
+      # 3. Use an adapter (Net::HTTP is the default)
+      faraday.adapter Faraday.default_adapter
+    end
 
-    # Set required headers
-    request["Authorization"] = "Bearer #{access_token}"
-    request["x-goog-user-project"] = @project_id
+    # 4. Make the POST request
+    response = conn.post do |req|
+      # Set long HTTP timeouts on the request options
+      req.options.timeout = LONG_READ_TIMEOUT_SECONDS     # Read/Write Timeout (90 seconds)
+      req.options.open_timeout = LONG_OPEN_TIMEOUT_SECONDS # Connection Timeout (10 seconds)
+      req.body = payload.to_json
+    end
 
-    # Set the request body
-    request.body = @payload.to_json
-
-    # Send the request
-    response = http.request(request)
-
-    unless response.is_a?(Net::HTTPSuccess)
-      raise "API Request failed with status #{response.code}: #{response.body}"
+    # 5. Faraday's `response.success?` is equivalent to checking Net::HTTPSuccess (200-299)
+    unless response.success?
+      raise "API Request failed with status #{response.status}: #{response.body}"
     end
 
     JSON.parse(response.body)
+  rescue Faraday::TimeoutError => e
+    # Catch specific Faraday timeout errors for clearer logging/reporting
+    raise "API Timeout Error (Faraday): The TTS request exceeded the timeout of #{LONG_READ_TIMEOUT_SECONDS} seconds. Message: #{e.message}"
   end
 end

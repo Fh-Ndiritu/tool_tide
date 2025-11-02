@@ -29,11 +29,6 @@
       <pre class="whitespace-pre-wrap text-sm text-neutral-900 font-semibold leading-snug line-clamp-2">
         <%= audio.content %>
       </pre>
-
-      <!-- Style Prompt (1 line-clamp) -->
-      <p class="text-xs text-text-secondary leading-snug line-clamp-1 mt-0.5">
-        <span class="text-neutral-700 font-bold mr-1">Prompt:</span> <%= audio.style_prompt.presence || 'N/A' %>
-      </p>
     </div>
   </div>
 
@@ -59,22 +54,6 @@
         Audio Generation Details
       </h1>
 
-      <!-- Record Metadata -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- Content -->
-        <div class="p-4 bg-neutral-100 rounded-lg border border-neutral-300">
-          <strong class="block font-semibold text-sm text-neutral-700 mb-1">Content:</strong>
-          <!-- Use pre-wrap for multi-line content -->
-          <pre class="whitespace-pre-wrap text-sm text-neutral-900 leading-relaxed"><%= audio.content %></pre>
-        </div>
-
-        <!-- Style Prompt -->
-        <div class="p-4 bg-neutral-100 rounded-lg border border-neutral-300">
-          <strong class="block font-semibold text-sm text-neutral-700 mb-1">Style Prompt:</strong>
-          <p class="text-sm text-neutral-900 leading-relaxed"><%= audio.style_prompt.presence || 'N/A' %></p>
-        </div>
-      </div>
-
       <!-- Audio Player and Download Section -->
       <% if audio.audio_file.attached? %>
         <div class="pt-6 border-t border-neutral-300 space-y-4">
@@ -99,6 +78,17 @@
           <p class="font-medium">Audio file not yet attached or an error occurred during generation.</p>
         </div>
       <% end %>
+
+      <!-- Record Metadata -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Content -->
+        <div class="p-4 bg-neutral-100 rounded-lg border border-neutral-300">
+          <strong class="block font-semibold text-sm text-neutral-700 mb-1">Content:</strong>
+          <!-- Use pre-wrap for multi-line content -->
+          <pre class="whitespace-pre-wrap text-sm text-neutral-900 leading-relaxed"><%= audio.content %></pre>
+        </div>
+      </div>
+
 
     </div>
   </div>

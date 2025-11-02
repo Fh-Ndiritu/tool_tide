@@ -65,6 +65,6 @@ class AudiosController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def audio_params
-      params.expect(audio: [ :content, :style_prompt ])
+      params.expect(audio: [ :content, :single_speaker ])
     end
 end

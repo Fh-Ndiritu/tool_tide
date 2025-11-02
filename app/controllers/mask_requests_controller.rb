@@ -25,7 +25,6 @@ class MaskRequestsController < ApplicationController
 
   # GET /mask_requests/1/edit
   def edit
-    # binding.irb
     @canva = @mask_request.canva
     if params[:manual].present?
       redirect_to low_credits_path and return unless @canva.user.afford_generation?
