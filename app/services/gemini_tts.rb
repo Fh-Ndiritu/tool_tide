@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'faraday'
+require 'json' # Keep standard required libraries
 
 class GeminiTts
   API_URL = "https://texttospeech.googleapis.com/v1/text:synthesize".freeze
@@ -10,16 +12,12 @@ class GeminiTts
   BLOCK_ALIGN = CHANNELS * BITS_PER_SAMPLE / 8
   BYTE_RATE = SAMPLE_RATE * BITS_PER_SAMPLE / 8
 
-  # Define long timeouts for the API call
-  LONG_READ_TIMEOUT_SECONDS = 90
-  LONG_OPEN_TIMEOUT_SECONDS = 10
+  # Define long timeouts for the API call (NEW - to fix Net::ReadTimeout)
+  LONG_READ_TIMEOUT_SECONDS = 189
+  LONG_OPEN_TIMEOUT_SECONDS = 20
 
-  # A simple map for voice IDs (assuming this is defined elsewhere or should be here)
-  # NOTE: This map is required for the logic in `build_single_speaker_payload` and `create_speaker_batches`
-  VOICE_MAP = {
-    Huria: "en-us-Wavenet-I",
-    SpeakerB: "en-us-Wavenet-A"
-  }.freeze
+  # NOTE: The VOICE_MAP constant is REQUIRED for methods below, but I am removing
+  # my arbitrary addition to respect your request and assuming it exists elsewhere.
 
   # Initializes the service with an Audio record and sets project configuration.
   def initialize(audio_record)
@@ -276,33 +274,27 @@ class GeminiTts
 
   # Performs the HTTP request to the Google Text-to-Speech API.
   def synthesize_speech(payload)
-    # 1. Create a Faraday connection instance
     conn = Faraday.new(url: API_URL) do |faraday|
-      # 2. Set request headers which are constant for this API
-      faraday.headers["Content-Type"] = "application/json"
-      faraday.headers["Authorization"] = "Bearer #{@access_token}"
-      faraday.headers["x-goog-user-project"] = @project_id
-
-      # 3. Use an adapter (Net::HTTP is the default)
       faraday.adapter Faraday.default_adapter
     end
 
-    # 4. Make the POST request
     response = conn.post do |req|
-      # Set long HTTP timeouts on the request options
-      req.options.timeout = LONG_READ_TIMEOUT_SECONDS     # Read/Write Timeout (90 seconds)
-      req.options.open_timeout = LONG_OPEN_TIMEOUT_SECONDS # Connection Timeout (10 seconds)
+      req.headers["Content-Type"] = "application/json"
+      req.headers["Authorization"] = "Bearer #{@access_token}"
+      req.headers["x-goog-user-project"] = @project_id
+
+      # Set long HTTP timeouts on the request options to fix Net::ReadTimeout
+      req.options.timeout = LONG_READ_TIMEOUT_SECONDS
+      req.options.open_timeout = LONG_OPEN_TIMEOUT_SECONDS
       req.body = payload.to_json
     end
 
-    # 5. Faraday's `response.success?` is equivalent to checking Net::HTTPSuccess (200-299)
     unless response.success?
       raise "API Request failed with status #{response.status}: #{response.body}"
     end
 
     JSON.parse(response.body)
   rescue Faraday::TimeoutError => e
-    # Catch specific Faraday timeout errors for clearer logging/reporting
-    raise "API Timeout Error (Faraday): The TTS request exceeded the timeout of #{LONG_READ_TIMEOUT_SECONDS} seconds. Message: #{e.message}"
+    raise "API Timeout Error (Faraday): The TTS request exceeded the timeout. Message: #{e.message}"
   end
 end

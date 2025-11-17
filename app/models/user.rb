@@ -4,7 +4,7 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable, :trackable
+         :recoverable, :rememberable, :validatable, :trackable, :omniauthable
 
   has_many :payment_transactions, dependent: :destroy
 
@@ -17,10 +17,24 @@ class User < ApplicationRecord
 
   validates :privacy_policy, acceptance: { message: "must be accepted." }
 
+  enum :source, {
+    email: 0,
+    google: 1
+  }
+
   def state_address
     return "" if address.blank?
 
     "#{address['state']}, #{address['country']}"
+  end
+
+  def self.from_omniauth(auth)
+    where(email: auth.info.email).first_or_create do |user|
+      user.password = Devise.friendly_token[0, 20]
+      user.name = auth.info.name
+      user.privacy_policy = true
+      user.source = 'google'
+    end
   end
 
   def afford_generation?

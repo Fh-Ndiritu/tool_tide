@@ -1,101 +1,139 @@
-<div class="flex authentication">
-  <div class="card">
-    <%= content_tag :h3, "We are adding accounts to help preserve your work.", class: "py-4 flex w-full  text-white text-sm fancy-text justify-center" %>
-    <h2>Sign up, it's Free!</h2>
+<div class="flex flex-col items-center justify-center min-h-screen bg-gray-50">
+  <%# Card Container: Sizing and Shadow (max-w-md on sm+ screens) %>
+  <div class="w-full max-w-xs sm:max-w-md bg-white rounded-xl shadow-xl mx-4">
+    <%# Padding Wrapper %>
+    <div class="px-6 py-8 sm:px-8">
+      <%# --- Heading --- %>
+      <h1 class="text-3xl font-extrabold text-gray-900 text-center">
+        Create Your Account
+      </h1>
 
-    <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-      <%= render "devise/shared/error_messages", resource: resource %>
-      <div class="field">
-        <%= f.label :email %>
-        <br>
+      <p class="mt-2 text-center text-sm text-gray-500 mb-8">
+        Sign up in seconds, it's free.
+      </p>
 
-        <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "Email" %>
-      </div>
-
-      <div class="field">
-        <%= f.label :password %>
-        <% if @minimum_password_length %>
-          <em>(<%= @minimum_password_length %> characters minimum)</em>
+      <%# --- START: GOOGLE SIGN-UP BUTTON (Same reliable implementation as Log In) --- %>
+      <div class="mb-6">
+        <%= button_to user_google_oauth2_omniauth_authorize_path,
+                method: :post,
+                data: { turbo: false },
+                class: "w-full flex items-center justify-center space-x-3 px-5 py-2.5 border border-gray-300 rounded-lg shadow-sm text-base font-bold text-gray-700 bg-white hover:bg-gray-50 active:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out" do %>
+          <%= render(IconComponent.new(name: "google", classes: "h-5 w-5 text-gray-600")) %>
+          <span>Sign up with Google</span>
         <% end %>
-        <br>
+        <span class="text-xs my-1">
+          By signing up you agree to the
+          <a href="/privacy-policy" class="font-medium text-indigo-600 hover:text-indigo-500"> Privacy Policy </a>
+        </span>
+      </div>
 
-        <div
-          class="flex flex-inline relative p-0 mt-4"
-          data-controller="password-visibility"
-        >
-          <%= f.password_field :password, autocomplete: "new-password", class:"pr-5 !m-0 ", data: {password_visibility_target: 'input'},  placeholder: "Password" %>
-          <button
-            type="button"
-            data-action="password-visibility#toggle"
-            class="
-              absolute h-full right-5 top-1/2 -translate-y-1/2
-              !text-gray-400
-            "
-          >
-            <span data-password-visibility-target="icon">
-              <%= render(IconComponent.new(name: "eye", classes: "h-2 w-6")) %>
-            </span>
-            <span data-password-visibility-target="icon" class="hidden">
-              <%= render(IconComponent.new(name: "eye_slash", classes: "h-6 w-6")) %>
-            </span>
-          </button>
+      <%# --- END: GOOGLE SIGN-UP BUTTON --- %>
+
+      <%# --- OR DIVIDER --- %>
+      <div class="relative mb-6">
+        <div class="absolute inset-0 flex items-center" aria-hidden="true">
+          <div class="w-full border-t border-gray-300"></div>
+        </div>
+        <div class="relative flex justify-center text-sm">
+          <span class="px-2 bg-white text-gray-500 rounded-full"> Or continue with email </span>
         </div>
       </div>
 
-      <div class="field">
-        <%= f.label :password_confirmation %>
-        <br>
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+        <%= render "devise/shared/error_messages", resource: resource %>
 
-        <div
-          class="flex flex-inline relative p-0 mt-4"
-          data-controller="password-visibility"
-        >
-          <%= f.password_field :password_confirmation, autocomplete: "new-password", class:"pr-5 !m-0 ", data: {password_visibility_target: 'input'},  placeholder: "Confirm Password" %>
-          <button
-            type="button"
-            data-action="password-visibility#toggle"
-            class="
-              absolute h-full right-5 top-1/2 -translate-y-1/2
-              !text-gray-400
-            "
-          >
-            <span data-password-visibility-target="icon">
-              <%= render(IconComponent.new(name: "eye", classes: "h-2 w-6")) %>
-            </span>
-            <span data-password-visibility-target="icon" class="hidden">
-              <%= render(IconComponent.new(name: "eye_slash", classes: "h-6 w-6")) %>
-            </span>
-          </button>
-        </div>
-      </div>
+        <div class="space-y-4">
+          <%# --- Email Field --- %>
+          <div class="field">
+            <%= f.label :email, class: "block text-sm font-medium text-gray-700" %>
+            <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "you@example.com", class: "mt-1 w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-base p-2 placeholder-gray-400 bg-gray-200 hover:bg-white transition duration-150" %>
+          </div>
 
-      <div class="flex items-start mt-6 align-middle">
-        <div class="flex items-center h-3 align-middle">
-          <%= f.check_box :privacy_policy, {
-          required: true,
-          class: "focus:ring-red-500 h-4 w-4 text-red-600 border-gray-500 rounded-sm",
-          data: { action: "change->checkbox#toggle" }
-        }, 'true', 'false' %>
-        </div>
-        <div class="ml-3 text-sm">
-          <label for="privacy-policy" class="font-medium text-gray-200">
-            I have read and agree to the
-            <a
-              href="/privacy-policy"
-              class="text-secondary hover:text-white hover:underline"
+          <%# --- Password Field --- %>
+          <div class="field">
+            <%= f.label :password, class: "block text-sm font-medium text-gray-700" %>
+            <% if @minimum_password_length %>
+              <em class="text-xs text-gray-500 ml-1">(<%= @minimum_password_length %> characters minimum)</em>
+            <% end %>
+
+            <div
+              class="flex relative mt-1"
+              data-controller="password-visibility"
             >
-              Privacy Policy
-            </a>
-            .
-          </label>
+              <%= f.password_field :password, autocomplete: "new-password", class:"w-full pr-12 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-base p-2 placeholder-gray-400 bg-gray-200 hover:bg-white transition duration-150", data: {password_visibility_target: 'input'},  placeholder: "Password" %>
+              <button
+                type="button"
+                data-action="password-visibility#toggle"
+                class="
+                  absolute right-0 top-0 h-full w-12 flex items-center justify-center
+                  text-gray-400 hover:text-gray-600
+                "
+              >
+                <span data-password-visibility-target="icon">
+                  <%= render(IconComponent.new(name: "eye", classes: "h-5 w-5")) %>
+                </span>
+                <span data-password-visibility-target="icon" class="hidden">
+                  <%= render(IconComponent.new(name: "eye_slash", classes: "h-5 w-5")) %>
+                </span>
+              </button>
+            </div>
+          </div>
+
+          <%# --- Password Confirmation Field --- %>
+          <div class="field">
+            <%= f.label :password_confirmation, class: "block text-sm font-medium text-gray-700" %>
+            <div
+              class="flex relative mt-1"
+              data-controller="password-visibility"
+            >
+              <%= f.password_field :password_confirmation, autocomplete: "new-password", class:"w-full pr-12 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-base p-2 placeholder-gray-400 bg-gray-200 hover:bg-white transition duration-150", data: {password_visibility_target: 'input'},  placeholder: "Confirm Password" %>
+              <button
+                type="button"
+                data-action="password-visibility#toggle"
+                class="
+                  absolute right-0 top-0 h-full w-12 flex items-center justify-center
+                  text-gray-400 hover:text-gray-600
+                "
+              >
+                <span data-password-visibility-target="icon">
+                  <%= render(IconComponent.new(name: "eye", classes: "h-5 w-5")) %>
+                </span>
+                <span data-password-visibility-target="icon" class="hidden">
+                  <%= render(IconComponent.new(name: "eye_slash", classes: "h-5 w-5")) %>
+                </span>
+              </button>
+            </div>
+          </div>
         </div>
+
+        <%# --- Privacy Policy Checkbox (UX/Styling improved) --- %>
+        <div class="flex items-start mt-6">
+          <div class="flex items-center h-5">
+            <%= f.check_box :privacy_policy, {
+            required: true,
+            class: "h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500",
+            data: { action: "change->checkbox#toggle" }
+          }, 'true', 'false' %>
+          </div>
+          <div class="ml-3 text-sm">
+            <label for="user_privacy_policy" class="font-medium text-gray-700">
+              I have read and agree to the
+              <a href="/privacy-policy" class="font-medium text-indigo-600 hover:text-indigo-500"> Privacy Policy </a>.
+            </label>
+          </div>
+        </div>
+
+        <%# --- Submit Button (Primary CTA) --- %>
+        <div class="actions mt-6">
+          <%= f.submit "Sign up", class: "w-full flex justify-center py-2.5 px-4 border border-transparent rounded-md shadow-md text-base font-semibold text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer transition duration-150 ease-in-out" %>
+        </div>
+      <% end %>
+
+      <%# --- Footer Link: Already Registered? --- %>
+      <div class="mt-6 text-center text-sm">
+        <span class="text-gray-600">Already have an account?</span>
+        <%= link_to "Log in", new_session_path(resource_name), class: "font-medium text-indigo-600 hover:text-indigo-500 ml-1" %>
       </div>
-
-      <div class="actions"><%= f.submit "Sign up" %></div>
-    <% end %>
-
-    <div class="shared_links flex gap-3 text-white my-6">
-      <%= render "devise/shared/links" %>
     </div>
   </div>
 </div>

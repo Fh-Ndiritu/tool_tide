@@ -128,3 +128,7 @@ gem "sentry-ruby"
 gem "ancestry", "~> 4.3"
 
 gem "redcarpet", "~> 3.6"
+
+gem 'omniauth'
+gem 'omniauth-google-oauth2'
+gem 'omniauth-rails_csrf_protection'

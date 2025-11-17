@@ -168,6 +168,7 @@ html {
 .text-fancy {
   font-family: 'Comic Relief', system-ui;
 }
+
 .authentication {
   color: var(--color-text-light);
 }

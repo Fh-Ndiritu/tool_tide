@@ -1,55 +1,100 @@
-<div class="flex authentication">
-  <div class="card">
-    <%= content_tag :h3, "We are adding accounts to help preserve your work.", class: "py-4 flex w-full  text-white text-sm fancy-text justify-center" %>
-    <h2>Log in</h2>
+<div class="flex flex-col items-center justify-center min-h-screen bg-gray-50">
+  <%# Card Container: Sizing and Shadow (Replaces .authentication .card CSS) %>
+  <div class="w-full max-w-xs sm:max-w-md bg-white rounded-xl shadow-xl mx-4">
+    <%# Padding Wrapper (Replaces custom card padding) %>
+    <div class="px-6 py-8 sm:px-8">
+      <%# --- Heading (Replaces .authentication h2) --- %>
+      <h1 class="text-3xl font-extrabold text-gray-900 text-center">
+        Welcome Back
+      </h1>
 
-    <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-      <div class="field">
-        <%= f.label :email %>
-        <br>
+      <p class="mt-2 text-center text-sm text-gray-500 mb-8">
+        Sign in to continue to your dashboard.
+      </p>
 
-        <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "Email" %>
+      <%# --- GOOGLE SIGN-IN BUTTON --- %>
+      <div class="mb-6">
+        <%= button_to user_google_oauth2_omniauth_authorize_path,
+                method: :post,
+                data: { turbo: false },
+                class: "w-full flex items-center justify-center space-x-3 px-5 py-2.5 border border-gray-300 rounded-lg shadow-sm text-base font-bold text-gray-700 bg-white hover:bg-gray-50 active:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out" do %>
+          <%= render(IconComponent.new(name: "google", classes: "h-5 w-5 text-gray-600")) %>
+          <span>Sign in with Google</span>
+        <% end %>
       </div>
 
-      <div class="field">
-        <%= f.label :password %>
-        <br>
-
-        <div
-          class="flex flex-inline relative p-0 mt-4"
-          data-controller="password-visibility"
-        >
-          <%= f.password_field :password, autocomplete: "current-password", class:"pr-5 !m-0 ", data: {password_visibility_target: 'input'},  placeholder: "Password" %>
-          <button
-            type="button"
-            data-action="password-visibility#toggle"
-            class="
-              absolute h-full right-5 top-1/2 -translate-y-1/2
-              !text-gray-400
-            "
-          >
-            <span data-password-visibility-target="icon">
-              <%= render(IconComponent.new(name: "eye", classes: "h-2 w-6")) %>
-            </span>
-            <span data-password-visibility-target="icon" class="hidden">
-              <%= render(IconComponent.new(name: "eye_slash", classes: "h-6 w-6")) %>
-            </span>
-          </button>
+      <%# --- OR DIVIDER --- %>
+      <div class="relative mb-6">
+        <div class="absolute inset-0 flex items-center" aria-hidden="true">
+          <div class="w-full border-t border-gray-300"></div>
+        </div>
+        <div class="relative flex justify-center text-sm">
+          <span class="px-2 bg-white text-gray-500 rounded-full"> Or use your credentials </span>
         </div>
       </div>
 
-      <% if devise_mapping.rememberable? %>
-        <div class="field">
-          <%= f.check_box :remember_me %>
-          <%= f.label :remember_me %>
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+        <div class="space-y-4">
+          <%# --- Email Field --- %>
+          <div class="field">
+            <%# Label class now handles the custom styling (.authentication .field label) %>
+            <%= f.label :email, class: "block text-sm font-medium text-gray-700" %>
+            <%# Input classes now handle background, padding, and focus (Replaces custom input CSS) %>
+            <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "you@example.com", class: "mt-1 w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-base p-2 placeholder-gray-400 bg-gray-200 hover:bg-white transition duration-150" %>
+          </div>
+
+          <%# --- Password Field --- %>
+          <div class="field">
+            <%= f.label :password, class: "block text-sm font-medium text-gray-700" %>
+            <div
+              class="flex relative mt-1"
+              data-controller="password-visibility"
+            >
+              <%= f.password_field :password, autocomplete: "current-password", class:"w-full pr-12 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-base p-2 placeholder-gray-400 bg-gray-200 hover:bg-white transition duration-150", data: {password_visibility_target: 'input'},  placeholder: "••••••••" %>
+              <button
+                type="button"
+                data-action="password-visibility#toggle"
+                class="
+                  absolute right-0 top-0 h-full w-12 flex items-center justify-center
+                  text-gray-400 hover:text-gray-600
+                "
+              >
+                <span data-password-visibility-target="icon">
+                  <%= render(IconComponent.new(name: "eye", classes: "h-5 w-5")) %>
+                </span>
+                <span data-password-visibility-target="icon" class="hidden">
+                  <%= render(IconComponent.new(name: "eye_slash", classes: "h-5 w-5")) %>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <%# --- Remember Me and Forgot Password --- %>
+        <div class="mt-4 flex items-center justify-between">
+          <% if devise_mapping.rememberable? %>
+            <div class="field flex items-center">
+              <%= f.check_box :remember_me, class: "h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500" %>
+              <%= f.label :remember_me, class: "ml-2 block text-sm text-gray-900" %>
+            </div>
+          <% end %>
+
+          <div class="text-sm">
+            <%= link_to "Forgot password?", new_password_path(resource_name), class: "font-medium text-indigo-600 hover:text-indigo-500" %>
+          </div>
+        </div>
+
+        <%# --- Submit Button (Replaces .authentication .actions CSS) --- %>
+        <div class="actions mt-6">
+          <%= f.submit "Log in", class: "w-full flex justify-center py-2.5 px-4 border border-transparent rounded-md shadow-md text-base font-semibold text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer transition duration-150 ease-in-out" %>
         </div>
       <% end %>
 
-      <div class="actions"><%= f.submit "Log in" %></div>
-    <% end %>
-
-    <div class="shared_links flex gap-3 text-white my-6">
-      <%= render "devise/shared/links" %>
+      <%# --- Footer Link --- %>
+      <div class="mt-6 text-center text-sm">
+        <span class="text-gray-600">Don't have an account?</span>
+        <%= link_to "Sign up", new_registration_path(resource_name), class: "font-medium text-indigo-600 hover:text-indigo-500 ml-1" %>
+      </div>
     </div>
   </div>
 </div>
