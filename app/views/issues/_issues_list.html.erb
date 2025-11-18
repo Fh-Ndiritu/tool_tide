@@ -1,0 +1,19 @@
+<%# app/views/issues/_issues_list.html.erb %>
+<%# Local variable: issues %>
+
+<div class="space-y-4">
+  <% if issues.any? %>
+    <% issues.each do |issue| %>
+      <%# Wrap each issue in a div with its DOM ID for Turbo Stream updates %>
+      <%= turbo_frame_tag issue do %>
+        <%= render "issues/issue_card", issue: issue %>
+      <% end %>
+    <% end %>
+  <% else %>
+    <div class="p-10 text-center bg-neutral-100 rounded-lg border border-neutral-300">
+      <p class="text-neutral-700">
+        No feedback issues have been submitted yet.
+      </p>
+    </div>
+  <% end %>
+</div>

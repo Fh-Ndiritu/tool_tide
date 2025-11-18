@@ -14,6 +14,8 @@ class User < ApplicationRecord
   has_many :text_requests, dependent: :destroy
   has_many :favorites, as: :favoritable
   has_many :favorites, dependent: :destroy
+  has_many :issues
+  has_many :votes
 
   validates :privacy_policy, acceptance: { message: "must be accepted." }
 
@@ -52,6 +54,12 @@ class User < ApplicationRecord
   def sufficient_pro_credits?
     # this means you can afford the next minimum pro cost
     pro_engine_credits >= GOOGLE_IMAGE_COST * DEFAULT_IMAGE_COUNT
+  end
+
+  def redacted_email
+    email
+    email[0..5] = "*" * 5
+    email
   end
 
   private

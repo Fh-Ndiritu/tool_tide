@@ -1,0 +1,81 @@
+<%# app/views/issues/_issue_card.html.erb %>
+<%# Local variable: issue %>
+
+<div
+  class="
+    flex p-4 border border-neutral-300 rounded-lg bg-white
+    hover:shadow-md transition duration-150 ease-in-out
+  "
+>
+  <%# 1. Voting Column (Left) %>
+  <%= render "issues/voting_block", issue: issue %>
+
+  <%# 2. Issue Content Frame (Main) - This is the swappable area %>
+  <%= turbo_frame_tag dom_id(issue, :content) do %>
+    <div class="flex-1 pl-4">
+      <div class="flex justify-between items-start">
+        <h3 class="text-xl font-semibold text-text-dark mb-1">
+          <%= link_to issue.title, issue_path(issue), class: "hover:text-text-primary" %>
+        </h3>
+
+        <%# Status Badge %>
+        <span class="ml-4 px-3 py-1 text-xs font-semibold rounded-full <%= status_badge_classes(issue.progress) %>">
+          <%= issue.progress.humanize %>
+        </span>
+      </div>
+
+      <p class="text-neutral-700 line-clamp-2 mb-2">
+        <%= issue.body.truncate(150) %>
+      </p>
+
+      <div class="text-sm text-neutral-500">
+        <span class="mr-3">
+          Category:
+          <span class="font-medium"><%= issue.category.humanize %></span>
+        </span>
+
+        <span>
+          Submitted by <%= issue.user.redacted_email %> on
+          <%= issue.created_at.strftime("%b %d, %Y") %>
+        </span>
+
+        <%# Delivery Date Badge (Visible only if applicable and set) %>
+        <% if issue.delivery_trackable? && issue.delivery_date.present? %>
+          <span
+            class="
+              ml-4 px-2 py-0.5 text-xs font-medium rounded-md
+              bg-accent-secondary text-text-dark
+            "
+          >
+            Target: <%= issue.delivery_date.strftime("%b %d") %>
+          </span>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <% if current_user.admin? %>
+    <div
+      class="
+        pl-4 border-l border-neutral-300 hidden sm:flex flex-col space-y-2
+        min-w-[5rem]
+      "
+    >
+      <%# Update Edit link to target the issue_content frame %>
+      <%= link_to "Edit", edit_issue_path(issue),
+          data: { turbo_frame: dom_id(issue, :content) },
+          class: "text-sm text-text-primary hover:underline whitespace-nowrap" %>
+
+      <%= button_to "Archive", issue_path(issue),
+          method: :patch,
+          params: { issue: { progress: :archived } },
+          data: { turbo_confirm: "Are you sure you want to archive this issue? It will be hidden from the main view." },
+          class: "text-sm text-red-500 hover:text-red-700 hover:underline cursor-pointer bg-transparent border-none p-0 text-left whitespace-nowrap" %>
+
+      <%= button_to "Next Up", issue_path(issue),
+          method: :patch,
+          params: { issue: { progress: :next_up } },
+          class: "text-sm text-accent hover:text-accent hover:underline cursor-pointer bg-transparent border-none p-0 text-left whitespace-nowrap" %>
+    </div>
+  <% end %>
+</div>

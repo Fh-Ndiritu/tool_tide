@@ -1,0 +1,59 @@
+<%= form_with(model: issue) do |form| %>
+  <% if issue.errors.any? %>
+    <div
+      id="error_explanation"
+      class="bg-red-100 text-red-700 px-4 py-3 font-medium rounded-md mb-6"
+    >
+      <h2 class="font-bold mb-2">
+        <%= pluralize(issue.errors.count, "error") %> prohibited this issue
+        from being submitted:
+      </h2>
+
+      <ul class="list-disc ml-6">
+        <% issue.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="space-y-5">
+    <div>
+      <%= form.label :title, class: "font-semibold text-text-dark" %>
+
+      <%= form.text_field :title,
+        placeholder: "Summarize the issue clearly (e.g., 'Login button is missing')",
+        class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full",
+          {"border-gray-400 focus:outline-primary": issue.errors[:title].none?,
+           "border-red-400 focus:outline-red-600": issue.errors[:title].any?}] %>
+    </div>
+
+    <div>
+      <%= form.label :category, "Type of Issue", class: "font-semibold text-text-dark" %>
+
+      <%= form.select :category,
+        Issue.categories.map { |key, value| [key.humanize, key] },
+        { include_blank: "Select a Category" },
+        class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full bg-white",
+          {"border-gray-400 focus:outline-primary": issue.errors[:category].none?,
+           "border-red-400 focus:outline-red-600": issue.errors[:category].any?}] %>
+    </div>
+
+    <div>
+      <%= form.label :body, "Details", class: "font-semibold text-text-dark" %>
+
+      <%= form.text_area :body, rows: 6,
+        placeholder: "Describe the steps to reproduce the issue and expected behavior.",
+        class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full resize-none",
+          {"border-gray-400 focus:outline-primary": issue.errors[:body].none?,
+           "border-red-400 focus:outline-red-600": issue.errors[:body].any?}] %>
+    </div>
+
+    <%= form.hidden_field :user_id, value: current_user.id if defined?(current_user) %>
+
+    <div class="pt-2">
+      <%= form.submit "Submit Issue",
+        class: "w-full rounded-md px-3.5 py-2.5 bg-cta-bg hover:opacity-90 text-text-dark font-medium cursor-pointer transition duration-150 ease-in-out" %>
+    </div>
+  </div>
+<% end %>

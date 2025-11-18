@@ -1,0 +1,32 @@
+<% current_vote = issue.current_user_vote(current_user) if defined?(current_user) %>
+
+<div
+  id="issue_<%= issue.id %>_voting_block"
+  class="
+    flex flex-col items-center pr-4 border-r border-neutral-300
+    text-text-accent
+  "
+  data-controller="voting"
+>
+  <%= button_to issue_votes_path(issue, value: 1), method: :post,
+      data: { turbo_frame: "_top", voting_target: "upvoteButton" },
+      class: [
+        "text-xl transition-colors duration-100",
+        current_vote&.value == 1 ? "text-primary" : "hover:text-primary"
+      ].join(" ") do %>
+    ▲
+  <% end %>
+
+  <span data-voting-target="score" class="font-bold text-xl leading-tight">
+    <%= issue.vote_score %>
+  </span>
+
+  <%= button_to issue_votes_path(issue, value: -1), method: :post,
+      data: { turbo_frame: "_top", voting_target: "downvoteButton" },
+      class: [
+        "text-xl transition-colors duration-100",
+        current_vote&.value == -1 ? "text-red-500" : "hover:text-red-500"
+      ].join(" ") do %>
+    ▼
+  <% end %>
+</div>

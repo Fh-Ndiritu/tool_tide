@@ -1,0 +1,77 @@
+<% content_for :title, "Roadmap & Feedback" %>
+
+<div class="w-full" data-controller="tabs">
+  <% if notice.present? %>
+    <p
+      class="
+        py-2 px-3 bg-green-50 mb-5 text-green-700 font-medium rounded-md
+        inline-block
+      "
+      id="notice"
+    >
+      <%= notice %>
+    </p>
+  <% end %>
+
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="font-bold text-4xl text-text-dark">
+      Product Feedback
+    </h1>
+
+    <%# The link should likely go to a central submission form, we'll keep the scaffold link for now %>
+    <%= link_to "Submit New Issue", new_issue_path,
+        class: "rounded-md px-3.5 py-2.5 bg-cta-bg hover:opacity-90 text-text-dark block font-medium transition duration-150 ease-in-out" %>
+  </div>
+
+  <%# --- Tab Navigation --- %>
+  <div class="border-b border-neutral-300 mb-8">
+    <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+      <%# Issues/Feedback Tab %>
+      <button
+        data-tabs-target="tab"
+        data-action="click->tabs#changeTab"
+        class="
+          whitespace-nowrap pb-3 px-1 border-b-2 font-medium text-lg
+          cursor-pointer transition duration-150 ease-in-out
+        "
+        aria-current="page"
+      >
+        Feedback & Issues
+      </button>
+
+      <%# Roadmap/Features Tab - NOTE: This requires a @features variable from a controller, or a separate route %>
+      <button
+        data-tabs-target="tab"
+        data-action="click->tabs#changeTab"
+        class="
+          whitespace-nowrap pb-3 px-1 border-b-2 font-medium text-lg
+          cursor-pointer transition duration-150 ease-in-out
+        "
+      >
+        Upcoming Features
+      </button>
+    </nav>
+  </div>
+
+  <%# ------------------------ %>
+
+  <%# --- Tab Panels --- %>
+
+  <%# 1. Issues/Feedback Panel %>
+  <div data-tabs-target="panel" id="issues" class="min-w-full">
+    <%= render "issues/issues_list", issues: @issues %>
+  </div>
+
+  <%# 2. Roadmap/Features Panel - Content will be added later %>
+  <div data-tabs-target="panel" id="features" class="min-w-full hidden">
+    <h3 class="text-2xl font-semibold mb-4 text-text-dark">
+      Upcoming Features for Polling
+    </h3>
+
+    <div class="p-10 text-center bg-neutral-100 rounded-lg border border-neutral-300">
+      <p class="text-neutral-700">Feature roadmap list goes here.</p>
+    </div>
+  </div>
+
+  <%# ------------------------ %>
+</div>
