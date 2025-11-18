@@ -33,8 +33,11 @@
                 transition duration-200 focus:outline-none focus:ring-4 focus:ring-accent-secondary cursor-pointer
               "
             >
-              <span class="font-bold text-lg"><%= current_user.email[..1].upcase %></span>
+              <span class="font-bold text-lg">
+                <%= current_user.email[..1].upcase %>
+              </span>
             </button>
+
             <div
               data-dropdown-target="menu"
               data-dropdown-hidden-class="hidden"
@@ -44,7 +47,10 @@
               "
             >
               <%= link_to "Credits Balance", credits_path, class: "block px-3 py-2 text-sm text-neutral-900 rounded-lg transition duration-150 hover:bg-secondary hover:text-white", data: { action: "click->dropdown#hide" } %>
+              <%= link_to "Favorites", favorites_path, class: "block px-3 py-2 text-sm text-neutral-900 rounded-lg transition duration-150 hover:bg-secondary hover:text-white", data: { action: "click->dropdown#hide" } %>
+
               <%= link_to "Contact Support", contact_us_path, class: "block px-3 py-2 text-sm text-neutral-900 rounded-lg transition duration-150 hover:bg-secondary hover:text-white", data: { action: "click->dropdown#hide" } %>
+
               <div class="border-t border-gray-200 my-2"></div>
 
               <%= button_to "Log Out", destroy_user_session_path, method: :delete, class: "w-full text-left block px-3 py-2 text-sm text-red-600 rounded-lg transition duration-150 hover:bg-red-600 hover:text-white", data: { action: "click->dropdown#hide" } %>
@@ -134,12 +140,6 @@
         data: { action: "click->navbar#toggleMenu" }
         ) %>
         <%= render ButtonComponent.new(
-        text: "Favorites",
-        href: favorites_path,
-        classes: "#{active_item(favorites_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
-        data: { action: "click->navbar#toggleMenu" }
-        ) %>
-        <%= render ButtonComponent.new(
         text: "Explore",
         href: explore_path,
         classes: "#{active_item(explore_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
@@ -154,7 +154,9 @@
               transition duration-200 focus:outline-none focus:ring-4 focus:ring-accent-secondary cursor-pointer
             "
           >
-            <span class="font-bold text-lg"><%= current_user.email[..1].upcase %></span>
+            <span class="font-bold text-lg">
+              <%= current_user.email[..1].upcase %>
+            </span>
           </button>
 
           <div
@@ -166,7 +168,9 @@
             "
           >
             <%= link_to "Credits Balance", credits_path, class: "block px-3 py-2 text-sm text-neutral-900 rounded-lg transition duration-150 hover:bg-secondary hover:text-white", data: { action: "click->dropdown#hide" } %>
+            <%= link_to "Favorites", favorites_path, class: "block px-3 py-2 text-sm text-neutral-900 rounded-lg transition duration-150 hover:bg-secondary hover:text-white", data: { action: "click->dropdown#hide" } %>
             <%= link_to "Contact Support", contact_us_path, class: "block px-3 py-2 text-sm text-neutral-900 rounded-lg transition duration-150 hover:bg-secondary hover:text-white", data: { action: "click->dropdown#hide" } %>
+
             <div class="border-t border-gray-200 my-2"></div>
 
             <%= button_to "Log Out", destroy_user_session_path, method: :delete, class: "w-full text-left block px-3 py-2 text-sm text-red-600 rounded-lg transition duration-150 hover:bg-red-600 hover:text-white", data: { action: "click->dropdown#hide" } %>

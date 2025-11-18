@@ -45,7 +45,7 @@ Rails.application.routes.draw do
   get "paystack/callback", to: "payment_transactions#callback"
 
   resources :payment_transactions, only: :create
-  devise_for :users, controllers: { omniauth_callbacks: 'users/omniauth_callbacks' }
+  devise_for :users, controllers: { omniauth_callbacks: "users/omniauth_callbacks" }
 
   mount ActionCable.server => "/cable"
 

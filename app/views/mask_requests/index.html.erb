@@ -23,17 +23,19 @@
         ></path>
       </svg>
     </div>
+
     <div>
       <h3 class="text-lg font-bold">New Feature: Ai Editor!</h3>
+
       <p class="mt-1 text-sm text-blue-800">
         You can now edit any design result directly. Look for the
-        <strong>"Ai Edits" button</strong>
-        next to each design to instantly jump into the new
-        <strong>Ai Editor</strong>
-        and customize your images.
+        <strong>"Ai Editor" button</strong> next to each design to instantly
+        jump into the new <strong>Ai Editor</strong> and customize your
+        images.
       </p>
     </div>
   </div>
+
   <div id="mask_requests" class="min-w-full space-y-4 md:space-y-6">
     <% if @mask_requests.any? %>
       <%= render partial: 'mask_requests/mask_request', collection: @mask_requests, locals: {compact: true} %>
@@ -47,6 +49,7 @@
         <p class="text-lg text-gray-500">
           No design results have been created yet. Start a new project!
         </p>
+
         <%= link_to "Start New Design", new_canva_path, class: "cute-btn btn-primary mt-4" %>
       </div>
     <% end %>

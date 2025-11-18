@@ -33,7 +33,7 @@ class User < ApplicationRecord
       user.password = Devise.friendly_token[0, 20]
       user.name = auth.info.name
       user.privacy_policy = true
-      user.source = 'google'
+      user.source = "google"
     end
   end
 

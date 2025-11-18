@@ -314,5 +314,5 @@ Devise.setup do |config|
   config.omniauth :google_oauth2,
                   Rails.application.credentials.dig(:google_oauth2, :client_id),
                   Rails.application.credentials.dig(:google_oauth2, :client_secret),
-                  { scope: 'email,profile', skip_jwt: true }
+                  { scope: "email,profile", skip_jwt: true }
 end

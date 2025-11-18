@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'faraday'
-require 'json' # Keep standard required libraries
+require "faraday"
+require "json" # Keep standard required libraries
 
 class GeminiTts
   API_URL = "https://texttospeech.googleapis.com/v1/text:synthesize".freeze
