@@ -1,10 +1,17 @@
 <%= form_with(model: audio, class: "space-y-6 w-full p-6 sm:p-10 bg-white shadow-2xl hover:shadow-xl transition-shadow duration-300 rounded-xl border border-neutral-300") do |form| %>
   <!-- Heading uses --color-text-dark (text-neutral-900) -->
-  <h1 class="text-3xl font-extrabold text-neutral-900 mb-6 border-b pb-3">Audio Generation Request</h1>
+  <h1 class="text-3xl font-extrabold text-neutral-900 mb-6 border-b pb-3">
+    Audio Generation Request
+  </h1>
 
   <% if audio.errors.any? %>
-    <div id="error_explanation" class="bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded-md">
-      <h2 class="font-bold text-lg mb-1">There were <%= pluralize(audio.errors.count, "error") %>:</h2>
+    <div
+      id="error_explanation"
+      class="bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded-md"
+    >
+      <h2 class="font-bold text-lg mb-1">
+        There were <%= pluralize(audio.errors.count, "error") %>:
+      </h2>
       <ul class="list-disc ml-6 text-sm space-y-0.5">
         <% audio.errors.each do |error| %>
           <li><%= error.full_message %></li>
@@ -19,14 +26,31 @@
     <%= form.label :single_speaker, "Generation Mode", class: "block text-sm font-semibold text-neutral-700 mb-2" %>
 
     <!-- Background uses light neutral color, border uses medium neutral color -->
-    <div class="flex flex-col sm:flex-row gap-4 p-4 bg-neutral-100 rounded-lg border border-neutral-300">
-      <label class="flex items-center space-x-2 cursor-pointer p-2 flex-1 bg-white rounded-lg shadow-sm hover:bg-accent-secondary transition duration-150">
+    <div
+      class="
+        flex flex-col sm:flex-row gap-4 p-4 bg-neutral-100 rounded-lg border
+        border-neutral-300
+      "
+    >
+      <label
+        class="
+          flex items-center space-x-2 cursor-pointer p-2 flex-1 bg-white
+          rounded-lg shadow-sm hover:bg-accent-secondary transition
+          duration-150
+        "
+      >
         <!-- Radio buttons use --color-primary for text/focus rings -->
         <%= form.radio_button :single_speaker, true, class: "focus:ring-primary h-5 w-5 text-primary border-neutral-300", checked: audio.single_speaker.nil? ? true : audio.single_speaker %>
         <span class="text-sm font-medium text-neutral-800">Single Speaker (Plain Text)</span>
       </label>
 
-      <label class="flex items-center space-x-2 cursor-pointer p-2 flex-1 bg-white rounded-lg shadow-sm hover:bg-accent-secondary transition duration-150">
+      <label
+        class="
+          flex items-center space-x-2 cursor-pointer p-2 flex-1 bg-white
+          rounded-lg shadow-sm hover:bg-accent-secondary transition
+          duration-150
+        "
+      >
         <!-- Radio buttons use --color-primary for text/focus rings -->
         <%= form.radio_button :single_speaker, false, class: "focus:ring-primary h-5 w-5 text-primary border-neutral-300" %>
         <span class="text-sm font-medium text-neutral-800">Multi-Speaker (JSON Conversation)</span>

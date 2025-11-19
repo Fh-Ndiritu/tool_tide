@@ -13,7 +13,9 @@
         <% else %>
           <%# Handles cases where the original record (text_request or mask_request) was deleted %>
           <div class="bg-neutral-700 p-4 rounded-lg shadow-md text-neutral-400">
-            Original item not found (ID: <%= favorite.favoritable_id %>).
+            Original item not found (ID:
+            <%= favorite.favoritable_id %>
+            ).
             <%= button_to favorite, method: :delete, data: { confirm: 'Remove this broken favorite?' }, class: "text-red-400 hover:text-red-300 mt-2" do %>
               Remove
             <% end %>
@@ -23,8 +25,14 @@
     </div>
   <% else %>
     <div class="text-center p-12 bg-neutral-800 rounded-lg shadow-lg">
-      <p class="text-xl text-neutral-400">You haven't favorited any creations yet!</p>
-      <p class="text-neutral-500 mt-2">Go generate some beautiful landscapes!</p>
+      <p class="text-xl text-neutral-400">
+        You haven't favorited any creations yet!
+      </p>
+
+      <p class="text-neutral-500 mt-2">
+        Go generate some beautiful landscapes!
+      </p>
+
       <%= link_to "Go to Canva", new_canva_path, class: "cute-btn accent-btn mt-4" %>
     </div>
   <% end %>

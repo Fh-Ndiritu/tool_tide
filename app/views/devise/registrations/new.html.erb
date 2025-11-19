@@ -23,7 +23,12 @@
         <% end %>
         <span class="text-xs my-1">
           By signing up you agree to the
-          <a href="/privacy-policy" class="font-medium text-indigo-600 hover:text-indigo-500"> Privacy Policy </a>
+          <a
+            href="/privacy-policy"
+            class="font-medium text-indigo-600 hover:text-indigo-500"
+          >
+            Privacy Policy
+          </a>
         </span>
       </div>
 
@@ -35,7 +40,7 @@
           <div class="w-full border-t border-gray-300"></div>
         </div>
         <div class="relative flex justify-center text-sm">
-          <span class="px-2 bg-white text-gray-500 rounded-full"> Or continue with email </span>
+          <span class="px-2 bg-white text-gray-500 rounded-full">Or continue with email</span>
         </div>
       </div>
 
@@ -53,7 +58,9 @@
           <div class="field">
             <%= f.label :password, class: "block text-sm font-medium text-gray-700" %>
             <% if @minimum_password_length %>
-              <em class="text-xs text-gray-500 ml-1">(<%= @minimum_password_length %> characters minimum)</em>
+              <em class="text-xs text-gray-500 ml-1">
+                (<%= @minimum_password_length %> characters minimum)
+              </em>
             <% end %>
 
             <div
@@ -118,7 +125,13 @@
           <div class="ml-3 text-sm">
             <label for="user_privacy_policy" class="font-medium text-gray-700">
               I have read and agree to the
-              <a href="/privacy-policy" class="font-medium text-indigo-600 hover:text-indigo-500"> Privacy Policy </a>.
+              <a
+                href="/privacy-policy"
+                class="font-medium text-indigo-600 hover:text-indigo-500"
+              >
+                Privacy Policy
+              </a>
+              .
             </label>
           </div>
         </div>

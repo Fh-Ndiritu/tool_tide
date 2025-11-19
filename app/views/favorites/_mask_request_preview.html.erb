@@ -1,14 +1,16 @@
 <%# Local variable 'favoritable' is the MaskRequest object %>
-<%# Local variable 'favorite' is the Favorite join record %>
-<div class="
-  bg-[#c6d4ee] p-3 rounded-lg shadow-md
-  flex flex-col md:flex-row justify-between items-start md:items-center
-  hover:bg-[#d1cbfc] hover:shadow-lg transition duration-200
-">
 
+<%# Local variable 'favorite' is the Favorite join record %>
+
+<div
+  class="
+    bg-[#c6d4ee] p-3 rounded-lg shadow-md
+    flex flex-col md:flex-row justify-between items-start md:items-center
+    hover:bg-[#d1cbfc] hover:shadow-lg transition duration-200
+  "
+>
   <%# Left Section: Image and Text/Details (Always the link target) %>
   <%= link_to favoritable, class: "flex items-start flex-grow min-w-0" do %>
-
     <%# Image Container (w-24 h-24) %>
     <div class="flex-shrink-0 w-24 h-24 overflow-hidden rounded-md mr-4">
       <% if favoritable.main_view.attached? %>
@@ -25,13 +27,13 @@
       <p class="text-sm font-semibold text-text-dark line-clamp-1">
         Mask Edit
       </p>
+
       <p class="text-xs text-neutral-700 mt-1">
         Completed: **<%= favoritable.created_at.to_date.to_fs(:long) %>**
       </p>
+
       <%# CHANGE: Increased contrast for source/date text (text-neutral-700) %>
-      <span class="text-xs text-neutral-700 mt-1">
-        Source ID: <%= favoritable.id %>
-      </span>
+      <span class="text-xs text-neutral-700 mt-1">Source ID: <%= favoritable.id %></span>
     </div>
   <% end %>
 

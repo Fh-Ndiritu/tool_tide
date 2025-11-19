@@ -1,9 +1,11 @@
 <%# app/views/features/_polling_block.html.erb %>
+
 <%# Local variable: feature %>
 
 <% current_poll = feature.polls.find_by(user: current_user) if defined?(current_user) %>
 
 <%# NOTE: Requires feature.polls.count to be calculated, or a dedicated score method %>
+
 <% score = feature.polls.count %>
 
 <div

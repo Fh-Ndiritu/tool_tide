@@ -1,14 +1,16 @@
 <%# Local variable 'favoritable' is the TextRequest object %>
-<%# Local variable 'favorite' is the Favorite join record %>
-<div class="
-  bg-[#c6d4ee] p-3 rounded-lg shadow-md
-  flex flex-col md:flex-row justify-between items-start md:items-center
-  hover:bg-[#d1cbfc] hover:shadow-lg transition duration-200
-">
 
+<%# Local variable 'favorite' is the Favorite join record %>
+
+<div
+  class="
+    bg-[#c6d4ee] p-3 rounded-lg shadow-md
+    flex flex-col md:flex-row justify-between items-start md:items-center
+    hover:bg-[#d1cbfc] hover:shadow-lg transition duration-200
+  "
+>
   <%# Left Section: Image and Text/Prompt (Always the link target) %>
   <%= link_to text_requests_path(current_request: favoritable.id), class: "flex items-start flex-grow min-w-0" do %>
-
     <%# Image Container (w-24 h-24) %>
     <div class="flex-shrink-0 w-24 h-24 overflow-hidden rounded-md mr-4">
       <% if favoritable.result_image.attached? %>
@@ -25,9 +27,11 @@
       <p class="text-sm font-semibold text-text-dark line-clamp-1">
         AI Edit
       </p>
+
       <p class="text-xs text-neutral-700 line-clamp-2 mt-1">
         <%= favoritable.prompt.truncate(80) %>
       </p>
+
       <%# CHANGE: Increased contrast for source/date text (text-neutral-700) %>
       <span class="text-xs text-neutral-700 mt-1">
         Created: <%= favoritable.created_at.to_date.to_fs(:short) %>

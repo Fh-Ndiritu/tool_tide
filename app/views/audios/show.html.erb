@@ -1,13 +1,21 @@
 <% content_for :title, "Showing audio" %>
 
 <!-- Main content container: centered and responsive -->
+
 <div class="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
   <% if notice.present? %>
     <!-- Success Notice styled with theme colors -->
-    <p class="py-2 px-3 bg-green-500/10 mb-5 text-green-700 font-medium rounded-lg inline-block border border-green-500" id="notice"><%= notice %></p>
+    <p
+      class="
+        py-2 px-3 bg-green-500/10 mb-5 text-green-700 font-medium rounded-lg
+        inline-block border border-green-500
+      "
+      id="notice"
+    >
+      <%= notice %>
+    </p>
   <% end %>
 
-
-    <!-- Render the partial which contains the audio player and details -->
+  <!-- Render the partial which contains the audio player and details -->
   <%= render @audio %>
 </div>

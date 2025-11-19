@@ -1,7 +1,9 @@
 <%# app/views/issues/_form_inline.html.erb %>
+
 <%# Local variables: issue %>
 
 <%# This form will submit via Turbo, and the IssuesController#update will return the issue_card partial on success %>
+
 <%= form_with(model: issue, data: { turbo_frame: dom_id(issue, :content) }, class: "w-full") do |form| %>
   <div class="flex-1 pl-0 sm:pl-4 space-y-4">
     <%# --- Error Alert --- %>

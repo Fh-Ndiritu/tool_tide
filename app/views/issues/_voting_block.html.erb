@@ -17,9 +17,7 @@
     ▲
   <% end %>
 
-  <span data-voting-target="score" class="font-bold text-xl leading-tight">
-    <%= issue.vote_score %>
-  </span>
+  <span data-voting-target="score" class="font-bold text-xl leading-tight"><%= issue.vote_score %></span>
 
   <%= button_to issue_votes_path(issue, value: -1), method: :post,
       data: { turbo_frame: "_top", voting_target: "downvoteButton" },

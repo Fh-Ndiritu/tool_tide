@@ -33,9 +33,7 @@
                 transition duration-200 focus:outline-none focus:ring-4 focus:ring-accent-secondary cursor-pointer
               "
             >
-              <span class="font-bold text-lg">
-                <%= current_user.email[..1].upcase %>
-              </span>
+              <span class="font-bold text-lg"><%= current_user.email[..1].upcase %></span>
             </button>
 
             <div
@@ -160,9 +158,7 @@
               transition duration-200 focus:outline-none focus:ring-4 focus:ring-accent-secondary cursor-pointer
             "
           >
-            <span class="font-bold text-lg">
-              <%= current_user.email[..1].upcase %>
-            </span>
+            <span class="font-bold text-lg"><%= current_user.email[..1].upcase %></span>
           </button>
 
           <div

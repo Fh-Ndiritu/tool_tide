@@ -3,22 +3,51 @@
 <% if compact_mode %>
   <!-- ============================================== -->
   <!-- COMPACT MODE (Used on Index Page) -->
-  <!-- The parent element (in index.html.erb) handles the main card and link styling.
-       This partial only provides the content structure for the flex row. -->
+  <!--
+  The parent element (in index.html.erb) handles the main card and link styling.
+  This partial only provides the content structure for the flex row.
+-->
   <!-- ============================================== -->
-
   <div class="flex items-center w-full min-w-0">
     <!-- Icon indicating audio status -->
     <% if audio.audio_file.attached? %>
-      <div class="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-primary rounded-full shadow-md text-text-light mr-4">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
+      <div
+        class="
+          flex-shrink-0 w-8 h-8 flex items-center justify-center bg-primary
+          rounded-full shadow-md text-text-light mr-4
+        "
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-4 w-4"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
+            clip-rule="evenodd"
+          />
         </svg>
       </div>
     <% else %>
-      <div class="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-red-400 rounded-full shadow-md text-text-light mr-4">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1zM9 14a1 1 0 112 0 1 1 0 01-2 0z" clip-rule="evenodd" />
+      <div
+        class="
+          flex-shrink-0 w-8 h-8 flex items-center justify-center bg-red-400
+          rounded-full shadow-md text-text-light mr-4
+        "
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-4 w-4"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1zM9 14a1 1 0 112 0 1 1 0 01-2 0z"
+            clip-rule="evenodd"
+          />
         </svg>
       </div>
     <% end %>
@@ -26,23 +55,33 @@
     <!-- Content and Style Prompt -->
     <div class="min-w-0">
       <!-- Content (2 line-clamp) -->
-      <pre class="whitespace-pre-wrap text-sm text-neutral-900 font-semibold leading-snug line-clamp-4">
+      <pre
+        class="
+          whitespace-pre-wrap text-sm text-neutral-900 font-semibold
+          leading-snug line-clamp-4
+        "
+      >
         <%= audio.content[200..500] %>
       </pre>
     </div>
   </div>
-
 <% else %>
   <!-- ============================================== -->
   <!-- DETAILED MODE (Used on Show Page) -->
   <!-- This partial renders the complete, styled page content on the show view. -->
   <!-- ============================================== -->
-
-  <div id="<%= dom_id audio %>" class="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-    <div class="space-y-6 w-full p-6 sm:p-10 bg-white shadow-2xl rounded-xl border border-neutral-300">
-
+  <div
+    id="<%= dom_id audio %>"
+    class="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8"
+  >
+    <div
+      class="
+        space-y-6 w-full p-6 sm:p-10 bg-white shadow-2xl rounded-xl border
+        border-neutral-300
+      "
+    >
       <!-- Navigation Links -->
-      <div class="pt-6  flex flex-col sm:flex-row justify-center gap-3">
+      <div class="pt-6 flex flex-col sm:flex-row justify-center gap-3">
         <%= link_to "Edit this audio", edit_audio_path(audio),
           class: "sm:flex-1 text-center rounded-lg px-4 py-2 bg-accent-secondary hover:bg-neutral-300 text-primary inline-block font-medium transition duration-200 shadow-sm hover:shadow-md" %>
 
@@ -57,12 +96,17 @@
       <!-- Audio Player and Download Section -->
       <% if audio.audio_file.attached? %>
         <div class="pt-6 border-t border-neutral-300 space-y-4">
-          <h2 class="text-xl font-bold text-text-primary">Playback & Download</h2>
+          <h2 class="text-xl font-bold text-text-primary">
+            Playback & Download
+          </h2>
 
           <!-- Detailed Audio Player -->
           <div class="flex justify-center p-4 bg-accent-secondary rounded-lg shadow-md">
             <audio controls class="w-full">
-              <source src="<%= url_for(audio.audio_file) %>" type="<%= audio.audio_file.content_type %>">
+              <source
+                src="<%= url_for(audio.audio_file) %>"
+                type="<%= audio.audio_file.content_type %>"
+              >
               Your browser does not support the audio element.
             </audio>
           </div>
@@ -74,8 +118,15 @@
           </div>
         </div>
       <% else %>
-        <div class="pt-4 text-center p-4 bg-red-100 text-red-700 rounded-lg border border-red-300">
-          <p class="font-medium">Audio file not yet attached or an error occurred during generation.</p>
+        <div
+          class="
+            pt-4 text-center p-4 bg-red-100 text-red-700 rounded-lg border
+            border-red-300
+          "
+        >
+          <p class="font-medium">
+            Audio file not yet attached or an error occurred during generation.
+          </p>
         </div>
       <% end %>
 
@@ -84,12 +135,11 @@
         <!-- Content -->
         <div class="p-4 bg-neutral-100 rounded-lg border border-neutral-300">
           <strong class="block font-semibold text-sm text-neutral-700 mb-1">Content:</strong>
+
           <!-- Use pre-wrap for multi-line content -->
           <pre class="whitespace-pre-wrap text-sm text-neutral-900 leading-relaxed"><%= audio.content %></pre>
         </div>
       </div>
-
-
     </div>
   </div>
 <% end %>

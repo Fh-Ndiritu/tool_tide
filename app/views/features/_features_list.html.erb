@@ -1,7 +1,9 @@
 <%# app/views/features/_features_list.html.erb %>
+
 <%# Local variable: features %>
 
 <%# --- Nudge Paragraph (TOP POSITION) --- %>
+
 <p
   class="
     text-center text-base text-neutral-600 mb-8 p-4 border
@@ -9,9 +11,12 @@
     max-w-2xl mx-auto
   "
 >
-  ✨ <b>Help us build what matters most!</b> Your <b>votes</b> directly
-  influence our development priorities. Take a moment to vote on the features
-  you want to see launched next.
+  ✨
+  <b>Help us build what matters most!</b>
+  Your
+  <b>votes</b>
+  directly influence our development priorities. Take a moment to vote on the
+  features you want to see launched next.
 </p>
 
 <h3
@@ -24,6 +29,7 @@
 </h3>
 
 <%# --- The Core List Wrapper --- %>
+
 <div id="features" class="space-y-5">
   <% if features.any? %>
     <% features.each do |feature| %>
@@ -45,8 +51,7 @@
       </p>
 
       <p class="text-neutral-500 text-base">
-        If you're an admin, use the <b>Propose New Feature</b> button to start
-        polling the community.
+        If you're an admin, use the <b>Propose New Feature</b> button to start polling the community.
       </p>
     </div>
   <% end %>
