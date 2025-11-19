@@ -1,28 +1,19 @@
-<%= form_with(model: feature) do |form| %>
-  <% if feature.errors.any? %>
-    <div
-      id="error_explanation"
-      class="bg-red-100 text-red-700 px-4 py-3 font-medium rounded-md mb-6"
-    >
-      <h2 class="font-bold mb-2">
-        <%= pluralize(feature.errors.count, "error") %> prohibited this feature
-        from being saved:
-      </h2>
+<%# app/views/features/_form_inline.html.erb %>
+<%# Local variable: feature %>
 
-      <ul class="list-disc ml-6">
-        <% feature.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+<%= form_with(model: feature, data: { turbo_frame: dom_id(feature, :content) }) do |form| %>
+  <div class="flex-1 pl-4 space-y-4">
+    <% if feature.errors.any? %>
+      <div class="bg-red-100 text-red-700 px-4 py-3 font-medium rounded-md">
+        Validation failed.
+      </div>
+    <% end %>
 
-  <div class="space-y-5">
     <div>
       <%= form.label :title, class: "font-semibold text-text-dark" %>
 
       <%= form.text_field :title,
-        placeholder: "Summarize the feature (e.g., 'Dark Mode Toggle')",
+        placeholder: "Summarize the feature",
         class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full",
           {"border-neutral-500 focus:outline-primary": feature.errors[:title].none?,
            "border-red-400 focus:outline-red-600": feature.errors[:title].any?}] %>
@@ -54,8 +45,9 @@
         </div>
 
         <div
+          class="flex-1"
           data-status-change-target="deliveryDateWrapper"
-          class="flex-1 <%= feature.delivery_trackable? ? '' : 'hidden' %>"
+          class="<%= feature.delivery_trackable? ? '' : 'hidden' %>"
         >
           <%= form.label :delivery_date, "Target Delivery Date", class: "font-semibold text-text-dark" %>
 
@@ -67,9 +59,15 @@
       </div>
     </div>
 
-    <div class="pt-2">
-      <%= form.submit "Save Feature",
-        class: "w-full rounded-md px-3.5 py-2.5 bg-cta-bg hover:opacity-90 text-text-dark font-medium cursor-pointer transition duration-150 ease-in-out" %>
+    <%# --------------------------------------------- %>
+    <div class="flex justify-end gap-2 pt-2">
+      <%# Cancel button links back to the original content partial, replacing the form %>
+      <%= link_to "Cancel", feature_path(feature),
+          data: { turbo_frame: dom_id(feature, :content) },
+          class: "rounded-md px-3 py-2 text-text-dark hover:bg-neutral-300 font-medium transition duration-150 ease-in-out" %>
+
+      <%= form.submit "Save Changes",
+          class: "rounded-md px-3 py-2 bg-accent hover:opacity-90 text-text-dark font-medium cursor-pointer transition duration-150 ease-in-out" %>
     </div>
   </div>
 <% end %>

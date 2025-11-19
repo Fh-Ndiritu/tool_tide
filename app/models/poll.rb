@@ -6,8 +6,7 @@ class Poll < ApplicationRecord
   validates :user_id, uniqueness: { scope: :feature_id }
 
   # Define preferences (e.g., 1 for "Nice to have next")
-  enum preference: {
+  enum :preference, {
     nice_to_have_next: 1
-    # Add more preference levels if needed, e.g., essential: 2, low_priority: 0
   }
 end

@@ -1,29 +1,31 @@
-<% content_for :title, "Features" %>
+<% content_for :title, "Features Roadmap" %>
 
 <div class="w-full">
   <% if notice.present? %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
+    <p
+      class="
+        py-2 px-3 bg-green-50 mb-5 text-green-700 font-medium rounded-md
+        inline-block
+      "
+      id="notice"
+    >
+      <%= notice %>
+    </p>
   <% end %>
 
-  <div class="flex justify-between items-center">
-    <h1 class="font-bold text-4xl">Features</h1>
-    <%= link_to "New feature", new_feature_path, class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white block font-medium" %>
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="font-bold text-4xl text-text-dark">Features Roadmap</h1>
+
+    <%# Link to create a new feature (Admin only) %>
+    <% if current_user.admin? %>
+      <%= link_to "Propose New Feature", new_feature_path,
+        class: "rounded-md px-3.5 py-2.5 bg-cta-bg hover:opacity-90 text-text-dark block font-medium transition duration-150 ease-in-out" %>
+    <% end %>
   </div>
 
-  <div id="features" class="min-w-full divide-y divide-gray-200 space-y-5">
-    <% if @features.any? %>
-      <% @features.each do |feature| %>
-        <div class="flex flex-col sm:flex-row justify-between items-center pb-5 sm:pb-0">
-          <%= render feature %>
-          <div class="w-full sm:w-auto flex flex-col sm:flex-row space-x-2 space-y-2">
-            <%= link_to "Show", feature, class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-            <%= link_to "Edit", edit_feature_path(feature), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-            <%= button_to "Destroy", feature, method: :delete, class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
-          </div>
-        </div>
-      <% end %>
-    <% else %>
-      <p class="text-center my-10">No features found.</p>
-    <% end %>
+  <div id="features" class="min-w-full">
+    <%# Render the list using the modern card partial structure %>
+    <%# NOTE: This assumes @features is loaded in the controller %>
+    <%= render "features/features_list", features: @features %>
   </div>
 </div>

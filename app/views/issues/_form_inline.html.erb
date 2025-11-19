@@ -2,26 +2,59 @@
 <%# Local variables: issue %>
 
 <%# This form will submit via Turbo, and the IssuesController#update will return the issue_card partial on success %>
-<%= form_with(model: issue, data: { turbo_frame: dom_id(issue, :content) }) do |form| %>
-  <div class="flex-1 pl-4 space-y-4">
+<%= form_with(model: issue, data: { turbo_frame: dom_id(issue, :content) }, class: "w-full") do |form| %>
+  <div class="flex-1 pl-0 sm:pl-4 space-y-4">
+    <%# --- Error Alert --- %>
     <% if issue.errors.any? %>
-      <div class="bg-red-100 text-red-700 px-4 py-2 font-medium rounded-md">
-        Validation failed.
+      <div
+        class="
+          bg-red-50 text-red-700 border border-red-300 px-4 py-3 font-medium
+          rounded-lg shadow-sm
+        "
+      >
+        <p class="font-bold mb-1">Could not save issue:</p>
+
+        <ul class="list-disc list-inside text-sm">
+          <% issue.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
       </div>
     <% end %>
 
-    <%# 1. Title/Body (Editable by any admin/submitter) %>
-    <%= form.text_field :title,
-        placeholder: "Title",
-        class: "block border-b-2 text-xl font-semibold border-neutral-300 focus:border-primary w-full" %>
+    <%# 1. Title/Body Inputs (User Content) %>
+    <%# Dynamic class helper for errors, assuming you have one, or just inline logic %>
+    <% error_class = ->(field) { issue.errors[field].any? ? "border-red-500 focus:ring-red-500" : "border-neutral-300 focus:border-primary" } %>
 
-    <%= form.text_area :body, rows: 4,
-        placeholder: "Description",
-        class: "block border-b-2 border-neutral-300 focus:border-primary w-full resize-none text-neutral-700" %>
+    <%= form.text_field :title,
+        placeholder: "Summarize the issue (Title)",
+        class: [
+          "block text-xl font-extrabold border-b-2 bg-neutral-50/50 hover:bg-neutral-50 p-2 w-full",
+          "focus:ring-0 focus:outline-none transition duration-150",
+          error_class.call(:title)
+        ].join(" ") %>
+
+    <%= form.text_area :body, rows: 5,
+        placeholder: "Describe the issue and desired outcome (Description)",
+        class: [
+          "block border-b-2 text-base text-neutral-700 bg-neutral-50/50 hover:bg-neutral-50 p-2 w-full resize-y min-h-[7rem]",
+          "focus:ring-0 focus:outline-none transition duration-150",
+          error_class.call(:body)
+        ].join(" ") %>
 
     <%# 2. Admin/Progress Fields (Only relevant if admin is editing) %>
-    <div data-controller="status-change">
-      <div class="flex gap-4">
+    <div data-controller="status-change" class="pt-4">
+      <h4
+        class="
+          text-base font-semibold text-text-dark mb-3 border-b
+          border-neutral-200 pb-1
+        "
+      >
+        Admin Controls
+      </h4>
+
+      <div class="flex flex-col sm:flex-row gap-4">
+        <%# Status Select %>
         <div class="flex-1">
           <%= form.label :progress, "Status", class: "text-sm font-medium text-text-dark block mb-1" %>
 
@@ -29,30 +62,31 @@
             Issue.progresses.map { |key, value| [key.humanize, key] },
             {},
             data: { action: "change->status-change#handleProgressChange", status_change_target: "progressSelect" },
-            class: "block shadow-sm rounded-md border border-neutral-500 px-3 py-2 w-full bg-white focus:outline-primary" %>
+            class: "block shadow-sm rounded-lg border border-neutral-300 px-3 py-2 w-full bg-white text-text-dark focus:outline-primary focus:ring-1 focus:ring-primary transition duration-150" %>
         </div>
 
+        <%# Delivery Date %>
         <div
-          class="flex-1"
           data-status-change-target="deliveryDateWrapper"
-          class="<%= issue.delivery_trackable? ? '' : 'hidden' %>"
+          class="flex-1 <%= issue.delivery_trackable? ? '' : 'hidden' %>"
         >
           <%= form.label :delivery_date, "Delivery Date (Optional)", class: "text-sm font-medium text-text-dark block mb-1" %>
 
           <%= form.date_field :delivery_date,
-            class: "block shadow-sm rounded-md border border-neutral-500 px-3 py-2 w-full focus:outline-primary" %>
+            class: "block shadow-sm rounded-lg border border-neutral-300 px-3 py-2 w-full text-text-dark focus:outline-primary focus:ring-1 focus:ring-primary transition duration-150" %>
         </div>
       </div>
     </div>
 
-    <div class="flex justify-end gap-2 pt-2">
+    <%# --- Action Buttons --- %>
+    <div class="flex justify-end gap-3 pt-6 border-t border-neutral-200 mt-4">
       <%# Cancel button links back to the original content partial %>
       <%= link_to "Cancel", issue_path(issue),
           data: { turbo_frame: dom_id(issue, :content) },
-          class: "rounded-md px-3 py-2 text-text-dark hover:bg-neutral-300 font-medium transition duration-150 ease-in-out" %>
+          class: "rounded-lg px-4 py-2 text-text-dark border border-neutral-300 hover:bg-neutral-200 font-medium transition duration-150 ease-in-out shadow-sm" %>
 
       <%= form.submit "Save Changes",
-          class: "rounded-md px-3 py-2 bg-accent hover:opacity-90 text-text-dark font-medium cursor-pointer transition duration-150 ease-in-out" %>
+          class: "rounded-lg px-4 py-2 bg-primary hover:bg-primary/90 text-text-light font-medium cursor-pointer transition duration-150 ease-in-out shadow-md shadow-primary/30" %>
     </div>
   </div>
 <% end %>

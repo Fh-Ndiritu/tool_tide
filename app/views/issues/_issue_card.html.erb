@@ -3,48 +3,70 @@
 
 <div
   class="
-    flex p-4 border border-neutral-300 rounded-lg bg-white
-    hover:shadow-md transition duration-150 ease-in-out
+    flex p-4 sm:p-6 border-b border-neutral-200 bg-white shadow-sm rounded-xl
+    hover:shadow-xl hover:border-primary/50 transition duration-300 ease-in-out
   "
 >
-  <%# 1. Voting Column (Left) %>
-  <%= render "issues/voting_block", issue: issue %>
+  <%# 1. Voting Column (Left) - Prominent, fixed width on all devices %>
+  <div class="mr-4 sm:mr-6 flex-shrink-0">
+    <%= render "issues/voting_block", issue: issue %>
+  </div>
 
-  <%# 2. Issue Content Frame (Main) - This is the swappable area %>
+  <%# 2. Issue Content Frame (Main) - The swappable area for content/form %>
   <%= turbo_frame_tag dom_id(issue, :content) do %>
-    <div class="flex-1 pl-4">
-      <div class="flex justify-between items-start">
-        <h3 class="text-xl font-semibold text-text-dark mb-1">
-          <%= link_to issue.title, issue_path(issue), class: "hover:text-text-primary" %>
+    <div class="flex-1 min-w-0">
+      <%# --- Title and Status Block --- %>
+      <div class="flex flex-col sm:flex-row justify-between sm:items-start mb-2">
+        <h3 class="text-lg sm:text-xl font-semibold text-text-dark leading-snug">
+          <%# Title link is always the primary target %>
+          <%= link_to issue.title, issue_path(issue), class: "hover:text-text-primary transition duration-150" %>
         </h3>
 
-        <%# Status Badge %>
-        <span class="ml-4 px-3 py-1 text-xs font-semibold rounded-full <%= status_badge_classes(issue.progress) %>">
+        <%# Status Badge - Aligns nicely on both mobile and desktop %>
+        <span
+          class="
+            ml-0 sm:ml-4 mt-1 sm:mt-0
+            px-3 py-1 text-xs font-bold rounded-full
+            whitespace-nowrap
+            flex-shrink-0
+            <%= status_badge_classes(issue.progress) %>
+          "
+        >
           <%= issue.progress.humanize %>
         </span>
       </div>
 
-      <p class="text-neutral-700 line-clamp-2 mb-2">
+      <%# Description Preview %>
+      <p class="text-neutral-700 text-sm sm:text-base line-clamp-2 mb-3">
         <%= issue.body.truncate(150) %>
       </p>
 
-      <div class="text-sm text-neutral-500">
-        <span class="mr-3">
-          Category:
-          <span class="font-medium"><%= issue.category.humanize %></span>
+      <%# Footer Metadata - Compact and readable on all sizes %>
+      <div class="text-xs sm:text-sm text-gray-400 flex flex-wrap gap-x-4 gap-y-1">
+        <%# Category Badge %>
+        <span class="font-medium text-text-primary">
+          <%= issue.category.humanize %>
         </span>
 
-        <span>
+        <%# Submission Date/User %>
+        <span class="hidden sm:inline">
           Submitted by <%= issue.user.redacted_email %> on
+        </span>
+
+        <span class="sm:hidden">
+          Submitted <%= issue.created_at.strftime("%b %d") %>
+        </span>
+
+        <span class="hidden sm:inline">
           <%= issue.created_at.strftime("%b %d, %Y") %>
         </span>
 
-        <%# Delivery Date Badge (Visible only if applicable and set) %>
+        <%# Delivery Date Badge (Admin/Tracked Issues Only) %>
         <% if issue.delivery_trackable? && issue.delivery_date.present? %>
           <span
             class="
-              ml-4 px-2 py-0.5 text-xs font-medium rounded-md
-              bg-accent-secondary text-text-dark
+              px-2 py-0.5 text-xs font-bold rounded-md bg-secondary
+              text-white ml-0 sm:ml-2
             "
           >
             Target: <%= issue.delivery_date.strftime("%b %d") %>
@@ -54,28 +76,29 @@
     </div>
   <% end %>
 
-  <% if current_user.admin? %>
+  <%# 3. Admin Actions (Right) - HIDDEN ON MOBILE/SMALL SCREENS %>
+  <% if current_user&.admin? %>
     <div
       class="
-        pl-4 border-l border-neutral-300 hidden sm:flex flex-col space-y-2
-        min-w-[5rem]
+        pl-4 border-l border-neutral-300 hidden md:flex flex-col space-y-2
+        min-w-[6rem] items-start
       "
     >
       <%# Update Edit link to target the issue_content frame %>
       <%= link_to "Edit", edit_issue_path(issue),
           data: { turbo_frame: dom_id(issue, :content) },
-          class: "text-sm text-text-primary hover:underline whitespace-nowrap" %>
+          class: "text-xs font-medium text-text-primary hover:text-accent-dark hover:underline whitespace-nowrap" %>
 
       <%= button_to "Archive", issue_path(issue),
           method: :patch,
           params: { issue: { progress: :archived } },
-          data: { turbo_confirm: "Are you sure you want to archive this issue? It will be hidden from the main view." },
-          class: "text-sm text-red-500 hover:text-red-700 hover:underline cursor-pointer bg-transparent border-none p-0 text-left whitespace-nowrap" %>
+          data: { turbo_confirm: "Are you sure you want to archive this issue?" },
+          class: "text-xs font-medium text-red-500 hover:text-red-700 hover:underline cursor-pointer bg-transparent border-none p-0 text-left whitespace-nowrap" %>
 
       <%= button_to "Next Up", issue_path(issue),
           method: :patch,
           params: { issue: { progress: :next_up } },
-          class: "text-sm text-accent hover:text-accent hover:underline cursor-pointer bg-transparent border-none p-0 text-left whitespace-nowrap" %>
+          class: "text-xs font-medium text-accent hover:text-accent-dark hover:underline cursor-pointer bg-transparent border-none p-0 text-left whitespace-nowrap" %>
     </div>
   <% end %>
 </div>

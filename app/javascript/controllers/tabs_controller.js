@@ -3,21 +3,27 @@
 import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
-  // Define targets for the tab buttons and content panels
-  static targets = ['tab', 'panel'];
+  // Add the adminFeatureButton target for conditional display in the header
+  static targets = ['tab', 'panel', 'adminFeatureButton'];
 
   connect() {
     this.showInitialTab();
   }
 
   showInitialTab() {
-    // Determine which tab to show initially (e.g., the first one, or based on URL)
-    this.panelTargets.forEach((panel, index) => {
-      // Show the first panel by default
+    // Show the first tab (index 0) on connect
+    this.tabTargets.forEach((tab, index) => {
+      // Find the issue button which is the default
+      const issueButton = this.element.querySelector('a[href="/issues/new"]');
+
       if (index === 0) {
-        this.setActive(this.tabTargets[index], panel);
+        this.updateStyles(tab, this.panelTargets[index], true);
+
+        // Ensure issue button is visible and admin button is hidden on initial load
+        if (issueButton) issueButton.classList.remove('hidden');
+        if (this.hasAdminFeatureButtonTarget) this.adminFeatureButtonTarget.classList.add('hidden');
       } else {
-        this.setInactive(this.tabTargets[index], panel);
+        this.updateStyles(tab, this.panelTargets[index], false);
       }
     });
   }
@@ -26,38 +32,45 @@ export default class extends Controller {
   changeTab(event) {
     event.preventDefault();
 
-    // Get the index of the clicked tab
     const selectedTab = event.currentTarget;
-    const index = this.tabTargets.indexOf(selectedTab);
+    const selectedIndex = this.tabTargets.indexOf(selectedTab);
 
-    this.panelTargets.forEach((panel, i) => {
-      if (i === index) {
-        this.setActive(this.tabTargets[i], panel);
-      } else {
-        this.setInactive(this.tabTargets[i], panel);
-      }
+    // Find the issue button (default action)
+    const issueButton = this.element.querySelector('a[href="/issues/new"]');
+
+    this.tabTargets.forEach((tab, index) => {
+      const isSelected = index === selectedIndex;
+      this.updateStyles(tab, this.panelTargets[index], isSelected);
     });
+
+    // Handle the Action Button swap
+    const isFeaturesTab = selectedIndex === 1;
+
+    if (issueButton) {
+      issueButton.classList.toggle('hidden', isFeaturesTab);
+    }
+
+    if (this.hasAdminFeatureButtonTarget) {
+      this.adminFeatureButtonTarget.classList.toggle('hidden', !isFeaturesTab);
+    }
   }
 
-  setActive(tab, panel) {
-    // Style the active tab button
-    tab.classList.remove(
-      'text-[--color-text-dark]',
-      'hover:text-[--color-text-primary]',
-      'border-[--color-neutral-300]'
-    );
-    tab.classList.add('text-[--color-text-primary]', 'border-[--color-primary]');
+  // Consolidated method to apply active/inactive styles and visibility
+  updateStyles(tab, panel, isActive) {
+    if (isActive) {
+      // Set Active Styles using concise Tailwind names
+      tab.classList.remove('text-neutral-500', 'border-neutral-300');
+      tab.classList.add('text-primary', 'border-primary');
 
-    // Show the content panel
-    panel.classList.remove('hidden');
-  }
+      // Show the content panel
+      panel.classList.remove('hidden');
+    } else {
+      // Set Inactive Styles using concise Tailwind names
+      tab.classList.remove('text-primary', 'border-primary');
+      tab.classList.add('text-neutral-500', 'border-neutral-300');
 
-  setInactive(tab, panel) {
-    // Style the inactive tab button
-    tab.classList.remove('text-[--color-text-primary]', 'border-[--color-primary]');
-    tab.classList.add('text-[--color-text-dark]', 'hover:text-[--color-text-primary]', 'border-[--color-neutral-300]');
-
-    // Hide the content panel
-    panel.classList.add('hidden');
+      // Hide the content panel
+      panel.classList.add('hidden');
+    }
   }
 }

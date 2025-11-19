@@ -1,9 +1,16 @@
 <% content_for :title, "New feature" %>
 
-<div class="md:w-2/3 w-full">
-  <h1 class="font-bold text-4xl">New feature</h1>
+<div class="max-w-xl mx-auto p-4 sm:p-6 lg:p-8">
+  <div class="bg-white shadow-xl rounded-lg p-6 sm:p-8 border border-neutral-300">
+    <h1 class="font-bold text-3xl text-text-dark mb-6 text-center">
+      Propose New Feature
+    </h1>
 
-  <%= render "form", feature: @feature %>
+    <%= render "form", feature: @feature %>
 
-  <%= link_to "Back to features", features_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+    <div class="mt-6 text-center">
+      <%= link_to "Cancel and Go Back", features_path,
+          class: "rounded-md px-4 py-2 bg-neutral-100 hover:bg-neutral-300 text-text-dark inline-block font-medium transition duration-150 ease-in-out" %>
+    </div>
+  </div>
 </div>

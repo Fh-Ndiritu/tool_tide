@@ -1,0 +1,28 @@
+<%# app/views/features/_polling_block.html.erb %>
+<%# Local variable: feature %>
+
+<% current_poll = feature.polls.find_by(user: current_user) if defined?(current_user) %>
+
+<%# NOTE: Requires feature.polls.count to be calculated, or a dedicated score method %>
+<% score = feature.polls.count %>
+
+<div
+  id="feature_<%= feature.id %>_polling_block"
+  class="
+    flex flex-col items-center pr-4 border-r border-neutral-300
+    text-text-primary
+  "
+>
+  <p class="text-xs text-neutral-500 mb-1">Polls</p>
+
+  <%# Polling Button (Preference: 1) %>
+  <%= button_to feature_polls_path(feature, preference: 1), method: :post,
+      data: { turbo_frame: "_top" },
+      class: [
+        "text-lg px-2 py-1 rounded-md transition-colors duration-100 font-semibold",
+        current_poll.present? ? "bg-primary text-text-light hover:opacity-80" : "bg-neutral-100 text-text-dark hover:bg-primary hover:text-text-light"
+      ].join(" ") do %>
+    <span class="text-2xl leading-none block"><%= score %></span>
+    <span class="text-xs mt-1 block">Vote Up</span>
+  <% end %>
+</div>

@@ -1,18 +1,53 @@
-<%# app/views/issues/_issues_list.html.erb %>
-<%# Local variable: issues %>
+<p
+  class="
+    text-center text-base text-neutral-600 mb-8 p-4 border
+    border-accent-secondary rounded-lg bg-primary/10 shadow-md
+    max-w-2xl mx-auto
+  "
+>
+  <b>Don't hold back!</b> We rely on your insights to make this product better.
+  If you spot a bug or have a brilliant idea for a new feature, please use the
+  <b>"Submit New Issue"</b> button above.
+</p>
 
-<div class="space-y-4">
+<h3
+  class="
+    font-extrabold text-2xl sm:text-3xl mb-6 text-text-dark border-b
+    border-neutral-200 pb-3
+  "
+>
+  Submitted Feedback & Issues
+</h3>
+
+<%# --- The Core List Wrapper --- %>
+<div id="issues" class="space-y-5">
   <% if issues.any? %>
     <% issues.each do |issue| %>
-      <%# Wrap each issue in a div with its DOM ID for Turbo Stream updates %>
+      <%# Wrap each issue in its DOM ID for Turbo Stream updates (removal/replacement) %>
       <%= turbo_frame_tag issue do %>
+        <%# _issue_card.html.erb handles the design and responsiveness of each item %>
         <%= render "issues/issue_card", issue: issue %>
       <% end %>
     <% end %>
   <% else %>
-    <div class="p-10 text-center bg-neutral-100 rounded-lg border border-neutral-300">
-      <p class="text-neutral-700">
-        No feedback issues have been submitted yet.
+    <%# Enhanced Empty State %>
+    <div
+      class="
+        p-10 text-center bg-white rounded-xl border-2
+        border-dashed border-neutral-300 shadow-inner
+      "
+    >
+      <p class="text-xl font-semibold text-neutral-600 mb-2">
+        Nothing to see here yet!
+      </p>
+
+      <p class="text-neutral-500 text-base">
+        Be the first to submit a piece of <b>feedback</b> or report an
+        <b>issue</b>.
+      </p>
+
+      <p class="text-neutral-500 text-sm mt-1">
+        Your input drives our development roadmap.
       </p>
     </div>
   <% end %>

@@ -1,30 +1,41 @@
 class FeaturesController < ApplicationController
   before_action :set_feature, only: %i[ show edit update destroy ]
+  include ActionView::RecordIdentifier
 
-  # GET /features or /features.json
   def index
+    # Note: Features are already loaded in IssuesController#index for the dashboard context.
+    # This action remains for direct routing/scoping if needed later.
     @features = Feature.all
   end
 
-  # GET /features/1 or /features/1.json
   def show
+    respond_to do |format|
+      format.html
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.replace(
+          dom_id(@feature, :content),
+          partial: "features/feature_card_content",
+          locals: { feature: @feature }
+        )
+      end
+    end
   end
 
-  # GET /features/new
   def new
     @feature = Feature.new
   end
 
-  # GET /features/1/edit
   def edit
   end
 
-  # POST /features or /features.json
   def create
     @feature = Feature.new(feature_params)
 
     respond_to do |format|
       if @feature.save
+        # Assuming we want to broadcast new features to the roadmap list like issues
+        format.turbo_stream { render turbo_stream: turbo_stream.prepend("features", partial: "features/feature_card", locals: { feature: @feature }) }
+
         format.html { redirect_to @feature, notice: "Feature was successfully created." }
         format.json { render :show, status: :created, location: @feature }
       else
@@ -34,20 +45,38 @@ class FeaturesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /features/1 or /features/1.json
   def update
     respond_to do |format|
       if @feature.update(feature_params)
+
+        format.turbo_stream do
+          if @feature.archived? || @feature.released?
+            render turbo_stream: turbo_stream.remove(@feature)
+          else
+            # If successfully updated, replace the form (dom_id(@feature, :content))
+            # with the updated card content, or the whole card if it's a status change
+            render turbo_stream: turbo_stream.replace(
+              @feature, # Replace the whole card to handle status changes/re-sorting/styling
+              partial: "features/feature_card",
+              locals: { feature: @feature }
+            )
+          end
+        end
+
         format.html { redirect_to @feature, notice: "Feature was successfully updated.", status: :see_other }
-        format.json { render :show, status: :ok, location: @feature }
       else
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace(
+            dom_id(@feature, :content),
+            partial: "features/form_inline",
+            locals: { feature: @feature }
+          ), status: :unprocessable_entity
+        end
         format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @feature.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # DELETE /features/1 or /features/1.json
   def destroy
     @feature.destroy!
 
@@ -58,13 +87,12 @@ class FeaturesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_feature
-      @feature = Feature.find(params.expect(:id))
+      @feature = Feature.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def feature_params
-      params.expect(feature: [ :title, :description, :progress, :delivery_date ])
+      # Standardized to use require/permit for strong parameters
+      params.require(:feature).permit(:title, :description, :progress, :delivery_date)
     end
 end
