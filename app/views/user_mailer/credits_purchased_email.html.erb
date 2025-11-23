@@ -1,0 +1,24 @@
+<p>Hello <%= @user.email %>!</p>
+
+<p>Francis from Hadaa AI here.</p>
+
+<p>Great news! Your payment has been successfully processed and <strong><%= @credits_issued %> credits</strong> have been added to your account. 🎉</p>
+
+<p><strong>Order Details:</strong></p>
+<ul>
+  <li>Order ID: <%= @transaction.paypal_order_id %></li>
+  <li>Amount Paid: $<%= sprintf('%.2f', @transaction.amount) %> USD</li>
+  <li>Credits Issued: <%= @credits_issued %> credits</li>
+  <li>Date: <%= @transaction.paid_at.strftime('%B %d, %Y at %I:%M %p') %></li>
+  <li>Payment Method: PayPal</li>
+</ul>
+
+<p>You can start using your credits right away:</p>
+
+<p><%= link_to 'Go to Design Editor →', new_canva_url %></p>
+
+<p>We hope you enjoy creating amazing designs! If you have any questions or need assistance, feel free to reach out.</p>
+
+<p>Best,</p>
+
+<p>Francis</p>

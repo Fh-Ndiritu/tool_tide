@@ -12,4 +12,15 @@ class UserMailer < ApplicationMailer
       subject: "Welcome to our Awesome App!"
     )
   end
+
+  def credits_purchased_email
+    @user = params[:user]
+    @transaction = PaymentTransaction.find(params[:transaction_id])
+    @credits_issued = params[:credits_issued]
+
+    mail(
+      to: @user.email,
+      subject: "Your Credits Purchase is Complete! 🎉"
+    )
+  end
 end

@@ -132,3 +132,5 @@ gem "redcarpet", "~> 3.6"
 gem 'omniauth'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-rails_csrf_protection'
+
+gem 'paypal-server-sdk', '2.0.0'

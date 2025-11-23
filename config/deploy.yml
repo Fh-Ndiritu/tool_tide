@@ -50,9 +50,9 @@ env:
     - GEMINI_API_KEY
     - GEMINI_API_KEYS
     - BREVO_API_KEY
-    - PAYSTACK_BASE_URL
-    - PAYSTACK_API_KEY
-    - PAYSTACK_CALLBACK_URL
+    - PAYPAL_CLIENT_ID
+    - PAYPAL_CLIENT_SECRET
+    - PAYPAL_ENVIRONMENT
 
   clear:
     # Run the Solid Queue Supervisor inside the web server's Puma process to do jobs.

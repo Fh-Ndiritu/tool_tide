@@ -32,12 +32,21 @@ class PaymentTransaction < ApplicationRecord
   def issue_credits
     return unless validated? && !credits_issued?
 
+    credits_amount = nil
     ActiveRecord::Base.transaction do
-      amount = Object.const_get("PRO_CREDITS_PER_#{currency}") * self.amount
-      user.credits.create!(source: :purchase, amount:, credit_type: :pro_engine)
+      credits_amount = Object.const_get("PRO_CREDITS_PER_#{currency}") * amount
+      user.credits.create!(source: :purchase, amount: credits_amount, credit_type: :pro_engine)
       update credits_issued: true
       user.update reverted_to_free_engine: false, notified_about_pro_credits: false
     end
+
+    UserMailer.with(
+      user: user,
+      transaction_id: id,
+      credits_issued: credits_amount
+    ).credits_purchased_email.deliver_later
+
+    credits_amount
   end
 
   private

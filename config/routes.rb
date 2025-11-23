@@ -49,9 +49,11 @@ Rails.application.routes.draw do
   resources :mask_requests, only: :index
   # Home routes
   get "credits", to: "home#credits", as: :credits
-  get "paystack/callback", to: "payment_transactions#callback"
-
-  resources :payment_transactions, only: :create
+  resources :payment_transactions, only: :create do
+    collection do
+      post :capture
+    end
+  end
   devise_for :users, controllers: { omniauth_callbacks: "users/omniauth_callbacks" }
 
   mount ActionCable.server => "/cable"

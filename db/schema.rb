@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_18_175805) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_22_165500) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -199,16 +199,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_18_175805) do
     t.decimal "amount", precision: 10, scale: 2
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "access_code"
-    t.string "authorization_url"
-    t.string "paystack_reference_id"
     t.boolean "validated", default: false, null: false
     t.integer "status", default: 0, null: false
     t.datetime "paid_at"
     t.string "method"
-    t.string "paystack_customer_id"
     t.string "currency", default: "USD"
     t.boolean "credits_issued", default: false, null: false
+    t.string "paypal_order_id"
+    t.string "paypal_payer_id"
     t.index ["user_id"], name: "index_payment_transactions_on_user_id"
   end
 
