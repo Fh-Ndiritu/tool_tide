@@ -1,0 +1,49 @@
+<% content_for :title, "Select Plants" %>
+
+<%= turbo_stream_from @mask_request.canva %>
+
+<div
+  class="flex w-full flex-col items-center min-h-screen bg-neutral-300 p-2"
+  id="plants"
+>
+  <div class="w-full sm:max-w-lg lg:max-w-5xl">
+    <%= render 'shared/balances' %>
+
+    <div class="bg-neutral-100 p-3 sm:p-8 md:p-12 rounded-2xl shadow-2xl my-8" data-controller="mask-request"
+         data-mask-request-update-location-url="<%= update_location_mask_request_path(@mask_request) %>"
+         data-mask-request-suggest-plants-url="<%= suggest_plants_mask_request_path(@mask_request) %>">
+
+      <div class="mb-8 flex flex-col w-full items-center text-center">
+        <h3 class="text-3xl font-extrabold text-text-dark mb-2">
+          Plant Recommendations
+        </h3>
+        <p class="text-lg text-neutral-700">Get suggestions based on your location or add your own.</p>
+      </div>
+
+      <div class="flex justify-center mb-8">
+        <button class="btn cute-btn accent-btn flex items-center gap-2" data-action="mask-request#getLocation">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+          </svg>
+          Get Local Suggestions
+        </button>
+      </div>
+
+      <%= render "plant_list" %>
+
+      <div class="mt-8 border-t border-neutral-200 pt-8">
+        <h4 class="text-xl font-bold mb-4 text-text-dark">Add Custom Plants</h4>
+        <%= form_with url: add_plant_mask_request_path(@mask_request), method: :post, class: "flex gap-4" do |f| %>
+          <%= f.text_field "plant[english_name]", placeholder: "e.g. Rose, Lavender, Tulip (comma-separated)", class: "flex-1 rounded-lg border-neutral-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" %>
+          <%= f.submit "Add Plants", class: "btn cute-btn" %>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="flex justify-center mt-8 mb-12 gap-4">
+      <%= link_to "Back to Styles", edit_mask_request_path(@mask_request), class: "btn cute-btn !bg-neutral-500" %>
+      <%= button_to "Generate Design", mask_request_path(@mask_request, generate: true), method: :patch, class: "btn cute-btn text-xl px-8 py-4 w-full md:w-auto", data: { turbo: false } %>
+    </div>
+  </div>
+</div>

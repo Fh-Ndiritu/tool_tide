@@ -1,5 +1,5 @@
 class MaskRequestsController < ApplicationController
-  before_action :set_mask_request, only: %i[ show edit update destroy ]
+  before_action :set_mask_request, only: %i[ show edit update destroy plants suggest_plants remove_plant add_plant]
   before_action :set_canva, only: %i[new create]
   skip_before_action :authenticate_user!, only: :explore
 
@@ -57,16 +57,22 @@ class MaskRequestsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /mask_requests/1 or /mask_requests/1.json
   def update
     respond_to do |format|
-      if @mask_request.update(preset_params)
-        DesignGeneratorJob.perform_later(@mask_request.id)
-        format.html { head :no_content }
+      if @mask_request.preset.present? || @mask_request.update(preset_params)
+        if params[:generate]
+          DesignGeneratorJob.perform_later(@mask_request.id)
+          format.html { redirect_to mask_request_path(@mask_request), status: :see_other }
+        else
+          format.html { redirect_to plants_mask_request_path(@mask_request), status: :see_other }
+        end
       else
         format.html { render :edit, status: :unprocessable_entity }
       end
     end
+  end
+
+  def plants
   end
 
   # DELETE /mask_requests/1 or /mask_requests/1.json
@@ -76,6 +82,50 @@ class MaskRequestsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to mask_requests_path, notice: "Mask request was successfully destroyed.", status: :see_other }
       format.json { head :no_content }
+    end
+  end
+
+  def update_location
+    current_user.update(location_params)
+    head :ok
+  end
+
+  def suggest_plants
+    @mask_request.fetching_plant_suggestions!  # Set progress - triggers broadcast
+    DesignGenerator.new(@mask_request).suggest_plants(force: true)
+    @mask_request.reload
+    @mask_request.plant_suggestions_ready!  # Set progress - triggers broadcast
+    respond_to do |format|
+      format.turbo_stream
+    end
+  end
+
+  def add_plant
+    plant_names_input = plant_params[:english_name]
+
+    # Split by comma, trim whitespace, and remove blank entries
+    plant_names = plant_names_input.split(',').map(&:strip).reject(&:blank?)
+
+    # Create plants for each name
+    plant_names.each do |plant_name|
+      # Create plant with just the name, no details yet (validated: false)
+      plant = Plant.find_or_create_by!(english_name: plant_name)
+
+      # Only create the association if it doesn't already exist
+      unless @mask_request.mask_request_plants.exists?(plant_id: plant.id)
+        @mask_request.mask_request_plants.create!(plant: plant, quantity: 1)
+      end
+    end
+
+    respond_to do |format|
+      format.turbo_stream
+    end
+  end
+
+  def remove_plant
+    @mask_request.mask_request_plants.find(params[:plant_id]).destroy
+    respond_to do |format|
+      format.turbo_stream
     end
   end
 
@@ -96,5 +146,13 @@ class MaskRequestsController < ApplicationController
 
     def preset_params
       params.expect(mask_request: [ :preset ])
+    end
+
+    def location_params
+      params.require(:user).permit(:latitude, :longitude, address: {})
+    end
+
+    def plant_params
+      params.require(:plant).permit(:english_name)
     end
 end

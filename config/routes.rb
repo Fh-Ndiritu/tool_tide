@@ -43,7 +43,15 @@ Rails.application.routes.draw do
   get :low_credits, to: "credits#low"
 
   resources :canvas, shallow: true, except: [ :index, :edit, :show ] do
-    resources :mask_requests
+    resources :mask_requests do
+      member do
+        get :plants
+        post :suggest_plants
+        post :add_plant
+        delete :remove_plant
+        patch :update_location
+      end
+    end
   end
 
   resources :mask_requests, only: :index

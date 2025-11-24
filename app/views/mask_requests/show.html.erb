@@ -1,5 +1,7 @@
 <% content_for :title, "Showing mask request" %>
 
+<%= turbo_stream_from @mask_request.canva %>
+
 <div
   class="
     max-w-[1200px] space-y-12 flex flex-col justify-center items-center

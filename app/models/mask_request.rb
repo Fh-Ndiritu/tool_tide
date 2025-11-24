@@ -29,6 +29,10 @@ class MaskRequest < ApplicationRecord
 
 enum :progress, {
   uploading: 0,
+  getting_location: 1,
+  location_updated: 2,
+  fetching_plant_suggestions: 3,
+  plant_suggestions_ready: 9,
   validating: 10,
   validated: 20,
   preparing: 30,
@@ -112,7 +116,7 @@ enum :progress, {
   private
 
   def broadcast_progress
-    if failed? || complete?
+    if failed? || complete? || plant_suggestions_ready?
       Turbo::StreamsChannel.broadcast_refresh_to(canva, target: "styles")
     else
     Turbo::StreamsChannel.broadcast_replace_to(canva, target: "loader", partial: "layouts/shared/loader", locals: { record: self, klasses: "fixed " })

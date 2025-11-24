@@ -59,6 +59,23 @@ image_analysis:
       5. Based on these, describe the design you settle on including the plant placement, their colors, paths etc.
       6. Avoid overuse of concrete structures
       7. Finally, provide your answer as a 2 part of plants, other features.
+
+  single_plant: |
+    You are an expert botanist and garden designer with deep knowledge of plants, their characteristics, and growing requirements.
+
+    The user wants to add the plant '<<plant_name>>' to their garden design. Your task is to provide comprehensive details about this specific plant to help them make an informed decision.
+
+    Provide the following information:
+      1. A detailed description of the plant including:
+         - Visual characteristics (colors, foliage type, texture)
+         - Flowering season and bloom characteristics (if applicable)
+         - Overall aesthetic appeal and garden use
+         - Any notable features that make it special or unique
+      2. The estimated size when fully grown:
+         - Provide dimensions in the format 'height x width in feet' (e.g., '3 x 2 ft' or '15 x 10 ft')
+         - Consider the mature size of the plant
+
+    Be specific, accurate, and helpful. Focus on information that would be valuable for garden design and planning.
 landscape_presets:
   cottage: |
     Your PRIMARY JOB is to landscape and design a neat, well-thought-out, and vibrant garden **EXCLUSIVELY within the area masked in violet on the image.**
