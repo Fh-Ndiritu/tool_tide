@@ -104,7 +104,7 @@ class MaskRequestsController < ApplicationController
     plant_names_input = plant_params[:english_name]
 
     # Split by comma, trim whitespace, and remove blank entries
-    plant_names = plant_names_input.split(',').map(&:strip).reject(&:blank?)
+    plant_names = plant_names_input.split(",").map(&:strip).reject(&:blank?)
 
     # Create plants for each name
     plant_names.each do |plant_name|

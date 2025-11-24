@@ -113,6 +113,10 @@ enum :progress, {
     [ main_view.presence, rotated_view.presence, drone_view.presence ].compact.sample
   end
 
+  def processing?
+    plants? || getting_location? || location_updated? || fetching_plant_suggestions? || validating? || preparing? || main_view? || plants? || rotating? || drone? || processed? || retying? || overlaying?
+  end
+
   private
 
   def broadcast_progress
