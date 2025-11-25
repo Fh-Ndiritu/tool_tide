@@ -62,6 +62,7 @@ class MaskRequestsController < ApplicationController
       if @mask_request.preset.present? || @mask_request.update(preset_params)
         if params[:generate]
           DesignGeneratorJob.perform_later(@mask_request.id)
+          @mask_request.validating!
           format.html { redirect_to mask_request_path(@mask_request), status: :see_other }
         else
           format.html { redirect_to plants_mask_request_path(@mask_request), status: :see_other }

@@ -33,6 +33,7 @@ export default class extends Controller {
     'thumb',
     'fill',
     'display',
+    'suggestionsSection',
   ];
 
   static values = {
@@ -358,6 +359,9 @@ export default class extends Controller {
       if (response.ok) {
         // Just trigger plant suggestions - loader will be managed by broadcasts
         this.requestPlantSuggestions();
+        if (this.hasSuggestionsSectionTarget) {
+          this.suggestionsSectionTarget.classList.remove('hidden');
+        }
       } else {
         this.showMessage("Failed to update location.");
       }
