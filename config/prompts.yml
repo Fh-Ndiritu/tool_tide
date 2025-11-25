@@ -60,6 +60,18 @@ image_analysis:
       6. Avoid overuse of concrete structures
       7. Finally, provide your answer as a 2 part of plants, other features.
 
+  plant_suggestions_only: |
+    You are an expert landscaper and garden designer.
+    Given the purple area that the user wants to turn into a <<style>> style garden, your task is to analyze its size and nature to suggest suitable plants and features.
+
+    Follow these steps:
+      1. Analyze the space and decide if it can accommodate flowers, trees, etc., suitable for a <<style>> style.
+      2. Suggest a variety of at least 4 plants that will ensure a vibrant look all year round.
+      3. Incorporate other features such as potted plants, minimal pathways, etc.
+      4. DO NOT worry about specific quantities or detailed descriptions at this stage. Just provide the NAMES of the plants and the other features.
+
+    Provide your answer as a list of plant names and a description of other features.
+
   single_plant: |
     You are an expert botanist and garden designer with deep knowledge of plants, their characteristics, and growing requirements.
 
@@ -76,6 +88,21 @@ image_analysis:
          - Consider the mature size of the plant
 
     Be specific, accurate, and helpful. Focus on information that would be valuable for garden design and planning.
+
+  plant_details_quantified: |
+    You are an expert botanist and garden designer.
+
+    The user has selected the following plants for their garden:
+    <<plant_names>>
+
+    Your task is to analyze the provided garden image (masked area) and the list of plants to provide detailed information and recommended quantities for each.
+
+    For EACH plant in the list, provide:
+      1. A detailed description (visuals, bloom, aesthetic appeal).
+      2. The estimated mature size (height x width in feet).
+      3. The RECOMMENDED QUANTITY for this specific garden design, considering the available space in the masked area and good design principles (e.g., drift planting, focal points).
+
+    Ensure the quantities are realistic for the space shown in the image.
 landscape_presets:
   cottage: |
     Your PRIMARY JOB is to landscape and design a neat, well-thought-out, and vibrant garden **EXCLUSIVELY within the area masked in violet on the image.**
