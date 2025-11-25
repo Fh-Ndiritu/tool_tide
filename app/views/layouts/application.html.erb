@@ -138,7 +138,8 @@
   </head>
 
   <body data-controller="loader">
-    <%= render partial: "layouts/shared/loader", locals: { record: nil, klasses: "hidden fixed" } %>
+    <% show_loader = defined?(@mask_request) && @mask_request&.processing? %>
+    <%= render partial: "layouts/shared/loader", locals: { record: (show_loader ? @mask_request : nil), klasses: "#{show_loader ? '' : 'hidden'} fixed" } %>
     <%= render "shared/navbar" %>
     <%= render "shared/flash" %>
     <main class="<%= content_for(:main_classes) %>">

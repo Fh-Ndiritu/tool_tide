@@ -33,6 +33,7 @@ export default class extends Controller {
     'thumb',
     'fill',
     'display',
+    'suggestionsSection',
   ];
 
   static values = {
@@ -223,22 +224,40 @@ export default class extends Controller {
     });
   }
 
-  showMessage(message) {
+  showMessage(message, autoHide = false, duration = 2000) {
     const messageDiv = document.createElement('div');
     messageDiv.className = 'fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50';
-    messageDiv.innerHTML = `
-      <div class="bg-white p-6 rounded-lg shadow-xl text-center rounded-xl">
-        <p class="mb-4 text-lg font-semibold">${message}</p>
-        <div class="flex justify-center">
-          <button id="ok-btn" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow-md transition duration-300 ease-in-out">OK</button>
-        </div>
-      </div>
-    `;
-    document.body.appendChild(messageDiv);
 
-    document.getElementById('ok-btn').onclick = () => {
-      document.body.removeChild(messageDiv);
-    };
+    if (autoHide) {
+      // Auto-hide version without OK button
+      messageDiv.innerHTML = `
+        <div class="bg-white p-6 rounded-lg shadow-xl text-center rounded-xl">
+          <p class="text-lg font-semibold">${message}</p>
+        </div>
+      `;
+      document.body.appendChild(messageDiv);
+
+      setTimeout(() => {
+        if (document.body.contains(messageDiv)) {
+          document.body.removeChild(messageDiv);
+        }
+      }, duration);
+    } else {
+      // Manual dismiss version with OK button
+      messageDiv.innerHTML = `
+        <div class="bg-white p-6 rounded-lg shadow-xl text-center rounded-xl">
+          <p class="mb-4 text-lg font-semibold">${message}</p>
+          <div class="flex justify-center">
+            <button id="ok-btn" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow-md transition duration-300 ease-in-out">OK</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(messageDiv);
+
+      document.getElementById('ok-btn').onclick = () => {
+        document.body.removeChild(messageDiv);
+      };
+    }
   }
 
   showConfirmation(message, onConfirm) {
@@ -305,5 +324,66 @@ export default class extends Controller {
     this.maskTarget.files = dataTransfer.files;
 
     this.submitTarget.click();
+  }
+
+  getLocation(event) {
+    event.preventDefault();
+    if (navigator.geolocation) {
+      // No custom overlay - let the server-side loader handle progress display
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          this.updateLocation(position.coords.latitude, position.coords.longitude);
+        },
+        (error) => {
+          console.error("Error getting location:", error);
+          this.showMessage("Could not get your location. Please ensure you have allowed location access.");
+        }
+      );
+    } else {
+      this.showMessage("Geolocation is not supported by this browser.");
+    }
+  }
+
+  updateLocation(lat, lng) {
+    const url = this.element.dataset.maskRequestUpdateLocationUrl;
+
+    fetch(url, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+      },
+      body: JSON.stringify({ user: { latitude: lat, longitude: lng } })
+    })
+    .then(response => {
+      if (response.ok) {
+        // Just trigger plant suggestions - loader will be managed by broadcasts
+        this.requestPlantSuggestions();
+        if (this.hasSuggestionsSectionTarget) {
+          this.suggestionsSectionTarget.classList.remove('hidden');
+        }
+      } else {
+        this.showMessage("Failed to update location.");
+      }
+    });
+  }
+
+  requestPlantSuggestions() {
+    const url = this.element.dataset.maskRequestSuggestPlantsUrl;
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Accept': 'text/vnd.turbo-stream.html',
+        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+      }
+    })
+    .then(response => response.text())
+    .then(html => {
+      if (window.Turbo) {
+        window.Turbo.renderStreamMessage(html);
+      } else {
+        console.error("Turbo not found");
+      }
+    });
   }
 }
