@@ -174,7 +174,7 @@
                 "
               >
                 <%= image_tag url_for(image.variant(resize_to_limit: [400, 400])),
-                    loading: index < 10 ? :eager : :lazy,
+                    loading: :lazy,
                     alt: "AI Landscaping Design in #{request.preset.humanize} Style",
                     title: "#{request.preset.humanize} Style Design",
                     class: "w-full h-auto" %>
@@ -331,14 +331,15 @@
               hover:scale-[1.03] transition duration-500 group flex-grow p-1
             "
           >
-            <div
-              class="relative h-72 bg-cover bg-center rounded-t-xl rounded-b-none"
-              style="background-image: url('<%= image_url('how_it_works/brush_tool.webp') %>');"
-            >
+            <div class="relative h-72 rounded-t-xl rounded-b-none overflow-hidden">
+              <%= image_tag 'how_it_works/brush_tool.webp',
+                  class: "absolute inset-0 w-full h-full object-cover transition duration-500 group-hover:scale-110",
+                  loading: :lazy,
+                  alt: "Upload Your Photo" %>
               <div
                 class="
                   absolute inset-0 bg-neutral-900/50 flex items-center
-                  justify-center
+                  justify-center z-10
                 "
               >
                 <span class="text-5xl font-extrabold text-accent drop-shadow-lg">1</span>
@@ -374,14 +375,15 @@
               hover:scale-[1.03] transition duration-500 group flex-grow p-1
             "
           >
-            <div
-              class="relative h-72 bg-cover bg-center rounded-t-xl rounded-b-none"
-              style="background-image: url('<%= image_url('how_it_works/draw.png') %>');"
-            >
+            <div class="relative h-72 rounded-t-xl rounded-b-none overflow-hidden">
+              <%= image_tag 'how_it_works/draw.png',
+                  class: "absolute inset-0 w-full h-full object-cover transition duration-500 group-hover:scale-110",
+                  loading: :lazy,
+                  alt: "Brush to Modify" %>
               <div
                 class="
                   absolute inset-0 bg-neutral-900/50 flex items-center
-                  justify-center
+                  justify-center z-10
                 "
               >
                 <span class="text-5xl font-extrabold text-accent drop-shadow-lg">2</span>
@@ -414,14 +416,15 @@
               hover:scale-[1.03] transition duration-500 group flex-grow p-1
             "
           >
-            <div
-              class="relative h-72 bg-cover bg-center rounded-t-xl rounded-b-none"
-              style="background-image: url('<%= image_url('how_it_works/select_style.png') %>');"
-            >
+            <div class="relative h-72 rounded-t-xl rounded-b-none overflow-hidden">
+              <%= image_tag 'how_it_works/select_style.png',
+                  class: "absolute inset-0 w-full h-full object-cover transition duration-500 group-hover:scale-110",
+                  loading: :lazy,
+                  alt: "Select your Vibe" %>
               <div
                 class="
                   absolute inset-0 bg-neutral-900/50 flex items-center
-                  justify-center
+                  justify-center z-10
                 "
               >
                 <span class="text-5xl font-extrabold text-accent drop-shadow-lg">3</span>
@@ -454,14 +457,15 @@
               hover:scale-[1.03] transition duration-500 group flex-grow p-1
             "
           >
-            <div
-              class="relative h-72 bg-cover bg-center rounded-t-xl rounded-b-none"
-              style="background-image: url('<%= image_url('how_it_works/results.png') %>');"
-            >
+            <div class="relative h-72 rounded-t-xl rounded-b-none overflow-hidden">
+              <%= image_tag 'how_it_works/results.png',
+                  class: "absolute inset-0 w-full h-full object-cover transition duration-500 group-hover:scale-110",
+                  loading: :lazy,
+                  alt: "Hadaa Magic" %>
               <div
                 class="
                   absolute inset-0 bg-neutral-900/50 flex items-center
-                  justify-center
+                  justify-center z-10
                 "
               >
                 <span class="text-5xl font-extrabold text-accent drop-shadow-lg">4</span>
@@ -494,14 +498,15 @@
               hover:scale-[1.03] transition duration-500 group flex-grow p-1
             "
           >
-            <div
-              class="relative h-72 bg-cover bg-center rounded-t-xl rounded-b-none"
-              style="background-image: url('<%= image_url('how_it_works/shopping_list.webp') %>');"
-            >
+            <div class="relative h-72 rounded-t-xl rounded-b-none overflow-hidden">
+              <%= image_tag 'how_it_works/shopping_list.webp',
+                  class: "absolute inset-0 w-full h-full object-cover transition duration-500 group-hover:scale-110",
+                  loading: :lazy,
+                  alt: "Planting Guide" %>
               <div
                 class="
                   absolute inset-0 bg-neutral-900/50 flex items-center
-                  justify-center
+                  justify-center z-10
                 "
               >
                 <span class="text-5xl font-extrabold text-accent drop-shadow-lg">5</span>
@@ -534,14 +539,15 @@
               hover:scale-[1.03] transition duration-500 group flex-grow p-1
             "
           >
-            <div
-              class="relative h-72 bg-cover bg-center rounded-t-xl rounded-b-none"
-              style="background-image: url('<%= image_url('how_it_works/text_editor.png') %>');"
-            >
+            <div class="relative h-72 rounded-t-xl rounded-b-none overflow-hidden">
+              <%= image_tag 'how_it_works/text_editor.png',
+                  class: "absolute inset-0 w-full h-full object-cover transition duration-500 group-hover:scale-110",
+                  loading: :lazy,
+                  alt: "Take the Wheel!" %>
               <div
                 class="
                   absolute inset-0 bg-neutral-900/30 flex items-center
-                  justify-center
+                  justify-center z-10
                 "
               >
                 <span class="text-5xl font-extrabold text-accent drop-shadow-lg">6</span>
