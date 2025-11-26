@@ -4,20 +4,38 @@
 
 <%# --- Nudge Paragraph (TOP POSITION) --- %>
 
-<p
-  class="
-    text-center text-base text-neutral-600 mb-8 p-4 border
-    border-accent-secondary rounded-lg bg-accent-secondary/10 shadow-md
-    max-w-2xl mx-auto
-  "
->
-  ✨
-  <b>Help us build what matters most!</b>
-  Your
-  <b>votes</b>
-  directly influence our development priorities. Take a moment to vote on the
-  features you want to see launched next.
-</p>
+<% if user_signed_in? %>
+  <p
+    class="
+      text-center text-base text-neutral-600 mb-8 p-4 border
+      border-accent-secondary rounded-lg bg-accent-secondary/10 shadow-md
+      max-w-2xl mx-auto
+    "
+  >
+    ✨
+    <b>Help us build what matters most!</b>
+    Your
+    <b>votes</b>
+    directly influence our development priorities. Take a moment to vote on the
+    features you want to see launched next.
+  </p>
+<% else %>
+  <p
+    class="
+      text-center text-base text-neutral-600 mb-8 p-4 border
+      border-primary rounded-lg bg-primary/10 shadow-md
+      max-w-2xl mx-auto
+    "
+  >
+    👋
+    <b>Welcome!</b>
+    You're viewing our upcoming features roadmap.
+    <%= link_to "Sign in", new_user_session_path, class: "text-primary font-bold hover:underline" %>
+    or
+    <%= link_to "create an account", new_user_registration_path, class: "text-primary font-bold hover:underline" %>
+    to vote on features and help shape the future of our platform!
+  </p>
+<% end %>
 
 <h3
   class="

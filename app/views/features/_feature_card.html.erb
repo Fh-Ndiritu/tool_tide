@@ -65,7 +65,7 @@
   <% end %>
 
   <%# 3. Admin Actions (Right) - HIDDEN ON MOBILE/SMALL SCREENS (sm: breakpoint changed to md:) %>
-  <% if current_user&.admin? %>
+  <% if user_signed_in? && current_user&.admin? %>
     <div
       class="
         pl-4 border-l border-neutral-300 hidden md:flex flex-col space-y-2
