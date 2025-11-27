@@ -64,33 +64,9 @@
         </li>
       </ul>
 
-      <%# --- START: PAYMENT SECURITY & TOP-UP BLOCK --- %>
-      <div class="bg-gray-100 p-4 rounded-lg border border-gray-300">
-        <div class="flex items-start space-x-3">
-          <span class="text-xl pt-0.5 text-secondary">🛡️</span>
-          <div class="mb-6">
-            <h4 class="text-sm font-bold text-neutral-900 mb-1 uppercase">
-              Secure & Trusted Payment
-            </h4>
-            <p class="text-neutral-700 text-sm">
-              Your payment is secure.
-              <b>Paystack, a Stripe Company</b>
-              , uses bank-grade
-              <b>PCI DSS standards</b>
-              , ensuring we
-              <b>never store</b>
-              your credit card details.
-            </p>
-          </div>
-        </div>
-
-        <div class="flex w-full justify-center pt-4 border-t border-neutral-300 mt-4">
-          <%# The remaining primary action: Top Up Credits %>
-          <%= button_to "Top Up Credits", payment_transactions_path, data: {turbo: false}, method: :post, class: "cursor-pointer inline-block bg-secondary text-white font-bold py-3 px-8 rounded-full shadow-xl transition-all duration-300 transform hover:scale-[1.03] hover:bg-cta-bg/90 ring-4 ring-cta-bg/50" %>
-        </div>
+      <div class="flex w-full justify-center mt-8">
+        <%= button_to "Buy Credits", payment_transactions_path, data: {turbo: false}, method: :post, class: "cursor-pointer inline-block bg-secondary text-white font-bold py-3 px-8 rounded-full shadow-xl transition-all duration-300 transform hover:scale-[1.03] hover:bg-cta-bg/90 ring-4 ring-cta-bg/50" %>
       </div>
-
-      <%# --- END: PAYMENT SECURITY & TOP-UP BLOCK --- %>
     </div>
   </div>
 </div>
