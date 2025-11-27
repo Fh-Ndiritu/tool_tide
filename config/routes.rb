@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     resources :votes, only: [ :create ]
   end
   resources :audios
+  resources :searches, only: [:index]
   resources :favorites, only: [ :create, :destroy, :index ]
   scope "/designs" do
     get ":slug", to: "locations#show", as: :location, constraints: { slug: /[a-z0-9\-\_]+/ }

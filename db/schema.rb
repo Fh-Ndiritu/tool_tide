@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_24_172722) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_27_182622) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -232,6 +232,19 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_24_172722) do
     t.index ["user_id"], name: "index_polls_on_user_id"
   end
 
+  create_table "search_terms", force: :cascade do |t|
+    t.string "term"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "ip_address"
+    t.string "city"
+    t.string "country"
+    t.float "latitude"
+    t.float "longitude"
+    t.index ["user_id"], name: "index_search_terms_on_user_id"
+  end
+
   create_table "suggested_plants", force: :cascade do |t|
     t.string "name"
     t.text "description"
@@ -331,6 +344,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_24_172722) do
   add_foreign_key "payment_transactions", "users"
   add_foreign_key "polls", "features"
   add_foreign_key "polls", "users"
+  add_foreign_key "search_terms", "users"
   add_foreign_key "suggested_plants", "landscape_requests"
   add_foreign_key "text_requests", "users"
   add_foreign_key "tool_calls", "messages"

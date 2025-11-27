@@ -1,0 +1,28 @@
+<h1>Search Report</h1>
+<p>Here are the searches performed since <%= @since_time.strftime('%B %d, %H:%M') %>:</p>
+
+<% if @searches.any? %>
+  <ul>
+    <% @searches.each do |search| %>
+      <li>
+        <strong><%= search.term %></strong>
+        <span style="color: #666; font-size: 0.9em;">
+          - <%= search.created_at.strftime('%H:%M') %>
+          <% if search.user %>
+            (by <%= search.user.email %>)
+          <% else %>
+            (Guest)
+          <% end %>
+          <% if search.ip_address.present? %>
+            | IP: <%= search.ip_address %>
+          <% end %>
+          <% if search.city.present? || search.country.present? %>
+            | Location: <%= [search.city, search.country].compact.join(', ') %>
+          <% end %>
+        </span>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>No searches recorded in this period.</p>
+<% end %>
