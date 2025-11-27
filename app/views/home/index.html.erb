@@ -61,12 +61,12 @@
           }
           .phone-wrapper {
             animation: phone-rock 3s ease-in-out infinite;
+            transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            cursor: pointer;
           }
-          .phone-wrapper:hover {
-            animation: phone-rock-to-straight 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-          }
-          @keyframes phone-rock-to-straight {
-            to { transform: rotate(0deg); }
+          .phone-wrapper:hover, .phone-wrapper:active, .phone-wrapper:focus-within {
+            animation: none;
+            transform: rotate(0deg);
           }
         </style>
         <div class="phone-wrapper relative mx-auto border-[#f37f3c] bg-[#f37f3c] border-[14px] rounded-[2.5rem] h-[600px] w-[300px] shadow-2xl shadow-accent/20">
