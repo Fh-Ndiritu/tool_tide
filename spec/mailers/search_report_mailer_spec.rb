@@ -12,7 +12,7 @@ RSpec.describe SearchReportMailer, type: :mailer do
 
     it "renders the headers" do
       expect(mail.subject).to include("Search Report since")
-      expect(mail.to).to eq(["fhndiritu@gmail.com"])
+      expect(mail.to).to eq([ "fhndiritu@gmail.com" ])
       # The from address comes from ApplicationMailer defaults which pulls from credentials
       # We just check it's present, or we can check the specific value if we knew the credential
       expect(mail.from).not_to be_empty
