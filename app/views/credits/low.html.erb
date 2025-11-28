@@ -86,7 +86,7 @@
           </div>
         </div>
         <div class="flex w-full justify-center">
-          <%= button_to "Top Up Credits", payment_transactions_path, data: {turbo: false}, method: :post, class: "m-auto cursor-pointer inline-block bg-secondary text-neutral-100 font-bold py-3 px-8 rounded-full shadow-xl transition-all duration-300 transform hover:scale-[1.03] hover:bg-cta-bg ring-4 ring-secondary/50" %>
+          <%= button_to "Top Up Credits", payment_transactions_path, data: {turbo: false}, method: :post, onclick: "gtag('event', 'begin_checkout', { 'currency': 'USD', 'value': #{DEFAULT_USD_PURCHASE_AMOUNT.to_f} });", class: "m-auto cursor-pointer inline-block bg-secondary text-neutral-100 font-bold py-3 px-8 rounded-full shadow-xl transition-all duration-300 transform hover:scale-[1.03] hover:bg-cta-bg ring-4 ring-secondary/50" %>
         </div>
       </div>
     </div>

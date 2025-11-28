@@ -11,5 +11,7 @@ class HomeController < ApplicationController
     @text_requests = tags.map { |tag| text_requests.where(generation_taggings: { tag: tag }).limit(4) }.flatten
   end
 
-  def credits; end
+  def credits
+    @conversion_event = flash[:conversion_event]
+  end
 end

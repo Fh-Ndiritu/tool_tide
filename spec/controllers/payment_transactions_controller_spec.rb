@@ -55,14 +55,40 @@ RSpec.describe PaymentTransactionsController, type: :controller do
   describe "GET #callback" do
     context "when reference is present" do
       context "and payment verification is successful" do
+        let(:payment_transaction) do
+          PaymentTransaction.create!(
+            user: user,
+            amount: 10,
+            currency: "usd",
+            paystack_reference_id: "test_ref_123",
+            credits_issued: false
+          )
+        end
+
         before do
           allow(Paystack::VerifyPayment).to receive(:perform).and_return(Dry::Monads::Success(true))
+          allow(PaymentTransaction).to receive(:find_by).with(paystack_reference_id: "test_ref_123").and_return(payment_transaction)
         end
 
         it "sets a success flash and redirects to credits_path" do
-          get :callback, params: { reference: "123" }
+          get :callback, params: { reference: "test_ref_123" }
           expect(flash[:success]).to eq("Payment successful!")
           expect(response).to redirect_to(credits_path)
+        end
+
+        it "sets conversion_event flash with transaction details" do
+          get :callback, params: { reference: "test_ref_123" }
+          expect(flash[:conversion_event]).to be_present
+          expect(flash[:conversion_event][:transaction_id]).to eq("test_ref_123")
+          expect(flash[:conversion_event][:value]).to eq(10.0)
+          expect(flash[:conversion_event][:currency]).to eq("USD")
+          expect(flash[:conversion_event][:credits]).to eq(200) # 10 * PRO_CREDITS_PER_USD (20)
+        end
+
+        it "does not set credits in conversion_event if already issued" do
+          payment_transaction.update(credits_issued: true)
+          get :callback, params: { reference: "test_ref_123" }
+          expect(flash[:conversion_event][:credits]).to eq(0)
         end
       end
 
