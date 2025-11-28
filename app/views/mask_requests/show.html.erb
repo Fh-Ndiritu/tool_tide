@@ -1,6 +1,15 @@
 <% content_for :title, "Showing mask request" %>
 
 <%= turbo_stream_from @mask_request.canva %>
+<% if @trigger_pql_event %>
+  <script>
+    gtag('event', 'pql_mask_request', {
+      'event_category': 'engagement',
+      'event_label': 'first_mask_request'
+    });
+  </script>
+<% end %>
+
 
 <div
   class="

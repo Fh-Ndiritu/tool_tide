@@ -15,6 +15,9 @@ class MaskRequestsController < ApplicationController
 
   # GET /mask_requests/1 or /mask_requests/1.json
   def show
+    puts "Show Flash: #{flash.to_hash}"
+    @trigger_pql_event = flash[:pql_event] == "true"
+    puts "Trigger: #{@trigger_pql_event}"
   end
 
   # GET /mask_requests/new
@@ -61,6 +64,9 @@ class MaskRequestsController < ApplicationController
     respond_to do |format|
       if @mask_request.preset.present? || @mask_request.update(preset_params)
         if params[:generate]
+          if MaskRequest.joins(canva: :user).where(users: { id: current_user.id }).count == 1
+            flash[:pql_event] = "true"
+          end
           DesignGeneratorJob.perform_later(@mask_request.id)
           @mask_request.validating!
           format.html { redirect_to mask_request_path(@mask_request), status: :see_other }
