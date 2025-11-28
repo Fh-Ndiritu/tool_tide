@@ -32,5 +32,4 @@ RSpec.describe MaskRequestsController, type: :controller do
       end
     end
   end
-
 end
