@@ -214,7 +214,10 @@ class DesignGenerator
       c.fill "white"
       c.stroke "black"
       c.strokewidth "2"
-      c.draw "text 0,0 \"Premium Only\""
+
+      c.font "DejaVu-Sans"
+
+      c.annotate '0', "Premium Only"
     end
 
     blob = upload_blob(main_image)
