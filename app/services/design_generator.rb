@@ -207,7 +207,6 @@ class DesignGenerator
     main_image_blob = @mask_request.main_view.download
     main_image = MiniMagick::Image.read(main_image_blob)
 
-    # Add watermark
     main_image.combine_options do |c|
       c.blur "0x20"
       c.gravity "Center"
@@ -215,7 +214,7 @@ class DesignGenerator
       c.fill "white"
       c.stroke "black"
       c.strokewidth "2"
-      c.draw "text 0,0 'Premium Only'"
+      c.draw "text 0,0 \"Premium Only\""
     end
 
     blob = upload_blob(main_image)
