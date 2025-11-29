@@ -92,6 +92,15 @@
 
       <%# Description & CTA - Order 3 on mobile, Order 2 on desktop %>
       <div class="w-full lg:w-1/2 text-center lg:text-left text-white order-3 lg:order-2">
+        <%# Free Trial Badge %>
+        <div class="inline-flex items-center gap-3 bg-gradient-to-r from-accent/20 to-secondary/20 border-2 border-accent/50 rounded-full px-6 py-3 mb-6">
+          <span class="text-3xl">🎁</span>
+          <div class="text-left">
+            <p class="text-sm font-bold text-accent uppercase tracking-wide">Try Free - No Credit Card</p>
+            <p class="text-xs text-neutral-200">Mask Designer and Ai Editor</p>
+          </div>
+        </div>
+
         <p
           class="
             text-lg md:text-xl max-w-2xl lg:max-w-3xl mx-auto lg:mx-0 mb-10
@@ -100,7 +109,7 @@
         >
           <b>Upload. Brush. Transform.</b>
           Get photorealistic designs, smart plant recommendations, and a complete
-          shopping list. Purchase credits and start designing instantly.
+          shopping list. <b class="text-accent">Start your free trial</b> - no credit card required.
         </p>
 
         <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
@@ -620,6 +629,34 @@
       Frequently Asked Questions
     </h2>
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
+      <%# START: FAQ Item 0 - Free Trial %>
+      <div
+        class="
+          bg-gradient-to-br from-accent/10 to-secondary/10 rounded-xl shadow-2xl p-6 border-2 border-accent
+          transition duration-300 hover:scale-[1.02] hover:shadow-accent/50
+        "
+        data-accordion-target="item"
+      >
+        <h3
+          class="
+            text-xl font-bold mb-0 text-accent flex justify-between
+            items-center cursor-pointer
+          "
+          data-action="click->accordion#toggle"
+        >
+          Is there a free trial? 🎁
+        </h3>
+        <div>
+          <p class="text-base text-neutral-300 leading-relaxed mt-3">
+            <b class="text-accent">Yes! Absolutely free.</b>
+            Try Hadaa with <b>1 free brush design</b> and <b>1 free AI text edit</b> - no credit card required.
+            Experience our photorealistic transformations before committing.
+          </p>
+        </div>
+      </div>
+
+      <%# END: FAQ Item 0 - Free Trial %>
+
       <%# START: FAQ Item 1 - Pricing Model %>
       <div
         class="
@@ -639,7 +676,9 @@
         </h3>
         <div>
           <p class="text-base text-neutral-300 leading-relaxed mt-3">
-            Hadaa operates on a simple, transparent
+            <b class="text-accent">Start with a free trial!</b>
+            Try our Mask Designer and AI Editor with no credit card required.
+            After your trial, Hadaa operates on a simple, transparent
             <b>Pay-As-You-Go credit system</b>
             . To begin, you purchase your first pack:
             <b>$10 for 200 Usage Credits</b>
@@ -819,14 +858,14 @@
 <section id="pricing" class="py-16 md:py-32 bg-gray-200 text-gray-900">
   <div class="container mx-auto px-6 max-w-3xl">
     <h2 class="text-center text-4xl md:text-6xl font-extrabold mb-4 leading-tight">
-      Simple Pricing. <span class="text-accent">Design on Demand.</span>
+      Try Free. <span class="text-accent">Then Pay As You Go.</span>
     </h2>
 
     <p class="text-center text-xl md:text-2xl max-w-3xl mx-auto mb-16 text-gray-600">
-      Our entire platform is built on a transparent
+      <b class="text-accent">Start with a free trial</b> - no credit card required.
+      Experience the magic, then unlock unlimited designs with our transparent
       <b>Pay-As-You-Go</b>
-      credit system. Get instant access to every feature with your first credit
-      purchase.
+      credit system.
     </p>
 
     <%# START: Pricing Card %>
@@ -851,9 +890,10 @@
         </p>
 
         <p class="text-lg leading-relaxed mb-8 text-gray-800">
-          This one-time purchase is your key to instant, high-fidelity AI
-          landscape design.
-          <b>No subscription required.</b>
+          After your free trial, this one-time purchase unlocks unlimited access to
+          all features.
+          <b>No subscription. No hidden fees.</b>
+          Just pure creative freedom.
         </p>
 
         <%# START: ButtonComponent - Unlock All Features %>
