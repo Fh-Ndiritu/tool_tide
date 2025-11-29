@@ -90,7 +90,6 @@ gem "faraday", "~> 2.13"
 
 gem "kramdown", "~> 2.5"
 
-gem "hexapdf", "~> 1.3"
 # Bot prevention
 gem "rack-attack"
 gem "recaptcha"
@@ -129,6 +128,6 @@ gem "ancestry", "~> 4.3"
 
 gem "redcarpet", "~> 3.6"
 
-gem 'omniauth'
-gem 'omniauth-google-oauth2'
-gem 'omniauth-rails_csrf_protection'
+gem "omniauth"
+gem "omniauth-google-oauth2"
+gem "omniauth-rails_csrf_protection"
