@@ -27,6 +27,13 @@ SitemapGenerator::Sitemap.create do
    #     add article_path(article), :lastmod => article.updated_at
    #   end
 
+  add privacy_policy_path, priority: 0.7, changefreq: "monthly"
+  add contact_us_path, priority: 0.7, changefreq: "monthly"
+  add explore_path, priority: 0.9, changefreq: "daily"
+  add ojus_path, priority: 0.8, changefreq: "weekly"
+
+  add features_path, priority: 0.8, changefreq: "weekly"
+
    Tag.where(tag_class: :event).each do |event|
     add "/events/#{event.slug}", changefreq: "weekly", priority: 0.8
   end
