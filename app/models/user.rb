@@ -9,6 +9,7 @@ class User < ApplicationRecord
   has_many :payment_transactions, dependent: :destroy
 
   has_many :canvas, dependent: :destroy
+  has_many :mask_requests, through: :canvas
 
   has_many :credits, dependent: :destroy
   has_many :text_requests, dependent: :destroy
@@ -60,6 +61,10 @@ class User < ApplicationRecord
     email
     email[0..5] = "*" * 5
     email
+  end
+
+  def free_design_available?
+    mask_requests.complete.count == 0 && !credits.exists?(source: :purchase, credit_type: :pro_engine)
   end
 
   private

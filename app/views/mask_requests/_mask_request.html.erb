@@ -36,6 +36,18 @@
         <%= link_to "Show", mask_request_path(mask_request), class: "!max-w-[45%] cute-btn !bg-cta-bg " if defined?(compact) %>
       </div>
 
+      </div>
+
+      <% unless current_user.afford_generation? %>
+        <div class="bg-gradient-to-r from-accent/10 to-secondary/10 rounded-xl p-6 text-center border border-accent/20 shadow-sm my-6">
+           <h3 class="text-xl font-bold text-gray-900 mb-2">✨ Unlock Premium Views</h3>
+           <p class="text-gray-600 mb-4">
+             Get access to high-resolution rotated and drone views, and generate unlimited designs.
+           </p>
+           <%= link_to "Get Credits & Unlock", credits_path, class: "cute-btn btn-primary inline-block !w-auto px-8" %>
+        </div>
+      <% end %>
+
       <hr class="border-t border-neutral-200">
 
       <% views = [mask_request.main_view, mask_request.rotated_view, mask_request.drone_view].compact.select(&:attached?)

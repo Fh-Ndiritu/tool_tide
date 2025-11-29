@@ -66,8 +66,7 @@ class DesignGenerator
 
     generate_secondary_views
 
-    @mask_request.processed!
-    charge_generation
+    charge_generation if @mask_request.canva.user.afford_generation?
 
   rescue Faraday::ServerError => e
     user_error = e.is_a?(Faraday::ServerError) ? "We are having some downtime, try again later ..." : "Something went wrong, try a different style."
@@ -178,13 +177,49 @@ class DesignGenerator
 
 
   def generate_secondary_views
-    @mask_request.rotating!
-    rotate_view
+    if @mask_request.canva.user.afford_generation?
+      @mask_request.rotating!
+      rotate_view
 
-    @mask_request.drone!
-    drone_view
+      @mask_request.drone!
+      drone_view
+      @mask_request.processed!
+    else
+      generate_premium_locked_views
+      @mask_request.complete!
+    end
   rescue StandardError => e
     @mask_request.update error_msg: e.message
+  end
+
+  def generate_premium_locked_views
+    @mask_request.rotating!
+    create_watermarked_view(:rotated_view)
+
+    @mask_request.drone!
+    create_watermarked_view(:drone_view)
+  end
+
+  def create_watermarked_view(attachment_name)
+    return unless @mask_request.main_view.attached?
+
+    # Download main view
+    main_image_blob = @mask_request.main_view.download
+    main_image = MiniMagick::Image.read(main_image_blob)
+
+    # Add watermark
+    main_image.combine_options do |c|
+      c.blur "0x20"
+      c.gravity "Center"
+      c.pointsize "100"
+      c.fill "white"
+      c.stroke "black"
+      c.strokewidth "2"
+      c.draw "text 0,0 'Premium Only'"
+    end
+
+    blob = upload_blob(main_image)
+    @mask_request.send(attachment_name).attach(blob)
   end
 
   def rotate_view
