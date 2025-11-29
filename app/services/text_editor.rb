@@ -37,9 +37,10 @@ class TextEditor
 
   def charge_generation
     if @text_request.reload.result_image.attached?
-      cost = GOOGLE_IMAGE_COST * 1
-
-      @text_request.user.charge_pro_cost!(cost)
+      if @text_request.user.afford_text_editing?
+        cost = GOOGLE_IMAGE_COST * 1
+        @text_request.user.charge_pro_cost!(cost)
+      end
       @text_request.complete!
     else
       @text_request.update!(progress: :failed, error_msg: "Result not found")

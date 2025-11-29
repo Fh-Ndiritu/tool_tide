@@ -67,6 +67,10 @@ class User < ApplicationRecord
     mask_requests.complete.count == 0 && !credits.exists?(source: :purchase, credit_type: :pro_engine)
   end
 
+  def free_text_edit_available?
+    text_requests.complete.count == 0 && !credits.exists?(source: :purchase, credit_type: :pro_engine)
+  end
+
   private
 
   def received_trial_credits?
