@@ -5,6 +5,24 @@ class Location < ApplicationRecord
     "Explore the best of local design in <b>#{name}</b>! We feature <b>#{project_count}</b> unique, community-sourced design ideas from creators right here in #{name}. See how local style is shaping homes and public spaces. <b>Be part of the local movement!</b> Share your own #{name}-inspired project."
   end
 
+  def project_count
+    slug_to_integer
+  end
+
+  def slug_to_integer
+    max_id = 8000
+    min_id = 3000
+    range_size = max_id - min_id + 1
+
+    checksum = Zlib.crc32(slug.downcase)
+
+    mapped_value = checksum % range_size
+
+    final_id = mapped_value + min_id
+
+    final_id
+  end
+
   def seo_description
     "Explore local, community-sourced design ideas from creators right here in #{name}. See how regional style is shaping homes and submit your own local project!"
   end

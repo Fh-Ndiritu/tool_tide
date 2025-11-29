@@ -65,6 +65,10 @@ class Tag < ApplicationRecord
     final_id
   end
 
+  def project_count
+    slug_to_integer
+  end
+
 
   private
 

@@ -1,7 +1,6 @@
 module EventTagsHelper
   def unique_intro_content(tag)
-    # Recommended: Use a dedicated counter cache column for safety and speed.
-    project_count = tag.respond_to?(:project_count) ? tag.project_count : tag.slug_to_integer
+    project_count = tag.project_count
 
     case tag.tag_class
     when "event"
