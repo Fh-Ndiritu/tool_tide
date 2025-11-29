@@ -43,7 +43,7 @@ Rails.application.routes.draw do
   get :explore, to: "mask_requests#explore"
   get :low_credits, to: "credits#low"
 
-  get '/ojus-ai-vs-hadaa-ai', to: 'competitors#ojus', as: :ojus
+  get "/ojus-ai-vs-hadaa-ai", to: "competitors#ojus", as: :ojus
 
   resources :canvas, shallow: true, except: [ :index, :edit, :show ] do
     resources :mask_requests do
