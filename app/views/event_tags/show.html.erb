@@ -36,34 +36,39 @@
   >
 
   <%= tag.script type: "application/ld+json" do %>
-    { "@context": "https://schema.org", "@type": "CollectionPage", "name": "
-    <%= @tag.title %>
-    Landscaping Ideas", "description": "
-    <%= @tag.seo_description %>
-    ", "url": "
-    <%= event_tag_url(@tag.slug) %>
-    ", "mainEntity": { "@type": "ItemList", "itemListElement": [
-    <% all_requests = @mask_requests.map { |mr| { request: mr, type: :mask } } +
-                           @text_requests.map { |tr| { request: tr, type: :text } } %>
-    <% all_requests.each_with_index do |item, index| %>
-      <% request = item[:request] %>
-      <% is_mask = item[:type] == :mask %>
-      { "@type": "CreativeWork", "name": "Generated
-      <%= @tag.title %>
-      Landscaping Design
-      <%= index + 1 %>
-      ", "url": "
-      <%= is_mask ? mask_request_url(request) : text_request_url(request) %>
-      ", "image": "
-      <% if is_mask %>
-        <%= rails_blob_url(request.main_view, only_full_url: true) if request.main_view.attached? %>
-      <% else %>
-        <%= rails_blob_url(request.result_image, only_full_url: true) if request.result_image.attached? %>
-      <% end %>
-      ", "author": { "@type": "Organization", "name": "Hadaa AI Community" } }
-      <%= index == all_requests.count - 1 ? '' : ',' %>
-    <% end %>
-    ] } }
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": "<%= @tag.title %> Landscaping Ideas",
+      "description": "<%= @tag.seo_description %>",
+      "url": "<%= event_tag_url(@tag.slug) %>",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "<%= @tag.rating %>",
+        "reviewCount": "<%= @tag.project_count %>"
+      },
+      "mainEntity": {
+        "@type": "ItemList",
+        "itemListElement": [
+          <% all_requests = @mask_requests.map { |mr| { request: mr, type: :mask } } +
+                            @text_requests.map { |tr| { request: tr, type: :text } } %>
+          <% all_requests.each_with_index do |item, index| %>
+            <% request = item[:request] %>
+            <% is_mask = item[:type] == :mask %>
+            {
+              "@type": "CreativeWork",
+              "name": "Generated <%= @tag.title %> Landscaping Design <%= index + 1 %>",
+              "url": "<%= is_mask ? mask_request_url(request) : text_request_url(request) %>",
+              "image": "<% if is_mask %><%= rails_blob_url(request.main_view, only_full_url: true) if request.main_view.attached? %><% else %><%= rails_blob_url(request.result_image, only_full_url: true) if request.result_image.attached? %><% end %>",
+              "author": {
+                "@type": "Organization",
+                "name": "Hadaa AI Community"
+              }
+            }<%= index == all_requests.count - 1 ? '' : ',' %>
+          <% end %>
+        ]
+      }
+    }
   <% end %>
 <% end %>
 

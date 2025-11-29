@@ -1,4 +1,6 @@
 class Tag < ApplicationRecord
+  include SlugRatable
+
   before_validation :generate_slug, on: [ :create, :update ]
   validates_presence_of :tag_class, :title, :slug
   validates_uniqueness_of :title, { scope: :tag_class }
@@ -50,25 +52,6 @@ class Tag < ApplicationRecord
 
     scope.limit(10)
   end
-
-  def slug_to_integer
-    max_id = 8000
-    min_id = 3000
-    range_size = max_id - min_id + 1
-
-    checksum = Zlib.crc32(slug.downcase)
-
-    mapped_value = checksum % range_size
-
-    final_id = mapped_value + min_id
-
-    final_id
-  end
-
-  def project_count
-    slug_to_integer
-  end
-
 
   private
 
