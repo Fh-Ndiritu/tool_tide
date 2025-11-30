@@ -1,0 +1,5 @@
+class AddNarrationSceneToAudios < ActiveRecord::Migration[8.0]
+  def change
+    add_reference :audios, :narration_scene, null: false, foreign_key: true
+  end
+end

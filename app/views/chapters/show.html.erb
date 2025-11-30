@@ -1,0 +1,121 @@
+<div class="max-w-4xl mx-auto px-4 py-8">
+  <div class="mb-6">
+    <%= link_to "← Back to Chapters", chapters_path, class: "text-indigo-600 hover:text-indigo-900" %>
+  </div>
+
+  <div class="bg-white shadow overflow-hidden sm:rounded-lg mb-8">
+    <div class="px-4 py-5 sm:px-6 flex justify-between items-center">
+      <div>
+        <h3 class="text-lg leading-6 font-medium text-gray-900"><%= @chapter.title %></h3>
+        <p class="mt-1 max-w-2xl text-sm text-gray-500">
+          Status: <span class="font-semibold <%= @chapter.status == 'completed' ? 'text-green-600' : (@chapter.status == 'failed' ? 'text-red-600' : 'text-yellow-600') %>"><%= @chapter.status.capitalize %></span>
+        </p>
+      </div>
+      <% if @chapter.video.attached? %>
+        <%= link_to "Download Video", rails_blob_path(@chapter.video, disposition: "attachment"), class: "bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 text-sm" %>
+      <% end %>
+    </div>
+    <div class="border-t border-gray-200 px-4 py-5 sm:p-0">
+      <dl class="sm:divide-y sm:divide-gray-200">
+        <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+          <dt class="text-sm font-medium text-gray-500">Video Mode</dt>
+          <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"><%= @chapter.video_mode.capitalize %></dd>
+        </div>
+        <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+          <dt class="text-sm font-medium text-gray-500">Content Overview</dt>
+          <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 whitespace-pre-wrap"><%= @chapter.content %></dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+
+  <% if @chapter.video.attached? %>
+    <div class="mb-8">
+      <h3 class="text-lg font-medium text-gray-900 mb-4">Final Video</h3>
+      <video controls class="w-full rounded-lg shadow-lg">
+        <source src="<%= rails_blob_url(@chapter.video) %>" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  <% end %>
+
+  <div class="space-y-8">
+    <h3 class="text-xl font-bold text-gray-900">Subchapters</h3>
+    <% @chapter.subchapters.order(:order).each do |subchapter| %>
+      <div class="bg-white shadow sm:rounded-lg overflow-hidden">
+        <div class="px-4 py-5 sm:px-6 bg-gray-50">
+          <h4 class="text-lg font-medium text-gray-900">
+            <%= subchapter.order %>. <%= subchapter.title %>
+          </h4>
+          <p class="mt-1 text-sm text-gray-500"><%= subchapter.overview %></p>
+        </div>
+
+        <% if subchapter.video.attached? %>
+          <div class="aspect-w-16 aspect-h-9 bg-black">
+             <video controls class="w-full h-full object-contain">
+              <source src="<%= rails_blob_url(subchapter.video) %>" type="video/mp4">
+            </video>
+          </div>
+        <% end %>
+
+        <div class="border-t border-gray-200">
+          <ul role="list" class="divide-y divide-gray-200">
+            <% subchapter.narration_scenes.order(:order).each do |scene| %>
+              <li class="px-4 py-4 sm:px-6">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="text-sm font-medium text-gray-900">Scene <%= scene.order %></span>
+                  <span class="text-xs text-gray-500"><%= scene.duration %>s</span>
+                </div>
+                <p class="text-sm text-gray-600 mb-2"><%= scene.content_overview %></p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                  <div>
+                    <h5 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Narration</h5>
+                    <div class="text-sm text-gray-800 bg-gray-50 p-3 rounded max-h-40 overflow-y-auto">
+                      <%= scene.narration_text %>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h5 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Media</h5>
+                    <div class="space-y-2">
+                      <% if scene.audio&.audio_file&.attached? %>
+                        <audio controls class="w-full h-8">
+                          <source src="<%= rails_blob_url(scene.audio.audio_file) %>" type="audio/wav">
+                        </audio>
+                      <% end %>
+
+                      <% if scene.video.attached? %>
+                        <video controls class="w-full h-32 object-cover rounded">
+                          <source src="<%= rails_blob_url(scene.video) %>" type="video/mp4">
+                        </video>
+                      <% end %>
+                    </div>
+                  </div>
+                </div>
+
+                <% if scene.image_prompts.any? %>
+                  <div class="mt-4">
+                    <h5 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Generated Images</h5>
+                    <div class="flex space-x-2 overflow-x-auto pb-2">
+                      <% scene.image_prompts.order(:timestamp).each do |prompt| %>
+                        <div class="flex-shrink-0 w-24 relative group">
+                          <% if prompt.image.attached? %>
+                            <%= image_tag prompt.image, class: "w-24 h-24 object-cover rounded shadow-sm" %>
+                          <% else %>
+                            <div class="w-24 h-24 bg-gray-200 rounded flex items-center justify-center text-gray-400 text-xs">No Image</div>
+                          <% end %>
+                          <span class="absolute bottom-0 right-0 bg-black bg-opacity-50 text-white text-xs px-1 rounded-tl"><%= prompt.timestamp %>s</span>
+                        </div>
+                      <% end %>
+                    </div>
+                  </div>
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

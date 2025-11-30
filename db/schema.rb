@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_27_182622) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_30_123323) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -45,6 +45,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_27_182622) do
     t.datetime "updated_at", null: false
     t.boolean "single_speaker", default: true
     t.string "error_msg"
+    t.integer "narration_scene_id", null: false
+    t.index ["narration_scene_id"], name: "index_audios_on_narration_scene_id"
   end
 
   create_table "canvas", force: :cascade do |t|
@@ -53,6 +55,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_27_182622) do
     t.datetime "updated_at", null: false
     t.integer "device_width", default: 400
     t.index ["user_id"], name: "index_canvas_on_user_id"
+  end
+
+  create_table "chapters", force: :cascade do |t|
+    t.string "title"
+    t.text "content"
+    t.string "video_mode"
+    t.string "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "chats", force: :cascade do |t|
@@ -100,6 +111,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_27_182622) do
     t.index ["generation_type", "generation_id"], name: "index_generation_taggings_on_generation"
     t.index ["tag_id", "generation_id", "generation_type"], name: "idx_on_tag_id_generation_id_generation_type_9189069e36", unique: true
     t.index ["tag_id"], name: "index_generation_taggings_on_tag_id"
+  end
+
+  create_table "image_prompts", force: :cascade do |t|
+    t.integer "narration_scene_id", null: false
+    t.text "prompt"
+    t.integer "timestamp"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["narration_scene_id"], name: "index_image_prompts_on_narration_scene_id"
   end
 
   create_table "issues", force: :cascade do |t|
@@ -193,6 +213,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_27_182622) do
     t.index ["tool_call_id"], name: "index_messages_on_tool_call_id"
   end
 
+  create_table "narration_scenes", force: :cascade do |t|
+    t.integer "subchapter_id", null: false
+    t.integer "order"
+    t.text "content_overview"
+    t.text "narration_text"
+    t.json "dialogue_content"
+    t.integer "duration"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["subchapter_id"], name: "index_narration_scenes_on_subchapter_id"
+  end
+
   create_table "payment_transactions", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "uuid"
@@ -243,6 +275,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_27_182622) do
     t.float "latitude"
     t.float "longitude"
     t.index ["user_id"], name: "index_search_terms_on_user_id"
+  end
+
+  create_table "subchapters", force: :cascade do |t|
+    t.integer "chapter_id", null: false
+    t.string "title"
+    t.text "overview"
+    t.integer "order"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chapter_id"], name: "index_subchapters_on_chapter_id"
   end
 
   create_table "suggested_plants", force: :cascade do |t|
@@ -330,10 +372,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_27_182622) do
   end
 
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "audios", "narration_scenes"
   add_foreign_key "canvas", "users"
   add_foreign_key "credits", "users"
   add_foreign_key "favorites", "users"
   add_foreign_key "generation_taggings", "tags"
+  add_foreign_key "image_prompts", "narration_scenes"
   add_foreign_key "issues", "users"
   add_foreign_key "landscape_requests", "landscapes"
   add_foreign_key "landscapes", "users"
@@ -341,10 +385,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_27_182622) do
   add_foreign_key "mask_request_plants", "plants"
   add_foreign_key "mask_requests", "canvas"
   add_foreign_key "messages", "chats"
+  add_foreign_key "narration_scenes", "subchapters"
   add_foreign_key "payment_transactions", "users"
   add_foreign_key "polls", "features"
   add_foreign_key "polls", "users"
   add_foreign_key "search_terms", "users"
+  add_foreign_key "subchapters", "chapters"
   add_foreign_key "suggested_plants", "landscape_requests"
   add_foreign_key "text_requests", "users"
   add_foreign_key "tool_calls", "messages"
