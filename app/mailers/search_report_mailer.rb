@@ -4,7 +4,7 @@ class SearchReportMailer < ApplicationMailer
     @since_time = since_time
 
     mail(
-      to: "fhndiritu@gmail.com",
+      to: "francis@hadaa.app",
       subject: "Search Report since #{since_time.strftime('%B %d, %H:%M')}"
     )
   end
