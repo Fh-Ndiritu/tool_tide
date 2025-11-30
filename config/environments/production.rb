@@ -62,6 +62,7 @@ Rails.application.configure do
   # Set host to be used by links generated in mailer templates.
   # config/environments/production.rb
   config.action_mailer.default_url_options = { host: "hadaa.app", protocol: "https" }
+  config.action_mailer.asset_host = "https://hadaa.app"
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
