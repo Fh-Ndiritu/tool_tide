@@ -34,6 +34,7 @@ Rails.application.routes.draw do
     resources :tags, only: :create
     resources :text_requests, only: [ :index, :edit ]
     resources :mask_requests, only: [ :index, :edit ]
+    resources :chapters, only: [ :index, :new, :create, :show ]
     post "mask_requests/toggle_display"
     post "text_requests/toggle_display"
   end
@@ -58,7 +59,6 @@ Rails.application.routes.draw do
   end
 
   resources :mask_requests, only: :index
-  resources :chapters, only: [ :index, :new, :create, :show ]
   # Home routes
   get "credits", to: "home#credits", as: :credits
   get "paystack/callback", to: "payment_transactions#callback"

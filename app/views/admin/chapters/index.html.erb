@@ -4,14 +4,14 @@
 <div class="max-w-4xl mx-auto px-4 py-8">
   <div class="flex justify-between items-center mb-8">
     <h1 class="text-3xl font-bold text-gray-900">Video Chapters</h1>
-    <%= link_to "New Chapter", new_chapter_path, class: "bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition" %>
+    <%= link_to "New Chapter", new_admin_chapter_path, class: "bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition" %>
   </div>
 
   <div class="bg-white shadow overflow-hidden sm:rounded-md">
     <ul role="list" class="divide-y divide-gray-200">
       <% @chapters.each do |chapter| %>
         <li>
-          <%= link_to chapter_path(chapter), class: "block hover:bg-gray-50" do %>
+          <%= link_to admin_chapter_path(chapter), class: "block hover:bg-gray-50" do %>
             <div class="px-4 py-4 sm:px-6">
               <div class="flex items-center justify-between">
                 <p class="text-sm font-medium text-indigo-600 truncate"><%= chapter.title %></p>

@@ -3,8 +3,8 @@ class Chapter < ApplicationRecord
   has_one_attached :video
 
   def status
-    return :pending if self.status.nil?
+    return :pending if read_attribute(:status).nil?
 
-    self.status
+    read_attribute(:status)
   end
 end
