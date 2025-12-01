@@ -149,7 +149,7 @@ CREDITS_INFO = "$#{DEFAULT_USD_PURCHASE_AMOUNT.to_i} for #{(DEFAULT_USD_PURCHASE
 
 VOICE_MAP = {
   # Main Narrator/Default Voice (Neutral - Engaging/Warm Storyteller)
-  Huria: "Puck",
+  Huria: "Algieba",
 
   # Primary Male Character (Male - Clear, Steady Lead)
   Karuri: "Iapetus",
