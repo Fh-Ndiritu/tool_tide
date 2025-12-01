@@ -6,15 +6,19 @@ module VideoPipeline
     end
 
     def perform
-      return if @input_videos.empty?
+      # Filter out unattached videos
+      valid_videos = @input_videos.select(&:attached?)
+
+      if valid_videos.empty?
+        Rails.logger.warn("No attached videos found to concatenate for #{@output_record.class.name} #{@output_record.id}")
+        return
+      end
 
       Dir.mktmpdir do |dir|
         input_txt_path = File.join(dir, "input.txt")
 
         File.open(input_txt_path, "w") do |f|
-          @input_videos.each_with_index do |video, index|
-            next unless video.attached?
-
+          valid_videos.each_with_index do |video, index|
             video_path = File.join(dir, "video_#{index}.mp4")
             File.open(video_path, "wb") do |v_file|
               v_file.write(video.download)
@@ -29,7 +33,9 @@ module VideoPipeline
         # Run ffmpeg concat
         command = "ffmpeg -f concat -safe 0 -i #{input_txt_path} -c copy #{output_path}"
 
-        system(command)
+        unless system(command)
+          raise "FFMPEG failed to concatenate videos for #{@output_record.class.name} #{@output_record.id}"
+        end
 
         if File.exist?(output_path)
           @output_record.video.attach(
@@ -38,7 +44,7 @@ module VideoPipeline
             content_type: "video/mp4"
           )
         else
-          Rails.logger.error("FFMPEG failed to concatenate videos for #{@output_record.class.name} #{@output_record.id}")
+          raise "FFMPEG output file not found for #{@output_record.class.name} #{@output_record.id}"
         end
       end
     end

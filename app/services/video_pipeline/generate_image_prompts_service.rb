@@ -16,7 +16,7 @@ module VideoPipeline
     end
 
     def perform
-      audio = @narration_scene.audio
+      audio = @narration_scene.reload.audio
       return unless audio&.audio_file&.attached?
 
       # Get duration using ffprobe
