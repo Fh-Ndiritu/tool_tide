@@ -19,7 +19,6 @@ module VideoPipeline
       # If GeminiTts calls `JSON.parse`, it expects a string.
       # This implies `Audio` might be using `serialize` or just raw string in some cases, or GeminiTts is written assuming string storage.
       # Let's check GeminiTts again.
-      binding.irb
       content_json = @narration_scene.dialogue_content.to_json
 
       audio = Audio.create!(

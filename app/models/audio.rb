@@ -1,6 +1,6 @@
 class Audio < ApplicationRecord
   has_one_attached :audio_file
-  belongs_to :narration_scene
+  belongs_to :narration_scene, optional: true
 
   validates :content, presence: true
   validates :single_speaker, inclusion: { in: [ true, false ] }

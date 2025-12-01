@@ -15,7 +15,8 @@ module VideoPipeline
     end
 
     def perform
-      prompt = "We need to split the following subchapter content into 3 Narration Scenes which are 1 minute long each. Ensure the content stays logical and in prose.\n\nSubchapter Overview: #{@subchapter.overview}"
+      prompt = "We need to split the following subchapter content into 2 Narration Scenes which are each 1.5 minutes long.
+      Ensure the content stays logical and in prose and focusses to tell the story in detail and within such a small amount of time. \n\nSubchapter Overview: #{@subchapter.overview}"
 
       response = RubyLLM.chat.with_schema(SceneListSchema).ask(prompt)
 

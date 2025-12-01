@@ -1,7 +1,7 @@
 module VideoPipeline
   class NarrationSchema < RubyLLM::Schema
     object :narration do
-      string :text, description: "The full narration text in Vaatvidya style"
+      string :text, description: "The full narration text in a lively and engaging style."
     end
   end
 
@@ -35,13 +35,17 @@ module VideoPipeline
 
     def generate_narration_text
       prompt = <<~PROMPT
-        Generate narration for the following scene overview:
+        Your task is to generate a dynamic, deeply atmospheric, and emotionally resonant narration for the following scene overview:
         "#{@narration_scene.content_overview}"
 
-        Use the style used by Popular Youtube Creator Vaatvidya to keep users engaged and intrigued in a Vaatvidya Narration Style.
-        Maintain a fast standard clear narrative pace. The tone must be somber and authoritative, embodying the ancient lore aesthetic.
-        Revise the content to ensure the story is profound, narrative and maintains our style.
-      PROMPT
+        ## Narration Style and Requirements
+          Use these steps to generate a narration:
+          1. Carefully analyze the scene overview and expand it into a full narrative that is rich in sensory details and logical prose.
+          2. The narration must advance the core plot points detailed in the scene overview. The primary goal is coherence and understanding.
+          3. You must use a TikTok or Short Story style to ensure we include details, stay engaging and concise.
+          4. Capture a provocative and engaging tone that will keep the audience interested.
+          5. Review the final narration to ensure it is clear and engaging and indeed expands on the scene overview without going beyond the scope of the scene overview.
+        PROMPT
 
       response = RubyLLM.chat.with_schema(NarrationSchema).ask(prompt)
       @narration_scene.update!(narration_text: response.content["narration"]["text"])
@@ -64,22 +68,51 @@ module VideoPipeline
 
       available_voices = VOICE_MAP.keys.join(", ")
 
-      prompt = <<~PROMPT
-        Convert the following narration into a dialogue script.
+     prompt = <<~PROMPT
+      Your task is to convert the provided 'Narration' text into a structured, multi-speaker dialogue script.
+      USE dialogue only when necessary which is rare, and when it is necessary, use it to advance the plot or to express a character's emotions.
+      Otherwise just chunk the narration into Huria's interjections.
 
-        Narration:
-        "#{@narration_scene.narration_text}"
+      Narration:
+      "#{@narration_scene.narration_text}"
 
-        Character Descriptions:
-        #{character_descriptions}
+      Character Descriptions:
+      #{character_descriptions}
 
-        Rules:
-        1. The narrator will always be Huria.
-        2. Select other speakers from the available voices list based on character type, Gender etc.
-        3. Available voices: #{available_voices}.
-        4. Structure the output as a list of blocks. Each block should have a 'style_prompt' and a list of 'turns'.
-        5. For Huria (Narrator), prefer the style prompt: "Vaatvidya Narration Style. Maintain a fast standard clear narrative pace. The tone must be somber and authoritative, embodying the ancient lore aesthetic." but adapt it if the context requires (e.g. if the scene is very fast or slow).
-        6. For other characters, generate appropriate style prompts based on their description and the scene context.
+      Available Voices (for non-Huria speakers):
+      #{available_voices}
+
+      ## Rules for Dialogue Conversion
+      1.  **Narrator:** The sole Narrator must always be **Huria**.
+      2.  **Fidelity to Content:** Distribute the key plot points and emotional beats from the 'Narration' into the character dialogue and Huria's interjections.
+      3.  **Speaker Selection:** Select non-Huria speakers from the 'Available Voices' list based on gender, character type, and scene context.
+      4.  **Output Structure:** Structure the output as an Array of Hashes. Each Hash represents a style block and must contain the following keys: 'style_prompt' and 'turns'.
+      5. DO NOT include asterisks ** or any visual formatting in the output.
+
+      ## Style Prompt Generation
+      5.  **Huria's Style (Narrator):**
+          * **Default:** "Tiktok Narration Style. Maintain a fast, clear narrative pace. The tone must be authoritative and engaging."
+          * **Adaptation:** Adapt this style prompt if the scene requires tone adjustments etc.
+      6.  **Character Style (Non-Huria):**
+          * Generate unique and appropriate 'style_prompt' strings for each conversational character based on their 'Character Descriptions' and the current scene's context. Styles should introduce contrast (e.g., sharp and cynical, low and fearful, warm and hesitant).
+      7. DO NOT use dialogue just for the sake of it. Use it only when it is necessary to advance the plot or to express a character's emotions.
+
+      ## Example Output Structure (Reference)
+      [
+        {
+          "style_prompt": "Tiktok Narration Style. Maintain a fast, clear narrative pace. The tone must be authoritative and engaging.",
+          "turns": [
+            {"speaker": "Huria", "text": "What happened in the final hours before Julius left the city?"}
+          ]
+        },
+        {
+          "style_prompt": "Low, gravelly male voice. Sharp and cynical tone, delivered with a slow, deliberate pace.",
+          "turns": [
+            {"speaker": "Karuri", "text": "I told you this relic was cursed, didn't I?"}
+          ]
+        },
+        // ... more blocks
+      ]
       PROMPT
 
       response = RubyLLM.chat.with_schema(DialogueSchema).ask(prompt)
