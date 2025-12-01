@@ -1,5 +1,5 @@
 class ChaptersController < ApplicationController
-  skip_before_action :verify_authenticity_token, only: [:create], if: -> { request.format.json? }
+  skip_before_action :verify_authenticity_token, only: [ :create ], if: -> { request.format.json? }
 
   def index
     @chapters = Chapter.order(created_at: :desc)

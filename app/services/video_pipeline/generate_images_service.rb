@@ -77,10 +77,10 @@ module VideoPipeline
         return
       end
 
-      img_from_b64 = Base64.decode64(generated_image['bytesBase64Encoded'])
+      img_from_b64 = Base64.decode64(generated_image["bytesBase64Encoded"])
 
       # read from image_data
-      mime_type = generated_image['mimeType']
+      mime_type = generated_image["mimeType"]
       extension = mime_type.split("/").last
 
       temp_file = Tempfile.new([ "generated_image", ".#{extension}" ], binmode: true)

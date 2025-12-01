@@ -3,17 +3,16 @@
 <html>
   <head>
     <title>
-      Try Hadaa AI FREE: Virtual Landscape Planner & Garden Photo Editor - No Credit Card
+      <%= content_for?(:title) ? yield(:title) : "Try Hadaa AI FREE: Virtual Landscape Planner & Garden Photo Editor - No Credit Card" %>
     </title>
 
     <meta
-      name="description"
-      content="Start FREE with Hadaa's AI landscape planner - no credit card required! Try our Mask Designer and AI Editor to visualize seasonal designs, prep your yard for events, and create stunning garden transformations."
+      content="<%= content_for?(:description) ? yield(:description) : "Transform your yard instantly with Hadaa's AI Landscape Design tool. Upload a photo to visualize stunning garden ideas, get local plant recommendations, and generate shopping lists. Start your free trial today - no credit card required." %>"
     >
 
     <meta
       property="og:title"
-      content="Try Hadaa AI FREE: Virtual Landscape Planner - No Credit Card"
+      content="<%= content_for?(:title) ? yield(:title) : "Try Hadaa AI FREE: Virtual Landscape Planner - No Credit Card" %>"
     />
 
     <meta property="og:type" content="website" />
@@ -27,7 +26,7 @@
 
     <meta
       property="og:description"
-      content="Start FREE with Hadaa - no credit card needed! Try our Mask Designer and AI Editor to visualize seasonal garden changes and design your backyard for any occasion."
+      content="<%= content_for?(:description) ? yield(:description) : "Transform your yard instantly with Hadaa's AI Landscape Design tool. Upload a photo to visualize stunning garden ideas, get local plant recommendations, and generate shopping lists. Start your free trial today - no credit card required." %>"
     />
 
     <%# Twitter Card (for Twitter/X) %>

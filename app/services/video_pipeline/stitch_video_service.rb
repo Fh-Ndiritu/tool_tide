@@ -55,9 +55,9 @@ module VideoPipeline
         video_mode = @narration_scene.subchapter.chapter.video_mode
         scale_filter = if video_mode == "portrait"
                          "scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920:(ow-iw)/2:(oh-ih)/2"
-                       else
+        else
                          "scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2"
-                       end
+        end
 
         command = "ffmpeg -f concat -safe 0 -i #{input_txt_path} -i #{audio_path} -c:v libx264 -vf \"#{scale_filter},format=yuv420p\" -c:a aac -shortest #{output_path}"
 

@@ -58,7 +58,7 @@ Rails.application.routes.draw do
   end
 
   resources :mask_requests, only: :index
-  resources :chapters, only: [:index, :new, :create, :show]
+  resources :chapters, only: [ :index, :new, :create, :show ]
   # Home routes
   get "credits", to: "home#credits", as: :credits
   get "paystack/callback", to: "payment_transactions#callback"
