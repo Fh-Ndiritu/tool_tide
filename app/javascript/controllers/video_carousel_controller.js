@@ -8,8 +8,14 @@ export default class extends Controller {
 
   connect() {
     this.currentIndex = 0
-    if (this.videosValue.length > 0) {
-      this.playVideo(this.currentIndex)
+    // If source is already set (e.g. from HTML), don't override it immediately
+    if (!this.sourceTarget.getAttribute("src")) {
+      if (this.videosValue.length > 0) {
+        this.playVideo(this.currentIndex)
+      }
+    } else {
+      // Ensure video is playing if it was preloaded
+      this.videoTarget.play().catch(e => console.log("Autoplay prevented:", e))
     }
   }
 
