@@ -115,8 +115,8 @@
           ) %>
         <%= render ButtonComponent.new(
           text: "Pricing",
-          href: "#pricing",
-          classes: " gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
+          href: pricing_path,
+          classes: "#{active_item(pricing_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
           data: { action: "click->navbar#toggleMenu" }
           ) %>
         <%= render ButtonComponent.new(
@@ -130,6 +130,12 @@
           text: "Home",
           href: root_path,
           classes: "#{active_item(root_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
+          data: { action: "click->navbar#toggleMenu" }
+          ) %>
+        <%= render ButtonComponent.new(
+          text: "Pricing",
+          href: pricing_path,
+          classes: "#{active_item(pricing_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
           data: { action: "click->navbar#toggleMenu" }
           ) %>
       <% end %>
