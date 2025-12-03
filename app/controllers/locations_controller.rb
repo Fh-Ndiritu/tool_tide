@@ -26,6 +26,6 @@ class LocationsController < ApplicationController
     .where(users: { admin: true })
     .references(:user)
     .order("RANDOM()")
-    .limit(4)
+    .limit(6)
   end
 end

@@ -125,7 +125,7 @@
           <span class="text-sm text-gray-500 hidden sm:inline-block">Created by Hadaa Users</span>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <% @text_requests.each do |text_request| %>
             <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100 flex flex-col h-full hover:shadow-2xl transition-shadow duration-300">
               <div class="relative h-64 sm:h-80 overflow-hidden group">
@@ -144,7 +144,7 @@
                     <%= text_request.user.email[0].upcase %>
                   </div>
                   <div class="text-sm text-gray-500">
-                    Designed by <span class="font-medium text-gray-900">User <%= text_request.user.id %></span>
+                    Designed by <span class="font-medium text-gray-900">User <%= rand(2000..15000) %></span>
                   </div>
                 </div>
 
@@ -209,7 +209,7 @@
                     <div class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 font-bold text-[10px]">
                       <%= mask_request.canva.user.email[0].upcase %>
                     </div>
-                    <span class="text-xs text-gray-500">User <%= mask_request.canva.user.id %></span>
+                    <span class="text-xs text-gray-500">User <%= rand(2000..15000) %></span>
                   </div>
                   <span class="text-xs font-medium text-accent bg-accent/10 px-2 py-1 rounded-md">
                     Mask Edit
