@@ -2,8 +2,8 @@
   class="px-4 shadow-md bg-accent-secondary <%= 'sticky top-0 z-50' unless user_signed_in? %>"
   data-controller="navbar"
 >
-  <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
-    <div class="w-full flex items-center mb-0 md:mb-0 relative">
+  <div class="container mx-auto flex flex-col lg:flex-row justify-between items-center">
+    <div class="w-full flex items-center mb-0 lg:mb-0 relative">
       <div class="flex-shrink-0">
         <%= link_to root_path, class: "flex items-center" do %>
           <%= image_tag "hadaa.png", alt: "Hadaa", class:"h-22 w-22 rounded-full mr-2" %>
@@ -11,7 +11,7 @@
       </div>
 
       <!-- Desktop Search Bar -->
-      <div class="flex-1 max-w-md mx-4 hidden md:block">
+      <div class="flex-1 max-w-md mx-4 hidden lg:block">
         <%= form_with url: searches_path, method: :get, class: "relative w-full", data: { turbo: true } do |f| %>
           <%= f.text_field :query,
               placeholder: "Search...",
@@ -26,7 +26,7 @@
       </div>
 
       <!-- Mobile Search Bar - Always Visible -->
-      <div class="flex-1 mx-2 md:hidden">
+      <div class="flex-1 mx-2 lg:hidden">
         <%= form_with url: searches_path, method: :get, class: "relative w-full", data: { turbo: true } do |f| %>
           <%= f.text_field :query,
               placeholder: "Search...",
@@ -42,7 +42,7 @@
 
       <% if user_signed_in? %>
         <div
-          class="md:hidden absolute left-1/2 -translate-x-1/2"
+          class="lg:hidden absolute left-1/2 -translate-x-1/2"
           data-action="click->navbar#toggleMenu"
         >
           <%= render ButtonComponent.new(
@@ -52,7 +52,7 @@
                 svg_classes: "bg-transparent h-6 w-6 text-neutral-900",
                 ) %>
         </div>
-        <div class="ml-auto md:hidden">
+        <div class="ml-auto lg:hidden">
           <%# --- FIX APPLIED: data-controller="dropdown" added here for mobile view --- %>
           <div data-controller="dropdown" class="relative">
             <button
@@ -86,7 +86,7 @@
           </div>
         </div>
       <% else %>
-        <div class="ml-auto md:hidden" data-action="click->navbar#toggleMenu">
+        <div class="ml-auto lg:hidden" data-action="click->navbar#toggleMenu">
           <%= render ButtonComponent.new(
                 text: "",
                 classes: "bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
@@ -101,9 +101,9 @@
       id="navigation-links"
       data-navbar-target="navigationLinks"
       class="
-        md:pr-4 flex justify-center md:justify-end hidden md:flex flex-col
-        md:flex-row max-md:w-full items-center space-y-2 md:space-y-0
-        md:space-x-4 md:min-w-8/12
+        lg:pr-4 flex justify-center lg:justify-end hidden lg:flex flex-col
+        lg:flex-row max-lg:w-full items-center space-y-2 lg:space-y-0
+        lg:space-x-4 lg:min-w-8/12
       "
     >
       <% if active_item(root_path).present? && !user_signed_in? %>
@@ -191,7 +191,7 @@
         classes: "#{active_item(issues_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
         data: { action: "click->navbar#toggleMenu" }
         ) %>
-        <div data-controller="dropdown" class="relative hidden md:block">
+        <div data-controller="dropdown" class="relative hidden lg:block">
           <button
             data-action="dropdown#toggle"
             class="
