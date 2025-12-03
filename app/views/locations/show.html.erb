@@ -84,7 +84,7 @@
       <h1
         class="
           text-3xl md:text-6xl font-extrabold tracking-tight text-gray-900
-          mb-4
+          mb-6
         "
       >
         Best
@@ -92,120 +92,192 @@
         Designs in
         <span class="text-secondary"><%= @location.name %></span>
       </h1>
-      <div class="max-w-4xl mx-auto text-xl text-gray-600 font-light">
+      <div class="max-w-4xl mx-auto text-xl text-gray-600 font-light mb-8">
         Explore top-rated, AI-generated garden and outdoor living ideas tailored
         for properties in
         <b><%= @location.name %>, <%= @location.admin_name.presence || @location.country_code %></b>
-        . Find your next landscaping project!
+        .
       </div>
+
+      <%= link_to "Create Design for #{@location.name} 🚀", new_canva_path(location: @location.name),
+          class: "inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-full shadow-sm text-white bg-accent hover:bg-accent/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent transition-all duration-200 transform hover:scale-105" %>
     </header>
 
-    <div class="space-y-16">
+    <div class="space-y-20">
       <%# Main container for consistent vertical flow %>
 
       <%# --- SEO Paragraph and Divider --- %>
       <div
         class="
           mx-auto text-lg text-gray-700 leading-relaxed border-b pb-8
-          border-gray-200
+          border-gray-200 max-w-4xl text-center
         "
       >
         <%= generate_location_seo_paragraph(@location) %>
       </div>
 
       <%# --- Content Grid 1: Text Prompts --- %>
-      <h2
-        class="
-          text-3xl font-bold text-gray-800 border-l-4 border-secondary pl-4
-          mb-8
-        "
-      >
-        Text Designs
-      </h2>
+      <div>
+        <div class="flex items-center justify-between mb-8 border-l-4 border-secondary pl-4">
+          <h2 class="text-3xl font-bold text-gray-800">
+            Text Designs
+          </h2>
+          <span class="text-sm text-gray-500 hidden sm:inline-block">Created by Hadaa Users</span>
+        </div>
 
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-        <%= render @text_requests %>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+          <% @text_requests.each do |text_request| %>
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100 flex flex-col h-full hover:shadow-2xl transition-shadow duration-300">
+              <div class="relative h-64 sm:h-80 overflow-hidden group">
+                <%= image_tag text_request.result_image.variant(resize_to_limit: [800, 800]),
+                    alt: "AI Landscaping design for #{@location.name}",
+                    class: "w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" if text_request.result_image.attached? %>
+
+                <div class="absolute top-4 right-4 bg-black/60 backdrop-blur-sm text-white text-xs font-bold px-3 py-1 rounded-full">
+                  AI Text Edit
+                </div>
+              </div>
+
+              <div class="p-6 flex-1 flex flex-col">
+                <div class="flex items-center gap-2 mb-4">
+                  <div class="w-8 h-8 rounded-full bg-gradient-to-br from-accent to-secondary flex items-center justify-center text-white font-bold text-xs">
+                    <%= text_request.user.email[0].upcase %>
+                  </div>
+                  <div class="text-sm text-gray-500">
+                    Designed by <span class="font-medium text-gray-900">User <%= text_request.user.id %></span>
+                  </div>
+                </div>
+
+                <div class="bg-gray-50 rounded-xl p-4 mb-6 flex-1 border border-gray-100">
+                  <p class="text-gray-700 italic text-sm leading-relaxed">
+                    "<%= text_request.prompt %>"
+                  </p>
+                </div>
+
+                <%= link_to new_text_request_path(prompt: text_request.prompt),
+                    class: "w-full flex items-center justify-center gap-2 py-3 px-4 bg-white border-2 border-accent text-accent font-bold rounded-xl hover:bg-accent hover:text-white transition-colors duration-200" do %>
+                  <span>Try this Prompt</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
       </div>
 
       <%# --- Content Grid 2: Mask Requests (Original Images) --- %>
-      <h2
-        class="
-          text-3xl font-bold text-gray-800 border-l-4 border-secondary pl-4
-          pt-4 mt-8 mb-8
-        "
-      >
-        Mask Brush Designs
-      </h2>
+      <div>
+        <div class="flex items-center justify-between mb-8 border-l-4 border-secondary pl-4 pt-4 mt-8">
+          <h2 class="text-3xl font-bold text-gray-800">
+            Mask Brush Designs
+          </h2>
+          <span class="text-sm text-gray-500 hidden sm:inline-block">Real transformations</span>
+        </div>
 
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-        <% @mask_requests.each do |mask_request| %>
-          <div
-            class="
-              group relative bg-white rounded-xl shadow-lg hover:shadow-xl
-              transition-all duration-300 ease-in-out transform
-              hover:-translate-y-1 overflow-hidden border border-gray-100
-              cursor-pointer
-            "
-          >
-            <%= link_to mask_request_path(mask_request), class: "block" do %>
-              <%= image_tag mask_request.main_view.variant(resize_to_limit: [280, 280]),
-                  alt: "AI Landscaping design for #{@location.name}",
-                  class: "object-cover w-full aspect-square transition-opacity duration-300 group-hover:opacity-90" if mask_request.main_view.attached? %>
-              <div
-                class="
-                  absolute inset-0 bg-gradient-to-t from-gray-900/60
-                  to-transparent opacity-0 group-hover:opacity-100
-                  transition-opacity flex items-end p-4
-                "
-              >
-                <span class="text-white text-sm font-semibold">View Design</span>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <% @mask_requests.each do |mask_request| %>
+            <div
+              class="
+                group relative bg-white rounded-2xl shadow-lg hover:shadow-2xl
+                transition-all duration-300 ease-in-out transform
+                hover:-translate-y-1 overflow-hidden border border-gray-100
+                cursor-pointer flex flex-col
+              "
+            >
+              <%= link_to mask_request_path(mask_request), class: "block relative aspect-[4/5] overflow-hidden" do %>
+                <%= image_tag mask_request.main_view.variant(resize_to_limit: [400, 500]),
+                    alt: "AI Landscaping design for #{@location.name}",
+                    class: "object-cover w-full h-full transition-transform duration-500 group-hover:scale-110" if mask_request.main_view.attached? %>
+
+                <div
+                  class="
+                    absolute inset-0 bg-gradient-to-t from-black/80 via-black/20
+                    to-transparent opacity-0 group-hover:opacity-100
+                    transition-opacity duration-300 flex flex-col justify-end p-6
+                  "
+                >
+                  <span class="text-white font-bold text-lg mb-2">View Transformation</span>
+                  <span class="text-gray-300 text-sm">Click to see before/after</span>
+                </div>
+              <% end %>
+
+              <div class="p-4 border-t border-gray-100 bg-white">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <div class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 font-bold text-[10px]">
+                      <%= mask_request.canva.user.email[0].upcase %>
+                    </div>
+                    <span class="text-xs text-gray-500">User <%= mask_request.canva.user.id %></span>
+                  </div>
+                  <span class="text-xs font-medium text-accent bg-accent/10 px-2 py-1 rounded-md">
+                    Mask Edit
+                  </span>
+                </div>
               </div>
-            <% end %>
-          </div>
-        <% end %>
+            </div>
+          <% end %>
 
-        <% if @mask_requests.empty? && @text_requests.empty? %>
-          <p
-            class="
-              text-gray-500 sm:col-span-full text-center py-12 text-xl
-              font-light border-2 border-dashed border-gray-300 rounded-xl
-            "
-          >
-            No designs found for this location yet. <b>Be the first</b> to start the trend on Hadaa AI!
-          </p>
-        <% end %>
+          <% if @mask_requests.empty? && @text_requests.empty? %>
+            <div class="col-span-full flex flex-col items-center justify-center py-16 px-4 border-2 border-dashed border-gray-300 rounded-2xl bg-gray-50">
+              <div class="text-6xl mb-4">🎨</div>
+              <h3 class="text-2xl font-bold text-gray-800 mb-2">No designs yet</h3>
+              <p class="text-gray-500 text-center mb-6 max-w-md">
+                Be the first to create a stunning AI landscape design for <b><%= @location.name %></b>!
+              </p>
+              <%= link_to "Start Designing Now", new_canva_path, class: "px-6 py-3 bg-accent text-white font-bold rounded-full hover:bg-accent/90 transition-colors" %>
+            </div>
+          <% end %>
+        </div>
       </div>
 
       <%# --- CTA SECTION (The Conversion Target) --- %>
       <section
         class="
-          mt-20 p-4 md:p-12 bg-gray-700 rounded-2xl shadow-2xl text-center
-          text-white
+          mt-20 p-8 md:p-16 bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl shadow-2xl text-center
+          text-white relative overflow-hidden
         "
       >
-        <%# Strong, inviting green for the CTA %>
-        <h3 class="text-4xl font-extrabold mb-4">Don't Just Admire, Design!</h3>
+        <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-accent via-secondary to-accent"></div>
 
-        <p class="text-xl mb-10 font-light max-w-3xl mx-auto">
+        <%# Strong, inviting green for the CTA %>
+        <h3 class="text-4xl md:text-5xl font-extrabold mb-6 tracking-tight">Don't Just Admire, Design!</h3>
+
+        <p class="text-xl md:text-2xl mb-12 font-light max-w-3xl mx-auto text-gray-300">
           Bring your vision to life with our AI. Start creating your own
-          <b><%= @location.name %></b>
+          <b class="text-white"><%= @location.name %></b>
           masterpiece now.
         </p>
 
-        <%= link_to "Start Designing Now! 🚀", new_canva_path,
-            class: "inline-flex items-center px-10 py-4 border-2 border-white text-lg font-bold rounded-full shadow-lg text-emerald-600 bg-white hover:bg-emerald-50 transition duration-300 transform hover:scale-105" %>
-        <%# High contrast button: White on Emerald %>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <%= link_to new_canva_path,
+              class: "inline-flex items-center justify-center px-10 py-4 border-2 border-transparent text-lg font-bold rounded-full shadow-lg text-gray-900 bg-accent hover:bg-white transition duration-300 transform hover:scale-105" do %>
+            <span>Start Designing Free</span>
+            <span class="ml-2">🎁</span>
+          <% end %>
+
+          <%= link_to pricing_path,
+              class: "inline-flex items-center justify-center px-10 py-4 border-2 border-gray-600 text-lg font-bold rounded-full text-white hover:border-white hover:bg-white/10 transition duration-300" do %>
+            <span>View Pricing</span>
+          <% end %>
+        </div>
+
+        <p class="mt-6 text-sm text-gray-400">No credit card required for free trial.</p>
       </section>
 
       <%# --- INTERNAL LINKING SECTION --- %>
-      <div class="mt-16 pt-8 border-t border-gray-200">
-        <h4 class="text-2xl font-bold text-gray-800 mb-4">
+      <div class="mt-16 pt-12 border-t border-gray-200">
+        <h4 class="text-2xl font-bold text-gray-800 mb-6">
           Explore Related Locations
         </h4>
         <div class="flex flex-wrap gap-3">
           <% @location.related_locations.each do |location| %>
-            <%= link_to "<b class='text-emerald-600'>#{location.admin_name}</b> gardens".html_safe, location_path(slug: location.slug),
-                class: "px-4 py-2 text-sm rounded-full bg-emerald-50 text-gray-700 hover:bg-emerald-100 border border-emerald-200 transition duration-150" %>
+            <%= link_to location_path(slug: location.slug),
+                class: "group flex items-center gap-2 px-5 py-2.5 text-sm font-medium rounded-full bg-white border border-gray-200 text-gray-700 hover:border-emerald-300 hover:shadow-md transition-all duration-200" do %>
+              <span>🌿</span>
+              <span><b class="text-emerald-700 group-hover:text-emerald-800"><%= location.admin_name %></b> gardens</span>
+            <% end %>
           <% end %>
         </div>
       </div>
