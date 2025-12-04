@@ -16,6 +16,14 @@
         Results for <%= mask_request.preset.humanize %> Style Design
       </h3>
       <h4 class="text-base text-secondary"><%= mask_request.user_error %></h4>
+      <p class="text-sm text-gray-600">
+        User: <%= mask_request.user.email %>
+        <% if mask_request.user.state_address.present? %>
+          <span class="font-semibold text-blue-600 ml-2">
+            📍 <%= mask_request.user.state_address %>
+          </span>
+        <% end %>
+      </p>
     </div>
 
     <%# The main request view containing the tag management section %>

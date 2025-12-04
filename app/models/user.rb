@@ -25,6 +25,21 @@ class User < ApplicationRecord
     google: 1
   }
 
+  geocoded_by :current_sign_in_ip do |obj, results|
+    if geo = results.first
+      obj.latitude = geo.latitude
+      obj.longitude = geo.longitude
+      obj.address = {
+        city: geo.city,
+        state: geo.state,
+        country: geo.country,
+        country_code: geo.country_code
+      }
+    end
+  end
+
+  after_validation :geocode, if: ->(obj){ obj.current_sign_in_ip.present? && obj.current_sign_in_ip_changed? }
+
   def state_address
     return "" if address.blank?
 
