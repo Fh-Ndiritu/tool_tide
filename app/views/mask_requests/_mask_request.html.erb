@@ -28,25 +28,59 @@
         </div>
       </div>
 
+      <div class="w-full my-6 relative">
+        <!-- Decorative sparkles around the button -->
+        <div class="absolute -top-2 -left-2 text-2xl animate-pulse opacity-70">✨</div>
+        <div class="absolute -top-2 -right-2 text-2xl animate-pulse opacity-70" style="animation-delay: 0.3s;">🌟</div>
+        <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 text-2xl animate-pulse opacity-70" style="animation-delay: 0.6s;">💫</div>
+
+        <%= link_to new_text_request_path(signed_blob_id: mask_request.main_view.blob.signed_id),
+            class: "group relative block w-full overflow-hidden rounded-2xl bg-gradient-to-r from-purple-600 via-fuchsia-500 to-orange-500 p-[2px] text-center shadow-2xl shadow-purple-500/50 transition-all duration-500 hover:scale-[1.04] hover:shadow-2xl hover:shadow-fuchsia-500/70 hover:brightness-110 hover:ring-4 hover:ring-purple-400/60 focus:outline-none focus:ring-2 focus:ring-fuchsia-400 focus:ring-offset-2 hover:bg-gradient-to-r hover:from-purple-500 hover:via-pink-500 hover:to-orange-400" do %>
+
+          <!-- Animated shimmer layer -->
+          <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-pulse opacity-50"></div>
+
+          <!-- PRO badge -->
+          <div class="absolute -top-3 -right-3 bg-gradient-to-br from-yellow-400 to-orange-500 text-white text-xs font-black px-3 py-1 rounded-full shadow-lg border-2 border-white transform rotate-12 animate-bounce">
+            PRO
+          </div>
+
+          <div class="relative flex flex-col items-center justify-center rounded-2xl bg-gradient-to-br from-purple-900/90 via-fuchsia-900/90 to-orange-900/90 backdrop-blur-sm px-6 py-5 transition-all duration-300 group-hover:from-purple-800/95 group-hover:via-fuchsia-800/95 group-hover:to-orange-800/95">
+
+            <!-- Main content -->
+            <div class="flex items-center gap-3 mb-2">
+              <span class="text-3xl animate-bounce filter drop-shadow-lg">🎨</span>
+              <span class="text-xl md:text-2xl font-black tracking-tight bg-gradient-to-r from-yellow-200 via-pink-200 to-orange-200 bg-clip-text text-transparent drop-shadow-2xl animate-pulse">
+                Advanced AI Customization
+              </span>
+              <span class="text-3xl animate-bounce filter drop-shadow-lg" style="animation-delay: 0.2s;">🚀</span>
+            </div>
+
+            <p class="text-sm text-white/90 drop-shadow-md mb-3 font-medium">
+              Make intelligent and accurate changes to designs using only a text prompt
+            </p>
+
+            <p class="text-sm md:text-base font-bold text-white/95 drop-shadow-lg tracking-wide">
+              <span class="inline-block bg-white/20 px-3 py-1 rounded-full">Most Powerful Tool</span>
+              <span class="mx-2">•</span>
+              <span class="inline-block bg-white/20 px-3 py-1 rounded-full">Unlimited Changes</span>
+            </p>
+
+          </div>
+        <% end %>
+      </div>
+
       <div class="flex flex-wrap max-sm:justify-center gap-3">
         <%= link_to "Brush Edit", new_canva_mask_request_path(mask_request.canva), class: "!max-w-[45%] cute-btn btn-secondary " %>
         <%= link_to "New Design", new_canva_path, class: "!max-w-[45%] cute-btn btn-primary "  unless defined?(compact) %>
         <%= link_to "Change Style", edit_mask_request_path(mask_request, manual: true), class: "!max-w-[45%] cute-btn !bg-accent-secondary !text-gray-800 " %>
-        <%= link_to "Ai Editor", new_text_request_path(signed_blob_id:  mask_request.main_view.blob.signed_id), class: "!max-w-[45%] cute-btn btn-accent " %>
+
         <%= link_to "Show", mask_request_path(mask_request), class: "!max-w-[45%] cute-btn !bg-cta-bg " if defined?(compact) %>
       </div>
 
       </div>
 
-      <% if !defined?(compact) && mask_request == mask_request.user.mask_requests.order(:created_at).first && !current_user.afford_generation? %>
-        <div class="bg-gradient-to-r from-accent/10 to-secondary/10 rounded-xl p-6 text-center border border-accent/20 shadow-sm my-6">
-           <h3 class="text-xl font-bold text-gray-900 mb-2">✨ Unlock Premium Views</h3>
-           <p class="text-gray-600 mb-4">
-             Get access to high-resolution rotated and drone views, and generate unlimited designs.
-           </p>
-           <%= link_to "Get Credits & Unlock", credits_path, class: "cute-btn btn-primary inline-block !w-auto px-8" %>
-        </div>
-      <% end %>
+
 
       <hr class="border-t border-neutral-200">
 
