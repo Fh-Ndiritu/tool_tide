@@ -38,7 +38,7 @@
 
       </div>
 
-      <% unless current_user.afford_generation? %>
+      <% if !defined?(compact) && mask_request == mask_request.user.mask_requests.order(:created_at).first && !current_user.afford_generation? %>
         <div class="bg-gradient-to-r from-accent/10 to-secondary/10 rounded-xl p-6 text-center border border-accent/20 shadow-sm my-6">
            <h3 class="text-xl font-bold text-gray-900 mb-2">✨ Unlock Premium Views</h3>
            <p class="text-gray-600 mb-4">
