@@ -89,12 +89,7 @@
             "ratingValue": "4.9",
             "reviewCount": "6400"
           },
-          "description": "<%= content_for?(:schema_description) ? yield(:schema_description) : "Try Hadaa FREE - no credit card required! Hadaa is an AI-powered virtual landscape design app that lets you transform photos into beautiful gardens, plan seasonal layouts, and prepare for events with our Mask Designer and AI Editor." %>",
-          "potentialAction": {
-            "@type": "SearchAction",
-            "target": "<%= request.base_url %>/search?q={search_term_string}", <%# Adjust with your actual search URL %>
-            "query-input": "required name=search_term_string"
-          }
+          "description": "<%= content_for?(:schema_description) ? yield(:schema_description) : "Try Hadaa FREE - no credit card required! Hadaa is an AI-powered virtual landscape design app that lets you transform photos into beautiful gardens, plan seasonal layouts, and prepare for events with our Mask Designer and AI Editor." %>"
         }
       </script>
     <% end %>
