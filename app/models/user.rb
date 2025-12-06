@@ -13,10 +13,9 @@ class User < ApplicationRecord
 
   has_many :credits, dependent: :destroy
   has_many :text_requests, dependent: :destroy
-  has_many :favorites, as: :favoritable
-  has_many :favorites, dependent: :destroy
-  has_many :issues
-  has_many :votes
+  has_many :favorites, as: :favoritable, dependent: :destroy
+  has_many :issues, dependent: :destroy
+  has_many :votes, dependent: :destroy
 
   validates :privacy_policy, acceptance: { message: "must be accepted." }
 
@@ -38,7 +37,7 @@ class User < ApplicationRecord
     end
   end
 
-  before_save :geocode, if: ->(obj) { obj.current_sign_in_ip.present? && obj.current_sign_in_ip_changed? }
+  after_validation :geocode, if: ->(obj) { obj.current_sign_in_ip.present? && obj.current_sign_in_ip_changed? }
 
   def state_address
     return "" if address.blank?
