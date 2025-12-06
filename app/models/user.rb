@@ -37,7 +37,8 @@ class User < ApplicationRecord
     end
   end
 
-  after_validation :geocode, if: ->(obj) { obj.current_sign_in_ip.present? && obj.current_sign_in_ip_changed? }
+  before_save :geocode
+  # , if: ->(obj) { obj.current_sign_in_ip.present? && obj.current_sign_in_ip_changed? }
 
   def state_address
     return "" if address.blank?
