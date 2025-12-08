@@ -43,6 +43,7 @@ Rails.application.routes.draw do
   get "features/sketch-to-3d-rendering", to: "features#sketch_to_3d_rendering"
   get "city-design-inspiration", to: "features#city_design_inspiration"
   get "event-seasonal-landscaping", to: "features#event_seasonal_landscaping"
+  get "full-faq", to: "pages#full_faq"
   get :low_credits, to: "credits#low"
 
   get "/ojus-ai-vs-hadaa-ai", to: "competitors#ojus", as: :ojus

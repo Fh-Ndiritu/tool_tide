@@ -5,4 +5,7 @@ class PagesController < ApplicationController
 
   def contact_us
   end
+
+  def full_faq
+  end
 end
