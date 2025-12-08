@@ -9,4 +9,19 @@ class FeaturesController < ApplicationController
 
   def preset_style_selection
   end
+
+  def location_plant_suggestions
+  end
+
+  def drone_view_3d_perspective
+  end
+
+  def shopping_list_planting_guide
+  end
+
+  def city_design_inspiration
+  end
+
+  def event_seasonal_landscaping
+  end
 end

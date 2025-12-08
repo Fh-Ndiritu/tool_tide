@@ -37,6 +37,11 @@ Rails.application.routes.draw do
   get "features/brush-prompt-editor", to: "features#brush_prompt_editor"
   get "features/ai-prompt-editor", to: "features#ai_prompt_editor"
   get "features/preset-style-selection", to: "features#preset_style_selection"
+  get "features/location-plant-suggestions", to: "features#location_plant_suggestions"
+  get "features/drone-view-3d-perspective", to: "features#drone_view_3d_perspective"
+  get "features/shopping-list-planting-guide", to: "features#shopping_list_planting_guide"
+  get "city-design-inspiration", to: "features#city_design_inspiration"
+  get "event-seasonal-landscaping", to: "features#event_seasonal_landscaping"
   get :low_credits, to: "credits#low"
 
   get "/ojus-ai-vs-hadaa-ai", to: "competitors#ojus", as: :ojus

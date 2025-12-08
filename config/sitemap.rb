@@ -35,6 +35,11 @@ SitemapGenerator::Sitemap.create do
   add "/features/brush-prompt-editor", priority: 0.8, changefreq: "weekly"
   add "/features/ai-prompt-editor", priority: 0.8, changefreq: "weekly"
   add "/features/preset-style-selection", priority: 0.8, changefreq: "weekly"
+  add "/features/location-plant-suggestions", priority: 0.8, changefreq: "weekly"
+  add "/features/drone-view-3d-perspective", priority: 0.8, changefreq: "weekly"
+  add "/features/shopping-list-planting-guide", priority: 0.8, changefreq: "weekly"
+  add "/city-design-inspiration", priority: 0.8, changefreq: "weekly"
+  add "/event-seasonal-landscaping", priority: 0.8, changefreq: "weekly"
 
   Tag.where(tag_class: :event).each do |event|
     add "/events/#{event.slug}", changefreq: "weekly", priority: 0.8
