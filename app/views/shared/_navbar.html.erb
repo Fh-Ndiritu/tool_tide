@@ -3,7 +3,7 @@
   data-controller="navbar"
 >
   <div class="container mx-auto flex flex-col lg:flex-row justify-between items-center">
-    <div class="w-full flex items-center mb-0 lg:mb-0 relative">
+    <div class="w-full lg:w-auto flex items-center mb-0 lg:mb-0 relative">
       <div class="flex-shrink-0">
         <%= link_to root_path, class: "flex items-center" do %>
           <%= image_tag "hadaa.png", alt: "Hadaa", class:"h-22 w-22 rounded-full mr-2" %>
@@ -73,7 +73,7 @@
       class="
         lg:pr-4 flex justify-center lg:justify-end hidden lg:flex flex-col
         lg:flex-row max-lg:w-full items-center space-y-2 lg:space-y-0
-        lg:space-x-4 lg:min-w-8/12
+        lg:space-x-4 lg:flex-1
       "
     >
       <% if active_item(root_path).present? && !user_signed_in? %>
@@ -152,7 +152,7 @@
         <div data-controller="dropdown" class="relative">
           <button
             data-action="dropdown#toggle"
-            class="flex items-center gap-2 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white px-3 py-2 rounded-md transition duration-150"
+            class="flex items-center gap-4 px-4 py-2 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0 rounded-md transition duration-150"
           >
             <span class="font-bold">Features</span>
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -163,7 +163,7 @@
           <div
             data-dropdown-target="menu"
             data-dropdown-hidden-class="hidden"
-            class="hidden absolute right-0 mt-2 w-72 bg-white rounded-xl shadow-2xl p-2 z-50 ring-1 ring-black/5 origin-top-right"
+            class="hidden absolute left-1/2 -translate-x-1/2 lg:left-auto lg:translate-x-0 mt-2 w-72 bg-white rounded-xl shadow-2xl p-2 z-50 ring-1 ring-black/5 origin-top-right lg:right-0"
           >
             <%= link_to "/features/brush-prompt-editor", class: "block px-4 py-3 text-sm text-gray-700 hover:bg-accent/10 hover:text-accent rounded-lg transition duration-150 group", data: { action: "click->dropdown#hide" } do %>
               <div class="font-bold mb-0.5">Brush Tool & Prompt Editor</div>
@@ -193,6 +193,11 @@
             <%= link_to "/features/shopping-list-planting-guide", class: "block px-4 py-3 text-sm text-gray-700 hover:bg-accent/10 hover:text-accent rounded-lg transition duration-150 group", data: { action: "click->dropdown#hide" } do %>
               <div class="font-bold mb-0.5">Shopping List & Planting Guide</div>
               <div class="text-xs text-gray-500 group-hover:text-accent/80">Automated procurement and execution</div>
+            <% end %>
+
+            <%= link_to "/features/sketch-to-3d-rendering", class: "block px-4 py-3 text-sm text-gray-700 hover:bg-accent/10 hover:text-accent rounded-lg transition duration-150 group", data: { action: "click->dropdown#hide" } do %>
+              <div class="font-bold mb-0.5">Sketch to 3D Rendering</div>
+              <div class="text-xs text-gray-500 group-hover:text-accent/80">Convert sketches to photorealistic 3D designs</div>
             <% end %>
 
             <%= link_to "/city-design-inspiration", class: "block px-4 py-3 text-sm text-gray-700 hover:bg-accent/10 hover:text-accent rounded-lg transition duration-150 group", data: { action: "click->dropdown#hide" } do %>
@@ -245,7 +250,7 @@
         <div data-controller="dropdown" class="relative">
           <button
             data-action="dropdown#toggle"
-            class="flex items-center gap-2 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white px-3 py-2 rounded-md transition duration-150"
+            class="flex items-center gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0 rounded-md transition duration-150"
           >
             <span class="font-bold">Features</span>
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -256,7 +261,7 @@
           <div
             data-dropdown-target="menu"
             data-dropdown-hidden-class="hidden"
-            class="hidden absolute right-0 mt-2 w-72 bg-white rounded-xl shadow-2xl p-2 z-50 ring-1 ring-black/5 origin-top-right"
+            class="hidden absolute left-1/2 -translate-x-1/2 lg:left-auto lg:translate-x-0 mt-2 w-72 bg-white rounded-xl shadow-2xl p-2 z-50 ring-1 ring-black/5 origin-top-right lg:right-0"
           >
             <%= link_to "/features/brush-prompt-editor", class: "block px-4 py-3 text-sm text-gray-700 hover:bg-accent/10 hover:text-accent rounded-lg transition duration-150 group", data: { action: "click->dropdown#hide" } do %>
               <div class="font-bold mb-0.5">Brush Tool & Prompt Editor</div>
@@ -286,6 +291,11 @@
             <%= link_to "/features/shopping-list-planting-guide", class: "block px-4 py-3 text-sm text-gray-700 hover:bg-accent/10 hover:text-accent rounded-lg transition duration-150 group", data: { action: "click->dropdown#hide" } do %>
               <div class="font-bold mb-0.5">Shopping List & Planting Guide</div>
               <div class="text-xs text-gray-500 group-hover:text-accent/80">Automated procurement and execution</div>
+            <% end %>
+
+            <%= link_to "/features/sketch-to-3d-rendering", class: "block px-4 py-3 text-sm text-gray-700 hover:bg-accent/10 hover:text-accent rounded-lg transition duration-150 group", data: { action: "click->dropdown#hide" } do %>
+              <div class="font-bold mb-0.5">Sketch to 3D Rendering</div>
+              <div class="text-xs text-gray-500 group-hover:text-accent/80">Convert sketches to photorealistic 3D designs</div>
             <% end %>
 
             <%= link_to "/city-design-inspiration", class: "block px-4 py-3 text-sm text-gray-700 hover:bg-accent/10 hover:text-accent rounded-lg transition duration-150 group", data: { action: "click->dropdown#hide" } do %>

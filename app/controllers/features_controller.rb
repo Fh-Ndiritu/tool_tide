@@ -24,4 +24,7 @@ class FeaturesController < ApplicationController
 
   def event_seasonal_landscaping
   end
+
+  def sketch_to_3d_rendering
+  end
 end

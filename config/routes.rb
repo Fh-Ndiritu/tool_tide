@@ -40,6 +40,7 @@ Rails.application.routes.draw do
   get "features/location-plant-suggestions", to: "features#location_plant_suggestions"
   get "features/drone-view-3d-perspective", to: "features#drone_view_3d_perspective"
   get "features/shopping-list-planting-guide", to: "features#shopping_list_planting_guide"
+  get "features/sketch-to-3d-rendering", to: "features#sketch_to_3d_rendering"
   get "city-design-inspiration", to: "features#city_design_inspiration"
   get "event-seasonal-landscaping", to: "features#event_seasonal_landscaping"
   get :low_credits, to: "credits#low"
