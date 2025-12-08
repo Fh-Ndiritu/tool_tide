@@ -35,13 +35,12 @@
       <h3 class="text-lg font-extrabold leading-tight text-neutral-900 truncate">
         Request #<%= text_request.id %>
       </h3>
+
       <p class="text-xs text-gray-500 mb-2">
         <%= text_request.user.email %>
         <% if text_request.user.state_address.present? %>
           <br>
-          <span class="font-semibold text-blue-600">
-            📍 <%= text_request.user.state_address %>
-          </span>
+          <span class="font-semibold text-blue-600">📍 <%= text_request.user.state_address %></span>
         <% end %>
       </p>
 

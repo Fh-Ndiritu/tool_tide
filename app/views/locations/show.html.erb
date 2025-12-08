@@ -40,39 +40,38 @@
   >
 
   <%= tag.script type: "application/ld+json" do %>
-    {
-      "@context": "https://schema.org",
-      "@type": "CollectionPage",
-      "name": "<%= @location.name %> Landscaping Ideas",
-      "description": "<%= @location.seo_description %>",
-      "url": "<%= location_url(@location) %>",
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "<%= @location.rating %>",
-        "reviewCount": "<%= @location.project_count %>"
-      },
-      "mainEntity": {
-        "@type": "ItemList",
-        "itemListElement": [
-          <% all_requests = @mask_requests.map { |mr| { request: mr, type: :mask } } +
+    { "@context": "https://schema.org", "@type": "CollectionPage", "name": "
+    <%= @location.name %>
+    Landscaping Ideas", "description": "
+    <%= @location.seo_description %>
+    ", "url": "
+    <%= location_url(@location) %>
+    ", "aggregateRating": { "@type": "AggregateRating", "ratingValue": "
+    <%= @location.rating %>
+    ", "reviewCount": "
+    <%= @location.project_count %>
+    " }, "mainEntity": { "@type": "ItemList", "itemListElement": [
+    <% all_requests = @mask_requests.map { |mr| { request: mr, type: :mask } } +
                             @text_requests.map { |tr| { request: tr, type: :text } } %>
-          <% all_requests.each_with_index do |item, index| %>
-            <% request = item[:request] %>
-            <% is_mask = item[:type] == :mask %>
-            {
-              "@type": "CreativeWork",
-              "name": "Generated <%= @location.name %> Landscaping Design <%= index + 1 %>",
-              "url": "<%= is_mask ? mask_request_url(request) : text_request_url(request) %>",
-              "image": "<% if is_mask %><%= rails_blob_url(request.main_view, only_full_url: true) if request.main_view.attached? %><% else %><%= rails_blob_url(request.result_image, only_full_url: true) if request.result_image.attached? %><% end %>",
-              "author": {
-                "@type": "Organization",
-                "name": "Hadaa AI Community"
-              }
-            }<%= index == all_requests.count - 1 ? '' : ',' %>
-          <% end %>
-        ]
-      }
-    }
+    <% all_requests.each_with_index do |item, index| %>
+      <% request = item[:request] %>
+      <% is_mask = item[:type] == :mask %>
+      { "@type": "CreativeWork", "name": "Generated
+      <%= @location.name %>
+      Landscaping Design
+      <%= index + 1 %>
+      ", "url": "
+      <%= is_mask ? mask_request_url(request) : text_request_url(request) %>
+      ", "image": "
+      <% if is_mask %>
+        <%= rails_blob_url(request.main_view, only_full_url: true) if request.main_view.attached? %>
+      <% else %>
+        <%= rails_blob_url(request.result_image, only_full_url: true) if request.result_image.attached? %>
+      <% end %>
+      ", "author": { "@type": "Organization", "name": "Hadaa AI Community" } }
+      <%= index == all_requests.count - 1 ? '' : ',' %>
+    <% end %>
+    ] } }
   <% end %>
 <% end %>
 
@@ -92,6 +91,7 @@
         Designs in
         <span class="text-secondary"><%= @location.name %></span>
       </h1>
+
       <div class="max-w-4xl mx-auto text-xl text-gray-600 font-light mb-8">
         Explore top-rated, AI-generated garden and outdoor living ideas tailored
         for properties in
@@ -118,7 +118,12 @@
 
       <%# --- Content Grid 1: Text Prompts --- %>
       <div>
-        <div class="flex items-center justify-between mb-8 border-l-4 border-secondary pl-4">
+        <div
+          class="
+            flex items-center justify-between mb-8 border-l-4
+            border-secondary pl-4
+          "
+        >
           <h2 class="text-3xl font-bold text-gray-800">
             Text Designs
           </h2>
@@ -127,24 +132,42 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <% @text_requests.each do |text_request| %>
-            <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100 flex flex-col h-full hover:shadow-2xl transition-shadow duration-300">
+            <div
+              class="
+                bg-white rounded-2xl shadow-xl overflow-hidden border
+                border-gray-100 flex flex-col h-full hover:shadow-2xl
+                transition-shadow duration-300
+              "
+            >
               <div class="relative h-64 sm:h-80 overflow-hidden group">
                 <%= image_tag text_request.result_image.variant(resize_to_limit: [800, 800]),
                     alt: "AI Landscaping design for #{@location.name}",
                     class: "w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" if text_request.result_image.attached? %>
 
-                <div class="absolute top-4 right-4 bg-black/60 backdrop-blur-sm text-white text-xs font-bold px-3 py-1 rounded-full">
+                <div
+                  class="
+                    absolute top-4 right-4 bg-black/60 backdrop-blur-sm
+                    text-white text-xs font-bold px-3 py-1 rounded-full
+                  "
+                >
                   AI Text Edit
                 </div>
               </div>
 
               <div class="p-6 flex-1 flex flex-col">
                 <div class="flex items-center gap-2 mb-4">
-                  <div class="w-8 h-8 rounded-full bg-gradient-to-br from-accent to-secondary flex items-center justify-center text-white font-bold text-xs">
+                  <div
+                    class="
+                      w-8 h-8 rounded-full bg-gradient-to-br from-accent
+                      to-secondary flex items-center justify-center
+                      text-white font-bold text-xs
+                    "
+                  >
                     <%= text_request.user.email[0].upcase %>
                   </div>
                   <div class="text-sm text-gray-500">
-                    Designed by <span class="font-medium text-gray-900">User <%= rand(2000..15000) %></span>
+                    Designed by
+                    <span class="font-medium text-gray-900">User <%= rand(2000..15000) %></span>
                   </div>
                 </div>
 
@@ -157,8 +180,19 @@
                 <%= link_to new_user_session_path,
                     class: "w-full flex items-center justify-center gap-2 py-3 px-4 bg-white border-2 border-accent text-accent font-bold rounded-xl hover:bg-accent hover:text-white transition-colors duration-200" do %>
                   <span>Try this Prompt</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M13 10V3L4 14h7v7l9-11h-7z"
+                    />
                   </svg>
                 <% end %>
               </div>
@@ -169,7 +203,12 @@
 
       <%# --- Content Grid 2: Mask Requests (Original Images) --- %>
       <div>
-        <div class="flex items-center justify-between mb-8 border-l-4 border-secondary pl-4 pt-4 mt-8">
+        <div
+          class="
+            flex items-center justify-between mb-8 border-l-4
+            border-secondary pl-4 pt-4 mt-8
+          "
+        >
           <h2 class="text-3xl font-bold text-gray-800">
             Mask Brush Designs
           </h2>
@@ -206,12 +245,22 @@
               <div class="p-4 border-t border-gray-100 bg-white">
                 <div class="flex items-center justify-between">
                   <div class="flex items-center gap-2">
-                    <div class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 font-bold text-[10px]">
+                    <div
+                      class="
+                        w-6 h-6 rounded-full bg-gray-200 flex items-center
+                        justify-center text-gray-600 font-bold text-[10px]
+                      "
+                    >
                       <%= mask_request.canva.user.email[0].upcase %>
                     </div>
                     <span class="text-xs text-gray-500">User <%= rand(2000..15000) %></span>
                   </div>
-                  <span class="text-xs font-medium text-accent bg-accent/10 px-2 py-1 rounded-md">
+                  <span
+                    class="
+                      text-xs font-medium text-accent bg-accent/10 px-2 py-1
+                      rounded-md
+                    "
+                  >
                     Mask Edit
                   </span>
                 </div>
@@ -220,12 +269,25 @@
           <% end %>
 
           <% if @mask_requests.empty? && @text_requests.empty? %>
-            <div class="col-span-full flex flex-col items-center justify-center py-16 px-4 border-2 border-dashed border-gray-300 rounded-2xl bg-gray-50">
+            <div
+              class="
+                col-span-full flex flex-col items-center justify-center
+                py-16 px-4 border-2 border-dashed border-gray-300
+                rounded-2xl bg-gray-50
+              "
+            >
               <div class="text-6xl mb-4">🎨</div>
-              <h3 class="text-2xl font-bold text-gray-800 mb-2">No designs yet</h3>
+
+              <h3 class="text-2xl font-bold text-gray-800 mb-2">
+                No designs yet
+              </h3>
+
               <p class="text-gray-500 text-center mb-6 max-w-md">
-                Be the first to create a stunning AI landscape design for <b><%= @location.name %></b>!
+                Be the first to create a stunning AI landscape design for
+                <b><%= @location.name %></b>
+                !
               </p>
+
               <%= link_to "Start Designing Now", new_canva_path, class: "px-6 py-3 bg-accent text-white font-bold rounded-full hover:bg-accent/90 transition-colors" %>
             </div>
           <% end %>
@@ -239,12 +301,24 @@
           text-white relative overflow-hidden
         "
       >
-        <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-accent via-secondary to-accent"></div>
+        <div
+          class="
+            absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-accent
+            via-secondary to-accent
+          "
+        ></div>
 
         <%# Strong, inviting green for the CTA %>
-        <h3 class="text-4xl md:text-5xl font-extrabold mb-6 tracking-tight">Don't Just Admire, Design!</h3>
+        <h3 class="text-4xl md:text-5xl font-extrabold mb-6 tracking-tight">
+          Don't Just Admire, Design!
+        </h3>
 
-        <p class="text-xl md:text-2xl mb-12 font-light max-w-3xl mx-auto text-gray-300">
+        <p
+          class="
+            text-xl md:text-2xl mb-12 font-light max-w-3xl mx-auto
+            text-gray-300
+          "
+        >
           Bring your vision to life with our AI. Start creating your own
           <b class="text-white"><%= @location.name %></b>
           masterpiece now.
@@ -263,7 +337,9 @@
           <% end %>
         </div>
 
-        <p class="mt-6 text-sm text-gray-400">No credit card required for free trial.</p>
+        <p class="mt-6 text-sm text-gray-400">
+          No credit card required for free trial.
+        </p>
       </section>
 
       <%# --- INTERNAL LINKING SECTION --- %>
@@ -276,7 +352,10 @@
             <%= link_to location_path(slug: location.slug),
                 class: "group flex items-center gap-2 px-5 py-2.5 text-sm font-medium rounded-full bg-white border border-gray-200 text-gray-700 hover:border-emerald-300 hover:shadow-md transition-all duration-200" do %>
               <span>🌿</span>
-              <span><b class="text-emerald-700 group-hover:text-emerald-800"><%= location.admin_name %></b> gardens</span>
+              <span>
+                <b class="text-emerald-700 group-hover:text-emerald-800"><%= location.admin_name %></b>
+                gardens
+              </span>
             <% end %>
           <% end %>
         </div>

@@ -1,4 +1,5 @@
 <% content_for :title, "Create New Video Chapter | AI Video Production - Hadaa" %>
+
 <% content_for :description, "Create a new AI-generated video chapter. Choose your video mode (landscape or portrait), add your content overview, and let our AI system generate professional educational videos automatically." %>
 
 <div class="max-w-2xl mx-auto px-4 py-8">
@@ -7,7 +8,9 @@
   <%= form_with(model: [:admin, @chapter], class: "space-y-6") do |form| %>
     <% if @chapter.errors.any? %>
       <div class="bg-red-50 p-4 rounded-md">
-        <h2 class="text-red-800 text-sm font-medium"><%= pluralize(@chapter.errors.count, "error") %> prohibited this chapter from being saved:</h2>
+        <h2 class="text-red-800 text-sm font-medium">
+          <%= pluralize(@chapter.errors.count, "error") %> prohibited this chapter from being saved:
+        </h2>
         <ul class="list-disc list-inside text-red-700 text-sm mt-2">
           <% @chapter.errors.each do |error| %>
             <li><%= error.full_message %></li>
