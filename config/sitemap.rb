@@ -32,9 +32,7 @@ SitemapGenerator::Sitemap.create do
   add explore_path, priority: 0.9, changefreq: "daily"
   add ojus_path, priority: 0.8, changefreq: "weekly"
 
-  add features_path, priority: 0.8, changefreq: "weekly"
-
-   Tag.where(tag_class: :event).each do |event|
+  Tag.where(tag_class: :event).each do |event|
     add "/events/#{event.slug}", changefreq: "weekly", priority: 0.8
   end
 

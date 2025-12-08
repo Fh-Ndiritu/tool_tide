@@ -14,8 +14,6 @@ class User < ApplicationRecord
   has_many :credits, dependent: :destroy
   has_many :text_requests, dependent: :destroy
   has_many :favorites, as: :favoritable, dependent: :destroy
-  has_many :issues, dependent: :destroy
-  has_many :votes, dependent: :destroy
 
   validates :privacy_policy, acceptance: { message: "must be accepted." }
 
