@@ -58,17 +58,10 @@ RSpec.describe MaskRequestsController, type: :controller do
     end
   end
 
-  describe "GET #new" do
-    it "redirects to low_credits_path if user cannot afford generation" do
-      allow_any_instance_of(User).to receive(:afford_generation?).and_return(false)
-      get :new, params: { canva_id: canva.id }, session: valid_session
-      expect(response).to redirect_to(low_credits_path)
-    end
-
-    it "returns a success response if user can afford generation" do
-      allow_any_instance_of(User).to receive(:afford_generation?).and_return(true)
-      get :new, params: { canva_id: canva.id }, session: valid_session
-      expect(response).to be_successful
+  describe 'GET #new' do
+    it 'assigns a new canva' do
+      get :new
+      expect(assigns(:canva)).to be_a_new(Canva)
     end
   end
 

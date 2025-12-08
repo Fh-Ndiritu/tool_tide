@@ -152,62 +152,100 @@
         <div data-controller="dropdown" class="relative">
           <button
             data-action="dropdown#toggle"
-            class="flex items-center gap-4 px-4 py-2 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0 rounded-md transition duration-150"
+            class="
+              flex items-center gap-4 px-4 py-2 bg-transparent
+              hover:bg-secondary focus:outline-none hover:bg-accent
+              text-neutral-900 hover:text-white p-0 rounded-md transition
+              duration-150
+            "
           >
             <span class="font-bold">Features</span>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 9l-7 7-7-7"
+              />
             </svg>
           </button>
 
           <div
             data-dropdown-target="menu"
             data-dropdown-hidden-class="hidden"
-            class="hidden absolute left-1/2 -translate-x-1/2 lg:left-auto lg:translate-x-0 mt-2 w-72 bg-white rounded-xl shadow-2xl p-2 z-50 ring-1 ring-black/5 origin-top-right lg:right-0"
+            class="
+              hidden absolute left-1/2 -translate-x-1/2 lg:left-auto
+              lg:translate-x-0 mt-2 w-72 bg-white rounded-xl shadow-2xl p-2
+              z-50 ring-1 ring-black/5 origin-top-right lg:right-0
+            "
           >
             <%= link_to "/features/brush-prompt-editor", class: "block px-4 py-3 text-sm text-gray-700 hover:bg-accent/10 hover:text-accent rounded-lg transition duration-150 group", data: { action: "click->dropdown#hide" } do %>
               <div class="font-bold mb-0.5">Brush Tool & Prompt Editor</div>
-              <div class="text-xs text-gray-500 group-hover:text-accent/80">Precision editing for your landscape</div>
+              <div class="text-xs text-gray-500 group-hover:text-accent/80">
+                Precision editing for your landscape
+              </div>
             <% end %>
 
             <%= link_to "/features/ai-prompt-editor", class: "block px-4 py-3 text-sm text-gray-700 hover:bg-accent/10 hover:text-accent rounded-lg transition duration-150 group", data: { action: "click->dropdown#hide" } do %>
               <div class="font-bold mb-0.5">Intelligent AI Prompt Editor</div>
-              <div class="text-xs text-gray-500 group-hover:text-accent/80">Granular control for advanced designers</div>
+              <div class="text-xs text-gray-500 group-hover:text-accent/80">
+                Granular control for advanced designers
+              </div>
             <% end %>
 
             <%= link_to "/features/preset-style-selection", class: "block px-4 py-3 text-sm text-gray-700 hover:bg-accent/10 hover:text-accent rounded-lg transition duration-150 group", data: { action: "click->dropdown#hide" } do %>
               <div class="font-bold mb-0.5">Preset Styles Selection</div>
-              <div class="text-xs text-gray-500 group-hover:text-accent/80">Instant inspiration, professional control</div>
+              <div class="text-xs text-gray-500 group-hover:text-accent/80">
+                Instant inspiration, professional control
+              </div>
             <% end %>
 
             <%= link_to "/features/location-plant-suggestions", class: "block px-4 py-3 text-sm text-gray-700 hover:bg-accent/10 hover:text-accent rounded-lg transition duration-150 group", data: { action: "click->dropdown#hide" } do %>
               <div class="font-bold mb-0.5">Location Plant Suggestions</div>
-              <div class="text-xs text-gray-500 group-hover:text-accent/80">Sustainable, data-driven garden planning</div>
+              <div class="text-xs text-gray-500 group-hover:text-accent/80">
+                Sustainable, data-driven garden planning
+              </div>
             <% end %>
 
             <%= link_to "/features/drone-view-3d-perspective", class: "block px-4 py-3 text-sm text-gray-700 hover:bg-accent/10 hover:text-accent rounded-lg transition duration-150 group", data: { action: "click->dropdown#hide" } do %>
               <div class="font-bold mb-0.5">Drone View & 3D Perspective</div>
-              <div class="text-xs text-gray-500 group-hover:text-accent/80">Professional site analysis and visualization</div>
+              <div class="text-xs text-gray-500 group-hover:text-accent/80">
+                Professional site analysis and visualization
+              </div>
             <% end %>
 
             <%= link_to "/features/shopping-list-planting-guide", class: "block px-4 py-3 text-sm text-gray-700 hover:bg-accent/10 hover:text-accent rounded-lg transition duration-150 group", data: { action: "click->dropdown#hide" } do %>
               <div class="font-bold mb-0.5">Shopping List & Planting Guide</div>
-              <div class="text-xs text-gray-500 group-hover:text-accent/80">Automated procurement and execution</div>
+              <div class="text-xs text-gray-500 group-hover:text-accent/80">
+                Automated procurement and execution
+              </div>
             <% end %>
 
             <%= link_to "/features/sketch-to-3d-rendering", class: "block px-4 py-3 text-sm text-gray-700 hover:bg-accent/10 hover:text-accent rounded-lg transition duration-150 group", data: { action: "click->dropdown#hide" } do %>
               <div class="font-bold mb-0.5">Sketch to 3D Rendering</div>
-              <div class="text-xs text-gray-500 group-hover:text-accent/80">Convert sketches to photorealistic 3D designs</div>
+              <div class="text-xs text-gray-500 group-hover:text-accent/80">
+                Convert sketches to photorealistic 3D designs
+              </div>
             <% end %>
 
             <%= link_to "/city-design-inspiration", class: "block px-4 py-3 text-sm text-gray-700 hover:bg-accent/10 hover:text-accent rounded-lg transition duration-150 group", data: { action: "click->dropdown#hide" } do %>
               <div class="font-bold mb-0.5">City Design Inspiration</div>
-              <div class="text-xs text-gray-500 group-hover:text-accent/80">Local landscape designs & inspiration gallery</div>
+              <div class="text-xs text-gray-500 group-hover:text-accent/80">
+                Local landscape designs & inspiration gallery
+              </div>
             <% end %>
 
             <%= link_to "/event-seasonal-landscaping", class: "block px-4 py-3 text-sm text-gray-700 hover:bg-accent/10 hover:text-accent rounded-lg transition duration-150 group", data: { action: "click->dropdown#hide" } do %>
               <div class="font-bold mb-0.5">Event Seasonal Landscaping</div>
-              <div class="text-xs text-gray-500 group-hover:text-accent/80">Instant holiday & seasonal visualization</div>
+              <div class="text-xs text-gray-500 group-hover:text-accent/80">
+                Instant holiday & seasonal visualization
+              </div>
             <% end %>
           </div>
         </div>
@@ -250,62 +288,99 @@
         <div data-controller="dropdown" class="relative">
           <button
             data-action="dropdown#toggle"
-            class="flex items-center gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0 rounded-md transition duration-150"
+            class="
+              flex items-center gap-4 bg-transparent hover:bg-secondary
+              focus:outline-none hover:bg-accent text-neutral-900
+              hover:text-white p-0 rounded-md transition duration-150
+            "
           >
             <span class="font-bold">Features</span>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 9l-7 7-7-7"
+              />
             </svg>
           </button>
 
           <div
             data-dropdown-target="menu"
             data-dropdown-hidden-class="hidden"
-            class="hidden absolute left-1/2 -translate-x-1/2 lg:left-auto lg:translate-x-0 mt-2 w-72 bg-white rounded-xl shadow-2xl p-2 z-50 ring-1 ring-black/5 origin-top-right lg:right-0"
+            class="
+              hidden absolute left-1/2 -translate-x-1/2 lg:left-auto
+              lg:translate-x-0 mt-2 w-72 bg-white rounded-xl shadow-2xl p-2
+              z-50 ring-1 ring-black/5 origin-top-right lg:right-0
+            "
           >
             <%= link_to "/features/brush-prompt-editor", class: "block px-4 py-3 text-sm text-gray-700 hover:bg-accent/10 hover:text-accent rounded-lg transition duration-150 group", data: { action: "click->dropdown#hide" } do %>
               <div class="font-bold mb-0.5">Brush Tool & Prompt Editor</div>
-              <div class="text-xs text-gray-500 group-hover:text-accent/80">Precision editing for your landscape</div>
+              <div class="text-xs text-gray-500 group-hover:text-accent/80">
+                Precision editing for your landscape
+              </div>
             <% end %>
 
             <%= link_to "/features/ai-prompt-editor", class: "block px-4 py-3 text-sm text-gray-700 hover:bg-accent/10 hover:text-accent rounded-lg transition duration-150 group", data: { action: "click->dropdown#hide" } do %>
               <div class="font-bold mb-0.5">Intelligent AI Prompt Editor</div>
-              <div class="text-xs text-gray-500 group-hover:text-accent/80">Granular control for advanced designers</div>
+              <div class="text-xs text-gray-500 group-hover:text-accent/80">
+                Granular control for advanced designers
+              </div>
             <% end %>
 
             <%= link_to "/features/preset-style-selection", class: "block px-4 py-3 text-sm text-gray-700 hover:bg-accent/10 hover:text-accent rounded-lg transition duration-150 group", data: { action: "click->dropdown#hide" } do %>
               <div class="font-bold mb-0.5">Preset Styles Selection</div>
-              <div class="text-xs text-gray-500 group-hover:text-accent/80">Instant inspiration, professional control</div>
+              <div class="text-xs text-gray-500 group-hover:text-accent/80">
+                Instant inspiration, professional control
+              </div>
             <% end %>
 
             <%= link_to "/features/location-plant-suggestions", class: "block px-4 py-3 text-sm text-gray-700 hover:bg-accent/10 hover:text-accent rounded-lg transition duration-150 group", data: { action: "click->dropdown#hide" } do %>
               <div class="font-bold mb-0.5">Location Plant Suggestions</div>
-              <div class="text-xs text-gray-500 group-hover:text-accent/80">Sustainable, data-driven garden planning</div>
+              <div class="text-xs text-gray-500 group-hover:text-accent/80">
+                Sustainable, data-driven garden planning
+              </div>
             <% end %>
 
             <%= link_to "/features/drone-view-3d-perspective", class: "block px-4 py-3 text-sm text-gray-700 hover:bg-accent/10 hover:text-accent rounded-lg transition duration-150 group", data: { action: "click->dropdown#hide" } do %>
               <div class="font-bold mb-0.5">Drone View & 3D Perspective</div>
-              <div class="text-xs text-gray-500 group-hover:text-accent/80">Professional site analysis and visualization</div>
+              <div class="text-xs text-gray-500 group-hover:text-accent/80">
+                Professional site analysis and visualization
+              </div>
             <% end %>
 
             <%= link_to "/features/shopping-list-planting-guide", class: "block px-4 py-3 text-sm text-gray-700 hover:bg-accent/10 hover:text-accent rounded-lg transition duration-150 group", data: { action: "click->dropdown#hide" } do %>
               <div class="font-bold mb-0.5">Shopping List & Planting Guide</div>
-              <div class="text-xs text-gray-500 group-hover:text-accent/80">Automated procurement and execution</div>
+              <div class="text-xs text-gray-500 group-hover:text-accent/80">
+                Automated procurement and execution
+              </div>
             <% end %>
 
             <%= link_to "/features/sketch-to-3d-rendering", class: "block px-4 py-3 text-sm text-gray-700 hover:bg-accent/10 hover:text-accent rounded-lg transition duration-150 group", data: { action: "click->dropdown#hide" } do %>
               <div class="font-bold mb-0.5">Sketch to 3D Rendering</div>
-              <div class="text-xs text-gray-500 group-hover:text-accent/80">Convert sketches to photorealistic 3D designs</div>
+              <div class="text-xs text-gray-500 group-hover:text-accent/80">
+                Convert sketches to photorealistic 3D designs
+              </div>
             <% end %>
 
             <%= link_to "/city-design-inspiration", class: "block px-4 py-3 text-sm text-gray-700 hover:bg-accent/10 hover:text-accent rounded-lg transition duration-150 group", data: { action: "click->dropdown#hide" } do %>
               <div class="font-bold mb-0.5">City Design Inspiration</div>
-              <div class="text-xs text-gray-500 group-hover:text-accent/80">Local landscape designs & inspiration gallery</div>
+              <div class="text-xs text-gray-500 group-hover:text-accent/80">
+                Local landscape designs & inspiration gallery
+              </div>
             <% end %>
 
             <%= link_to "/event-seasonal-landscaping", class: "block px-4 py-3 text-sm text-gray-700 hover:bg-accent/10 hover:text-accent rounded-lg transition duration-150 group", data: { action: "click->dropdown#hide" } do %>
               <div class="font-bold mb-0.5">Event Seasonal Landscaping</div>
-              <div class="text-xs text-gray-500 group-hover:text-accent/80">Instant holiday & seasonal visualization</div>
+              <div class="text-xs text-gray-500 group-hover:text-accent/80">
+                Instant holiday & seasonal visualization
+              </div>
             <% end %>
           </div>
         </div>

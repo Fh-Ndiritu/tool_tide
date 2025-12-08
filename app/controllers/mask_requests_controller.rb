@@ -22,7 +22,7 @@ class MaskRequestsController < ApplicationController
 
   # GET /mask_requests/new
   def new
-    redirect_to low_credits_path and return unless @canva.user.afford_generation? || @canva.user.free_design_available?
+    redirect_to low_credits_path and return unless @canva.user.afford_generation?
     @mask_request = @canva.mask_requests.new
   end
 
@@ -30,7 +30,7 @@ class MaskRequestsController < ApplicationController
   def edit
     @canva = @mask_request.canva
     if params[:manual].present?
-      redirect_to low_credits_path and return unless @canva.user.afford_generation? || @canva.user.free_design_available?
+      redirect_to low_credits_path and return unless @canva.user.afford_generation?
       # we don't need to update this, we can create a copy and work on that
       request = @mask_request.copy
       redirect_to edit_mask_request_path(request)

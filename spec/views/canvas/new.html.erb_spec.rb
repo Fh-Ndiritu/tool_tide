@@ -9,25 +9,8 @@ RSpec.describe "canvas/new", type: :view do
     assign(:canva, canva)
   end
 
-  context "when user has free design available" do
-    before do
-      allow(user).to receive(:free_design_available?).and_return(true)
-    end
-
-    it "displays the free generation banner" do
-      render
-      expect(rendered).to include("First Generation Free!")
-    end
-  end
-
-  context "when user does not have free design available" do
-    before do
-      allow(user).to receive(:free_design_available?).and_return(false)
-    end
-
-    it "does not display the free generation banner" do
-      render
-      expect(rendered).not_to include("First Generation Free!")
-    end
+  it 'displays the canvas form' do
+    render
+    expect(rendered).to have_selector('div[data-controller="canvas"]')
   end
 end

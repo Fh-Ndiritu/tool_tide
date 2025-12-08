@@ -175,53 +175,15 @@ class DesignGenerator
     @mask_request.main_view.attach(blob)
   end
 
-
   def generate_secondary_views
-    if @mask_request.canva.user.afford_generation?
-      @mask_request.rotating!
-      rotate_view
-
-      @mask_request.drone!
-      drone_view
-      @mask_request.processed!
-    else
-      generate_premium_locked_views
-      @mask_request.complete!
-    end
-  rescue StandardError => e
-    @mask_request.update error_msg: e.message
-  end
-
-  def generate_premium_locked_views
     @mask_request.rotating!
-    create_watermarked_view(:rotated_view)
+    rotate_view
 
     @mask_request.drone!
-    create_watermarked_view(:drone_view)
-  end
-
-  def create_watermarked_view(attachment_name)
-    return unless @mask_request.main_view.attached?
-
-    # Download main view
-    main_image_blob = @mask_request.main_view.download
-    main_image = MiniMagick::Image.read(main_image_blob)
-
-    main_image.combine_options do |c|
-      c.blur "0x20"
-      c.gravity "Center"
-      c.pointsize "100"
-      c.fill "white"
-      c.stroke "black"
-      c.strokewidth "2"
-
-      c.font "DejaVu-Sans"
-
-      c.annotate "0", "Premium Only"
-    end
-
-    blob = upload_blob(main_image)
-    @mask_request.send(attachment_name).attach(blob)
+    drone_view
+    @mask_request.processed!
+  rescue StandardError => e
+    @mask_request.update error_msg: e.message
   end
 
   def rotate_view

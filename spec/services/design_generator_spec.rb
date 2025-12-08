@@ -45,41 +45,11 @@ RSpec.describe DesignGenerator do
   end
 
   describe "#generate_secondary_views" do
-    context "when user can afford generation" do
-      before do
-        allow(user).to receive(:afford_generation?).and_return(true)
-      end
+    it "generates rotated and drone views for all users" do
+      expect(generator).to receive(:rotate_view)
+      expect(generator).to receive(:drone_view)
 
-      it "calls standard view generation methods" do
-        expect(generator).to receive(:rotate_view)
-        expect(generator).to receive(:drone_view)
-        expect(generator).not_to receive(:generate_premium_locked_views)
-
-        generator.send(:generate_secondary_views)
-      end
-    end
-
-    context "when user cannot afford generation (free design)" do
-      before do
-        allow(user).to receive(:afford_generation?).and_return(false)
-      end
-
-      it "calls generate_premium_locked_views" do
-        expect(generator).not_to receive(:rotate_view)
-        expect(generator).not_to receive(:drone_view)
-        expect(generator).to receive(:generate_premium_locked_views)
-
-        generator.send(:generate_secondary_views)
-      end
-    end
-  end
-
-  describe "#generate_premium_locked_views" do
-    it "creates watermarked views" do
-      expect(generator).to receive(:create_watermarked_view).with(:rotated_view)
-      expect(generator).to receive(:create_watermarked_view).with(:drone_view)
-
-      generator.send(:generate_premium_locked_views)
+      generator.send(:generate_secondary_views)
     end
   end
 end

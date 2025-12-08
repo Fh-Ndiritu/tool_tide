@@ -38,6 +38,8 @@ class User < ApplicationRecord
   before_save :geocode
   # , if: ->(obj) { obj.current_sign_in_ip.present? && obj.current_sign_in_ip_changed? }
 
+  after_create_commit :issue_signup_credits
+
   def state_address
     return "" if address.blank?
 
@@ -76,17 +78,13 @@ class User < ApplicationRecord
     email
   end
 
-  def free_design_available?
-    mask_requests.complete.count == 0 && !credits.exists?(source: :purchase, credit_type: :pro_engine)
-  end
-
-  def free_text_edit_available?
-    text_requests.complete.count == 0 && !credits.exists?(source: :purchase, credit_type: :pro_engine)
-  end
-
   private
 
-  def received_trial_credits?
-    credits.exists?(source: :trial, credit_type: :pro_engine)
+  def issue_signup_credits
+    credits.create!(
+      source: :signup,
+      credit_type: :pro_engine,
+      amount: 40
+    )
   end
 end
