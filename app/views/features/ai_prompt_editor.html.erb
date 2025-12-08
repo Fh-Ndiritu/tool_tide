@@ -1,0 +1,187 @@
+<% content_for :title, "Intelligent AI Prompt Editor for Landscape Design" %>
+<% content_for :description, "Fine-tune AI landscape designs with Hadaa's Intelligent Prompt Editor. Get granular control over plant species, materials, and lighting for iterative, professional workflows." %>
+<% content_for :keywords, "advanced AI landscape prompt editor, edit specific features of generated landscape with AI, fine-tuning AI garden design prompts for plant species, material swap AI landscape design, AI landscape design with numerical input, specify plant count and location AI, AI growth stage rendering, iterative AI landscape design, professional AI visualization control, AI design with version history" %>
+
+<div class="bg-neutral-900 text-white min-h-screen font-sans selection:bg-secondary selection:text-white">
+  <%# --- Hero Section --- %>
+  <section class="relative py-20 lg:py-32 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-neutral-900/90 to-neutral-900 z-0"></div>
+    <%# Background placeholder %>
+    <div class="absolute inset-0 bg-[url('https://placehold.co/1920x1080/1a1a1a/333333?text=Prompt+Editor+Background')] bg-cover bg-center opacity-20 -z-10"></div>
+
+    <div class="container mx-auto px-6 relative z-10 text-center">
+      <span class="inline-block py-1 px-3 rounded-full bg-secondary/10 border border-secondary/30 text-secondary text-sm font-bold tracking-wider mb-6 animate-fade-in-up">
+        GRANULAR CONTROL
+      </span>
+      <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-8 leading-tight animate-fade-in-up delay-100">
+        Intelligent AI Prompt Editor: <br class="hidden md:block" />
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-secondary to-accent">
+          Granular Control for Advanced Designers
+        </span>
+      </h1>
+      <p class="text-xl md:text-2xl text-neutral-300 max-w-4xl mx-auto leading-relaxed mb-12 animate-fade-in-up delay-200 font-light">
+        Hadaa’s Intelligent AI Prompt Editor is the definitive tool for control and refinement, positioning the platform as the industry leader for professionals who require design fidelity over simple inspiration.
+      </p>
+
+      <div class="flex flex-col sm:flex-row justify-center gap-4 animate-fade-in-up delay-300">
+        <%= link_to "Try Prompt Editor Free", new_user_registration_path, class: "px-8 py-4 bg-secondary text-white font-bold rounded-full hover:bg-white hover:text-black transition-all duration-300 transform hover:scale-105 shadow-[0_0_20px_rgba(139,92,246,0.4)]" %>
+        <%= link_to "See How It Works", "#how-it-works", class: "px-8 py-4 bg-transparent border border-white/30 text-white font-bold rounded-full hover:bg-white/10 transition-all duration-300 backdrop-blur-sm" %>
+      </div>
+    </div>
+  </section>
+
+  <%# --- Intro Content --- %>
+  <section class="py-16 bg-neutral-900">
+    <div class="container mx-auto px-6 max-w-5xl">
+      <div class="bg-neutral-800/50 rounded-3xl p-8 md:p-12 border border-white/5 shadow-2xl backdrop-blur-sm">
+        <h2 class="text-2xl md:text-3xl font-bold mb-6 text-white">
+          Why is an Advanced AI Prompt Editor Necessary?
+        </h2>
+        <p class="text-lg text-neutral-300 leading-relaxed mb-6">
+          The core challenge in AI design is maintaining control over specific details. Advanced designers, architects, and detail-oriented clients require the ability to make surgical changes without having to regenerate the entire image.
+        </p>
+        <p class="text-lg text-neutral-300 leading-relaxed">
+          The Intelligent Prompt Editor is designed to accept complex, natural language inputs and translate them into focused, immediate modifications, functioning as the most advanced AI landscape prompt editor on the market.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <%# --- Complexity & Precision Section --- %>
+  <section id="how-it-works" class="py-20 lg:py-32 relative">
+    <div class="container mx-auto px-6">
+      <div class="flex flex-col lg:flex-row items-center gap-16">
+        <%# Content %>
+        <div class="w-full lg:w-1/2">
+          <div class="flex items-center gap-4 mb-6">
+            <div class="w-12 h-12 rounded-2xl bg-secondary flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-secondary/20">A</div>
+            <h2 class="text-3xl md:text-4xl font-bold text-white">Complexity and Precision</h2>
+          </div>
+          <h3 class="text-xl text-secondary mb-8 font-medium">Technical Inputs for Fidelity</h3>
+
+          <p class="text-lg text-neutral-300 mb-8 leading-relaxed">
+            Our editor handles prompts up to 100 words and supports up to 5 distinct modifiers in a single command, ensuring both efficiency and high accuracy in generation.
+          </p>
+
+          <div class="space-y-8">
+            <div class="flex gap-4">
+              <div class="w-1 bg-gradient-to-b from-secondary to-transparent rounded-full h-auto"></div>
+              <div>
+                <h4 class="text-xl font-bold text-white mb-2">Technical Inputs</h4>
+                <p class="text-neutral-400">Achieve professional-grade accuracy by specifying numerical and technical inputs. You can define the exact number of plants, their precise location, the color of plants, their growth stage, the desired season to transform to, and specific colors and materials to use in the design.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <%# Visual %>
+        <div class="w-full lg:w-1/2">
+          <div class="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl group">
+            <div class="absolute inset-0 bg-secondary/10 group-hover:bg-transparent transition-colors duration-500 z-10 pointer-events-none"></div>
+            <%= image_tag "https://placehold.co/800x600/222/secondary?text=Technical+Inputs+UI", alt: "Technical Inputs Interface", class: "w-full h-auto transform group-hover:scale-105 transition-transform duration-700" %>
+
+            <%# Floating UI Element Mockup %>
+            <div class="absolute bottom-6 left-6 right-6 bg-black/80 backdrop-blur-md p-4 rounded-xl border border-white/10 z-20">
+              <div class="flex flex-col gap-2">
+                <div class="flex justify-between text-xs text-neutral-400">
+                  <span>Plant Count: 5</span>
+                  <span>Season: Spring</span>
+                </div>
+                <div class="h-1 bg-white/20 rounded-full overflow-hidden">
+                  <div class="h-full bg-secondary w-3/4"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <%# --- Granular Refinement Section --- %>
+  <section class="py-20 lg:py-32 bg-neutral-800/30 relative overflow-hidden">
+    <%# Decorative elements %>
+    <div class="absolute top-0 left-0 w-1/3 h-full bg-gradient-to-r from-secondary/5 to-transparent pointer-events-none"></div>
+
+    <div class="container mx-auto px-6">
+      <div class="flex flex-col lg:flex-row-reverse items-center gap-16">
+        <%# Content %>
+        <div class="w-full lg:w-1/2">
+          <div class="flex items-center gap-4 mb-6">
+            <div class="w-12 h-12 rounded-2xl bg-accent flex items-center justify-center text-black font-bold text-xl shadow-lg shadow-accent/20">B</div>
+            <h2 class="text-3xl md:text-4xl font-bold text-white">Granular Refinement</h2>
+          </div>
+          <h3 class="text-xl text-accent mb-8 font-medium">Iterative Workflows</h3>
+
+          <p class="text-lg text-neutral-300 mb-8 leading-relaxed">
+            The Prompt Editor enables a true iterative design process, allowing you to continuously fine-tune your visualization based on feedback or evolving requirements. This level of refinement aligns with traditional CAD workflows but delivers instant photorealistic results.
+          </p>
+
+          <div class="space-y-6">
+            <div class="bg-black/20 p-5 rounded-2xl border border-white/5 hover:border-accent/30 transition-colors">
+              <h4 class="text-lg font-bold text-white mb-2">Direct Text-to-Design Changes</h4>
+              <p class="text-sm text-neutral-400">Make focused modifications to any element of the design.</p>
+            </div>
+
+            <div class="bg-black/20 p-5 rounded-2xl border border-white/5 hover:border-accent/30 transition-colors">
+              <h4 class="text-lg font-bold text-white mb-2">Popular Preset Commands</h4>
+              <ul class="text-sm text-neutral-400 space-y-2 list-disc list-inside">
+                <li><strong>Nightscaping:</strong> "Add a few warm yellow spaced out outdoor lamps..."</li>
+                <li><strong>Structural Removal:</strong> "Remove all paths and walkways..."</li>
+                <li><strong>Seasonal & Event Theming:</strong> "Add a soft blanket of snow..."</li>
+              </ul>
+            </div>
+
+            <div class="bg-black/20 p-5 rounded-2xl border border-white/5 hover:border-accent/30 transition-colors">
+              <h4 class="text-lg font-bold text-white mb-2">Version Control</h4>
+              <p class="text-sm text-neutral-400">Design without risk. Instantly go back to any previous version at any point.</p>
+            </div>
+          </div>
+        </div>
+
+        <%# Visual %>
+        <div class="w-full lg:w-1/2">
+          <div class="relative">
+            <div class="absolute -inset-4 bg-gradient-to-r from-accent to-secondary opacity-20 blur-2xl rounded-full"></div>
+            <div class="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
+              <%= image_tag "https://placehold.co/800x600/1a1a1a/accent?text=Iterative+Workflow", alt: "Iterative Workflow Interface", class: "w-full h-auto" %>
+
+              <%# Version Control UI Mockup %>
+              <div class="absolute top-6 right-6 bg-black/80 backdrop-blur-md p-3 rounded-lg border border-white/10">
+                 <div class="flex flex-col gap-2">
+                   <div class="flex items-center gap-2 text-xs text-white/80">
+                     <span class="w-2 h-2 rounded-full bg-green-500"></span> Version 3 (Current)
+                   </div>
+                   <div class="flex items-center gap-2 text-xs text-white/40">
+                     <span class="w-2 h-2 rounded-full bg-white/20"></span> Version 2
+                   </div>
+                   <div class="flex items-center gap-2 text-xs text-white/40">
+                     <span class="w-2 h-2 rounded-full bg-white/20"></span> Version 1
+                   </div>
+                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <%# --- CTA Section --- %>
+  <section class="py-20">
+    <div class="container mx-auto px-6">
+      <div class="bg-gradient-to-r from-secondary to-accent rounded-3xl p-12 md:p-20 text-center shadow-2xl relative overflow-hidden">
+        <div class="absolute inset-0 bg-[url('https://placehold.co/1920x600/000000/ffffff?text=Noise')] opacity-10 mix-blend-overlay"></div>
+
+        <h2 class="text-4xl md:text-6xl font-black text-white mb-8 relative z-10">Demand the Precision Your Projects Require</h2>
+        <p class="text-xl text-white/90 max-w-2xl mx-auto mb-10 font-medium relative z-10">
+          Upgrade your workflow with Hadaa’s Intelligent AI Prompt Editor.
+        </p>
+
+        <%= link_to "Start Free Trial", new_user_registration_path, class: "inline-block px-10 py-5 bg-white text-secondary text-xl font-bold rounded-full hover:bg-neutral-100 transition-all duration-300 transform hover:scale-105 shadow-xl relative z-10" %>
+
+        <p class="mt-6 text-white/80 text-sm font-semibold relative z-10">No credit card required • Instant access</p>
+      </div>
+    </div>
+  </section>
+</div>

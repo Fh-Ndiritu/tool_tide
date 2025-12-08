@@ -30,7 +30,11 @@ SitemapGenerator::Sitemap.create do
   add privacy_policy_path, priority: 0.7, changefreq: "monthly"
   add contact_us_path, priority: 0.7, changefreq: "monthly"
   add explore_path, priority: 0.9, changefreq: "daily"
+  add explore_path, priority: 0.9, changefreq: "daily"
   add ojus_path, priority: 0.8, changefreq: "weekly"
+  add "/features/brush-prompt-editor", priority: 0.8, changefreq: "weekly"
+  add "/features/ai-prompt-editor", priority: 0.8, changefreq: "weekly"
+  add "/features/preset-style-selection", priority: 0.8, changefreq: "weekly"
 
   Tag.where(tag_class: :event).each do |event|
     add "/events/#{event.slug}", changefreq: "weekly", priority: 0.8

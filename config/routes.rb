@@ -34,6 +34,9 @@ Rails.application.routes.draw do
   get "privacy-policy", to: "pages#privacy_policy"
   get "contact_us", to: "pages#contact_us"
   get :explore, to: "mask_requests#explore"
+  get "features/brush-prompt-editor", to: "features#brush_prompt_editor"
+  get "features/ai-prompt-editor", to: "features#ai_prompt_editor"
+  get "features/preset-style-selection", to: "features#preset_style_selection"
   get :low_credits, to: "credits#low"
 
   get "/ojus-ai-vs-hadaa-ai", to: "competitors#ojus", as: :ojus
