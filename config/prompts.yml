@@ -103,6 +103,39 @@ image_analysis:
       3. The RECOMMENDED QUANTITY for this specific garden design, considering the available space in the masked area and good design principles (e.g., drift planting, focal points).
 
     Ensure the quantities are realistic for the space shown in the image.
+
+  sketch_detection: |
+    You are an expert architect and image analyst.
+    Analyze the provided image and determine if it is an architectural sketch, drawing, or blueprint.
+
+    Return a boolean value:
+    - true: if the image is a sketch, drawing, or blueprint.
+    - false: if the image is a photograph or realistic rendering.
+
+  sketch_to_3d: |
+    You are an expert 3D architectural visualizer.
+    Transform this architectural sketch into a high-quality 3D clay rendering.
+
+    Key Requirements:
+    - Maintain the exact perspective, scale, and angle of the original sketch.
+    - Convert all lines and structures into 3D forms with clean, clay-like material.
+    - Do not add textures or colors yet; focus on form, light, and shadow.
+    - Ensure the lighting is soft and highlights the architectural volumes.
+    - The output should look like a professional white model or clay render.
+
+  3d_to_photorealistic: |
+    You are an expert architectural photographer and renderer.
+    Transform this 3D clay rendering into a stunning, photorealistic image.
+
+    Key Requirements:
+    - Maintain the exact perspective, scale, and angle of the 3D render.
+    - Apply realistic materials (concrete, wood, glass, vegetation) appropriate for the architecture.
+    - Add realistic lighting, shadows, and environmental context (sky, reflections).
+    - The result should be indistinguishable from a high-end architectural photograph.
+    - Ensure the mood is vibrant and inviting.
+    - YOU SHALL not change the ANGLE OR ORIENTATION of the image.
+    - The layout and elements of the image shall remain IDENTICALLY and WITHOUT ALTERATION.
+
 landscape_presets:
   cottage: |
     Your PRIMARY JOB is to landscape and design a neat, well-thought-out, and vibrant garden **EXCLUSIVELY within the area masked in violet on the image.**

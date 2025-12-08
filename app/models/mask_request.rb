@@ -96,7 +96,11 @@ enum :progress, {
   end
 
   def overlay_mask
-    api_image = MiniMagick::Image.read(canva.api_image_blob.download)
+    if sketch?
+      api_image = MiniMagick::Image.read(rotated_view.download)
+    else
+      api_image = MiniMagick::Image.read(canva.api_image_blob.download)
+    end
 
     mask_binary = mask.download
     mask_image = MiniMagick::Image.read(mask_binary)

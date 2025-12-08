@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_05_065958) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_06_093403) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -197,6 +197,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_05_065958) do
     t.boolean "trial_generation", default: false
     t.text "features"
     t.text "feature_prompt"
+    t.boolean "sketch", default: false
     t.index ["canva_id"], name: "index_mask_requests_on_canva_id"
   end
 

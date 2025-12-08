@@ -38,6 +38,12 @@ class GardenSuggestionSchema < RubyLLM::Schema
   end
 end
 
+class SketchDetectionSchema < RubyLLM::Schema
+  object :analysis do
+    boolean :is_sketch, description: "True if the image is an architectural sketch, drawing, or blueprint. False otherwise."
+  end
+end
+
 class DesignGenerator
   include Designable
 
@@ -53,18 +59,21 @@ class DesignGenerator
     @mask_request.update user_error: nil, error_msg: nil, progress: :preparing
     @mask_request.purge_views
 
-    unless @mask_request.overlay.attached?
-      @mask_request.resize_mask
-
-      @mask_request.overlaying!
-      @mask_request.overlay_mask
-    end
-
     suggest_plants(force: false)
     validate_plants
-    main_view
 
-    generate_secondary_views
+    if detect_sketch
+      generate_sketch_pipeline
+    else
+      unless @mask_request.overlay.attached?
+        @mask_request.resize_mask
+
+        @mask_request.overlaying!
+        @mask_request.overlay_mask
+      end
+      main_view
+      generate_secondary_views
+    end
 
     charge_generation if @mask_request.canva.user.afford_generation?
 
@@ -150,6 +159,83 @@ class DesignGenerator
     # Pass the overlay image to give context for quantity estimation
     response = RubyLLM.chat.with_schema(PlantDetailsListSchema).ask(prompt, with: @mask_request.overlay)
     response.content["plants_details"]["plants"]
+  end
+
+  def detect_sketch
+    prompt = YAML.load_file(Rails.root.join("config/prompts.yml")).dig("image_analysis", "sketch_detection")
+    response = RubyLLM.chat.with_schema(SketchDetectionSchema).ask(prompt, with: @mask_request.overlay)
+    is_sketch = response.content["analysis"]["is_sketch"]
+    @mask_request.update(sketch: is_sketch)
+    is_sketch
+  rescue => e
+    Rails.logger.error("Sketch detection failed: #{e.message}")
+    false
+  end
+
+  def generate_sketch_pipeline
+    # 1. Main View: Sketch -> 3D Rendering
+    @mask_request.main_view!
+    generate_3d_view
+
+    # 2. Rotated View: 3D Rendering -> Photorealistic
+    @mask_request.rotating!
+    generate_photorealistic_view
+
+    # 3. Generate Overlay using the Photorealistic Image
+    @mask_request.overlaying!
+    @mask_request.overlay_mask
+
+    # 4. Drone View: Photorealistic -> Designed Garden (Overlayed)
+    @mask_request.drone!
+    generate_drone_view_from_sketch
+
+    @mask_request.processed!
+  end
+
+  def generate_3d_view
+    prompt = YAML.load_file(Rails.root.join("config/prompts.yml")).dig("image_analysis", "sketch_to_3d")
+    image = @mask_request.image
+
+    payload = gcp_payload(prompt:, image:)
+    response = fetch_gcp_response(payload)
+    blob = save_gcp_results(response)
+    @mask_request.main_view.attach(blob)
+  end
+
+  def generate_photorealistic_view
+    return unless @mask_request.main_view.attached?
+
+    prompt = YAML.load_file(Rails.root.join("config/prompts.yml")).dig("image_analysis", "3d_to_photorealistic")
+    image = @mask_request.main_view
+
+    payload = gcp_payload(prompt:, image:)
+    response = fetch_gcp_response(payload)
+    blob = save_gcp_results(response)
+    @mask_request.rotated_view.attach(blob)
+  end
+
+  def generate_drone_view_from_sketch
+    return unless @mask_request.rotated_view.attached?
+
+    # Use the standard design prompt logic but apply it to the photorealistic image
+    prompt = if @mask_request.feature_prompt.present?
+      prompt_wrapper = YAML.load_file(Rails.root.join("config/prompts.yml")).dig("image_analysis", "wrapper")
+      prompt_wrapper.gsub!("<<feature_prompt>>", @mask_request.feature_prompt)
+      prompt_wrapper.gsub!("<<style>>", @mask_request.preset)
+
+      plants = @mask_request.mask_request_plants.map { |mp|  [ mp.quantity, mp.plant.english_name, "( #{mp.plant.description})" ].join(" ") }.join("\n")
+      prompt_wrapper.gsub!("<<plants>>", plants)
+       prompt_wrapper.gsub!("<<other_features>>", @mask_request.features)
+    else
+     @mask_request.prompt
+    end
+
+    image = @mask_request.overlay
+
+    payload = gcp_payload(prompt:, image:)
+    response = fetch_gcp_response(payload)
+    blob = save_gcp_results(response)
+    @mask_request.drone_view.attach(blob)
   end
 
   private
