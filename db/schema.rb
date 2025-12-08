@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_05_065958) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_08_171246) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -94,15 +94,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_05_065958) do
     t.index ["user_id"], name: "index_favorites_on_user_id"
   end
 
-  create_table "features", force: :cascade do |t|
-    t.string "title"
-    t.text "description"
-    t.integer "progress", default: 0
-    t.date "delivery_date"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "generation_taggings", force: :cascade do |t|
     t.integer "tag_id", null: false
     t.string "generation_type", null: false
@@ -121,18 +112,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_05_065958) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["narration_scene_id"], name: "index_image_prompts_on_narration_scene_id"
-  end
-
-  create_table "issues", force: :cascade do |t|
-    t.string "title"
-    t.text "body"
-    t.integer "user_id", null: false
-    t.integer "category", default: 0
-    t.integer "progress", default: 0
-    t.date "delivery_date"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_issues_on_user_id"
   end
 
   create_table "landscape_requests", force: :cascade do |t|
@@ -195,8 +174,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_05_065958) do
     t.string "user_error"
     t.integer "visibility", default: 0
     t.boolean "trial_generation", default: false
-    t.text "features"
-    t.text "feature_prompt"
+    t.boolean "sketch", default: false
     t.index ["canva_id"], name: "index_mask_requests_on_canva_id"
   end
 
@@ -253,16 +231,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_05_065958) do
     t.datetime "updated_at", null: false
     t.string "size"
     t.boolean "validated", default: false
-  end
-
-  create_table "polls", force: :cascade do |t|
-    t.integer "feature_id", null: false
-    t.integer "user_id", null: false
-    t.integer "preference"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["feature_id"], name: "index_polls_on_feature_id"
-    t.index ["user_id"], name: "index_polls_on_user_id"
   end
 
   create_table "subchapters", force: :cascade do |t|
@@ -349,17 +317,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_05_065958) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  create_table "votes", force: :cascade do |t|
-    t.string "voteable_type", null: false
-    t.integer "voteable_id", null: false
-    t.integer "user_id", null: false
-    t.integer "value"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_votes_on_user_id"
-    t.index ["voteable_type", "voteable_id"], name: "index_votes_on_voteable"
-  end
-
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "audios", "narration_scenes"
   add_foreign_key "canvas", "users"
@@ -367,7 +324,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_05_065958) do
   add_foreign_key "favorites", "users"
   add_foreign_key "generation_taggings", "tags"
   add_foreign_key "image_prompts", "narration_scenes"
-  add_foreign_key "issues", "users"
   add_foreign_key "landscape_requests", "landscapes"
   add_foreign_key "landscapes", "users"
   add_foreign_key "mask_request_plants", "mask_requests"
@@ -376,11 +332,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_05_065958) do
   add_foreign_key "messages", "chats"
   add_foreign_key "narration_scenes", "subchapters"
   add_foreign_key "payment_transactions", "users"
-  add_foreign_key "polls", "features"
-  add_foreign_key "polls", "users"
   add_foreign_key "subchapters", "chapters"
   add_foreign_key "suggested_plants", "landscape_requests"
   add_foreign_key "text_requests", "users"
   add_foreign_key "tool_calls", "messages"
-  add_foreign_key "votes", "users"
 end

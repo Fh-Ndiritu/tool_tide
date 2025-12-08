@@ -1,13 +1,6 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  resources :features do
-    resources :polls, only: [ :create ]
-  end
-
-  resources :issues do
-    resources :votes, only: [ :create ]
-  end
   resources :audios
   resources :favorites, only: [ :create, :destroy, :index ]
   scope "/designs" do

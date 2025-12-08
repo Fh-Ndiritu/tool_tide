@@ -155,12 +155,6 @@
         classes: "#{active_item(explore_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
         data: { action: "click->navbar#toggleMenu" }
         ) %>
-        <%= render ButtonComponent.new(
-        text: "Upcoming Features",
-        href: issues_path,
-        classes: "#{active_item(issues_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
-        data: { action: "click->navbar#toggleMenu" }
-        ) %>
         <div data-controller="dropdown" class="relative hidden lg:block">
           <button
             data-action="dropdown#toggle"
