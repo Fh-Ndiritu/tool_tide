@@ -22,11 +22,8 @@
     <%# Background placeholder %>
     <!-- PROMPT: Split screen showing a hand-drawn landscape sketch on the left transforming into a photorealistic 3D garden on the right, magical transition effect, high resolution. -->
     <div
-      class="
-        absolute inset-0
-        bg-[url('https://placehold.co/1920x1080/0f172a/1e293b?text=Sketch+to+3D+Background')]
-        bg-cover bg-center opacity-20 -z-10
-      "
+      class="absolute inset-0 bg-cover bg-center opacity-20"
+      style="background-image: url('<%= asset_path("features/drone_view_bg.png") %>')"
     ></div>
 
     <div class="container mx-auto px-6 relative z-10 text-center">
@@ -323,7 +320,7 @@
             ></div>
 
             <!-- PROMPT: A sequence of images showing the transformation: 1. Rough pencil sketch of a patio. 2. White clay 3D model of the same patio. 3. Final photorealistic render with plants and furniture. -->
-            <%= image_tag "https://placehold.co/800x600/1a1a1a/00acc1?text=Sketch+to+Clay+to+Real", alt: "Sketch to 3D Pipeline", class: "w-full h-auto" %>
+            <%= image_tag "features/drone_view_analysis.png", alt: "Sketch to 3D Pipeline", class: "w-full h-auto" %>
           </div>
         </div>
       </div>
@@ -413,7 +410,7 @@
             ></div>
 
             <!-- PROMPT: UI mockup showing the Hadaa editor interface with a 3D rendered garden, showing tools for Mask Editor and Prompt Editor active. -->
-            <%= image_tag "https://placehold.co/800x600/1a1a1a/00acc1?text=Integrated+Editor+UI", alt: "Integrated Editor UI", class: "w-full h-auto" %>
+            <%= image_tag "features/brush_tool_interface.png", alt: "Integrated Editor UI", class: "w-full h-auto" %>
           </div>
         </div>
       </div>
@@ -433,9 +430,9 @@
         <div
           class="
             absolute inset-0
-            bg-[url('https://placehold.co/1920x600/000000/ffffff?text=Noise')]
-            opacity-10 mix-blend-overlay
+            opacity-20 mix-blend-overlay
           "
+          style="background-image: url('<%= asset_path("features/noise_texture.png") %>');"
         ></div>
 
         <h2 class="text-4xl md:text-6xl font-black text-black mb-8 relative z-10">

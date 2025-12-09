@@ -22,7 +22,7 @@
     <%# Background placeholder %>
     <%# Background placeholder %>
     <div
-      class="absolute inset-0 bg-cover bg-center opacity-20 -z-10"
+      class="absolute inset-0 bg-cover bg-center opacity-20"
       style="background-image: url('<%= asset_path('features/ai_prompt_bg.png') %>')"
     ></div>
 
@@ -364,10 +364,11 @@
         <div
           class="
             absolute inset-0
-            bg-[url('https://placehold.co/1920x600/000000/ffffff?text=Noise')]
-            opacity-10 mix-blend-overlay
+            opacity-20 mix-blend-overlay
           "
+          style="background-image: url('<%= asset_path("features/noise_texture.png") %>');"
         ></div>
+
 
         <h2 class="text-4xl md:text-6xl font-black text-white mb-8 relative z-10">
           Demand the Precision Your Projects Require

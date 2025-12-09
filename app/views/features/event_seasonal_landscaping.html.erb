@@ -22,11 +22,8 @@
     <%# Background placeholder %>
     <!-- PROMPT: Magical Christmas night scene of a suburban house with tasteful holiday lighting, warm glow, snow on the ground, festive atmosphere, 4k resolution. -->
     <div
-      class="
-        absolute inset-0
-        bg-[url('https://placehold.co/1920x1080/0f172a/1e293b?text=Event+Seasonal+Landscaping')]
-        bg-cover bg-center opacity-20 -z-10
-      "
+      class="absolute inset-0 bg-cover bg-center opacity-20"
+      style="background-image: url('<%= asset_path("features/event_seasonal_bg.png") %>')"
     ></div>
 
     <div class="container mx-auto px-6 relative z-10 text-center">
@@ -289,7 +286,7 @@
             ></div>
 
             <!-- PROMPT: Split screen UI showing a house in summer on the left and the same house with Halloween decorations on the right, pumpkins, spiderwebs, spooky lighting, high quality render. -->
-            <%= image_tag "https://placehold.co/800x600/1a1a1a/00acc1?text=Seasonal+Design+Editor", alt: "Seasonal Design Editor", class: "w-full h-auto" %>
+            <%= image_tag "features/seasonal_design_editor.png", alt: "Seasonal Design Editor", class: "w-full h-auto" %>
 
             <%# Floating UI Element Mockup %>
             <div
@@ -329,9 +326,9 @@
         <div
           class="
             absolute inset-0
-            bg-[url('https://placehold.co/1920x600/000000/ffffff?text=Noise')]
-            opacity-10 mix-blend-overlay
+            opacity-20 mix-blend-overlay
           "
+          style="background-image: url('<%= asset_path("features/noise_texture.png") %>');"
         ></div>
 
         <h2 class="text-4xl md:text-6xl font-black text-black mb-8 relative z-10">

@@ -22,11 +22,8 @@
     <%# Background placeholder %>
     <!-- PROMPT: Flat lay photography of gardening tools, seed packets, and a digital tablet showing a plant shopping list, rustic wooden table background, natural lighting, high resolution. -->
     <div
-      class="
-        absolute inset-0
-        bg-[url('https://placehold.co/1920x1080/0f172a/1e293b?text=Shopping+List+Background')]
-        bg-cover bg-center opacity-20 -z-10
-      "
+      class="absolute inset-0 bg-cover bg-center opacity-20"
+      style="background-image: url('<%= asset_path("features/shopping_list_bg.png") %>')"
     ></div>
 
     <div class="container mx-auto px-6 relative z-10 text-center">
@@ -300,7 +297,7 @@
             ></div>
 
             <!-- PROMPT: Close up of a mobile app interface showing a checklist of plants to buy, with quantities and estimated prices, checked items, clean and organized UI. -->
-            <%= image_tag "https://placehold.co/800x600/1a1a1a/00acc1?text=Shopping+List+Interface", alt: "Shopping List Interface", class: "w-full h-auto" %>
+            <%= image_tag "features/shopping_list_interface.png", alt: "Shopping List Interface", class: "w-full h-auto" %>
 
             <%# Floating UI Element Mockup %>
             <div
@@ -340,9 +337,9 @@
         <div
           class="
             absolute inset-0
-            bg-[url('https://placehold.co/1920x600/000000/ffffff?text=Noise')]
-            opacity-10 mix-blend-overlay
+            opacity-20 mix-blend-overlay
           "
+          style="background-image: url('<%= asset_path("features/noise_texture.png") %>');"
         ></div>
 
         <h2 class="text-4xl md:text-6xl font-black text-black mb-8 relative z-10">

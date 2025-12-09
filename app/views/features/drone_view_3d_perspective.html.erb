@@ -22,11 +22,8 @@
     <%# Background placeholder %>
     <!-- PROMPT: Aerial drone shot of a large, complex landscape design project, bird's eye view, showing geometric patterns of pathways and planting beds, golden hour lighting, high resolution. -->
     <div
-      class="
-        absolute inset-0
-        bg-[url('https://placehold.co/1920x1080/0f172a/1e293b?text=Drone+View+Background')]
-        bg-cover bg-center opacity-20 -z-10
-      "
+      class="absolute inset-0 bg-cover bg-center opacity-20"
+      style="background-image: url('<%= asset_path("features/drone_view_bg.png") %>')"
     ></div>
 
     <div class="container mx-auto px-6 relative z-10 text-center">
@@ -281,7 +278,7 @@
             ></div>
 
             <!-- PROMPT: Split screen showing a 2D site plan on the left and a 3D generated drone view on the right, interface elements showing camera angle and elevation data, professional CAD software look. -->
-            <%= image_tag "https://placehold.co/800x600/1a1a1a/00acc1?text=Drone+View+Analysis", alt: "Drone View Interface", class: "w-full h-auto" %>
+            <%= image_tag "features/drone_view_analysis.png", alt: "Drone View Interface", class: "w-full h-auto" %>
 
             <%# Floating UI Element Mockup %>
             <div
@@ -350,9 +347,9 @@
         <div
           class="
             absolute inset-0
-            bg-[url('https://placehold.co/1920x600/000000/ffffff?text=Noise')]
-            opacity-10 mix-blend-overlay
+            opacity-20 mix-blend-overlay
           "
+          style="background-image: url('<%= asset_path("features/noise_texture.png") %>');"
         ></div>
 
         <h2 class="text-4xl md:text-6xl font-black text-black mb-8 relative z-10">

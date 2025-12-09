@@ -22,11 +22,8 @@
     <%# Background placeholder %>
     <!-- PROMPT: Lush, vibrant garden with diverse plant species, healthy foliage, sunlight filtering through leaves, sustainable landscaping, high resolution nature photography. -->
     <div
-      class="
-        absolute inset-0
-        bg-[url('https://placehold.co/1920x1080/064e3b/065f46?text=Plant+Suggestions+Background')]
-        bg-cover bg-center opacity-20 -z-10
-      "
+      class="absolute inset-0 bg-cover bg-center opacity-20"
+      style="background-image: url('<%= asset_path("features/plant_suggestions_bg.png") %>')"
     ></div>
 
     <div class="container mx-auto px-6 relative z-10 text-center">
@@ -293,7 +290,7 @@
             ></div>
 
             <!-- PROMPT: Close up of a plant selection interface on a tablet, showing a plant card with hardiness zone compatibility score, water usage data, and sun exposure icons, clean modern UI. -->
-            <%= image_tag "https://placehold.co/800x600/1a1a1a/00acc1?text=Data+Driven+Design", alt: "Data Driven Design Interface", class: "w-full h-auto" %>
+            <%= image_tag "features/data_driven_design.png", alt: "Data Driven Design Interface", class: "w-full h-auto" %>
 
             <%# Floating UI Element Mockup %>
             <div
@@ -332,9 +329,9 @@
         <div
           class="
             absolute inset-0
-            bg-[url('https://placehold.co/1920x600/000000/ffffff?text=Noise')]
-            opacity-10 mix-blend-overlay
+            opacity-20 mix-blend-overlay
           "
+          style="background-image: url('<%= asset_path("features/noise_texture.png") %>');"
         ></div>
 
         <h2 class="text-4xl md:text-6xl font-black text-black mb-8 relative z-10">

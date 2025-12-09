@@ -22,8 +22,8 @@
     <%# Background placeholder %>
     <!-- PROMPT: Abstract dark texture, brushed metal or slate surface, deep charcoal and black tones, subtle lighting, high quality 4k background. -->
     <div
-      class="absolute inset-0 bg-cover bg-center opacity-20 -z-10"
-      style="background-image: url('<%= asset_path('features/brush_prompt_bg.png') %>')"
+      class="absolute inset-0 bg-cover bg-center opacity-20"
+      style="background-image: url('<%= asset_path("features/brush_prompt_bg.jpg") %>')"
     ></div>
 
     <div class="container mx-auto px-6 relative z-10 text-center">
@@ -205,7 +205,7 @@
             ></div>
 
             <!-- PROMPT: Close up of a tablet screen showing a landscape design app, a finger using a digital brush to mask an area of a garden photo, UI elements for brush size and opacity, professional design tool. -->
-            <%= image_tag "https://placehold.co/800x600/222/accent?text=Brush+Tool+Interface", alt: "AI Brush Tool Interface", class: "w-full h-auto transform group-hover:scale-105 transition-transform duration-700" %>
+            <%= image_tag "features/brush_tool_interface.png", alt: "AI Brush Tool Interface", class: "w-full h-auto transform group-hover:scale-105 transition-transform duration-700" %>
 
             <%# Floating UI Element Mockup %>
             <div
@@ -325,7 +325,7 @@
               "
             >
               <!-- PROMPT: Split screen UI of a landscape design software, top half shows a photo of a backyard, bottom half shows a text input field with the prompt 'Change the walkway to slate pavers', modern dark interface. -->
-              <%= image_tag "https://placehold.co/800x600/1a1a1a/secondary?text=Prompt+Editor+UI", alt: "Intelligent Prompt Editor UI", class: "w-full h-auto" %>
+            <%= image_tag "features/seasonal_design_editor.png", alt: "Intelligent Prompt Editor UI", class: "w-full h-auto" %>
 
               <%# Chat/Prompt UI Mockup %>
               <div
@@ -531,9 +531,9 @@
         <div
           class="
             absolute inset-0
-            bg-[url('https://placehold.co/1920x600/000000/ffffff?text=Noise')]
-            opacity-10 mix-blend-overlay
+            opacity-20 mix-blend-overlay
           "
+          style="background-image: url('<%= asset_path("features/noise_texture.png") %>');"
         ></div>
 
         <h2 class="text-4xl md:text-6xl font-black text-black mb-8 relative z-10">
