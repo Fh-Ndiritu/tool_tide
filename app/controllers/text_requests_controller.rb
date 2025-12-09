@@ -7,10 +7,10 @@ class TextRequestsController < ApplicationController
     @text_requests = current_user.text_requests.complete_or_in_progress
     @current_request = current_user.text_requests.find_by(id: params[:current_request]) || @text_requests.first
     if @current_request.blank?
-      if current_user.canvas.joins(:mask_requests).where(mask_requests: { progress: :complete }).present?
-      redirect_to mask_requests_path, notice: "Use pen button to start text editing" and return
+      if (latest_mask_request = current_user.mask_requests.complete.first)
+        redirect_to new_text_request_path(signed_blob_id: latest_mask_request.main_view.blob.signed_id) and return
       else
-      redirect_to new_canva_path, alert: "Create a brush landscape to start text editing"  and return
+        redirect_to new_canva_path, alert: "Create a brush landscape to start text editing" and return
       end
     end
   end
