@@ -6,6 +6,22 @@ module ApplicationHelper
     "active-item " if request.path == path
   end
 
+  def active_link_class(path)
+    base_classes = "block px-4 py-3 text-sm rounded-lg transition duration-150 group"
+    if current_page?(path)
+      "#{base_classes} bg-accent/10 text-accent"
+    else
+      "#{base_classes} text-gray-700 hover:bg-accent/10 hover:text-accent"
+    end
+  end
+
+  def marketing_page?
+    return true if current_page?(root_path)
+    return true if request.path.start_with?("/features/")
+    return true if ["/city-design-inspiration", "/event-seasonal-landscaping"].include?(request.path)
+    false
+  end
+
   def progress_message(progress)
     case progress
     when "uploading"
