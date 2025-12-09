@@ -52,7 +52,7 @@
         </div>
 
         <%= link_to new_text_request_path(signed_blob_id: mask_request.main_view.blob.signed_id),
-            class: "group relative block w-full overflow-hidden rounded-2xl bg-gradient-to-r from-purple-600 via-fuchsia-500 to-orange-500 p-[2px] text-center shadow-2xl shadow-purple-500/50 transition-all duration-500 hover:scale-[1.04] hover:shadow-2xl hover:shadow-fuchsia-500/70 hover:brightness-110 hover:ring-4 hover:ring-purple-400/60 focus:outline-none focus:ring-2 focus:ring-fuchsia-400 focus:ring-offset-2 hover:bg-gradient-to-r hover:from-purple-500 hover:via-pink-500 hover:to-orange-400" do %>
+            class: "group relative block w-full overflow-hidden rounded-2xl bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 p-[2px] text-center shadow-2xl shadow-pink-500/50 transition-all duration-500 hover:scale-[1.04] hover:shadow-2xl hover:shadow-purple-500/70 hover:brightness-110 hover:ring-4 hover:ring-pink-400/60 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2" do %>
           <!-- Animated shimmer layer -->
           <div
             class="
@@ -76,10 +76,9 @@
           <div
             class="
               relative flex flex-col items-center justify-center rounded-2xl
-              bg-gradient-to-br from-purple-900/90 via-fuchsia-900/90
-              to-orange-900/90 backdrop-blur-sm px-6 py-5 transition-all
-              duration-300 group-hover:from-purple-800/95
-              group-hover:via-fuchsia-800/95 group-hover:to-orange-800/95
+              bg-gradient-to-br from-gray-900 via-purple-900 to-indigo-900 backdrop-blur-sm px-6 py-5 transition-all
+              duration-300 group-hover:from-gray-800
+              group-hover:via-purple-800 group-hover:to-indigo-800
             "
           >
             <!-- Main content -->
@@ -93,7 +92,7 @@
                   drop-shadow-2xl animate-pulse
                 "
               >
-                Advanced AI Customization
+                Refine with prompts
               </span>
               <span
                 class="text-3xl animate-bounce filter drop-shadow-lg"
@@ -191,7 +190,7 @@
                 <%= render(IconComponent.new(classes: "h-5 w-5", name: "download")) %>
               <% end unless defined?(compact) %>
 
-              <%= link_to new_text_request_path(signed_blob_id:  view.blob.signed_id), class: "icon-btn bg-accent/90 hover:bg-accent text-white" do %>
+              <%= link_to new_text_request_path(signed_blob_id:  view.blob.signed_id), class: "icon-btn bg-secondary hover:bg-secondary/80 text-white ring-2 ring-white/50" do %>
                 <%= render(IconComponent.new(classes: "h-5 w-5", name: "pencil")) %>
               <% end %>
             </div>
