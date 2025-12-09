@@ -105,6 +105,15 @@
           data: { action: "click->navbar#toggleMenu" }
           ) %>
         <% end %>
+        <% unless marketing_page? %>
+          <%= render ButtonComponent.new(
+          text: "New Design",
+          href: new_canva_path,
+          classes: "#{active_item(new_canva_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
+          data: { action: "click->navbar#toggleMenu" }
+          ) %>
+        <% end %>
+
         <%= render ButtonComponent.new(
         text: "Dashboard",
         href: mask_requests_path,
