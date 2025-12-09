@@ -42,18 +42,39 @@
               data-dropdown-target="menu"
               data-dropdown-hidden-class="hidden"
               class="
-                hidden absolute right-0 mt-3 w-56 bg-accent-secondary
-                rounded-lg shadow-lg p-2 z-50 ring-1 ring-gray-300
+                hidden absolute right-0 mt-2 w-72 bg-white
+                rounded-xl shadow-none lg:shadow-2xl p-2 z-50 ring-1 ring-black/5
               "
             >
-              <%= link_to "Credits Balance", credits_path, class: "block px-3 py-2 text-sm text-neutral-900 rounded-lg transition duration-150 hover:bg-secondary hover:text-white", data: { action: "click->dropdown#hide" } %>
-              <%= link_to "Favorites", favorites_path, class: "block px-3 py-2 text-sm text-neutral-900 rounded-lg transition duration-150 hover:bg-secondary hover:text-white", data: { action: "click->dropdown#hide" } %>
+              <%= link_to credits_path, class: active_link_class(credits_path), data: { action: "click->dropdown#hide" } do %>
+                <div class="font-bold mb-0.5">Credits Balance</div>
+                <div class="text-xs text-gray-500 group-hover:text-accent/80">
+                  Manage your credits
+                </div>
+              <% end %>
 
-              <%= link_to "Contact Support", contact_us_path, class: "block px-3 py-2 text-sm text-neutral-900 rounded-lg transition duration-150 hover:bg-secondary hover:text-white", data: { action: "click->dropdown#hide" } %>
+              <%= link_to favorites_path, class: active_link_class(favorites_path), data: { action: "click->dropdown#hide" } do %>
+                <div class="font-bold mb-0.5">Favorites</div>
+                <div class="text-xs text-gray-500 group-hover:text-accent/80">
+                  View your saved designs
+                </div>
+              <% end %>
+
+              <%= link_to contact_us_path, class: active_link_class(contact_us_path), data: { action: "click->dropdown#hide" } do %>
+                <div class="font-bold mb-0.5">Contact Support</div>
+                <div class="text-xs text-gray-500 group-hover:text-accent/80">
+                  Get help with your account
+                </div>
+              <% end %>
 
               <div class="border-t border-gray-200 my-2"></div>
 
-              <%= button_to "Log Out", destroy_user_session_path, method: :delete, class: "w-full text-left block px-3 py-2 text-sm text-red-600 rounded-lg transition duration-150 hover:bg-red-600 hover:text-white", data: { action: "click->dropdown#hide" } %>
+              <%= button_to destroy_user_session_path, method: :delete, class: "w-full text-left block px-4 py-3 text-sm text-red-600 rounded-lg transition duration-150 hover:bg-red-50 group", data: { action: "click->dropdown#hide" } do %>
+                <div class="font-bold mb-0.5">Log Out</div>
+                <div class="text-xs text-red-400 group-hover:text-red-600">
+                  Sign out of your account
+                </div>
+              <% end %>
             </div>
           </div>
         </div>
@@ -92,7 +113,7 @@
         ) %>
 
         <% if marketing_page? %>
-          <div data-controller="dropdown" class="relative w-full lg:w-auto">
+          <div data-controller="dropdown" data-dropdown-hidden-class="hidden" class="relative w-full lg:w-auto">
             <button
               data-action="dropdown#toggle"
               class="
@@ -221,7 +242,7 @@
           ) %>
         <% end %>
 
-        <div data-controller="dropdown" class="relative hidden lg:block">
+        <div data-controller="dropdown" data-dropdown-hidden-class="hidden" class="relative hidden lg:block">
           <button
             data-action="dropdown#toggle"
             class="
@@ -237,17 +258,39 @@
             data-dropdown-target="menu"
             data-dropdown-hidden-class="hidden"
             class="
-              hidden absolute right-0 mt-3 w-56 bg-accent-secondary
-              rounded-lg shadow-lg p-2 z-50 ring-1 ring-gray-300
+              hidden absolute right-0 mt-2 w-72 bg-white
+              rounded-xl shadow-none lg:shadow-2xl p-2 z-50 ring-1 ring-black/5
             "
           >
-            <%= link_to "Credits Balance", credits_path, class: "block px-3 py-2 text-sm text-neutral-900 rounded-lg transition duration-150 hover:bg-secondary hover:text-white", data: { action: "click->dropdown#hide" } %>
-            <%= link_to "Favorites", favorites_path, class: "block px-3 py-2 text-sm text-neutral-900 rounded-lg transition duration-150 hover:bg-secondary hover:text-white", data: { action: "click->dropdown#hide" } %>
-            <%= link_to "Contact Support", contact_us_path, class: "block px-3 py-2 text-sm text-neutral-900 rounded-lg transition duration-150 hover:bg-secondary hover:text-white", data: { action: "click->dropdown#hide" } %>
+            <%= link_to credits_path, class: active_link_class(credits_path), data: { action: "click->dropdown#hide" } do %>
+              <div class="font-bold mb-0.5">Credits Balance</div>
+              <div class="text-xs text-gray-500 group-hover:text-accent/80">
+                Manage your credits
+              </div>
+            <% end %>
+
+            <%= link_to favorites_path, class: active_link_class(favorites_path), data: { action: "click->dropdown#hide" } do %>
+              <div class="font-bold mb-0.5">Favorites</div>
+              <div class="text-xs text-gray-500 group-hover:text-accent/80">
+                View your saved designs
+              </div>
+            <% end %>
+
+            <%= link_to contact_us_path, class: active_link_class(contact_us_path), data: { action: "click->dropdown#hide" } do %>
+              <div class="font-bold mb-0.5">Contact Support</div>
+              <div class="text-xs text-gray-500 group-hover:text-accent/80">
+                Get help with your account
+              </div>
+            <% end %>
 
             <div class="border-t border-gray-200 my-2"></div>
 
-            <%= button_to "Log Out", destroy_user_session_path, method: :delete, class: "w-full text-left block px-3 py-2 text-sm text-red-600 rounded-lg transition duration-150 hover:bg-red-600 hover:text-white", data: { action: "click->dropdown#hide" } %>
+            <%= button_to destroy_user_session_path, method: :delete, class: "w-full text-left block px-4 py-3 text-sm text-red-600 rounded-lg transition duration-150 hover:bg-red-50 group", data: { action: "click->dropdown#hide" } do %>
+              <div class="font-bold mb-0.5">Log Out</div>
+              <div class="text-xs text-red-400 group-hover:text-red-600">
+                Sign out of your account
+              </div>
+            <% end %>
           </div>
         </div>
       <% else %>
@@ -258,7 +301,7 @@
           data: { action: "click->navbar#toggleMenu" }
           ) %>
 
-        <div data-controller="dropdown" class="relative w-full lg:w-auto">
+        <div data-controller="dropdown" data-dropdown-hidden-class="hidden" class="relative w-full lg:w-auto">
           <button
             data-action="dropdown#toggle"
             class="

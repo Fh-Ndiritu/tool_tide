@@ -18,7 +18,7 @@ module ApplicationHelper
   def marketing_page?
     return true if current_page?(root_path)
     return true if request.path.start_with?("/features/")
-    return true if ["/city-design-inspiration", "/event-seasonal-landscaping"].include?(request.path)
+    return true if [ "/city-design-inspiration", "/event-seasonal-landscaping" ].include?(request.path)
     false
   end
 
