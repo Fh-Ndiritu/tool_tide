@@ -34,9 +34,9 @@
     <%= link_to "Cancel", new_canva_path, class: "!bg-neutral-500 btn  cute-btn " %>
     <button
       data-action="mask-request#insertMask"
-      class="btn cute-btn accent-btn"
+      class="flex flex-col items-center  btn cute-btn accent-btn"
     >
-      Submit
+      Generate Now <span class="ml-2 text-sm">(<%= DEFAULT_IMAGE_COUNT * GOOGLE_IMAGE_COST %> credits)</span>
     </button>
   </div>
 <% end %>

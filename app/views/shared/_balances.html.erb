@@ -1,56 +1,72 @@
 <div class="w-full my-8">
   <%= link_to credits_path, class: "grid grid-cols-2 md:grid-cols-3 gap-4 p-5 bg-white border border-gray-200 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl group no-underline text-inherit" do %>
-    <div
-      class="
-        flex flex-col gap-2 border-b border-gray-200 pb-4 md:border-b-0
-        md:border-r md:pb-0 md:pr-4 col-span-2 md:col-span-1
-      "
-    >
-      <div class="flex items-center gap-3">
-        <div class="p-2 bg-accent/10 rounded-full flex-shrink-0">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5 text-accent"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-          >
-            <path
-              d="M21 4H3a2 2 0 00-2 2v12a2 2 0 002 2h18a2 2 0 002-2V6a2 2 0 00-2-2zM3 8h18V6H3v2zm18 10H3v-6h18v6z"
-            />
-          </svg>
-        </div>
-        <div class="flex flex-col">
-          <h3 class="text-xs font-medium text-gray-500 uppercase tracking-wider">
-            Total Available Credits
-          </h3>
-          <span class="text-lg font-extrabold text-primary leading-tight"><%= current_user.pro_engine_credits %></span>
-        </div>
+    <% if controller_name == 'mask_requests' && action_name == 'new' %>
+      <div class="col-span-2 md:col-span-3 flex items-center justify-between">
+        <p class="text-sm text-gray-700">
+          You have <strong class="text-primary"><%= current_user.pro_engine_credits %></strong> credits and this feature will cost <strong class="text-secondary"><%= DEFAULT_IMAGE_COUNT * GOOGLE_IMAGE_COST %></strong> credits.
+        </p>
+        <p
+          class="
+            text-accent font-semibold text-xs transition-colors
+            duration-300 group-hover:text-accent-dark whitespace-nowrap ml-4
+          "
+        >
+          Manage Credits &rarr;
+        </p>
       </div>
-
-      <p
+    <% else %>
+      <div
         class="
-          text-accent font-semibold text-xs mt-1 transition-colors
-          duration-300 group-hover:text-accent-dark
+          flex flex-col gap-2 border-b border-gray-200 pb-4 md:border-b-0
+          md:border-r md:pb-0 md:pr-4 col-span-2 md:col-span-1
         "
       >
-        Manage Credits &rarr;
-      </p>
-    </div>
+        <div class="flex items-center gap-3">
+          <div class="p-2 bg-accent/10 rounded-full flex-shrink-0">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5 text-accent"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path
+                d="M21 4H3a2 2 0 00-2 2v12a2 2 0 002 2h18a2 2 0 002-2V6a2 2 0 00-2-2zM3 8h18V6H3v2zm18 10H3v-6h18v6z"
+              />
+            </svg>
+          </div>
+          <div class="flex flex-col">
+            <h3 class="text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Total Available Credits
+            </h3>
+            <span class="text-lg font-extrabold text-primary leading-tight"><%= current_user.pro_engine_credits %></span>
+          </div>
+        </div>
 
-    <div class="flex flex-col gap-1 border-r border-gray-200 pr-4">
-      <h4 class="text-xs font-medium text-gray-700 uppercase tracking-wider">
-        Brush Edits
-      </h4>
-      <span class="text-lg font-bold text-secondary">24 Credits</span>
-      <span class="text-xs text-gray-400 mt-0">/ 3 images</span>
-    </div>
+        <p
+          class="
+            text-accent font-semibold text-xs mt-1 transition-colors
+            duration-300 group-hover:text-accent-dark
+          "
+        >
+          Manage Credits &rarr;
+        </p>
+      </div>
 
-    <div class="flex flex-col gap-1">
-      <h4 class="text-xs font-medium text-gray-700 uppercase tracking-wider">
-        Ai Edits
-      </h4>
-      <span class="text-lg font-bold text-secondary">8 Credits</span>
-      <span class="text-xs text-gray-400 mt-0">/ edit request</span>
-    </div>
+      <div class="flex flex-col gap-1 border-r border-gray-200 pr-4">
+        <h4 class="text-xs font-medium text-gray-700 uppercase tracking-wider">
+          Brush Edits
+        </h4>
+        <span class="text-lg font-bold text-secondary">24 Credits</span>
+        <span class="text-xs text-gray-400 mt-0">/ 3 images</span>
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <h4 class="text-xs font-medium text-gray-700 uppercase tracking-wider">
+          Ai Edits
+        </h4>
+        <span class="text-lg font-bold text-secondary">8 Credits</span>
+        <span class="text-xs text-gray-400 mt-0">/ edit request</span>
+      </div>
+    <% end %>
   <% end %>
 </div>

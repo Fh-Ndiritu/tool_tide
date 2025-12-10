@@ -121,7 +121,7 @@
 
             <%# --- Generate Button (Inside Form) --- %>
             <div class="mt-1 pb-2 flex justify-start">
-              <%= form.submit "Generate",
+              <%= form.submit "Generate (#{GOOGLE_IMAGE_COST} credits)",
               class: "max-sm:!w-full cute-btn accent-btn sm:flex-1",
               data: { prompt_setter_target: "submit" } if current_user == text_request.user %>
             </div>
