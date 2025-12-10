@@ -46,7 +46,7 @@
               <% end %>
             </div>
             <% if text_request.result_image.attached? %>
-              <div class="absolute top-4 right-4 z-20">
+              <div class="absolute top-4 left-1/2 -translate-x-1/2 md:left-auto md:translate-x-0 md:right-4 z-20">
                 <% favorite = current_user.favorites.find_by(favoritable: text_request) %>
                 <%= render 'favorites/favorite_button',
                     favoritable: text_request,
@@ -54,15 +54,15 @@
               </div>
             <% end %>
             <div
-              class="relative m-auto !w-[400px] h-auto flex z-10 juxtapose"
+              class="relative m-auto w-full h-full flex z-10 juxtapose"
               data-startingposition="90"
             >
               <% if text_request.result_image.attached? %>
-                <%= image_tag text_request.result_image.variant(:juxtaposed), class: "w-[400px] object-contain", data: {label: "After"} %>
+                <%= image_tag text_request.result_image.variant(:juxtaposed), class: "w-full h-full object-contain", data: {label: "After"} %>
               <% else %>
-                <%= image_tag text_request.original_image.variant(:juxtaposed), class: "w-[400px] object-contain", data: {label: "After"} %>
+                <%= image_tag text_request.original_image.variant(:juxtaposed), class: "w-full h-full object-contain", data: {label: "Results will appear here"} %>
               <% end %>
-              <%= image_tag text_request.original_image.variant(:juxtaposed), class: "w-[400px] object-contain", data: {label: "Before"} %>
+              <%= image_tag text_request.original_image.variant(:juxtaposed), class: "w-full h-full object-contain", data: {label: "Before"} %>
             </div>
           <% else %>
             <div

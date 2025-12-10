@@ -19,11 +19,11 @@ class TextRequest < ApplicationRecord
   }
 
   has_one_attached :original_image do |attachable|
-    attachable.variant(:juxtaposed, resize_to_limit: [ 400, nil ])
+    attachable.variant(:juxtaposed, resize_to_limit: [ 700, nil ])
   end
 
   has_one_attached :result_image do |attachable|
-    attachable.variant(:juxtaposed, resize_to_limit: [ 400, nil ])
+    attachable.variant(:juxtaposed, resize_to_limit: [ 700, nil ])
   end
 
   scope :by_user, ->(user_id) { where(user_id: user_id) }
