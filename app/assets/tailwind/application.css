@@ -20,6 +20,35 @@
   --color-text-primary: #5c6bc0;
   --color-text-secondary: #d370a8;
   --color-text-accent: #67cedb;
+
+  --animate-bounce-complex: bounce-complex 3s infinite ease-in-out;
+
+  @keyframes bounce-complex {
+    0%, 100% {
+      transform: translateY(0);
+      animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+    }
+    30% {
+      transform: translateY(-25%);
+      animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    }
+    50% {
+      transform: translateY(0);
+      animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+    }
+    65% {
+      transform: translateY(-12%);
+      animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    }
+    80% {
+      transform: translateY(0);
+      animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+    }
+    90% {
+      transform: translateY(-6%);
+      animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    }
+  }
 }
 
 ::-webkit-scrollbar {
