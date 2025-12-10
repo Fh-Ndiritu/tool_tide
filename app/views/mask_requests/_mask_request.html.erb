@@ -137,14 +137,15 @@
         { url: rails_blob_path(view), title: "#{index+1}. #{view.name.humanize}", index: index }
       end %>
 
+      <link rel="stylesheet" href="https://unpkg.com/photoswipe@5.4.3/dist/photoswipe.css">
+
       <div
         class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
-        data-controller="gallery"
-        data-gallery-images-value="<%= gallery_data.to_json %>"
-        data-gallery-modal-target="#gallery-modal"
+        data-controller="photoswipe"
       >
         <% views.each_with_index do |view, index| %>
           <% full_url = rails_blob_path(view) %>
+          <% metadata = view.metadata %>
 
           <% auxiliary_image_class = if defined?(compact) && index > 0
                                     'hidden sm:block'
@@ -159,7 +160,14 @@
               <%= auxiliary_image_class %>
             "
           >
-            <a href="<%= full_url %>" data-action="gallery#open" class="block">
+            <a
+              href="<%= full_url %>"
+              data-pswp-src="<%= full_url %>"
+              data-pswp-width="<%= metadata['width'] || 1024 %>"
+              data-pswp-height="<%= metadata['height'] || 1024 %>"
+              target="_blank"
+              class="block"
+            >
               <%= image_tag(view.variant(resize_to_limit: [500, 500]), loading: :lazy, class: "w-full max-h-[250px] sm:max-h-[400px] object-cover transition-transform duration-500 group-hover:scale-[1.02]") %>
 
               <div
@@ -182,10 +190,6 @@
             </div>
 
             <div class="absolute bottom-3 right-4 z-20 flex space-x-2">
-              <%= link_to "#", class: "icon-btn bg-secondary/40 hover:bg-secondary/70 text-white" do %>
-                <%= render(IconComponent.new(classes: "h-5 w-5", name: "expand")) %>
-              <% end %>
-
               <%= link_to rails_blob_path(view, disposition: :attachment), class: "icon-btn bg-accent-secondary/40 hover:bg-accent-secondary/70 text-white" do %>
                 <%= render(IconComponent.new(classes: "h-5 w-5", name: "download")) %>
               <% end unless defined?(compact) %>
@@ -197,7 +201,7 @@
           </div>
         <% end %>
 
-        <%= render 'mask_requests/gallery_modal' %>
+
       </div>
 
       <% if mask_request.plants.present? && !defined?(compact) %>

@@ -16,3 +16,5 @@ pin "@stimulus-components/password-visibility", to: "@stimulus-components--passw
 pin "masonry" # @0.0.2
 pin "ejs" # @0.7.1
 pin "fs" # @2.1.0
+pin "photoswipe", to: "https://unpkg.com/photoswipe@5.4.3/dist/photoswipe.esm.js"
+pin "photoswipe-lightbox", to: "https://unpkg.com/photoswipe@5.4.3/dist/photoswipe-lightbox.esm.js"

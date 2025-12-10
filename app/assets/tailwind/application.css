@@ -420,3 +420,14 @@ html {
 input[type='checkbox'] {
   accent-color: #dc2626; /* Red-600, matches your text-red-600 */
 }
+
+/* PhotoSwipe Customization */
+.pswp__bg {
+  background: rgba(10, 10, 10, 0.95) !important; /* Very dark, neutral background */
+  backdrop-filter: blur(15px);
+}
+
+.pswp__img {
+  border-radius: 8px !important; /* Slightly tighter radius */
+  box-shadow: 0 20px 60px rgba(0,0,0,0.8) !important;
+}
