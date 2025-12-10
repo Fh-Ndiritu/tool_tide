@@ -425,12 +425,12 @@
           classes: "#{active_item(pricing_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
           data: { action: "click->navbar#toggleMenu" }
           ) %>
-        <%= render ButtonComponent.new(
-          text: "FAQ",
-          href: "#faq",
-          classes: " gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
-          data: { action: "click->navbar#toggleMenu" }
-          ) %>
+          <%= render ButtonComponent.new(
+            text: "FAQ",
+            href: current_page?(root_path) ? "#faq" : full_faq_path,
+            classes: " gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
+            data: { action: "click->navbar#toggleMenu" }
+            ) %>
         <%= render ButtonComponent.new(
         text: "Explore",
         href: explore_path,
