@@ -4,9 +4,9 @@
 
 <div class="container mx-auto w-full px-4 sm:max-w-lg lg:max-w-5xl mt-4">
 
-  <div id="mask_requests" class="min-w-full space-y-4 md:space-y-6">
+  <div id="mask_requests" class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
     <% if @mask_requests.any? %>
-      <%= render partial: 'mask_requests/mask_request', collection: @mask_requests, locals: {compact: true} %>
+      <%= render partial: 'mask_requests/mask_request_compact', collection: @mask_requests, as: :mask_request %>
     <% else %>
       <div
         class="

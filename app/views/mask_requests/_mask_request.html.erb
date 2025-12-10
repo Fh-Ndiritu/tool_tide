@@ -1,306 +1,172 @@
-<% if mask_request.complete?  && mask_request.main_view.attached? %>
-  <div class="container mx-auto py-4 <%= 'compact' if defined?(compact) %>">
-    <div
-      class="
-        bg-white rounded-2xl shadow-2xl border border-gray-100 p-6 sm:p-8
-        md:p-10 space-y-6 md:space-y-10
-      "
-    >
-      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
-        <div class="flex flex-col">
-          <h3 class="text-xl md:text-4xl font-extrabold leading-tight text-secondary">
-            Results for
-            <span class="text-accent"><%= mask_request.preset.humanize %></span>
-            Style Design
-          </h3>
+<% if mask_request.complete? && mask_request.main_view.attached? %>
+  <div class="container mx-auto py-8 <%= 'compact' if defined?(compact) %>">
+    <div class="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
 
-          <h4 class="text-base font-medium text-gray-500">
-            <%= mask_request.user_error %>
-          </h4>
+      <!-- Header Section -->
+      <div class="px-8 py-8 border-b border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div>
+          <div class="flex items-center gap-3 mb-2">
+            <span class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-bold tracking-wide uppercase">
+              <%= mask_request.preset.humanize %>
+            </span>
+            <span class="text-gray-400 text-sm">
+              <%= time_ago_in_words(mask_request.created_at) %> ago
+            </span>
+          </div>
+          <h3 class="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">
+            Your Garden Design
+          </h3>
+          <% if mask_request.user_error.present? %>
+             <p class="text-red-500 mt-2 font-medium"><%= mask_request.user_error %></p>
+          <% end %>
         </div>
 
         <% favorite = current_user.favorites.find_by(favoritable: mask_request) %>
-
         <div class="flex-shrink-0">
-          <%= render 'favorites/favorite_button',
-          favoritable: mask_request,
-          favorite: favorite %>
+          <%= render 'favorites/favorite_button', favoritable: mask_request, favorite: favorite %>
         </div>
       </div>
 
-      <div class="w-full my-6 relative">
-        <!-- Decorative sparkles around the button -->
-        <div class="absolute -top-2 -left-2 text-2xl animate-pulse opacity-70">
-          ✨
-        </div>
+      <div class="p-8 space-y-10">
 
-        <div
-          class="absolute -top-2 -right-2 text-2xl animate-pulse opacity-70"
-          style="animation-delay: 0.3s;"
-        >
-          🌟
-        </div>
+        <!-- Refine with Prompts - Hero Section -->
+        <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-900 to-gray-800 text-white shadow-2xl transform transition-all hover:scale-[1.01] duration-500">
+          <div class="absolute top-0 right-0 -mt-10 -mr-10 w-64 h-64 bg-secondary opacity-20 blur-3xl rounded-full pointer-events-none"></div>
+          <div class="absolute bottom-0 left-0 -mb-10 -ml-10 w-64 h-64 bg-primary opacity-20 blur-3xl rounded-full pointer-events-none"></div>
 
-        <div
-          class="
-            absolute -bottom-2 left-1/2 -translate-x-1/2 text-2xl
-            animate-pulse opacity-70
-          "
-          style="animation-delay: 0.6s;"
-        >
-          💫
-        </div>
-
-        <%= link_to new_text_request_path(signed_blob_id: mask_request.main_view.blob.signed_id),
-            class: "group relative block w-full overflow-hidden rounded-2xl bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 p-[2px] text-center shadow-2xl shadow-pink-500/50 transition-all duration-500 hover:scale-[1.04] hover:shadow-2xl hover:shadow-purple-500/70 hover:brightness-110 hover:ring-4 hover:ring-pink-400/60 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2" do %>
-          <!-- Animated shimmer layer -->
-          <div
-            class="
-              absolute inset-0 bg-gradient-to-r from-transparent
-              via-white/30 to-transparent animate-pulse opacity-50
-            "
-          ></div>
-
-          <!-- PRO badge -->
-          <div
-            class="
-              absolute -top-3 -right-3 bg-gradient-to-br from-yellow-400
-              to-orange-500 text-white text-xs font-black px-3 py-1
-              rounded-full shadow-lg border-2 border-white transform
-              rotate-12 animate-bounce
-            "
-          >
-            PRO
-          </div>
-
-          <div
-            class="
-              relative flex flex-col items-center justify-center rounded-2xl
-              bg-gradient-to-br from-gray-900 via-purple-900 to-indigo-900 backdrop-blur-sm px-6 py-5 transition-all
-              duration-300 group-hover:from-gray-800
-              group-hover:via-purple-800 group-hover:to-indigo-800
-            "
-          >
-            <!-- Main content -->
-            <div class="flex items-center gap-3 mb-2">
-              <span class="text-3xl animate-bounce filter drop-shadow-lg">🎨</span>
-              <span
-                class="
-                  text-xl md:text-2xl font-black tracking-tight
-                  bg-gradient-to-r from-yellow-200 via-pink-200
-                  to-orange-200 bg-clip-text text-transparent
-                  drop-shadow-2xl animate-pulse
-                "
-              >
-                Refine with prompts
-              </span>
-              <span
-                class="text-3xl animate-bounce filter drop-shadow-lg"
-                style="animation-delay: 0.2s;"
-              >
-                🚀
-              </span>
-            </div>
-
-            <p class="text-sm text-white/90 drop-shadow-md mb-3 font-medium">
-              Make intelligent and accurate changes to <b>THIS</b> design using only a text
-              prompt
-            </p>
-
-            <p
-              class="
-                text-sm md:text-base font-bold text-white/95 drop-shadow-lg
-                tracking-wide
-              "
-            >
-              <span class="inline-block bg-white/20 px-3 py-1 rounded-full">Most Powerful Tool</span>
-              <span class="mx-2">•</span>
-              <span class="inline-block bg-white/20 px-3 py-1 rounded-full">Unlimited Changes</span>
-            </p>
-          </div>
-        <% end %>
-      </div>
-
-      <div class="flex flex-wrap max-sm:justify-center gap-3">
-        <%= link_to "Brush Edit", new_canva_mask_request_path(mask_request.canva), class: "!max-w-[45%] cute-btn btn-secondary " %>
-        <%= link_to "New Design", new_canva_path, class: "!max-w-[45%] cute-btn btn-primary "  unless defined?(compact) %>
-        <%= link_to "Change Style", edit_mask_request_path(mask_request, manual: true), class: "!max-w-[45%] cute-btn !bg-accent-secondary !text-gray-800 " %>
-
-        <%= link_to "Show", mask_request_path(mask_request), class: "!max-w-[45%] cute-btn !bg-cta-bg " if defined?(compact) %>
-      </div>
-
-      <hr class="border-t border-neutral-200">
-
-      <% views = [mask_request.main_view, mask_request.rotated_view, mask_request.drone_view].compact.select(&:attached?)
-
-      gallery_data = views.map.with_index do |view, index|
-        { url: rails_blob_path(view), title: "#{index+1}. #{view.name.humanize}", index: index }
-      end %>
-
-      <link rel="stylesheet" href="https://unpkg.com/photoswipe@5.4.3/dist/photoswipe.css">
-
-      <div
-        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
-        data-controller="photoswipe"
-      >
-        <% views.each_with_index do |view, index| %>
-          <% full_url = rails_blob_path(view) %>
-          <% metadata = view.metadata %>
-
-          <% auxiliary_image_class = if defined?(compact) && index > 0
-                                    'hidden sm:block'
-                                  else
-                                    ''
-                                  end %>
-
-          <div
-            class="
-              group relative overflow-hidden rounded-lg shadow-xl cursor-pointer
-              transition-all duration-300 transform hover:-translate-y-1 hover:shadow-2xl
-              <%= auxiliary_image_class %>
-            "
-          >
-            <a
-              href="<%= full_url %>"
-              data-pswp-src="<%= full_url %>"
-              data-pswp-width="<%= metadata['width'] || 1024 %>"
-              data-pswp-height="<%= metadata['height'] || 1024 %>"
-              target="_blank"
-              class="block"
-            >
-              <%= image_tag(view.variant(resize_to_limit: [500, 500]), loading: :lazy, class: "w-full max-h-[250px] sm:max-h-[400px] object-cover transition-transform duration-500 group-hover:scale-[1.02]") %>
-
-              <div
-                class="
-                  absolute inset-0 bg-gradient-to-t from-black/80
-                  via-transparent to-transparent
-                "
-              ></div>
-            </a>
-
-            <div
-              class="
-                absolute bottom-3 left-4 right-4 text-white
-                pointer-events-none
-              "
-            >
-              <p class="text-sm font-medium opacity-80">
-                <%= view.name.humanize %>
+          <div class="relative z-10 p-8 md:p-10 flex flex-col md:flex-row items-center justify-between gap-8">
+            <div class="flex-1 space-y-4">
+              <div class="flex items-center gap-3 text-secondary font-bold tracking-wider uppercase text-sm">
+                <span class="flex h-2 w-2 rounded-full bg-secondary animate-pulse"></span>
+                AI Design Editor
+              </div>
+              <h4 class="text-2xl md:text-3xl font-bold leading-tight">
+                Not quite right? <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">Refine it instantly.</span>
+              </h4>
+              <p class="text-gray-300 text-lg max-w-xl leading-relaxed">
+                Use our advanced AI to make specific changes to this design using simple text prompts. It's like having a landscape architect on standby.
               </p>
             </div>
 
-            <div class="absolute bottom-3 right-4 z-20 flex space-x-2">
-              <%= link_to rails_blob_path(view, disposition: :attachment), class: "icon-btn bg-accent-secondary/40 hover:bg-accent-secondary/70 text-white" do %>
+            <%= link_to new_text_request_path(signed_blob_id: mask_request.main_view.blob.signed_id), class: "group relative inline-flex items-center gap-3 bg-white text-gray-900 px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:bg-gray-50 transition-all duration-300 hover:shadow-xl hover:-translate-y-1" do %>
+              <span>Open AI Editor</span>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-secondary group-hover:scale-110 transition-transform">
+                <path fill-rule="evenodd" d="M9.315 7.584C12.195 3.883 16.695 1.5 21.75 1.5a.75.75 0 01.75.75c0 5.056-2.383 9.555-6.084 12.436A6.75 6.75 0 019.75 22.5a.75.75 0 01-.75-.75v-4.131A15.838 15.838 0 016.382 15H2.25a.75.75 0 01-.75-.75 6.75 6.75 0 017.815-6.666zM15 6.75a2.25 2.25 0 100 4.5 2.25 2.25 0 000-4.5z" clip-rule="evenodd" />
+                <path d="M5.26 17.242a.75.75 0 10-.897-1.203 5.243 5.243 0 00-2.05 5.022.75.75 0 00.625.627 5.243 5.243 0 005.022-2.051.75.75 0 10-1.202-.897 3.744 3.744 0 01-3.008 1.51c0-1.23.592-2.323 1.51-3.008z" />
+              </svg>
+            <% end %>
+          </div>
+        </div>
+
+
+
+        <!-- Gallery Grid -->
+        <% views = [mask_request.main_view, mask_request.rotated_view, mask_request.drone_view].compact.select(&:attached?) %>
+        <link rel="stylesheet" href="https://unpkg.com/photoswipe@5.4.3/dist/photoswipe.css">
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" data-controller="photoswipe">
+          <% views.each_with_index do |view, index| %>
+            <% full_url = rails_blob_path(view) %>
+            <% metadata = view.metadata %>
+
+            <div class="group relative rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300">
+              <a href="<%= full_url %>"
+                 data-pswp-src="<%= full_url %>"
+                 data-pswp-width="<%= metadata['width'] || 1024 %>"
+                 data-pswp-height="<%= metadata['height'] || 1024 %>"
+                 target="_blank"
+                 class="block relative aspect-[4/3]">
+                <%= image_tag(view.variant(resize_to_limit: [600, 600]), loading: :lazy, class: "w-full h-full object-cover transition-transform duration-700 group-hover:scale-105") %>
+                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
+
+                <!-- Hover Overlay Icon -->
+                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div class="bg-white/90 backdrop-blur-sm p-3 rounded-full shadow-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-gray-900">
+                      <path fill-rule="evenodd" d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.689a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z" clip-rule="evenodd" />
+                    </svg>
+                  </div>
+                </div>
+              </a>
+
+              <div class="absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
+                <p class="text-white font-medium text-sm"><%= view.name.humanize %></p>
+              </div>
+
+              <div class="absolute bottom-3 right-4 z-20 flex space-x-2">
+              <%= link_to rails_blob_path(view, disposition: :attachment), class: "icon-btn bg-black/40 hover:bg-black/60 text-white backdrop-blur-md border border-white/20 transition-all duration-300 hover:scale-110", title: "Download" do %>
                 <%= render(IconComponent.new(classes: "h-5 w-5", name: "download")) %>
               <% end unless defined?(compact) %>
 
-              <%= link_to new_text_request_path(signed_blob_id:  view.blob.signed_id), class: "icon-btn bg-secondary hover:bg-secondary/80 text-white ring-2 ring-white/50" do %>
+              <%= link_to new_text_request_path(signed_blob_id:  view.blob.signed_id), class: "icon-btn bg-white text-secondary hover:bg-secondary hover:text-white shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-secondary/50", title: "Refine with AI" do %>
                 <%= render(IconComponent.new(classes: "h-5 w-5", name: "pencil")) %>
               <% end %>
             </div>
-          </div>
-        <% end %>
+            </div>
+          <% end %>
+        </div>
 
+        <!-- Action Buttons -->
+        <div class="flex flex-wrap gap-4 justify-center md:justify-start mt-8">
+           <%= link_to new_canva_mask_request_path(mask_request.canva), class: "cute-btn btn-secondary flex items-center gap-2" do %>
+             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10 3.75a2 2 0 10-4 0 2 2 0 004 0zM17.25 4.5a.75.75 0 00-1.5 0 .75.75 0 001.5 0zM12.75 3.75a.75.75 0 100 1.5.75.75 0 000-1.5zM5 7a1 1 0 011-1h8a1 1 0 011 1v3a1 1 0 01-1 1H6a1 1 0 01-1-1V7zM11.25 15.75a.75.75 0 00-1.5 0V14h1.5v1.75zM14.25 15.75a.75.75 0 00-1.5 0V14h1.5v1.75zM8.25 15.75a.75.75 0 00-1.5 0V14h1.5v1.75zM16 14v1.75a2.25 2.25 0 01-2.25 2.25h-7.5A2.25 2.25 0 014 15.75V14a1 1 0 011-1h10a1 1 0 011 1z" /></svg>
+             Brush Edit
+           <% end %>
 
-      </div>
+           <%= link_to new_canva_path, class: "cute-btn btn-primary flex items-center gap-2" do %>
+             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg>
+             New Design
+           <% end unless defined?(compact) %>
 
-      <% if mask_request.plants.present? && !defined?(compact) %>
-        <div class="planting_and_design_guide space-y-8">
-          <section>
-            <h3
-              class="
-                text-3xl font-bold text-gray-800 border-b-2 border-accent
-                pb-2 mb-6
-              "
-            >
-              🌱 Planting Guide: Suggested Varieties
-            </h3>
+           <%= link_to edit_mask_request_path(mask_request, manual: true), class: "cute-btn !bg-accent-secondary !text-gray-800 flex items-center gap-2" do %>
+             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M2.24 6.8a.75.75 0 001.06-.04l1.95-2.1 1.95 2.1a.75.75 0 101.1-1.02l-2.5-2.7a.75.75 0 00-1.1 0l-2.5 2.7a.75.75 0 00.04 1.06zm6.11 5.5a.75.75 0 001.06-.04l1.95-2.1 1.95 2.1a.75.75 0 101.1-1.02l-2.5-2.7a.75.75 0 00-1.1 0l-2.5 2.7a.75.75 0 00.04 1.06z" clip-rule="evenodd" /><path d="M9.75 13.25a.75.75 0 000 1.5h4.5a.75.75 0 000-1.5h-4.5z" /></svg>
+             Change Style
+           <% end %>
+        </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Planting Guide -->
+        <% if mask_request.plants.present? && !defined?(compact) %>
+          <div class="pt-8">
+            <div class="flex items-center gap-3 mb-8 border-b border-gray-100 pb-4">
+              <span class="text-2xl">🌱</span>
+              <h3 class="text-2xl font-bold text-gray-900">Planting Guide</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <% mask_request.mask_request_plants.each do |mp| %>
-                <div
-                  class="
-                    flex flex-col justify-between bg-white p-4 rounded-xl
-                    shadow-md border border-neutral-200
-                  "
-                >
-                  <div class="mb-2">
-                    <div class="flex items-center gap-3 mb-3">
-                      <span class="text-xl font-extrabold text-accent whitespace-nowrap"><%= mp.quantity %>x</span>
-                      <%= link_to "https://www.google.com/search?q=#{CGI.escape(mp.plant.english_name + ' plant')}&tbm=isch", target: "_blank", rel: "noopener noreferrer", class: "flex items-center gap-2 bg-white hover:bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 transition-all hover:shadow-md group flex-1 w-full" do %>
-                        <svg
-                          class="w-5 h-5 flex-shrink-0"
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-                            fill="#4285F4"
-                          />
-                          <path
-                            d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-                            fill="#34A853"
-                          />
-                          <path
-                            d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
-                            fill="#FBBC05"
-                          />
-                          <path
-                            d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-                            fill="#EA4335"
-                          />
-                        </svg>
-                        <span
-                          class="
-                            font-bold text-base text-gray-700
-                            group-hover:text-gray-900 flex-1
-                          "
-                        >
-                          <%= mp.plant.english_name %>
-                        </span>
+                <div class="bg-gray-50 rounded-xl p-5 border border-gray-100 hover:border-green-200 hover:shadow-md transition-all duration-300 group">
+                  <div class="flex justify-between items-start mb-3">
+                    <h4 class="font-bold text-lg text-gray-900 group-hover:text-green-700 transition-colors">
+                      <%= mp.plant.english_name %>
+                    </h4>
+                    <span class="bg-white px-3 py-1 rounded-lg text-sm font-bold text-gray-600 shadow-sm border border-gray-100">
+                      <%= mp.quantity %>x
+                    </span>
+                  </div>
 
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke-width="2"
-                          stroke="currentColor"
-                          class="
-                            w-4 h-4 text-gray-400 group-hover:text-gray-600
-                            flex-shrink-0
-                          "
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
-                          />
-                        </svg>
-                      <% end %>
+                  <p class="text-gray-600 text-sm mb-4 leading-relaxed">
+                    <%= mp.plant.description %>
+                  </p>
+
+                  <div class="flex items-center justify-between mt-auto pt-4 border-t border-gray-200/50">
+                    <div class="text-xs font-medium text-gray-500 bg-white px-2 py-1 rounded border border-gray-200">
+                      Size: <span class="text-gray-900"><%= mp.plant.size %> ft</span>
                     </div>
 
-                    <p class="text-sm text-neutral-600 mt-2">
-                      <%= mp.plant.description %>
-                    </p>
-
-                    <div
-                      class="
-                        mt-3 text-xs text-secondary opacity-80
-                        bg-neutral-100 inline-block px-2 py-1 rounded
-                        font-medium
-                      "
-                    >
-                      Max Size:
-                      <span class="font-bold"><%= mp.plant.size %> ft</span>
-                      (width x height)
-                    </div>
+                    <%= link_to "https://www.google.com/search?q=#{CGI.escape(mp.plant.english_name + ' plant')}&tbm=isch", target: "_blank", rel: "noopener noreferrer", class: "inline-flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-700 hover:underline" do %>
+                      <span>View Images</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
+                        <path fill-rule="evenodd" d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h5a.75.75 0 010 1.5h-5z" clip-rule="evenodd" />
+                        <path fill-rule="evenodd" d="M6.194 12.753a.75.75 0 001.06.053L16.5 4.44v2.81a.75.75 0 001.5 0v-4.5a.75.75 0 00-.75-.75h-4.5a.75.75 0 000 1.5h2.553l-9.056 8.194a.75.75 0 00-.053 1.06z" clip-rule="evenodd" />
+                      </svg>
+                    <% end %>
                   </div>
                 </div>
               <% end %>
             </div>
-          </section>
-        </div>
-      <% end %>
+          </div>
+        <% end %>
+      </div>
     </div>
   </div>
 <% end %>
