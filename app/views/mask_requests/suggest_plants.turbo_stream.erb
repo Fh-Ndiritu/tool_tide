@@ -1,1 +1,6 @@
 <%= turbo_stream.replace "plant_list", partial: "mask_requests/plant_list", locals: { mask_request: @mask_request } %>
+<%= turbo_stream.append "plants" do %>
+  <script>
+    document.querySelector('[data-mask-request-target="suggestionsSection"]').classList.remove("hidden");
+  </script>
+<% end %>

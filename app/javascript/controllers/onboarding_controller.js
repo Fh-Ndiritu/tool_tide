@@ -256,8 +256,8 @@ export default class extends Controller {
 
   startTextEditTour() {
     if (!this.hasTextEditTarget) return
-    // Only show if uploading (fresh request)
-    if (this.currentRequestProgressValue !== 'uploading') return
+    // Only show if uploading (fresh request) or complete (show page)
+    if (this.currentRequestProgressValue !== 'uploading' && this.currentRequestProgressValue !== 'complete') return
 
     const steps = [
       {
