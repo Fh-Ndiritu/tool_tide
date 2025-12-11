@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_09_184020) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_11_003628) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -265,7 +265,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_09_184020) do
 
   create_table "text_requests", force: :cascade do |t|
     t.text "prompt"
-    t.integer "progress"
+    t.integer "progress", default: 0
     t.string "user_error"
     t.integer "visibility"
     t.boolean "trial_generation"
@@ -316,6 +316,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_09_184020) do
     t.string "name"
     t.integer "source", default: 0
     t.string "user_name"
+    t.integer "onboarding_stage", default: 0
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

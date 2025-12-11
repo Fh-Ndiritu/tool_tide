@@ -5,6 +5,7 @@
   <div
     id="history-list-mobile"
     class="flex flex-row space-x-4 overflow-x-auto pt-2 pb-4"
+    data-onboarding-target="history"
   >
     <%= render partial: 'text_requests/text_request_preview', collection: @text_requests, as: :text_request %>
   </div>
@@ -34,7 +35,7 @@
   <h2 class="text-xl font-bold my-4 text-neutral-400">Previous Edits</h2>
   <span class="py-1 text-sm text-neutral-600">Click image to jump back to it</span>
 
-  <div id="history-list-desktop" class="space-y-4 flex-1 overflow-y-auto px-1">
+  <div id="history-list-desktop" class="space-y-4 flex-1 overflow-y-auto px-1" data-onboarding-target="history">
     <%= render partial: 'text_requests/text_request_preview', collection: @text_requests, as: :text_request %>
   </div>
 </aside>

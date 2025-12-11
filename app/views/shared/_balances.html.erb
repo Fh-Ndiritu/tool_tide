@@ -1,6 +1,6 @@
 <div class="w-full my-8">
   <%= link_to credits_path, class: "grid grid-cols-2 md:grid-cols-3 gap-4 p-5 bg-white border border-gray-200 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl group no-underline text-inherit" do %>
-    <% if controller_name == 'mask_requests' && action_name == 'new' %>
+    <% if (controller_name == 'mask_requests' && action_name == 'new') || (controller_name == 'canvas' && action_name == 'new') %>
       <div class="col-span-2 md:col-span-3 flex items-center justify-between">
         <p class="text-sm text-gray-700">
           You have <strong class="text-primary"><%= current_user.pro_engine_credits %></strong> credits and this feature will cost <strong class="text-secondary"><%= DEFAULT_IMAGE_COUNT * GOOGLE_IMAGE_COST %></strong> credits.

@@ -460,3 +460,96 @@ input[type='checkbox'] {
   border-radius: 8px !important; /* Slightly tighter radius */
   box-shadow: 0 20px 60px rgba(0,0,0,0.8) !important;
 }
+
+@keyframes ring-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(242, 63, 175, 0.8);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 0 25px rgba(242, 63, 175, 0);
+    transform: scale(1.02);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(242, 63, 175, 0);
+    transform: scale(1);
+  }
+}
+
+.ring-pulse {
+  animation: ring-pulse 1.5s infinite;
+  border-color: var(--color-secondary) !important;
+  z-index: 50; /* Ensure it stays on top */
+}
+
+/* Driver.js Customization */
+.driver-popover {
+  background-color: #ffffff !important;
+  color: var(--color-text-dark) !important;
+  border-radius: 16px !important;
+  padding: 20px !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+  border: 1px solid var(--color-neutral-300) !important;
+  max-width: 350px !important;
+}
+
+.driver-popover-title {
+  font-family: 'Comic Relief', system-ui !important;
+  font-size: 1.25rem !important;
+  font-weight: bold !important;
+  color: var(--color-primary) !important;
+  margin-bottom: 10px !important;
+}
+
+.driver-popover-description {
+  font-family: 'Roboto', sans-serif !important;
+  font-size: 0.95rem !important;
+  line-height: 1.5 !important;
+  color: var(--color-neutral-700) !important;
+  margin-bottom: 20px !important;
+}
+
+.driver-popover-footer {
+  margin-top: 15px !important;
+}
+
+.driver-popover-next-btn {
+  background-color: var(--color-secondary) !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 8px 16px !important;
+  font-size: 0.9rem !important;
+  font-weight: 600 !important;
+  text-shadow: none !important;
+  transition: all 0.2s ease !important;
+}
+
+.driver-popover-next-btn:hover {
+  background-color: var(--color-accent) !important;
+  transform: scale(1.05);
+}
+
+.driver-popover-prev-btn {
+  background-color: transparent !important;
+  color: var(--color-neutral-500) !important;
+  border: 1px solid var(--color-neutral-300) !important;
+  border-radius: 8px !important;
+  padding: 8px 16px !important;
+  font-size: 0.9rem !important;
+  text-shadow: none !important;
+  transition: all 0.2s ease !important;
+}
+
+.driver-popover-prev-btn:hover {
+  background-color: var(--color-neutral-100) !important;
+  color: var(--color-neutral-700) !important;
+}
+
+.driver-popover-close-btn {
+  color: var(--color-neutral-500) !important;
+}
+
+.driver-popover-close-btn:hover {
+  color: var(--color-secondary) !important;
+}

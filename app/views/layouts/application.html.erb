@@ -40,6 +40,7 @@
 
     <%# Update with your actual Twitter handle %>
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css"/>
     <link rel="preconnect" href="https://fonts.googleapis.com">
 
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -75,24 +76,6 @@
     <%# Dynamic Schema Markup %>
     <% if content_for?(:schema_markup) %>
       <%= yield :schema_markup %>
-    <% else %>
-      <%# Updated Default Schema Markup for the AI Landscaping Tool %>
-      <script type="application/ld+json">
-    {
-      "@context": "http://schema.org",
-      "@type": "SoftwareApplication", <%# Changed to reflect an app/tool %>
-      "name": "<%= content_for?(:schema_name)? yield(:schema_name) : "Hadaa AI Garden Design App" %>",
-      "url": "<%= request.original_url.split('?').first %>",
-      "operatingSystem": "Web, iOS, Android",
-      "applicationCategory": "DesignApplication",
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": <%= rand(4.5..5.0).round(1) %>,
-        "reviewCount": <%= rand(4000..9000) %>
-      },
-      "description": "<%= content_for?(:schema_description)? yield(:schema_description) : "Try Hadaa FREE - no credit card required! Hadaa is an AI-powered virtual landscape design app that offers precision tools like the Brush Designer and Prompt Editor to transform photos, plan seasonal layouts, and generate actionable shopping lists." %>"
-    }
-  </script>
     <% end %>
 
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -153,11 +136,19 @@ f="XMLHttpRequest",g._w={},g._w[f]=m[f],g._w[s]=m[s],m[s]&&(m[s]=function(){retu
 </script>
   </head>
 
-  <body data-controller="loader">
+  <body
+  data-controller="loader <%= user_signed_in? ? 'onboarding' : '' %>"
+  data-onboarding-stage-value="<%= current_user.onboarding_stage if user_signed_in? %>"
+  data-onboarding-complete-request-count-value="<%= current_user.text_requests.complete.count if user_signed_in? %>"
+  data-onboarding-current-request-progress-value="<%= (@current_request || @text_request)&.progress if user_signed_in? %>"
+  >
     <% show_loader = defined?(@mask_request) && @mask_request&.processing? %>
     <%= render partial: "layouts/shared/loader", locals: { record: (show_loader ? @mask_request : nil), klasses: "#{show_loader ? '' : 'hidden'} fixed" } %>
     <%= render "shared/navbar" %>
     <%= render "shared/flash" %>
+    <% if user_signed_in? %>
+      <%= render "shared/onboarding_modal" %>
+    <% end %>
     <main class="<%= content_for(:main_classes) %>">
       <div class="w-full m-auto block"><%= yield %></div>
     </main>

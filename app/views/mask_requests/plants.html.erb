@@ -29,6 +29,7 @@
         <button
           class="btn cute-btn accent-btn flex items-center gap-2"
           data-action="mask-request#getLocation"
+          data-onboarding-target="plantsButton"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -53,7 +54,7 @@
         </button>
 
         <%= link_to "Back to Styles", edit_mask_request_path(@mask_request), class: "btn cute-btn !bg-neutral-500" %>
-        <%= button_to "Next", mask_request_path(@mask_request, generate: true), method: :patch, class: "btn cute-btn !bg-gradient-to-r !from-blue-600 !to-indigo-600 !text-white !border-none shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 transform hover:scale-105 font-bold tracking-wide", data: { turbo: false } %>
+        <%= button_to "Next", mask_request_path(@mask_request, generate: true), method: :patch, class: "btn cute-btn !bg-gradient-to-r !from-blue-600 !to-indigo-600 !text-white !border-none shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 transform hover:scale-105 font-bold tracking-wide", data: { turbo: false, onboarding_target: "nextButton" } %>
       </div>
 
       <div
@@ -73,7 +74,7 @@
         </div>
 
         <div class="flex justify-center mt-8">
-          <%= button_to "Next", mask_request_path(@mask_request, generate: true), method: :patch, class: "btn cute-btn !bg-gradient-to-r !from-blue-600 !to-indigo-600 !text-white !border-none shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 transform hover:scale-105 font-bold tracking-wide", data: { turbo: false } %>
+          <%= button_to "Next", mask_request_path(@mask_request, generate: true), method: :patch, class: "btn cute-btn !bg-gradient-to-r !from-blue-600 !to-indigo-600 !text-white !border-none shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 transform hover:scale-105 font-bold tracking-wide", data: { turbo: false, onboarding_target: "nextButton" } %>
         </div>
       </div>
     </div>

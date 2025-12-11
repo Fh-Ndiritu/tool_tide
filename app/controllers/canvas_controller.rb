@@ -12,6 +12,7 @@ class CanvasController < ApplicationController
 
     respond_to do |format|
       if @canva.save
+        current_user.image_uploaded!
         format.html { redirect_to new_canva_mask_request_path(@canva), status: :see_other }
         format.json { render :show, status: :created, location: @canva }
       else

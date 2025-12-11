@@ -22,6 +22,19 @@ class User < ApplicationRecord
     google: 1
   }
 
+  enum :onboarding_stage, {
+    fresh: 0,
+    welcome_seen: 1,
+    image_uploaded: 2,
+    mask_drawn: 3,
+    style_selected: 8,
+    plants_viewed: 9,
+    first_result_viewed: 4,
+    text_editor_opened: 5,
+    refinement_generated: 6,
+    completed: 7
+  }
+
   geocoded_by :current_sign_in_ip do |obj, results|
     if geo = results.first
       obj.latitude = geo.latitude

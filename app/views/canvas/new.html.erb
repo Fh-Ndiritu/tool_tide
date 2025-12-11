@@ -22,16 +22,18 @@
       <div
         data-action="dragover->canvas#dragOver dragleave->canvas#dragLeave drop->canvas#drop click->canvas#triggerFileInput"
         data-canvas-target="dropZone"
+        data-onboarding-target="upload"
         class="
-          flex min-h-[200px] gap-6 border-2 border-dashed border-accent
-          rounded-lg p-8 sm:p-12 items-center text-center text-neutral-300
-          hover:bg-accent transition-colors
-          duration-200 cursor-pointer
+          flex flex-col justify-center min-h-[200px] gap-6 border-2 border-dashed border-neutral-400
+          rounded-xl p-8 sm:p-12 items-center text-center text-neutral-200
+          bg-white/10 backdrop-blur-sm
+          hover:bg-white/20 hover:border-secondary transition-all
+          duration-300 cursor-pointer group
         "
       >
-        <div class="flex w-full md:w-9/12 items-center gap-4 justify-center">
-          <%= render(IconComponent.new(name: "upload", classes: "h-6 w-6 -mb-2")) %>
-          <p class="mt-2 text-xl fancy-text">
+        <div class="flex flex-col w-full md:w-9/12 items-center gap-4 justify-center">
+          <%= render(IconComponent.new(name: "upload", classes: "h-12 w-12 text-neutral-300 group-hover:text-white transition-colors duration-300")) %>
+          <p class="text-lg fancy-text">
             Drag & drop an image or click to upload
           </p>
         </div>

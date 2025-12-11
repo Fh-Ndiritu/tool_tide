@@ -41,6 +41,7 @@ class TextEditor
         cost = GOOGLE_IMAGE_COST * 1
         @text_request.user.charge_pro_cost!(cost)
       end
+      @text_request.user.refinement_generated!
       @text_request.complete!
     else
       @text_request.update!(progress: :failed, error_msg: "Result not found")

@@ -1,9 +1,9 @@
-<div id="loader" class="z-50">
+<div id="loader" class="z-[2147483647]">
   <% is_fullscreen = klasses.include?('fixed') %>
 
   <div
     data-loader-target="loader"
-    class="<%= klasses %> inset-0 flex flex-col items-center justify-center z-50 transition-all duration-500 <%= is_fullscreen ? 'bg-gray-900/85 backdrop-blur-md' : 'bg-black opacity-85' %>"
+    class="<%= klasses %> inset-0 flex flex-col items-center justify-center z-[2147483647] transition-all duration-500 <%= is_fullscreen ? 'bg-gray-900/90 backdrop-blur-md' : 'bg-black opacity-85' %>"
   >
     <% if is_fullscreen %>
       <!-- Fullscreen Loader Design -->

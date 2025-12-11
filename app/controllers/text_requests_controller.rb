@@ -6,6 +6,12 @@ class TextRequestsController < ApplicationController
   def index
     @text_requests = current_user.text_requests.complete_or_in_progress
     @current_request = current_user.text_requests.find_by(id: params[:current_request]) || @text_requests.first
+
+    # Ensure onboarding stage is correct if they land here
+    if ['plants_viewed', 'first_result_viewed'].include?(current_user.onboarding_stage)
+      current_user.text_editor_opened!
+    end
+
     if @current_request.blank?
       if (latest_mask_request = current_user.mask_requests.complete.first)
         redirect_to new_text_request_path(signed_blob_id: latest_mask_request.main_view.blob.signed_id) and return
@@ -29,6 +35,7 @@ class TextRequestsController < ApplicationController
       request.original_image.attach(blob)
       request.save!
     end
+    current_user.text_editor_opened!
     redirect_to text_requests_path(current_request: @text_request.id)
   end
 

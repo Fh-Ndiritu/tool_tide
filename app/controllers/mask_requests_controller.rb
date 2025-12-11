@@ -52,6 +52,7 @@ class MaskRequestsController < ApplicationController
           @mask_request.destroy
           format.html { redirect_to new_canva_mask_request_path(@mask_request.canva),  status: :see_other }
         else
+          current_user.mask_drawn!
           format.html { redirect_to edit_mask_request_path(@mask_request),  status: :see_other }
         end
       else
@@ -69,8 +70,10 @@ class MaskRequestsController < ApplicationController
           end
           DesignGeneratorJob.perform_later(@mask_request.id)
           @mask_request.validating!
+          current_user.plants_viewed!
           format.html { redirect_to mask_request_path(@mask_request), status: :see_other }
         else
+          current_user.style_selected!
           format.html { redirect_to plants_mask_request_path(@mask_request), status: :see_other }
         end
       else

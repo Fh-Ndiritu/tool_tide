@@ -48,7 +48,7 @@
               </p>
             </div>
 
-            <%= link_to new_text_request_path(signed_blob_id: mask_request.main_view.blob.signed_id), class: "group relative inline-flex items-center gap-3 bg-white text-gray-900 px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:bg-gray-50 transition-all duration-300 hover:shadow-xl hover:-translate-y-1" do %>
+            <%= link_to new_text_request_path(signed_blob_id: mask_request.main_view.blob.signed_id), data: { onboarding_target: "textEdit" }, class: "group relative inline-flex items-center gap-3 bg-white text-gray-900 px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:bg-gray-50 transition-all duration-300 hover:shadow-xl hover:-translate-y-1" do %>
               <span>Open AI Editor</span>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-secondary group-hover:scale-110 transition-transform">
                 <path fill-rule="evenodd" d="M9.315 7.584C12.195 3.883 16.695 1.5 21.75 1.5a.75.75 0 01.75.75c0 5.056-2.383 9.555-6.084 12.436A6.75 6.75 0 019.75 22.5a.75.75 0 01-.75-.75v-4.131A15.838 15.838 0 016.382 15H2.25a.75.75 0 01-.75-.75 6.75 6.75 0 017.815-6.666zM15 6.75a2.25 2.25 0 100 4.5 2.25 2.25 0 000-4.5z" clip-rule="evenodd" />
@@ -74,6 +74,7 @@
                  data-pswp-src="<%= full_url %>"
                  data-pswp-width="<%= metadata['width'] || 1024 %>"
                  data-pswp-height="<%= metadata['height'] || 1024 %>"
+                 data-onboarding-target="history"
                  target="_blank"
                  class="block relative aspect-[4/3]">
                 <%= image_tag(view.variant(resize_to_limit: [600, 600]), loading: :lazy, class: "w-full h-full object-cover transition-transform duration-700 group-hover:scale-105") %>
@@ -94,7 +95,7 @@
               </div>
 
               <div class="absolute bottom-3 right-4 z-20 flex space-x-2">
-              <%= link_to rails_blob_path(view, disposition: :attachment), class: "icon-btn bg-black/40 hover:bg-black/60 text-white backdrop-blur-md border border-white/20 transition-all duration-300 hover:scale-110", title: "Download" do %>
+              <%= link_to rails_blob_path(view, disposition: :attachment), class: "icon-btn bg-black/40 hover:bg-black/60 text-white backdrop-blur-md border border-white/20 transition-all duration-300 hover:scale-110", title: "Download", data: { onboarding_target: "download" } do %>
                 <%= render(IconComponent.new(classes: "h-5 w-5", name: "download")) %>
               <% end unless defined?(compact) %>
 
@@ -108,17 +109,17 @@
 
         <!-- Action Buttons -->
         <div class="flex flex-wrap gap-4 justify-center md:justify-start mt-8">
-           <%= link_to new_canva_mask_request_path(mask_request.canva), class: "cute-btn btn-secondary flex items-center gap-2" do %>
+           <%= link_to new_canva_mask_request_path(mask_request.canva), class: "cute-btn btn-secondary flex items-center gap-2", data: { onboarding_target: "brushEdit" } do %>
              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10 3.75a2 2 0 10-4 0 2 2 0 004 0zM17.25 4.5a.75.75 0 00-1.5 0 .75.75 0 001.5 0zM12.75 3.75a.75.75 0 100 1.5.75.75 0 000-1.5zM5 7a1 1 0 011-1h8a1 1 0 011 1v3a1 1 0 01-1 1H6a1 1 0 01-1-1V7zM11.25 15.75a.75.75 0 00-1.5 0V14h1.5v1.75zM14.25 15.75a.75.75 0 00-1.5 0V14h1.5v1.75zM8.25 15.75a.75.75 0 00-1.5 0V14h1.5v1.75zM16 14v1.75a2.25 2.25 0 01-2.25 2.25h-7.5A2.25 2.25 0 014 15.75V14a1 1 0 011-1h10a1 1 0 011 1z" /></svg>
              Brush Edit
            <% end %>
 
-           <%= link_to new_canva_path, class: "cute-btn btn-primary flex items-center gap-2" do %>
+           <%= link_to new_canva_path, class: "cute-btn btn-primary flex items-center gap-2", data: { onboarding_target: "newDesign" } do %>
              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg>
              New Design
            <% end unless defined?(compact) %>
 
-           <%= link_to edit_mask_request_path(mask_request, manual: true), class: "cute-btn !bg-accent-secondary !text-gray-800 flex items-center gap-2" do %>
+           <%= link_to edit_mask_request_path(mask_request, manual: true), class: "cute-btn !bg-accent-secondary !text-gray-800 flex items-center gap-2", data: { onboarding_target: "changeStyle" } do %>
              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M2.24 6.8a.75.75 0 001.06-.04l1.95-2.1 1.95 2.1a.75.75 0 101.1-1.02l-2.5-2.7a.75.75 0 00-1.1 0l-2.5 2.7a.75.75 0 00.04 1.06zm6.11 5.5a.75.75 0 001.06-.04l1.95-2.1 1.95 2.1a.75.75 0 101.1-1.02l-2.5-2.7a.75.75 0 00-1.1 0l-2.5 2.7a.75.75 0 00.04 1.06z" clip-rule="evenodd" /><path d="M9.75 13.25a.75.75 0 000 1.5h4.5a.75.75 0 000-1.5h-4.5z" /></svg>
              Change Style
            <% end %>
