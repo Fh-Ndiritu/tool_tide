@@ -179,3 +179,5 @@ VOICE_MAP = {
   Chiru: "Zephyr"
 
 }.freeze
+
+QA_USERS = [679, 496].freeze

@@ -103,6 +103,12 @@ class User < ApplicationRecord
     )
   end
 
+  enum :restart_onboarding_status, {
+    initial: 0,
+    restarted: 1,
+    completed_after_restart: 2
+  }
+
   def prevent_onboarding_regression
     return if onboarding_stage.nil?
 
@@ -111,6 +117,10 @@ class User < ApplicationRecord
 
     old_int = self.class.onboarding_stages[old_value]
     new_int = self.class.onboarding_stages[self.onboarding_stage]
+
+    # Allow regression if status is restarted and we are going to fresh (or just trust the controller set it)
+    # Actually, if we are fresh, new_int is 0.
+    return if restarted? && new_int == 0
 
     # Clamp to max between prev and current
     if new_int < old_int
