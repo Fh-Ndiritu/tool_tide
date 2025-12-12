@@ -3,7 +3,6 @@
 <% content_for :description, "Access all your AI-generated garden and landscape designs in one place. View, edit, and manage your design projects. Use the AI Editor to refine any design instantly." %>
 
 <div class="container mx-auto w-full px-4 sm:max-w-lg lg:max-w-5xl mt-4">
-
   <div id="mask_requests" class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
     <% if @mask_requests.any? %>
       <%= render partial: 'mask_requests/mask_request_compact', collection: @mask_requests, as: :mask_request %>

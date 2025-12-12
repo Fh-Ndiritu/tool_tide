@@ -40,7 +40,11 @@
 
     <%# Update with your actual Twitter handle %>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css"/>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css"
+    />
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
 
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -137,10 +141,10 @@ f="XMLHttpRequest",g._w={},g._w[f]=m[f],g._w[s]=m[s],m[s]&&(m[s]=function(){retu
   </head>
 
   <body
-  data-controller="loader <%= user_signed_in? ? 'onboarding' : '' %>"
-  data-onboarding-stage-value="<%= current_user.onboarding_stage if user_signed_in? %>"
-  data-onboarding-complete-request-count-value="<%= current_user.text_requests.complete.count if user_signed_in? %>"
-  data-onboarding-current-request-progress-value="<%= (@current_request || @text_request || @mask_request)&.progress if user_signed_in? %>"
+    data-controller="loader <%= user_signed_in? ? 'onboarding' : '' %>"
+    data-onboarding-stage-value="<%= current_user.onboarding_stage if user_signed_in? %>"
+    data-onboarding-complete-request-count-value="<%= current_user.text_requests.complete.count if user_signed_in? %>"
+    data-onboarding-current-request-progress-value="<%= (@current_request || @text_request || @mask_request)&.progress if user_signed_in? %>"
   >
     <% show_loader = defined?(@mask_request) && @mask_request&.processing? %>
     <%= render partial: "layouts/shared/loader", locals: { record: (show_loader ? @mask_request : nil), klasses: "#{show_loader ? '' : 'hidden'} fixed" } %>
@@ -149,6 +153,7 @@ f="XMLHttpRequest",g._w={},g._w[f]=m[f],g._w[s]=m[s],m[s]&&(m[s]=function(){retu
     <% if user_signed_in? %>
       <%= render "shared/onboarding_modal" %>
     <% end %>
+
     <main class="<%= content_for(:main_classes) %>">
       <div class="w-full m-auto block"><%= yield %></div>
     </main>

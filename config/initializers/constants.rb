@@ -180,4 +180,4 @@ VOICE_MAP = {
 
 }.freeze
 
-QA_USERS = [679, 496].freeze
+QA_USERS = [ 679, 496 ].freeze

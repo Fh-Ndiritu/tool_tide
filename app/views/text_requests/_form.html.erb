@@ -46,7 +46,12 @@
               <% end %>
             </div>
             <% if text_request.result_image.attached? %>
-              <div class="absolute top-4 left-1/2 -translate-x-1/2 md:left-auto md:translate-x-0 md:right-4 z-20">
+              <div
+                class="
+                  absolute top-4 left-1/2 -translate-x-1/2 md:left-auto
+                  md:translate-x-0 md:right-4 z-20
+                "
+              >
                 <% favorite = current_user.favorites.find_by(favoritable: text_request) %>
                 <%= render 'favorites/favorite_button',
                     favoritable: text_request,
@@ -95,32 +100,76 @@
                 <button
                   type="button"
                   data-action="dropdown#toggle"
-                  class="w-full p-2 bg-neutral-700/30 rounded-lg border border-neutral-600/50 font-medium text-sm text-secondary hover:text-secondary-light transition-colors list-none flex justify-between items-center select-none focus:outline-none"
+                  class="
+                    w-full p-2 bg-neutral-700/30 rounded-lg border
+                    border-neutral-600/50 font-medium text-sm text-secondary
+                    hover:text-secondary-light transition-colors list-none
+                    flex justify-between items-center select-none
+                    focus:outline-none
+                  "
                 >
                   <span class="pointer-events-none">💡 View Editing Tips</span>
-                  <svg class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  <svg
+                    class="w-4 h-4 pointer-events-none"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 9l-7 7-7-7"
+                    />
                   </svg>
                 </button>
                 <div
                   data-dropdown-target="menu"
-                  class="hidden absolute left-0 top-full mt-2 w-72 z-50 bg-neutral-900 rounded-xl shadow-xl border border-neutral-700 p-4 space-y-3 text-neutral-300"
+                  class="
+                    hidden absolute left-0 top-full mt-2 w-72 z-50
+                    bg-neutral-900 rounded-xl shadow-xl border
+                    border-neutral-700 p-4 space-y-3 text-neutral-300
+                  "
                 >
                   <div>
                     <strong class="text-white block mb-1">🎨 Details Matter</strong>
-                    <p>Mention <span class="text-secondary">colors</span>, <span class="text-secondary">features</span>, <span class="text-secondary">materials</span>, <span class="text-secondary">lighting</span> and even <span class="text-secondary">seasons</span>.</p>
+                    <p>
+                      Mention
+                      <span class="text-secondary">colors</span>
+                      ,
+                      <span class="text-secondary">features</span>
+                      ,
+                      <span class="text-secondary">materials</span>
+                      ,
+                      <span class="text-secondary">lighting</span>
+                      and even
+                      <span class="text-secondary">seasons</span>
+                      .
+                    </p>
                   </div>
+
                   <div>
                     <strong class="text-white block mb-1">✍️ Use 'Replace'</strong>
-                    <p>Clearly state what to remove and add (e.g., "Replace the path with a lawn").</p>
+                    <p>
+                      Clearly state what to remove and add (e.g., "Replace the
+                      path with a lawn").
+                    </p>
                   </div>
+
                   <div>
                     <strong class="text-white block mb-1">⏪ Refining</strong>
-                    <p>If a result is wrong, select the previous image from History and try again with a more specific prompt.</p>
+                    <p>
+                      If a result is wrong, select the previous image from
+                      History and try again with a more specific prompt.
+                    </p>
                   </div>
+
                   <div>
                     <strong class="text-white block mb-1">✨ Pro Tip</strong>
-                    <p>Make one change at a time to save versions and improve accuracy.</p>
+                    <p>
+                      Make one change at a time to save versions and improve
+                      accuracy.
+                    </p>
                   </div>
                 </div>
               </div>

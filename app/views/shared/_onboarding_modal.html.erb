@@ -1,21 +1,41 @@
-  <!-- Welcome Modal -->
+<!-- Welcome Modal -->
+
+<div
+  data-onboarding-target="modal"
+  class="
+    fixed inset-0 z-[100] flex items-center justify-center bg-black/80
+    backdrop-blur-sm hidden
+  "
+>
   <div
-    data-onboarding-target="modal"
-    class="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm hidden"
+    class="
+      bg-white rounded-2xl p-8 max-w-md text-center shadow-2xl border
+      border-gray-200 transform transition-all scale-100
+    "
   >
-    <div class="bg-white rounded-2xl p-8 max-w-md text-center shadow-2xl border border-gray-200 transform transition-all scale-100">
-      <div class="mb-6">
-        <span class="text-6xl">🎉</span>
-      </div>
-      <h2 class="text-3xl font-extrabold text-gray-900 mb-4">Welcome to Hadaa!</h2>
-      <p class="text-lg text-gray-600 mb-8 leading-relaxed">
-        You have <span class="font-bold text-secondary bg-secondary/10 px-2 py-1 rounded"><%= current_user.pro_engine_credits %> Free Credits</span> to design your dream garden. Let's create your first design!
-      </p>
-      <button
-        data-action="click->onboarding#closeModal"
-        class="w-full bg-gradient-to-r from-primary to-secondary text-white font-bold text-lg py-4 px-8 rounded-xl shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-200"
-      >
-        Let's Get Started
-      </button>
-    </div>
+    <div class="mb-6"><span class="text-6xl">🎉</span></div>
+
+    <h2 class="text-3xl font-extrabold text-gray-900 mb-4">
+      Welcome to Hadaa!
+    </h2>
+
+    <p class="text-lg text-gray-600 mb-8 leading-relaxed">
+      You have
+      <span class="font-bold text-secondary bg-secondary/10 px-2 py-1 rounded">
+        <%= current_user.pro_engine_credits %> Free Credits
+      </span>
+      to design your dream garden. Let's create your first design!
+    </p>
+
+    <button
+      data-action="click->onboarding#closeModal"
+      class="
+        w-full bg-gradient-to-r from-primary to-secondary text-white
+        font-bold text-lg py-4 px-8 rounded-xl shadow-lg hover:shadow-xl
+        hover:scale-[1.02] transition-all duration-200
+      "
+    >
+      Let's Get Started
+    </button>
   </div>
+</div>

@@ -17,8 +17,6 @@
     sm:p-6 lg:p-8 font-sans text-text-dark w-full sm:max-w-lg lg:max-w-5xl m-auto
   "
 >
-
-
   <%= render 'shared/balances' %>
   <div
     class="
@@ -34,6 +32,7 @@
     >
       Draw areas to modify
     </h1>
+
     <div
       data-mask-request-target="editorSection"
       class="flex flex-col lg:flex-row lg:gap-8"
@@ -148,17 +147,36 @@
       </div>
     </div>
 
-    <div class="mt-8 p-6 bg-neutral-50 rounded-xl border border-neutral-200 text-sm text-neutral-700">
-      <h3 class="font-bold text-neutral-900 text-lg mb-3">🖌️ Mastering the Brush Tool</h3>
-      <p class="mb-3">The model modifies only the area <strong class="text-neutral-900">directly covered by your brush strokes</strong>.</p>
+    <div
+      class="
+        mt-8 p-6 bg-neutral-50 rounded-xl border border-neutral-200 text-sm
+        text-neutral-700
+      "
+    >
+      <h3 class="font-bold text-neutral-900 text-lg mb-3">
+        🖌️ Mastering the Brush Tool
+      </h3>
+
+      <p class="mb-3">
+        The model modifies only the area
+        <strong class="text-neutral-900">directly covered by your brush strokes</strong>
+        .
+      </p>
+
       <ul class="space-y-2">
         <li class="flex items-start gap-2">
           <span>✅</span>
-          <span><strong>Do this:</strong> Use a thick brush stroke directly over the specific element you want to change.</span>
+          <span>
+            <strong>Do this:</strong> Use a thick brush stroke directly over the specific element you want to change.
+          </span>
         </li>
         <li class="flex items-start gap-2">
           <span>❌</span>
-          <span><strong>Avoid this:</strong> Do not simply outline an area; the entire enclosed space will be interpreted as the target.</span>
+          <span>
+            <strong>Avoid this:</strong>
+            Do not simply outline an area; the entire enclosed space will be
+            interpreted as the target.
+          </span>
         </li>
       </ul>
     </div>

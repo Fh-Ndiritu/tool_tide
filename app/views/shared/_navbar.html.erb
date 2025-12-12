@@ -10,18 +10,19 @@
         <% end %>
       </div>
 
-        <%# # Mobile link button %>
-          <div
-            class="lg:hidden <%= user_signed_in? ? 'absolute left-1/2 -translate-x-1/2' : 'ml-auto' %>"
-            data-action="click->navbar#toggleMenu"
-          >
-            <%= render ButtonComponent.new(
+      <%# # Mobile link button %>
+      <div
+        class="lg:hidden <%= user_signed_in? ? 'absolute left-1/2 -translate-x-1/2' : 'ml-auto' %>"
+        data-action="click->navbar#toggleMenu"
+      >
+        <%= render ButtonComponent.new(
                   text: "",
                   classes: "bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
                   svg: 'list',
                   svg_classes: "bg-transparent h-6 w-6 text-neutral-900",
                   ) %>
-          </div>
+      </div>
+
       <%# # For logged in users %>
       <% if user_signed_in? %>
         <%# # Desktop link button %>
@@ -113,14 +114,12 @@
           data: { action: "click->navbar#toggleMenu" }
           ) %>
         <% end %>
-
         <%= render ButtonComponent.new(
         text: "Dashboard",
         href: mask_requests_path,
         classes: "#{active_item(mask_requests_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
         data: { action: "click->navbar#toggleMenu" }
         ) %>
-
         <% if !marketing_page? && current_user.mask_requests.complete.exists? %>
           <%= render ButtonComponent.new(
             text: "Polish Designs",
@@ -129,9 +128,12 @@
             data: { action: "click->navbar#toggleMenu" }
           ) %>
         <% end %>
-
         <% if marketing_page? %>
-          <div data-controller="dropdown" data-dropdown-hidden-class="hidden" class="relative w-full lg:w-auto">
+          <div
+            data-controller="dropdown"
+            data-dropdown-hidden-class="hidden"
+            class="relative w-full lg:w-auto"
+          >
             <button
               data-action="dropdown#toggle"
               class="
@@ -203,7 +205,9 @@
               <% end %>
 
               <%= link_to "/features/shopping-list-planting-guide", class: active_link_class("/features/shopping-list-planting-guide"), data: { action: "click->dropdown#hide" } do %>
-                <div class="font-bold mb-0.5">Shopping List & Planting Guide</div>
+                <div class="font-bold mb-0.5">
+                  Shopping List & Planting Guide
+                </div>
                 <div class="text-xs text-gray-500 group-hover:text-accent/80">
                   Automated procurement and execution
                 </div>
@@ -237,7 +241,6 @@
           classes: "#{active_item(explore_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
           data: { action: "click->navbar#toggleMenu" }
           ) %>
-
           <%= render ButtonComponent.new(
             text: "FAQ",
             href: "#faq",
@@ -245,7 +248,6 @@
             data: { action: "click->navbar#toggleMenu" }
             ) %>
         <% end %>
-
         <% if current_user.admin? %>
           <%= render ButtonComponent.new(
            text: "Users/MaskEdits",
@@ -260,15 +262,17 @@
            data: { action: "click->navbar#toggleMenu" }
           ) %>
         <% end %>
-
         <% if (current_user.admin? || QA_USERS.include?(current_user.id)) && current_user.initial? && current_user.completed? %>
           <%= button_to "Restart Onboarding", onboarding_reset_path, method: :post,
               form: { class: "contents" },
               class: "gap-4 p-2 rounded-lg cursor-pointer bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0 font-semibold flex items-center",
               data: { action: "click->navbar#toggleMenu" } %>
         <% end %>
-
-        <div data-controller="dropdown" data-dropdown-hidden-class="hidden" class="relative hidden lg:block">
+        <div
+          data-controller="dropdown"
+          data-dropdown-hidden-class="hidden"
+          class="relative hidden lg:block"
+        >
           <button
             data-action="dropdown#toggle"
             class="
@@ -326,8 +330,11 @@
           classes: "#{active_item(root_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
           data: { action: "click->navbar#toggleMenu" }
           ) %>
-
-        <div data-controller="dropdown" data-dropdown-hidden-class="hidden" class="relative w-full lg:w-auto">
+        <div
+          data-controller="dropdown"
+          data-dropdown-hidden-class="hidden"
+          class="relative w-full lg:w-auto"
+        >
           <button
             data-action="dropdown#toggle"
             class="
@@ -433,7 +440,7 @@
           classes: "#{active_item(pricing_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
           data: { action: "click->navbar#toggleMenu" }
           ) %>
-          <%= render ButtonComponent.new(
+        <%= render ButtonComponent.new(
             text: "FAQ",
             href: current_page?(root_path) ? "#faq" : full_faq_path,
             classes: " gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",

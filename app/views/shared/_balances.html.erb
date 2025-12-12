@@ -3,7 +3,11 @@
     <% if (controller_name == 'mask_requests' && action_name == 'new') || (controller_name == 'canvas' && action_name == 'new') %>
       <div class="col-span-2 md:col-span-3 flex items-center justify-between">
         <p class="text-sm text-gray-700">
-          You have <strong class="text-primary"><%= current_user.pro_engine_credits %></strong> credits and this feature will cost <strong class="text-secondary"><%= DEFAULT_IMAGE_COUNT * GOOGLE_IMAGE_COST %></strong> credits.
+          You have
+          <strong class="text-primary"><%= current_user.pro_engine_credits %></strong>
+          credits and this feature will cost
+          <strong class="text-secondary"><%= DEFAULT_IMAGE_COUNT * GOOGLE_IMAGE_COST %></strong>
+          credits.
         </p>
         <p
           class="
@@ -38,7 +42,9 @@
             <h3 class="text-xs font-medium text-gray-500 uppercase tracking-wider">
               Total Available Credits
             </h3>
-            <span class="text-lg font-extrabold text-primary leading-tight"><%= current_user.pro_engine_credits %></span>
+            <span class="text-lg font-extrabold text-primary leading-tight">
+              <%= current_user.pro_engine_credits %>
+            </span>
           </div>
         </div>
 
@@ -51,7 +57,6 @@
           Manage Credits &rarr;
         </p>
       </div>
-
       <div class="flex flex-col gap-1 border-r border-gray-200 pr-4">
         <h4 class="text-xs font-medium text-gray-700 uppercase tracking-wider">
           Brush Edits
@@ -59,7 +64,6 @@
         <span class="text-lg font-bold text-secondary">24 Credits</span>
         <span class="text-xs text-gray-400 mt-0">/ 3 images</span>
       </div>
-
       <div class="flex flex-col gap-1">
         <h4 class="text-xs font-medium text-gray-700 uppercase tracking-wider">
           Ai Edits
