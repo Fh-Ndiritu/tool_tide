@@ -57,12 +57,7 @@
         </div>
 
         <div class="mt-4 flex items-center justify-between">
-          <% if devise_mapping.rememberable? %>
-            <div class="field flex items-center">
-              <%= f.check_box :remember_me, class: "h-4 w-4 text-accent border-neutral-600 rounded focus:ring-accent bg-neutral-700" %>
-              <%= f.label :remember_me, class: "ml-2 block text-sm text-neutral-300" %>
-            </div>
-          <% end %>
+
 
           <div class="text-sm">
             <%= link_to "Forgot password?", new_password_path(resource_name), class: "font-medium text-accent hover:text-accent/80" %>

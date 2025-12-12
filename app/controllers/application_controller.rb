@@ -21,6 +21,11 @@ class ApplicationController < ActionController::Base
   def enforce_onboarding_flow
     return unless user_signed_in?
     return if current_user.onboarding_stage == "completed"
+    if current_user.text_requests.complete.exists? && current_user.text_requests.count > 1
+      current_user.update(onboarding_stage: "completed")
+      return
+    end
+
     return unless [ "canvas", "mask_requests" ].include?(controller_name)
 
     target_path = case current_user.onboarding_stage

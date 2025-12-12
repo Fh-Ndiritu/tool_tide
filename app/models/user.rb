@@ -22,17 +22,19 @@ class User < ApplicationRecord
     google: 1
   }
 
+  before_update :prevent_onboarding_regression, if: :will_save_change_to_onboarding_stage?
+
   enum :onboarding_stage, {
     fresh: 0,
-    welcome_seen: 1,
-    image_uploaded: 2,
-    mask_drawn: 3,
-    style_selected: 8,
-    plants_viewed: 9,
-    first_result_viewed: 4,
-    text_editor_opened: 5,
-    refinement_generated: 6,
-    completed: 7
+    welcome_seen: 10,
+    image_uploaded: 20,
+    mask_drawn: 30,
+    style_selected: 40,
+    plants_viewed: 50,
+    first_result_viewed: 60,
+    text_editor_opened: 70,
+    refinement_generated: 80,
+    completed: 90
   }
 
   geocoded_by :current_sign_in_ip do |obj, results|
@@ -99,5 +101,20 @@ class User < ApplicationRecord
       credit_type: :pro_engine,
       amount: 40
     )
+  end
+
+  def prevent_onboarding_regression
+    return if onboarding_stage.nil?
+
+    old_value = changes_to_save["onboarding_stage"]&.first
+    return if old_value.nil?
+
+    old_int = self.class.onboarding_stages[old_value]
+    new_int = self.class.onboarding_stages[self.onboarding_stage]
+
+    # Clamp to max between prev and current
+    if new_int < old_int
+      self.onboarding_stage = old_value
+    end
   end
 end

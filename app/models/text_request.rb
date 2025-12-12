@@ -39,7 +39,8 @@ class TextRequest < ApplicationRecord
     processed: 5,
     complete: 6,
     failed: 7,
-    retying: 8
+    retying: 8,
+    analyzing: 9
   }
 
   enum :visibility, {
@@ -48,7 +49,7 @@ class TextRequest < ApplicationRecord
   }
 
   def in_progress?
-    progress_before_type_cast.in?(self.class.progresses["validating"]...self.class.progresses["complete"])
+    progress_before_type_cast.in?(self.class.progresses["validating"]...self.class.progresses["complete"]) || analyzing?
   end
 
   private
@@ -58,11 +59,12 @@ class TextRequest < ApplicationRecord
     TextEditorJob.perform_later(id)
   end
 
-def broadcast_progress
-  if failed? || complete?
-    Turbo::StreamsChannel.broadcast_refresh_to("#{user.id}_text_requests")
-  else
-    Turbo::StreamsChannel.broadcast_update_to("#{user.id}_text_requests", target: "loader_overlay", partial: "layouts/shared/loader", locals: { record: self, klasses: " group embed absolute w-full h-full z-1" })
+  def broadcast_progress
+    if failed? || complete?
+      Turbo::StreamsChannel.broadcast_refresh_to("#{user.id}_text_requests")
+    else
+      Turbo::StreamsChannel.broadcast_update_to("#{user.id}_text_requests", target: "loader_overlay", partial: "layouts/shared/loader", locals: { record: self, klasses: " group embed absolute w-full h-full z-1" })
+      Turbo::StreamsChannel.broadcast_update_to("#{user.id}_text_requests", target: dom_id(self, :loader), partial: "layouts/shared/loader", locals: { record: self, klasses: "group embed absolute !opacity-75 z-1 w-full h-full" })
+    end
   end
-end
 end

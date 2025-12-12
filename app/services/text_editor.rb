@@ -25,7 +25,8 @@ class TextEditor
   private
 
   def process_with_text
-    prompt = @text_request.prompt
+    TextRequestQualifier.perform(@text_request)
+    prompt = @text_request.refined_prompt.presence || @text_request.prompt
     image = @text_request.original_image
     payload = gcp_payload(prompt:, image:)
     @text_request.generating!

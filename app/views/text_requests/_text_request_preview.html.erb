@@ -49,8 +49,10 @@
       </p>
     </div>
 
-    <% if text_request.in_progress? %>
-      <%= render partial: "layouts/shared/loader", locals: { record: text_request, klasses: "group embed absolute !opacity-75 z-1 w-full h-full" } %>
-    <% end %>
+    <div id="<%= dom_id(text_request, :loader) %>" class="absolute inset-0 pointer-events-none z-20">
+      <% if text_request.in_progress? %>
+        <%= render partial: "layouts/shared/loader", locals: { record: text_request, klasses: "group embed absolute !opacity-75 z-1 w-full h-full" } %>
+      <% end %>
+    </div>
   </div>
 <% end %>
