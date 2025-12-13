@@ -1,9 +1,9 @@
-<div class="mb-4 md:mb-6 break-inside-avoid">
+<div class="masonry-item w-full sm:w-1/2 md:w-1/3 lg:w-1/5 p-0 mb-0">
   <div
     class="
-      rounded-xl shadow-2xl overflow-hidden cursor-pointer
+      overflow-hidden cursor-pointer
       transition-all duration-300 ease-in-out
-      hover:scale-[1.05] hover:shadow-accent/70 hover:shadow-2xl relative group
+      hover:scale-[1.05] hover:z-10 relative group
     "
   >
     <%= image_tag url_for(text_request.result_image.variant(resize_to_limit: [400, 400])),
@@ -30,9 +30,9 @@
       "
     >
       <%= render ButtonComponent.new(
-                    text: "Design Details 🔒",
+                    text: "Login & view",
                     href: text_request_path(text_request),
-                    classes: "bg-black/70 text-white text-sm font-bold py-2 px-4 rounded-full shadow-lg ring-2 ring-white/70 hover:bg-black/90"
+                    classes: "bg-black/50 hover:bg-black/80 backdrop-blur-md text-white text-[10px] font-bold py-1 px-3 rounded-full transition-all duration-300"
                   ) %>
     </div>
   </div>

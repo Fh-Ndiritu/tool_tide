@@ -13,10 +13,23 @@ pin_all_from "app/javascript/channels", under: "channels"
 pin "@stimulus-components/dropdown", to: "@stimulus-components--dropdown.js" # @3.0.0
 pin "stimulus-use" # @0.52.3
 pin "@stimulus-components/password-visibility", to: "@stimulus-components--password-visibility.js" # @3.0.0
-pin "masonry" # @0.0.2
+pin "masonry-layout" # @4.2.2
+pin "imagesloaded" # @5.0.0
+pin "desandro-matches-selector" # @2.0.2
+pin "ev-emitter" # @2.1.2
+pin "fizzy-ui-utils" # @2.0.7
+pin "get-size" # @2.0.3
+pin "outlayer" # @2.1.1
 pin "ejs" # @0.7.1
 pin "fs" # @2.1.0
 pin "photoswipe", to: "https://unpkg.com/photoswipe@5.4.3/dist/photoswipe.esm.js"
 pin "photoswipe-lightbox", to: "https://unpkg.com/photoswipe@5.4.3/dist/photoswipe-lightbox.esm.js"
 pin "driver.js", to: "https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.js.mjs"
 pin "canvas-confetti" # @1.9.4
+pin "imagesloaded" # @5.0.0
+pin "masonry-layout" # @4.2.2
+pin "desandro-matches-selector" # @2.0.2
+pin "ev-emitter" # @2.1.2
+pin "fizzy-ui-utils" # @2.0.7
+pin "get-size" # @2.0.3
+pin "outlayer" # @2.1.1
