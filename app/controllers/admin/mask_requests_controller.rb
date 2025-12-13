@@ -17,6 +17,16 @@ class Admin::MaskRequestsController < ApplicationController
   def edit
   end
 
+  def destroy
+    @mask_request = MaskRequest.find(params[:id])
+    if @mask_request.user.admin?
+      @mask_request.destroy
+      redirect_to admin_mask_requests_path, notice: "Mask request destroyed."
+    else
+      redirect_to admin_mask_requests_path, alert: "You can only destroy admin requests."
+    end
+  end
+
   def toggle_display
     @mask_request = MaskRequest.find(params[:id])
     if @mask_request.everyone?

@@ -17,6 +17,15 @@ class Admin::TextRequestsController < ApplicationController
   def edit
   end
 
+  def destroy
+    if @text_request.user.admin?
+      @text_request.destroy
+      redirect_to admin_text_requests_path, notice: "Text request destroyed."
+    else
+      redirect_to admin_text_requests_path, alert: "You can only destroy admin requests."
+    end
+  end
+
   def toggle_display
     if @text_request.everyone?
       @text_request.personal!
