@@ -1,5 +1,6 @@
 class Admin::TextRequestsController < ApplicationController
-  before_action :set_text_request, only: [ :edit, :toggle_display ]
+  before_action :set_text_request, only: [ :edit, :toggle_display, :destroy ]
+
   def index
      @text_requests = if params[:day].present?
       TextRequest.complete.where(updated_at: params[:day].to_i.days.ago.all_day)
