@@ -67,27 +67,8 @@
         </li>
       </ul>
 
-      <div class="bg-gray-100 p-4 rounded-lg mb-8 border border-gray-300">
-        <div class="flex items-start space-x-3">
-          <span class="text-xl pt-0.5 text-secondary">🛡️</span>
-          <div class="mb-6">
-            <h4 class="text-sm font-bold text-neutral-900 mb-1 uppercase">
-              Secure & Trusted Payment
-            </h4>
-            <p class="text-neutral-700 text-sm">
-              Your payment is secure.
-              <b>Paystack, a Stripe Company</b>
-              , uses bank-grade
-              <b>PCI DSS standards</b>
-              , ensuring we
-              <b>never store</b>
-              your credit card details.
-            </p>
-          </div>
-        </div>
-        <div class="flex w-full justify-center">
-          <%= button_to "Top Up Credits", payment_transactions_path, data: {turbo: false}, method: :post, onclick: "gtag('event', 'begin_checkout', { 'currency': 'USD', 'value': #{DEFAULT_USD_PURCHASE_AMOUNT.to_f} });", class: "m-auto cursor-pointer inline-block bg-secondary text-neutral-100 font-bold py-3 px-8 rounded-full shadow-xl transition-all duration-300 transform hover:scale-[1.03] hover:bg-cta-bg ring-4 ring-secondary/50" %>
-        </div>
+      <div class="flex w-full justify-center">
+        <%= button_to "Top Up Credits", payment_transactions_path, data: {turbo: false}, method: :post, onclick: "gtag('event', 'begin_checkout', { 'currency': 'USD', 'value': #{DEFAULT_USD_PURCHASE_AMOUNT.to_f} });", class: "m-auto cursor-pointer inline-block bg-secondary text-neutral-100 font-bold py-3 px-8 rounded-full shadow-xl transition-all duration-300 transform hover:scale-[1.03] hover:bg-cta-bg ring-4 ring-secondary/50" %>
       </div>
     </div>
   </div>
