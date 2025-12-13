@@ -27,4 +27,7 @@ class FeaturesController < ApplicationController
 
   def sketch_to_3d_rendering
   end
+
+  def intuitive_onboarding
+  end
 end

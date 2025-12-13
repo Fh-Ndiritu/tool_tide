@@ -183,6 +183,13 @@
                 </div>
               <% end %>
 
+              <%= link_to "/features/intuitive-onboarding", class: active_link_class("/features/intuitive-onboarding"), data: { action: "click->dropdown#hide" } do %>
+                <div class="font-bold mb-0.5">Intuitive Onboarding</div>
+                <div class="text-xs text-gray-500 group-hover:text-accent/80">
+                  Zero learning curve, instant results
+                </div>
+              <% end %>
+
               <%= link_to "/features/preset-style-selection", class: active_link_class("/features/preset-style-selection"), data: { action: "click->dropdown#hide" } do %>
                 <div class="font-bold mb-0.5">Preset Styles Selection</div>
                 <div class="text-xs text-gray-500 group-hover:text-accent/80">
@@ -374,6 +381,13 @@
               <div class="font-bold mb-0.5">Brush Tool & Prompt Editor</div>
               <div class="text-xs text-gray-500 group-hover:text-accent/80">
                 Precision editing for your landscape
+              </div>
+            <% end %>
+
+            <%= link_to "/features/intuitive-onboarding", class: active_link_class("/features/intuitive-onboarding"), data: { action: "click->dropdown#hide" } do %>
+              <div class="font-bold mb-0.5">Intuitive Onboarding</div>
+              <div class="text-xs text-gray-500 group-hover:text-accent/80">
+                Zero learning curve, instant results
               </div>
             <% end %>
 
