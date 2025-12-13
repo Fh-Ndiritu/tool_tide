@@ -1,9 +1,6 @@
 class OnboardingController < ApplicationController
   def update
     if current_user.update(onboarding_stage: params[:stage])
-      if current_user.completed? && current_user.restarted?
-        current_user.completed_after_restart!
-      end
       respond_to do |format|
         format.turbo_stream
       end
@@ -18,7 +15,7 @@ class OnboardingController < ApplicationController
 
     current_user.transaction do
       current_user.restarted!
-      current_user.update!(onboarding_stage: :fresh, pro_engine_credits: 100)
+      current_user.update!(pro_engine_credits: current_user.pro_engine_credits + 60)
     end
     redirect_to root_path, notice: "Onboarding reset successfully."
   end
