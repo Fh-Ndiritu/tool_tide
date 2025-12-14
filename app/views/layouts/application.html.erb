@@ -138,6 +138,17 @@ g.log=function(b,d){h("log",{level:b,msg:d})},g.consent=function(b){h("setIdenti
 f="XMLHttpRequest",g._w={},g._w[f]=m[f],g._w[s]=m[s],m[s]&&(m[s]=function(){return g._w[s].apply(this,arguments)}),g._v="2.0.0")
 }(window,document,window._fs_namespace,"script",window._fs_script);
 </script>
+    <% if user_signed_in? %>
+      <script>
+        FS('setIdentity', {
+          uid: '<%= current_user.id %>',
+          properties: {
+            displayName: '<%= current_user.user_name || current_user.name || current_user.email %>',
+            email: '<%= current_user.email %>'
+          }
+        });
+      </script>
+    <% end %>
   </head>
 
   <body
