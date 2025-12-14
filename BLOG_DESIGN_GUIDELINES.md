@@ -16,62 +16,56 @@ All content must be returned as raw HTML with inline Tailwind CSS classes. Use t
 
 *   **Body Text:** `text-lg text-neutral-300 leading-relaxed mb-6 font-light font-sans`
     *   *Note:* We use light text on dark backgrounds (`bg-neutral-900`) for the blog specifically to match the app's premium feel.
-*   **H2 Headings:** `text-3xl font-bold text-white mt-12 mb-6 border-b border-white/10 pb-4`
+*   **H1 Title:** `text-4xl md:text-5xl font-extrabold text-white mb-8 tracking-tight`
+*   **H2 Headings:** `text-2xl md:text-3xl font-bold text-white mt-12 mb-6 border-b border-white/10 pb-4`
 *   **H3 Headings:** `text-xl font-semibold text-accent mb-4 mt-8`
 *   **Links:** `text-accent hover:text-white underline decoration-accent/30 underline-offset-4 transition-colors`
 
-### Layout Containers
-
-*   **Standard Wrapper:** The content is injected into a container. Ensure extensive use of whitespace.
+### Layout Containers (Full Width & Responsive)
+*   **Main Section Wrappers:** MUST be full screen width to allow background colors to extend fully.
+    *   Class: `w-full bg-neutral-900`
+*   **Inner Content Constraints:** All text and components must be inside a constrained container to ensure readability.
+    *   Class: `container mx-auto px-6 max-w-4xl py-12 md:py-20`
 *   **Feature Box / Callout:**
-    ```html
-    <div class="bg-neutral-800/50 border border-white/5 rounded-2xl p-8 my-10 backdrop-blur-sm">
-      <!-- content -->
-    </div>
-    ```
+    *   Container: `bg-neutral-800/50 rounded-2xl p-8 my-10 border border-white/5 shadow-2xl backdrop-blur-sm`
+    *   Text: `text-neutral-300`
 
 ## 3. Required Components
 
-### A. The "Local Plant Palette" Grid
-When listing plants, DO NOT use a simple bullet list. Use a responsive grid card layout.
+### A. The "Plant Palette" Grid
+A responsive grid layout for displaying plant recommendations.
+*   **Grid Container:** `grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-10`
+*   **Card Item:** `bg-neutral-800/30 rounded-3xl p-8 border border-white/5 hover:bg-neutral-800/50 transition-all duration-300 hover:-translate-y-2 group`
+*   **Icon/Initial:**
+    *   Base: `w-12 h-12 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform font-bold text-xl`
+    *   **Color Variety (Rotate these):**
+        *   `bg-accent/20 text-accent`
+        *   `bg-blue-500/20 text-blue-400`
+        *   `bg-green-500/20 text-green-400`
+        *   `bg-purple-500/20 text-purple-400`
+        *   `bg-rose-500/20 text-rose-400`
+*   **Title:** `text-xl font-bold text-white mb-2 group-hover:text-accent transition-colors`
+*   **Description:** `text-neutral-400 text-sm mb-4 leading-relaxed`
+*   **Link:** `text-xs font-bold text-accent uppercase tracking-wider hover:text-white`
 
-```html
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-10">
-  <!-- Repeat for each plant -->
-  <div class="bg-neutral-800 rounded-xl p-6 border border-white/5 hover:border-accent/50 transition-colors group">
-    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-accent transition-colors">[Plant Name]</h3>
-    <p class="text-neutral-400 text-sm mb-4">[Short description of why it works here]</p>
-    <a href="https://www.google.com/search?q=[Plant Name]+plant" target="_blank" class="text-xs font-bold text-accent uppercase tracking-wider hover:text-white">
-      View Images &rarr;
-    </a>
-  </div>
-</div>
-```
-
-### B. In-Content CTAs (Contextual)
-Place 1-2 contextual CTAs within the body content where relevant (e.g., after discussing specific design styles or plants).
-
-```html
-<div class="my-12 p-1 bg-gradient-to-r from-accent/20 to-secondary/20 rounded-2xl">
-  <div class="bg-neutral-900 rounded-xl p-8 text-center">
-    <h4 class="text-2xl font-bold text-white mb-2">See this in your yard</h4>
-    <p class="text-neutral-300 mb-6 max-w-2xl mx-auto">Don't guess. Use Hadaa's <strong>AI Brush</strong> to visualize [Specific Topic from text] instantly.</p>
-    <a href="/users/sign_up" class="inline-block px-8 py-3 bg-white text-black font-bold rounded-full hover:bg-accent hover:text-white transition-all transform hover:scale-105">
-      Try It Free
-    </a>
-  </div>
-</div>
-```
+### B. Contextual CTA Section
+A prominent call-to-action block to drive user sign-ups.
+*   **Outer Gradient Wrapper:** `my-12 p-[1px] bg-gradient-to-r from-accent to-secondary rounded-3xl overflow-hidden shadow-2xl`
+*   **Inner Container:** `bg-neutral-900 rounded-[23px] p-8 md:p-12 text-center relative`
+*   **Headline:** `text-3xl md:text-4xl font-bold text-white mb-4`
+*   **Body:** `text-lg text-neutral-300 mb-8 max-w-2xl mx-auto`
+*   **Button:** `inline-block px-10 py-4 bg-white text-black font-bold rounded-full hover:bg-accent hover:text-white transition-all duration-300 transform hover:scale-105 shadow-xl`
 
 ### C. Internal Linking (SEO)
-You will be provided with a list of **Related Guides**. You MUST weave these links naturally into the text where relevant, OR create a "Read More" section at the end of a segment.
-*   **Format:** `<a href="/landscaping-guides/[slug]" class="...">[Title]</a>`
+Weave links naturally into the text.
+*   **Style:** `text-accent hover:text-white transition-colors`
 
 ---
 
 ## 4. Image Instructions
-*   Use `https://source.unsplash.com/1600x900/?[keyword]` for generic placeholders if needed, but prefer describing the visual so we can replace it with app assets later.
-*   For now, leave clear comments: `<!-- INSERT IMAGE: [Description] -->`
+*   **Placeholder Source:** `https://source.unsplash.com/1600x900/?[keyword]`
+*   **Alt Text:** Descriptive and keyword-rich.
+*   **Styling:** `rounded-2xl shadow-lg border border-white/10 w-full mb-8`
 
 ## 5. Structural Rules
 1.  **No Introduction Fluff:** Start immediately with value.

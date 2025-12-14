@@ -1,7 +1,14 @@
 <% content_for :title, @page_title %>
 <% content_for :description, @page_description %>
 
-  <%= @blog.content.html_safe %>
+<div>
+<% if @blog.html_content.present? %>
+  <%= @blog.html_content.gsub('```html', '').gsub('```', '').html_safe %>
+<% else %>
+  <p>No content available for this blog post.</p>
+<% end %>
+</div>
+
 <%# CTA Section %>
 <div class="bg-green-50 dark:bg-green-900 py-12 mt-12">
   <div class="container mx-auto px-4 text-center">

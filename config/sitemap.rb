@@ -49,8 +49,13 @@ SitemapGenerator::Sitemap.create do
     add "/seasons/#{season.slug}", changefreq: "weekly", priority: 0.8
   end
 
-  Location.find_each do |location|
-    add "/designs/#{location.slug}", changefreq: "weekly", priority: 0.8
+    # Location.find_each do |location|
+    #   add "/designs/#{location.slug}", changefreq: "weekly", priority: 0.8
+    # end
+
+  # We add automated blog pages
+  Blog.find_each do |blog|
+    add "/landscaping-guides/#{blog.slug}", changefreq: "weekly", priority: 0.8
   end
 end
 

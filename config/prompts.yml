@@ -326,50 +326,95 @@ blog:
   questions_to_blog: |
     Role: You are the Senior Content Strategist and SEO Specialist for Hadaa.app. Your goal is to write a highly authoritative, location-specific landscape design guide.
 
-    Input Data: I will provide you with a set of Deep Dive Answers regarding a specific location (City/State/Country).
+    Role: You are the Senior Content Strategist for Hadaa.app.
 
-    Your Task: Transform those answers into a structured, engaging, and SEO-optimized blog post. You must return the content as a valid HTML string using Tailwind CSS classes for a professional, responsive layout.
+    Goal: Write a highly authoritative, location-specific landscape design guide based on provided research.
+    Output Format: Clean, structured Markdown.
 
-    IMPORTANT: You must STRICTLY adhere to the visual design rules defined in the <design_guidelines> section below. Do not invent your own styles if they conflict with the guidelines.
+    Input Data:
+    <deep_dive_answers>
+    <<deep_dive_answers>>
+    </deep_dive_answers>
 
-    Technical & UI Constraints:
-    - Use Tailwind CSS for all styling.
-    - Ensure the layout is mobile-responsive.
-    - Do not use asterisks or markdown bolding symbols in the content. Use HTML tags like strong or span with font-medium.
-    - Links for plants will be a google search link to www.google.com/search?q=Plant Name + "plant"
+    <related_blogs>
+    <<related_blogs>>
+    </related_blogs>
 
-    Editorial Guidelines:
-    - H1 Title: Create a compelling H1 at the top of the content.
-    - Plant List: MUST use the responsive grid layout defined in the guidelines.
-    - Maintenance Calendar: Present this clearly, using a container style from the guidelines.
-    - Call to Action: Ensure you place at least one primary CTA that points to '/users/sign_up' with the text 'Start Designing Free'.
-    - Internal Linking: Include contextually relevant backlinks to 2-3 blogs from the <related_blogs> list.
+    1. Editorial Strategy (Strict Adherence)
 
-    SEO & Brand Voice:
-    - Emphasize the AI Brush and Intelligent Prompt Editor.
-    - Maintain the Inverted Pyramid style (core answers first).
-    - Avoid fluff like "In today's world" or "Let's dive in."
+    A. The "Generative Visibility" Structure (LLM Optimization)
 
-    <deep_dive_questions> <<deep_dive_questions>> </deep_dive_questions>
+    Inverted Pyramid: Do not bury the answer. Start every section with the core solution. (e.g., "The best shade tree for Austin is the Live Oak because...")
 
-    <design_guidelines> <<design_guidelines>> </design_guidelines>
+    Semantic Density: Use specific botanical names, soil terminology, and local climate terms found in the input data.
 
-    <related_blogs> <<related_blogs>> </related_blogs>
+    No Fluff: Remove generic intros like "In today's world" or "Let's dive in."
 
-    CAREFULLY read through the <deep_dive_questions> and <design_guidelines> sections before providing a response.
+    B. The Hadaa Brand Rule
 
-    The Blog Structure (Output Format): Your answer must be a JSON object with this structure:
-    {
-      blog_post: {
-      "metadata": {
-        "title": "The Title of the Blog Post",
-        "description": "The Meta Description",
-        "primary_keyword": "Keyword",
-        "lsi_keywords": ["K1", "K2"],
-        "url_slug": "location-state-name"
-      },
-      "content": "A single HTML string containing the body of the post with Tailwind classes."
-      }
-    }
-    IMPORTANT: Return the response as a RAW JSON string. Do NOT wrap it in markdown code blocks (```json). Do NOT add any text before or after the JSON.
-    You SHALL not ADD any commentary or return any additional information other than the JSON object.
+    Zero-Mention Body: Do NOT mention Hadaa.app, AI tools, or software in the main body of the article. The guide must stand alone as a valuable resource for plants and maintenance.
+
+    The "Precision" Conclusion: You will only mention Hadaa in the very last paragraph. When you do, you must frame it as a tool for Precision and Control (specifically mentioning the AI Brush for materials and Intelligent Prompt Editor for style), not just "inspiration."
+
+    C. Formatting Rules
+
+    Plant Lists: Format these as a Markdown Table with columns: Plant Name, Best Use, Key Feature.
+
+    Plant Links: Every plant name in the table must be a link to a Google Image search: [Plant Name](https://www.google.com/search?q=Plant+Name+"plant").
+
+    Internal Links: Contextually weave the <related_blogs> into the text where they add value (e.g., "For more on drought-tolerant groundcover, see our guide on [Link Title](Link URL)...").
+
+    2. The Article Structure
+
+    Please generate the response in the following format:
+
+    --- METADATA ---
+
+    SEO Title: (Engaging, High-Intent Title including Location)
+
+    Meta Description: (Under 160 chars, authoritative summary)
+
+    URL Slug: location-(state-or-country)-landscape-guide
+
+    --- ARTICLE CONTENT ---
+    The entire blog content from title to last logical paragraph.
+
+    Last paragraph: This is the Hadaa pitch. Explain that before buying expensive materials, the user should visualize their specific yard. Mention how Hadaa.app allows them to use the AI Brush to paint specific hardscapes (gravel/mulch) or the Prompt Editor to refine the style, ensuring the design works before breaking ground.]
+
+  markdown_to_html: |
+    Role: You are an expert Frontend Developer and UI/UX Designer for Hadaa.app.
+
+    Task: Convert the provided Markdown blog content into a visually stunning, responsive HTML page using Tailwind CSS.
+
+    Input:
+    <content_to_convert>
+    <<markdown_content>>
+    </content_to_convert>
+
+    Visual Reference:
+    I have attached a screenshot of our "Brush Tool" feature page. You MUST analyze this image to understand our "Premium Dark" aesthetic:
+    - Deep neutral backgrounds (bg-neutral-900).
+    - Glowing borders.
+    - Specific font weights (light/extrabold).
+    - Card styles (glassmorphism).
+
+    Guidelines:
+    You must strictly follow the <design_guidelines> provided below.
+
+    <design_guidelines>
+    <<design_guidelines>>
+    </design_guidelines>
+
+    Specific Instructions:
+    1. **HTML Structure:** Return the full HTML body content (do not include <html>, <head>, or <body> tags, just the inner content).
+    2. **Images:** Replace any image placeholders or comments with actual `img` tags using LoremFlickr e.g. `https://loremflickr.com/1600/900/miami,skyline`.
+      - If no images are present, carefully analyze the content and create a relevant images using LoremFlickr.
+    3. **Links:** Ensure all plant links (Google Search) are styled with `text-accent underline hover:text-white`.
+    4. **Cards:** Use the card styles from the guidelines/image for the Plant List and any Feature Boxes.
+      - Use layout variations to break monotony.
+    5. **Typography:** Use `font-sans` with `text-neutral-300` for body and `text-white` for headings.
+    6. Use HTML <b> tags for bold instead of markdown asterisks (*).
+
+    Output Format: RETURN ONLY the HTML content with no commentary, or ANY extra text besides
+
+    IMPORTANT: DO NOT enclose the HTML in markdown tags or any other formatting. Just return the raw HTML content.

@@ -13,6 +13,12 @@ class BlogPostSchema < RubyLLM::Schema
   end
 end
 
+class BlogHTMLSchema < RubyLLM::Schema
+  object :blog_post do
+    string :html_content, description: "The raw HTML string of the blog post"
+  end
+end
+
 class BlogGeneratorService
   def initialize(blog_id)
     @blog = Blog.find(blog_id)
@@ -23,11 +29,11 @@ class BlogGeneratorService
   end
 
   def generate
-    # Step 1: Deep Dive with Mistral
     generate_deep_dive unless @blog.raw_deep_dive.present?
 
-    # Step 2: Blog Post with Gemini
     generate_blog_content
+
+    generate_blog_html
   end
 
   private
@@ -35,21 +41,17 @@ class BlogGeneratorService
   def generate_deep_dive
     prompt = PROMPTS["blog"]["deep_dive_questions"].gsub("<<LOCATION>>", @blog.location_name)
 
-    response = RubyLLM.chat(model: 'mistral-large-latest', provider: 'mistral').ask(prompt)
+    response = RubyLLM.chat(model: "mistral-large-latest", provider: "mistral").ask(prompt)
     @blog.update!(raw_deep_dive: response.content)
   end
 
   def generate_blog_content
-    design_guidelines = File.read(Rails.root.join("BLOG_DESIGN_GUIDELINES.md"))
-
-    # Fetch random other blogs for internal linking
     related_blogs = Blog.where.not(id: @blog.id).sample(4).map do |b|
       "- [#{b.title}](/landscaping-guides/#{b.slug.split('/').last})"
     end.join("\n")
 
     prompt = PROMPTS["blog"]["questions_to_blog"]
-             .gsub("<<deep_dive_questions>>", @blog.raw_deep_dive)
-             .gsub("<<design_guidelines>>", design_guidelines)
+             .gsub("<<deep_dive_answers>>", @blog.raw_deep_dive)
              .gsub("<<related_blogs>>", related_blogs)
 
     response = RubyLLM.chat.with_schema(BlogPostSchema).ask(prompt)
@@ -64,7 +66,23 @@ class BlogGeneratorService
       title: metadata["title"],
       content: data["content"],
       metadata: metadata.except("url_slug"),
-      slug: final_slug,
+      slug: final_slug
+    )
+  end
+
+  def generate_blog_html
+    design_guidelines = File.read(Rails.root.join("BLOG_DESIGN_GUIDELINES.md"))
+    reference_image = Rails.root.join("app/assets/images/brush_prompt.png")
+
+    prompt = PROMPTS["blog"]["markdown_to_html"]
+             .gsub("<<markdown_content>>", @blog.content)
+             .gsub("<<design_guidelines>>", design_guidelines)
+
+    response = RubyLLM.chat.ask(prompt, with: reference_image)
+    html_content = response.content.gsub('```html', '').gsub('```', '')
+
+    @blog.update!(
+      html_content: html_content,
       published: true
     )
   end

@@ -13,15 +13,11 @@ module Admin
     def create
       @blog = Blog.new(blog_params)
       if @blog.save
-        BlogGeneratorService.perform(@blog.id)
-        redirect_to admin_blogs_path, notice: "Blog for #{@blog.location_name} is being generated."
+        BlogGenerationJob.perform_later(@blog.id)
+        redirect_to admin_blogs_path, notice: "Blog generation for #{@blog.location_name} has been queued."
       else
         render :new
       end
-    rescue => e
-      flash[:alert] = "Generation failed: #{e.message}"
-      @blog.destroy if @blog.persisted?
-      render :new
     end
 
     def show
