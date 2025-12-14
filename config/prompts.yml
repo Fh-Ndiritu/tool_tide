@@ -408,10 +408,10 @@ blog:
     Specific Instructions:
     1. **HTML Structure:** Return the full HTML body content (do not include <html>, <head>, or <body> tags, just the inner content).
     2. **Images:** Replace any image placeholders or comments with actual `img` tags using LoremFlickr e.g. `https://loremflickr.com/1600/900/miami,skyline`.
-      - If no images are present, carefully analyze the content and create a relevant images using LoremFlickr.
+      - If no images are present, carefully analyze the content and create 2-3 relevant images using LoremFlickr.
     3. **Links:** Ensure all plant links (Google Search) are styled with `text-accent underline hover:text-white`.
     4. **Cards:** Use the card styles from the guidelines/image for the Plant List and any Feature Boxes.
-      - Use layout variations to break monotony.
+      - Use multi-column layout variations to break monotony where appropriate.
     5. **Typography:** Use `font-sans` with `text-neutral-300` for body and `text-white` for headings.
     6. Use HTML <b> tags for bold instead of markdown asterisks (*).
 

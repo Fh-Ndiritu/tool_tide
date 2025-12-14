@@ -256,18 +256,64 @@
             ) %>
         <% end %>
         <% if current_user.admin? %>
-          <%= render ButtonComponent.new(
-           text: "Users/MaskEdits",
-           href: admin_mask_requests_path,
-           classes: "#{active_item(admin_mask_requests_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
-           data: { action: "click->navbar#toggleMenu" }
-          ) %>
-          <%= render ButtonComponent.new(
-           text: "Users/TextEdits",
-           href: admin_text_requests_path,
-           classes: "#{active_item(admin_text_requests_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
-           data: { action: "click->navbar#toggleMenu" }
-          ) %>
+          <div data-controller="dropdown" class="relative">
+            <button
+              data-action="dropdown#toggle"
+              class="
+                flex items-center gap-4 bg-transparent hover:bg-secondary
+                focus:outline-none hover:bg-accent text-neutral-900
+                hover:text-white p-0 rounded-md transition duration-150
+                w-full lg:w-auto justify-center
+              "
+            >
+              <span class="font-bold">Admin</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
+
+            <div
+              data-dropdown-target="menu"
+              data-dropdown-hidden-class="hidden"
+              class="
+                hidden relative w-full lg:absolute lg:w-72 lg:left-auto
+                lg:translate-x-0 mt-2 bg-white rounded-xl shadow-none lg:shadow-2xl p-2
+                z-50 ring-1 ring-black/5 origin-top-right lg:right-0
+              "
+            >
+              <%= link_to admin_mask_requests_path, class: active_link_class(admin_mask_requests_path), data: { action: "click->dropdown#hide" } do %>
+                <div class="font-bold mb-0.5">Users/MaskEdits</div>
+                <div class="text-xs text-gray-500 group-hover:text-accent/80">
+                  Manage mask requests
+                </div>
+              <% end %>
+
+              <%= link_to admin_text_requests_path, class: active_link_class(admin_text_requests_path), data: { action: "click->dropdown#hide" } do %>
+                <div class="font-bold mb-0.5">Users/TextEdits</div>
+                <div class="text-xs text-gray-500 group-hover:text-accent/80">
+                  Manage text requests
+                </div>
+              <% end %>
+
+              <%= link_to admin_blogs_path, class: active_link_class(admin_blogs_path), data: { action: "click->dropdown#hide" } do %>
+                <div class="font-bold mb-0.5">Blogs</div>
+                <div class="text-xs text-gray-500 group-hover:text-accent/80">
+                  Manage blog posts
+                </div>
+              <% end %>
+            </div>
+          </div>
         <% end %>
         <% if (current_user.admin? || QA_USERS.include?(current_user.id)) && current_user.initial? && current_user.completed? %>
           <%= button_to "Restart Onboarding", onboarding_reset_path, method: :post,

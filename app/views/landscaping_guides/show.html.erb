@@ -1,7 +1,7 @@
 <% content_for :title, @page_title %>
 <% content_for :description, @page_description %>
 
-<div>
+<div class="dark:bg-neutral-900">
 <% if @blog.html_content.present? %>
   <%= @blog.html_content.gsub('```html', '').gsub('```', '').html_safe %>
 <% else %>
@@ -10,7 +10,7 @@
 </div>
 
 <%# CTA Section %>
-<div class="bg-green-50 dark:bg-green-900 py-12 mt-12">
+<div class="bg-white dark:bg-neutral-900 py-12 mt-12">
   <div class="container mx-auto px-4 text-center">
     <h2 class="text-3xl font-bold mb-4 text-green-900 dark:text-green-100">Ready to Visualize Your Dream Garden?</h2>
     <p class="text-lg text-green-700 dark:text-green-200 mb-8">Try Hadaa's AI Brush and Prompt Editor to bring these ideas to life in your own yard.</p>

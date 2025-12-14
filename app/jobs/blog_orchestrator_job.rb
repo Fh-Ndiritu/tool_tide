@@ -12,12 +12,12 @@ class BlogOrchestratorJob < ApplicationJob
 
     # Add City (Scoped with State/Country for uniqueness), State, Country
     if location.city.present?
-      city_target = [location.city, location.state, location.country].compact.join(", ")
+      city_target = [ location.city, location.state, location.country ].compact.join(", ")
       targets << city_target
     end
 
     if location.state.present?
-      state_target = [location.state, location.country].compact.join(", ")
+      state_target = [ location.state, location.country ].compact.join(", ")
       targets << state_target
     end
 
@@ -27,7 +27,7 @@ class BlogOrchestratorJob < ApplicationJob
     if location.major_counties.present?
       regions = location.major_counties.split(",").map(&:strip)
       scoped_regions = regions.map do |region|
-        [region, location.state, location.country].compact.join(", ")
+        [ region, location.state, location.country ].compact.join(", ")
       end
       targets.concat(scoped_regions)
     end

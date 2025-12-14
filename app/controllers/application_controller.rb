@@ -11,7 +11,9 @@ class ApplicationController < ActionController::Base
 
 
   def after_sign_in_path_for(resource)
-    if resource.is_a?(User) && resource.onboarding_stage != "completed"
+    if resource.is_a?(User) && resource.admin?
+      admin_mask_requests_path
+    elsif resource.is_a?(User) && resource.onboarding_stage != "completed"
       new_canva_path
     else
       super
