@@ -22,12 +22,14 @@ RSpec.describe "Geoblocking", type: :request do
             country: "Singapore"
           )
         ])
+        allow(Sentry).to receive(:capture_message)
       end
 
       it "blocks access" do
         get root_path
         expect(response).to have_http_status(:forbidden)
         expect(response.body).to eq("Access Forbidden")
+        expect(Sentry).to have_received(:capture_message).with(/Blocked user from Singapore/, anything)
       end
     end
 

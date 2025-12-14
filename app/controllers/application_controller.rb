@@ -68,8 +68,10 @@ class ApplicationController < ActionController::Base
 
   def block_singapore_users
     if request.location&.country_code == "SG"
+      Sentry.capture_message("
+        Blocked user from Singapore
+      ", level: :warning, extra: { ip: request.remote_ip, country: "SG" })
       render plain: "Access Forbidden", status: :forbidden
     end
   end
-
 end
