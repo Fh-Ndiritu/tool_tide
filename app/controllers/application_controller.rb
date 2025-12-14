@@ -7,6 +7,8 @@ class ApplicationController < ActionController::Base
   before_action :authenticate_user!
 
   before_action :enforce_onboarding_flow, unless: :devise_controller?
+  before_action :block_singapore_users
+
 
   def after_sign_in_path_for(resource)
     if resource.is_a?(User) && resource.onboarding_stage != "completed"
@@ -63,4 +65,11 @@ class ApplicationController < ActionController::Base
   def set_active_storage_url_options
     ActiveStorage::Current.url_options = { host: request.host, protocol: request.protocol.delete_suffix(":"), port: request.port }
   end
+
+  def block_singapore_users
+    if request.location&.country_code == "SG"
+      render plain: "Access Forbidden", status: :forbidden
+    end
+  end
+
 end
