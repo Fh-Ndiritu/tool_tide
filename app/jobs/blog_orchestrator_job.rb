@@ -1,5 +1,6 @@
 class BlogOrchestratorJob < ApplicationJob
-  queue_as :default
+  # TODO: Move all admin background jobs to low priority queue
+  queue_as :low_priority
 
   def perform
     location = BlogLocation.order(Arel.sql("last_processed_at ASC NULLS FIRST")).first
