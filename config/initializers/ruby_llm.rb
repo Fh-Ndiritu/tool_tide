@@ -6,11 +6,11 @@ RubyLLM.configure do |config|
 
   config.default_model = "gemini-2.0-flash"
 
-  # Connection settings
-  config.timeout = 120 # seconds
-  config.open_timeout = 120 # seconds
+  config.request_timeout = 300
+  config.max_retries = 4
 
-  # Retry settings
-  config.max_retries = 3
-  config.retry_interval = 2 # seconds
+  # Advanced retry behavior
+  config.retry_interval = 1 # Initial retry delay in seconds (default: 0.1)
+  config.retry_backoff_factor = 2 # Exponential backoff multiplier (default: 2)
+  config.retry_interval_randomness = 0.5 # Jitter to prevent thundering herd (default: 0.5)
 end
