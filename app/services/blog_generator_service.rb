@@ -79,7 +79,7 @@ class BlogGeneratorService
              .gsub("<<design_guidelines>>", design_guidelines)
 
     response = RubyLLM.chat.ask(prompt, with: reference_image)
-    html_content = response.content.gsub('```html', '').gsub('```', '')
+    html_content = response.content.gsub("```html", "").gsub("```", "")
 
     @blog.update!(
       html_content: html_content,
