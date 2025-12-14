@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_13_160000) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_14_114721) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -45,6 +45,21 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_13_160000) do
     t.datetime "updated_at", null: false
     t.boolean "single_speaker", default: true
     t.string "error_msg"
+    t.integer "vlog_id"
+    t.index ["vlog_id"], name: "index_audios_on_vlog_id"
+  end
+
+  create_table "blogs", force: :cascade do |t|
+    t.string "location_name"
+    t.string "slug"
+    t.string "title"
+    t.text "raw_deep_dive"
+    t.text "content"
+    t.json "metadata"
+    t.boolean "published"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["slug"], name: "index_blogs_on_slug"
   end
 
   create_table "canvas", force: :cascade do |t|
@@ -289,7 +304,26 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_13_160000) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "video_clips", force: :cascade do |t|
+    t.integer "vlog_id", null: false
+    t.json "metadata"
+    t.string "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["vlog_id"], name: "index_video_clips_on_vlog_id"
+  end
+
+  create_table "vlogs", force: :cascade do |t|
+    t.string "title"
+    t.string "status"
+    t.string "project_id"
+    t.json "manifest"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "audios", "vlogs"
   add_foreign_key "canvas", "users"
   add_foreign_key "credits", "users"
   add_foreign_key "favorites", "users"
@@ -304,4 +338,5 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_13_160000) do
   add_foreign_key "suggested_plants", "landscape_requests"
   add_foreign_key "text_requests", "users"
   add_foreign_key "tool_calls", "messages"
+  add_foreign_key "video_clips", "vlogs"
 end

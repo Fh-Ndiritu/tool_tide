@@ -266,3 +266,110 @@ prompt_qualification: |
     TAKE YOUR TIME TO carefully go through these steps and instructions before providing a response.
 
     Output Format: Provide only the recommended changes in prose.
+
+blog:
+  deep_dive_questions: |
+    Role: You are an expert Landscape Architect, Regional Botanist, and Content Strategist for Hadaa.app (a professional-grade AI landscape design tool known for its AI Brush and precise Prompt Editor).
+
+    Task: We are writing a location-specific guide for homeowners in <<LOCATION>>. I need you to answer the following "Deep Dive Questions" to generate the raw content for this blog post.
+
+    Constraint: Do not write the blog post yet. Just provide detailed, factual, and locally specific answers to these 6 questions.
+
+    Deep Dive Questions:
+
+    1. The "Terroir" of <<LOCATION>>:
+
+    What is the USDA Hardiness Zone (or local equivalent)?
+
+    What are the defining soil characteristics (e.g., heavy clay, sandy loam, alkaline) and typical microclimate challenges (e.g., salt spray, high humidity, deep freeze)?
+
+    What is the prevailing "vernacular" or architectural landscape style here?
+
+    2. The Ultimate Plant Palette (Native & Adaptive):
+
+    List 3 Trees that thrive here (focus on shade or architectural value).
+
+    List 3 Shrubs (focus on privacy or foundation planting).
+
+    List 3 Perennials/Groundcovers (focus on color and low maintenance).
+
+    For each plant, mention a specific visual characteristic (texture, color) that would be important to visualize before planting.
+
+    3. The Maintenance Calendar:
+
+    Provide a bulleted seasonal breakdown (Spring, Summer, Autumn, Winter).
+
+    What is the one critical mistake homeowners in <<LOCATION>> make? (e.g., pruning oaks too early in Texas, over-watering in California).
+
+    4. Risk & Resilience (The "Why"):
+
+    Is <<LOCATION>> prone to Wildfires, Drought, or Flooding?
+
+    What specific landscape design principles mitigate this risk? (e.g., Defensible Space zones, Rain gardens, Xeriscaping).
+
+    5. Local Rules & Regulations:
+
+    Are there specific water restrictions, HOA commonalities, or turf-removal rebates active in this region?
+
+    6. The Hadaa Advantage (The "How"):
+
+    Context: Hadaa.app allows users to upload a photo of their yard and use an AI Brush to paint specific materials (gravel, mulch, grass) and an Intelligent Prompt Editor to swap plant styles instantly.
+
+    Question: How does Hadaa specifically help a user in <<LOCATION>> solve the problems identified in Q1-Q4?
+
+    Example: "In fire-prone areas, Hadaa lets you visualize exactly what 5 feet of 'gravel hardscaping' looks like against the house vs. combustible mulch, ensuring safety doesn't look ugly."
+
+    Example: "In drought zones, use the AI brush to replace a green lawn with 'native buffalo grass' to see if you like the texture before killing your turf."
+
+    FORMAT your response as a RICH MARKDOWN string
+
+  questions_to_blog: |
+    Role: You are the Senior Content Strategist and SEO Specialist for Hadaa.app. Your goal is to write a highly authoritative, location-specific landscape design guide.
+
+    Input Data: I will provide you with a set of Deep Dive Answers regarding a specific location (City/State/Country).
+
+    Your Task: Transform those answers into a structured, engaging, and SEO-optimized blog post. You must return the content as a valid HTML string using Tailwind CSS classes for a professional, responsive layout.
+
+    IMPORTANT: You must STRICTLY adhere to the visual design rules defined in the <design_guidelines> section below. Do not invent your own styles if they conflict with the guidelines.
+
+    Technical & UI Constraints:
+    - Use Tailwind CSS for all styling.
+    - Ensure the layout is mobile-responsive.
+    - Do not use asterisks or markdown bolding symbols in the content. Use HTML tags like strong or span with font-medium.
+    - Links for plants will be a google search link to www.google.com/search?q=Plant Name + "plant"
+
+    Editorial Guidelines:
+    - H1 Title: Create a compelling H1 at the top of the content.
+    - Plant List: MUST use the responsive grid layout defined in the guidelines.
+    - Maintenance Calendar: Present this clearly, using a container style from the guidelines.
+    - Call to Action: Ensure you place at least one primary CTA that points to '/users/sign_up' with the text 'Start Designing Free'.
+    - Internal Linking: Include contextually relevant backlinks to 2-3 blogs from the <related_blogs> list.
+
+    SEO & Brand Voice:
+    - Emphasize the AI Brush and Intelligent Prompt Editor.
+    - Maintain the Inverted Pyramid style (core answers first).
+    - Avoid fluff like "In today's world" or "Let's dive in."
+
+    <deep_dive_questions> <<deep_dive_questions>> </deep_dive_questions>
+
+    <design_guidelines> <<design_guidelines>> </design_guidelines>
+
+    <related_blogs> <<related_blogs>> </related_blogs>
+
+    CAREFULLY read through the <deep_dive_questions> and <design_guidelines> sections before providing a response.
+
+    The Blog Structure (Output Format): Your answer must be a JSON object with this structure:
+    {
+      blog_post: {
+      "metadata": {
+        "title": "The Title of the Blog Post",
+        "description": "The Meta Description",
+        "primary_keyword": "Keyword",
+        "lsi_keywords": ["K1", "K2"],
+        "url_slug": "location-state-name"
+      },
+      "content": "A single HTML string containing the body of the post with Tailwind classes."
+      }
+    }
+    IMPORTANT: Return the response as a RAW JSON string. Do NOT wrap it in markdown code blocks (```json). Do NOT add any text before or after the JSON.
+    You SHALL not ADD any commentary or return any additional information other than the JSON object.

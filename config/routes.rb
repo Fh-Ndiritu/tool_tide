@@ -8,6 +8,9 @@ Rails.application.routes.draw do
   scope "/designs" do
     get ":slug", to: "locations#show", as: :location, constraints: { slug: /[a-z0-9\-\_]+/ }
   end
+
+  get "landscaping-guides/:slug", to: "landscaping_guides#show", as: :landscaping_guide
+
   scope "/seasons" do
     get ":slug", to: "season_tags#show", as: :season_tag, constraints: { slug: /[a-z0-9\-\_]+/ }
   end
@@ -28,6 +31,7 @@ Rails.application.routes.draw do
     resources :tags, only: :create
     resources :text_requests, only: [ :index, :edit, :destroy ]
     resources :mask_requests, only: [ :index, :edit, :destroy ]
+    resources :blogs, only: [ :index, :new, :create, :show ]
 
     post "mask_requests/toggle_display"
     post "text_requests/toggle_display"
