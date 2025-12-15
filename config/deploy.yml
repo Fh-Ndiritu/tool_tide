@@ -55,6 +55,7 @@ env:
     - PAYSTACK_CALLBACK_URL
     - MISTRAL_API_KEY
     - SENTRY_DSN
+    - IPINFO_API_TOKEN
 
   clear:
     # Run the Solid Queue Supervisor inside the web server's Puma process to do jobs.
