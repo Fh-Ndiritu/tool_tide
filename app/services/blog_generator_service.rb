@@ -46,7 +46,7 @@ class BlogGeneratorService
   end
 
   def generate_blog_content
-    related_blogs = Blog.where.not(id: @blog.id).where(published: true).sample(4).map do |b|
+    related_blogs = Blog.where.not(id: @blog.id).where(published: true).sample(6).map do |b|
       "- [#{b.title}](/landscaping-guides/#{b.slug.split('/').last})"
     end.join("\n")
 
