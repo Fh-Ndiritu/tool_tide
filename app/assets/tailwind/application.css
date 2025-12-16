@@ -553,3 +553,16 @@ input[type='checkbox'] {
 .driver-popover-close-btn:hover {
   color: var(--color-secondary) !important;
 }
+
+/* Dynamic HTML Content Styling */
+.dynamic-html-content table {
+  display: block;
+  overflow-x: auto;
+  width: 100%;
+  border-collapse: collapse; /* Ensure borders look good */
+}
+
+.dynamic-html-content img {
+  max-width: 100%;
+  height: auto;
+}
