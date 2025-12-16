@@ -113,7 +113,7 @@ gem "rdoc", "6.14.2"
 
 gem "devise", "~> 4.9", ">= 4.9.3"
 
-gem "ruby_llm", "~> 1.6"
+gem "ruby_llm", "~> 1.8"
 
 gem "ruby_llm-schema", "~> 0.2.1"
 
