@@ -1,13 +1,13 @@
 Geocoder.configure(
   # Geocoding options
   # timeout: 3,                 # geocoding service timeout (secs)
-  lookup: :ipinfo_io,         # name of geocoding service (symbol)
+  # lookup: :ipinfo_io,         # name of geocoding service (symbol)
   # ip_lookup: :ip_api_com,      # name of IP geocoding service (symbol)
   # language: :en,              # ISO-639 language code
   # use_https: false,           # use HTTPS for lookup requests? (if supported)
   # http_proxy: nil,            # HTTP proxy server (user:pass@host:port)
   # https_proxy: nil,           # HTTPS proxy server (user:pass@host:port)
-  api_key: ENV['IPINFO_API_TOKEN'],               # API key for geocoding service
+  # api_key: ENV['IPINFO_API_TOKEN'],               # API key for geocoding service
   # cache: nil,                 # cache object (must respond to #[], #[]=, and #del)
 
   # Exceptions that should not be rescued by default
