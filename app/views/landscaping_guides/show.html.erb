@@ -2,7 +2,9 @@
 
 <% content_for :description, @page_description %>
 
-<div class="dark:bg-neutral-900 dynamic-html-content">
+<% content_for :main_classes, "bg-neutral-900" %>
+
+<div class="bg-neutral-900 dynamic-html-content">
   <% if @blog.html_content.present? %>
     <%= @blog.html_content.gsub('```html', '').gsub('```', '').html_safe %>
   <% else %>
@@ -12,7 +14,7 @@
 
 <%# CTA Section %>
 
-<div class="bg-white dark:bg-neutral-900 py-12 mt-12">
+<div class="bg-neutral-900 py-12 mt-12">
   <div class="container mx-auto px-4 text-center">
     <h2 class="text-3xl font-bold mb-4 text-green-900 dark:text-green-100">
       Ready to Visualize Your Dream Garden?
