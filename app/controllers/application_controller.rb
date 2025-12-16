@@ -69,7 +69,8 @@ class ApplicationController < ActionController::Base
   end
 
   def block_singapore_users
-    if request.location&.country_code == "SG"
+    location = LocationService.lookup(request.remote_ip)
+    if location&.country_code == "SG"
       Sentry.capture_message("
         Blocked user from Singapore
       ", level: :warning, extra: { ip: request.remote_ip, country: "SG" })

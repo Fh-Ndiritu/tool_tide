@@ -37,11 +37,15 @@ class User < ApplicationRecord
     completed: 90
   }
 
-  geocoded_by :current_sign_in_ip do |obj, results|
-    if geo = results.first
-      obj.latitude = geo.latitude
-      obj.longitude = geo.longitude
-      obj.address = {
+  before_save :geocode_ip, if: :will_save_change_to_current_sign_in_ip?
+
+  def geocode_ip
+    return unless current_sign_in_ip.present?
+
+    if geo = LocationService.lookup(current_sign_in_ip)
+      self.latitude = geo.latitude
+      self.longitude = geo.longitude
+      self.address = {
         city: geo.city,
         state: geo.state,
         country: geo.country,
@@ -49,9 +53,6 @@ class User < ApplicationRecord
       }
     end
   end
-
-  before_save :geocode
-  # , if: ->(obj) { obj.current_sign_in_ip.present? && obj.current_sign_in_ip_changed? }
 
   after_create_commit :issue_signup_credits
 

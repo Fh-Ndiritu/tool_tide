@@ -109,7 +109,7 @@ gem "google-cloud-ai_platform-v1", "~> 1.23.0"
 gem "mini_magick", "~> 5.2"
 gem "rdoc", "6.14.2"
 
-gem "geocoder", "~> 1.8"
+
 
 gem "devise", "~> 4.9", ">= 4.9.3"
 

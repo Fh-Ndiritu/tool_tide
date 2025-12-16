@@ -4,20 +4,15 @@ RSpec.describe "User IP Tracking", type: :request do
   let(:user) { User.create!(email: "test_ip@example.com", password: "password", password_confirmation: "password", privacy_policy: true) }
 
   before do
-    Geocoder.configure(lookup: :test, ip_lookup: :test)
-    Geocoder::Lookup::Test.add_stub(
-      "1.2.3.4", [
-        {
-          'latitude'     => 40.7143528,
-          'longitude'    => -74.0059731,
-          'city'         => 'New York',
-          'address'      => 'New York, NY, USA',
-          'state'        => 'New York',
-          'state_code'   => 'NY',
-          'country'      => 'United States',
-          'country_code' => 'US'
-        }
-      ]
+    allow(LocationService).to receive(:lookup).with("1.2.3.4").and_return(
+      LocationService::LocationResult.new(
+        latitude: 40.7143528,
+        longitude: -74.0059731,
+        city: 'New York',
+        region_name: 'New York',
+        country_name: 'United States',
+        country_code: 'US'
+      )
     )
   end
 
