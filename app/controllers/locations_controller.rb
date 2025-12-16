@@ -1,12 +1,12 @@
 class LocationsController < ApplicationController
   skip_before_action :authenticate_user!
   def show
-    @location = Location.find_by(slug: params[:slug])
+    # @location = Location.find_by(slug: params[:slug])
 
-    if @location.blank?
+    # if @location.blank?
       head :gone
       return
-    end
+    # end
 
    @mask_requests = MaskRequest.unscoped
     .complete

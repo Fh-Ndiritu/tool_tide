@@ -41,5 +41,7 @@ module ToolTide
                        controller_specs: true,
                        request_specs: false
     end
+
+    config.exceptions_app = self.routes
   end
 end
