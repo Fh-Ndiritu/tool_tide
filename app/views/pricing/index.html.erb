@@ -4,9 +4,20 @@
 
 <% content_for :description, "See Hadaa's subscription plans. Access the intelligent prompt editor, drone views, and plant shopping lists. Start your free, no-commitment trial." %>
 
-<section id="pricing" class="relative py-16 md:py-32 bg-neutral-900 text-white overflow-hidden min-h-screen">
+<section
+  id="pricing"
+  class="
+    relative py-16 md:py-32 bg-neutral-900 text-white overflow-hidden
+    min-h-screen
+  "
+>
   <%# Background Ambient Glow %>
-  <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-accent/5 blur-[120px] rounded-full pointer-events-none z-0"></div>
+  <div
+    class="
+      absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-accent/5
+      blur-[120px] rounded-full pointer-events-none z-0
+    "
+  ></div>
 
   <div class="container mx-auto px-6 max-w-6xl relative z-10">
     <h2
@@ -40,14 +51,30 @@
       "
     >
       <%# Card Glow Effect %>
-      <div class="absolute -inset-[100%] bg-gradient-to-r from-transparent via-white/5 to-transparent skew-x-12 opacity-0 group-hover:animate-shine pointer-events-none"></div>
+      <div
+        class="
+          absolute -inset-[100%] bg-gradient-to-r from-transparent
+          via-white/5 to-transparent skew-x-12 opacity-0
+          group-hover:animate-shine pointer-events-none
+        "
+      ></div>
 
       <div class="text-center relative z-10">
-        <h3 class="text-3xl font-bold mb-2 text-white group-hover:text-accent transition-colors duration-300">
+        <h3
+          class="
+            text-3xl font-bold mb-2 text-white group-hover:text-accent
+            transition-colors duration-300
+          "
+        >
           Starter Credit Pack
         </h3>
 
-        <p class="text-6xl font-extrabold mb-2 leading-none text-transparent bg-clip-text bg-gradient-to-r from-accent to-secondary">
+        <p
+          class="
+            text-6xl font-extrabold mb-2 leading-none text-transparent
+            bg-clip-text bg-gradient-to-r from-accent to-secondary
+          "
+        >
           $10
         </p>
 
@@ -71,7 +98,12 @@
         <%# END: ButtonComponent - Unlock All Features %>
 
         <%# START: Feature List %>
-        <ul class="text-left mt-12 space-y-4 text-lg text-neutral-300 max-w-xl mx-auto">
+        <ul
+          class="
+            text-left mt-12 space-y-4 text-lg text-neutral-300 max-w-xl
+            mx-auto
+          "
+        >
           <li class="flex items-start">
             <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-4 mt-0.5 text-accent flex-shrink-0")) %>
             <span><b class="text-white">200 Credits</b> to start (e.g., approx. 40-50 high-res generations)</span>
@@ -93,9 +125,11 @@
             <span><b class="text-white">Pay-As-You-Go:</b>&nbsp;Purchase more credits at any time.</span>
           </li>
         </ul>
+
         <%# END: Feature List %>
       </div>
     </div>
+
     <%# END: Pricing Card %>
 
     <div class="text-center mt-24 text-white py-16 px-6 border-t border-white/10">

@@ -7,7 +7,12 @@
   <div class="bg-white dark:bg-gray-800 shadow-md rounded my-6 overflow-x-auto">
     <table class="min-w-full w-full table-auto">
       <thead>
-        <tr class="bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-200 uppercase text-sm leading-normal">
+        <tr
+          class="
+            bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-200
+            uppercase text-sm leading-normal
+          "
+        >
           <th class="py-3 px-6 text-left">Location</th>
           <th class="py-3 px-6 text-left">Slug</th>
           <th class="py-3 px-6 text-left">Updated At</th>
@@ -17,7 +22,12 @@
       </thead>
       <tbody class="text-gray-600 dark:text-gray-300 text-sm font-light">
         <% @blogs.each do |blog| %>
-          <tr class="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600">
+          <tr
+            class="
+              border-b border-gray-200 dark:border-gray-700
+              hover:bg-gray-100 dark:hover:bg-gray-600
+            "
+          >
             <td class="py-3 px-6 text-left whitespace-nowrap">
               <span class="font-medium"><%= blog.location_name %></span>
             </td>
@@ -25,7 +35,7 @@
               <%= link_to blog.slug, landscaping_guide_path(blog.slug.split('/').last), class: "text-blue-500 hover:underline" if blog.slug %>
             </td>
             <td class="py-3 px-6 text-left whitespace-nowrap">
-               <%= blog.updated_at.strftime("%B %d, %Y") %>
+              <%= blog.updated_at.strftime("%B %d, %Y") %>
             </td>
             <td class="py-3 px-6 text-left">
               <% if blog.published? %>
