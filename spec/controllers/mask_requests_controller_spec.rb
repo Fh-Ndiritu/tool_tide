@@ -56,17 +56,12 @@ RSpec.describe MaskRequestsController, type: :controller do
         sr.architectural_view.attach(io: StringIO.new("fake"), filename: "test.png", content_type: "image/png")
       end
 
-      it "automatically creates a mask request and redirects" do
+      it "renders the new template without creating a mask request" do
         get :new, params: { canva_id: canva.id }
 
-        # Should redirect to edit mask request
-        expect(response).to have_http_status(:redirect)
-        expect(response.location).to include("/edit")
-
-        # Verify side effects
-        user.reload
-        expect(user.onboarding_stage).to eq("mask_drawn")
-        expect(MaskRequest.last.sketch).to be true
+        expect(response).to be_successful
+        expect(User.where(id: user.id).pick(:onboarding_stage)).to eq("image_uploaded")
+        expect(MaskRequest.where(sketch: true).count).to eq(0)
       end
     end
   end
