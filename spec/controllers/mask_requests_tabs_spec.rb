@@ -41,7 +41,7 @@ RSpec.describe MaskRequestsController, type: :controller do
           canva: canva,
           progress: :complete
         )
-         # Ensure we have a mask request too to verify switching
+        # Ensure we have a mask request too to verify switching
         mr = MaskRequest.create! valid_attributes
         mr.main_view.attach(io: StringIO.new("fake"), filename: "test.png", content_type: "image/png")
       end
