@@ -3,22 +3,48 @@
 <% content_for :description, "Access all your AI-generated garden and landscape designs in one place. View, edit, and manage your design projects. Use the AI Editor to refine any design instantly." %>
 
 <div class="container mx-auto w-full px-4 sm:max-w-lg lg:max-w-5xl mt-4">
-  <div id="mask_requests" class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
-    <% if @mask_requests.any? %>
-      <%= render partial: 'mask_requests/mask_request_compact', collection: @mask_requests, as: :mask_request %>
-    <% else %>
-      <div
-        class="
-          text-center my-10 p-8 bg-gray-50 rounded-lg border border-dashed
-          border-gray-300
-        "
-      >
-        <p class="text-lg text-gray-500">
-          No design results have been created yet. Start a new project!
-        </p>
+  <% if @has_complete_sketches %>
+    <div class="flex border-b border-gray-200 mb-6">
+       <% active_tab_class = "border-primary text-primary" %>
+       <% inactive_tab_class = "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300" %>
 
-        <%= link_to "Start New Design", new_canva_path, class: "cute-btn btn-primary mt-4" %>
-      </div>
+       <%= link_to mask_requests_path(tab: 'designs'), class: "w-1/2 py-4 px-1 text-center border-b-2 font-medium text-sm #{params[:tab] != 'sketches' ? active_tab_class : inactive_tab_class}" do %>
+         Designs
+       <% end %>
+
+       <%= link_to mask_requests_path(tab: 'sketches'), class: "w-1/2 py-4 px-1 text-center border-b-2 font-medium text-sm #{params[:tab] == 'sketches' ? active_tab_class : inactive_tab_class}" do %>
+         Sketches
+       <% end %>
+    </div>
+  <% end %>
+
+  <div id="mask_requests" class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+    <% if params[:tab] == 'sketches' && @has_complete_sketches %>
+      <% if @sketch_requests.any? %>
+        <%= render partial: 'sketch_requests/sketch_request_compact', collection: @sketch_requests, as: :sketch_request %>
+      <% else %>
+         <div class="col-span-full text-center my-10 p-8 bg-gray-50 rounded-lg border border-dashed border-gray-300">
+            <p class="text-lg text-gray-500">No sketch requests found.</p>
+         </div>
+      <% end %>
+    <% else %>
+      <% if @mask_requests.any? %>
+        <%= render partial: 'mask_requests/mask_request_compact', collection: @mask_requests, as: :mask_request %>
+      <% else %>
+        <div
+          class="
+            col-span-full
+            text-center my-10 p-8 bg-gray-50 rounded-lg border border-dashed
+            border-gray-300
+          "
+        >
+          <p class="text-lg text-gray-500">
+            No design results have been created yet. Start a new project!
+          </p>
+
+          <%= link_to "Start New Design", new_canva_path, class: "cute-btn btn-primary mt-4" %>
+        </div>
+      <% end %>
     <% end %>
   </div>
 </div>

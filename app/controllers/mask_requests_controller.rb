@@ -5,7 +5,15 @@ class MaskRequestsController < ApplicationController
 
   # GET /mask_requests or /mask_requests.json
   def index
-    @mask_requests = MaskRequest.complete.joins(canva: :user).where(users: { id: current_user.id })
+    @has_complete_sketches = SketchRequest.complete.joins(canva: :user).where(users: { id: current_user.id }).exists?
+
+    if @has_complete_sketches && params[:tab] == "sketches"
+      @sketch_requests = SketchRequest.complete.joins(canva: :user).where(users: { id: current_user.id }).order(id: :desc)
+      @mask_requests = []
+    else
+      @mask_requests = MaskRequest.complete.joins(canva: :user).where(users: { id: current_user.id }).order(id: :desc)
+      @sketch_requests = []
+    end
   end
 
   def explore
