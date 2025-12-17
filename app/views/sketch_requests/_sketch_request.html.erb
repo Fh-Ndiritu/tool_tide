@@ -44,16 +44,13 @@
               </h4>
 
               <p class="text-gray-300 text-lg max-w-xl leading-relaxed">
-                Import this photorealistic render into our AI Brush editor to add specific plants, refine textures, or modify any detail with precision.
+                Import this photorealistic render into our AI Text Editor to add specific plants, refine textures, or modify any detail with precision.
               </p>
             </div>
 
-            <%= button_to new_mask_request_sketch_request_path(sketch_request), method: :post, class: "cursor-pointer group relative inline-flex items-center gap-3 bg-white text-gray-900 px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:bg-gray-50 transition-all duration-300 hover:shadow-xl hover:-translate-y-1" do %>
-              <span>Edit with AI Brush</span>
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-secondary group-hover:scale-110 transition-transform" viewBox="0 0 24 24" fill="currentColor">
-                <path fill-rule="evenodd" d="M9.315 7.584C12.195 3.883 16.695 1.5 21.75 1.5a.75.75 0 01.75.75c0 5.056-2.383 9.555-6.084 12.436A6.75 6.75 0 019.75 22.5a.75.75 0 01-.75-.75v-4.131A15.838 15.838 0 016.382 15H2.25a.75.75 0 01-.75-.75 6.75 6.75 0 017.815-6.666zM15 6.75a2.25 2.25 0 100 4.5 2.25 2.25 0 000-4.5z" clip-rule="evenodd" />
-                <path d="M5.26 17.242a.75.75 0 10-.897-1.203 5.243 5.243 0 00-2.05 5.022.75.75 0 00.625.627 5.243 5.243 0 005.022-2.051.75.75 0 10-1.202-.897 3.744 3.744 0 01-3.008 1.51c0-1.23.592-2.323 1.51-3.008z" />
-              </svg>
+            <%= link_to new_text_request_path(signed_blob_id: sketch_request.photorealistic_view.blob.signed_id), class: "cursor-pointer group relative inline-flex items-center gap-3 bg-white text-gray-900 px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:bg-gray-50 transition-all duration-300 hover:shadow-xl hover:-translate-y-1" do %>
+              <span>Edit with AI Text</span>
+              <%= render(IconComponent.new(classes: "h-6 w-6 text-secondary group-hover:scale-110 transition-transform", name: "pencil")) %>
             <% end %>
           </div>
         </div>
@@ -92,8 +89,8 @@
                </div>
                <% if sketch_request.architectural_view.attached? %>
                  <div class="absolute bottom-3 right-4 z-20 flex space-x-2">
-                   <%= link_to new_text_request_path(signed_blob_id:  sketch_request.architectural_view.blob.signed_id), class: "icon-btn bg-white text-secondary hover:bg-secondary hover:text-white shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-secondary/50 p-2 rounded-full", title: "Refine with AI" do %>
-                     <%= render(IconComponent.new(classes: "h-5 w-5", name: "pencil")) %>
+                   <%= link_to new_text_request_path(signed_blob_id:  sketch_request.architectural_view.blob.signed_id), class: "icon-btn bg-white text-secondary hover:bg-secondary hover:text-white shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-secondary/50 p-3 rounded-full", title: "Refine with AI" do %>
+                     <%= render(IconComponent.new(classes: "h-6 w-6", name: "pencil")) %>
                    <% end %>
                  </div>
                <% end %>
@@ -132,9 +129,17 @@
                  <span class="text-xs font-bold text-primary-300">Final Result</span>
                </div>
                <% if sketch_request.photorealistic_view.attached? %>
+                 <div class="absolute bottom-3 left-4 z-20 flex space-x-2">
+                    <%= button_to new_mask_request_sketch_request_path(sketch_request), method: :post, class: "icon-btn bg-black/50 text-white hover:bg-white hover:text-black shadow-lg transition-all duration-300 hover:scale-110 p-3 rounded-full backdrop-blur-sm", title: "Edit with AI Mask Brush" do %>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
+                          <path fill-rule="evenodd" d="M9.315 7.584C12.195 3.883 16.695 1.5 21.75 1.5a.75.75 0 01.75.75c0 5.056-2.383 9.555-6.084 12.436A6.75 6.75 0 019.75 22.5a.75.75 0 01-.75-.75v-4.131A15.838 15.838 0 016.382 15H2.25a.75.75 0 01-.75-.75 6.75 6.75 0 017.815-6.666zM15 6.75a2.25 2.25 0 100 4.5 2.25 2.25 0 000-4.5z" clip-rule="evenodd" />
+                          <path d="M5.26 17.242a.75.75 0 10-.897-1.203 5.243 5.243 0 00-2.05 5.022.75.75 0 00.625.627 5.243 5.243 0 005.022-2.051.75.75 0 10-1.202-.897 3.744 3.744 0 01-3.008 1.51c0-1.23.592-2.323 1.51-3.008z" />
+                        </svg>
+                    <% end %>
+                 </div>
                  <div class="absolute bottom-3 right-4 z-20 flex space-x-2">
-                   <%= link_to new_text_request_path(signed_blob_id:  sketch_request.photorealistic_view.blob.signed_id), class: "icon-btn bg-white text-secondary hover:bg-secondary hover:text-white shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-secondary/50 p-2 rounded-full", title: "Refine with AI" do %>
-                     <%= render(IconComponent.new(classes: "h-5 w-5", name: "pencil")) %>
+                   <%= link_to new_text_request_path(signed_blob_id:  sketch_request.photorealistic_view.blob.signed_id), class: "icon-btn bg-white text-secondary hover:bg-secondary hover:text-white shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-secondary/50 p-3 rounded-full", title: "Refine with AI" do %>
+                     <%= render(IconComponent.new(classes: "h-6 w-6", name: "pencil")) %>
                    <% end %>
                  </div>
                <% end %>
@@ -176,8 +181,8 @@
                </div>
                <% if sketch_request.rotated_view.attached? %>
                  <div class="absolute bottom-3 right-4 z-20 flex space-x-2">
-                   <%= link_to new_text_request_path(signed_blob_id:  sketch_request.rotated_view.blob.signed_id), class: "icon-btn bg-white text-secondary hover:bg-secondary hover:text-white shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-secondary/50 p-2 rounded-full", title: "Refine with AI" do %>
-                     <%= render(IconComponent.new(classes: "h-5 w-5", name: "pencil")) %>
+                   <%= link_to new_text_request_path(signed_blob_id:  sketch_request.rotated_view.blob.signed_id), class: "icon-btn bg-white text-secondary hover:bg-secondary hover:text-white shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-secondary/50 p-3 rounded-full", title: "Refine with AI" do %>
+                     <%= render(IconComponent.new(classes: "h-6 w-6", name: "pencil")) %>
                    <% end %>
                  </div>
                <% end %>
@@ -191,6 +196,17 @@
 
         </div>
 
+      </div>
+
+      <!-- Recommendation Footer -->
+      <div class="border-t border-gray-800 pt-8 mt-8 text-center space-y-2">
+        <p class="text-gray-400">
+          You can also use the <span class="text-gray-300 font-medium">mask editor</span> but results may vary.
+        </p>
+        <p class="text-secondary font-medium flex items-center justify-center gap-2">
+          <%= render(IconComponent.new(classes: "h-4 w-4", name: "sparkles")) %>
+          We recommend using the text editor
+        </p>
       </div>
     </div>
   </div>

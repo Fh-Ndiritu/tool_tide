@@ -17,7 +17,7 @@ RSpec.describe SketchGenerationJob, type: :job do
     # Mock GCP Payload and Response
     allow_any_instance_of(SketchGenerationJob).to receive(:fetch_gcp_response).and_return({
       "candidates" => [
-        { "content" => { "parts" => [{ "text" => "GCP Analysis Result" }] } }
+        { "content" => { "parts" => [ { "text" => "GCP Analysis Result" } ] } }
       ]
     })
     allow_any_instance_of(SketchGenerationJob).to receive(:save_gcp_results).and_return(create_file_blob)
