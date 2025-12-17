@@ -57,7 +57,31 @@
       <% end %>
 
       <!-- 3D Views Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8" data-controller="photoswipe">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8" data-controller="photoswipe">
+
+        <!-- 0. Original Sketch -->
+        <div class="space-y-4">
+          <div class="relative aspect-[3/4] bg-black rounded-2xl overflow-hidden border border-gray-800 shadow-xl group">
+               <% if sketch_request.canva.image.attached? %>
+                 <% full_url = rails_blob_path(sketch_request.canva.image) %>
+                 <a href="<%= full_url %>"
+                    data-pswp-src="<%= full_url %>"
+                    data-pswp-width="<%= sketch_request.canva.image.metadata['width'] || 1024 %>"
+                    data-pswp-height="<%= sketch_request.canva.image.metadata['height'] || 1024 %>"
+                    target="_blank"
+                    class="block w-full h-full">
+                   <%= image_tag sketch_request.canva.image, loading: "eager", class: "w-full h-full object-cover transition duration-700 group-hover:scale-105" %>
+                 </a>
+               <% end %>
+
+               <div class="absolute top-4 left-4 bg-black/60 backdrop-blur px-3 py-1 rounded-full border border-white/10">
+                 <span class="text-xs font-medium text-gray-300">Original</span>
+               </div>
+          </div>
+          <div class="flex items-center justify-between px-2">
+              <h3 class="font-semibold text-lg text-gray-200">Original Sketch</h3>
+          </div>
+        </div>
 
         <!-- 1. Clay View -->
         <div class="space-y-4">
@@ -70,16 +94,17 @@
                     data-pswp-height="<%= sketch_request.architectural_view.metadata['height'] || 1024 %>"
                     target="_blank"
                     class="block w-full h-full">
-                   <%= image_tag sketch_request.architectural_view, class: "w-full h-full object-cover transition duration-700 group-hover:scale-105" %>
+                   <%= image_tag sketch_request.architectural_view, loading: "eager", class: "w-full h-full object-cover transition duration-700 group-hover:scale-105" %>
                  </a>
                <% else %>
                  <!-- Loading / Placeholder State -->
-                 <div class="absolute inset-0 flex flex-col items-center justify-center space-y-4 p-6 text-center">
+                 <div class="absolute inset-0 flex flex-col items-center justify-center space-y-4 p-6 text-center <%= 'animate-pulse bg-gray-800/50' if sketch_request.processing_architectural? %>">
                     <% if sketch_request.processing_architectural? || sketch_request.created? %>
-                      <div class="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-                      <p class="text-gray-500 text-sm animate-pulse">Generating ArchiCAD View...</p>
+                      <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-gray-700 to-gray-600 animate-spin"></div>
+                      <p class="text-gray-400 text-sm font-medium animate-pulse">Generating ArchiCAD View...</p>
                    <% else %>
-                     <p class="text-gray-600">Waiting to start...</p>
+                     <div class="w-12 h-12 rounded-full bg-gray-800 border border-gray-700"></div>
+                     <p class="text-gray-600 font-medium">Waiting to start...</p>
                    <% end %>
                  </div>
                <% end %>
@@ -111,16 +136,16 @@
                     data-pswp-height="<%= sketch_request.photorealistic_view.metadata['height'] || 1024 %>"
                     target="_blank"
                     class="block w-full h-full">
-                   <%= image_tag sketch_request.photorealistic_view, class: "w-full h-full object-cover transition duration-700 group-hover:scale-105" %>
+                   <%= image_tag sketch_request.photorealistic_view, loading: "eager", class: "w-full h-full object-cover transition duration-700 group-hover:scale-105" %>
                  </a>
                <% else %>
-                 <div class="absolute inset-0 flex flex-col items-center justify-center space-y-4 p-6 text-center">
+                 <div class="absolute inset-0 flex flex-col items-center justify-center space-y-4 p-6 text-center <%= 'animate-pulse bg-primary/5' if sketch_request.processing_photorealistic? %>">
                     <% if sketch_request.processing_photorealistic? %>
-                      <div class="w-8 h-8 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
-                      <p class="text-gray-500 text-sm animate-pulse">Rendering 3D Photo Mode...</p>
+                      <div class="w-12 h-12 rounded-full border-4 border-primary border-t-transparent animate-spin"></div>
+                      <p class="text-primary-300 text-sm font-medium animate-pulse">Rendering 3D Photo Mode...</p>
                     <% elsif sketch_request.progress_before?(:processing_photorealistic) %>
-                      <div class="w-8 h-8 rounded-full border-2 border-gray-800"></div>
-                      <p class="text-gray-700 text-sm">Waiting for ArchiCAD View...</p>
+                      <div class="w-12 h-12 rounded-full bg-gray-800 border border-gray-700 opacity-50"></div>
+                      <p class="text-gray-600 font-medium">Waiting for ArchiCAD View...</p>
                    <% end %>
                  </div>
                <% end %>
@@ -160,18 +185,18 @@
                     data-pswp-height="<%= sketch_request.rotated_view.metadata['height'] || 1024 %>"
                     target="_blank"
                     class="block w-full h-full">
-                   <%= image_tag sketch_request.rotated_view, class: "w-full h-full object-cover transition duration-700 group-hover:scale-105" %>
+                   <%= image_tag sketch_request.rotated_view, loading: "eager", class: "w-full h-full object-cover transition duration-700 group-hover:scale-105" %>
                  </a>
 
 
                <% else %>
-                 <div class="absolute inset-0 flex flex-col items-center justify-center space-y-4 p-6 text-center">
+                 <div class="absolute inset-0 flex flex-col items-center justify-center space-y-4 p-6 text-center <%= 'animate-pulse bg-secondary/5' if sketch_request.processing_rotated? %>">
                     <% if sketch_request.processing_rotated? %>
-                      <div class="w-8 h-8 border-4 border-secondary border-t-transparent rounded-full animate-spin"></div>
-                      <p class="text-gray-500 text-sm animate-pulse">Rendering Recommended Angle...</p>
+                      <div class="w-12 h-12 rounded-full border-4 border-secondary border-t-transparent animate-spin"></div>
+                      <p class="text-secondary-300 text-sm font-medium animate-pulse">Rendering Recommended Angle...</p>
                     <% elsif sketch_request.progress_before?(:processing_rotated) %>
-                      <div class="w-8 h-8 rounded-full border-2 border-gray-800"></div>
-                      <p class="text-gray-700 text-sm">Waiting for Photo Mode...</p>
+                      <div class="w-12 h-12 rounded-full bg-gray-800 border border-gray-700 opacity-50"></div>
+                      <p class="text-gray-600 font-medium">Waiting for Photo Mode...</p>
                    <% end %>
                  </div>
                <% end %>

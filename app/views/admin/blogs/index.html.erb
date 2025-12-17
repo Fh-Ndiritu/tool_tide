@@ -35,7 +35,7 @@
               <%= link_to blog.slug, landscaping_guide_path(blog.slug.split('/').last), class: "text-blue-500 hover:underline" if blog.slug %>
             </td>
             <td class="py-3 px-6 text-left whitespace-nowrap">
-              <%= blog.updated_at.strftime("%B %d, %Y") %>
+              <%= blog.updated_at.strftime("%B %d, %Y %l:%M %p") %>
             </td>
             <td class="py-3 px-6 text-left">
               <% if blog.published? %>
