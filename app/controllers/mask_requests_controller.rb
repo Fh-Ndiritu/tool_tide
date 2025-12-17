@@ -22,6 +22,17 @@ class MaskRequestsController < ApplicationController
 
   # GET /mask_requests/new
   def new
+    # Smart Sketch Transition during Onboarding
+    if current_user.onboarding_stage == 'image_uploaded' &&
+       (sketch_req = current_user.sketch_requests.complete.last) &&
+       !current_user.mask_requests.where(sketch: true).exists?
+
+       mask_request = sketch_req.create_mask_request!
+       current_user.mask_drawn! # Move to next stage
+       redirect_to edit_mask_request_path(mask_request)
+       return
+    end
+
     redirect_to low_credits_path and return unless @canva.user.afford_generation?
     @mask_request = @canva.mask_requests.new
   end

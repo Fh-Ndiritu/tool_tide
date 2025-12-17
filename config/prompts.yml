@@ -266,6 +266,33 @@ prompt_qualification: |
     TAKE YOUR TIME TO carefully go through these steps and instructions before providing a response.
     Output Format: Provide only the recommended changes in prose.
 
+sketch_analysis:
+    general: |
+      You are an expert Architectural Analyst and Creative Director.
+      Your task is to analyze an architectural sketch or drawing and define its core features to guide a 3D visualization pipeline.
+
+      Image is attached.
+
+      Step 1: Feature Analysis
+      Analyze the sketch and extract:
+      - The main structure type (e.g., modern two-story house, bungalow, patio overhang).
+      - Key geometric features (e.g., flat roof, floor-to-ceiling windows, wooden deck, swimming pool).
+      - Composition and surrounding context (e.g., garden borders, fencing, neighboring trees).
+
+      Step 2: Dynamic Angle Recommendation
+      Suggest ONE "Cool" dynamic camera angle that would show off this specific design best in a 3D reveal.
+      Choose one of:
+      - "Drone Shot from 45 degrees"
+      - "Slight Rotation to Right"
+      - "Eye-Level Corner View"
+      - "Top-Down Plan View"
+
+      Return your answer in strictly valid JSON format:
+      {
+        "analysis": "A prose description of the main structure and features...",
+        "angle": "Name of the recommended angle (e.g. Drone Shot from 45 degrees)"
+      }
+
 sketch_transformation:
     clay_render: |
       You are an expert 3D modeler.
@@ -283,6 +310,20 @@ sketch_transformation:
       Preserve the exact angle and structure of the input image.
       The style should be modern and sophisticated.
 
+    archi_cad_render: |
+      You are an expert Architectural Visualizer using ArchiCAD / Revit.
+      Transform this sketch into a clean, professional "White Mode" 3D architectural model.
+
+      Style Guide:
+      - Pure white or light grey model aesthetic.
+      - Crisp, sharp edges (no hand-drawn lines).
+      - Soft ambient occlusion shadows.
+      - "Clay" or "Maquette" style but with high precision.
+      - NO realistic textures (no grass, no wood grain, no sky).
+      - Look like a high-end architectural study model.
+
+      Context from analysis: <<analysis>>
+
     photorealistic_render: |
       You are an expert in Photorealistic Rendering.
       Transform this architectural visualization into a 100% photorealistic image.
@@ -291,6 +332,18 @@ sketch_transformation:
       Enhance the vegetation and materials to be lifelike.
       Preserve the exact composition and perspective.
 
+    angle_transformation: |
+        You are an expert Drone Photographer and 3D Camera Operator.
+        Take the input photorealistic image and apply a camera transformation to it.
+
+        Transformation: <<angle>>
+
+        - If "Drone Shot": Lift the camera up and tilt down to show the layout.
+        - If "Rotation": Rotate the view slightly to reveal the depth of the structure.
+        - If "Eye-Level": Bring the camera down to human height.
+
+        Maintain consistency with the original design in the input image.
+        Ensure the output is high-quality 3D render style.
 blog:
   deep_dive_questions: |
     Role: You are an expert Landscape Architect, Regional Botanist, and Content Strategist for Hadaa.app (a professional-grade AI landscape design tool known for its AI Brush and precise Prompt Editor).

@@ -63,7 +63,7 @@ module ApplicationHelper
     when "overlaying"
       "Analyzing Garden Area"
     else
-      "Just a moment 🧘"
+      "Analyzing Scene 🧘"
     end
   end
 

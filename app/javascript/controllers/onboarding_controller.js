@@ -41,6 +41,12 @@ export default class extends Controller {
     const stage = this.stageValue
     console.log("Current Stage:", stage)
 
+    // Stop tooltips if we are in the sketch pipeline
+    // http://localhost:3000/canvas/20/mask_requests/new?sketch_detected=true
+    if (window.location.pathname.includes("/sketch_requests/") || window.location.search.includes("sketch_detected")) {
+      return
+    }
+
     switch (stage) {
       case "fresh":
         this.showWelcomeModal()

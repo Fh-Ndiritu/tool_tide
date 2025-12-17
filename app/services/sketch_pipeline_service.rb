@@ -12,7 +12,10 @@ class SketchPipelineService
   def start_generation
     return unless check_credits
 
-    sketch_request = @canva.sketch_requests.create!(progress: :processing_clay)
+    sketch_request = @canva.sketch_requests.create!(
+      progress: :processing_architectural,
+      user: @canva.user
+    )
 
     # Deduct credits
     @canva.user.charge_pro_cost!(CREDIT_COST)

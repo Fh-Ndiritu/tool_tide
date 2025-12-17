@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_17_090000) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_17_111652) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -247,7 +247,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_17_090000) do
     t.string "user_error"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "analysis"
+    t.string "recommended_angle"
+    t.integer "user_id", null: false
     t.index ["canva_id"], name: "index_sketch_requests_on_canva_id"
+    t.index ["user_id"], name: "index_sketch_requests_on_user_id"
   end
 
   create_table "suggested_plants", force: :cascade do |t|
@@ -359,6 +363,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_17_090000) do
   add_foreign_key "messages", "chats"
   add_foreign_key "payment_transactions", "users"
   add_foreign_key "sketch_requests", "canvas"
+  add_foreign_key "sketch_requests", "users"
   add_foreign_key "suggested_plants", "landscape_requests"
   add_foreign_key "text_requests", "users"
   add_foreign_key "tool_calls", "messages"

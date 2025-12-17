@@ -49,7 +49,7 @@ class SketchAnalysisJob < ApplicationJob
         locals: { canva: canva }
       )
     else
-       # If photo, we just update the status. UI might not need to know explicitly unless we were showing a spinner.
+      # If photo, we just update the status. UI might not need to know explicitly unless we were showing a spinner.
     end
   end
 end

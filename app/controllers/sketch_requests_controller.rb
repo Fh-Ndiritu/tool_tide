@@ -16,21 +16,10 @@ class SketchRequestsController < ApplicationController
   end
 
   def new_mask_request
-    # Create a NEW Canva from the result (photorealistic view usually)
-    # The user wants "New Canva where mask_request mode is preselected"
+    # Create a NEW Canva from the result
+    mask_request = @sketch_request.create_mask_request!
 
-    source_image = @sketch_request.photo_view || @sketch_request.canva.image
-
-    # We need to duplicate the blob to a new Canva
-    new_canva = Canva.create!(user: current_user)
-
-    new_canva.image.attach(source_image.blob)
-
-    # Pre-select mask request mode?
-    # Usually usage is creating a mask request on the new canva.
-    # We can redirect to the mask_request#show (which likely handles the 'new' state logic if we set it up right, or we manually create a mask request)
-
-    redirect_to new_canva_mask_request_path(new_canva), notice: "New project created from result!"
+    redirect_to edit_mask_request_path(mask_request), notice: "New project created from result!"
   end
 
   private

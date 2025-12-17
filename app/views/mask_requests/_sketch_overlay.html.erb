@@ -15,27 +15,27 @@
       <div class="space-y-3">
         <div class="aspect-square rounded-xl bg-gray-800 overflow-hidden border border-gray-700 relative group">
            <!-- Placeholder for Clay -->
-           <div class="absolute inset-0 flex items-center justify-center text-gray-500 font-medium">Clay Render</div>
-           <%= image_tag "how_it_works/step_2_modern.png", class: "w-full h-full object-cover opacity-50 group-hover:opacity-100 transition" %>
+           <div class="absolute inset-x-0 bottom-0 p-2 bg-gradient-to-t from-black/80 to-transparent flex items-end justify-center text-white font-medium z-10">3D Architectural Model</div>
+           <%= image_tag "sketch_overlays/step_1_model.png", class: "w-full h-full object-cover group-hover:scale-105 transition duration-500" %>
         </div>
-        <p class="text-center text-gray-400 font-medium">1. Clay Model</p>
+        <p class="text-center text-gray-400 font-medium">1. ArchiCAD Model</p>
       </div>
       <div class="space-y-3">
         <div class="aspect-square rounded-xl bg-gray-800 overflow-hidden border border-gray-700 relative group">
            <!-- Placeholder for Archi -->
-           <div class="absolute inset-0 flex items-center justify-center text-gray-500 font-medium">Archi View</div>
-           <%= image_tag "how_it_works/step_4_modern.png", class: "w-full h-full object-cover opacity-50 group-hover:opacity-100 transition" %>
+           <div class="absolute inset-x-0 bottom-0 p-2 bg-gradient-to-t from-black/80 to-transparent flex items-end justify-center text-white font-medium z-10">Photorealistic Design</div>
+           <%= image_tag "sketch_overlays/step_2_render.png", class: "w-full h-full object-cover group-hover:scale-105 transition duration-500" %>
 
         </div>
-        <p class="text-center text-gray-400 font-medium">2. Architectural</p>
+        <p class="text-center text-gray-400 font-medium">2. Photorealistic</p>
       </div>
       <div class="space-y-3">
         <div class="aspect-square rounded-xl bg-gray-800 overflow-hidden border border-gray-700 relative group">
            <!-- Placeholder for Photo -->
-            <div class="absolute inset-0 flex items-center justify-center text-gray-500 font-medium">Photorealistic</div>
-            <%= image_tag "how_it_works/results.png", class: "w-full h-full object-cover opacity-50 group-hover:opacity-100 transition" %>
+            <div class="absolute inset-x-0 bottom-0 p-2 bg-gradient-to-t from-black/80 to-transparent flex items-end justify-center text-white font-medium z-10">Rotated Perspective</div>
+            <%= image_tag "sketch_overlays/step_3_angle.png", class: "w-full h-full object-cover group-hover:scale-105 transition duration-500" %>
         </div>
-        <p class="text-center text-gray-400 font-medium">3. Photorealistic</p>
+        <p class="text-center text-gray-400 font-medium">3. Dynamic Angle</p>
       </div>
     </div>
 
@@ -44,7 +44,7 @@
         <div class="space-y-2">
             <h3 class="text-xl font-semibold text-white">Full 3D Transformation</h3>
             <p class="text-gray-400 text-sm">
-              Includes Clay, Architectural, and Photorealistic renders.
+              Includes 3D White Model, Photorealistic Design, and a Dynamic Angle view.
               <br>
               <span class="text-secondary font-medium"><%= SketchPipelineService::CREDIT_COST %> credits</span>
             </p>
