@@ -266,77 +266,101 @@ prompt_qualification: |
     TAKE YOUR TIME TO carefully go through these steps and instructions before providing a response.
     Output Format: Provide only the recommended changes in prose.
 
-sketch_analysis:
-    general: |
-      You are an expert Architectural Analyst and Creative Director.
-      Your task is to analyze an architectural sketch or drawing and define its core features to guide a 3D visualization pipeline.
-
-      Image is attached.
-
-      Step 1: Feature Analysis
-      Analyze the sketch and extract:
-      - The main structure type (e.g., modern two-story house, bungalow, patio overhang).
-      - Key geometric features (e.g., flat roof, floor-to-ceiling windows, wooden deck, swimming pool).
-      - Composition and surrounding context (e.g., garden borders, fencing, neighboring trees).
-
-      Step 2: Dynamic Angle Recommendation
-      Suggest ONE "Cool" dynamic camera angle that would show off this specific design best in a 3D reveal.
-      Choose one of:
-      - "Drone Shot from 45 degrees"
-      - "Slight Rotation to Right"
-      - "Eye-Level Corner View"
-      - "Top-Down Plan View"
-
-      Return your answer in strictly valid JSON format:
-      {
-        "analysis": "A prose description of the main structure and features...",
-        "angle": "Name of the recommended angle (e.g. Drone Shot from 45 degrees)"
-      }
-
 sketch_transformation:
     archi_cad_render: |
-      Role: Expert Architectural Visualizer & geometry analyzer.
-      Task: Transform the input sketch into a pristine "White Model" architectural maquette and analyze its geometry.
+      You are acting as a Senior BIM Specialist and Computational Designer.
+      Your task is to perform a forensic reconstruction of the attached landscape sketch, map, drawing plan etc.
 
-      Visual Style Guide:
-      - Materiality: Museum-quality white matte board for structures; balsa wood for perimeter fencing.
-      - Vegetation: Abstract representation. Use "wire armature" or "translucent white spheres" for trees; "stippled clay texture" for groundcover. DO NOT generate realistic leaves.
-      - Lighting: Studio setup with softbox lighting from the top-left (45 degrees). High Ambient Occlusion to reveal depth changes.
-      - Viewport: Isometric Projection (30-degree angle) to preserve the scale of the "Rad 58.00'" driveway curve.
-      - Critical Detail: Ensure the "Sunken Courtyard" (Coure en sous sol) is rendered as a depression/void, not a flat surface.
+      Step 1: Forensic Analysis Analyze the input image and output a bulleted technical summary comprising:
 
-      Output Requirement 1 (Image): A 4K isometric render of the white model.
-      Output Requirement 2 (Text Analysis): Return a bulleted analysis of the main features visible in the isometric view. Specifically verify:
-        1. The detection of the sunken courtyard depth.
-        2. The continuity of the curved driveway.
-        3. The relationship between the "2 Story Res" and the property lines.
+      Hardscape Geometries: Identify features, arcs, symbols, shading, colors and more to decipher features like an expert.
 
-      Context from analysis: <<analysis>>
+      Topography: Identify vertical constraints, specifically the "Coure en sous sol" (sunken courtyard) and any retaining wall heights.
+
+      Botanical Data: List the specific plant species written in the sketch notes if any.
+
+      TEXT: Analyze the text written to inform your understanding of the context and the expected result.
+
+      Materiality: Identify architectural materials (e.g. Stone & Stucco etc).
+
+      Carefully take your time to understand the sketch before proceeding.
+
+      Step 2: The ArchiCad White Model Generation Generate a high-fidelity "Clay Render" or "White Model" visualization of this site.
+
+      Generation Protocol: Create a completely new 3D image based on the analysis. Do not simply filter or recolor the input sketch. Construct a fresh 3D geometry.
+
+      Style: ArchiCad / Revit BIM style, clean Ambient Occlusion pass.
+
+      Material: Uniform white matte styling (museum board/styrofoam) for all hardscapes and buildings to emphasize massing.
+
+      Vegetation: Represent trees and plants as translucent white wireframes show volume without texture.
+      Water: Carefully detect and understand water features then transform them into faded blue wireframes to show volume without texture.
+
+      Geometry: Extrude the 2D lines into 3D volumes. The building footprint must have height and negative Z-axis depth used where appropriate.
+
+      View: Strict 3D Isometric Projection (Axonometric). Rotate the camera to a high-angle 3/4 view (approx 30-45 degrees) to reveal the verticality of walls and the depth of the courtyard. Do not output a flat 2D top-down plan.
+
+      Canvas: The background of the image must be Midnight Petrol #003B46
+      TEXT: Any text from the image will be interpreted to influence the 3D rendering and MUST not be rendered in the final image.
+
+      Output Requirement: Provide the text analysis first, followed immediately by the White Model render.
 
     photorealistic_render: |
-      You are an expert in Photorealistic Rendering.
-      Transform this architectural visualization into a 100% photorealistic image.
-      Add realistic lighting, shadows, reflections, and atmosphere.
-      Make it look indistinguishable from a real photograph.
-      Enhance the vegetation and materials to be lifelike.
-      Preserve the exact composition and perspective.
+      You are acting as a Landscape Architect and 3D Visualization Expert.
+      Your goal is to transform the 3d render into a real life photo taken from a drone or a human eye level using a camera, hyperealism 4k resolution.
+      You shall do this by taking the White Model (geometric ground truth) and performing a high-fidelity texture and atmospheric synthesis using these steps
+
+      Phase 1: Contextual Synthesis
+        Analyze the geometry of the provided White Model and the text analysis that identified the architectural and hardscape materiality.
+          <text_analysis>
+            <<analysis>>
+          </text_analysis>
+
+        Maintain absolute spatial consistency with the original forms, specifically the verticality of walls and the depth of any sunken features.
+
+
+      Phase 2: Material & Biological Mapping
+        Apply the following specifications across the scene.
+
+        1. Architectural & Hardscape Materiality:
+          Map materials based on the Forensic Analysis in Step 1 (e.g., if "Stucco" was identified, apply weathered Venetian plaster; if "Stone" was identified, apply ashlar limestone).
+          Default (if unspecified): Use a palette of warm-toned natural stone, sand-finish concrete, and matte architectural plaster.
+
+        2. The Dynamic Planting Engine: Do not use generic greenery. Instead, interpret the botanical list from the Step 1 analysis using these rendering logic rules:
+
+          Transparency: If the species is airy (like Thalictrum or certain grasses), render as a translucent floral veil to maintain sightlines.
+          Structure: If the species is structural (like Perovskia or Buxus), render with clear verticality or defined massing.
+          Seasonal Accents: If specific berries or colors are noted (like Callicarpa), render the plant in its peak seasonal state (e.g., Late Autumn decay).
+
+        3. Matrix Layout: Always arrange plants in intermingled drifts and "New Perennial" matrices rather than isolated mulch rings. Use a woven tapestry of groundcovers (like Luzula) as the base layer.
+
+      Phase 3: Atmospheric & View Settings
+        Season/Time: Default to Late Autumn Golden Hour unless Step 1 specified otherwise. Use volumetric backlighting to illuminate seed heads and foliage textures.
+        Background: Set the entire scene against a solid, matte Midnight Petrol (Deep Slate Teal) background to maximize the vibrance of the colors and architectural edges.
+        Camera: High-end architectural photography style, 8k resolution, Unreal Engine 5.2 render quality, subtle tilt-shift effect.
+
+      Phase 4: Spatial Consistency Audit
+        Generation Task: Construct the photorealistic render now based on the unique data from this specific site.
+
+      CAREFULLY analyze the photorealistic render and the text analysis to understand the site before proceeding.
+
+      Finally convert your synthesis into a 4k photorealistic image taken from a professional-grade camera with a 50mm lens.
+      Ensure the cinematography, lighting, and composition are consistent with the photorealistic render.
 
     angle_transformation: |
-      Role: Expert Drone Photographer & 3D Neural Renderer (Novel View Synthesis).
-      Task: Re-photograph the scene from a new perspective while strictly maintaining the architectural and botanical identity of the previous render.
+      Acting as a 3D Visualization Expert, perform a Novel View Synthesis on the provided image to change the camera position while preserving all subject identity, materials, and textures.
 
-      Apply this anfle and transformation instructions: <<angle>>
+      Task: Angle Transformation
 
-      Execution Logic:
-      - If "Drone Shot / Bird's Eye": Lift camera +45 degrees elevation. Focus on the geometry of the driveway arc and the layout of the planting drifts.
-      - If "Eye-Level / Human Scale": Drop camera to 1.6m height. Focus on the transparency of the Thalictrum veils and the texture of the stucco.
-      - If "Reverse Isometric": Rotate azimuth 180 degrees. Reveal the "Hidden Side" of the residence.
+        Rotation: You MUST START by moving the camera by 120 degrees to the left or right so that the camera is looking at the site from a different angle.
 
-      Constraint Checklist:
-      - The "2 Story Stone & Stucco" facade must remain consistent.
-      - The "Callicarpa" berries must remain violet.
-      - The "Sunken Courtyard" must retain its depth (do not flatten).
-      - Lighting direction must adapt physically to the new camera angle (shadows must rotate correctly).
+        Projection: Raise the camera by a 45-degree angle into an Isometric Projection (Axonometric).
+
+        Identity Lock: Maintain absolute consistency for all architectural materials, specific plant species, and lighting conditions from the original image.
+
+        Presentation: Render the site as a floating diorama island against a solid matte Midnight Petrol background. Ensure parallel lines remain parallel to preserve geometric accuracy.
+
+      Carefully review the image and final results to ensure the camera HAS BEEN MOVED by 120 degrees and the angle has been raised by 45 degrees.
 
 blog:
   deep_dive_questions: |

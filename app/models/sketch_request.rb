@@ -22,7 +22,6 @@ class SketchRequest < ApplicationRecord
   end
 
   def create_mask_request!
-    # Create a NEW Canva from the result (usually the final rotated view)
     source_image = photorealistic_view || rotated_view || canva.image
 
     # We need to duplicate the blob to a new Canva
