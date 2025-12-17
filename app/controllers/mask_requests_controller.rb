@@ -23,7 +23,7 @@ class MaskRequestsController < ApplicationController
   # GET /mask_requests/new
   def new
     # Smart Sketch Transition during Onboarding
-    if current_user.onboarding_stage == 'image_uploaded' &&
+    if current_user.onboarding_stage == "image_uploaded" &&
        (sketch_req = current_user.sketch_requests.complete.last) &&
        !current_user.mask_requests.where(sketch: true).exists?
 
