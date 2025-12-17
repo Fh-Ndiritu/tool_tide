@@ -29,6 +29,7 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :tags, only: :create
+    resources :canvas, only: %i[create show]
     resources :text_requests, only: [ :index, :edit, :destroy ]
     resources :mask_requests, only: [ :index, :edit, :destroy ]
     resources :blogs, only: [ :index, :new, :create, :show ]
@@ -56,6 +57,10 @@ Rails.application.routes.draw do
   get "/ojus-ai-vs-hadaa-ai", to: "competitors#ojus", as: :ojus
 
   resources :canvas, shallow: true, except: [ :index, :edit, :show ] do
+    resources :sketch_requests, only: %i[create show] do
+      post :new_mask_request, on: :member
+    end
+
     resources :mask_requests do
       member do
         get :plants

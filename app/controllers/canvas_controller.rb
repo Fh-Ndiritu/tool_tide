@@ -13,7 +13,8 @@ class CanvasController < ApplicationController
     respond_to do |format|
       if @canva.save
         current_user.image_uploaded!
-        format.html { redirect_to new_canva_mask_request_path(@canva), status: :see_other }
+        result = SketchAnalysisJob.perform_now(@canva)
+        format.html { redirect_to new_canva_mask_request_path(@canva, sketch_detected: (result == "sketch")), status: :see_other }
         format.json { render :show, status: :created, location: @canva }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -53,6 +54,6 @@ class CanvasController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def canva_params
-      params.expect(canva: [ :user_id, :image, :device_width ]).merge(user: current_user)
+      params.expect(canva: [ :user_id, :image, :device_width, :treat_as ]).merge(user: current_user)
     end
 end

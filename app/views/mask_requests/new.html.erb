@@ -181,4 +181,7 @@
       </ul>
     </div>
   </div>
+  <div id="sketch_overlays">
+    <%= render "mask_requests/sketch_overlay", canva: @canva if params[:sketch_detected] == "true" %>
+  </div>
 </div>

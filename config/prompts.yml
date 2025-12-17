@@ -264,8 +264,32 @@ prompt_qualification: |
     </response_guide>
 
     TAKE YOUR TIME TO carefully go through these steps and instructions before providing a response.
-
     Output Format: Provide only the recommended changes in prose.
+
+sketch_transformation:
+    clay_render: |
+      You are an expert 3D modeler.
+      Transform this sketch into a clean, untextured clay render (white/grey material).
+      Focus entirely on the 3D form, volume, and lighting.
+      Preserve the perspective, angle, and all structural features exactly as shown in the sketch.
+      Do not add colors or textures yet.
+      Output a high-quality 3D clay rendering.
+
+    architectural_render: |
+      You are an expert Architectural Visualizer.
+      Transform this clay render into a professional architectural visualization.
+      Apply realistic textures to the surfaces (glass, concrete, wood, grass).
+      Keep the lighting soft and professional.
+      Preserve the exact angle and structure of the input image.
+      The style should be modern and sophisticated.
+
+    photorealistic_render: |
+      You are an expert in Photorealistic Rendering.
+      Transform this architectural visualization into a 100% photorealistic image.
+      Add realistic lighting, shadows, reflections, and atmosphere.
+      Make it look indistinguishable from a real photograph.
+      Enhance the vegetation and materials to be lifelike.
+      Preserve the exact composition and perspective.
 
 blog:
   deep_dive_questions: |

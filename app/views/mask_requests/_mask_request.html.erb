@@ -191,7 +191,16 @@
                 "
               >
                 <p class="text-white font-medium text-sm">
-                  <%= view.name.humanize %>
+                  <% if mask_request.canva.treat_as_sketch? %>
+                    <%= case view.name
+                        when "main_view" then "Clay Render"
+                        when "rotated_view" then "Architectural View"
+                        when "drone_view" then "Photorealistic View"
+                        else view.name.humanize
+                        end %>
+                  <% else %>
+                    <%= view.name.humanize %>
+                  <% end %>
                 </p>
               </div>
 
