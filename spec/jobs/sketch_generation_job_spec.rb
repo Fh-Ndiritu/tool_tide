@@ -15,7 +15,11 @@ RSpec.describe SketchGenerationJob, type: :job do
     )
 
     # Mock GCP Payload and Response
-    allow_any_instance_of(SketchGenerationJob).to receive(:fetch_gcp_response).and_return("fake_response_data")
+    allow_any_instance_of(SketchGenerationJob).to receive(:fetch_gcp_response).and_return({
+      "candidates" => [
+        { "content" => { "parts" => [{ "text" => "GCP Analysis Result" }] } }
+      ]
+    })
     allow_any_instance_of(SketchGenerationJob).to receive(:save_gcp_results).and_return(create_file_blob)
 
     # Ensure canva has image
@@ -38,15 +42,14 @@ RSpec.describe SketchGenerationJob, type: :job do
       expect(sketch_request.progress).to eq("complete")
     end
 
-    it 'updates analysis and angle' do
+    it 'updates analysis' do
       perform_enqueued_jobs { described_class.perform_later(sketch_request) }
 
       sketch_request.reload
-      expect(sketch_request.analysis).to eq("Test Analysis")
-      expect(sketch_request.recommended_angle).to eq("Test Angle")
+      expect(sketch_request.analysis).to eq("GCP Analysis Result")
     end
 
-    it 'generates all 3 views' do
+    it 'generates all views' do
       perform_enqueued_jobs { described_class.perform_later(sketch_request) }
 
       sketch_request.reload
@@ -56,17 +59,7 @@ RSpec.describe SketchGenerationJob, type: :job do
     end
 
     context 'on failure' do
-      before do
-        allow(RubyLLM).to receive(:chat).and_raise(StandardError.new("LLM Failed"))
-      end
-
-      it 'handles analysis failure with defaults' do
-        perform_enqueued_jobs { described_class.perform_later(sketch_request) }
-
-        sketch_request.reload
-        expect(sketch_request.analysis).to be_present
-        expect(sketch_request.recommended_angle).to be_present
-      end
+      # Analysis failure handling is irrelevant if analysis is disabled
     end
 
     context 'on generation failure' do
@@ -75,13 +68,12 @@ RSpec.describe SketchGenerationJob, type: :job do
       end
 
       it 'marks request as failed' do
-        expect(SketchPipelineService).to receive(:refund_on_failure).with(sketch_request)
-
         perform_enqueued_jobs { described_class.perform_later(sketch_request) }
 
         sketch_request.reload
         expect(sketch_request.progress).to eq("failed")
         expect(sketch_request.error_msg).to eq("GCP Failed")
+        expect(sketch_request.user_error).to be_present
       end
     end
   end

@@ -16,8 +16,7 @@
       <% if sketch_request.failed? %>
         <div class="bg-red-900/50 border border-red-500/50 rounded-xl p-6 text-red-200">
           <h3 class="font-bold text-lg mb-2">Generation Failed</h3>
-          <p class="text-sm opacity-80"><%= sketch_request.error_msg %></p>
-          <p class="mt-4 text-xs">Credits have been refunded.</p>
+          <p class="text-sm opacity-80"><%= sketch_request.user_error %></p>
         </div>
       <% end %>
 

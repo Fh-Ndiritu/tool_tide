@@ -27,28 +27,37 @@ RSpec.describe SketchRequest, type: :model do
     end
   end
 
-  describe '#create_mask_request!' do
+  describe '#create_result_canva!' do
     let(:image_blob) { create_file_blob('test_image.png', 'image/png') }
 
     before do
       sketch_request.photorealistic_view.attach(image_blob)
     end
 
-    it 'creates a new canva and mask request' do
+    it 'creates a new canva' do
       expect {
-        sketch_request.create_mask_request!
+        sketch_request.create_result_canva!
       }.to change(Canva, :count).by(1)
-       .and change(MaskRequest, :count).by(1)
     end
 
-    it 'sets the new mask request as sketch' do
-      mask_request = sketch_request.create_mask_request!
-      expect(mask_request.sketch).to be true
+    it 'does not create a mask request' do
+      expect {
+        sketch_request.create_result_canva!
+      }.not_to change(MaskRequest, :count)
     end
 
     it 'copies the image from the source view' do
-      mask_request = sketch_request.create_mask_request!
-      expect(mask_request.canva.image).to be_attached
+      new_canva = sketch_request.create_result_canva!
+      expect(new_canva.image).to be_attached
+    end
+
+    it 'returns existing canva if exists' do
+      existing = sketch_request.create_result_canva!
+
+      expect {
+        second_call = sketch_request.create_result_canva!
+        expect(second_call).to eq(existing)
+      }.not_to change(Canva, :count)
     end
   end
 

@@ -10,20 +10,20 @@ class SketchGenerationJob < ApplicationJob
   end
 
   def perform(sketch_request)
-    # 0. Analysis & Strategy
-    sketch_request.update!(progress: :processing_architectural)
-
     # 1. Architectural View (ArchiCAD / White Mode)
-    # Stored in :architectural_view
-    # archi_prompt = YAML.load_file(Rails.root.join("config/prompts.yml")).dig("sketch_transformation", "archi_cad_render")
-    # generate_view(sketch_request, :architectural_view, archi_prompt, sketch_request.canva.image)
+    sketch_request.update!(progress: :processing_architectural)
+    archi_prompt = YAML.load_file(Rails.root.join("config/prompts.yml")).dig("sketch_transformation", "archi_cad_render")
+    generate_view(sketch_request, :architectural_view, archi_prompt, sketch_request.canva.image)
 
+    if !sketch_request.architectural_view.attached?
+      sketch_request.update!(progress: :failed, error_msg: "Failed to generate Architectural View")
+      return
+    end
     # 2. 3D Photo Mode (Photorealistic)
     # Stored in :photorealistic_view
     sketch_request.update!(progress: :processing_photorealistic)
     prompt_text = YAML.load_file(Rails.root.join("config/prompts.yml")).dig("sketch_transformation", "photorealistic_render")
     prompt_text = prompt_text.gsub("<<analysis>>", sketch_request.analysis) if sketch_request.analysis.present?
-    # Using the ArchiCAD view (architectural_view) as input for clean structure
     generate_view(sketch_request, :photorealistic_view, prompt_text, sketch_request.architectural_view)
 
     # 3. Recommended Angle (Rotated)
@@ -39,8 +39,12 @@ class SketchGenerationJob < ApplicationJob
   rescue => e
     Rails.logger.error("SketchGenerationJob Failure: #{e.message}")
     pp e.backtrace
-    SketchPipelineService.refund_on_failure(sketch_request) unless sketch_request.architectural_view.attached?
-    sketch_request.update!(progress: :failed, error_msg: e.message)
+    # Refund no longer needed as we don't charge upfront
+    sketch_request.update!(
+      progress: :failed,
+      error_msg: e.message,
+      user_error: "We couldn't generate your 3D model. Please try again or use a different image."
+    )
   end
 
   private

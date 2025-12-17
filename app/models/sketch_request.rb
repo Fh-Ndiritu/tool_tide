@@ -21,15 +21,18 @@ class SketchRequest < ApplicationRecord
     SketchRequest.progresses[progress] < SketchRequest.progresses[target_progress.to_s]
   end
 
-  def create_mask_request!
+  def create_result_canva!
     source_image = photorealistic_view || rotated_view || canva.image
+    source_blob = source_image.blob
 
-    # We need to duplicate the blob to a new Canva
+    # Find existing canva for this image and user to avoid duplicates
+    existing_canva = user.canvas.joins(image_attachment: :blob).find_by(active_storage_blobs: { id: source_blob.id })
+    return existing_canva if existing_canva
+
+    # Create new Canva if not found
     new_canva = Canva.create!(user: user)
-    new_canva.image.attach(source_image.blob)
-
-    # Create the mask request
-    new_canva.mask_requests.create!(sketch: true)
+    new_canva.image.attach(source_blob)
+    new_canva
   end
 
   def purge_views

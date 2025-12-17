@@ -7,7 +7,7 @@ class SketchRequestsController < ApplicationController
     if (sketch_request = service.start_generation)
       redirect_to sketch_request_path(sketch_request), notice: "Sketch pipeline started!"
     else
-      redirect_to @canva.mask_requests.last || @canva, alert: "Failed to start generation (Insufficient credits?)"
+      redirect_to @canva, alert: "Failed to start generation. Please try again."
     end
   end
 
@@ -15,11 +15,12 @@ class SketchRequestsController < ApplicationController
     # @sketch_request is set
   end
 
-  def new_mask_request
-    # Create a NEW Canva from the result
-    mask_request = @sketch_request.create_mask_request!
 
-    redirect_to edit_mask_request_path(mask_request), notice: "New project created from result!"
+  def new_mask_request
+    # Create or find a Canva from the result
+    canva = @sketch_request.create_result_canva!
+    # Redirect to the drawing interface (new mask request on that canva)
+    redirect_to new_canva_mask_request_path(canva, sketch_detected: false), notice: "Project created from result! Please outline the area to modify."
   end
 
   private

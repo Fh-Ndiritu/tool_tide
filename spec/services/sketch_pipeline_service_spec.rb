@@ -13,17 +13,11 @@ RSpec.describe SketchPipelineService do
   end
 
   describe '#start_generation' do
-    context 'when user has enough credits' do
+    context 'when starting generation' do
       it 'creates a sketch request' do
         expect {
           service.start_generation
         }.to change(SketchRequest, :count).by(1)
-      end
-
-      it 'deducts credits' do
-        expect {
-          service.start_generation
-        }.to change { user.reload.pro_engine_credits }.by(-described_class::CREDIT_COST)
       end
 
       it 'enqueues SketchGenerationJob' do
@@ -62,16 +56,6 @@ RSpec.describe SketchPipelineService do
           service.start_generation
         }.not_to change { user.reload.pro_engine_credits }
       end
-    end
-  end
-
-  describe '.refund_on_failure' do
-    let(:sketch_request) { SketchRequest.create!(user: user, canva: canva) }
-
-    it 'refunds credits to the user' do
-      expect {
-        described_class.refund_on_failure(sketch_request)
-      }.to change { user.reload.pro_engine_credits }.by(described_class::CREDIT_COST)
     end
   end
 end

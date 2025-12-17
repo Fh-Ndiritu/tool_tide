@@ -22,18 +22,14 @@ RSpec.describe "SketchRequests", type: :request do
       expect(response).to redirect_to(sketch_request_path(SketchRequest.last))
     end
 
+
     context "when generation fails (insufficient credits)" do
       before { user.update!(pro_engine_credits: 0) }
 
-      it "redirects back to mask request or canvas with alert" do
+      it "redirects back with alert" do
         post canva_sketch_requests_path(canva)
 
-        target = canva.mask_requests.last || canva
-        if target.is_a?(MaskRequest)
-            expect(response).to redirect_to(mask_request_path(target))
-        else
-            expect(response).to redirect_to(canva_path(target))
-        end
+        expect(response).to redirect_to(canva_path(canva))
         expect(flash[:alert]).to be_present
       end
     end
@@ -54,13 +50,14 @@ RSpec.describe "SketchRequests", type: :request do
       )
     end
 
-    it "creates a mask request and redirects to edit" do
+    it "creates/finds a result canva and redirects to new mask request path" do
       expect {
         post new_mask_request_sketch_request_path(sketch_request)
-      }.to change(MaskRequest, :count).by(1)
+      }.to change(Canva, :count).by(1)
+      # Note: MaskRequest count should NOT change until user submits form
 
-      new_mr = MaskRequest.order(created_at: :desc).first
-      expect(response).to redirect_to(edit_mask_request_path(new_mr))
+      new_canva = Canva.order(created_at: :desc).first
+      expect(response).to redirect_to(new_canva_mask_request_path(new_canva, sketch_detected: true))
     end
   end
 end
