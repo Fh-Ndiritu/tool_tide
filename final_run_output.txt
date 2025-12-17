@@ -1,0 +1,323 @@
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.14.2/lib/rdoc/version.rb:8: warning: already initialized constant RDoc::VERSION
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.15.0/lib/rdoc/version.rb:8: warning: previous definition of VERSION was here
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.14.2/lib/rdoc.rb:68: warning: already initialized constant RDoc::VISIBILITIES
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.15.0/lib/rdoc.rb:68: warning: previous definition of VISIBILITIES was here
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.14.2/lib/rdoc.rb:74: warning: already initialized constant RDoc::DOT_DOC_FILENAME
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.15.0/lib/rdoc.rb:74: warning: previous definition of DOT_DOC_FILENAME was here
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.14.2/lib/rdoc.rb:79: warning: already initialized constant RDoc::GENERAL_MODIFIERS
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.15.0/lib/rdoc.rb:79: warning: previous definition of GENERAL_MODIFIERS was here
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.14.2/lib/rdoc.rb:84: warning: already initialized constant RDoc::CLASS_MODIFIERS
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.15.0/lib/rdoc.rb:84: warning: previous definition of CLASS_MODIFIERS was here
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.14.2/lib/rdoc.rb:89: warning: already initialized constant RDoc::ATTR_MODIFIERS
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.15.0/lib/rdoc.rb:89: warning: previous definition of ATTR_MODIFIERS was here
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.14.2/lib/rdoc.rb:94: warning: already initialized constant RDoc::CONSTANT_MODIFIERS
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.15.0/lib/rdoc.rb:94: warning: previous definition of CONSTANT_MODIFIERS was here
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.14.2/lib/rdoc.rb:99: warning: already initialized constant RDoc::METHOD_MODIFIERS
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.15.0/lib/rdoc.rb:99: warning: previous definition of METHOD_MODIFIERS was here
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.14.2/lib/rdoc/markdown.rb:257: warning: already initialized constant RDoc::Markdown::KpegPosInfo
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.15.0/lib/rdoc/markdown.rb:257: warning: previous definition of KpegPosInfo was here
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.14.2/lib/rdoc/markdown/entities.rb:5: warning: already initialized constant RDoc::Markdown::HTML_ENTITIES
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.15.0/lib/rdoc/markdown/entities.rb:5: warning: previous definition of HTML_ENTITIES was here
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.14.2/lib/rdoc/markdown/literals.rb:86: warning: already initialized constant RDoc::Markdown::Literals::KpegPosInfo
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.15.0/lib/rdoc/markdown/literals.rb:86: warning: previous definition of KpegPosInfo was here
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.14.2/lib/rdoc/markdown/literals.rb:446: warning: already initialized constant RDoc::Markdown::Literals::Rules
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.15.0/lib/rdoc/markdown/literals.rb:446: warning: previous definition of Rules was here
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.14.2/lib/rdoc/markdown.rb:584: warning: already initialized constant RDoc::Markdown::EXTENSIONS
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.15.0/lib/rdoc/markdown.rb:584: warning: previous definition of EXTENSIONS was here
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.14.2/lib/rdoc/markdown.rb:589: warning: already initialized constant RDoc::Markdown::DEFAULT_EXTENSIONS
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.15.0/lib/rdoc/markdown.rb:589: warning: previous definition of DEFAULT_EXTENSIONS was here
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.14.2/lib/rdoc/markdown.rb:16599: warning: already initialized constant RDoc::Markdown::Rules
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.15.0/lib/rdoc/markdown.rb:16420: warning: previous definition of Rules was here
+.......FFFFFFFFFFFFFFFFFFFFFFFFFFFFF/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/actionpack-8.0.2.1/lib/action_dispatch/middleware/exception_wrapper.rb:176: warning: Status code :unprocessable_entity is deprecated and will be removed in a future version of Rack. Please use :unprocessable_content instead.
+F/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/actionpack-8.0.2.1/lib/action_dispatch/middleware/exception_wrapper.rb:176: warning: Status code :unprocessable_entity is deprecated and will be removed in a future version of Rack. Please use :unprocessable_content instead.
+F.*..
+
+Pending: (Failures listed here are expected and do not affect your suite's status)
+
+  1) MaskRequestsController PUT #update with valid params updates the requested mask_request
+     # Temporarily skipped with xit
+     # ./spec/controllers/mask_requests_controller_spec.rb:138
+
+Failures:
+
+  1) SketchRequest#create_mask_request! creates a new canva and mask request
+     Failure/Error:
+       ActiveStorage::Blob.create_after_upload!(
+         io: File.open(path),
+         filename: filename,
+         content_type: content_type
+       )
+
+     NoMethodError:
+       undefined method 'create_after_upload!' for class ActiveStorage::Blob
+     # ./spec/models/sketch_request_spec.rb:75:in 'Object#create_file_blob'
+     # ./spec/models/sketch_request_spec.rb:31:in 'block (3 levels) in <top (required)>'
+     # ./spec/models/sketch_request_spec.rb:34:in 'block (3 levels) in <top (required)>'
+
+  2) SketchRequest#create_mask_request! sets the new mask request as sketch
+     Failure/Error:
+       ActiveStorage::Blob.create_after_upload!(
+         io: File.open(path),
+         filename: filename,
+         content_type: content_type
+       )
+
+     NoMethodError:
+       undefined method 'create_after_upload!' for class ActiveStorage::Blob
+     # ./spec/models/sketch_request_spec.rb:75:in 'Object#create_file_blob'
+     # ./spec/models/sketch_request_spec.rb:31:in 'block (3 levels) in <top (required)>'
+     # ./spec/models/sketch_request_spec.rb:34:in 'block (3 levels) in <top (required)>'
+
+  3) SketchRequest#create_mask_request! copies the image from the source view
+     Failure/Error:
+       ActiveStorage::Blob.create_after_upload!(
+         io: File.open(path),
+         filename: filename,
+         content_type: content_type
+       )
+
+     NoMethodError:
+       undefined method 'create_after_upload!' for class ActiveStorage::Blob
+     # ./spec/models/sketch_request_spec.rb:75:in 'Object#create_file_blob'
+     # ./spec/models/sketch_request_spec.rb:31:in 'block (3 levels) in <top (required)>'
+     # ./spec/models/sketch_request_spec.rb:34:in 'block (3 levels) in <top (required)>'
+
+  4) SketchRequest#purge_views purges all attached views
+     Failure/Error:
+       ActiveStorage::Blob.create_after_upload!(
+         io: File.open(path),
+         filename: filename,
+         content_type: content_type
+       )
+
+     NoMethodError:
+       undefined method 'create_after_upload!' for class ActiveStorage::Blob
+     # ./spec/models/sketch_request_spec.rb:75:in 'Object#create_file_blob'
+     # ./spec/models/sketch_request_spec.rb:57:in 'block (3 levels) in <top (required)>'
+
+  5) SketchPipelineService#start_generation when user has enough credits creates a sketch request
+     Failure/Error: user.update!(pro_engine_credits: 100)
+
+     ActiveRecord::RecordInvalid:
+       Validation failed: Privacy policy must be accepted.
+     # ./spec/services/sketch_pipeline_service_spec.rb:12:in 'block (2 levels) in <top (required)>'
+
+  6) SketchPipelineService#start_generation when user has enough credits deducts credits
+     Failure/Error: user.update!(pro_engine_credits: 100)
+
+     ActiveRecord::RecordInvalid:
+       Validation failed: Privacy policy must be accepted.
+     # ./spec/services/sketch_pipeline_service_spec.rb:12:in 'block (2 levels) in <top (required)>'
+
+  7) SketchPipelineService#start_generation when user has enough credits enqueues SketchGenerationJob
+     Failure/Error: user.update!(pro_engine_credits: 100)
+
+     ActiveRecord::RecordInvalid:
+       Validation failed: Privacy policy must be accepted.
+     # ./spec/services/sketch_pipeline_service_spec.rb:12:in 'block (2 levels) in <top (required)>'
+
+  8) SketchPipelineService#start_generation when user has enough credits returns the sketch request
+     Failure/Error: user.update!(pro_engine_credits: 100)
+
+     ActiveRecord::RecordInvalid:
+       Validation failed: Privacy policy must be accepted.
+     # ./spec/services/sketch_pipeline_service_spec.rb:12:in 'block (2 levels) in <top (required)>'
+
+  9) SketchPipelineService#start_generation when user has enough credits sets the canva to treat_as sketch
+     Failure/Error: user.update!(pro_engine_credits: 100)
+
+     ActiveRecord::RecordInvalid:
+       Validation failed: Privacy policy must be accepted.
+     # ./spec/services/sketch_pipeline_service_spec.rb:12:in 'block (2 levels) in <top (required)>'
+
+  10) SketchPipelineService#start_generation when user does not have enough credits returns nil
+      Failure/Error: user.update!(pro_engine_credits: 100)
+
+      ActiveRecord::RecordInvalid:
+        Validation failed: Privacy policy must be accepted.
+      # ./spec/services/sketch_pipeline_service_spec.rb:12:in 'block (2 levels) in <top (required)>'
+
+  11) SketchPipelineService#start_generation when user does not have enough credits does not create a sketch request
+      Failure/Error: user.update!(pro_engine_credits: 100)
+
+      ActiveRecord::RecordInvalid:
+        Validation failed: Privacy policy must be accepted.
+      # ./spec/services/sketch_pipeline_service_spec.rb:12:in 'block (2 levels) in <top (required)>'
+
+  12) SketchPipelineService#start_generation when user does not have enough credits does not deduct credits
+      Failure/Error: user.update!(pro_engine_credits: 100)
+
+      ActiveRecord::RecordInvalid:
+        Validation failed: Privacy policy must be accepted.
+      # ./spec/services/sketch_pipeline_service_spec.rb:12:in 'block (2 levels) in <top (required)>'
+
+  13) SketchPipelineService.refund_on_failure refunds credits to the user
+      Failure/Error: user.update!(pro_engine_credits: 100)
+
+      ActiveRecord::RecordInvalid:
+        Validation failed: Privacy policy must be accepted.
+      # ./spec/services/sketch_pipeline_service_spec.rb:12:in 'block (2 levels) in <top (required)>'
+
+  14) SketchGenerationJob#perform updates progress through stages
+      Failure/Error: perform_enqueued_job { described_class.perform_later(sketch_request) }
+
+      NoMethodError:
+        undefined method 'perform_enqueued_job' for #<RSpec::ExampleGroups::SketchGenerationJob::Perform:0x00007d9a862d1830>
+      # ./spec/jobs/sketch_generation_job_spec.rb:41:in 'block (3 levels) in <top (required)>'
+
+  15) SketchGenerationJob#perform updates analysis and angle
+      Failure/Error: perform_enqueued_job { described_class.perform_later(sketch_request) }
+
+      NoMethodError:
+        undefined method 'perform_enqueued_job' for #<RSpec::ExampleGroups::SketchGenerationJob::Perform:0x00007d9a861a2cc0>
+      # ./spec/jobs/sketch_generation_job_spec.rb:48:in 'block (3 levels) in <top (required)>'
+
+  16) SketchGenerationJob#perform generates all 3 views
+      Failure/Error: perform_enqueued_job { described_class.perform_later(sketch_request) }
+
+      NoMethodError:
+        undefined method 'perform_enqueued_job' for #<RSpec::ExampleGroups::SketchGenerationJob::Perform:0x00007d9a86119740>
+      # ./spec/jobs/sketch_generation_job_spec.rb:56:in 'block (3 levels) in <top (required)>'
+
+  17) SketchGenerationJob#perform on failure handles analysis failure with defaults
+      Failure/Error: perform_enqueued_job { described_class.perform_later(sketch_request) }
+
+      NoMethodError:
+        undefined method 'perform_enqueued_job' for #<RSpec::ExampleGroups::SketchGenerationJob::Perform::OnFailure:0x00007d9a8608e078>
+      # ./spec/jobs/sketch_generation_job_spec.rb:70:in 'block (4 levels) in <top (required)>'
+
+  18) SketchGenerationJob#perform on generation failure marks request as failed
+      Failure/Error: perform_enqueued_job { described_class.perform_later(sketch_request) }
+
+      NoMethodError:
+        undefined method 'perform_enqueued_job' for #<RSpec::ExampleGroups::SketchGenerationJob::Perform::OnGenerationFailure:0x00007d9a860307c0>
+      # ./spec/jobs/sketch_generation_job_spec.rb:87:in 'block (4 levels) in <top (required)>'
+
+  19) SketchRequests POST /canvas/:canva_id/sketch_requests creates a new sketch request and redirects
+      Failure/Error: user.update!(pro_engine_credits: 100)
+
+      ActiveRecord::RecordInvalid:
+        Validation failed: Privacy policy must be accepted.
+      # ./spec/requests/sketch_requests_spec.rb:13:in 'block (2 levels) in <top (required)>'
+
+  20) SketchRequests POST /canvas/:canva_id/sketch_requests when generation fails (insufficient credits) redirects back to mask request with alert
+      Failure/Error: user.update!(pro_engine_credits: 100)
+
+      ActiveRecord::RecordInvalid:
+        Validation failed: Privacy policy must be accepted.
+      # ./spec/requests/sketch_requests_spec.rb:13:in 'block (2 levels) in <top (required)>'
+
+  21) SketchRequests GET /sketch_requests/:id renders the show template
+      Failure/Error: user.update!(pro_engine_credits: 100)
+
+      ActiveRecord::RecordInvalid:
+        Validation failed: Privacy policy must be accepted.
+      # ./spec/requests/sketch_requests_spec.rb:13:in 'block (2 levels) in <top (required)>'
+
+  22) SketchRequests POST /sketch_requests/:id/new_mask_request creates a mask request and redirects to edit
+      Failure/Error: user.update!(pro_engine_credits: 100)
+
+      ActiveRecord::RecordInvalid:
+        Validation failed: Privacy policy must be accepted.
+      # ./spec/requests/sketch_requests_spec.rb:13:in 'block (2 levels) in <top (required)>'
+
+  23) MaskRequestsController GET #index returns a success response
+      Failure/Error: expect(response).to be_successful
+        expected `#<ActionDispatch::TestResponse:0x00007d9a858bf658 @mon_data=#<Monitor:0x00007d9a858cdeb0>, @mon_data_...trol={}, @request=#<ActionController::TestRequest GET "http://test.host/mask_requests" for 0.0.0.0>>.successful?` to be truthy, got false
+      # ./spec/controllers/mask_requests_controller_spec.rb:43:in 'block (3 levels) in <top (required)>'
+
+  24) MaskRequestsController GET #show returns a success response
+      Failure/Error: expect(response).to be_successful
+        expected `#<ActionDispatch::TestResponse:0x00007d9a8526fbe0 @mon_data=#<Monitor:0x00007d9a852854e0>, @mon_data_...ol={}, @request=#<ActionController::TestRequest GET "http://test.host/mask_requests/1" for 0.0.0.0>>.successful?` to be truthy, got false
+      # ./spec/controllers/mask_requests_controller_spec.rb:51:in 'block (3 levels) in <top (required)>'
+
+  25) MaskRequestsController GET #new renders the new template
+      Failure/Error: expect(response).to be_successful
+        expected `#<ActionDispatch::TestResponse:0x00007d9a8524a160 @mon_data=#<Monitor:0x00007d9a8523d2a8>, @mon_data_...ctionController::TestRequest GET "http://test.host/canvas/980190962/mask_requests/new" for 0.0.0.0>>.successful?` to be truthy, got false
+      # ./spec/controllers/mask_requests_controller_spec.rb:58:in 'block (3 levels) in <top (required)>'
+
+  26) MaskRequestsController GET #new when user has a completed sketch and is in image_uploaded stage automatically creates a mask request and redirects
+      Failure/Error: user.update!(onboarding_stage: :image_uploaded)
+
+      ActiveRecord::RecordInvalid:
+        Validation failed: Privacy policy must be accepted.
+      # ./spec/controllers/mask_requests_controller_spec.rb:63:in 'block (4 levels) in <top (required)>'
+
+  27) MaskRequestsController GET #edit redirects to low_credits_path if manual and user cannot afford generation
+      Failure/Error: expect(response).to redirect_to(low_credits_path)
+
+        Expected response to be a redirect to <http://test.host/low_credits> but was a redirect to <http://test.host/canvas/new>.
+        Expected "http://test.host/low_credits" to be === "http://test.host/canvas/new".
+      # ./spec/controllers/mask_requests_controller_spec.rb:92:in 'block (3 levels) in <top (required)>'
+
+  28) MaskRequestsController GET #edit redirects to mask_request_path if request is failed or complete
+      Failure/Error: expect(response).to redirect_to(mask_request_path(mask_request))
+
+        Expected response to be a redirect to <http://test.host/mask_requests/1> but was a redirect to <http://test.host/canvas/new>.
+        Expected "http://test.host/mask_requests/1" to be === "http://test.host/canvas/new".
+      # ./spec/controllers/mask_requests_controller_spec.rb:98:in 'block (3 levels) in <top (required)>'
+
+  29) MaskRequestsController GET #edit returns a success response if request is uploading
+      Failure/Error: expect(response).to be_successful
+        expected `#<ActionDispatch::TestResponse:0x00007d9a874b91b0 @mon_data=#<Monitor:0x00007d9a87fc8060>, @mon_data_..., @request=#<ActionController::TestRequest GET "http://test.host/mask_requests/1/edit" for 0.0.0.0>>.successful?` to be truthy, got false
+      # ./spec/controllers/mask_requests_controller_spec.rb:104:in 'block (3 levels) in <top (required)>'
+
+  30) MaskRequestsController POST #create with valid params creates a new MaskRequest
+      Failure/Error: current_user.mask_drawn!
+
+      ActiveRecord::RecordInvalid:
+        Validation failed: Privacy policy must be accepted.
+      # ./app/controllers/mask_requests_controller.rb:67:in 'block in MaskRequestsController#create'
+      # ./app/controllers/mask_requests_controller.rb:57:in 'MaskRequestsController#create'
+      # ./spec/controllers/mask_requests_controller_spec.rb:112:in 'block (5 levels) in <top (required)>'
+      # ./spec/controllers/mask_requests_controller_spec.rb:113:in 'block (4 levels) in <top (required)>'
+
+  31) MaskRequestsController POST #create with valid params redirects to edit_mask_request_path if no user error
+      Failure/Error: current_user.mask_drawn!
+
+      ActiveRecord::RecordInvalid:
+        Validation failed: Privacy policy must be accepted.
+      # ./app/controllers/mask_requests_controller.rb:67:in 'block in MaskRequestsController#create'
+      # ./app/controllers/mask_requests_controller.rb:57:in 'MaskRequestsController#create'
+      # ./spec/controllers/mask_requests_controller_spec.rb:117:in 'block (4 levels) in <top (required)>'
+
+Finished in 5.83 seconds (files took 6.41 seconds to load)
+42 examples, 31 failures, 1 pending
+
+Failed examples:
+
+rspec ./spec/models/sketch_request_spec.rb:37 # SketchRequest#create_mask_request! creates a new canva and mask request
+rspec ./spec/models/sketch_request_spec.rb:44 # SketchRequest#create_mask_request! sets the new mask request as sketch
+rspec ./spec/models/sketch_request_spec.rb:49 # SketchRequest#create_mask_request! copies the image from the source view
+rspec ./spec/models/sketch_request_spec.rb:56 # SketchRequest#purge_views purges all attached views
+rspec ./spec/services/sketch_pipeline_service_spec.rb:17 # SketchPipelineService#start_generation when user has enough credits creates a sketch request
+rspec ./spec/services/sketch_pipeline_service_spec.rb:23 # SketchPipelineService#start_generation when user has enough credits deducts credits
+rspec ./spec/services/sketch_pipeline_service_spec.rb:29 # SketchPipelineService#start_generation when user has enough credits enqueues SketchGenerationJob
+rspec ./spec/services/sketch_pipeline_service_spec.rb:35 # SketchPipelineService#start_generation when user has enough credits returns the sketch request
+rspec ./spec/services/sketch_pipeline_service_spec.rb:41 # SketchPipelineService#start_generation when user has enough credits sets the canva to treat_as sketch
+rspec ./spec/services/sketch_pipeline_service_spec.rb:50 # SketchPipelineService#start_generation when user does not have enough credits returns nil
+rspec ./spec/services/sketch_pipeline_service_spec.rb:54 # SketchPipelineService#start_generation when user does not have enough credits does not create a sketch request
+rspec ./spec/services/sketch_pipeline_service_spec.rb:60 # SketchPipelineService#start_generation when user does not have enough credits does not deduct credits
+rspec ./spec/services/sketch_pipeline_service_spec.rb:71 # SketchPipelineService.refund_on_failure refunds credits to the user
+rspec ./spec/jobs/sketch_generation_job_spec.rb:37 # SketchGenerationJob#perform updates progress through stages
+rspec ./spec/jobs/sketch_generation_job_spec.rb:47 # SketchGenerationJob#perform updates analysis and angle
+rspec ./spec/jobs/sketch_generation_job_spec.rb:55 # SketchGenerationJob#perform generates all 3 views
+rspec ./spec/jobs/sketch_generation_job_spec.rb:69 # SketchGenerationJob#perform on failure handles analysis failure with defaults
+rspec ./spec/jobs/sketch_generation_job_spec.rb:83 # SketchGenerationJob#perform on generation failure marks request as failed
+rspec ./spec/requests/sketch_requests_spec.rb:17 # SketchRequests POST /canvas/:canva_id/sketch_requests creates a new sketch request and redirects
+rspec ./spec/requests/sketch_requests_spec.rb:28 # SketchRequests POST /canvas/:canva_id/sketch_requests when generation fails (insufficient credits) redirects back to mask request with alert
+rspec ./spec/requests/sketch_requests_spec.rb:37 # SketchRequests GET /sketch_requests/:id renders the show template
+rspec ./spec/requests/sketch_requests_spec.rb:51 # SketchRequests POST /sketch_requests/:id/new_mask_request creates a mask request and redirects to edit
+rspec ./spec/controllers/mask_requests_controller_spec.rb:40 # MaskRequestsController GET #index returns a success response
+rspec ./spec/controllers/mask_requests_controller_spec.rb:48 # MaskRequestsController GET #show returns a success response
+rspec ./spec/controllers/mask_requests_controller_spec.rb:56 # MaskRequestsController GET #new renders the new template
+rspec ./spec/controllers/mask_requests_controller_spec.rb:72 # MaskRequestsController GET #new when user has a completed sketch and is in image_uploaded stage automatically creates a mask request and redirects
+rspec ./spec/controllers/mask_requests_controller_spec.rb:88 # MaskRequestsController GET #edit redirects to low_credits_path if manual and user cannot afford generation
+rspec ./spec/controllers/mask_requests_controller_spec.rb:95 # MaskRequestsController GET #edit redirects to mask_request_path if request is failed or complete
+rspec ./spec/controllers/mask_requests_controller_spec.rb:101 # MaskRequestsController GET #edit returns a success response if request is uploading
+rspec ./spec/controllers/mask_requests_controller_spec.rb:110 # MaskRequestsController POST #create with valid params creates a new MaskRequest
+rspec ./spec/controllers/mask_requests_controller_spec.rb:116 # MaskRequestsController POST #create with valid params redirects to edit_mask_request_path if no user error
+
+Coverage report generated for RSpec to /home/fh/code/playground/tool_tide/coverage.
+Line Coverage: 11.42% (278 / 2434)
+Stopped processing SimpleCov as a previous error not related to SimpleCov has been detected

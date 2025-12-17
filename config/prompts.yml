@@ -294,33 +294,22 @@ sketch_analysis:
       }
 
 sketch_transformation:
-    clay_render: |
-      You are an expert 3D modeler.
-      Transform this sketch into a clean, untextured clay render (white/grey material).
-      Focus entirely on the 3D form, volume, and lighting.
-      Preserve the perspective, angle, and all structural features exactly as shown in the sketch.
-      Do not add colors or textures yet.
-      Output a high-quality 3D clay rendering.
-
-    architectural_render: |
-      You are an expert Architectural Visualizer.
-      Transform this clay render into a professional architectural visualization.
-      Apply realistic textures to the surfaces (glass, concrete, wood, grass).
-      Keep the lighting soft and professional.
-      Preserve the exact angle and structure of the input image.
-      The style should be modern and sophisticated.
-
     archi_cad_render: |
-      You are an expert Architectural Visualizer using ArchiCAD / Revit.
-      Transform this sketch into a clean, professional "White Mode" 3D architectural model.
+      Role: Expert Architectural Visualizer & geometry analyzer.
+      Task: Transform the input sketch into a pristine "White Model" architectural maquette and analyze its geometry.
 
-      Style Guide:
-      - Pure white or light grey model aesthetic.
-      - Crisp, sharp edges (no hand-drawn lines).
-      - Soft ambient occlusion shadows.
-      - "Clay" or "Maquette" style but with high precision.
-      - NO realistic textures (no grass, no wood grain, no sky).
-      - Look like a high-end architectural study model.
+      Visual Style Guide:
+      - Materiality: Museum-quality white matte board for structures; balsa wood for perimeter fencing.
+      - Vegetation: Abstract representation. Use "wire armature" or "translucent white spheres" for trees; "stippled clay texture" for groundcover. DO NOT generate realistic leaves.
+      - Lighting: Studio setup with softbox lighting from the top-left (45 degrees). High Ambient Occlusion to reveal depth changes.
+      - Viewport: Isometric Projection (30-degree angle) to preserve the scale of the "Rad 58.00'" driveway curve.
+      - Critical Detail: Ensure the "Sunken Courtyard" (Coure en sous sol) is rendered as a depression/void, not a flat surface.
+
+      Output Requirement 1 (Image): A 4K isometric render of the white model.
+      Output Requirement 2 (Text Analysis): Return a bulleted analysis of the main features visible in the isometric view. Specifically verify:
+        1. The detection of the sunken courtyard depth.
+        2. The continuity of the curved driveway.
+        3. The relationship between the "2 Story Res" and the property lines.
 
       Context from analysis: <<analysis>>
 
@@ -333,17 +322,22 @@ sketch_transformation:
       Preserve the exact composition and perspective.
 
     angle_transformation: |
-        You are an expert Drone Photographer and 3D Camera Operator.
-        Take the input photorealistic image and apply a camera transformation to it.
+      Role: Expert Drone Photographer & 3D Neural Renderer (Novel View Synthesis).
+      Task: Re-photograph the scene from a new perspective while strictly maintaining the architectural and botanical identity of the previous render.
 
-        Transformation: <<angle>>
+      Apply this anfle and transformation instructions: <<angle>>
 
-        - If "Drone Shot": Lift the camera up and tilt down to show the layout.
-        - If "Rotation": Rotate the view slightly to reveal the depth of the structure.
-        - If "Eye-Level": Bring the camera down to human height.
+      Execution Logic:
+      - If "Drone Shot / Bird's Eye": Lift camera +45 degrees elevation. Focus on the geometry of the driveway arc and the layout of the planting drifts.
+      - If "Eye-Level / Human Scale": Drop camera to 1.6m height. Focus on the transparency of the Thalictrum veils and the texture of the stucco.
+      - If "Reverse Isometric": Rotate azimuth 180 degrees. Reveal the "Hidden Side" of the residence.
 
-        Maintain consistency with the original design in the input image.
-        Ensure the output is high-quality 3D render style.
+      Constraint Checklist:
+      - The "2 Story Stone & Stucco" facade must remain consistent.
+      - The "Callicarpa" berries must remain violet.
+      - The "Sunken Courtyard" must retain its depth (do not flatten).
+      - Lighting direction must adapt physically to the new camera angle (shadows must rotate correctly).
+
 blog:
   deep_dive_questions: |
     Role: You are an expert Landscape Architect, Regional Botanist, and Content Strategist for Hadaa.app (a professional-grade AI landscape design tool known for its AI Brush and precise Prompt Editor).

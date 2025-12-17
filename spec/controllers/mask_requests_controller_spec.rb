@@ -8,7 +8,7 @@ RSpec.describe MaskRequestsController, type: :controller do
 
   before do
     sign_in(user)
-    allow(controller).to receive(:current_user).and_return(user)
+    user.update(onboarding_stage: :completed)
   end
 
   let(:valid_attributes) {
@@ -20,25 +20,11 @@ RSpec.describe MaskRequestsController, type: :controller do
     }
   }
 
-  let(:invalid_attributes) {
-    {
-      mask: nil,
-      original_image: nil,
-      device_width: nil,
-      progress: nil,
-      canva_id: nil
-    }
-  }
-
-  let(:new_attributes) {
-    { preset: 'new_preset' }
-  }
-
   let(:valid_session) { {} }
 
   describe "GET #index" do
     it "returns a success response" do
-      mask_request = MaskRequest.create! valid_attributes
+      MaskRequest.create! valid_attributes
       get :index, params: {}, session: valid_session
       expect(response).to be_successful
     end
@@ -56,6 +42,32 @@ RSpec.describe MaskRequestsController, type: :controller do
     it 'renders the new template' do
       get :new, params: { canva_id: canva.id }
       expect(response).to be_successful
+    end
+
+    context "when user has a completed sketch and is in image_uploaded stage" do
+      before do
+        # Bypass regression check
+        user.update_column(:onboarding_stage, User.onboarding_stages["image_uploaded"])
+        sr = SketchRequest.create!(
+          user: user,
+          canva: canva,
+          progress: :complete
+        )
+        sr.architectural_view.attach(io: StringIO.new("fake"), filename: "test.png", content_type: "image/png")
+      end
+
+      it "automatically creates a mask request and redirects" do
+        get :new, params: { canva_id: canva.id }
+
+        # Should redirect to edit mask request
+        expect(response).to have_http_status(:redirect)
+        expect(response.location).to include("/edit")
+
+        # Verify side effects
+        user.reload
+        expect(user.onboarding_stage).to eq("mask_drawn")
+        expect(MaskRequest.last.sketch).to be true
+      end
     end
   end
 
@@ -99,39 +111,6 @@ RSpec.describe MaskRequestsController, type: :controller do
         expect(response).to redirect_to(new_canva_mask_request_path(canva))
       end
     end
-
-    # context "with invalid params" do
-    #   it "renders a response with 422 status" do
-    #     post :create, params: { canva_id: canva.id, mask_request: invalid_attributes }, session: valid_session
-    #     expect(response).to have_http_status(:see_other)
-    #   end
-    # end
-  end
-
-  describe "PUT #update" do
-    context "with valid params" do
-      xit "updates the requested mask_request" do
-        mask_request = MaskRequest.create! valid_attributes
-        put :update, params: { id: mask_request.to_param, mask_request: new_attributes }, session: valid_session
-        mask_request.reload
-        expect(mask_request.preset).to eq('new_preset')
-      end
-
-      # it "enqueues DesignGeneratorJob" do
-      #   mask_request = MaskRequest.create! valid_attributes
-      #   expect(DesignGeneratorJob).to receive(:perform_later).with(mask_request.id)
-      #   put :update, params: { id: mask_request.to_param, mask_request: new_attributes }, session: valid_session
-      # end
-    end
-
-    # context "with invalid params" do
-    #   it "renders a response with 422 status" do
-    #     mask_request = MaskRequest.create! valid_attributes
-    #     put :update, params: { id: mask_request.to_param, mask_request: invalid_attributes }, session: valid_session
-    #     binding.irb
-    #     expect(response).to have_http_status(500)
-    #   end
-    # end
   end
 
   describe "DELETE #destroy" do

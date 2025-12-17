@@ -43,3 +43,20 @@ class Admin::MaskRequestsController < ApplicationController
     end
   end
 end
+
+
+# email_list = [
+#   "mohamedeladly122@gmail.com",
+#   "engulfa80@gmail.com",
+#   "altasteve@yahoo.com",
+#   "fmfoukal@gmail.com",
+#   "engwaelgomaa44@gmail.com",
+#   "wafaawael32@gmail.com",
+#   "chetanpchavan@gmail.com",
+#   "douwezwerink@hotmail.com",
+#   "lennert.driesen2004@gmail.com",
+#   "naynyy@gmail.com",
+#   "cachitomayorga@gmail.com"
+# ]
+
+# User.where(email: email_list).joins(:mask_requests).where(mask_requests: { progress: "complete" }).map{ |user| user.mask_requests.complete.last.canva.image.url }.join("\n\n")

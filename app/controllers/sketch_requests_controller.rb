@@ -7,7 +7,7 @@ class SketchRequestsController < ApplicationController
     if (sketch_request = service.start_generation)
       redirect_to sketch_request_path(sketch_request), notice: "Sketch pipeline started!"
     else
-      redirect_to @canva.mask_request, alert: "Failed to start generation (Insufficient credits?)"
+      redirect_to @canva.mask_requests.last || @canva, alert: "Failed to start generation (Insufficient credits?)"
     end
   end
 

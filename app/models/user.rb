@@ -16,7 +16,7 @@ class User < ApplicationRecord
   has_many :sketch_requests, dependent: :destroy
   has_many :favorites, as: :favoritable, dependent: :destroy
 
-  validates :privacy_policy, acceptance: { message: "must be accepted." }
+  validates :privacy_policy, acceptance: { message: "must be accepted." }, on: :create
 
   enum :source, {
     email: 0,

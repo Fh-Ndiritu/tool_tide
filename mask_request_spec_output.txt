@@ -1,0 +1,57 @@
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.14.2/lib/rdoc/version.rb:8: warning: already initialized constant RDoc::VERSION
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.15.0/lib/rdoc/version.rb:8: warning: previous definition of VERSION was here
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.14.2/lib/rdoc.rb:68: warning: already initialized constant RDoc::VISIBILITIES
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.15.0/lib/rdoc.rb:68: warning: previous definition of VISIBILITIES was here
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.14.2/lib/rdoc.rb:74: warning: already initialized constant RDoc::DOT_DOC_FILENAME
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.15.0/lib/rdoc.rb:74: warning: previous definition of DOT_DOC_FILENAME was here
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.14.2/lib/rdoc.rb:79: warning: already initialized constant RDoc::GENERAL_MODIFIERS
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.15.0/lib/rdoc.rb:79: warning: previous definition of GENERAL_MODIFIERS was here
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.14.2/lib/rdoc.rb:84: warning: already initialized constant RDoc::CLASS_MODIFIERS
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.15.0/lib/rdoc.rb:84: warning: previous definition of CLASS_MODIFIERS was here
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.14.2/lib/rdoc.rb:89: warning: already initialized constant RDoc::ATTR_MODIFIERS
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.15.0/lib/rdoc.rb:89: warning: previous definition of ATTR_MODIFIERS was here
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.14.2/lib/rdoc.rb:94: warning: already initialized constant RDoc::CONSTANT_MODIFIERS
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.15.0/lib/rdoc.rb:94: warning: previous definition of CONSTANT_MODIFIERS was here
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.14.2/lib/rdoc.rb:99: warning: already initialized constant RDoc::METHOD_MODIFIERS
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.15.0/lib/rdoc.rb:99: warning: previous definition of METHOD_MODIFIERS was here
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.14.2/lib/rdoc/markdown.rb:257: warning: already initialized constant RDoc::Markdown::KpegPosInfo
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.15.0/lib/rdoc/markdown.rb:257: warning: previous definition of KpegPosInfo was here
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.14.2/lib/rdoc/markdown/entities.rb:5: warning: already initialized constant RDoc::Markdown::HTML_ENTITIES
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.15.0/lib/rdoc/markdown/entities.rb:5: warning: previous definition of HTML_ENTITIES was here
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.14.2/lib/rdoc/markdown/literals.rb:86: warning: already initialized constant RDoc::Markdown::Literals::KpegPosInfo
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.15.0/lib/rdoc/markdown/literals.rb:86: warning: previous definition of KpegPosInfo was here
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.14.2/lib/rdoc/markdown/literals.rb:446: warning: already initialized constant RDoc::Markdown::Literals::Rules
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.15.0/lib/rdoc/markdown/literals.rb:446: warning: previous definition of Rules was here
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.14.2/lib/rdoc/markdown.rb:584: warning: already initialized constant RDoc::Markdown::EXTENSIONS
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.15.0/lib/rdoc/markdown.rb:584: warning: previous definition of EXTENSIONS was here
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.14.2/lib/rdoc/markdown.rb:589: warning: already initialized constant RDoc::Markdown::DEFAULT_EXTENSIONS
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.15.0/lib/rdoc/markdown.rb:589: warning: previous definition of DEFAULT_EXTENSIONS was here
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.14.2/lib/rdoc/markdown.rb:16599: warning: already initialized constant RDoc::Markdown::Rules
+/home/fh/.local/share/mise/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/rdoc-6.15.0/lib/rdoc/markdown.rb:16420: warning: previous definition of Rules was here
+.Show Flash: {}
+Trigger: false
+..F......*..
+
+Pending: (Failures listed here are expected and do not affect your suite's status)
+
+  1) MaskRequestsController PUT #update with valid params updates the requested mask_request
+     # Temporarily skipped with xit
+     # ./spec/controllers/mask_requests_controller_spec.rb:139
+
+Failures:
+
+  1) MaskRequestsController GET #new when user has a completed sketch and is in image_uploaded stage automatically creates a mask request and redirects
+     Failure/Error: expect(response).to have_http_status(:redirect)
+       expected the response to have a redirect status code (3xx) but it was 200
+     # ./spec/controllers/mask_requests_controller_spec.rb:77:in 'block (4 levels) in <top (required)>'
+
+Finished in 8.52 seconds (files took 6.33 seconds to load)
+13 examples, 1 failure, 1 pending
+
+Failed examples:
+
+rspec ./spec/controllers/mask_requests_controller_spec.rb:73 # MaskRequestsController GET #new when user has a completed sketch and is in image_uploaded stage automatically creates a mask request and redirects
+
+Coverage report generated for RSpec to /home/fh/code/playground/tool_tide/coverage.
+Line Coverage: 10.0% (249 / 2489)
+Stopped processing SimpleCov as a previous error not related to SimpleCov has been detected
