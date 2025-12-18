@@ -20,7 +20,7 @@ class CustomRubyLLM
 
   def initialize(*_params)
     @context = RubyLLM.context do |config|
-      key =  ENV.fetch('GEMINI_API_KEYS', ENV.fetch('GEMINI_API_KEY')).split('____').sample
+      key =  ENV.fetch("GEMINI_API_KEYS", ENV.fetch("GEMINI_API_KEY")).split("____").sample
       config.gemini_api_key = key
     end
   end
