@@ -16,7 +16,7 @@ class SketchAnalysisJob < ApplicationJob
 
     prompt = "Analyze this image and determine if it is a real photo or a sketch/drawing/architecture plan. Return 'photo' or 'sketch'."
 
-    response = RubyLLM.chat.with_schema(ImageAnalysisSchema).ask(
+    response = CustomRubyLLM.context.chat.with_schema(ImageAnalysisSchema).ask(
       prompt,
       with: canva.image
     )

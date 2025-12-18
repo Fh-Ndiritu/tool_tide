@@ -25,7 +25,7 @@ class TextRequestQualifier
 
     full_prompt = "#{prompt}\n\nUser Request: #{@text_request.prompt}\n\nIMPORTANT: Provide ONLY the list of recommended changes in the JSON response. DO NOT generate any images."
 
-    response = RubyLLM.chat.with_schema(RefinedPromptSchema).ask(
+    response = CustomRubyLLM.context.chat.with_schema(RefinedPromptSchema).ask(
       full_prompt,
       with: @text_request.original_image
     )

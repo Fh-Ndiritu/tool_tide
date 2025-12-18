@@ -89,7 +89,7 @@ class DesignGenerator
         prompt += "\n\n#{location_info}\nSuggest plants suitable for this specific location and climate."
       end
 
-      response = RubyLLM.chat.with_schema(GardenSuggestionSchema).ask(prompt, with: @mask_request.overlay)
+      response = CustomRubyLLM.context.chat.with_schema(GardenSuggestionSchema).ask(prompt, with: @mask_request.overlay)
 
 
       data = response.content["design_features"]
@@ -148,7 +148,7 @@ class DesignGenerator
     prompt.gsub!("<<plant_names>>", plant_names)
 
     # Pass the overlay image to give context for quantity estimation
-    response = RubyLLM.chat.with_schema(PlantDetailsListSchema).ask(prompt, with: @mask_request.overlay)
+    response = CustomRubyLLM.context.chat.with_schema(PlantDetailsListSchema).ask(prompt, with: @mask_request.overlay)
     response.content["plants_details"]["plants"]
   end
 

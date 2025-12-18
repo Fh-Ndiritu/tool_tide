@@ -54,7 +54,7 @@ class BlogGeneratorService
              .gsub("<<deep_dive_answers>>", @blog.raw_deep_dive)
              .gsub("<<related_blogs>>", related_blogs)
 
-    response = RubyLLM.chat.with_schema(BlogPostSchema).ask(prompt)
+    response = CustomRubyLLM.context.chat.with_schema(BlogPostSchema).ask(prompt)
 
     data = response.content["blog_post"]
     metadata = data["metadata"]
@@ -78,7 +78,7 @@ class BlogGeneratorService
              .gsub("<<markdown_content>>", @blog.content)
              .gsub("<<design_guidelines>>", design_guidelines)
 
-    response = RubyLLM.chat.ask(prompt, with: reference_image)
+    response = CustomRubyLLM.context.chat.ask(prompt, with: reference_image)
     html_content = response.content.gsub("```html", "").gsub("```", "")
 
     @blog.update!(

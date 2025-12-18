@@ -14,3 +14,12 @@ RubyLLM.configure do |config|
   config.retry_backoff_factor = 2 # Exponential backoff multiplier (default: 2)
   config.retry_interval_randomness = 0.5 # Jitter to prevent thundering herd (default: 0.5)
 end
+
+class CustomRubyLLM
+  def self.context
+    RubyLLM.configure do |config|
+      config.gemini_api_key = ENV["GEMINI_API_KEYS"].split("__").sample
+    end
+    RubyLLM
+  end
+end
