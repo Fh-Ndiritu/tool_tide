@@ -16,10 +16,16 @@ RubyLLM.configure do |config|
 end
 
 class CustomRubyLLM
-  def self.context
-    RubyLLM.configure do |config|
-      config.gemini_api_key = ENV["GEMINI_API_KEYS"].split("__").sample
+  attr_accessor :context
+
+  def initialize(*_params)
+    @context = RubyLLM.context do |config|
+      key =  ENV.fetch('GEMINI_API_KEYS', ENV.fetch('GEMINI_API_KEY')).split('____').sample
+      config.gemini_api_key = key
     end
-    RubyLLM
+  end
+
+  def self.context(**args)
+    new(**args).context
   end
 end

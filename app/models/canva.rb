@@ -6,6 +6,7 @@ class Canva < ApplicationRecord
 
   has_many :mask_requests, dependent: :destroy
   has_many :sketch_requests, dependent: :destroy
+  after_create_commit :update_user
 
   def drawable_image
     variant = image.variant(resize_to_limit: [ device_width, nil ]).processed
@@ -22,4 +23,11 @@ class Canva < ApplicationRecord
     photo: 0,
     sketch: 1
   }, prefix: true
+
+
+  private
+
+  def update_user
+    user.image_uploaded!
+  end
 end

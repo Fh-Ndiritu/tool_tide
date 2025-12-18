@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :authenticate_user!
 
-  before_action :enforce_onboarding_flow, unless: :devise_controller?
+  # before_action :enforce_onboarding_flow, unless: :devise_controller?
   before_action :block_singapore_users
 
 
@@ -22,42 +22,59 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def enforce_onboarding_flow
-    return unless user_signed_in?
-    return if current_user.onboarding_stage == "completed"
+  # def enforce_onboarding_flow
+  #   return
+  #   return unless user_signed_in?
+  #   return if current_user.onboarding_stage == "completed"
 
-    if current_user.text_requests.complete.exists? && current_user.text_requests.count > 1
-      current_user.update(onboarding_stage: "completed")
-      return
-    end
+  #   if current_user.text_requests.complete.exists? && current_user.text_requests.count > 1
+  #     current_user.update(onboarding_stage: "completed")
+  #     return
+  #   end
 
-    return unless [ "canvas", "mask_requests" ].include?(controller_name)
+  #   return unless [ "canvas", "mask_requests" ].include?(controller_name)
 
-    target_path = case current_user.onboarding_stage
-    when "fresh", "welcome_seen"
-                    new_canva_path
-    when "image_uploaded"
-                    latest_canva = current_user.canvas.last
-                    latest_canva ? new_canva_mask_request_path(latest_canva) : new_canva_path
-    when "mask_drawn"
-                    latest_mr = current_user.mask_requests.last
-                    latest_mr ? edit_mask_request_path(latest_mr) : new_canva_path
-    when "style_selected"
-                    latest_mr = current_user.mask_requests.last
-                    latest_mr ? plants_mask_request_path(latest_mr) : new_canva_path
-    when "plants_viewed", "first_result_viewed"
-                    latest_mr = current_user.mask_requests.last
-                    latest_mr ? mask_request_path(latest_mr) : new_canva_path
-    when "text_editor_opened", "refinement_generated"
-                    text_requests_path
-    else
-                    nil
-    end
+  #   latest_canva = current_user.canvas.treat_as_photo.last
 
-    if target_path && request.get? && request.path != target_path
-      redirect_to target_path
-    end
-  end
+  #   target_path = case current_user.onboarding_stage
+  #   when "fresh", "welcome_seen"
+  #                   new_canva_path
+  #   when "image_uploaded"
+  #     # User has no mask_request yet, create and redirect them
+  #                   latest_canva ? new_canva_mask_request_path(latest_canva) : new_canva_path
+  #   when "mask_drawn"
+  #     # User has a mask_request, redirect them to it
+  #                   latest_mr = current_user.mask_requests.where.not(progress: :failed).last
+  #                   if latest_mr
+  #                     edit_mask_request_path(latest_mr)
+  #                   else
+  #                     # if their last mr failed, redirect them to the canvas
+  #                     latest_canva ? new_canva_mask_request_path(latest_canva) : new_canva_path
+  #                   end
+  #   when "style_selected"
+  #                   latest_mr = current_user.mask_requests.where.not(progress: :failed).last
+  #                   if latest_mr
+  #                     plants_mask_request_path(latest_mr)
+  #                   else
+  #                      latest_canva ? new_canva_mask_request_path(latest_canva) : new_canva_path
+  #                   end
+  #   when "plants_viewed", "first_result_viewed"
+  #                   latest_mr = current_user.mask_requests.where.not(progress: :failed).last
+  #                   if latest_mr
+  #                     mask_request_path(latest_mr)
+  #                   else
+  #                      latest_canva ? new_canva_mask_request_path(latest_canva) : new_canva_path
+  #                   end
+  #   when "text_editor_opened", "refinement_generated"
+  #                   text_requests_path
+  #   else
+  #                   nil
+  #   end
+
+  #   if target_path && request.get? && request.path != target_path
+  #     redirect_to target_path
+  #   end
+  # end
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: [ :privacy_policy, :user_name ])

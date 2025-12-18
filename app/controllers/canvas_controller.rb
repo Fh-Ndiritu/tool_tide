@@ -12,13 +12,13 @@ class CanvasController < ApplicationController
 
     respond_to do |format|
       if @canva.save
-        current_user.image_uploaded!
         result = SketchAnalysisJob.perform_now(@canva)
-        format.html { redirect_to new_canva_mask_request_path(@canva, sketch_detected: (result == "sketch")), status: :see_other }
-        format.json { render :show, status: :created, location: @canva }
+        redirect_path = new_canva_mask_request_path(@canva, sketch_detected: (result == "sketch"))
+        format.html { redirect_to redirect_path, status: :see_other }
+        format.turbo_stream { redirect_to redirect_path, status: :see_other }
       else
         format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @canva.errors, status: :unprocessable_entity }
+        format.turbo_stream { render :new, status: :unprocessable_entity }
       end
     end
   end

@@ -50,11 +50,9 @@ class MaskRequestsController < ApplicationController
   # POST /mask_requests or /mask_requests.json
   def create
     @mask_request = @canva.mask_requests.new(mask_request_params)
-
     respond_to do |format|
       if @mask_request.save
         MaskValidatorJob.perform_now(@mask_request.id)
-        # SketchAnalysisJob moved to CanvasController#create
         @mask_request.reload
         if @mask_request.user_error.present?
           flash[:alert] = @mask_request.user_error
@@ -71,12 +69,6 @@ class MaskRequestsController < ApplicationController
   end
 
   def update
-    if params[:proceed_as_photo]
-      @mask_request.canva.update!(treat_as: :photo)
-      redirect_to edit_mask_request_path(@mask_request), notice: "Proceeding with standard mask pipeline."
-      return
-    end
-
     respond_to do |format|
       if @mask_request.preset.present? || @mask_request.update(preset_params)
         if params[:generate]
