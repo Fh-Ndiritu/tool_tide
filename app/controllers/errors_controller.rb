@@ -1,6 +1,5 @@
 class ErrorsController < ApplicationController
   skip_before_action :authenticate_user!
-  skip_before_action :enforce_onboarding_flow
 
 
   def not_found
