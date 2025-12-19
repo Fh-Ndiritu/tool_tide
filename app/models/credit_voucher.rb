@@ -5,7 +5,7 @@ class CreditVoucher < ApplicationRecord
   validates :user, presence: true
   validates :amount, numericality: { greater_than: 0 }
 
-  def redeem!
+  def redeem?
     return false if redeemed_at.present?
 
     transaction do
@@ -15,6 +15,7 @@ class CreditVoucher < ApplicationRecord
         credit_type: :pro_engine,
         amount: amount
       )
+      true
     end
   end
 end

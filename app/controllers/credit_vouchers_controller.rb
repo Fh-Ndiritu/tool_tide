@@ -14,7 +14,7 @@ class CreditVouchersController < ApplicationController
       return
     end
 
-    if voucher.redeem!
+    if voucher.redeem?
       flash[:voucher_redeemed] = true
       flash[:voucher_amount] = voucher.amount
       redirect_to new_canva_path
