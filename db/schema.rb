@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_19_162151) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_19_165014) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -338,6 +338,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_19_162151) do
     t.string "user_name"
     t.integer "onboarding_stage", default: 0
     t.integer "restart_onboarding_status", default: 0
+    t.datetime "feature_announcement_sent_at"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

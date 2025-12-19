@@ -12,4 +12,13 @@ class UserMailer < ApplicationMailer
       subject: "Welcome to our Awesome App!"
     )
   end
+  def feature_announcement_email
+    @user = params[:user]
+    @voucher = params[:voucher]
+
+    mail(
+      to: @user.email,
+      subject: "Question about your garden design"
+    )
+  end
 end

@@ -17,7 +17,7 @@ class CreditVouchersController < ApplicationController
     if voucher.redeem!
       flash[:voucher_redeemed] = true
       flash[:voucher_amount] = voucher.amount
-      redirect_to root_path
+      redirect_to new_canva_path
     else
       redirect_to root_path, alert: "This voucher has already been redeemed."
     end

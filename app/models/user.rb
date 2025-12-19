@@ -57,6 +57,19 @@ class User < ApplicationRecord
 
   after_create_commit :issue_signup_credits
 
+  def location_city
+    return nil if address.blank?
+    address['city']
+  end
+
+  def last_design_date
+    [
+      mask_requests.maximum(:created_at),
+      text_requests.maximum(:created_at),
+      sketch_requests.maximum(:created_at)
+    ].compact.max
+  end
+
   def state_address
     return "" if address.blank?
 
