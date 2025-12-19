@@ -1,5 +1,9 @@
 class PagesController < ApplicationController
-  skip_before_action :authenticate_user!
+  skip_before_action :authenticate_user!, only: [:privacy_policy, :contact_us, :full_faq]
+
+  def communities
+  end
+
   def privacy_policy
   end
 

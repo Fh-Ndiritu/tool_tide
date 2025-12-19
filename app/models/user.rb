@@ -59,7 +59,7 @@ class User < ApplicationRecord
 
   def location_city
     return nil if address.blank?
-    address['city']
+    address["city"]
   end
 
   def last_design_date

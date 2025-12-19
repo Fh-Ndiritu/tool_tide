@@ -1,0 +1,274 @@
+<% content_for :title, "Join the Hadaa Community" %>
+<% content_for :description, "Connect with other designers, share your creations, and get exclusive tips in our WhatsApp and Telegram communities." %>
+
+<div class="bg-gray-50 text-neutral-900 min-h-screen font-sans selection:bg-accent selection:text-white">
+
+  <%# --- Hero Section --- %>
+  <section class="relative py-5 overflow-hidden">
+    <%# Subtle radial gradient for depth %>
+    <div class="absolute inset-0 bg-gradient-to-tr from-gray-100 to-white opacity-50 z-0"></div>
+
+    <div class="container mx-auto px-6 relative z-10 text-center">
+      <span
+        class="
+          inline-block py-1 px-4 rounded-full bg-accent/10 border
+          border-accent/40 text-accent-700 text-sm font-bold tracking-wider mb-6
+          animate-fade-in-up uppercase
+        "
+      >
+        Connect & Grow
+      </span>
+
+      <h1
+        class="
+          text-5xl md:text-7xl font-extrabold tracking-tight mb-4
+          leading-tight animate-fade-in-up delay-100 text-gray-900
+        "
+      >
+        Join the
+        <span
+          class="
+            text-transparent bg-clip-text bg-gradient-to-r from-accent
+            to-secondary
+          "
+        >
+          Community
+        </span>
+      </h1>
+
+      <p
+        class="
+          text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto
+          leading-relaxed mb-12 animate-fade-in-up delay-200 font-normal
+        "
+      >
+        Connect with other designers, share your creations, and get exclusive tips.
+      </p>
+    </div>
+  </section>
+
+  <%# --- Community Cards Section --- %>
+  <section class="pb-10">
+    <div class="container mx-auto px-6 max-w-6xl">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+
+        <%# WhatsApp Card %>
+        <div
+          class="
+            bg-white rounded-3xl p-8 md:p-12 border border-gray-100
+            shadow-xl relative overflow-hidden group
+            hover:shadow-2xl hover:shadow-green-200/50 transition-all duration-300
+            hover:-translate-y-2
+          "
+        >
+          <!-- Decoration -->
+          <div class="absolute top-0 right-0 p-8 opacity-10 transform translate-x-1/2 -translate-y-1/2 group-hover:scale-110 transition-transform duration-500">
+             <svg xmlns="http://www.w3.org/2000/svg" class="h-64 w-64 text-green-500" fill="currentColor" viewBox="0 0 24 24">
+               <path d="M.057 24l1.687-6.163c-3.104-5.325-2.988-11.96 1.343-16.852C6.91-3.328 22.458 1.48 20.916 11.23c-1.341 8.482-10.778 13.916-19.167 12.185L0 24h.057zM12 2.163c-5.286 0-9.689 4.148-9.882 9.533-.008 1.954.588 3.737 1.621 5.257l-1.042 3.804 3.99-1.018c1.472.932 3.167 1.488 5.074 1.488 5.437 0 9.846-4.28 9.846-9.533 0-5.253-4.409-9.533-9.607-9.533zM16.92 14.542c-.2.535-1.129 1.012-1.571 1.066-.372.046-2.585.9-6.903-1.638-.592-.352-2.825-2.844-3.565-4.48-.916-2.028.18-2.68.799-2.68.22 0 .445.008.629.02.327.02.477.067.653.456.248.544 1.054 2.502 1.144 2.68.09.178.14.378.02.578-.12.2-.206.312-.4.536-.2.22-.422.49-.604.629-.204.156-.416.33.158 1.32.744 1.282 1.838 2.302 3.324 2.946.368.16.634.135.872-.116.24-.252.956-1.114 1.21-1.492.256-.378.652-.314 1.096-.156.444.158 2.812 1.326 3.296 1.57.484.244.808.366.924.568.116.204.116 1.18-.382 1.714z"/>
+             </svg>
+          </div>
+
+          <div class="relative z-10">
+            <div class="flex items-center justify-between mb-8">
+              <div
+                class="
+                  w-16 h-16 rounded-2xl bg-green-100 flex items-center
+                  justify-center text-green-600 shadow-sm
+                "
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M.057 24l1.687-6.163c-3.104-5.325-2.988-11.96 1.343-16.852C6.91-3.328 22.458 1.48 20.916 11.23c-1.341 8.482-10.778 13.916-19.167 12.185L0 24h.057zM12 2.163c-5.286 0-9.689 4.148-9.882 9.533-.008 1.954.588 3.737 1.621 5.257l-1.042 3.804 3.99-1.018c1.472.932 3.167 1.488 5.074 1.488 5.437 0 9.846-4.28 9.846-9.533 0-5.253-4.409-9.533-9.607-9.533zM16.92 14.542c-.2.535-1.129 1.012-1.571 1.066-.372.046-2.585.9-6.903-1.638-.592-.352-2.825-2.844-3.565-4.48-.916-2.028.18-2.68.799-2.68.22 0 .445.008.629.02.327.02.477.067.653.456.248.544 1.054 2.502 1.144 2.68.09.178.14.378.02.578-.12.2-.206.312-.4.536-.2.22-.422.49-.604.629-.204.156-.416.33.158 1.32.744 1.282 1.838 2.302 3.324 2.946.368.16.634.135.872-.116.24-.252.956-1.114 1.21-1.492.256-.378.652-.314 1.096-.156.444.158 2.812 1.326 3.296 1.57.484.244.808.366.924.568.116.204.116 1.18-.382 1.714z"/>
+                </svg>
+              </div>
+              <span
+                class="
+                  inline-flex items-center px-3 py-1 rounded-full text-xs
+                  font-bold bg-green-100 text-green-700
+                  uppercase tracking-wide
+                "
+              >
+                Active Now
+              </span>
+            </div>
+
+            <h3 class="text-3xl font-bold text-gray-900 mb-4 transition-colors">
+              WhatsApp Group
+            </h3>
+            <p class="text-gray-600 leading-relaxed mb-8 text-lg">
+              Join our vibrant WhatsApp community for instant updates, quick tips,
+              and direct chats with the team.
+            </p>
+
+            <a
+              href="https://chat.whatsapp.com/Dec9v5Kq4Ky1BfTQ4IqmVN"
+              target="_blank"
+              class="
+                block w-full py-4 bg-gradient-to-r from-green-500 to-green-600 text-white font-bold text-lg
+                rounded-xl hover:from-green-400 hover:to-green-500 transition-all duration-300
+                transform hover:scale-[1.02] shadow-xl shadow-green-200 text-center
+                ring-offset-2 ring-offset-white focus:ring-2 focus:ring-green-500
+                border border-transparent hover:border-green-300/50
+              "
+            >
+              Join WhatsApp
+            </a>
+          </div>
+        </div>
+
+        <%# Telegram Card %>
+        <div
+          class="
+            bg-white rounded-3xl p-8 md:p-12 border border-blue-100
+            shadow-xl relative overflow-hidden group
+            hover:shadow-2xl hover:shadow-blue-200/50 transition-all duration-300
+            hover:-translate-y-2
+          "
+        >
+          <!-- Decoration -->
+          <div class="absolute top-0 right-0 p-8 opacity-10 transform translate-x-1/2 -translate-y-1/2 group-hover:scale-110 transition-transform duration-500">
+             <svg xmlns="http://www.w3.org/2000/svg" class="h-64 w-64 text-blue-500" fill="currentColor" viewBox="0 0 24 24">
+               <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+             </svg>
+          </div>
+
+          <div class="relative z-10">
+            <div class="flex items-center justify-between mb-8">
+              <div
+                class="
+                  w-16 h-16 rounded-2xl bg-blue-100 flex items-center
+                  justify-center text-blue-600 shadow-sm
+                "
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                </svg>
+              </div>
+              <span
+                class="
+                  inline-flex items-center px-3 py-1 rounded-full text-xs
+                  font-bold bg-blue-100 text-blue-700
+                  uppercase tracking-wide
+                "
+              >
+                Discussion
+              </span>
+            </div>
+
+            <h3 class="text-3xl font-bold text-gray-900 mb-4 transition-colors">
+              Telegram Channel
+            </h3>
+            <p class="text-gray-600 leading-relaxed mb-8 text-lg">
+              Subscribe to our Telegram channel for in-depth discussions, design
+              challenges, and community showcases.
+            </p>
+
+            <a
+              href="https://t.me/+SzkTsfE1bAswODlh"
+              target="_blank"
+              class="
+                block w-full py-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold text-lg
+                rounded-xl hover:from-blue-400 hover:to-blue-500 transition-all duration-300
+                transform hover:scale-[1.02] shadow-xl shadow-blue-200 text-center
+                ring-offset-2 ring-offset-white focus:ring-2 focus:ring-blue-500
+                border border-transparent hover:border-blue-300/50
+              "
+            >
+              Join Telegram
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <%# --- Why Join Section --- %>
+  <section class="pb-20 bg-white border-t border-gray-100">
+    <div class="container mx-auto px-6">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <h2 class="text-3xl md:text-5xl font-extrabold text-gray-900 mb-6">
+          Why You Should Join
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <%# Feature 1: Expert Tips %>
+        <div class="text-center group p-6 rounded-3xl transition-all duration-300 hover:shadow-xl hover:-translate-y-2 border border-transparent hover:border-gray-100 bg-white">
+          <div
+            class="
+              w-16 h-16 mx-auto rounded-2xl bg-accent/10 flex items-center
+              justify-center mb-6 group-hover:scale-110 transition-transform duration-300
+              shadow-sm
+            "
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-bold text-gray-900 mb-3">Expert Tips</h3>
+          <p class="text-gray-600 leading-relaxed text-sm">
+            Get daily design tips and tricks from our expert team directly in
+            your feed.
+          </p>
+        </div>
+
+        <%# Feature 2: Feature Previews %>
+        <div class="text-center group p-6 rounded-3xl transition-all duration-300 hover:shadow-xl hover:-translate-y-2 border border-transparent hover:border-gray-100 bg-white">
+          <div
+            class="
+              w-16 h-16 mx-auto rounded-2xl bg-secondary/10 flex items-center
+              justify-center mb-6 group-hover:scale-110 transition-transform duration-300
+              shadow-sm
+            "
+          >
+             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-bold text-gray-900 mb-3">Feature Previews</h3>
+          <p class="text-gray-600 leading-relaxed text-sm">
+            See and test new features before anyone else. Helping shape the
+            future of Hadaa.
+          </p>
+        </div>
+
+        <%# Feature 3: Community Love %>
+        <div class="text-center group p-6 rounded-3xl transition-all duration-300 hover:shadow-xl hover:-translate-y-2 border border-transparent hover:border-gray-100 bg-white">
+          <div
+            class="
+              w-16 h-16 mx-auto rounded-2xl bg-rose-50 flex items-center
+              justify-center mb-6 group-hover:scale-110 transition-transform duration-300
+              shadow-sm
+            "
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-rose-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-bold text-gray-900 mb-3">Community Love</h3>
+          <p class="text-gray-600 leading-relaxed text-sm">
+            Connect with other landscapers and homeowners DIY-ing their landscaping.
+          </p>
+        </div>
+
+        <%# Feature 4: Free Occasional Credits (New) %>
+        <div class="text-center group p-6 rounded-3xl transition-all duration-300 hover:shadow-xl hover:-translate-y-2 border border-transparent hover:border-gray-100 bg-white">
+          <div
+            class="
+              w-16 h-16 mx-auto rounded-2xl bg-amber-50 flex items-center
+              justify-center mb-6 group-hover:scale-110 transition-transform duration-300
+              shadow-sm
+            "
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-bold text-gray-900 mb-3">Free Credits</h3>
+          <p class="text-gray-600 leading-relaxed text-sm">
+             Get free occassional credits to run designs and try out new features on us.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

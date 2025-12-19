@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  get 'communities', to: 'pages#communities'
   resources :audios
   post "onboarding/update", to: "onboarding#update"
   post "onboarding/reset", to: "onboarding#reset"
