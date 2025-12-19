@@ -7,7 +7,8 @@ class Credit < ApplicationRecord
     daily_issuance: 0,
     trial: 1,
     purchase: 2,
-    signup: 3
+    signup: 3,
+    voucher: 4
   }
 
   enum :credit_type, {
@@ -18,7 +19,7 @@ class Credit < ApplicationRecord
   private
 
   def update_user_credits
-    if pro_engine? && (purchase? || signup?)
+    if pro_engine? && (purchase? || signup? || voucher?)
       user.increment!(:pro_engine_credits, amount)
     end
   end

@@ -164,6 +164,7 @@ f="XMLHttpRequest",g._w={},g._w[f]=m[f],g._w[s]=m[s],m[s]&&(m[s]=function(){retu
     <%= render "shared/flash" %>
     <% if user_signed_in? %>
       <%= render "shared/onboarding_modal" %>
+      <%= render "shared/voucher_modal" %>
     <% end %>
 
     <main class="<%= content_for(:main_classes) %>">

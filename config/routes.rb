@@ -74,6 +74,7 @@ Rails.application.routes.draw do
 
   resources :mask_requests, only: :index
   # Home routes
+  get "redeem/:token", to: "credit_vouchers#redeem", as: :redeem_credit
   get "credits", to: "home#credits", as: :credits
   get "pricing", to: "pricing#index"
   get "paystack/callback", to: "payment_transactions#callback"

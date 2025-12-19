@@ -1,0 +1,47 @@
+<!-- Voucher Success Modal -->
+<% if flash[:voucher_redeemed] %>
+  <div
+    data-controller="onboarding"
+    data-onboarding-target="modal"
+    class="
+      fixed inset-0 z-[100] flex items-center justify-center bg-black/80
+      backdrop-blur-sm
+    "
+  >
+    <div
+      class="
+        bg-white rounded-2xl p-8 max-w-md text-center shadow-2xl border
+        border-gray-200 transform transition-all scale-100 animate-bounce-in
+      "
+    >
+      <div class="mb-6"><span class="text-6xl">🎁</span></div>
+
+      <h2 class="text-3xl font-extrabold text-gray-900 mb-4">
+        Credits Received!
+      </h2>
+
+      <p class="text-lg text-gray-600 mb-8 leading-relaxed">
+        You have successfully redeemed
+        <span class="font-bold text-secondary bg-secondary/10 px-2 py-1 rounded">
+          <%= flash[:voucher_amount] %> Credits
+        </span>
+        to use on your garden designs.
+      </p>
+
+      <p class="text-md text-gray-500 mb-8 italic">
+        "Please explore by making uploads, sketches and more! We'd love your feedback."
+      </p>
+
+      <button
+        data-action="click->onboarding#closeModal"
+        class="
+          w-full bg-gradient-to-r from-primary to-secondary text-white
+          font-bold text-lg py-4 px-8 rounded-xl shadow-lg hover:shadow-xl
+          hover:scale-[1.02] transition-all duration-200
+        "
+      >
+        Start Creating
+      </button>
+    </div>
+  </div>
+<% end %>
