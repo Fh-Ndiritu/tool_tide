@@ -56,6 +56,8 @@ env:
     - MISTRAL_API_KEY
     - SENTRY_DSN
     - IPINFO_API_TOKEN
+    - RECAPTCHA_SITE_KEY
+    - RECAPTCHA_SECRET_KEY
 
   clear:
     # Run the Solid Queue Supervisor inside the web server's Puma process to do jobs.
