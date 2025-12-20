@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
 
   # before_action :enforce_onboarding_flow, unless: :devise_controller?
   before_action :block_singapore_users
+  before_action :redirect_to_canva, if: -> { user_signed_in? && devise_controller? }
 
 
   def after_sign_in_path_for(resource)
@@ -76,6 +77,13 @@ class ApplicationController < ActionController::Base
   #   end
   # end
 
+  def redirect_to_canva
+    # if the path is sign in and user is signed in, redirect to canva
+    if request.path == "/users/sign_in" && user_signed_in?
+      redirect_to new_canva_path
+    end
+  end
+
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: [ :privacy_policy, :user_name ])
     devise_parameter_sanitizer.permit(:account_update, keys: [ :user_name ])
@@ -93,5 +101,6 @@ class ApplicationController < ActionController::Base
       ", level: :warning, extra: { ip: request.remote_ip, country: "SG" })
       render plain: "Access Forbidden", status: :forbidden
     end
+
   end
 end
