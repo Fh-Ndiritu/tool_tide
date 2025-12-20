@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 class Users::RegistrationsController < Devise::RegistrationsController
-  before_action :check_captcha, only: [:create]
+  before_action :check_captcha, only: [ :create ]
 
   private
 
   def check_captcha
-    return if verify_recaptcha(action: 'signup', minimum_score: 0.5)
+    return if verify_recaptcha(action: "signup", minimum_score: 0.5)
 
     self.resource = resource_class.new sign_up_params
     resource.validate # Look for any other validation errors besides Recaptcha
