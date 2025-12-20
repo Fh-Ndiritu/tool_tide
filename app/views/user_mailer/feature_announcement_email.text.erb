@@ -1,0 +1,21 @@
+Hi <%= @user.name || "there" %>,
+
+<% if @user.last_design_date %>
+I saw the garden design you were working on around <%= @user.last_design_date.strftime("%B %d") %>. It looked like an interesting project, so I wanted to reach out personally.
+<% else %>
+I noticed you joined Hadaa recently but haven't started your first design yet. I wanted to reach out personally to help you get going.
+<% end %>
+
+We've just pushed a few updates to Hadaa that might help you:
+
+1. Localized Plants: We now suggest greenery that specifically thrives in <%= @user.location_city || "your climate" %>, so your design is actually plantable.
+2. Smart Sketch: You can now turn rough hand-drawn maps into photorealistic 3D views instantly.
+
+I’ve added 50 credits to your account to help you try these out. You can use this link to activate them:
+
+<%= redeem_credit_url(token: @voucher.token) %>
+
+Could you do me a favor? After you try the new tools, just hit Reply and let me know if the plant suggestions felt right for <%= @user.location_city || "your area" %>. I read every reply.
+
+Best,
+Winnie

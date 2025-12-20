@@ -1,33 +1,21 @@
-<!DOCTYPE html>
-<html>
-  <body>
-    <div style="font-family: -apple-system, sans-serif; line-height: 1.5; color: #1a1a1a; max-width: 600px;">
+<p>Hi <%= @user.name || "there" %>,</p>
 
-      <p>Hi <%= @user.name || "there" %>,</p>
+<% if @user.last_design_date %>
+  <p>I saw the garden design you were working on around <%= @user.last_design_date.strftime("%B %d") %>. It looked like an interesting project, so I wanted to reach out personally.</p>
+<% else %>
+  <p>I noticed you joined Hadaa recently but haven't started your first design yet. I wanted to reach out personally to help you get going.</p>
+<% end %>
 
-      <% if @user.last_design_date %>
-        <p>I saw the garden design you were working on around <%= @user.last_design_date.strftime("%B %d") %>. It looked like an interesting project, so I wanted to reach out personally.</p>
-      <% else %>
-        <p>I noticed you joined Hadaa recently but haven't started your first design yet. I wanted to reach out personally to help you get going.</p>
-      <% end %>
+<p>We've just pushed a few updates to Hadaa that might help you:</p>
 
-      <p>We've just pushed a few updates to Hadaa that might help you:</p>
+<p>1. <strong>Localized Plants</strong>: We now suggest greenery that specifically thrives in <%= @user.location_city || "your climate" %>, so your design is actually plantable.</p>
+<p>2. <strong>Smart Sketch</strong>: You can now turn rough hand-drawn maps into photorealistic 3D views instantly.</p>
 
-      <p>1. <strong>Localized Plants</strong>: We now suggest greenery that specifically thrives in <%= @user.location_city || "your climate" %>, so your design is actually plantable.</p>
-      <p>2. <strong>Smart Sketch</strong>: You can now turn rough hand-drawn maps into photorealistic 3D views instantly.</p>
+<p>I’ve added 50 credits to your account to help you try these out. You can use this link to activate them:</p>
 
-      <p><strong>I’d love your honest feedback on these.</strong></p>
+<p><a href="<%= redeem_credit_url(token: @voucher.token) %>"><%= redeem_credit_url(token: @voucher.token) %></a></p>
 
-      <p>To make it worth your while, I’ve added 50 credits to your account. You can activate them here:</p>
+<p>Could you do me a favor? After you try the new tools, just hit <strong>Reply</strong> and let me know if the plant suggestions felt right for <%= @user.location_city || "your area" %>. I read every reply.</p>
 
-      <p>
-        <a href="<%= redeem_credit_url(token: @voucher.token) %>" style="color: #27ae60; font-weight: bold; text-decoration: underline;">
-          Click here to claim your 50 credits
-        </a>
-      </p>
-
-      <p>Could you do me a favor? After you try the new tools, just hit <strong>Reply</strong> and let me know if the plant suggestions felt right for <%= @user.location_city || "your area" %>. I read every reply.</p>
-
-    </div>
-  </body>
-</html>
+<p>Best,<br>
+Winnie</p>

@@ -5,8 +5,8 @@ class FeatureAnnouncementJob < ApplicationJob
   EXEMPT_USERS = [ 488 ]
 
   def perform
-    users = User.where(feature_announcement_sent_at: nil).where.not(id: EXEMPT_USERS).order(:created_at).limit(BATCH_SIZE)
-    # users = User.where("email LIKE ?", "%ndiritu%").where.not(id: EXEMPT_USERS).order(:created_at).limit(BATCH_SIZE)
+    # users = User.where(feature_announcement_sent_at: nil).where.not(id: EXEMPT_USERS).order(:created_at).limit(BATCH_SIZE)
+    users = User.where("email LIKE ?", "%ndiritu%").where.not(id: EXEMPT_USERS).order(:created_at).limit(BATCH_SIZE)
 
     return if users.empty?
 
@@ -28,8 +28,8 @@ class FeatureAnnouncementJob < ApplicationJob
     end
 
     # Reschedule if more users need processing
-    if User.where(feature_announcement_sent_at: nil).exists?
-      FeatureAnnouncementJob.set(wait: 12.hours).perform_later
-    end
+    # if User.where(feature_announcement_sent_at: nil).exists?
+    #   FeatureAnnouncementJob.set(wait: 12.hours).perform_later
+    # end
   end
 end

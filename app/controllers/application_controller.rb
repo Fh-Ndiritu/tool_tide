@@ -101,6 +101,5 @@ class ApplicationController < ActionController::Base
       ", level: :warning, extra: { ip: request.remote_ip, country: "SG" })
       render plain: "Access Forbidden", status: :forbidden
     end
-
   end
 end
