@@ -5,6 +5,7 @@
 # `$XDG_CONFIG_HOME/git/ignore` or `~/.config/git/ignore`
 
 # Ignore bundler config.
+social_media_calendar.md
 /.bundle
 /coverage
 # Ignore all environment files.
