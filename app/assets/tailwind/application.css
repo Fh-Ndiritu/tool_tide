@@ -482,6 +482,19 @@ input[type='checkbox'] {
   z-index: 50; /* Ensure it stays on top */
 }
 
+@keyframes pulse-scale {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+.animate-pulse-scale {
+  animation: pulse-scale 2s infinite ease-in-out;
+}
+
 /* Driver.js Customization */
 .driver-popover {
   background-color: #ffffff !important;

@@ -28,8 +28,8 @@ class FeatureAnnouncementJob < ApplicationJob
     end
 
     # Reschedule if more users need processing
-    # if User.where(feature_announcement_sent_at: nil).exists?
-    #   FeatureAnnouncementJob.set(wait: 12.hours).perform_later
-    # end
+    if User.where(feature_announcement_sent_at: nil).exists?
+      FeatureAnnouncementJob.set(wait: 12.hours).perform_later
+    end
   end
 end
