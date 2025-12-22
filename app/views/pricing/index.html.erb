@@ -41,96 +41,121 @@
       credit system.
     </p>
 
-    <%# START: Pricing Card %>
-    <div
-      class="
-        p-8 md:p-12 mb-8 lg:mb-0 bg-neutral-800/50 backdrop-blur-md rounded-3xl shadow-2xl
-        border border-white/10 text-white transform transition-all
-        duration-500 hover:scale-[1.02] hover:border-accent hover:shadow-[0_0_30px_rgba(var(--color-accent),0.3)]
-        relative overflow-hidden group
-      "
-    >
-      <%# Card Glow Effect %>
+    <%# START: Pricing Cards Container %>
+    <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+
+      <%# START: Free Plan Card %>
       <div
         class="
-          absolute -inset-[100%] bg-gradient-to-r from-transparent
-          via-white/5 to-transparent skew-x-12 opacity-0
-          group-hover:animate-shine pointer-events-none
+          p-8 md:p-10 bg-neutral-800/30 backdrop-blur-md rounded-3xl shadow-xl
+          border border-white/10 text-white transform transition-all
+          duration-500 hover:scale-[1.02] hover:border-white/30
+          relative overflow-hidden flex flex-col
         "
-      ></div>
+      >
+        <div class="mb-8">
+          <h3 class="text-2xl font-bold mb-2 text-white">Free Plan</h3>
+          <div class="flex items-baseline gap-2">
+            <span class="text-5xl font-extrabold text-white">Free</span>
+          </div>
+          <p class="text-neutral-400 mt-2 font-medium">No Credit Card Required</p>
+        </div>
 
-      <div class="text-center relative z-10">
-        <h3
-          class="
-            text-3xl font-bold mb-2 text-white group-hover:text-accent
-            transition-colors duration-300
-          "
-        >
-          Starter Credit Pack
-        </h3>
-
-        <p
-          class="
-            text-6xl font-extrabold mb-2 leading-none text-transparent
-            bg-clip-text bg-gradient-to-r from-accent to-secondary
-          "
-        >
-          $10
-        </p>
-
-        <p class="text-xl font-bold mb-8 text-neutral-400">
-          For 200 Usage Credits
-        </p>
-
-        <p class="text-lg leading-relaxed mb-10 text-neutral-300 max-w-2xl mx-auto">
-          After your free trial, this one-time purchase unlocks unlimited access
-          to all features.
-          <b class="text-white">No subscription. No hidden fees.</b>
-          Just pure creative freedom.
-        </p>
-
-        <%# START: ButtonComponent - Unlock All Features %>
-        <%= render ButtonComponent.new(
-            text: "Signup and Access all features - No Credit Card",
-            href: new_user_registration_path,
-            classes: "w-full md:w-auto inline-block bg-accent hover:bg-accent-hover text-black font-extrabold py-4 px-10 rounded-full shadow-[0_4px_14px_0_rgba(var(--color-accent),0.39)] hover:shadow-[0_6px_20px_rgba(var(--color-accent),0.23)] hover:-translate-y-0.5 transition duration-300"
-            ) %>
-        <%# END: ButtonComponent - Unlock All Features %>
-
-        <%# START: Feature List %>
-        <ul
-          class="
-            text-left mt-12 space-y-4 text-lg text-neutral-300 max-w-xl
-            mx-auto
-          "
-        >
-          <li class="flex items-start">
-            <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-4 mt-0.5 text-accent flex-shrink-0")) %>
-            <span><b class="text-white">200 Credits</b> to start (e.g., approx. 40-50 high-res generations)</span>
+        <ul class="space-y-4 mb-8 flex-1 text-neutral-300">
+           <li class="flex items-start">
+            <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-3 mt-0.5 text-green-400 flex-shrink-0")) %>
+            <span><b class="text-white">40 Free Credits</b> to start</span>
           </li>
           <li class="flex items-start">
-            <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-4 mt-0.5 text-accent flex-shrink-0")) %>
-            <span>Full access to the <b class="text-white">Mask & Ai Editor</b></span>
+            <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-3 mt-0.5 text-green-400 flex-shrink-0")) %>
+            <span>Free Mask Brush Editor</span>
           </li>
           <li class="flex items-start">
-            <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-4 mt-0.5 text-accent flex-shrink-0")) %>
-            <span><b class="text-white">Unlimited High-Resolution Downloads</b></span>
+            <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-3 mt-0.5 text-green-400 flex-shrink-0")) %>
+            <span>Free Plants & Localizations</span>
           </li>
           <li class="flex items-start">
-            <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-4 mt-0.5 text-accent flex-shrink-0")) %>
-            <span>Location-Aware Plant Recommendations & Shopping Lists</span>
+            <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-3 mt-0.5 text-green-400 flex-shrink-0")) %>
+            <span>Free Text Editor</span>
           </li>
           <li class="flex items-start">
-            <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-4 mt-0.5 text-accent flex-shrink-0")) %>
-            <span><b class="text-white">Pay-As-You-Go:</b>&nbsp;Purchase more credits at any time.</span>
+            <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-3 mt-0.5 text-green-400 flex-shrink-0")) %>
+            <span>Free Sketch to 3D</span>
           </li>
         </ul>
 
-        <%# END: Feature List %>
+        <%= render ButtonComponent.new(
+            text: "Start for Free",
+            href: new_user_registration_path,
+            classes: "w-full bg-white/10 hover:bg-white/20 text-white font-bold py-4 px-8 rounded-full transition duration-300 border border-white/20"
+            ) %>
       </div>
-    </div>
+      <%# END: Free Plan Card %>
 
-    <%# END: Pricing Card %>
+      <%# START: Starter Credit Pack Card %>
+      <div
+        class="
+          p-8 md:p-10 bg-neutral-800/80 backdrop-blur-md rounded-3xl shadow-2xl
+          border border-accent text-white transform transition-all
+          duration-500 hover:scale-[1.02] hover:shadow-[0_0_40px_rgba(var(--color-accent),0.2)]
+          relative overflow-hidden group flex flex-col
+        "
+      >
+         <%# Card Glow Effect %>
+        <div
+          class="
+            absolute -inset-[100%] bg-gradient-to-r from-transparent
+            via-white/5 to-transparent skew-x-12 opacity-0
+            group-hover:animate-shine pointer-events-none
+          "
+        ></div>
+
+         <div class="absolute top-0 right-0 bg-accent text-black text-xs font-bold px-3 py-1 rounded-bl-xl">
+          MOST POPULAR
+        </div>
+
+        <div class="mb-8">
+          <h3 class="text-2xl font-bold mb-2 text-accent">Starter Credit Pack</h3>
+          <div class="flex items-baseline gap-2">
+            <span class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-accent to-white">$10</span>
+            <span class="text-neutral-400 text-lg">/ once</span>
+          </div>
+          <p class="text-neutral-400 mt-2 font-medium">For 200 Usage Credits</p>
+        </div>
+
+        <ul class="space-y-4 mb-8 flex-1 text-neutral-300">
+           <li class="flex items-start">
+            <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-3 mt-0.5 text-accent flex-shrink-0")) %>
+            <span><b class="text-white">200 Credits</b> (approx. 40-50 high-res generations)</span>
+          </li>
+          <li class="flex items-start">
+            <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-3 mt-0.5 text-accent flex-shrink-0")) %>
+            <span>Access to <b class="text-white">exactly all features</b></span>
+          </li>
+          <li class="flex items-start">
+            <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-3 mt-0.5 text-accent flex-shrink-0")) %>
+            <span>Unlimited High-Resolution Downloads</span>
+          </li>
+           <li class="flex items-start">
+            <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-3 mt-0.5 text-accent flex-shrink-0")) %>
+            <span>Pay-As-You-Go Convenience</span>
+          </li>
+           <li class="flex items-start">
+            <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-3 mt-0.5 text-accent flex-shrink-0")) %>
+            <span>No Subscription Required</span>
+          </li>
+        </ul>
+
+         <%= render ButtonComponent.new(
+            text: "Get 200 Credits",
+            href: new_user_registration_path,
+            classes: "w-full bg-accent hover:bg-accent-hover text-black font-extrabold py-4 px-8 rounded-full shadow-[0_4px_14px_0_rgba(var(--color-accent),0.39)] hover:shadow-[0_6px_20px_rgba(var(--color-accent),0.23)] hover:-translate-y-0.5 transition duration-300"
+            ) %>
+      </div>
+      <%# END: Starter Credit Pack Card %>
+
+    </div>
+    <%# END: Pricing Cards Container %>
 
     <div class="text-center mt-24 text-white py-16 px-6 border-t border-white/10">
       <h3 class="text-3xl md:text-4xl font-extrabold mb-6">
