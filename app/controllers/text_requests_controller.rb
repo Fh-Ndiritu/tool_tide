@@ -27,7 +27,6 @@ class TextRequestsController < ApplicationController
 
   # GET /text_requests/new
   def new
-     redirect_to low_credits_path and return unless current_user.afford_text_editing?
 
     blob = ActiveStorage::Blob.find_signed(params[:signed_blob_id])
     redirect_to canvas_path, alert: "Image was not found!" and return if blob.blank?

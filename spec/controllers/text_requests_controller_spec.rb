@@ -65,9 +65,19 @@ RSpec.describe TextRequestsController, type: :controller do
   end
 
   describe "GET #new" do
-    it "returns a success response" do
+    it "redirects to canvas_path because of missing blob" do
       get :new, params: {}, session: valid_session
       expect(response).to redirect_to(canvas_path)
+    end
+
+    context "with low credits" do
+      before { user.update(pro_engine_credits: 0) }
+
+      it "does not redirect to low_credits_path" do
+        get :new, params: {}, session: valid_session
+        expect(response).not_to redirect_to(low_credits_path)
+        expect(response).to redirect_to(canvas_path)
+      end
     end
   end
 

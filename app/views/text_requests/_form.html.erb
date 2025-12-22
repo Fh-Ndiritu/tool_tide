@@ -95,121 +95,145 @@
       <div class="lg:h-auto w-full flex-shrink-0 flex flex-col">
         <% if text_request.original_image.attached? %>
           <%= form_with(model: text_request, class: "flex flex-col", data: { controller: "prompt-setter", prompt_setter_target: "form" }) do |form| %>
-            <div class="my-3 mt-5">
-              <div data-controller="dropdown" class="relative w-full">
-                <button
-                  type="button"
-                  data-action="dropdown#toggle"
-                  class="
-                    w-full p-2 bg-neutral-700/30 rounded-lg border
-                    border-neutral-600/50 font-medium text-sm text-secondary
-                    hover:text-secondary-light transition-colors list-none
-                    flex justify-between items-center select-none
-                    focus:outline-none
-                  "
-                >
-                  <span class="pointer-events-none">💡 View Editing Tips</span>
-                  <svg
-                    class="w-4 h-4 pointer-events-none"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
+            <div class="relative group rounded-lg">
+                <% unless current_user.afford_text_editing? %>
+                  <div class="absolute inset-0 z-50 bg-neutral-900/60 backdrop-blur-sm rounded-lg flex flex-col items-center justify-center text-center px-6 border border-white/10 shadow-2xl">
+                    <div class="bg-gradient-to-br from-purple-500/20 to-blue-500/20 p-4 rounded-full mb-4 border border-white/10 shadow-inner">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white drop-shadow-md" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                      </svg>
+                    </div>
+
+                    <h3 class="text-xl font-bold text-white mb-2 tracking-tight">Need More Credits?</h3>
+                    <p class="text-neutral-300 text-sm mb-6 leading-relaxed">
+                      You need more credits to generate new variations.
+                      Top up now to continue designing!
+                    </p>
+
+
+                    <%= button_to "Buy Credits", payment_transactions_path, data: {turbo: false}, method: :post, onclick: "gtag('event', 'begin_checkout', { 'currency': 'USD', 'value': #{DEFAULT_USD_PURCHASE_AMOUNT.to_f} });", class: "cursor-pointer inline-block bg-secondary text-white font-bold py-3 px-8 rounded-full shadow-xl transition-all duration-300 transform hover:scale-[1.03] hover:bg-cta-bg/90 ring-4 ring-cta-bg/50" %>
+                  </div>
+                <% end %>
+
+                <div class="<%= 'opacity-40 grayscale-[0.5] pointer-events-none select-none filter blur-[1px]' unless current_user.afford_text_editing? %> transition-all duration-500">
+                  <div class="my-3 mt-5">
+                    <div data-controller="dropdown" class="relative w-full">
+                      <button
+                        type="button"
+                        data-action="dropdown#toggle"
+                        class="
+                          w-full p-2 bg-neutral-700/30 rounded-lg border
+                          border-neutral-600/50 font-medium text-sm text-secondary
+                          hover:text-secondary-light transition-colors list-none
+                          flex justify-between items-center select-none
+                          focus:outline-none
+                        "
+                      >
+                        <span class="pointer-events-none">💡 View Editing Tips</span>
+                        <svg
+                          class="w-4 h-4 pointer-events-none"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M19 9l-7 7-7-7"
+                          />
+                        </svg>
+                      </button>
+                      <div
+                        data-dropdown-target="menu"
+                        class="
+                          hidden absolute left-0 top-full mt-2 w-72 z-50
+                          bg-neutral-900 rounded-xl shadow-xl border
+                          border-neutral-700 p-4 space-y-3 text-neutral-300
+                        "
+                      >
+                        <div>
+                          <strong class="text-white block mb-1">🎨 Details Matter</strong>
+                          <p>
+                            Mention
+                            <span class="text-secondary">colors</span>
+                            ,
+                            <span class="text-secondary">features</span>
+                            ,
+                            <span class="text-secondary">materials</span>
+                            ,
+                            <span class="text-secondary">lighting</span>
+                            and even
+                            <span class="text-secondary">seasons</span>
+                            .
+                          </p>
+                        </div>
+
+                        <div>
+                          <strong class="text-white block mb-1">✍️ Use 'Replace'</strong>
+                          <p>
+                            Clearly state what to remove and add (e.g., "Replace the
+                            path with a lawn").
+                          </p>
+                        </div>
+
+                        <div>
+                          <strong class="text-white block mb-1">⏪ Refining</strong>
+                          <p>
+                            If a result is wrong, select the previous image from
+                            History and try again with a more specific prompt.
+                          </p>
+                        </div>
+
+                        <div>
+                          <strong class="text-white block mb-1">✨ Pro Tip</strong>
+                          <p>
+                            Make one change at a time to save versions and improve
+                            accuracy.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="my-3">
+                    <%= form.label :prompt, "Describe your changes", class: "block mb-2 text-sm font-medium" %>
+                    <%= form.text_area :prompt, rows: 3, placeholder: "Add spaced out outdoor garden yellow lights along the paths and then convert the image to a night view.", class: "w-full p-3 rounded-lg bg-neutral-700 text-text-light border-4 border-neutral-500 focus:outline-none focus:border-text-primary focus:ring-2 focus:ring-text-primary resize-none transition-colors duration-200 ring-pulse", data: { prompt_setter_target: "prompt", onboarding_target: "prompt", action: "input->prompt-setter#input" }, disabled: !current_user.afford_text_editing? %>
+                  </div>
+
+                  <div
+                    class="
+                      flex gap-2 mb-4 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0
+                      sm:px-0
+                    "
                   >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
-                </button>
-                <div
-                  data-dropdown-target="menu"
-                  class="
-                    hidden absolute left-0 top-full mt-2 w-72 z-50
-                    bg-neutral-900 rounded-xl shadow-xl border
-                    border-neutral-700 p-4 space-y-3 text-neutral-300
-                  "
-                >
-                  <div>
-                    <strong class="text-white block mb-1">🎨 Details Matter</strong>
-                    <p>
-                      Mention
-                      <span class="text-secondary">colors</span>
-                      ,
-                      <span class="text-secondary">features</span>
-                      ,
-                      <span class="text-secondary">materials</span>
-                      ,
-                      <span class="text-secondary">lighting</span>
-                      and even
-                      <span class="text-secondary">seasons</span>
-                      .
-                    </p>
+                    <% quick_prompts_for_buttons.each do |text, value| %>
+                      <button
+                        type="button"
+                        data-action="prompt-setter#set"
+                        data-prompt-setter-prompt-value="<%= value %>"
+                        class="
+                          flex-shrink-0 px-3 py-1 text-sm font-medium
+                          text-neutral-500 bg-transparent rounded-full
+                          hover:bg-neutral-800 hover:text-neutral-300 hover:border-neutral-500
+                          transition-colors duration-200
+                          border border-neutral-700 whitespace-nowrap
+                        "
+                        <%= 'disabled' unless current_user.afford_text_editing? %>
+                      >
+                        <%= text %>
+                      </button>
+                    <% end %>
                   </div>
 
-                  <div>
-                    <strong class="text-white block mb-1">✍️ Use 'Replace'</strong>
-                    <p>
-                      Clearly state what to remove and add (e.g., "Replace the
-                      path with a lawn").
-                    </p>
-                  </div>
-
-                  <div>
-                    <strong class="text-white block mb-1">⏪ Refining</strong>
-                    <p>
-                      If a result is wrong, select the previous image from
-                      History and try again with a more specific prompt.
-                    </p>
-                  </div>
-
-                  <div>
-                    <strong class="text-white block mb-1">✨ Pro Tip</strong>
-                    <p>
-                      Make one change at a time to save versions and improve
-                      accuracy.
-                    </p>
+                  <%# --- Generate Button (Inside Form) --- %>
+                  <div class="mt-1 pb-2 flex justify-start">
+                    <%= form.submit "Generate (#{GOOGLE_IMAGE_COST} credits)",
+                    class: "max-sm:!w-full cute-btn accent-btn sm:flex-1 disabled:opacity-50 disabled:cursor-not-allowed",
+                    data: { prompt_setter_target: "submit", onboarding_target: "generate" }, disabled: !current_user.afford_text_editing? if current_user == text_request.user %>
                   </div>
                 </div>
               </div>
-            </div>
-
-            <div class="my-3">
-              <%= form.label :prompt, "Describe your changes", class: "block mb-2 text-sm font-medium" %>
-              <%= form.text_area :prompt, rows: 3, placeholder: "Add spaced out outdoor garden yellow lights along the paths and then convert the image to a night view.", class: "w-full p-3 rounded-lg bg-neutral-700 text-text-light border-4 border-neutral-500 focus:outline-none focus:border-text-primary focus:ring-2 focus:ring-text-primary resize-none transition-colors duration-200 ring-pulse", data: { prompt_setter_target: "prompt", onboarding_target: "prompt", action: "input->prompt-setter#input" } %>
-            </div>
-
-            <div
-              class="
-                flex gap-2 mb-4 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0
-                sm:px-0
-              "
-            >
-              <% quick_prompts_for_buttons.each do |text, value| %>
-                <button
-                  type="button"
-                  data-action="prompt-setter#set"
-                  data-prompt-setter-prompt-value="<%= value %>"
-                  class="
-                    flex-shrink-0 px-3 py-1 text-sm font-medium
-                    text-neutral-500 bg-transparent rounded-full
-                    hover:bg-neutral-800 hover:text-neutral-300 hover:border-neutral-500
-                    transition-colors duration-200
-                    border border-neutral-700 whitespace-nowrap
-                  "
-                >
-                  <%= text %>
-                </button>
-              <% end %>
-            </div>
-
-            <%# --- Generate Button (Inside Form) --- %>
-            <div class="mt-1 pb-2 flex justify-start">
-              <%= form.submit "Generate (#{GOOGLE_IMAGE_COST} credits)",
-              class: "max-sm:!w-full cute-btn accent-btn sm:flex-1",
-              data: { prompt_setter_target: "submit", onboarding_target: "generate" } if current_user == text_request.user %>
-            </div>
           <% end %>
           <%# ------------------------------------------------------------- %>
           <%# 4. EXTERNAL ACTIONS (Download and Like Buttons) %>
