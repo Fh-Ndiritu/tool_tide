@@ -27,7 +27,6 @@ class TextRequestsController < ApplicationController
 
   # GET /text_requests/new
   def new
-
     blob = ActiveStorage::Blob.find_signed(params[:signed_blob_id])
     redirect_to canvas_path, alert: "Image was not found!" and return if blob.blank?
     @text_request = current_user.text_requests.new.tap do |request|

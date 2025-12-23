@@ -170,5 +170,9 @@ f="XMLHttpRequest",g._w={},g._w[f]=m[f],g._w[s]=m[s],m[s]&&(m[s]=function(){retu
     <main class="<%= content_for(:main_classes) %>">
       <div class="w-full m-auto block"><%= yield %></div>
     </main>
+
+    <% unless user_signed_in? %>
+      <%= render "shared/footer" %>
+    <% end %>
   </body>
 </html>
