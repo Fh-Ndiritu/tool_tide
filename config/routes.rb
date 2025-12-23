@@ -34,10 +34,13 @@ Rails.application.routes.draw do
     resources :text_requests, only: [ :index, :edit, :destroy ]
     resources :mask_requests, only: [ :index, :edit, :destroy ]
     resources :blogs, only: [ :index, :new, :create, :show ]
+    resources :public_assets, only: [ :index, :create, :destroy ]
 
     post "mask_requests/toggle_display"
     post "text_requests/toggle_display"
   end
+
+  resources :public_assets, only: :show, param: :uuid
 
   get "privacy-policy", to: "pages#privacy_policy"
   get "contact_us", to: "pages#contact_us"

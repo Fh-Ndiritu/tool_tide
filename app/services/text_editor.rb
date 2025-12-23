@@ -25,9 +25,9 @@ class TextEditor
   private
 
   def process_with_text
-    TextRequestQualifier.perform(@text_request)
+    # TextRequestQualifier.perform(@text_request)
     image = @text_request.original_image
-    payload = gcp_payload(prompt:, image:)
+    payload = gcp_payload(prompt: @text_request.prompt, image:)
     @text_request.generating!
     response = fetch_gcp_response(payload)
     blob = save_gcp_results(response)

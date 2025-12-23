@@ -1,0 +1,25 @@
+<div class="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
+  <div class="bg-white shadow-lg rounded-lg overflow-hidden max-w-4xl w-full">
+    <% if @public_asset.name.present? %>
+      <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
+        <h1 class="text-xl font-semibold text-gray-800"><%= @public_asset.name %></h1>
+      </div>
+    <% end %>
+
+    <div class="p-0 bg-gray-900 flex justify-center">
+      <% if @public_asset.image.attached? %>
+        <%= image_tag @public_asset.image, class: "max-h-[80vh] w-auto max-w-full object-contain" %>
+      <% else %>
+        <div class="p-12 text-center text-gray-500">
+          Image not available
+        </div>
+      <% end %>
+    </div>
+
+    <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-center">
+        <a href="<%= root_path %>" class="text-sm text-gray-600 hover:text-indigo-600 font-medium">
+            Powered by Hadaa AI Landscaper
+        </a>
+    </div>
+  </div>
+</div>

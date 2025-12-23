@@ -318,6 +318,13 @@
                   Manage blog posts
                 </div>
               <% end %>
+
+              <%= link_to admin_public_assets_path, class: active_link_class(admin_public_assets_path), data: { action: "click->dropdown#hide" } do %>
+                <div class="font-bold mb-0.5">Public Assets</div>
+                <div class="text-xs text-gray-500 group-hover:text-accent/80">
+                  Manage Public Assets
+                </div>
+              <% end %>
             </div>
           </div>
         <% end %>

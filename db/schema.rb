@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_19_165014) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_23_193837) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -249,6 +249,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_19_165014) do
     t.datetime "updated_at", null: false
     t.string "size"
     t.boolean "validated", default: false
+  end
+
+  create_table "public_assets", force: :cascade do |t|
+    t.string "uuid"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["uuid"], name: "index_public_assets_on_uuid"
   end
 
   create_table "sketch_requests", force: :cascade do |t|
