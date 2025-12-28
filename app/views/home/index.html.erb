@@ -66,11 +66,12 @@
         </h1>
       </div>
 
-      <%# Phone Wrapper - Order 2 on mobile, Order 2 on tablet (right col), Order 2 on desktop (right col, spans rows) %>
+      <%# Phone Wrapper - Order 3 on mobile, Order 3 on tablet (right col), Order 3 on desktop (right col, spans rows) %>
       <div
         class="
-          w-full flex justify-center lg:justify-end order-2 md:col-span-1
-          lg:col-span-1 lg:col-start-2 lg:row-span-2 mb-12 lg:mb-0
+          w-full flex justify-center lg:justify-end order-3 md:col-span-1
+          lg:col-span-1 lg:col-start-2 lg:row-start-1 lg:row-span-3 mb-12
+          lg:mb-0
         "
       >
         <style>
@@ -137,35 +138,19 @@
             "
           >
             <div
-              data-controller="video-carousel"
-              data-video-carousel-videos-value="<%= ['one.mp4', 'two.mp4', 'three.mp4', 'four.mp4', 'five.mp4'].map { |v| asset_path(v) }.to_json %>"
-              class="w-full h-full"
+              data-controller="carousel"
+              data-carousel-images-value="<%= ['carousel/carousel_cottage.png', 'carousel/carousel_mediterranean.png', 'carousel/carousel_zen.png', 'carousel/carousel_desert.png'].map { |v| asset_path(v) }.to_json %>"
+              class="w-full h-full bg-black relative overflow-hidden"
             >
-              <video
-                data-video-carousel-target="video"
-                data-action="ended->video-carousel#onEnded"
-                class="w-full h-full object-cover scale-[1.35]"
-                poster="<%= asset_path('poster.jpg') %>"
-                muted
-                playsinline
-                autoplay
-                preload="auto"
-              >
-                <source
-                  data-video-carousel-target="source"
-                  src="<%= asset_path('one.mp4') %>"
-                  type="video/mp4"
-                >
-              </video>
             </div>
           </div>
         </div>
       </div>
 
-      <%# Description & CTA - Order 3 on mobile, Order 3 on tablet (bottom full width), Order 3 on desktop (left col, bottom) %>
+      <%# Description - Order 2 on mobile, Order 2 on tablet, Order 2 on desktop (left col, middle) %>
       <div
         class="
-          w-full text-center lg:text-left text-white order-3 md:col-span-2
+          w-full text-center lg:text-left text-white order-2 md:col-span-2
           lg:col-span-1 lg:col-start-1 lg:row-start-2 flex flex-col
           items-center lg:items-start
         "
@@ -179,7 +164,7 @@
           " do %>
           <span class="text-3xl animate-bounce">🎁</span>
           <div class="text-left">
-            <p class="text-sm font-bold text-accent uppercase tracking-wide">
+            <p class="text-xs md:text-sm font-bold text-accent uppercase tracking-wide">
               Signup and Try Free - No Credit Card
             </p>
             <p class="text-xs text-neutral-200">Mask Designer and Ai Editor</p>
@@ -198,7 +183,16 @@
           <b class="text-accent">Signup and start your Free Plan</b>
           - no credit card required.
         </p>
+      </div>
 
+      <%# Buttons/CTA - Order 4 on mobile, Order 4 on tablet, Order 4 on desktop (left col, bottom) %>
+      <div
+        class="
+          w-full text-center lg:text-left text-white order-4 md:col-span-2
+          lg:col-span-1 lg:col-start-1 lg:row-start-3 flex flex-col
+          items-center lg:items-start
+        "
+      >
         <div
           class="
             flex flex-col sm:flex-row gap-4 justify-center lg:justify-start
@@ -212,14 +206,6 @@
               classes: "w-full sm:w-auto flex-shrink-0 bg-accent-secondary py-4 px-10 rounded-full shadow-3xl shadow-secondary/50 transition duration-300 transform hover:scale-105 border-white hover:border-primary hover:bg-white/10 text-black hover:text-white font-semibold py-4 px-10 rounded-full transition duration-300 transform hover:scale-[1.02]"
           ) %>
           <%# END: ButtonComponent - Start Designing Today %>
-
-          <%# START: ButtonComponent - View 10K+ User Designs %>
-          <%= render ButtonComponent.new(
-              text: "View 10K+ User Designs",
-              href: explore_path,
-              classes: "w-full sm:w-auto flex-shrink-0 border-2 border-white hover:border-primary hover:bg-white/10 text-white font-semibold py-4 px-10 rounded-full transition duration-300 transform hover:scale-[1.02]"
-          ) %>
-          <%# END: ButtonComponent - View 10K+ User Designs %>
         </div>
       </div>
     </div>
