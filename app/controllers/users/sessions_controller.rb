@@ -6,7 +6,7 @@ class Users::SessionsController < Devise::SessionsController
   private
 
   def check_captcha
-    return if verify_recaptcha(action: "login", minimum_score: 0.5)
+    return if verify_recaptcha
 
     self.resource = resource_class.new(sign_in_params)
     clean_up_passwords(resource)

@@ -94,7 +94,7 @@
         </div>
 
         <div class="actions mt-6">
-          <%= recaptcha_v3(action: 'login') %>
+          <%= recaptcha_tags %>
           <%= f.submit "Log in", class: "w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-lg text-base font-bold text-white bg-gradient-to-r from-secondary to-accent hover:shadow-accent/25 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent cursor-pointer transition-all duration-200" %>
         </div>
       <% end %>

@@ -9,7 +9,7 @@ class User < ApplicationRecord
   has_many :payment_transactions, dependent: :destroy
 
   has_many :canvas, dependent: :destroy
-  has_many :credit_vouchers
+  has_many :credit_vouchers, dependent: :destroy
   has_many :mask_requests, through: :canvas
 
   has_many :credits, dependent: :destroy
