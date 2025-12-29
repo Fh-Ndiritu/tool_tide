@@ -3,6 +3,12 @@
 class Users::RegistrationsController < Devise::RegistrationsController
   before_action :check_captcha, only: [ :create ]
 
+  def create
+    super do |resource|
+      cookies.permanent[:last_login_method] = "email"
+    end
+  end
+
   private
 
   def check_captcha

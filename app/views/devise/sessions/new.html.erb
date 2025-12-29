@@ -38,6 +38,11 @@
 
       <%# --- GOOGLE SIGN-IN BUTTON --- %>
       <div class="mb-6">
+        <% if cookies[:last_login_method] == 'google' %>
+          <div class="mb-2 text-center text-xs font-semibold text-accent animate-pulse">
+            You last logged in with Google
+          </div>
+        <% end %>
         <%= button_to user_google_oauth2_omniauth_authorize_path,
                 method: :post,
                 data: { turbo: false },
@@ -59,8 +64,13 @@
 
       <%= form_for(resource, as: resource_name, url: session_path(resource_name), data: { turbo: false }) do |f| %>
         <div class="space-y-4">
-          <div class="field">
+          <div class="field relative">
             <%= f.label :email, class: "block text-sm font-medium text-neutral-300 mb-1" %>
+            <% if cookies[:last_login_method] == 'email' %>
+              <div class="absolute -top-1 right-0 bg-accent text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-lg animate-bounce z-10">
+                Last used
+              </div>
+            <% end %>
             <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "you@example.com", class: "w-full bg-black/20 border border-white/10 rounded-lg shadow-sm focus:ring-2 focus:ring-accent focus:border-transparent text-base p-2.5 placeholder-neutral-500 text-white transition duration-150" %>
           </div>
 
@@ -94,7 +104,7 @@
         </div>
 
         <div class="actions mt-6">
-          <%= recaptcha_tags %>
+
           <%= f.submit "Log in", class: "w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-lg text-base font-bold text-white bg-gradient-to-r from-secondary to-accent hover:shadow-accent/25 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent cursor-pointer transition-all duration-200" %>
         </div>
       <% end %>

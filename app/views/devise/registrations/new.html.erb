@@ -89,7 +89,7 @@
               </em>
             <% end %>
 
-            <div class="relative mt-1" data-controller="password-visibility">
+            <div class="relative my-2" data-controller="password-visibility">
               <%= f.password_field :password, autocomplete: "new-password", class: "w-full bg-black/20 border border-white/10 rounded-lg shadow-sm focus:ring-2 focus:ring-accent focus:border-transparent text-base p-2.5 pr-10 placeholder-neutral-500 text-white transition duration-150", data: {password_visibility_target: 'input'}, placeholder: "Password" %>
               <button
                 type="button"
@@ -109,27 +109,7 @@
             </div>
           </div>
 
-          <div class="field">
-            <%= f.label :password_confirmation, class: "block text-sm font-medium text-neutral-300 mb-1" %>
-            <div class="relative mt-1" data-controller="password-visibility">
-              <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "w-full bg-black/20 border border-white/10 rounded-lg shadow-sm focus:ring-2 focus:ring-accent focus:border-transparent text-base p-2.5 pr-10 placeholder-neutral-500 text-white transition duration-150", data: {password_visibility_target: 'input'}, placeholder: "Confirm Password" %>
-              <button
-                type="button"
-                data-action="password-visibility#toggle"
-                class="
-                  absolute inset-y-0 right-0 px-3 flex items-center
-                  text-neutral-400 hover:text-neutral-200 focus:outline-none
-                "
-              >
-                <span data-password-visibility-target="icon">
-                  <%= render(IconComponent.new(name: "eye", classes: "h-5 w-5")) %>
-                </span>
-                <span data-password-visibility-target="icon" class="hidden">
-                  <%= render(IconComponent.new(name: "eye_slash", classes: "h-5 w-5")) %>
-                </span>
-              </button>
-            </div>
-          </div>
+
         </div>
 
         <%= f.hidden_field :privacy_policy, value: true %>
