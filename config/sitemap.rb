@@ -41,13 +41,13 @@ SitemapGenerator::Sitemap.create do
   add "/city-design-inspiration", priority: 0.8, changefreq: "weekly"
   add "/event-seasonal-landscaping", priority: 0.8, changefreq: "weekly"
 
-  Tag.where(tag_class: :event).each do |event|
-    add "/events/#{event.slug}", changefreq: "weekly", priority: 0.8
-  end
+  # Tag.where(tag_class: :event).each do |event|
+  #   add "/events/#{event.slug}", changefreq: "weekly", priority: 0.8
+  # end
 
-  Tag.where(tag_class: :season).each do |season|
-    add "/seasons/#{season.slug}", changefreq: "weekly", priority: 0.8
-  end
+  # Tag.where(tag_class: :season).each do |season|
+  #   add "/seasons/#{season.slug}", changefreq: "weekly", priority: 0.8
+  # end
 
   # Location.find_each do |location|
   #   add "/designs/#{location.slug}", changefreq: "weekly", priority: 0.8
@@ -58,5 +58,7 @@ SitemapGenerator::Sitemap.create do
     add "/landscaping-guides/#{blog.slug}", changefreq: "weekly", priority: 0.8
   end
 end
+
+IndexNowService.new.perform
 
 # rake sitemap:refresh:no_ping
