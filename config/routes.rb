@@ -12,19 +12,7 @@ Rails.application.routes.draw do
 
   get "landscaping-guides/:slug", to: "landscaping_guides#show", as: :landscaping_guide
 
-  scope "/seasons" do
-    get ":slug", to: "season_tags#show", as: :season_tag, constraints: { slug: /[a-z0-9\-\_]+/ }
-  end
 
-  scope "/events" do
-    get ":slug", to: "event_tags#show", as: :event_tag, constraints: { slug: /[a-z0-9\-\_]+/ }
-  end
-
-  resources :event_tags, only: [] do
-    member do
-      get :show
-    end
-  end
 
   resources :text_requests, except: [ :destroy, :create, :edit ]
 
@@ -54,7 +42,7 @@ Rails.application.routes.draw do
   get "features/sketch-to-3d-rendering", to: "features#sketch_to_3d_rendering"
   get "features/intuitive-onboarding", to: "features#intuitive_onboarding"
   get "city-design-inspiration", to: "features#city_design_inspiration"
-  get "event-seasonal-landscaping", to: "features#event_seasonal_landscaping"
+
   get "full-faq", to: "pages#full_faq"
   get :low_credits, to: "credits#low"
 
