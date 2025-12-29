@@ -21,4 +21,14 @@ class UserMailer < ApplicationMailer
       subject: "Question about your garden design"
     )
   end
+
+  def welcome_follow_up_email
+    @user = params[:user]
+    @activity_type = params[:activity_type]
+
+    mail(
+      to: @user.email,
+      subject: "Winnie from Hadaa"
+    )
+  end
 end

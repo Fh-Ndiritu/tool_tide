@@ -57,6 +57,7 @@ class User < ApplicationRecord
   end
 
   after_create_commit :issue_signup_credits
+  after_create_commit :schedule_welcome_follow_up
 
   def location_city
     return nil if address.blank?
@@ -138,5 +139,9 @@ class User < ApplicationRecord
     if new_int < old_int
       self.onboarding_stage = old_value
     end
+  end
+
+  def schedule_welcome_follow_up
+    WelcomeFollowUpJob.set(wait: 1.hour).perform_later(id)
   end
 end

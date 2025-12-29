@@ -1,0 +1,25 @@
+<% if @user.name %>
+Hi <%= @user.name.split.first %>,
+<% else %>
+Hi there,
+<% end %>
+
+<% case @activity_type.to_s %>
+<% when 'mask' %>
+I noticed you brushed an area you want to modify in your yard.
+<% when 'sketch' %>
+I noticed you made a sketch to 3D transformation.
+<% when 'text' %>
+I noticed you struggled to make prompt edits for your designs.
+<% else %>
+I noticed you signed up but haven't started a design yet.
+<% end %>
+
+I wanted to reach out and see how your experience has been so far.
+
+Are you finding inspiration or doing professional editing? Is there any way we can help?
+
+We want to make sure you get the most out of the tool.
+
+Cheers,
+Winnie
