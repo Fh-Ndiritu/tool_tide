@@ -54,6 +54,8 @@ SitemapGenerator::Sitemap.create do
 
   # We add automated blog pages
   Blog.find_each do |blog|
+    next unless blog.published?
+
     add "/landscaping-guides/#{blog.slug}", changefreq: "weekly", priority: 0.8
   end
 end
