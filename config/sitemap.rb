@@ -58,6 +58,6 @@ SitemapGenerator::Sitemap.create do
   end
 end
 
-IndexNowService.new.perform
+IndexNowService.new.broadcast
 
 # rake sitemap:refresh:no_ping
