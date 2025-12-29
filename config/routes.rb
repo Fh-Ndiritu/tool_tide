@@ -19,7 +19,7 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :tags, only: :create
     resources :canvas, only: %i[create show]
-    resources :text_requests, only: [ :index, :edit, :destroy ]
+    resources :text_requests, only: [ :index, :edit, :destroy, :show ]
     resources :mask_requests, only: [ :index, :edit, :destroy ]
     resources :blogs, only: [ :index, :new, :create, :show ]
     resources :public_assets, only: [ :index, :create, :destroy ]

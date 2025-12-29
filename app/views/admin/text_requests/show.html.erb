@@ -1,0 +1,95 @@
+<%= turbo_frame_tag "modal" do %>
+  <% text_request = @text_request %>
+  <% @main_color =  if text_request.user.admin? && text_request.personal?
+    'bg-blue-100 '
+   elsif text_request.everyone?
+    'bg-red-100 '
+   else
+    'bg-green-100 '
+   end %>
+
+  <div
+    data-controller="modal"
+    data-modal-frame-id="modal"
+    data-action="keydown.esc@window->modal#closeWithKeyboard"
+    class="fixed inset-0 z-50 overflow-y-auto bg-black bg-opacity-75 hidden"
+  >
+    <div
+      class="flex items-center justify-center min-h-screen p-4"
+      data-action="click->modal#closeBackground"
+    >
+      <div
+        class="
+          relative w-full max-w-6xl mx-auto rounded-xl shadow-3xl transform
+          transition-all duration-300 scale-100
+        "
+        data-action="click->modal#stop:stopPropagation"
+      >
+        <button
+          data-action="modal#close"
+          class="
+            absolute top-3 right-4 z-50 text-secondary hover:opacity-70
+            transition
+          "
+        >
+          <%= render(IconComponent.new(classes: "h-8 w-8", name: "x-circle")) %>
+        </button>
+
+        <div class="<%= @main_color %> rounded-2xl p-6 space-y-8 max-h-[90vh] overflow-y-auto">
+          <header class="pb-4 border-b border-gray-300">
+            <h3 class="text-2xl font-extrabold leading-tight text-neutral-900">
+              Request #<%= text_request.id %> Details
+            </h3>
+            <p class="text-sm text-gray-500 mt-1">
+              User: <%= text_request.user.email %>
+              <% if text_request.user.state_address.present? %>
+                <span class="font-semibold text-blue-600"> | 📍 <%= text_request.user.state_address %></span>
+              <% end %>
+            </p>
+          </header>
+
+          <div class="space-y-4">
+            <div>
+              <h4 class="text-lg font-bold text-neutral-900 mb-2">Prompt</h4>
+              <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 text-neutral-700 whitespace-pre-wrap">
+                <%= text_request.prompt %>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <% if text_request.original_image.attached? %>
+                <div class="space-y-2">
+                  <h4 class="text-lg font-bold text-neutral-900">Before (Original)</h4>
+                  <div class="overflow-hidden rounded-lg border border-gray-300 shadow-md">
+                    <%= image_tag(text_request.original_image, class: "w-full h-auto object-contain") %>
+                  </div>
+                </div>
+              <% end %>
+
+              <% if text_request.result_image.attached? %>
+                <div class="space-y-2">
+                  <h4 class="text-lg font-bold text-neutral-900">After (Result)</h4>
+                  <div class="overflow-hidden rounded-lg border border-gray-300 shadow-md">
+                    <%= image_tag(text_request.result_image, class: "w-full h-auto object-contain") %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+
+            <div class="space-y-2">
+              <h4 class="text-lg font-bold text-neutral-900">Tags</h4>
+              <p class="text-neutral-700"><%= text_request.tags.map(&:title).join(', ') if text_request.tags.any? %></p>
+            </div>
+
+             <div class="pt-4 border-t border-gray-300">
+                 <% if text_request.trial_generation? || text_request.user.admin? %>
+                    <%= render 'admin_controls', text_request: text_request %>
+                  <% end %>
+             </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

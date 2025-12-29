@@ -57,6 +57,10 @@
     </div>
 
     <div class="flex-shrink-0 mt-auto pt-2 border-t border-gray-300">
+      <%= link_to "View Full", admin_text_request_path(text_request),
+        data: { turbo_frame: "modal" },
+        class: "w-full text-center cute-btn secondary-btn mb-2" %>
+
       <%= link_to "Edit Details", edit_admin_text_request_path(text_request),
         data: { turbo_frame: "modal" },
         class: "w-full text-center cute-btn primary-btn mb-2" %>

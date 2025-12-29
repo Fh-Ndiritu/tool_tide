@@ -15,6 +15,10 @@ class Admin::TextRequestsController < ApplicationController
      end
   end
 
+  def show
+    @text_request = TextRequest.find(params[:id])
+  end
+
   def edit
   end
 
