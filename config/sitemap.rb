@@ -39,7 +39,6 @@ SitemapGenerator::Sitemap.create do
   add "/features/drone-view-3d-perspective", priority: 0.8, changefreq: "weekly"
   add "/features/shopping-list-planting-guide", priority: 0.8, changefreq: "weekly"
   add "/city-design-inspiration", priority: 0.8, changefreq: "weekly"
-  add "/event-seasonal-landscaping", priority: 0.8, changefreq: "weekly"
 
   # Tag.where(tag_class: :event).each do |event|
   #   add "/events/#{event.slug}", changefreq: "weekly", priority: 0.8

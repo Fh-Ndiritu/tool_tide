@@ -46,7 +46,7 @@ RSpec.describe IndexNowService do
     end
 
     context 'when sitemap contains URLs' do
-      let(:urls) { ['https://hadaa.app/', 'https://hadaa.app/about'] }
+      let(:urls) { [ 'https://hadaa.app/', 'https://hadaa.app/about' ] }
       let(:xml_content) do
         <<~XML
           <?xml version="1.0" encoding="UTF-8"?>

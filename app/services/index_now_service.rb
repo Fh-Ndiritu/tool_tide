@@ -1,6 +1,6 @@
 class IndexNowService
-  require 'zlib'
-  require 'open-uri'
+  require "zlib"
+  require "open-uri"
 
   INDEX_NOW_URL = "https://api.indexnow.org/indexnow"
   HOST = "hadaa.app"
@@ -38,10 +38,10 @@ class IndexNowService
     xml_content = Zlib::GzipReader.open(path) { |gz| gz.read }
     doc = Nokogiri::XML(xml_content)
 
-    if doc.at_css('sitemapindex')
+    if doc.at_css("sitemapindex")
       # It's an index, we need to read the children
       child_urls = []
-      doc.css('loc').each do |loc_node|
+      doc.css("loc").each do |loc_node|
         child_url = loc_node.text
         # Assuming child sitemaps are local and follow standard naming in public/
         filename = File.basename(child_url)
@@ -55,7 +55,7 @@ class IndexNowService
       child_urls.uniq
     else
       # It's a urlset
-      doc.css('url > loc').map(&:text)
+      doc.css("url > loc").map(&:text)
     end
   end
 
@@ -68,7 +68,7 @@ class IndexNowService
     }
 
     response = Faraday.post(INDEX_NOW_URL) do |req|
-      req.headers['Content-Type'] = 'application/json; charset=utf-8'
+      req.headers["Content-Type"] = "application/json; charset=utf-8"
       req.body = payload.to_json
     end
 
