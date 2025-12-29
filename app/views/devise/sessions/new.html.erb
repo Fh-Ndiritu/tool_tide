@@ -37,10 +37,12 @@
       </p>
 
       <%# --- GOOGLE SIGN-IN BUTTON --- %>
-      <div class="mb-6">
+      <div class="mb-6 relative">
         <% if cookies[:last_login_method] == 'google' %>
-          <div class="mb-2 text-center text-xs font-semibold text-accent animate-pulse">
-            You last logged in with Google
+          <div class="absolute -top-3 right-0 bg-neutral-900/90 backdrop-blur px-2 py-0.5 rounded-md border border-accent shadow-lg z-10">
+            <span class="text-[10px] font-bold text-accent uppercase tracking-wide animate-pulse">
+              Last Used
+            </span>
           </div>
         <% end %>
         <%= button_to user_google_oauth2_omniauth_authorize_path,
@@ -64,14 +66,18 @@
 
       <%= form_for(resource, as: resource_name, url: session_path(resource_name), data: { turbo: false }) do |f| %>
         <div class="space-y-4">
-          <div class="field relative">
+          <div class="field">
             <%= f.label :email, class: "block text-sm font-medium text-neutral-300 mb-1" %>
-            <% if cookies[:last_login_method] == 'email' %>
-              <div class="absolute -top-1 right-0 bg-accent text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-lg animate-bounce z-10">
-                Last used
-              </div>
-            <% end %>
-            <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "you@example.com", class: "w-full bg-black/20 border border-white/10 rounded-lg shadow-sm focus:ring-2 focus:ring-accent focus:border-transparent text-base p-2.5 placeholder-neutral-500 text-white transition duration-150" %>
+            <div class="relative">
+              <% if cookies[:last_login_method] == 'email' %>
+                <div class="absolute -top-3 right-0 bg-neutral-900/90 backdrop-blur px-2 py-0.5 rounded-md border border-accent shadow-lg z-10">
+                  <span class="text-[10px] font-bold text-accent uppercase tracking-wide animate-pulse">
+                   Last Used
+                  </span>
+                </div>
+              <% end %>
+              <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "you@example.com", class: "w-full bg-black/20 border border-white/10 rounded-lg shadow-sm focus:ring-2 focus:ring-accent focus:border-transparent text-base p-2.5 placeholder-neutral-500 text-white transition duration-150" %>
+            </div>
           </div>
 
           <div class="field">
