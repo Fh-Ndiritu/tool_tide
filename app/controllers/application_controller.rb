@@ -6,7 +6,6 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :authenticate_user!
 
-  # before_action :enforce_onboarding_flow, unless: :devise_controller?
   before_action :block_singapore_users
   before_action :redirect_to_canva, if: -> { user_signed_in? && devise_controller? }
 
