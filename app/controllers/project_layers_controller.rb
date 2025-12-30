@@ -1,0 +1,79 @@
+class ProjectLayersController < ApplicationController
+  before_action :authenticate_user!
+  before_action :set_project
+
+  def create
+    binding.irb
+    @layer = @project.layers.build(layer_params)
+    @layer.layer_type = :original if @project.layers.none?
+    @layer.layer_type ||= :mask # Default to mask if not original
+
+    if @layer.save
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.append("sidebar_layers", partial: "project_layers/layer", locals: { layer: @layer }),
+            turbo_stream.replace("empty_state", partial: "projects/empty_state", locals: { project: @project, hidden: true }),
+            turbo_stream.replace("canvas_wrapper", partial: "projects/canvas_wrapper", locals: { initial_layer: @layer, hidden: false })
+          ]
+        end
+        format.html { redirect_to project_path(@project) }
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to project_path(@project), alert: "Failed to create layer." }
+      end
+    end
+  end
+
+  def generate
+    prompt = params[:prompt]
+    preset = params[:preset]
+    variations = params[:variations].to_i
+    cost = GOOGLE_IMAGE_COST # Global constant
+    total_cost = cost * variations
+
+    # Credit Check
+    if current_user.pro_engine_credits < total_cost
+      return respond_to do |format|
+        format.turbo_stream { render turbo_stream: turbo_stream.append("sidebar_layers", "<div class='text-red-500 p-2'>Insufficient credits</div>") }
+      end
+    end
+
+    # Create Placeholder Layers
+    generated_layers = []
+
+    ActiveRecord::Base.transaction do
+      # Deduct Credits
+      current_user.charge_pro_cost!(total_cost)
+
+      variations.times do
+        generated_layers << @project.layers.create!(
+          layer_type: :generation,
+          prompt: prompt,
+          preset: preset,
+          parent_layer_id: params[:parent_layer_id]
+        )
+      end
+    end
+
+    # Enqueue Job
+    UnifiedGenerationJob.perform_later(generated_layers.map(&:id))
+
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.append("sidebar_layers", partial: "project_layers/layer", collection: generated_layers)
+      end
+    end
+  end
+
+  private
+
+  def set_project
+    @project = current_user.projects.find(params[:project_id])
+  end
+
+  def layer_params
+    params.require(:project_layer).permit(:image, :layer_type, :parent_layer_id, :prompt, :preset)
+  end
+end

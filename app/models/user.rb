@@ -7,6 +7,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable, :trackable, :omniauthable
 
   has_many :payment_transactions, dependent: :destroy
+  has_many :projects, dependent: :destroy
 
   has_many :canvas, dependent: :destroy
   has_many :credit_vouchers, dependent: :destroy

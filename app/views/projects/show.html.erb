@@ -1,0 +1,166 @@
+<div class="flex h-screen bg-[#1e1e1e] text-white overflow-hidden"
+     data-controller="unified-dashboard"
+     data-unified-dashboard-project-id-value="<%= @project.id %>">
+
+  <!-- Left Sidebar: Layers -->
+  <div class="w-64 bg-[#252525] border-r border-[#333] flex flex-col">
+    <div class="p-4 border-b border-[#333]">
+      <h2 class="font-bold text-lg text-gray-200">Layers</h2>
+    </div>
+
+    <div class="flex-1 overflow-y-auto p-2 space-y-2" id="sidebar_layers" data-unified-dashboard-target="sidebarLayers">
+      <%= render partial: "project_layers/layer", collection: @layers %>
+    </div>
+  </div>
+
+  <!-- Center: Canvas Area -->
+  <div class="flex-1 flex flex-col relative bg-[#1e1e1e]">
+    <!-- Top Bar -->
+    <div class="h-14 border-b border-[#333] flex items-center justify-between px-4 bg-[#252525]">
+      <div class="flex items-center gap-2">
+        <%= link_to projects_path, class: "text-gray-400 hover:text-white" do %>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+        <% end %>
+        <!-- Editable Title -->
+        <div class="group relative flex items-center">
+           <input type="text" value="<%= @project.title %>"
+                  class="bg-transparent text-white font-medium focus:outline-none focus:border-b border-green-500 w-64 pr-8"
+                  data-action="change->unified-dashboard#updateTitle">
+           <svg class="w-4 h-4 text-gray-500 absolute right-2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <div class="bg-[#333] rounded px-3 py-1 text-sm flex items-center gap-2">
+           <button>-</button>
+           <span>100%</span>
+           <button>+</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Canvas Container -->
+    <div class="flex-1 relative overflow-hidden flex items-center justify-center bg-[#101010]" id="canvas-scroll-area">
+
+      <!-- Empty State -->
+      <%= render "empty_state", project: @project, hidden: @layers.any? %>
+
+      <!-- Konva Wrapper -->
+      <%= render "canvas_wrapper", initial_layer: @initial_layer, hidden: @layers.empty? %>
+
+
+    </div>
+  </div>
+
+  <!-- Right Sidebar: Tools -->
+  <div class="w-80 bg-[#252525] border-l border-[#333] flex flex-col" data-unified-dashboard-target="toolsPanel">
+
+    <!-- Analysis / Prompting Section -->
+    <div class="p-4 space-y-6">
+
+      <!-- Tools -->
+      <div>
+        <label class="text-xs font-bold text-gray-500 uppercase mb-2 block">Tools</label>
+        <div class="grid grid-cols-3 gap-2">
+            <button class="p-2 bg-[#333] hover:bg-[#444] rounded flex flex-col items-center gap-1 active:bg-green-900/20 active:text-green-500 border border-transparent focus:border-green-500 transition">
+               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" /></svg>
+               <span class="text-[10px]">Select</span>
+            </button>
+            <button class="p-2 bg-[#333] hover:bg-[#444] rounded flex flex-col items-center gap-1 transition"
+                    data-action="click->konva-canvas#setTool" data-konva-canvas-tool-param="brush">
+               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
+               <span class="text-[10px]">Brush</span>
+            </button>
+             <button class="p-2 bg-[#333] hover:bg-[#444] rounded flex flex-col items-center gap-1 transition"
+                    data-action="click->konva-canvas#setTool" data-konva-canvas-tool-param="eraser">
+               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+               <span class="text-[10px]">Eraser</span>
+            </button>
+        </div>
+      </div>
+
+      <!-- Generator -->
+      <div class="pt-4 border-t border-[#333]">
+        <label class="text-xs font-bold text-gray-500 uppercase mb-2 block">Generation</label>
+
+        <%= form_with url: generate_project_layers_path(@project), method: :post, local: false, id: "generate_form" do |f| %>
+          <%= f.text_area :prompt, rows: 3,
+                class: "w-full bg-[#111] border border-[#444] rounded p-3 text-sm text-gray-200 focus:border-green-500 focus:outline-none resize-none mb-3",
+                placeholder: "Describe what you want to generate... e.g. 'Japanese Maple Tree'" %>
+
+          <div class="mb-4 relative" data-unified-dashboard-target="presetDropdown">
+             <label class="text-xs text-gray-400 mb-1 block">Style Preset</label>
+
+             <!-- Hidden Input -->
+             <%= f.hidden_field :preset, value: "", data: { unified_dashboard_target: "presetInput" } %>
+
+             <!-- Trigger Button -->
+             <button type="button"
+                     class="w-full bg-[#111] border border-[#444] rounded p-2 text-sm text-gray-300 flex items-center justify-between hover:border-green-500 transition"
+                     data-action="click->unified-dashboard#togglePresetMenu">
+                <span data-unified-dashboard-target="presetLabel">No Preset (Realistic)</span>
+                <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+             </button>
+
+             <!-- Dropdown Menu -->
+             <div class="hidden absolute bottom-full left-0 w-full mb-2 bg-[#252525] border border-[#444] rounded-lg shadow-xl z-50 max-h-64 overflow-y-auto"
+                  data-unified-dashboard-target="presetMenu">
+
+                <button type="button"
+                        class="w-full text-left p-2 hover:bg-[#333] flex items-center gap-3 border-b border-[#333] last:border-0"
+                        data-action="click->unified-dashboard#selectPreset"
+                        data-value=""
+                        data-label="No Preset (Realistic)">
+                   <div class="w-12 h-12 bg-gray-800 rounded flex items-center justify-center text-xs text-gray-500">None</div>
+                   <div>
+                      <div class="font-medium text-white text-sm">No Preset</div>
+                      <div class="text-[10px] text-gray-500">Realistic output</div>
+                   </div>
+                </button>
+
+                <% LANDSCAPE_PRESETS.each do |preset, description| %>
+                  <button type="button"
+                          class="w-full text-left p-2 hover:bg-[#333] flex items-center gap-3 border-b border-[#333] last:border-0"
+                          data-action="click->unified-dashboard#selectPreset"
+                          data-value="<%= preset %>"
+                          data-label="<%= preset.humanize %>">
+                     <%= image_tag "presets/#{preset}.png", class: "w-12 h-12 object-cover rounded bg-gray-800" %>
+                     <div>
+                        <div class="font-medium text-white text-sm"><%= preset.humanize %></div>
+                        <div class="text-[10px] text-gray-500"><%= description %></div>
+                     </div>
+                  </button>
+                <% end %>
+             </div>
+          </div>
+
+          <div class="flex items-center justify-between mb-4">
+             <label class="text-xs text-gray-400">Variations</label>
+             <div class="flex items-center gap-2">
+               <%= f.range_field :variations, min: 1, max: 4, value: 1, step: 1,
+                      class: "w-20 accent-green-500",
+                      data: { action: "input->unified-dashboard#updateVariationCount", unified_dashboard_target: "variationSlider" } %>
+               <span class="text-sm font-bold w-4 text-center" data-unified-dashboard-target="variationCount">1</span>
+             </div>
+          </div>
+
+          <%= f.button "Generate", class: "w-full py-3 bg-green-500 hover:shadow-[0_0_15px_rgba(34,197,94,0.4)] hover:bg-green-400 text-black font-bold rounded-lg transition" %>
+        <% end %>
+        <p class="text-[10px] text-gray-500 text-center mt-2">Cost: ~<span id="cost-display" data-unified-dashboard-target="costDisplay">8</span> credits</p>
+      </div>
+
+      <!-- Transform Actions -->
+      <div class="pt-4 border-t border-[#333]">
+         <button class="w-full py-2 bg-[#333] hover:bg-[#444] rounded text-sm text-gray-300 flex items-center justify-center gap-2 transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>
+            Plant Suggestions
+         </button>
+          <button class="mt-2 w-full py-2 bg-[#333] hover:bg-[#444] rounded text-sm text-gray-300 flex items-center justify-center gap-2 transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
+            Sketch to 3D
+         </button>
+      </div>
+
+    </div>
+  </div>
+</div>

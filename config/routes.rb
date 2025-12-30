@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  resources :projects, only: [:index, :create, :show, :update] do
+    resources :layers, controller: 'project_layers', only: [:create] do
+      post 'generate', on: :collection
+    end
+  end
+
   get "communities", to: "pages#communities"
   resources :audios
   post "onboarding/update", to: "onboarding#update"

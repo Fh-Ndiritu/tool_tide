@@ -1,0 +1,64 @@
+<div class="min-h-screen bg-gray-50 text-gray-900">
+  <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+
+    <div class="flex items-center justify-between mb-8">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-900">Your Projects</h1>
+        <p class="mt-1 text-sm text-gray-500">Manage and organize your landscape designs.</p>
+      </div>
+      <%= button_to projects_path, method: :post, class: "inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" do %>
+        <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+        </svg>
+        New Project
+      <% end %>
+    </div>
+
+    <% if @projects.any? %>
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <% @projects.each do |project| %>
+          <%= link_to project_path(project), class: "group relative bg-white border border-gray-200 rounded-lg flex flex-col overflow-hidden hover:shadow-lg transition-shadow duration-300" do %>
+            <div class="aspect-w-3 aspect-h-2 bg-gray-200 group-hover:opacity-75 sm:aspect-w-5 sm:aspect-h-4">
+              <!-- Thumbnail Placeholder or First Layer Image -->
+              <% if project.layers.any? && project.layers.first.image.attached? %>
+                 <%= image_tag project.layers.first.image, class: "w-full h-48 object-cover" %>
+              <% else %>
+                 <div class="w-full h-48 flex items-center justify-center bg-gray-100 text-gray-400">
+                    <svg class="h-12 w-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                 </div>
+              <% end %>
+            </div>
+            <div class="flex-1 p-4 space-y-2 flex flex-col justify-between">
+              <div>
+                <h3 class="text-sm font-medium text-gray-900">
+                  <span aria-hidden="true" class="absolute inset-0"></span>
+                  <%= project.title %>
+                </h3>
+                <p class="text-sm text-gray-500"><%= project.layers.count %> layers</p>
+              </div>
+              <div class="text-xs text-gray-400">
+                Updated <%= time_ago_in_words(project.updated_at) %> ago
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="text-center py-24 bg-white rounded-lg border-2 border-dashed border-gray-300">
+        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+          <path vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+        </svg>
+        <h3 class="mt-2 text-sm font-medium text-gray-900">No projects</h3>
+        <p class="mt-1 text-sm text-gray-500">Get started by creating a new project.</p>
+        <div class="mt-6">
+          <%= button_to projects_path, method: :post, class: "inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" do %>
+            <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+            </svg>
+            New Project
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
