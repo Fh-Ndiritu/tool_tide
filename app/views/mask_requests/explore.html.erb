@@ -61,7 +61,7 @@
                 relative group w-full
               "
             >
-              <%= image_tag image.variant(resize_to_limit: [400, 400]), loading: index < 10 ? :eager : :lazy, alt: "Landscaping result", title: "#{request.preset.humanize} Style Design", class: "w-full h-auto block" %>
+              <%= image_tag image.variant(resize_to_limit: [400, 400]), loading: index < 10 ? :eager : :lazy, alt: "Community #{request.preset.humanize} AI garden design - Explore Gallery", title: "#{request.preset.humanize} Style Design", class: "w-full h-auto block" %>
               <%= content_tag :h4, "#{request.preset.humanize} Style", class: "flex w-fit items-center absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/60 backdrop-blur-sm text-white text-sm font-medium px-4 py-1.5 rounded-full opacity-80 group-hover:opacity-100 transition-opacity duration-300" %>
             </div>
           </div>

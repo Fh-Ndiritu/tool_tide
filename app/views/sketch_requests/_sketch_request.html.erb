@@ -70,7 +70,7 @@
                     data-pswp-height="<%= sketch_request.canva.image.metadata['height'] || 1024 %>"
                     target="_blank"
                     class="block w-full h-full">
-                   <%= image_tag sketch_request.canva.image, loading: "eager", class: "w-full h-full object-cover transition duration-700 group-hover:scale-105" %>
+                   <%= image_tag sketch_request.canva.image, loading: "eager", class: "w-full h-full object-cover transition duration-700 group-hover:scale-105", alt: "Original sketch for 3D garden visualization" %>
                  </a>
                <% end %>
 
@@ -94,7 +94,7 @@
                     data-pswp-height="<%= sketch_request.architectural_view.metadata['height'] || 1024 %>"
                     target="_blank"
                     class="block w-full h-full">
-                   <%= image_tag sketch_request.architectural_view, loading: "eager", class: "w-full h-full object-cover transition duration-700 group-hover:scale-105" %>
+                   <%= image_tag sketch_request.architectural_view, loading: "eager", class: "w-full h-full object-cover transition duration-700 group-hover:scale-105", alt: "AI Architectural view landscape planner" %>
                  </a>
                <% else %>
                  <!-- Loading / Placeholder State -->
@@ -136,7 +136,7 @@
                     data-pswp-height="<%= sketch_request.photorealistic_view.metadata['height'] || 1024 %>"
                     target="_blank"
                     class="block w-full h-full">
-                   <%= image_tag sketch_request.photorealistic_view, loading: "eager", class: "w-full h-full object-cover transition duration-700 group-hover:scale-105" %>
+                   <%= image_tag sketch_request.photorealistic_view, loading: "eager", class: "w-full h-full object-cover transition duration-700 group-hover:scale-105", alt: "Photorealistic 3D garden design rendering" %>
                  </a>
                <% else %>
                  <div class="absolute inset-0 flex flex-col items-center justify-center space-y-4 p-6 text-center <%= 'animate-pulse bg-primary/5' if sketch_request.processing_photorealistic? %>">
@@ -185,7 +185,7 @@
                     data-pswp-height="<%= sketch_request.rotated_view.metadata['height'] || 1024 %>"
                     target="_blank"
                     class="block w-full h-full">
-                   <%= image_tag sketch_request.rotated_view, loading: "eager", class: "w-full h-full object-cover transition duration-700 group-hover:scale-105" %>
+                   <%= image_tag sketch_request.rotated_view, loading: "eager", class: "w-full h-full object-cover transition duration-700 group-hover:scale-105", alt: "Rotated camera angle backyard design tool" %>
                  </a>
 
 

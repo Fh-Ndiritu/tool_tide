@@ -7,11 +7,11 @@
   >
     <%= link_to sketch_request_path(sketch_request), class: "block relative group" do %>
       <% if sketch_request.photorealistic_view.attached? %>
-        <%= image_tag(sketch_request.photorealistic_view.variant(resize_to_limit: [800, 600]), loading: :lazy, class: "w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105") %>
+        <%= image_tag(sketch_request.photorealistic_view.variant(resize_to_limit: [800, 600]), loading: :lazy, class: "w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105", alt: "3D garden visualizer preview - #{sketch_request.progress.humanize}") %>
       <% elsif sketch_request.rotated_view.attached? %>
-        <%= image_tag(sketch_request.rotated_view.variant(resize_to_limit: [800, 600]), loading: :lazy, class: "w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105") %>
+        <%= image_tag(sketch_request.rotated_view.variant(resize_to_limit: [800, 600]), loading: :lazy, class: "w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105", alt: "3D garden visualizer rotated preview") %>
       <% elsif sketch_request.architectural_view.attached? %>
-        <%= image_tag(sketch_request.architectural_view.variant(resize_to_limit: [800, 600]), loading: :lazy, class: "w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105") %>
+        <%= image_tag(sketch_request.architectural_view.variant(resize_to_limit: [800, 600]), loading: :lazy, class: "w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105", alt: "3D garden visualizer architectural preview") %>
       <% else %>
          <div class="w-full h-64 bg-gray-200 flex items-center justify-center">
             <span class="text-gray-400">No Image Available</span>

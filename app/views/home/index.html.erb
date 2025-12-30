@@ -258,6 +258,7 @@
 
           <%= image_tag 'how_it_works/step_1_modern.png',
               class: "w-full h-full object-cover transition-opacity duration-300 ease-in-out",
+              alt: "AI landscape design generator upload photo step",
               data: { scroll_spy_target: "image" } %>
 
           <%# Decorative Elements %>
@@ -304,7 +305,7 @@
                 shadow-lg mb-4 relative group
               "
             >
-              <%= image_tag step[:img], class: "w-full h-full object-cover" %>
+              <%= image_tag step[:img], class: "w-full h-full object-cover", alt: "#{step[:title]} - AI garden design step" %>
               <div
                 class="
                   absolute top-4 left-4 bg-black/60 backdrop-blur px-3 py-1
@@ -399,7 +400,7 @@
               >
                 <%= image_tag url_for(image.variant(resize_to_limit: [400, 400])),
                     loading: index < 10 ? :eager : :lazy,
-                    alt: "AI Landscaping Design in #{request.preset.humanize} Style",
+                    alt: "AI Landscaping Design in #{request.preset.humanize} Style - AI garden design example",
                     title: "#{request.preset.humanize} Style Design",
                     class: "w-full h-auto block" %>
                <%= content_tag :h4, "#{request.preset.humanize} Style", class: "flex w-fit items-center absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/60 backdrop-blur-sm text-white text-sm font-medium px-4 py-1.5 rounded-full opacity-80 group-hover:opacity-100 transition-opacity duration-300" %>

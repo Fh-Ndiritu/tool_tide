@@ -43,7 +43,7 @@
                 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-2xl
               "
             >
-              <%= image_tag(mask_request.main_view.variant(resize_to_limit: [500, 500]), loading: :lazy, class: "w-full max-h-[400px] object-cover transition-transform duration-500 group-hover:scale-[1.02]") %>
+              <%= image_tag(mask_request.main_view.variant(resize_to_limit: [500, 500]), loading: :lazy, class: "w-full max-h-[400px] object-cover transition-transform duration-500 group-hover:scale-[1.02]", alt: "AI landscape design main view") %>
               <div
                 class="
                   absolute inset-0 bg-gradient-to-t from-black/80
@@ -73,7 +73,7 @@
                 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-2xl
               "
             >
-              <%= image_tag(mask_request.rotated_view.variant(resize_to_limit: [500, 500]), loading: :lazy, class: "w-full max-h-[400px] object-cover transition-transform duration-500 group-hover:scale-[1.02]") %>
+              <%= image_tag(mask_request.rotated_view.variant(resize_to_limit: [500, 500]), loading: :lazy, class: "w-full max-h-[400px] object-cover transition-transform duration-500 group-hover:scale-[1.02]", alt: "3D garden design rotated perspective") %>
               <div
                 class="
                   absolute inset-0 bg-gradient-to-t from-black/80
@@ -103,7 +103,7 @@
                 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-2xl
               "
             >
-              <%= image_tag(mask_request.drone_view.variant(resize_to_limit: [500, 500]), loading: :lazy, class: "w-full max-h-[400px] object-cover transition-transform duration-500 group-hover:scale-[1.02]") %>
+              <%= image_tag(mask_request.drone_view.variant(resize_to_limit: [500, 500]), loading: :lazy, class: "w-full max-h-[400px] object-cover transition-transform duration-500 group-hover:scale-[1.02]", alt: "Aerial angle landscape planner drone view") %>
               <div
                 class="
                   absolute inset-0 bg-gradient-to-t from-black/80

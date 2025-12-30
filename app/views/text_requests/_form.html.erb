@@ -37,7 +37,7 @@
         >
           <% if text_request.original_image.attached? %>
             <div class="absolute inset-0 z-0">
-              <%= image_tag text_request.original_image, class: "w-full md:h-full object-cover" %>
+              <%= image_tag text_request.original_image, class: "w-full md:h-full object-cover", alt: "Original photo for AI landscape design generator" %>
               <div class="absolute inset-0 backdrop-blur-xl bg-black/30"></div>
             </div>
             <div id="loader_overlay">
@@ -63,11 +63,11 @@
               data-startingposition="90"
             >
               <% if text_request.result_image.attached? %>
-                <%= image_tag text_request.result_image.variant(:juxtaposed), class: "w-full h-full object-contain", data: {label: "After"} %>
+                <%= image_tag text_request.result_image.variant(:juxtaposed), class: "w-full h-full object-contain", data: {label: "After"}, alt: "AI landscape design result - #{text_request.prompt} - advanced prompt editor" %>
               <% else %>
-                <%= image_tag text_request.original_image.variant(:juxtaposed), class: "w-full h-full object-contain", data: {label: "Results will appear here"} %>
+                <%= image_tag text_request.original_image.variant(:juxtaposed), class: "w-full h-full object-contain", data: {label: "Results will appear here"}, alt: "Original photo awaiting AI landscape transformation" %>
               <% end %>
-              <%= image_tag text_request.original_image.variant(:juxtaposed), class: "w-full h-full object-contain", data: {label: "Before"} %>
+              <%= image_tag text_request.original_image.variant(:juxtaposed), class: "w-full h-full object-contain", data: {label: "Before"}, alt: "AI garden visualizer before and after comparison - Original" %>
             </div>
           <% else %>
             <div

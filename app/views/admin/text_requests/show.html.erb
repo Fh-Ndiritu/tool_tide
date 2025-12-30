@@ -61,7 +61,7 @@
                 <div class="space-y-2">
                   <h4 class="text-lg font-bold text-neutral-900">Before (Original)</h4>
                   <div class="overflow-hidden rounded-lg border border-gray-300 shadow-md">
-                    <%= image_tag(text_request.original_image, class: "w-full h-auto object-contain") %>
+                    <%= image_tag(text_request.original_image, class: "w-full h-auto object-contain", alt: "Admin view - AI landscape design generator result - Original") %>
                   </div>
                 </div>
               <% end %>
@@ -70,7 +70,7 @@
                 <div class="space-y-2">
                   <h4 class="text-lg font-bold text-neutral-900">After (Result)</h4>
                   <div class="overflow-hidden rounded-lg border border-gray-300 shadow-md">
-                    <%= image_tag(text_request.result_image, class: "w-full h-auto object-contain") %>
+                    <%= image_tag(text_request.result_image, class: "w-full h-auto object-contain", alt: "Admin view - AI landscape design generator result - After") %>
                   </div>
                 </div>
               <% end %>

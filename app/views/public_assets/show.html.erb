@@ -8,7 +8,7 @@
 
     <div class="p-0 bg-gray-900 flex justify-center">
       <% if @public_asset.image.attached? %>
-        <%= image_tag @public_asset.image, class: "max-h-[80vh] w-auto max-w-full object-contain" %>
+        <%= image_tag @public_asset.image, class: "max-h-[80vh] w-auto max-w-full object-contain", alt: "Hadaa AI Landscape Design Asset - #{@public_asset.name}" %>
       <% else %>
         <div class="p-12 text-center text-gray-500">
           Image not available

@@ -46,7 +46,7 @@
           <tr>
             <td class="px-6 py-4 whitespace-nowrap">
               <% if asset.image.attached? %>
-                <%= image_tag asset.image.variant(resize_to_limit: [100, 100]), class: "h-16 w-16 object-cover rounded" %>
+                <%= image_tag asset.image.variant(resize_to_limit: [100, 100]), class: "h-16 w-16 object-cover rounded", alt: "Public Asset Thumbnail - #{asset.name.presence || 'Untitled'}" %>
               <% end %>
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">

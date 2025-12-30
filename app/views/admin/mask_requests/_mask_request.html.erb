@@ -114,7 +114,7 @@
             transition-all duration-500 transform hover:scale-105
           "
         >
-          <%= image_tag(mask_request.main_view.variant(resize_to_limit: [500, 500]), loading: :lazy, class: "w-full max-h-[400px] object-cover transition-transform duration-500 group-hover:scale-110") %>
+          <%= image_tag(mask_request.main_view.variant(resize_to_limit: [500, 500]), loading: :lazy, class: "w-full max-h-[400px] object-cover transition-transform duration-500 group-hover:scale-110", alt: "Admin - Mask Brush Tool Result") %>
           <div
             class="
               absolute inset-0 bg-gradient-to-t from-black via-transparent
@@ -141,7 +141,7 @@
             transition-all duration-500 transform hover:scale-105
           "
         >
-          <%= image_tag(mask_request.rotated_view.variant(resize_to_limit: [500, 500]), loading: :lazy, class: "w-full max-h-[400px] object-cover transition-transform duration-500 group-hover:scale-110") %>
+          <%= image_tag(mask_request.rotated_view.variant(resize_to_limit: [500, 500]), loading: :lazy, class: "w-full max-h-[400px] object-cover transition-transform duration-500 group-hover:scale-110", alt: "Admin - Rotated Angle View") %>
           <div
             class="
               absolute inset-0 bg-gradient-to-t from-black via-transparent
@@ -168,7 +168,7 @@
             transition-all duration-500 transform hover:scale-105
           "
         >
-          <%= image_tag(mask_request.drone_view.variant(resize_to_limit: [500, 500]), loading: :lazy, class: "w-full max-h-[400px] object-cover transition-transform duration-500 group-hover:scale-110") %>
+          <%= image_tag(mask_request.drone_view.variant(resize_to_limit: [500, 500]), loading: :lazy, class: "w-full max-h-[400px] object-cover transition-transform duration-500 group-hover:scale-110", alt: "Admin - Drone View Visualization") %>
           <div
             class="
               absolute inset-0 bg-gradient-to-t from-black via-transparent
@@ -195,7 +195,7 @@
             transition-all duration-500 transform hover:scale-105
           "
         >
-          <%= image_tag(mask_request.overlay.variant(resize_to_limit: [500, 500]), loading: :lazy, class: "w-full max-h-[400px] object-cover transition-transform duration-500 group-hover:scale-110") %>
+          <%= image_tag(mask_request.overlay.variant(resize_to_limit: [500, 500]), loading: :lazy, class: "w-full max-h-[400px] object-cover transition-transform duration-500 group-hover:scale-110", alt: "Admin - AI Brush Mask Overlay") %>
           <div
             class="
               absolute inset-0 bg-gradient-to-t from-black via-transparent
