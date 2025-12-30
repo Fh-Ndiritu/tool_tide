@@ -63,5 +63,4 @@ class ProjectLayer < ApplicationRecord
       locals: { layer: self }
     )
   end
-
 end
