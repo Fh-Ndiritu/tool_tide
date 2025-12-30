@@ -1,19 +1,21 @@
 class UnifiedGenerationJob < ApplicationJob
   queue_as :default
 
-  def perform(layer_ids)
-    layers = ProjectLayer.where(id: layer_ids)
+  def perform(layer)
+    return unless layer.is_a?(ProjectLayer)
 
-    layers.each do |layer|
-      # Simulate processing time
-      sleep 2
+    # Reload to ensure we have fresh state (though job args are usually fresh or GlobalID ref)
+    # ActiveJob serializes models as GlobalID, so 'layer' is already a fresh record finding.
 
-      # In a real scenario, this would call an AI Service.
-      # For now, we will just log it.
-      # Ideally we should attach a dummy image if we had one, but strict file access prevents me from grabbing a random one easily without knowing paths.
-      # So we will just print to stdout which is captured in logs.
+    layer.status_processing!
 
-      Rails.logger.info "UnifiedGenerationJob: Processed Layer #{layer.id} with prompt: '#{layer.prompt}' and preset: '#{layer.preset}'"
+    begin
+      UnifiedGenerator.perform(layer.id)
+      layer.status_completed!
+    rescue StandardError => e
+      Rails.logger.error("UnifiedGenerationJob Failed for Layer #{layer.id}: #{e.message}")
+      layer.status_failed!
+      raise e # Re-raise to ensure job failure is tracked/retried if configured
     end
   end
 end

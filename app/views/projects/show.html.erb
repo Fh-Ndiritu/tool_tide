@@ -1,6 +1,8 @@
 <div class="flex h-screen bg-[#1e1e1e] text-white overflow-hidden"
      data-controller="unified-dashboard"
-     data-unified-dashboard-project-id-value="<%= @project.id %>">
+     data-unified-dashboard-project-id-value="<%= @project.id %>"
+     data-unified-dashboard-active-layer-id-value="<%= @initial_layer&.id %>"
+     data-unified-dashboard-konva-canvas-outlet="#canvas_wrapper">
 
   <!-- Left Sidebar: Layers -->
   <div class="w-64 bg-[#252525] border-r border-[#333] flex flex-col">
@@ -9,7 +11,7 @@
     </div>
 
     <div class="flex-1 overflow-y-auto p-2 space-y-2" id="sidebar_layers" data-unified-dashboard-target="sidebarLayers">
-      <%= render partial: "project_layers/layer", collection: @layers %>
+      <%= render partial: "project_layers/layer", collection: @project.layers.ordered %>
     </div>
   </div>
 
@@ -83,11 +85,32 @@
       <div class="pt-4 border-t border-[#333]">
         <label class="text-xs font-bold text-gray-500 uppercase mb-2 block">Generation</label>
 
-        <%= form_with url: generate_project_layers_path(@project), method: :post, local: false, id: "generate_form" do |f| %>
-          <%= f.text_area :prompt, rows: 3,
-                class: "w-full bg-[#111] border border-[#444] rounded p-3 text-sm text-gray-200 focus:border-green-500 focus:outline-none resize-none mb-3",
-                placeholder: "Describe what you want to generate... e.g. 'Japanese Maple Tree'" %>
+        <%= form_with url: generate_project_layers_path(@project), method: :post, local: false, id: "generate_form",
+              data: { unified_dashboard_target: "form", action: "submit->unified-dashboard#prepareSubmission" } do |f| %>
 
+          <%= hidden_field_tag :mask_data, "", data: { unified_dashboard_target: "maskInput" } %> <!-- Hidden Mask Input -->
+
+          <!-- Mode Toggle -->
+          <div class="flex bg-[#111] p-1 rounded mb-4">
+             <button type="button" class="flex-1 py-1 text-xs font-medium rounded text-black bg-white shadow"
+                     data-action="click->unified-dashboard#setMode" data-mode="preset" data-unified-dashboard-target="presetModeBtn">
+                Preset Style
+             </button>
+             <button type="button" class="flex-1 py-1 text-xs font-medium rounded text-gray-500 hover:text-gray-300"
+                     data-action="click->unified-dashboard#setMode" data-mode="custom" data-unified-dashboard-target="customModeBtn">
+                Custom Prompt
+             </button>
+          </div>
+
+          <!-- Custom Prompt Input -->
+          <div class="hidden" data-unified-dashboard-target="customSection">
+            <%= f.text_area :prompt, rows: 3,
+                  class: "w-full bg-[#111] border border-[#444] rounded p-3 text-sm text-gray-200 focus:border-green-500 focus:outline-none resize-none mb-3",
+                  placeholder: "Describe exactly what you want..." %>
+          </div>
+
+          <!-- Preset Section -->
+          <div data-unified-dashboard-target="presetSection">
           <div class="mb-4 relative" data-unified-dashboard-target="presetDropdown">
              <label class="text-xs text-gray-400 mb-1 block">Style Preset</label>
 
@@ -132,6 +155,7 @@
                   </button>
                 <% end %>
              </div>
+          </div>
           </div>
 
           <div class="flex items-center justify-between mb-4">

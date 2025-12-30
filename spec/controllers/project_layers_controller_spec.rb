@@ -47,5 +47,4 @@ RSpec.describe ProjectLayersController, type: :controller do
       }.to change { user.reload.pro_engine_credits }.by(-8)
     end
   end
-
 end

@@ -1,6 +1,6 @@
 class Project < ApplicationRecord
   belongs_to :user
-  has_many :layers, class_name: 'ProjectLayer', dependent: :destroy
+  has_many :layers, class_name: "ProjectLayer", dependent: :destroy
 
   validates :title, presence: true
 
@@ -11,7 +11,7 @@ class Project < ApplicationRecord
   private
 
   def set_defaults
-    self.title ||= 'Untitled Project'
+    self.title ||= "Untitled Project"
     self.status ||= :active
   end
 end

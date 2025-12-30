@@ -3,7 +3,7 @@ class ProjectLayersController < ApplicationController
   before_action :set_project
 
   def create
-    binding.irb
+    # Removed binding.irb
     @layer = @project.layers.build(layer_params)
     @layer.layer_type = :original if @project.layers.none?
     @layer.layer_type ||= :mask # Default to mask if not original
@@ -40,30 +40,62 @@ class ProjectLayersController < ApplicationController
       end
     end
 
-    # Create Placeholder Layers
-    generated_layers = []
+    # Determine Transformation Type
+    transformation_type = if preset.present?
+                           :preset
+                         elsif prompt.present?
+                           :prompt
+                         else
+                           :none
+                         end
 
     ActiveRecord::Base.transaction do
       # Deduct Credits
       current_user.charge_pro_cost!(total_cost)
 
-      variations.times do
-        generated_layers << @project.layers.create!(
-          layer_type: :generation,
-          prompt: prompt,
-          preset: preset,
-          parent_layer_id: params[:parent_layer_id]
+      # Create First Layer (with Mask if present)
+      parent_layer_id = params[:parent_layer_id]
+
+      first_layer = @project.layers.create!(
+        layer_type: :generation,
+        transformation_type: transformation_type,
+        prompt: prompt,
+        preset: preset,
+        parent_layer_id: parent_layer_id,
+        status: :pending
+      )
+
+      if params[:mask_data].present?
+        decoded_data = Base64.decode64(params[:mask_data].split(",")[1])
+        first_layer.mask.attach(
+          io: StringIO.new(decoded_data),
+          filename: "mask.png",
+          content_type: "image/png"
         )
       end
-    end
 
-    # Enqueue Job
-    UnifiedGenerationJob.perform_later(generated_layers.map(&:id))
+      generated_layers = [first_layer]
 
-    respond_to do |format|
-      format.turbo_stream do
-        render turbo_stream: turbo_stream.append("sidebar_layers", partial: "project_layers/layer", collection: generated_layers)
+      # Create Variations using dup
+      (variations - 1).times do
+        # dup creates a shallow copy, but we need to ensure it's saved in the same transaction
+        new_layer = first_layer.dup
+        new_layer.save!
+
+        # Attach the same mask blob to the variant if it exists
+        if first_layer.mask.attached?
+          new_layer.mask.attach(first_layer.mask.blob)
+        end
+
+        generated_layers << new_layer
       end
+
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.append("sidebar_layers", partial: "project_layers/layer", collection: generated_layers)
+        end
+      end
+
     end
   end
 

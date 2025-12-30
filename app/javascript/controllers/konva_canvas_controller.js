@@ -67,6 +67,13 @@ export default class extends Controller {
     this.destroyKonva();
   }
 
+  imageUrlValueChanged(url, oldUrl) {
+    if (url && url !== oldUrl && this.stage) {
+      console.log('imageUrlValue changed, loading new image:', url);
+      this.loadImage(url);
+    }
+  }
+
   displayWidthValueChanged() {
     if (
       this.stage &&

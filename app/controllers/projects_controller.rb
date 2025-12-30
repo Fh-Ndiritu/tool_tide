@@ -1,6 +1,6 @@
 class ProjectsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_project, only: [:show, :update]
+  before_action :set_project, only: [ :show, :update ]
 
   def index
     @projects = current_user.projects.active.order(updated_at: :desc)
@@ -19,7 +19,7 @@ class ProjectsController < ApplicationController
 
   def show
     @layers = @project.layers.includes(image_attachment: :blob).order(created_at: :asc)
-    @initial_layer = @layers.find { |l| l.original? }
+    @initial_layer = @layers.find { |l| l.layer_type_original? }
   end
 
   def update
