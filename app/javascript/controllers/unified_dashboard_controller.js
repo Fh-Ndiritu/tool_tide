@@ -6,7 +6,7 @@ export default class extends Controller {
     "variationSlider", "variationCount", "emptyState", "resultList",
     "presetMenu", "presetInput", "presetLabel", "costDisplay",
     "presetSection", "customSection", "presetModeBtn", "customModeBtn",
-    "maskInput", "form", "sidebarLayer"
+    "maskInput", "form", "sidebarLayer", "generateBtn", "brushSizeDisplay"
   ];
 
   static outlets = ["konva-canvas"];
@@ -129,10 +129,34 @@ export default class extends Controller {
     console.log(`Selecting layer: ${id}, URL: ${imageUrl}`);
 
     this.activeLayerIdValue = id;
+    this.incrementViews(id);
 
     if (imageUrl && this.hasKonvaCanvasOutlet) {
       this.konvaCanvasOutlet.imageUrlValue = imageUrl;
     }
+  }
+
+  incrementViews(layerId) {
+    const projectId = this.projectIdValue;
+    fetch(`/projects/${projectId}/layers/${layerId}/view`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content
+      }
+    })
+    .then(response => {
+      if (response.ok) {
+        console.log(`Views incremented for layer ${layerId}`);
+        // Optionally update the UI to remove the "New" highlight
+        const layerEl = this.sidebarLayerTargets.find(el => parseInt(el.dataset.unifiedDashboardLayerIdParam) === layerId);
+        if (layerEl) {
+          const dot = layerEl.querySelector(".unviewed-dot");
+          if (dot) dot.remove();
+        }
+      }
+    })
+    .catch(error => console.error("Error incrementing views:", error));
   }
 
   activeLayerIdValueChanged() {
@@ -193,13 +217,63 @@ export default class extends Controller {
     if (this.hasPresetLabelTarget) this.presetLabelTarget.textContent = label;
 
     this.presetMenuTarget.classList.add("hidden");
+    this.validateGeneration();
   }
 
-  closeDropdownOutside(event) {
-    if (this.hasPresetMenuTarget && !this.presetMenuTarget.classList.contains("hidden")) {
-      if (!this.presetMenuTarget.contains(event.target)) {
-        this.presetMenuTarget.classList.add("hidden");
+  validateGeneration() {
+    let isValid = false;
+    if (this.currentMode === "preset") {
+      isValid = !!this.presetInputTarget.value;
+    } else {
+      isValid = !!this.promptInputTarget.value.trim();
+    }
+
+    if (this.hasGenerateBtnTarget) {
+      this.generateBtnTarget.disabled = !isValid;
+      if (isValid) {
+        this.generateBtnTarget.classList.remove("bg-gray-600", "cursor-not-allowed", "opacity-50");
+        this.generateBtnTarget.classList.add("bg-green-500", "hover:bg-green-400", "hover:shadow-[0_0_15px_rgba(34,197,94,0.4)]");
+      } else {
+        this.generateBtnTarget.classList.add("bg-gray-600", "cursor-not-allowed", "opacity-50");
+        this.generateBtnTarget.classList.remove("bg-green-500", "hover:bg-green-400", "hover:shadow-[0_0_15px_rgba(34,197,94,0.4)]");
       }
     }
   }
-}
+
+  updateBrushSizeDisplay(event) {
+    if (this.hasBrushSizeDisplayTarget) {
+      this.brushSizeDisplayTarget.textContent = `${event.target.value}px`;
+    }
+  }
+
+  setMode(event) {
+    const mode = event.currentTarget.dataset.mode;
+    this.currentMode = mode;
+
+    if (mode === "preset") {
+      this.presetSectionTarget.classList.remove("hidden");
+      this.customSectionTarget.classList.add("hidden");
+
+      this.presetModeBtnTarget.classList.add("bg-white", "text-black", "shadow");
+      this.presetModeBtnTarget.classList.remove("text-gray-500");
+
+      this.customModeBtnTarget.classList.remove("bg-white", "text-black", "shadow");
+      this.customModeBtnTarget.classList.add("text-gray-500");
+
+      // Clear custom prompt
+      if(this.hasPromptInputTarget) this.promptInputTarget.value = "";
+    } else {
+      this.presetSectionTarget.classList.add("hidden");
+      this.customSectionTarget.classList.remove("hidden");
+
+      this.customModeBtnTarget.classList.add("bg-white", "text-black", "shadow");
+      this.customModeBtnTarget.classList.remove("text-gray-500");
+
+      this.presetModeBtnTarget.classList.remove("bg-white", "text-black", "shadow");
+      this.presetModeBtnTarget.classList.add("text-gray-500");
+
+      // Clear preset
+      if(this.hasPresetInputTarget) this.presetInputTarget.value = "";
+    }
+    this.validateGeneration();
+  }

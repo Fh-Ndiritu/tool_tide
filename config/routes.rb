@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   resources :projects, only: [ :index, :create, :show, :update ] do
     resources :layers, controller: "project_layers", only: [ :create ] do
       post "generate", on: :collection
+      patch "view", on: :member
     end
   end
 

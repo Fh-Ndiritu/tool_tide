@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_30_182412) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_30_202453) do
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -280,6 +280,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_30_182412) do
     t.datetime "updated_at", null: false
     t.integer "status"
     t.integer "transformation_type"
+    t.integer "views_count", default: 0, null: false
     t.index ["parent_layer_id"], name: "index_project_layers_on_parent_layer_id"
     t.index ["project_id"], name: "index_project_layers_on_project_id"
   end

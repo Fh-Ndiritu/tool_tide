@@ -13,12 +13,12 @@ RSpec.describe ProjectLayersController, type: :controller do
     context "with valid params" do
       it "creates a new layer" do
         expect {
-          post :create, params: { project_id: project.id, layer: { image: image, layer_type: 'original' } }, format: :turbo_stream
+          post :create, params: { project_id: project.id, project_layer: { image: image, layer_type: 'original' } }, format: :turbo_stream
         }.to change(ProjectLayer, :count).by(1)
       end
 
       it "returns success via Turbo Stream" do
-        post :create, params: { project_id: project.id, layer: { image: image, layer_type: 'original' } }, format: :turbo_stream
+        post :create, params: { project_id: project.id, project_layer: { image: image, layer_type: 'original' } }, format: :turbo_stream
         expect(response).to have_http_status(:success)
       end
     end
@@ -45,6 +45,21 @@ RSpec.describe ProjectLayersController, type: :controller do
       expect {
         post :generate, params: { project_id: project.id, prompt: "test", variations: 1 }, format: :turbo_stream
       }.to change { user.reload.pro_engine_credits }.by(-8)
+    end
+  end
+
+  describe "PATCH #view" do
+    let!(:layer) { ProjectLayer.create!(project: project, layer_type: 'generation', image: image) }
+
+    it "increments the views_count" do
+      expect {
+        patch :view, params: { project_id: project.id, id: layer.id }
+      }.to change { layer.reload.views_count }.by(1)
+    end
+
+    it "returns success" do
+      patch :view, params: { project_id: project.id, id: layer.id }
+      expect(response).to have_http_status(:success)
     end
   end
 end

@@ -44,6 +44,10 @@ class ProjectLayer < ApplicationRecord
     !transformation_type_none? || layer_type_generation?
   end
 
+  def increment_views!
+    increment!(:views_count)
+  end
+
   private
 
   def enqueue_generation_job
@@ -52,11 +56,12 @@ class ProjectLayer < ApplicationRecord
 
   def broadcast_status_update
     # We broadcast a replace to the specific layer element to update its status icon or image
-    # broadcast_replace_to(
-    #   "project_#{project.id}_layers",
-    #   target: "layer_#{id}",
-    #   partial: "project_layers/layer",
-    #   locals: { layer: self }
-    # )
+    broadcast_replace_to(
+      "project_#{project.id}",
+      target: "layer_#{id}",
+      partial: "project_layers/layer",
+      locals: { layer: self }
+    )
   end
+
 end

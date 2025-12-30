@@ -43,11 +43,11 @@ class ProjectLayersController < ApplicationController
     # Determine Transformation Type
     transformation_type = if preset.present?
                            :preset
-                         elsif prompt.present?
+    elsif prompt.present?
                            :prompt
-                         else
+    else
                            :none
-                         end
+    end
 
     ActiveRecord::Base.transaction do
       # Deduct Credits
@@ -74,7 +74,7 @@ class ProjectLayersController < ApplicationController
         )
       end
 
-      generated_layers = [first_layer]
+      generated_layers = [ first_layer ]
 
       # Create Variations using dup
       (variations - 1).times do
@@ -95,8 +95,13 @@ class ProjectLayersController < ApplicationController
           render turbo_stream: turbo_stream.append("sidebar_layers", partial: "project_layers/layer", collection: generated_layers)
         end
       end
-
     end
+  end
+
+  def view
+    @layer = @project.layers.find(params[:id])
+    @layer.increment_views!
+    head :ok
   end
 
   private
