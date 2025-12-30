@@ -1,3 +1,4 @@
+<% content_for :title, "Reset Password | Hadaa" %>
 <div
   class="
     flex flex-col items-center justify-center min-h-screen bg-neutral-900
@@ -19,14 +20,14 @@
     "
   >
     <div class="px-6 py-8 sm:px-8">
-      <h2
+      <h1
         class="
           text-3xl font-extrabold text-transparent bg-clip-text
           bg-gradient-to-r from-white to-neutral-400 text-center mb-8
         "
       >
         Forgot your password?
-      </h2>
+      </h1>
 
       <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
         <%= render "devise/shared/error_messages", resource: resource %>
