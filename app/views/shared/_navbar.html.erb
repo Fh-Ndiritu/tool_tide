@@ -305,6 +305,13 @@
                 </div>
               <% end %>
 
+              <%= link_to admin_sketch_requests_path, class: active_link_class(admin_sketch_requests_path), data: { action: "click->dropdown#hide" } do %>
+                <div class="font-bold mb-0.5">Users/Sketches</div>
+                <div class="text-xs text-gray-500 group-hover:text-accent/80">
+                  Manage sketch requests
+                </div>
+              <% end %>
+
               <%= link_to admin_blogs_path, class: active_link_class(admin_blogs_path), data: { action: "click->dropdown#hide" } do %>
                 <div class="font-bold mb-0.5">Blogs</div>
                 <div class="text-xs text-gray-500 group-hover:text-accent/80">

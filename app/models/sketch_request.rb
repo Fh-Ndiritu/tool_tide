@@ -17,6 +17,15 @@ class SketchRequest < ApplicationRecord
     failed: 99
   }
 
+  enum :visibility, {
+    personal: 0,
+    everyone: 1
+  }
+
+  scope :by_user, ->(user_id) { where(user_id: user_id) }
+  scope :by_admin, ->() { joins(:user).where(users: { admin: true }) }
+  scope :by_visibility, ->(visibility) { where(visibility: visibility) }
+
   def progress_before?(target_progress)
     SketchRequest.progresses[progress] < SketchRequest.progresses[target_progress.to_s]
   end

@@ -1,0 +1,11 @@
+one:
+  user: john_doe
+  canva: one
+  progress: complete
+  visibility: personal
+
+two:
+  user: jane_doe
+  canva: one
+  progress: complete
+  visibility: everyone

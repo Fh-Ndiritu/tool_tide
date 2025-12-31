@@ -1,0 +1,120 @@
+<% @main_color = if sketch_request.user.admin? && sketch_request.personal?
+  'bg-blue-100 '
+elsif sketch_request.everyone?
+  'bg-red-100 '
+else
+  'bg-green-100 '
+end %>
+
+<div
+  class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12"
+  id="<%= dom_id(sketch_request) %>"
+>
+  <div class="<%= @main_color %> rounded-2xl shadow-2xl border border-gray-200 p-3 space-y-4">
+    <div class="flex flex-col max-sm:items-center md:justify-between">
+      <h3 class="text-xl font-extrabold leading-tight text-neutral-900">
+        Sketch Request Results
+      </h3>
+
+      <h4 class="text-base text-secondary"><%= sketch_request.user_error %></h4>
+
+      <p class="text-sm text-gray-600">
+        User:
+        <%= sketch_request.user.email %>
+        <% if sketch_request.user.address.present? %>
+           <span class="font-semibold text-blue-600 ml-2">📍 <%= sketch_request.user.address["address"] %></span>
+        <% end %>
+      </p>
+    </div>
+
+    <div
+      class="
+        flex flex-col gap-6 p-4 border-b border-neutral-300 md:flex-row
+        md:justify-start md:items-stretch
+      "
+    >
+      <div class="flex items-center gap-2">
+        <% if sketch_request.everyone? %>
+          <%= button_to "Hide from public",
+              admin_sketch_requests_toggle_display_path(id: sketch_request.id),
+              class: "cute-btn secondary-btn" %>
+        <% else %>
+          <%= button_to "List on Explore",
+              admin_sketch_requests_toggle_display_path(id: sketch_request.id),
+              class: "cute-btn primary-btn" %>
+        <% end %>
+
+        <% if sketch_request.user.admin? %>
+          <%= button_to "Delete",
+              admin_sketch_request_path(sketch_request),
+              method: :delete,
+              data: { turbo_confirm: "Are you sure you want to delete this admin request?" },
+              class: "cute-btn bg-red-600 hover:bg-red-700 text-white" %>
+        <% end %>
+      </div>
+    </div>
+
+    <hr class="border-t border-neutral-300">
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+      <%# Original Image %>
+      <% if sketch_request.canva.image.attached? %>
+        <div class="group relative overflow-hidden rounded-sm shadow-lg transition-all duration-500 transform hover:scale-105">
+          <%= image_tag(sketch_request.canva.image.variant(resize_to_limit: [500, 500]), loading: :lazy, class: "w-full max-h-[400px] object-cover transition-transform duration-500 group-hover:scale-110", alt: "Original Sketch") %>
+          <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-70"></div>
+          <div class="absolute bottom-4 left-4 right-4 text-white">
+            <p class="text-lg font-bold">Original Sketch</p>
+          </div>
+        </div>
+      <% end %>
+
+      <%# Architectural View %>
+      <% if sketch_request.architectural_view.attached? %>
+        <div class="group relative overflow-hidden rounded-sm shadow-lg transition-all duration-500 transform hover:scale-105">
+          <%= image_tag(sketch_request.architectural_view.variant(resize_to_limit: [500, 500]), loading: :lazy, class: "w-full max-h-[400px] object-cover transition-transform duration-500 group-hover:scale-110", alt: "Architectural View") %>
+          <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-70"></div>
+          <div class="absolute bottom-4 left-4 right-4 text-white">
+            <p class="text-lg font-bold">Architectural View</p>
+          </div>
+          <div class="absolute bottom-4 right-4 z-10 flex space-x-3">
+            <%= link_to rails_blob_path(sketch_request.architectural_view, disposition: :attachment), class: "h-8 w-8 flex items-center justify-center rounded-full bg-accent text-white shadow-xl backdrop-blur-md transition-all duration-300 transform hover:scale-110 hover:bg-secondary active:scale-95" do %>
+              <%= render(IconComponent.new(classes: "h-6 w-6", name: "download")) %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <%# Photorealistic View %>
+      <% if sketch_request.photorealistic_view.attached? %>
+        <div class="group relative overflow-hidden rounded-sm shadow-lg transition-all duration-500 transform hover:scale-105">
+          <%= image_tag(sketch_request.photorealistic_view.variant(resize_to_limit: [500, 500]), loading: :lazy, class: "w-full max-h-[400px] object-cover transition-transform duration-500 group-hover:scale-110", alt: "Photorealistic View") %>
+          <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-70"></div>
+          <div class="absolute bottom-4 left-4 right-4 text-white">
+            <p class="text-lg font-bold">Photorealistic View</p>
+          </div>
+          <div class="absolute bottom-4 right-4 z-10 flex space-x-3">
+            <%= link_to rails_blob_path(sketch_request.photorealistic_view, disposition: :attachment), class: "h-8 w-8 flex items-center justify-center rounded-full bg-accent text-white shadow-xl backdrop-blur-md transition-all duration-300 transform hover:scale-110 hover:bg-secondary active:scale-95" do %>
+              <%= render(IconComponent.new(classes: "h-6 w-6", name: "download")) %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <%# Rotated View %>
+      <% if sketch_request.rotated_view.attached? %>
+        <div class="group relative overflow-hidden rounded-sm shadow-lg transition-all duration-500 transform hover:scale-105">
+          <%= image_tag(sketch_request.rotated_view.variant(resize_to_limit: [500, 500]), loading: :lazy, class: "w-full max-h-[400px] object-cover transition-transform duration-500 group-hover:scale-110", alt: "Rotated View") %>
+          <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-70"></div>
+          <div class="absolute bottom-4 left-4 right-4 text-white">
+            <p class="text-lg font-bold">Rotated View</p>
+          </div>
+          <div class="absolute bottom-4 right-4 z-10 flex space-x-3">
+            <%= link_to rails_blob_path(sketch_request.rotated_view, disposition: :attachment), class: "h-8 w-8 flex items-center justify-center rounded-full bg-accent text-white shadow-xl backdrop-blur-md transition-all duration-300 transform hover:scale-110 hover:bg-secondary active:scale-95" do %>
+              <%= render(IconComponent.new(classes: "h-6 w-6", name: "download")) %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

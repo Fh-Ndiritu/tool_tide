@@ -21,11 +21,13 @@ Rails.application.routes.draw do
     resources :canvas, only: %i[create show]
     resources :text_requests, only: [ :index, :edit, :destroy, :show ]
     resources :mask_requests, only: [ :index, :edit, :destroy ]
+    resources :sketch_requests, only: [ :index, :edit, :destroy, :show ]
     resources :blogs, only: [ :index, :new, :create, :show ]
     resources :public_assets, only: [ :index, :create, :destroy ]
 
     post "mask_requests/toggle_display"
     post "text_requests/toggle_display"
+    post "sketch_requests/toggle_display"
   end
 
   resources :public_assets, only: :show, param: :uuid

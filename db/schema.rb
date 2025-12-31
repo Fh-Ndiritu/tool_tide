@@ -10,7 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_23_193837) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_31_064216) do
+  create_table "action_mailbox_inbound_emails", force: :cascade do |t|
+    t.integer "status", default: 0, null: false
+    t.string "message_id", null: false
+    t.string "message_checksum", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["message_id", "message_checksum"], name: "index_action_mailbox_inbound_emails_uniqueness", unique: true
+  end
+
+  create_table "action_text_rich_texts", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "body"
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["record_type", "record_id", "name"], name: "index_action_text_rich_texts_uniqueness", unique: true
+  end
+
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -251,6 +270,30 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_23_193837) do
     t.boolean "validated", default: false
   end
 
+  create_table "project_layers", force: :cascade do |t|
+    t.integer "project_id", null: false
+    t.integer "layer_type"
+    t.text "prompt"
+    t.string "preset"
+    t.integer "parent_layer_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "status"
+    t.integer "transformation_type"
+    t.integer "views_count", default: 0, null: false
+    t.index ["parent_layer_id"], name: "index_project_layers_on_parent_layer_id"
+    t.index ["project_id"], name: "index_project_layers_on_project_id"
+  end
+
+  create_table "projects", force: :cascade do |t|
+    t.string "title"
+    t.integer "user_id", null: false
+    t.integer "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_projects_on_user_id"
+  end
+
   create_table "public_assets", force: :cascade do |t|
     t.string "uuid"
     t.string "name"
@@ -269,6 +312,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_23_193837) do
     t.text "analysis"
     t.string "recommended_angle"
     t.integer "user_id", null: false
+    t.integer "visibility", default: 0
     t.index ["canva_id"], name: "index_sketch_requests_on_canva_id"
     t.index ["user_id"], name: "index_sketch_requests_on_user_id"
   end
@@ -383,6 +427,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_23_193837) do
   add_foreign_key "mask_requests", "canvas"
   add_foreign_key "messages", "chats"
   add_foreign_key "payment_transactions", "users"
+  add_foreign_key "project_layers", "project_layers", column: "parent_layer_id"
+  add_foreign_key "project_layers", "projects"
+  add_foreign_key "projects", "users"
   add_foreign_key "sketch_requests", "canvas"
   add_foreign_key "sketch_requests", "users"
   add_foreign_key "suggested_plants", "landscape_requests"
