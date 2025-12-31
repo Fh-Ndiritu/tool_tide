@@ -1,5 +1,6 @@
 class SketchAnalysisJob < ApplicationJob
   queue_as :default
+  retry_on StandardError, attempts: 3, wait: :exponential
 
   class ImageAnalysisSchema < RubyLLM::Schema
     object :result do
@@ -43,13 +44,11 @@ class SketchAnalysisJob < ApplicationJob
 
     if result == "sketch"
        Turbo::StreamsChannel.broadcast_replace_to(
-        canva,
+        "canvas_#{canva.id}",
         target: "sketch_overlays",
         partial: "mask_requests/sketch_overlay",
         locals: { canva: canva }
       )
-    else
-      # If photo, we just update the status. UI might not need to know explicitly unless we were showing a spinner.
     end
   end
 end

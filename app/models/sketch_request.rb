@@ -44,6 +44,6 @@ class SketchRequest < ApplicationRecord
   private
 
   def broadcast_progress
-    broadcast_replace_to self
+    broadcast_refresh_to self
   end
 end
