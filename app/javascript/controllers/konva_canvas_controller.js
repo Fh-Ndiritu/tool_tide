@@ -571,6 +571,32 @@ export default class extends Controller {
     console.log('Konva Stage destroyed and resources cleaned.');
   }
 
+  setZoom(scale) {
+    if (!this.stage) return;
+
+    const oldScale = this.stage.scaleX();
+
+    // Center the zoom
+    // We want the center of the view to remain the center
+    const width = this.stage.width();
+    const height = this.stage.height();
+
+    // Calculate new position to keep center... centered.
+    // However, since we are doing absolute scale setting (not relative zoom),
+    // it's easier to just center the 0,0-based content in the view.
+    // If the content is at 0,0, its center is width*scale/2, height*scale/2
+    // We want that point to be at width/2, height/2 of the stage.
+    // So stage.x + width*scale/2 = width/2 => stage.x = width/2 - width*scale/2
+
+    const newX = (width - width * scale) / 2;
+    const newY = (height - height * scale) / 2;
+
+    this.stage.scale({ x: scale, y: scale });
+    this.stage.position({ x: newX, y: newY });
+    this.stage.batchDraw();
+    console.log(`Zoom set to ${scale}`);
+  }
+
   getMaskDataURL() {
     if (!this.maskContext || !this.maskContext.canvas || !this.imageNode || !this.imageNode.image()) {
       console.error('Mask canvas, imageNode, or image is not available for generating mask data.');

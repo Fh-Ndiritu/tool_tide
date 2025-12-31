@@ -8,7 +8,8 @@ export default class extends Controller {
     "presetSection", "customSection", "presetModeBtn", "customModeBtn",
     "maskInput", "form", "sidebarLayer", "generateBtn", "brushSizeDisplay",
     "brushTab", "plantTab", "sketchTab",
-    "brushPanel", "plantPanel", "sketchPanel"
+    "brushPanel", "plantPanel", "sketchPanel", "zoomLevel",
+    "brushRange", "sliderFill", "sliderThumb"
   ];
 
   static outlets = ["konva-canvas"];
@@ -30,6 +31,10 @@ export default class extends Controller {
 
     // Initialize Mode
     this.currentMode = "preset";
+    this.currentScale = 1;
+
+    // Initialize Tool
+    this.setActiveToolUI("brush");
   }
 
   disconnect() {
@@ -281,19 +286,67 @@ export default class extends Controller {
 
   // --- Konva Canvas Delegation ---
   setTool(event) {
+    const toolName = event.params.tool;
     if (this.hasKonvaCanvasOutlet) {
       this.konvaCanvasOutlet.setTool({ params: event.params });
+    }
+    this.setActiveToolUI(toolName);
+  }
 
-      // Update UI button states if needed
-      const toolC = event.params.tool;
-      const buttons = document.querySelectorAll('[data-action="click->unified-dashboard#setTool"]');
-      buttons.forEach(btn => {
-         if(btn.dataset.unifiedDashboardToolParam === toolC) {
-             btn.classList.add("ring-2", "ring-green-500");
-         } else {
-             btn.classList.remove("ring-2", "ring-green-500");
-         }
-      });
+  setActiveToolUI(toolName) {
+    const buttons = this.element.querySelectorAll('[data-action="click->unified-dashboard#setTool"]');
+
+    buttons.forEach(btn => {
+      const isTarget = btn.dataset.unifiedDashboardToolParam === toolName;
+      const svg = btn.querySelector("svg");
+
+      if (isTarget) {
+        btn.classList.add("ring-2", "ring-green-500", "bg-[#444]");
+        btn.classList.remove("border-transparent");
+        if (svg) {
+          svg.classList.remove("text-gray-400");
+          svg.classList.add("text-white");
+        }
+      } else {
+        btn.classList.remove("ring-2", "ring-green-500", "bg-[#444]");
+        btn.classList.add("border-transparent");
+        if (svg) {
+          svg.classList.remove("text-white");
+          svg.classList.add("text-gray-400");
+        }
+      }
+    });
+  }
+
+
+
+  // --- Zoom Logic ---
+  zoomIn() {
+    this.updateZoom(0.1);
+  }
+
+  zoomOut() {
+    this.updateZoom(-0.1);
+  }
+
+  updateZoom(delta) {
+    let newScale = this.currentScale + delta;
+    // Clamp scale between 0.1 and 3.0
+    newScale = Math.min(Math.max(newScale, 0.1), 3.0);
+
+    // Round to 1 decimal place to avoid floating point weirdness
+    this.currentScale = Math.round(newScale * 10) / 10;
+
+    this.updateZoomUI();
+
+    if (this.hasKonvaCanvasOutlet) {
+      this.konvaCanvasOutlet.setZoom(this.currentScale);
+    }
+  }
+
+  updateZoomUI() {
+    if (this.hasZoomLevelTarget) {
+      this.zoomLevelTarget.textContent = `${Math.round(this.currentScale * 100)}%`;
     }
   }
 
@@ -312,6 +365,19 @@ export default class extends Controller {
   setBrushSizeFromUI(event) {
     if (this.hasKonvaCanvasOutlet) this.konvaCanvasOutlet.setBrushSizeFromUI(event);
     this.updateBrushSizeDisplay(event);
+
+    // Update Slider Visuals
+    const size = parseInt(event.target.value, 10);
+    if (this.hasBrushRangeTarget && this.hasSliderFillTarget && this.hasSliderThumbTarget) {
+      const min = parseInt(this.brushRangeTarget.min, 10) || 1;
+      const max = parseInt(this.brushRangeTarget.max, 10) || 100;
+
+      const pct = (size - min) / (max - min);
+      const percent = pct * 100;
+
+      this.sliderFillTarget.style.width = `${percent}%`;
+      this.sliderThumbTarget.style.left = `${percent}%`;
+    }
   }
 
   // --- Plant Suggestions ---
