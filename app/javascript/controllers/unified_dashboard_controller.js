@@ -6,7 +6,9 @@ export default class extends Controller {
     "variationSlider", "variationCount", "emptyState", "resultList",
     "presetMenu", "presetInput", "presetLabel", "costDisplay",
     "presetSection", "customSection", "presetModeBtn", "customModeBtn",
-    "maskInput", "form", "sidebarLayer", "generateBtn", "brushSizeDisplay"
+    "maskInput", "form", "sidebarLayer", "generateBtn", "brushSizeDisplay",
+    "brushTab", "plantTab", "sketchTab",
+    "brushPanel", "plantPanel", "sketchPanel"
   ];
 
   static outlets = ["konva-canvas"];
@@ -24,14 +26,23 @@ export default class extends Controller {
     this.highlightActiveLayer();
 
     // Close dropdown when clicking outside
-    document.addEventListener("click", this.closeDropdownOutside.bind(this));
+    document.addEventListener("click", this.closeDropdownOutside);
 
     // Initialize Mode
     this.currentMode = "preset";
   }
 
   disconnect() {
-    document.removeEventListener("click", this.closeDropdownOutside.bind(this));
+    document.removeEventListener("click", this.closeDropdownOutside);
+  }
+
+  closeDropdownOutside = (event) => {
+    if (this.hasPresetMenuTarget && !this.presetMenuTarget.classList.contains("hidden")) {
+      const isClickInside = this.presetDropdownTarget.contains(event.target);
+      if (!isClickInside) {
+        this.presetMenuTarget.classList.add("hidden");
+      }
+    }
   }
 
   updateUIState() {
@@ -89,6 +100,7 @@ export default class extends Controller {
       // Clear preset
       if(this.hasPresetInputTarget) this.presetInputTarget.value = "";
     }
+    this.validateGeneration();
   }
 
   prepareSubmission(event) {
@@ -246,34 +258,82 @@ export default class extends Controller {
     }
   }
 
-  setMode(event) {
-    const mode = event.currentTarget.dataset.mode;
-    this.currentMode = mode;
+  // --- Tool Tabs Logic ---
+  switchToolTab(event) {
+    const tabName = event.currentTarget.dataset.tab;
+    const tabs = ["brush", "plant", "sketch"];
 
-    if (mode === "preset") {
-      this.presetSectionTarget.classList.remove("hidden");
-      this.customSectionTarget.classList.add("hidden");
+    tabs.forEach(t => {
+      const btn = this[`${t}TabTarget`];
+      const panel = this[`${t}PanelTarget`];
 
-      this.presetModeBtnTarget.classList.add("bg-white", "text-black", "shadow");
-      this.presetModeBtnTarget.classList.remove("text-gray-500");
-
-      this.customModeBtnTarget.classList.remove("bg-white", "text-black", "shadow");
-      this.customModeBtnTarget.classList.add("text-gray-500");
-
-      // Clear custom prompt
-      if(this.hasPromptInputTarget) this.promptInputTarget.value = "";
-    } else {
-      this.presetSectionTarget.classList.add("hidden");
-      this.customSectionTarget.classList.remove("hidden");
-
-      this.customModeBtnTarget.classList.add("bg-white", "text-black", "shadow");
-      this.customModeBtnTarget.classList.remove("text-gray-500");
-
-      this.presetModeBtnTarget.classList.remove("bg-white", "text-black", "shadow");
-      this.presetModeBtnTarget.classList.add("text-gray-500");
-
-      // Clear preset
-      if(this.hasPresetInputTarget) this.presetInputTarget.value = "";
-    }
-    this.validateGeneration();
+      if (t === tabName) {
+        btn.classList.add("text-white", "border-b-2", "border-green-500");
+        btn.classList.remove("text-gray-400", "border-transparent");
+        panel.classList.remove("hidden");
+      } else {
+        btn.classList.remove("text-white", "border-b-2", "border-green-500");
+        btn.classList.add("text-gray-400", "border-transparent");
+        panel.classList.add("hidden");
+      }
+    });
   }
+
+  // --- Konva Canvas Delegation ---
+  setTool(event) {
+    if (this.hasKonvaCanvasOutlet) {
+      this.konvaCanvasOutlet.setTool({ params: event.params });
+
+      // Update UI button states if needed
+      const toolC = event.params.tool;
+      const buttons = document.querySelectorAll('[data-action="click->unified-dashboard#setTool"]');
+      buttons.forEach(btn => {
+         if(btn.dataset.unifiedDashboardToolParam === toolC) {
+             btn.classList.add("ring-2", "ring-green-500");
+         } else {
+             btn.classList.remove("ring-2", "ring-green-500");
+         }
+      });
+    }
+  }
+
+  undo() {
+    if (this.hasKonvaCanvasOutlet) this.konvaCanvasOutlet.undo();
+  }
+
+  redo() {
+    if (this.hasKonvaCanvasOutlet) this.konvaCanvasOutlet.redo();
+  }
+
+  clearSelection() {
+    if (this.hasKonvaCanvasOutlet) this.konvaCanvasOutlet.clearSelection();
+  }
+
+  setBrushSizeFromUI(event) {
+    if (this.hasKonvaCanvasOutlet) this.konvaCanvasOutlet.setBrushSizeFromUI(event);
+    this.updateBrushSizeDisplay(event);
+  }
+
+  // --- Plant Suggestions ---
+  requestPlantSuggestions() {
+      // Logic to request plant suggestions
+      alert("Requesting plant suggestions... (This would trigger a backend job)");
+  }
+
+  // --- Layer Collapsing ---
+  toggleLayer(event) {
+      event.stopPropagation();
+      const layerId = event.currentTarget.dataset.layerId;
+      const childrenContainer = document.getElementById(`layer_children_${layerId}`);
+      const icon = event.currentTarget.querySelector("svg");
+
+      if (childrenContainer) {
+          childrenContainer.classList.toggle("hidden");
+          if (childrenContainer.classList.contains("hidden")) {
+              icon.classList.remove("rotate-90");
+          } else {
+              icon.classList.add("rotate-90");
+          }
+      }
+  }
+}

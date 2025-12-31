@@ -11,8 +11,8 @@
       <h2 class="font-bold text-lg text-gray-200">Layers</h2>
     </div>
 
-    <div class="flex-1 overflow-y-auto p-2 space-y-2" id="sidebar_layers" data-unified-dashboard-target="sidebarLayers">
-      <%= render partial: "project_layers/layer", collection: @project.layers.ordered %>
+    <div class="flex-1 overflow-y-auto p-2" id="sidebar_layers" data-unified-dashboard-target="sidebarLayers">
+      <%= render partial: "project_layers/layer", collection: @project.layers.where(parent_layer_id: nil).ordered, locals: { depth: 0 } %>
     </div>
   </div>
 
@@ -59,9 +59,9 @@
   <div class="w-80 bg-[#252525] border-l border-[#333] flex flex-col" data-unified-dashboard-target="toolsPanel">
 
     <!-- User Balance & Analysis Section -->
-    <div class="p-4 space-y-6 flex-1 overflow-y-auto">
+    <div class="p-4 flex-1 overflow-y-auto">
       <!-- Credit Balance -->
-      <div class="bg-[#111] rounded-lg p-3 border border-[#333] flex items-center justify-between">
+      <div class="bg-[#111] rounded-lg p-3 border border-[#333] flex items-center justify-between mb-6">
         <div class="flex items-center gap-2">
           <svg class="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" /></svg>
           <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Your Balance</span>
@@ -72,36 +72,58 @@
         </div>
       </div>
 
-      <!-- Tools -->
-      <div>
-        <label class="text-xs font-bold text-gray-500 uppercase mb-3 block tracking-widest">Editor Tools</label>
-        <div class="grid grid-cols-2 gap-2 mb-4">
-            <button class="p-3 bg-[#333] hover:bg-[#444] rounded-xl flex flex-col items-center gap-2 transition border-2 border-transparent focus:border-green-500 active:bg-green-500/10 group"
-                    data-action="click->konva-canvas#setTool" data-konva-canvas-tool-param="brush">
-               <svg class="w-6 h-6 text-gray-400 group-hover:text-green-400 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
-               <span class="text-[10px] font-bold uppercase tracking-tighter">Brush</span>
+      <!-- Tools Tabs -->
+      <div class="flex gap-4 border-b border-[#333] mb-4">
+          <button class="pb-2 text-sm font-medium text-white border-b-2 border-green-500 transition focus:outline-none"
+                  data-action="click->unified-dashboard#switchToolTab" data-tab="brush" data-unified-dashboard-target="brushTab">
+              Brush
+          </button>
+          <button class="pb-2 text-sm font-medium text-gray-400 border-b-2 border-transparent hover:text-gray-200 transition focus:outline-none"
+                  data-action="click->unified-dashboard#switchToolTab" data-tab="plant" data-unified-dashboard-target="plantTab">
+              Plants
+          </button>
+           <button class="pb-2 text-sm font-medium text-gray-400 border-b-2 border-transparent hover:text-gray-200 transition focus:outline-none"
+                  data-action="click->unified-dashboard#switchToolTab" data-tab="sketch" data-unified-dashboard-target="sketchTab">
+              3D
+          </button>
+      </div>
+
+      <!-- Tab Content: Brush -->
+      <div data-unified-dashboard-target="brushPanel">
+          <div class="mb-4">
+            <p class="text-[10px] text-gray-400 mb-3 leading-relaxed">
+              Brush over areas you want to modify, then prompt the AI to change them.
+            </p>
+          </div>
+
+          <!-- Brush/Eraser Buttons -->
+          <div class="grid grid-cols-2 gap-2 mb-4">
+            <button class="p-3 bg-[#333] hover:bg-[#444] rounded-xl flex flex-col items-center gap-2 transition border-2 border-transparent focus:outline-none active:bg-green-500/10"
+                    data-action="click->unified-dashboard#setTool" data-unified-dashboard-tool-param="brush">
+               <svg class="w-6 h-6 text-gray-400 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
+               <span class="text-[10px] font-bold uppercase tracking-tighter text-gray-300">Brush</span>
             </button>
-             <button class="p-3 bg-[#333] hover:bg-[#444] rounded-xl flex flex-col items-center gap-2 transition border-2 border-transparent focus:border-green-500 active:bg-red-500/10 group"
-                    data-action="click->konva-canvas#setTool" data-konva-canvas-tool-param="eraser">
-               <svg class="w-6 h-6 text-gray-400 group-hover:text-red-400 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
-               <span class="text-[10px] font-bold uppercase tracking-tighter">Eraser</span>
+             <button class="p-3 bg-[#333] hover:bg-[#444] rounded-xl flex flex-col items-center gap-2 transition border-2 border-transparent focus:outline-none active:bg-red-500/10"
+                    data-action="click->unified-dashboard#setTool" data-unified-dashboard-tool-param="eraser">
+               <svg class="w-6 h-6 text-gray-400 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+               <span class="text-[10px] font-bold uppercase tracking-tighter text-gray-300">Eraser</span>
             </button>
         </div>
 
-        <!-- History Controls -->
+        <!-- Undo/Redo/Clear -->
         <div class="flex gap-2 mb-4">
-          <button class="flex-1 py-2 bg-[#333] hover:bg-[#444] rounded-lg text-xs font-bold transition flex items-center justify-center gap-2"
-                  data-action="click->konva-canvas#undo">
+          <button class="flex-1 py-2 bg-[#333] hover:bg-[#444] rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 text-gray-300"
+                  data-action="click->unified-dashboard#undo">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l5 5m-5-5l5-5" /></svg>
             Undo
           </button>
-          <button class="flex-1 py-2 bg-[#333] hover:bg-[#444] rounded-lg text-xs font-bold transition flex items-center justify-center gap-2"
-                  data-action="click->konva-canvas#redo">
+          <button class="flex-1 py-2 bg-[#333] hover:bg-[#444] rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 text-gray-300"
+                  data-action="click->unified-dashboard#redo">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 10h-10a8 8 0 00-8 8v2m18-10l-5 5m5-5l-5-5" /></svg>
             Redo
           </button>
-          <button class="px-3 py-2 bg-[#333] hover:bg-red-900/30 hover:text-red-500 rounded-lg text-xs font-bold transition"
-                  data-action="click->konva-canvas#clearSelection">
+          <button class="px-3 py-2 bg-[#333] hover:bg-red-900/30 hover:text-red-500 rounded-lg text-xs font-bold text-gray-300 transition"
+                  data-action="click->unified-dashboard#clearSelection">
             Clear
           </button>
         </div>
@@ -115,7 +137,7 @@
           <div class="slider-container relative h-6 flex items-center">
             <input type="range" min="1" max="100" value="40"
                    class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20"
-                   data-action="input->konva-canvas#setBrushSizeFromUI input->unified-dashboard#updateBrushSizeDisplay"
+                   data-action="input->unified-dashboard#setBrushSizeFromUI"
                    data-unified-dashboard-target="brushRange">
 
             <div class="slider-track absolute w-full h-full bg-[#111] overflow-hidden rounded-sm">
@@ -126,115 +148,140 @@
                  data-unified-dashboard-target="sliderThumb" style="left: 40%;"></div>
           </div>
         </div>
-      </div>
+        </div>
 
-      <!-- Generator -->
-      <div class="pt-4 border-t border-[#333]">
-        <label class="text-xs font-bold text-gray-500 uppercase mb-2 block">Generation</label>
+        <!-- Generator Section (Moved Inside Brush Panel) -->
+        <div class="mt-6 pt-4 border-t border-[#333]">
+          <label class="text-xs font-bold text-gray-500 uppercase mb-2 block">Generation</label>
 
-        <%= form_with url: generate_project_layers_path(@project), method: :post, local: false, id: "generate_form",
-              data: { unified_dashboard_target: "form", action: "submit->unified-dashboard#prepareSubmission" } do |f| %>
+          <%= form_with url: generate_project_layers_path(@project), method: :post, local: false, id: "generate_form",
+                data: { unified_dashboard_target: "form", action: "submit->unified-dashboard#prepareSubmission" } do |f| %>
 
-          <%= hidden_field_tag :mask_data, "", data: { unified_dashboard_target: "maskInput" } %> <!-- Hidden Mask Input -->
+            <%= hidden_field_tag :mask_data, "", data: { unified_dashboard_target: "maskInput" } %> <!-- Hidden Mask Input -->
 
-          <!-- Mode Toggle -->
-          <div class="flex bg-[#111] p-1 rounded mb-4">
-             <button type="button" class="flex-1 py-1 text-xs font-medium rounded text-black bg-white shadow"
-                     data-action="click->unified-dashboard#setMode" data-mode="preset" data-unified-dashboard-target="presetModeBtn">
-                Preset Style
-             </button>
-             <button type="button" class="flex-1 py-1 text-xs font-medium rounded text-gray-500 hover:text-gray-300"
-                     data-action="click->unified-dashboard#setMode" data-mode="custom" data-unified-dashboard-target="customModeBtn">
-                Custom Prompt
-             </button>
-          </div>
+            <!-- Mode Toggle -->
+            <div class="flex bg-[#111] p-1 rounded mb-4">
+               <button type="button" class="flex-1 py-1 text-xs font-medium rounded text-black bg-white shadow"
+                       data-action="click->unified-dashboard#setMode" data-mode="preset" data-unified-dashboard-target="presetModeBtn">
+                  Preset Style
+               </button>
+               <button type="button" class="flex-1 py-1 text-xs font-medium rounded text-gray-500 hover:text-gray-300"
+                       data-action="click->unified-dashboard#setMode" data-mode="custom" data-unified-dashboard-target="customModeBtn">
+                  Custom Prompt
+               </button>
+            </div>
 
-          <!-- Custom Prompt Input -->
-          <div class="hidden" data-unified-dashboard-target="customSection">
-            <%= f.text_area :prompt, rows: 3,
-                  class: "w-full bg-[#111] border border-[#444] rounded p-3 text-sm text-gray-200 focus:border-green-500 focus:outline-none resize-none mb-3",
-                  placeholder: "Describe exactly what you want...",
-                  data: { action: "input->unified-dashboard#validateGeneration", unified_dashboard_target: "promptInput" } %>
-          </div>
+            <!-- Custom Prompt Input -->
+            <div class="hidden" data-unified-dashboard-target="customSection">
+              <%= f.text_area :prompt, rows: 3,
+                    class: "w-full bg-[#111] border border-[#444] rounded p-3 text-sm text-gray-200 focus:border-green-500 focus:outline-none resize-none mb-3",
+                    placeholder: "Describe exactly what you want...",
+                    data: { action: "input->unified-dashboard#validateGeneration", unified_dashboard_target: "promptInput" } %>
+            </div>
 
-          <!-- Preset Section -->
-          <div data-unified-dashboard-target="presetSection">
-          <div class="mb-4 relative" data-unified-dashboard-target="presetDropdown">
-             <label class="text-xs text-gray-400 mb-1 block">Style Preset</label>
+            <!-- Preset Section -->
+            <div data-unified-dashboard-target="presetSection">
+            <div class="mb-4 relative" data-unified-dashboard-target="presetDropdown">
+               <label class="text-xs text-gray-400 mb-1 block">Style Preset</label>
 
-             <!-- Hidden Input -->
-             <%= f.hidden_field :preset, value: "", data: { unified_dashboard_target: "presetInput" } %>
+               <!-- Hidden Input -->
+               <%= f.hidden_field :preset, value: "", data: { unified_dashboard_target: "presetInput" } %>
 
-             <!-- Trigger Button -->
-             <button type="button"
-                     class="w-full bg-[#111] border border-[#444] rounded p-2 text-sm text-gray-300 flex items-center justify-between hover:border-green-500 transition"
-                     data-action="click->unified-dashboard#togglePresetMenu">
-                <span data-unified-dashboard-target="presetLabel">No Preset (Realistic)</span>
-                <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
-             </button>
+               <!-- Trigger Button -->
+               <button type="button"
+                       class="w-full bg-[#111] border border-[#444] rounded p-2 text-sm text-gray-300 flex items-center justify-between hover:border-green-500 transition"
+                       data-action="click->unified-dashboard#togglePresetMenu">
+                  <span data-unified-dashboard-target="presetLabel">No Preset (Realistic)</span>
+                  <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+               </button>
 
-             <!-- Dropdown Menu -->
-             <div class="hidden absolute bottom-full left-0 w-full mb-2 bg-[#252525] border border-[#444] rounded-lg shadow-xl z-50 max-h-64 overflow-y-auto"
-                  data-unified-dashboard-target="presetMenu">
+               <!-- Dropdown Menu -->
+               <div class="hidden absolute bottom-full left-0 w-full mb-2 bg-[#252525] border border-[#444] rounded-lg shadow-xl z-50 max-h-64 overflow-y-auto"
+                    data-unified-dashboard-target="presetMenu">
 
-                <button type="button"
-                        class="w-full text-left p-2 hover:bg-[#333] flex items-center gap-3 border-b border-[#333] last:border-0"
-                        data-action="click->unified-dashboard#selectPreset"
-                        data-value=""
-                        data-label="No Preset (Realistic)">
-                   <div class="w-12 h-12 bg-gray-800 rounded flex items-center justify-center text-xs text-gray-500">None</div>
-                   <div>
-                      <div class="font-medium text-white text-sm">No Preset</div>
-                      <div class="text-[10px] text-gray-500">Realistic output</div>
-                   </div>
-                </button>
-
-                <% LANDSCAPE_PRESETS.each do |preset, description| %>
                   <button type="button"
                           class="w-full text-left p-2 hover:bg-[#333] flex items-center gap-3 border-b border-[#333] last:border-0"
                           data-action="click->unified-dashboard#selectPreset"
-                          data-value="<%= preset %>"
-                          data-label="<%= preset.humanize %>">
-                     <%= image_tag "presets/#{preset}.png", class: "w-12 h-12 object-cover rounded bg-gray-800" %>
+                          data-value=""
+                          data-label="No Preset (Realistic)">
+                     <div class="w-12 h-12 bg-gray-800 rounded flex items-center justify-center text-xs text-gray-500">None</div>
                      <div>
-                        <div class="font-medium text-white text-sm"><%= preset.humanize %></div>
-                        <div class="text-[10px] text-gray-500"><%= description %></div>
+                        <div class="font-medium text-white text-sm">No Preset</div>
+                        <div class="text-[10px] text-gray-500">Realistic output</div>
                      </div>
                   </button>
-                <% end %>
-             </div>
-          </div>
-          </div>
 
-          <div class="flex items-center justify-between mb-4">
-             <label class="text-xs text-gray-400">Variations</label>
-             <div class="flex items-center gap-2">
-               <%= f.range_field :variations, min: 1, max: 4, value: 1, step: 1,
-                      class: "w-20 accent-green-500",
-                      data: { action: "input->unified-dashboard#updateVariationCount", unified_dashboard_target: "variationSlider" } %>
-               <span class="text-sm font-bold w-4 text-center" data-unified-dashboard-target="variationCount">1</span>
-             </div>
-          </div>
+                  <% LANDSCAPE_PRESETS.each do |preset, description| %>
+                    <button type="button"
+                            class="w-full text-left p-2 hover:bg-[#333] flex items-center gap-3 border-b border-[#333] last:border-0"
+                            data-action="click->unified-dashboard#selectPreset"
+                            data-value="<%= preset %>"
+                            data-label="<%= preset.humanize %>">
+                       <%= image_tag "presets/#{preset}.png", class: "w-12 h-12 object-cover rounded bg-gray-800" %>
+                       <div>
+                          <div class="font-medium text-white text-sm"><%= preset.humanize %></div>
+                          <div class="text-[10px] text-gray-500"><%= description %></div>
+                       </div>
+                    </button>
+                  <% end %>
+               </div>
+            </div>
+            </div>
 
-          <%= f.button "Generate",
-                class: "w-full py-3 bg-gray-600 cursor-not-allowed text-black font-bold rounded-lg transition opacity-50",
-                data: { unified_dashboard_target: "generateBtn" },
-                disabled: true %>
-        <% end %>
-        <p class="text-[10px] text-gray-500 text-center mt-2">Cost: ~<span id="cost-display" data-unified-dashboard-target="costDisplay">8</span> credits</p>
+            <div class="flex items-center justify-between mb-4">
+               <label class="text-xs text-gray-400">Variations</label>
+               <div class="flex items-center gap-2">
+                 <%= f.range_field :variations, min: 1, max: 4, value: 1, step: 1,
+                        class: "w-20 accent-green-500",
+                        data: { action: "input->unified-dashboard#updateVariationCount", unified_dashboard_target: "variationSlider" } %>
+                 <span class="text-sm font-bold w-4 text-center" data-unified-dashboard-target="variationCount">1</span>
+               </div>
+            </div>
+
+            <%= f.button "Generate",
+                  class: "w-full py-3 bg-gray-600 cursor-not-allowed text-black font-bold rounded-lg transition opacity-50",
+                  data: { unified_dashboard_target: "generateBtn" },
+                  disabled: true %>
+          <% end %>
+          <p class="text-[10px] text-gray-500 text-center mt-2">Cost: ~<span id="cost-display" data-unified-dashboard-target="costDisplay">8</span> credits</p>
+        </div>
       </div>
 
-      <!-- Transform Actions -->
-      <div class="pt-4 border-t border-[#333]">
-         <button class="w-full py-2 bg-[#333] hover:bg-[#444] rounded text-sm text-gray-300 flex items-center justify-center gap-2 transition">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>
-            Plant Suggestions
-         </button>
-          <button class="mt-2 w-full py-2 bg-[#333] hover:bg-[#444] rounded text-sm text-gray-300 flex items-center justify-center gap-2 transition">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
-            Sketch to 3D
-         </button>
+      <!-- Tab Content: Plant Suggestions -->
+      <div data-unified-dashboard-target="plantPanel" class="hidden">
+           <div class="mb-4">
+              <p class="text-xs text-gray-300 font-medium mb-1">AI Plant Recommendations</p>
+              <p class="text-[10px] text-gray-400 mb-4 leading-relaxed">
+                Click below to get plant suggestions based on your region and soil type. The AI will analyze your image and location.
+              </p>
+              <button class="w-full py-3 bg-green-600 hover:bg-green-500 rounded-lg text-white text-sm font-bold shadow-lg transition flex items-center justify-center gap-2"
+                      data-action="click->unified-dashboard#requestPlantSuggestions">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
+                  Generate Suggestions
+              </button>
+           </div>
       </div>
+
+       <!-- Tab Content: Sketch to 3D -->
+      <div data-unified-dashboard-target="sketchPanel" class="hidden">
+           <div class="mb-4">
+              <p class="text-xs text-gray-300 font-medium mb-1">Sketch to 3D Reality</p>
+              <p class="text-[10px] text-gray-400 mb-4 leading-relaxed">
+                 Transform your architectural sketches or rough drawings into photorealistic 3D renders.
+                 Best used when you have uploaded a sketch file.
+              </p>
+              <div class="bg-[#333] p-3 rounded-lg border border-[#444] text-center">
+                  <svg class="w-8 h-8 text-gray-500 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                  <p class="text-[10px] text-gray-400">Upload a sketch layer to use this feature.</p>
+              </div>
+           </div>
+      </div>
+
+
+      </div>
+
+
+
 
     </div>
   </div>
