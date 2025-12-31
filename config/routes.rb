@@ -2,6 +2,10 @@
 
 Rails.application.routes.draw do
   resources :projects, only: [ :index, :create, :show, :update ] do
+    member do
+      post :suggest_plants
+      patch :update_location
+    end
     resources :layers, controller: "project_layers", only: [ :create ] do
       post "generate", on: :collection
       patch "view", on: :member

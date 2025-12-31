@@ -12,7 +12,6 @@ class UnifiedGenerator
   end
 
   def generate
-        binding.irb
     full_prompt = construct_prompt
 
     input_image = prepare_input_image

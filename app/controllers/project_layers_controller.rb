@@ -3,7 +3,6 @@ class ProjectLayersController < ApplicationController
   before_action :set_project
 
   def create
-    # Removed binding.irb
     @layer = @project.layers.build(layer_params)
     @layer.layer_type = :original if @project.layers.none?
     @layer.layer_type ||= :mask # Default to mask if not original

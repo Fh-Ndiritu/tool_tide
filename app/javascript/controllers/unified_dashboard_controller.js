@@ -9,7 +9,7 @@ export default class extends Controller {
     "maskInput", "form", "sidebarLayer", "generateBtn", "brushSizeDisplay",
     "brushTab", "plantTab", "sketchTab",
     "brushPanel", "plantPanel", "sketchPanel", "zoomLevel",
-    "brushRange", "sliderFill", "sliderThumb"
+    "brushRange", "sliderFill", "sliderThumb", "downloadBtn"
   ];
 
   static outlets = ["konva-canvas"];
@@ -17,7 +17,10 @@ export default class extends Controller {
   static values = {
     projectId: Number,
     activeLayerId: Number,
-    creditCost: { type: Number, default: 8 }
+    activeLayerImageUrl: String,
+    creditCost: { type: Number, default: 8 },
+    suggestPlantsUrl: String,
+    updateLocationUrl: String
   };
 
   connect() {
@@ -142,15 +145,36 @@ export default class extends Controller {
   }
 
   selectLayer(event) {
-    const { id, imageUrl } = event.params;
-    console.log(`Selecting layer: ${id}, URL: ${imageUrl}`);
+    const { layerId, imageUrl } = event.params;
+    console.log(`Selecting layer: ${layerId}, URL: ${imageUrl}`);
 
-    this.activeLayerIdValue = id;
-    this.incrementViews(id);
+    this.activeLayerIdValue = layerId;
+    if (imageUrl) {
+      this.activeLayerImageUrlValue = imageUrl;
+    } else {
+        this.activeLayerImageUrlValue = "";
+    }
+
+    this.incrementViews(layerId);
 
     if (imageUrl && this.hasKonvaCanvasOutlet) {
       this.konvaCanvasOutlet.imageUrlValue = imageUrl;
     }
+  }
+
+  activeLayerImageUrlValueChanged() {
+      if (this.hasDownloadBtnTarget) {
+          const url = this.activeLayerImageUrlValue;
+          if (url) {
+              this.downloadBtnTarget.href = url;
+              this.downloadBtnTarget.classList.remove("opacity-50", "cursor-not-allowed");
+              this.downloadBtnTarget.classList.add("hover:bg-[#444]", "hover:text-white");
+          } else {
+              this.downloadBtnTarget.href = "#";
+              this.downloadBtnTarget.classList.add("opacity-50", "cursor-not-allowed");
+              this.downloadBtnTarget.classList.remove("hover:bg-[#444]", "hover:text-white");
+          }
+      }
   }
 
   incrementViews(layerId) {
@@ -381,9 +405,76 @@ export default class extends Controller {
   }
 
   // --- Plant Suggestions ---
-  requestPlantSuggestions() {
-      // Logic to request plant suggestions
-      alert("Requesting plant suggestions... (This would trigger a backend job)");
+  // --- Plant Suggestions ---
+  requestPlantSuggestions(event) {
+      if (event) event.preventDefault();
+
+      if (navigator.geolocation) {
+         navigator.geolocation.getCurrentPosition(
+           (position) => {
+             this.updateLocation(position.coords.latitude, position.coords.longitude);
+           },
+           (error) => {
+             console.error("Error getting location:", error);
+             alert("Could not get your location. Please ensure you have allowed location access.");
+           }
+         );
+      } else {
+        alert("Geolocation is not supported by this browser.");
+      }
+  }
+
+  updateLocation(lat, lng) {
+      if (!this.hasUpdateLocationUrlValue) return;
+
+      fetch(this.updateLocationUrlValue, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: JSON.stringify({ latitude: lat, longitude: lng })
+      })
+      .then(response => {
+        if (response.ok) {
+          this.fetchPlantSuggestions();
+        } else {
+          alert("Failed to update location.");
+        }
+      })
+      .catch(err => console.error(err));
+  }
+
+  fetchPlantSuggestions() {
+      if (!this.hasSuggestPlantsUrlValue) return;
+
+      // Show some loading state if possible
+      const btn = this.element.querySelector('[data-action="click->unified-dashboard#requestPlantSuggestions"]');
+      if(btn) {
+          btn.innerHTML = `<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Analyzing...`;
+          btn.disabled = true;
+      }
+
+      fetch(this.suggestPlantsUrlValue, {
+          method: "POST",
+          headers: {
+              "Accept": "text/vnd.turbo-stream.html",
+               "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content
+          }
+      })
+      .then(r => r.text())
+      .then(html => {
+          if (window.Turbo) window.Turbo.renderStreamMessage(html);
+          // Reset button state is handled by the replace or manually if needed,
+          // but usually the stream updates the content.
+      })
+      .catch(err => {
+          console.error(err);
+          if(btn) {
+              btn.innerHTML = "Retry";
+              btn.disabled = false;
+          }
+      });
   }
 
   // --- Layer Collapsing ---
