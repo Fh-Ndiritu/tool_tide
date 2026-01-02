@@ -45,7 +45,7 @@ class DesignGenerator
   def generate_planting_guide
     ActiveRecord::Base.transaction do
       @mask_request.mask_request_plants.destroy_all
-      prompt = YAML.load_file(Rails.root.join("config/prompts.yml")).dig("image_analysis", "plant_suggestions_only")
+      prompt = YAML.load_file(Rails.root.join("config/prompts.yml")).dig("plant_detection")
       response = CustomRubyLLM.context.chat.with_schema(GardenSuggestionSchema).ask(prompt, with: @mask_request.main_view)
 
       plants = response.content["plants"]

@@ -149,7 +149,7 @@ enum :progress, {
 
     # Composite the mask over the target image
     masked_image = api_image.composite(mask_image) do |c|
-      c.compose "Over"  # Overlay the mask
+      c.dissolve "70"  # Overlay the mask with 80% opacity
       c.gravity "Center" # Align the mask with the target image
     end
 
