@@ -116,7 +116,7 @@ class MaskRequestsController < ApplicationController
     current_user.update(user_params)
 
     Turbo::StreamsChannel.broadcast_update_to(
-      "canva_#{@canva.id}",
+      @canva,
       target: "user_location_info",
       partial: "mask_requests/location_info",
       locals: { user: current_user }

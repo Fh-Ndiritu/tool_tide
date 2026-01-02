@@ -44,7 +44,7 @@ class SketchAnalysisJob < ApplicationJob
 
     if result == "sketch"
        Turbo::StreamsChannel.broadcast_replace_to(
-        "canvas_#{canva.id}",
+        canva,
         target: "sketch_overlays",
         partial: "mask_requests/sketch_overlay",
         locals: { canva: canva }

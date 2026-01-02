@@ -55,12 +55,13 @@ image_analysis:
       1. Identify the plant name and its estimated full-grown size (Height x Width in ft).
       2. Specify the quantity used in the masked area.
       3. Detail the long-term maintenance, including watering frequency and pruning needs.
+      4. This image contains more than 4 plants. Please provide a planting guide for all plants in the image.
 
     Take your Time to carefully analyze the image and provide accurate and detailed responses.
 
     Constraint: Each plant description must be a maximum of three sentences.
 
-    Provide your answer as a comprehensive list of plants with all the requested details.
+    Provide your answer as a comprehensive array of plants with all the requested details.
 
 landscape_presets:
   cottage: |
