@@ -30,6 +30,6 @@ class SketchRequestsController < ApplicationController
   end
 
   def set_sketch_request
-    @sketch_request = SketchRequest.find(params[:id])
+    @sketch_request = SketchRequest.with_attached_rotated_view.includes(:canva).find(params[:id])
   end
 end

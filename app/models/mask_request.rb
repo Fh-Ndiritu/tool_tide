@@ -121,9 +121,9 @@ enum :progress, {
 
   def broadcast_progress
     if failed? || complete? || plant_suggestions_ready?
-      Turbo::StreamsChannel.broadcast_refresh_to(canva, target: "styles")
+      Turbo::StreamsChannel.broadcast_refresh_to("canva_#{canva_id}", target: "styles")
     else
-    Turbo::StreamsChannel.broadcast_replace_to(canva, target: "loader", partial: "layouts/shared/loader", locals: { record: self, klasses: "fixed " })
+    Turbo::StreamsChannel.broadcast_replace_to("canva_#{canva_id}", target: "loader", partial: "layouts/shared/loader", locals: { record: self, klasses: "fixed " })
     end
   end
 

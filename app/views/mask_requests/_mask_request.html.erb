@@ -198,18 +198,18 @@
                   from-black/80 to-transparent
                 "
               >
-                <p class="text-white font-medium text-sm">
-                  <% if mask_request.canva.treat_as_sketch? %>
-                    <%= case view.name
-                        when "main_view" then "Clay Render"
-                        when "rotated_view" then "Architectural View"
-                        when "drone_view" then "Photorealistic View"
-                        else view.name.humanize
-                        end %>
-                  <% else %>
-                    <%= view.name.humanize %>
-                  <% end %>
-                </p>
+                  <p class="text-white font-medium text-sm">
+                    <% if mask_request.canva.treat_as_sketch? %>
+                      <%= case view.name
+                          when "main_view" then "Option 1"
+                          when "rotated_view" then "Option 2"
+                          when "drone_view" then "Option 3"
+                          else view.name.humanize
+                          end %>
+                    <% else %>
+                      <%= view.name.humanize %>
+                    <% end %>
+                  </p>
               </div>
 
               <div class="absolute bottom-3 right-4 z-20 flex space-x-2">

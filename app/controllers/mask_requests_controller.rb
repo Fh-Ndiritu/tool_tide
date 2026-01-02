@@ -112,6 +112,7 @@ class MaskRequestsController < ApplicationController
     DesignGenerator.new(@mask_request).suggest_plants(force: true)
     @mask_request.reload
     @mask_request.plant_suggestions_ready!  # Set progress - triggers broadcast
+    @mask_request.reload
     respond_to do |format|
       format.turbo_stream
     end
@@ -149,7 +150,7 @@ class MaskRequestsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_mask_request
-      @mask_request = MaskRequest.find(params.expect(:id))
+      @mask_request = MaskRequest.includes(mask_request_plants: :plant, canva: :user).find(params.expect(:id))
     end
 
     # Only allow a list of trusted parameters through.
@@ -158,7 +159,7 @@ class MaskRequestsController < ApplicationController
     end
 
     def set_canva
-      @canva = Canva.find(params[:canva_id])
+      @canva = Canva.includes(:user).find(params[:canva_id])
     end
 
     def preset_params

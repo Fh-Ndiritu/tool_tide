@@ -64,7 +64,7 @@ class DesignGenerator
     validate_plants
     main_view
 
-    generate_secondary_views
+    # Variations are now generated within main_view
 
     charge_generation if @mask_request.canva.user.afford_generation?
 
@@ -169,40 +169,27 @@ class DesignGenerator
     end
 
     image = @mask_request.overlay
+
+    # Generate Option 1 (Main View)
     payload = gcp_payload(prompt:, image:)
     response = fetch_gcp_response(payload)
     blob = save_gcp_results(response)
     @mask_request.main_view.attach(blob)
-  end
 
-  def generate_secondary_views
+    # Generate Option 2 (Stored in rotated_view)
     @mask_request.rotating!
-    rotate_view
+    response = fetch_gcp_response(payload) # Same payload
+    blob = save_gcp_results(response)
+    @mask_request.rotated_view.attach(blob)
 
+    # Generate Option 3 (Stored in drone_view)
     @mask_request.drone!
-    drone_view
+    response = fetch_gcp_response(payload) # Same payload
+    blob = save_gcp_results(response)
+    @mask_request.drone_view.attach(blob)
+
     @mask_request.processed!
   rescue StandardError => e
     @mask_request.update error_msg: e.message
-  end
-
-  def rotate_view
-    image = @mask_request.reload.main_view
-    return unless  image.attached?
-
-    payload = gcp_payload(prompt: rotated_landscape_prompt, image:)
-    response = fetch_gcp_response(payload)
-    blob = save_gcp_results(response)
-    @mask_request.rotated_view.attach(blob)
-  end
-
-  def drone_view
-    image = @mask_request.reload.rotated_view
-    return unless image.attached?
-
-    payload = gcp_payload(prompt: aerial_landscape_prompt, image:)
-    response = fetch_gcp_response(payload)
-    blob = save_gcp_results(response)
-    @mask_request.drone_view.attach(blob)
   end
 end

@@ -66,15 +66,7 @@ module Designable
     }
   end
 
-  def rotated_landscape_prompt
-    "Given this 8k highly detailed image of a landscaped garden compound, move the camera 120% horizontally to view the garden from a different angle.
-   Focus on shifting the camera to focus on the garden with a high resolution and professional looking angle."
-  end
-
-  def aerial_landscape_prompt
-    "Given this image design of a well landscaped garden compound, change the perspective an aerial drone view to show the garden landscaping from above.
-  Focus on the details of the garden and show the house in the periphery from above. Make it an aerial view from a DJI drone perspective."
-  end
+  # rotated_landscape_prompt and aerial_landscape_prompt removed as we now generate 3 variations of the same prompt.
 
   def save_gcp_results(response)
     return unless response.is_a?(Hash)

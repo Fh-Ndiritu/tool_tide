@@ -11,6 +11,10 @@ Rails.application.configure do
   # Do not eager load code on boot.
   config.eager_load = false
 
+  # config.active_record.action_on_strict_loading_violation = :raise
+
+  # config.active_record.strict_loading_by_default = true
+
   # Show full error reports.
   config.consider_all_requests_local = true
 
