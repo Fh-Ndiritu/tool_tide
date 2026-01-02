@@ -1,6 +1,6 @@
 class SketchAnalysisJob < ApplicationJob
   queue_as :default
-  retry_on StandardError, attempts: 3, wait: :exponential
+  retry_on StandardError, attempts: 3
 
   class ImageAnalysisSchema < RubyLLM::Schema
     object :result do

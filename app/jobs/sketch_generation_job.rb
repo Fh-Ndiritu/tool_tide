@@ -1,5 +1,6 @@
 class SketchGenerationJob < ApplicationJob
   queue_as :default
+  retry_on StandardError, attempts: 3
   include Designable
 
   class SketchAnalysisSchema < RubyLLM::Schema
