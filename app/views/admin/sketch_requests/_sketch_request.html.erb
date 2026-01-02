@@ -106,7 +106,7 @@ end %>
           <%= image_tag(sketch_request.rotated_view.variant(resize_to_limit: [500, 500]), loading: :lazy, class: "w-full max-h-[400px] object-cover transition-transform duration-500 group-hover:scale-110", alt: "Rotated View") %>
           <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-70"></div>
           <div class="absolute bottom-4 left-4 right-4 text-white">
-            <p class="text-lg font-bold">Rotated View</p>
+            <p class="text-lg font-bold">Option 2</p>
           </div>
           <div class="absolute bottom-4 right-4 z-10 flex space-x-3">
             <%= link_to rails_blob_path(sketch_request.rotated_view, disposition: :attachment), class: "h-8 w-8 flex items-center justify-center rounded-full bg-accent text-white shadow-xl backdrop-blur-md transition-all duration-300 transform hover:scale-110 hover:bg-secondary active:scale-95" do %>

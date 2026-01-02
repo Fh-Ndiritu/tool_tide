@@ -32,7 +32,6 @@ class User < ApplicationRecord
     image_uploaded: 20,
     mask_drawn: 30,
     style_selected: 40,
-    plants_viewed: 50,
     first_result_viewed: 60,
     text_editor_opened: 70,
     refinement_generated: 80,

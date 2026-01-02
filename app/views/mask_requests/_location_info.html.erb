@@ -1,0 +1,8 @@
+<% if user.address.present? %>
+  <div class="flex items-center gap-1 text-green-600">
+    <%= render(IconComponent.new(name: "map_pin", classes: "h-3 w-3")) %>
+    <span>Using location: <%= user.state_address %></span>
+  </div>
+<% else %>
+  <span class="text-neutral-400">Enable location for local plant suggestions</span>
+<% end %>

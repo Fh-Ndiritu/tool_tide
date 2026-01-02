@@ -56,12 +56,14 @@ Rails.application.routes.draw do
     end
 
     resources :mask_requests do
+      collection do
+        patch :update_location
+      end
+
       member do
-        get :plants
-        post :suggest_plants
+        post :generate_planting_guide
         post :add_plant
         delete :remove_plant
-        patch :update_location
       end
     end
   end

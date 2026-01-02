@@ -33,3 +33,4 @@ pin "ev-emitter" # @2.1.2
 pin "fizzy-ui-utils" # @2.0.7
 pin "get-size" # @2.0.3
 pin "outlayer" # @2.1.1
+pin "@rails/request.js", to: "@rails--request.js.js" # @0.0.13

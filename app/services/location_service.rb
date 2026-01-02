@@ -52,4 +52,37 @@ class LocationService
       nil
     end
   end
+
+  def self.reverse_geocode(lat, lon)
+    return nil if lat.blank? || lon.blank?
+
+    begin
+      uri = URI("https://nominatim.openstreetmap.org/reverse?format=json&lat=#{lat}&lon=#{lon}")
+      req = Net::HTTP::Get.new(uri)
+      req['User-Agent'] = 'ToolTide/1.0' # Nominatim requires User-Agent
+
+      response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+        http.request(req)
+      end
+
+      if response.is_a?(Net::HTTPSuccess)
+        data = JSON.parse(response.body)
+        address = data["address"]
+
+        {
+          formatted_address: data["display_name"],
+          city: address["city"] || address["town"] || address["village"],
+          state: address["state"],
+          country: address["country"],
+          country_code: address["country_code"]
+        }
+      else
+         Rails.logger.error("LocationService Reverse Geocode Error: #{response.code} - #{response.message}")
+         nil
+      end
+    rescue StandardError => e
+      Rails.logger.error("LocationService Reverse Geocode Exception: #{e.message}")
+      nil
+    end
+  end
 end

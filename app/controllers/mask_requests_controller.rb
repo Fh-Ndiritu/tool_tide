@@ -1,6 +1,6 @@
 class MaskRequestsController < ApplicationController
-  before_action :set_mask_request, only: %i[ show edit update destroy plants suggest_plants remove_plant add_plant]
-  before_action :set_canva, only: %i[new create]
+  before_action :set_mask_request, only: %i[ show edit update destroy generate_planting_guide]
+  before_action :set_canva, only: %i[new create update_location]
   skip_before_action :authenticate_user!, only: :explore
 
   # GET /mask_requests or /mask_requests.json
@@ -47,6 +47,8 @@ class MaskRequestsController < ApplicationController
     end
   end
 
+
+
   # POST /mask_requests or /mask_requests.json
   def create
     @mask_request = @canva.mask_requests.new(mask_request_params)
@@ -71,28 +73,25 @@ class MaskRequestsController < ApplicationController
   def update
     respond_to do |format|
       if @mask_request.preset.present? || @mask_request.update(preset_params)
-        if params[:generate]
-          if MaskRequest.joins(canva: :user).where(users: { id: current_user.id }).count == 1
-            flash[:pql_event] = "true"
-          end
-          DesignGeneratorJob.perform_later(@mask_request.id)
-          @mask_request.validating!
-          current_user.plants_viewed!
-          format.html { redirect_to mask_request_path(@mask_request), status: :see_other }
-        else
-          current_user.style_selected!
-          format.html { redirect_to plants_mask_request_path(@mask_request), status: :see_other }
+        if MaskRequest.joins(canva: :user).where(users: { id: current_user.id }).count == 1
+          flash[:pql_event] = "true"
         end
+        current_user.style_selected!
+        DesignGeneratorJob.perform_later(@mask_request.id)
+        @mask_request.validating!
+        format.html { redirect_to mask_request_path(@mask_request), status: :see_other }
+        format.turbo_stream { redirect_to mask_request_path(@mask_request), status: :see_other }
       else
         format.html { render :edit, status: :unprocessable_entity }
+        format.turbo_stream { render :edit, status: :unprocessable_entity }
       end
     end
   end
 
-  def plants
-  end
 
-  # DELETE /mask_requests/1 or /mask_requests/1.json
+
+
+  # POST /mask_requests or /mask_requests.json
   def destroy
     @mask_request.destroy!
 
@@ -103,45 +102,32 @@ class MaskRequestsController < ApplicationController
   end
 
   def update_location
-    current_user.update(location_params)
+    user_params = location_params
+
+    if user_params[:latitude].present? && user_params[:longitude].present?
+       address = LocationService.reverse_geocode(user_params[:latitude], user_params[:longitude])
+       user_params[:address] = address if address
+    else
+       user_params[:address] = nil
+       user_params[:latitude] = nil
+       user_params[:longitude] = nil
+    end
+
+    current_user.update(user_params)
+
+    Turbo::StreamsChannel.broadcast_update_to(
+      "canva_#{@canva.id}",
+      target: "user_location_info",
+      partial: "mask_requests/location_info",
+      locals: { user: current_user }
+    )
     head :ok
   end
 
-  def suggest_plants
-    @mask_request.fetching_plant_suggestions!  # Set progress - triggers broadcast
-    DesignGenerator.new(@mask_request).suggest_plants(force: true)
-    @mask_request.reload
-    @mask_request.plant_suggestions_ready!  # Set progress - triggers broadcast
-    @mask_request.reload
-    respond_to do |format|
-      format.turbo_stream
-    end
-  end
+  def generate_planting_guide
+    @mask_request.fetching_plant_suggestions!
+    PlantingGuideJob.perform_later(@mask_request.id)
 
-  def add_plant
-    plant_names_input = plant_params[:english_name]
-
-    # Split by comma, trim whitespace, and remove blank entries
-    plant_names = plant_names_input.split(",").map(&:strip).reject(&:blank?)
-
-    # Create plants for each name
-    plant_names.each do |plant_name|
-      # Create plant with just the name, no details yet (validated: false)
-      plant = Plant.find_or_create_by!(english_name: plant_name)
-
-      # Only create the association if it doesn't already exist
-      unless @mask_request.mask_request_plants.exists?(plant_id: plant.id)
-        @mask_request.mask_request_plants.create!(plant: plant, quantity: 1)
-      end
-    end
-
-    respond_to do |format|
-      format.turbo_stream
-    end
-  end
-
-  def remove_plant
-    @mask_request.mask_request_plants.find(params[:plant_id]).destroy
     respond_to do |format|
       format.turbo_stream
     end

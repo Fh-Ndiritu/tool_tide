@@ -1,40 +1,11 @@
-class GardenFeatureSchema < RubyLLM::Schema
-  object :design_features do
-    array :plants, description: "A list of all plants to be used in the garden." do
-      object do
-        string :english_name, description: "The common name of the plant."
-        string :description, description: "Description of the plant's colors, flowering, and overall look."
-        integer :quantity, description: "The total number of this specific plant needed."
-        string :size, description: "The estimated height and width when fully grown (e.g., '15 * 10 ft')."
-      end
-    end
-
-    string :other_features, description: "A markdown unordered list of a description other design features to include."
-  end
-end
-
-class PlantDetailsListSchema < RubyLLM::Schema
-  object :plants_details do
-    array :plants, description: "List of details for each plant." do
-      object do
-        string :english_name, description: "The common name of the plant (must match input)."
-        string :description, description: "Description of the plant's colors, flowering season, and overall look."
-        string :size, description: "The estimated height and width when fully grown (e.g., '15 * 10 ft')."
-        integer :quantity, description: "The recommended quantity for this plant in the garden."
-      end
-    end
-  end
-end
-
 class GardenSuggestionSchema < RubyLLM::Schema
-  object :design_features do
-    array :plants, description: "A list of suggested plants." do
-      object do
-        string :english_name, description: "The common name of the plant."
-      end
+  array :plants, description: "A list of all plants to be used in the garden, with detailed planting and maintenance instructions." do
+    object do
+      string :english_name, description: "The common name of the plant."
+      string :description, description: "Brief guide including planting instructions, maintenance requirements, and visual description."
+      integer :quantity, description: "The total number of this specific plant needed."
+      string :size, description: "The estimated height and width when fully grown (e.g., '15 * 10 ft')."
     end
-
-    string :other_features, description: "A markdown unordered list of a description other design features to include."
   end
 end
 
@@ -60,8 +31,6 @@ class DesignGenerator
       @mask_request.overlay_mask
     end
 
-    suggest_plants(force: false)
-    validate_plants
     main_view
 
     # Variations are now generated within main_view
@@ -73,100 +42,31 @@ class DesignGenerator
     @mask_request.update error_msg: e.message, progress: :failed, user_error:
   end
 
-  def suggest_plants(force: false)
-    @mask_request.plants!
-    return if !force && @mask_request.mask_request_plants.any?
-
+  def generate_planting_guide
     ActiveRecord::Base.transaction do
       @mask_request.mask_request_plants.destroy_all
       prompt = YAML.load_file(Rails.root.join("config/prompts.yml")).dig("image_analysis", "plant_suggestions_only")
-      prompt.gsub!("<<style>>", @mask_request.preset.capitalize)
+      response = CustomRubyLLM.context.chat.with_schema(GardenSuggestionSchema).ask(prompt, with: @mask_request.main_view)
 
-      user = @mask_request.canva.user
-      if user.latitude.present? && user.longitude.present?
-        location_info = "The garden is located at coordinates #{user.latitude}, #{user.longitude}."
-        location_info += " Address: #{user.address['formatted_address']}" if user.address.present? && user.address["formatted_address"].present?
-        prompt += "\n\n#{location_info}\nSuggest plants suitable for this specific location and climate."
-      end
+      plants = response.content["plants"]
 
-      response = CustomRubyLLM.context.chat.with_schema(GardenSuggestionSchema).ask(prompt, with: @mask_request.overlay)
-
-
-      data = response.content["design_features"]
-
-      data["plants"].each do |plant_data|
-        # Only save plant name, no details yet (validated: false)
+      plants.each do |plant_data|
         plant = Plant.find_or_create_by!(english_name: plant_data["english_name"])
-        # Quantity will be set during validation
-        MaskRequestPlant.create!(plant: plant, mask_request_id: @mask_request.id, quantity: 1)
+        plant.update!(
+          description: plant_data["description"],
+          size: plant_data["size"],
+          validated: true
+        )
+        MaskRequestPlant.create!(plant: plant, mask_request_id: @mask_request.id, quantity: plant_data["quantity"])
       end
-
-      @mask_request.update!(features: data["other_features"])
     end
-  end
-
-  def validate_plants
-    # Get all plants for this mask request (both suggested and custom)
-    mask_request_plants = @mask_request.mask_request_plants.includes(:plant)
-    return if mask_request_plants.empty?
-
-    plant_names = mask_request_plants.map { |mrp| mrp.plant.english_name }.join(", ")
-
-    begin
-      details_list = fetch_bulk_plant_details(plant_names)
-
-      details_list.each do |details|
-        plant_name = details["english_name"]
-        # Find matching plant (case-insensitive search might be safer, but assuming exact match for now based on LLM instruction)
-        plant = Plant.find_by(english_name: plant_name)
-
-        if plant
-          # Update Plant details
-          plant.update!(
-            description: details["description"],
-            size: details["size"],
-            validated: true
-          )
-
-          # Update MaskRequestPlant quantity
-          mrp = mask_request_plants.find { |m| m.plant_id == plant.id }
-          if mrp
-            mrp.update!(quantity: details["quantity"])
-          end
-        else
-          Rails.logger.warn("Could not find plant matching returned name: #{plant_name}")
-        end
-      end
-    rescue => e
-      Rails.logger.error("Error in bulk plant validation: #{e.message}")
-      # Fallback: could try individual validation or just leave as is
-    end
-  end
-
-  def fetch_bulk_plant_details(plant_names)
-    prompt = YAML.load_file(Rails.root.join("config/prompts.yml")).dig("image_analysis", "plant_details_quantified")
-    prompt.gsub!("<<plant_names>>", plant_names)
-
-    # Pass the overlay image to give context for quantity estimation
-    response = CustomRubyLLM.context.chat.with_schema(PlantDetailsListSchema).ask(prompt, with: @mask_request.overlay)
-    response.content["plants_details"]["plants"]
   end
 
   private
 
   def main_view
     @mask_request.main_view!
-    prompt = if @mask_request.feature_prompt.present?
-      prompt_wrapper = YAML.load_file(Rails.root.join("config/prompts.yml")).dig("image_analysis", "wrapper")
-      prompt_wrapper.gsub!("<<feature_prompt>>", @mask_request.feature_prompt)
-      prompt_wrapper.gsub!("<<style>>", @mask_request.preset)
-
-      plants = @mask_request.mask_request_plants.map { |mp|  [ mp.quantity, mp.plant.english_name, "( #{mp.plant.description})" ].join(" ") }.join("\n")
-      prompt_wrapper.gsub!("<<plants>>", plants)
-       prompt_wrapper.gsub!("<<other_features>>", @mask_request.features)
-    else
-     @mask_request.prompt
-    end
+    prompt = @mask_request.prompt
 
     image = @mask_request.overlay
 

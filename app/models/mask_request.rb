@@ -31,8 +31,6 @@ enum :progress, {
   uploading: 0,
   getting_location: 1,
   location_updated: 2,
-  fetching_plant_suggestions: 3,
-  plant_suggestions_ready: 9,
   validating: 10,
   validated: 20,
   preparing: 30,
@@ -45,7 +43,9 @@ enum :progress, {
   failed: 90,
   retying: 100,
   mask_invalid: 110,
-  overlaying: 120
+  overlaying: 120,
+  fetching_plant_suggestions: 130,
+  plant_suggestions_ready: 140,
 }
 
   enum :visibility, {
@@ -114,13 +114,17 @@ enum :progress, {
   end
 
   def processing?
-    plants? || getting_location? || location_updated? || fetching_plant_suggestions? || validating? || preparing? || main_view? || plants? || rotating? || drone? || processed? || retying? || overlaying?
+    plants? || getting_location? || location_updated? || validating? || preparing? || main_view? || plants? || rotating? || drone? || processed? || retying? || overlaying?
+  end
+
+  def fetching_plants?
+    fetching_plant_suggestions? || plant_suggestions_ready?
   end
 
   private
 
   def broadcast_progress
-    if failed? || complete? || plant_suggestions_ready?
+    if failed? || complete?
       Turbo::StreamsChannel.broadcast_refresh_to("canva_#{canva_id}", target: "styles")
     else
     Turbo::StreamsChannel.broadcast_replace_to("canva_#{canva_id}", target: "loader", partial: "layouts/shared/loader", locals: { record: self, klasses: "fixed " })
