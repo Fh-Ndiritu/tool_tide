@@ -26,13 +26,15 @@ class SketchGenerationJob < ApplicationJob
     prompt_text = prompt_text.gsub("<<analysis>>", sketch_request.analysis) if sketch_request.analysis.present?
     generate_view(sketch_request, :photorealistic_view, prompt_text, sketch_request.architectural_view)
 
-    # 3. Recommended Angle (Rotated)
-    # Stored in :rotated_view
+    # 3. Second Variation (Formerly Rotated)
+    # Stored in :rotated_view (repurposed for Option 2)
     sketch_request.update!(progress: :processing_rotated)
-    angle_prompt = YAML.load_file(Rails.root.join("config/prompts.yml")).dig("sketch_transformation", "angle_transformation")
 
-    # Input is the Photorealistic result (photorealistic_view)
-    generate_view(sketch_request, :rotated_view, angle_prompt, sketch_request.photorealistic_view)
+    # Use the EXACT same prompt logic and input image as Step 2 to get a consistent variation
+    # prompt_text is already defined above from Step 2
+
+    # Input is the Architectural View (architectural_view) - same as Step 2
+    generate_view(sketch_request, :rotated_view, prompt_text, sketch_request.architectural_view)
 
     sketch_request.update!(progress: :complete)
 
