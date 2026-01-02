@@ -124,6 +124,8 @@ enum :progress, {
   private
 
   def broadcast_progress
+    return if fetching_plants?
+
     if failed? || complete?
       Turbo::StreamsChannel.broadcast_refresh_to(canva, target: "styles")
     else
