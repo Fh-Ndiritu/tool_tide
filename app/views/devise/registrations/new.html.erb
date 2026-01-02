@@ -19,8 +19,8 @@
   <%# Card Container %>
   <div
     class="
-      w-full max-w-xs sm:max-w-md bg-neutral-800/50 backdrop-blur-md
-      rounded-2xl shadow-2xl mx-4 border border-white/10 relative z-10
+      w-full max-w-xs sm:max-w-md bg-neutral-800 backdrop-blur-md
+      rounded-2xl shadow-2xl mx-4 border border-white/20 relative z-10
     "
   >
     <div class="px-6 py-8 sm:px-8">
@@ -46,7 +46,7 @@
           <%= render(IconComponent.new(name: "google", classes: "h-5 w-5 text-white")) %>
           <span>Sign up with Google</span>
         <% end %>
-        <span class="text-xs my-1 text-neutral-500 block text-center mt-2">
+        <span class="text-xs my-1 text-neutral-300 block text-center mt-2">
           By signing up you agree to the
           <a
             href="/privacy-policy"
@@ -63,7 +63,7 @@
           <div class="w-full border-t border-white/10"></div>
         </div>
         <div class="relative flex justify-center text-sm">
-          <span class="px-2 bg-transparent text-neutral-500">Or continue with email</span>
+          <span class="px-2 bg-transparent text-neutral-300">Or continue with email</span>
         </div>
       </div>
 
@@ -73,24 +73,24 @@
         <div class="space-y-4">
           <div class="field">
             <%= f.label :user_name, "User Name", class: "block text-sm font-medium text-neutral-300 mb-1" %>
-            <%= f.text_field :user_name, autofocus: true, placeholder: "Your Name", class: "w-full bg-black/20 border border-white/10 rounded-lg shadow-sm focus:ring-2 focus:ring-accent focus:border-transparent text-base p-2.5 placeholder-neutral-500 text-white transition duration-150" %>
+            <%= f.text_field :user_name, autofocus: true, placeholder: "Your Name", class: "w-full bg-black/20 border border-white/10 rounded-lg shadow-sm focus:ring-2 focus:ring-accent focus:border-transparent text-base p-2.5 placeholder-neutral-400 text-white transition duration-150" %>
           </div>
 
           <div class="field">
             <%= f.label :email, class: "block text-sm font-medium text-neutral-300 mb-1" %>
-            <%= f.email_field :email, autocomplete: "email", placeholder: "you@example.com", class: "w-full bg-black/20 border border-white/10 rounded-lg shadow-sm focus:ring-2 focus:ring-accent focus:border-transparent text-base p-2.5 placeholder-neutral-500 text-white transition duration-150" %>
+            <%= f.email_field :email, autocomplete: "email", placeholder: "you@example.com", class: "w-full bg-black/20 border border-white/10 rounded-lg shadow-sm focus:ring-2 focus:ring-accent focus:border-transparent text-base p-2.5 placeholder-neutral-400 text-white transition duration-150" %>
           </div>
 
           <div class="field">
             <%= f.label :password, class: "block text-sm font-medium text-neutral-300 mb-1" %>
             <% if @minimum_password_length %>
-              <em class="text-xs text-neutral-500 ml-1">
+              <em class="text-xs text-neutral-400 ml-1">
                 (<%= @minimum_password_length %> characters minimum)
               </em>
             <% end %>
 
             <div class="relative my-2" data-controller="password-visibility">
-              <%= f.password_field :password, autocomplete: "new-password", class: "w-full bg-black/20 border border-white/10 rounded-lg shadow-sm focus:ring-2 focus:ring-accent focus:border-transparent text-base p-2.5 pr-10 placeholder-neutral-500 text-white transition duration-150", data: {password_visibility_target: 'input'}, placeholder: "Password" %>
+              <%= f.password_field :password, autocomplete: "new-password", class: "w-full bg-black/20 border border-white/10 rounded-lg shadow-sm focus:ring-2 focus:ring-accent focus:border-transparent text-base p-2.5 pr-10 placeholder-neutral-400 text-white transition duration-150", data: {password_visibility_target: 'input'}, placeholder: "Password" %>
               <button
                 type="button"
                 data-action="password-visibility#toggle"
@@ -113,11 +113,22 @@
         </div>
 
         <%= f.hidden_field :privacy_policy, value: true %>
-        <%= recaptcha_tags %>
+
+        <div class="mt-6 mb-4 p-4 bg-accent/10 border border-accent/20 rounded-xl flex items-center justify-center gap-3 text-left mx-auto max-w-full">
+          <div class="text-accent text-lg">🛡️</div>
+          <div>
+             <p class="text-sm font-bold text-accent mb-0.5">Security Check Required</p>
+             <p class="text-xs text-neutral-300">Please verify you are human below to sign up.</p>
+          </div>
+        </div>
+
+        <div class="flex justify-center my-4">
+          <%= recaptcha_tags %>
+        </div>
 
         <div class="actions mt-8 text-center">
           <%= f.submit "Sign up", class: "w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-lg text-base font-bold text-white bg-gradient-to-r from-secondary to-accent hover:shadow-accent/25 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent cursor-pointer transition-all duration-200" %>
-          <p class="mt-4 text-xs text-neutral-500">
+          <p class="mt-4 text-xs text-neutral-300">
             By signing up you agree to the
             <a
               href="/privacy-policy"
@@ -131,7 +142,7 @@
       <% end %>
 
       <div class="mt-6 text-center text-sm">
-        <span class="text-neutral-400">Already have an account?</span>
+        <span class="text-neutral-300">Already have an account?</span>
         <%= link_to "Log in", new_session_path(resource_name), class: "font-medium text-accent hover:text-accent/80 ml-1" %>
       </div>
     </div>

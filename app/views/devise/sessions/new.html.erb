@@ -18,8 +18,8 @@
 
   <div
     class="
-      w-full max-w-xs sm:max-w-md bg-neutral-800/50 backdrop-blur-md
-      rounded-2xl shadow-2xl mx-4 border border-white/10 relative z-10
+      w-full max-w-xs sm:max-w-md bg-neutral-800 backdrop-blur-md
+      rounded-2xl shadow-2xl mx-4 border border-white/20 relative z-10
     "
   >
     <div class="px-6 py-8 sm:px-8">
@@ -32,7 +32,7 @@
         Welcome Back
       </h1>
 
-      <p class="mt-2 text-center text-sm text-neutral-400 mb-8">
+      <p class="mt-2 text-center text-sm text-neutral-300 mb-8">
         Sign in to continue to your dashboard.
       </p>
 
@@ -60,7 +60,7 @@
           <div class="w-full border-t border-white/10"></div>
         </div>
         <div class="relative flex justify-center text-sm">
-          <span class="px-2 bg-transparent text-neutral-500">Or use your credentials</span>
+          <span class="px-2 bg-transparent text-neutral-300">Or use your credentials</span>
         </div>
       </div>
 
@@ -76,14 +76,14 @@
                   </span>
                 </div>
               <% end %>
-              <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "you@example.com", class: "w-full bg-black/20 border border-white/10 rounded-lg shadow-sm focus:ring-2 focus:ring-accent focus:border-transparent text-base p-2.5 placeholder-neutral-500 text-white transition duration-150" %>
+              <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "you@example.com", class: "w-full bg-black/20 border border-white/10 rounded-lg shadow-sm focus:ring-2 focus:ring-accent focus:border-transparent text-base p-2.5 placeholder-neutral-400 text-white transition duration-150" %>
             </div>
           </div>
 
           <div class="field">
             <%= f.label :password, class: "block text-sm font-medium text-neutral-300 mb-1" %>
             <div class="relative mt-1" data-controller="password-visibility">
-              <%= f.password_field :password, autocomplete: "current-password", class: "w-full bg-black/20 border border-white/10 rounded-lg shadow-sm focus:ring-2 focus:ring-accent focus:border-transparent text-base p-2.5 pr-10 placeholder-neutral-500 text-white transition duration-150", data: {password_visibility_target: 'input'}, placeholder: "••••••••" %>
+              <%= f.password_field :password, autocomplete: "current-password", class: "w-full bg-black/20 border border-white/10 rounded-lg shadow-sm focus:ring-2 focus:ring-accent focus:border-transparent text-base p-2.5 pr-10 placeholder-neutral-400 text-white transition duration-150", data: {password_visibility_target: 'input'}, placeholder: "••••••••" %>
               <button
                 type="button"
                 data-action="password-visibility#toggle"
@@ -116,7 +116,7 @@
       <% end %>
 
       <div class="mt-6 text-center text-sm">
-        <span class="text-neutral-400">Don't have an account?</span>
+        <span class="text-neutral-300">Don't have an account?</span>
         <%= link_to "Sign up", new_registration_path(resource_name), class: "font-medium text-accent hover:text-accent/80 ml-1" %>
       </div>
     </div>
