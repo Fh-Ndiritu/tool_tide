@@ -14,7 +14,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def failure
-    flash[:error] = "Authentication failed: #{params[:message].humanize}"
+    flash[:error] = "Authentication failed: #{params[:message]&.humanize}"
     redirect_to new_user_session_path
   end
 end
