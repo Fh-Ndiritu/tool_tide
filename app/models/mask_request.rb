@@ -45,7 +45,7 @@ enum :progress, {
   mask_invalid: 110,
   overlaying: 120,
   fetching_plant_suggestions: 130,
-  plant_suggestions_ready: 140,
+  plant_suggestions_ready: 140
 }
 
   enum :visibility, {
@@ -125,9 +125,9 @@ enum :progress, {
 
   def broadcast_progress
     if failed? || complete?
-      Turbo::StreamsChannel.broadcast_refresh_to("canva_#{canva_id}", target: "styles")
+      Turbo::StreamsChannel.broadcast_refresh_to(canva, target: "styles")
     else
-    Turbo::StreamsChannel.broadcast_replace_to("canva_#{canva_id}", target: "loader", partial: "layouts/shared/loader", locals: { record: self, klasses: "fixed " })
+    Turbo::StreamsChannel.broadcast_replace_to(canva, target: "loader", partial: "layouts/shared/loader", locals: { record: self, klasses: "fixed " })
     end
   end
 

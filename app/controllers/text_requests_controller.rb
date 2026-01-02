@@ -8,7 +8,7 @@ class TextRequestsController < ApplicationController
     @current_request = current_user.text_requests.find_by(id: params[:current_request]) || @text_requests.first
 
     # Ensure onboarding stage is correct if they land here
-    if ["first_result_viewed" ].include?(current_user.onboarding_stage)
+    if [ "first_result_viewed" ].include?(current_user.onboarding_stage)
       current_user.text_editor_opened!
     end
 

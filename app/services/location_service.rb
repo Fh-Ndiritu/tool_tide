@@ -59,7 +59,7 @@ class LocationService
     begin
       uri = URI("https://nominatim.openstreetmap.org/reverse?format=json&lat=#{lat}&lon=#{lon}")
       req = Net::HTTP::Get.new(uri)
-      req['User-Agent'] = 'ToolTide/1.0' # Nominatim requires User-Agent
+      req["User-Agent"] = "ToolTide/1.0" # Nominatim requires User-Agent
 
       response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
         http.request(req)

@@ -44,8 +44,6 @@ RSpec.describe DesignGenerator do
     allow(mask_request).to receive(:rotating!).and_return(true)
     allow(mask_request).to receive(:drone!).and_return(true)
     allow(mask_request).to receive(:processed!).and_return(true)
-
-
   end
 
   describe "#generate_planting_guide" do
