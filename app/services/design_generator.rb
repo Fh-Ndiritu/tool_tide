@@ -47,7 +47,6 @@ class DesignGenerator
       @mask_request.mask_request_plants.destroy_all
       prompt = YAML.load_file(Rails.root.join("config/prompts.yml")).dig("plant_detection")
       response = CustomRubyLLM.context.chat.with_schema(GardenSuggestionSchema).ask(prompt, with: @mask_request.main_view)
-
       plants = response.content["plants"]
 
       plants.each do |plant_data|
@@ -60,6 +59,7 @@ class DesignGenerator
         MaskRequestPlant.create!(plant: plant, mask_request_id: @mask_request.id, quantity: plant_data["quantity"])
       end
     end
+    @mask_request.complete!
   end
 
   private
@@ -68,9 +68,11 @@ class DesignGenerator
     @mask_request.main_view!
     prompt = YAML.load_file(Rails.root.join("config/prompts.yml")).dig("landscape_presets", @mask_request.preset)
 
-    prompt += "YOU SHALL include the image in your response!
+    prompt += "
+    YOU SHALL include the image in your response!
     DO NOT modify any other areas of the image except for the precise region marked by violet paint.
     YOU CANNOT MODIFY the HOUSES, ADD new HOUSES or REMOVE the houses.
+    ONLY MODIFY the precise region marked by violet paint.
     "
 
     image = @mask_request.overlay

@@ -42,7 +42,6 @@ class MaskRequestsController < ApplicationController
       # we don't need to update this, we can create a copy and work on that
       request = @mask_request.copy
       # we shall recomend modern for now
-      request.update preset: :modern
       redirect_to edit_mask_request_path(request)
     elsif @mask_request.failed? || @mask_request.complete?
       redirect_to mask_request_path(@mask_request.id)
@@ -74,7 +73,7 @@ class MaskRequestsController < ApplicationController
 
   def update
     respond_to do |format|
-      if @mask_request.preset.present? || @mask_request.update!(preset_params)
+      if @mask_request.update!(preset_params)
         if MaskRequest.joins(canva: :user).where(users: { id: current_user.id }).count == 1
           flash[:pql_event] = "true"
         end

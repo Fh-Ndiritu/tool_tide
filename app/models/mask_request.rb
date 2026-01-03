@@ -121,6 +121,10 @@ enum :progress, {
     fetching_plant_suggestions? || plant_suggestions_ready?
   end
 
+  def conclusive?
+    complete? || failed?
+  end
+
   private
 
   def broadcast_progress

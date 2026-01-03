@@ -50,6 +50,10 @@ class SketchRequest < ApplicationRecord
     rotated_view.purge
   end
 
+  def conclusive?
+    complete? || failed?
+  end
+
   private
 
   def broadcast_progress
