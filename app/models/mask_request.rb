@@ -124,15 +124,19 @@ enum :progress, {
     complete? || failed?
   end
 
+  def performing_plant_generation?
+    fetching_plants? || (conclusive? && plants.present?)
+  end
+
   private
 
   def broadcast_progress
-    return if fetching_plants?
+    return if performing_plant_generation?
 
     if failed? || complete?
       Turbo::StreamsChannel.broadcast_refresh_to(canva, target: "styles")
     else
-    Turbo::StreamsChannel.broadcast_replace_to(canva, target: "loader", partial: "layouts/shared/loader", locals: { record: self, klasses: "fixed " })
+      Turbo::StreamsChannel.broadcast_replace_to(canva, target: "loader", partial: "layouts/shared/loader", locals: { record: self, klasses: "fixed " })
     end
   end
 
