@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  # Reveal health status on /up that otherwise be unable to shut down due to host constraint
+  get "up" => "rails/health#show", as: :rails_health_check
+
   # =========================================================
   # TENANT A: THE CLEAN SEO DOMAIN (hadaa.pro)
   # =========================================================
@@ -105,8 +108,7 @@ Rails.application.routes.draw do
 
     mount ActionCable.server => "/cable"
 
-    # Reveal health status
-    get "up" => "rails/health#show", as: :rails_health_check
+
 
     # Robots.txt to block all crawling on app
     get "robots.txt", to: "application#robots_block"
