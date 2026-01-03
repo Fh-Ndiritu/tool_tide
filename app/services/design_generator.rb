@@ -44,19 +44,28 @@ class DesignGenerator
 
   def generate_planting_guide
     ActiveRecord::Base.transaction do
-      @mask_request.mask_request_plants.destroy_all
+      @mask_request.plants.destroy_all
       prompt = YAML.load_file(Rails.root.join("config/prompts.yml")).dig("plant_detection")
+      prompt.gsub!("<<location>>", @mask_request.user.state_address)
+
       response = CustomRubyLLM.context.chat.with_schema(GardenSuggestionSchema).ask(prompt, with: @mask_request.main_view)
       plants = response.content["plants"]
 
+      retries = 3
+      while plants.size < 3 && retries > 0
+        retries -= 1
+        response = CustomRubyLLM.context.chat.with_schema(GardenSuggestionSchema).ask(prompt, with: @mask_request.main_view)
+        plants = response.content["plants"]
+      end
+
       plants.each do |plant_data|
-        plant = Plant.find_or_create_by!(english_name: plant_data["english_name"])
-        plant.update!(
+        @mask_request.plants.create!(
+          english_name: plant_data["english_name"],
           description: plant_data["description"],
           size: plant_data["size"],
+          quantity: plant_data["quantity"],
           validated: true
         )
-        MaskRequestPlant.create!(plant: plant, mask_request_id: @mask_request.id, quantity: plant_data["quantity"])
       end
     end
     @mask_request.complete!

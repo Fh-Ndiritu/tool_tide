@@ -61,8 +61,6 @@ Rails.application.routes.draw do
 
       member do
         post :generate_planting_guide
-        post :add_plant
-        delete :remove_plant
       end
     end
   end

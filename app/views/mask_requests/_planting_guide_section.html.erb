@@ -9,13 +9,17 @@
       </p>
     </div>
   <% elsif mask_request.plants.present? %>
-  <div class="flex items-center gap-3 mb-8 pb-4">
+  <div class="flex items-center gap-3 pb-4">
     <span class="text-2xl">🌱</span>
     <h3 class="text-2xl font-bold text-gray-900">Planting Guide</h3>
   </div>
-
+  <h4 class="text-base w-full mb-4 flex items-center gap-2 text-accent">
+    <%# # render location icon  %>
+    <%= render(IconComponent.new(name: "map_pin", classes: "h-3 w-3")) %>
+    Personalized to your location: <%= mask_request.user.state_address %>
+  </h4>
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-    <% mask_request.mask_request_plants.each do |mp| %>
+    <% mask_request.plants.each do |plant| %>
       <div
         class="
           bg-gray-50 rounded-xl p-5 border border-gray-100
@@ -30,7 +34,7 @@
               group-hover:text-green-700 transition-colors
             "
           >
-            <%= mp.plant.english_name %>
+            <%= plant.english_name %>
           </h4>
           <span
             class="
@@ -38,12 +42,12 @@
               text-gray-600 shadow-sm border border-gray-100
             "
           >
-            <%= mp.quantity %>x
+            <%= plant.quantity %>x
           </span>
         </div>
 
         <p class="text-gray-600 text-sm mb-4 leading-relaxed">
-          <%= mp.plant.description %>
+          <%= plant.description %>
         </p>
 
         <div
@@ -59,10 +63,10 @@
             "
           >
             Size:
-            <span class="text-gray-900"><%= mp.plant.size %> ft</span>
+            <span class="text-gray-900"><%= plant.size %> ft</span>
           </div>
 
-          <%= link_to "https://www.google.com/search?q=#{CGI.escape(mp.plant.english_name + ' plant')}&tbm=isch", target: "_blank", rel: "noopener noreferrer", class: "inline-flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-700 hover:underline" do %>
+          <%= link_to "https://www.google.com/search?q=#{CGI.escape(plant.english_name + ' plant')}&tbm=isch", target: "_blank", rel: "noopener noreferrer", class: "inline-flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-700 hover:underline" do %>
             <span>View Images</span>
             <svg
               xmlns="http://www.w3.org/2000/svg"

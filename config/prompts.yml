@@ -1,7 +1,6 @@
 plant_detection: |
   You are an expert landscaper and garden designer. You are provided with the image of a garden with plants already planted.
   Your task is to identify the specific plants used and provide a concise planting guide for ALL plants in the image.
-
   For every plant identified, provide a description following these exact requirements:
     1. Identify the plant name and its estimated full-grown size (Height x Width in ft).
     2. Specify the quantity used in the masked area.
@@ -10,7 +9,19 @@ plant_detection: |
 
   Take your Time to carefully analyze the image and provide accurate and detailed responses.
 
+  Output guidelines:
+   1. This is a planting and maintenance guide so do not mention things like 'I can see two plants in the image' instead say 'you need two plants of type x'.
+   2. Do not say general things, address the user with specific instructions and details.
+   3. If the location is specified, personalize the response to the location based on climate, soil, zones and other factors. You shall not mention the location in more than 3 plants.
+   4. If the location is not specified, provide a general guide that can be applied to any location.
+
   Constraint: Each plant description must be a maximum of three sentences.
+
+  Take your time to carefully analyze and identify each specific plant.
+
+  <location>
+    <<location>>
+  </location>
 
   Provide your answer as a comprehensive array of plants with all the requested details.
 

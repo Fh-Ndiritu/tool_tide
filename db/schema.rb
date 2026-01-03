@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_31_064216) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_03_093116) do
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -199,16 +199,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_31_064216) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "mask_request_plants", force: :cascade do |t|
-    t.integer "mask_request_id", null: false
-    t.integer "plant_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "quantity"
-    t.index ["mask_request_id"], name: "index_mask_request_plants_on_mask_request_id"
-    t.index ["plant_id"], name: "index_mask_request_plants_on_plant_id"
-  end
-
   create_table "mask_requests", force: :cascade do |t|
     t.integer "device_width"
     t.string "error_msg"
@@ -268,6 +258,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_31_064216) do
     t.datetime "updated_at", null: false
     t.string "size"
     t.boolean "validated", default: false
+    t.integer "mask_request_id", null: false
+    t.integer "quantity"
+    t.index ["mask_request_id"], name: "index_plants_on_mask_request_id"
   end
 
   create_table "project_layers", force: :cascade do |t|
@@ -281,8 +274,19 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_31_064216) do
     t.integer "status"
     t.integer "transformation_type"
     t.integer "views_count", default: 0, null: false
+    t.integer "sketch_status"
     t.index ["parent_layer_id"], name: "index_project_layers_on_parent_layer_id"
     t.index ["project_id"], name: "index_project_layers_on_project_id"
+  end
+
+  create_table "project_plants", force: :cascade do |t|
+    t.integer "project_id", null: false
+    t.integer "plant_id", null: false
+    t.integer "quantity"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["plant_id"], name: "index_project_plants_on_plant_id"
+    t.index ["project_id"], name: "index_project_plants_on_project_id"
   end
 
   create_table "projects", force: :cascade do |t|
@@ -422,13 +426,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_31_064216) do
   add_foreign_key "generation_taggings", "tags"
   add_foreign_key "landscape_requests", "landscapes"
   add_foreign_key "landscapes", "users"
-  add_foreign_key "mask_request_plants", "mask_requests"
-  add_foreign_key "mask_request_plants", "plants"
   add_foreign_key "mask_requests", "canvas"
   add_foreign_key "messages", "chats"
   add_foreign_key "payment_transactions", "users"
+  add_foreign_key "plants", "mask_requests"
   add_foreign_key "project_layers", "project_layers", column: "parent_layer_id"
   add_foreign_key "project_layers", "projects"
+  add_foreign_key "project_plants", "plants"
+  add_foreign_key "project_plants", "projects"
   add_foreign_key "projects", "users"
   add_foreign_key "sketch_requests", "canvas"
   add_foreign_key "sketch_requests", "users"

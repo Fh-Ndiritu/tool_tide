@@ -137,7 +137,7 @@ class MaskRequestsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_mask_request
-      @mask_request = MaskRequest.includes(mask_request_plants: :plant, canva: :user).find(params.expect(:id))
+      @mask_request = MaskRequest.includes(:plants, canva: :user).find(params.expect(:id))
     end
 
     # Only allow a list of trusted parameters through.
