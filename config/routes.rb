@@ -4,7 +4,6 @@ Rails.application.routes.draw do
   get "communities", to: "pages#communities"
   resources :audios
   post "onboarding/update", to: "onboarding#update"
-  post "onboarding/reset", to: "onboarding#reset"
   resources :favorites, only: [ :create, :destroy, :index ]
   scope "/designs" do
     get ":slug", to: "locations#show", as: :location, constraints: { slug: /[a-z0-9\-\_]+/ }

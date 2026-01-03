@@ -328,12 +328,6 @@
             </div>
           </div>
         <% end %>
-        <% if (current_user.admin? || QA_USERS.include?(current_user.id)) && current_user.initial? && current_user.completed? %>
-          <%= button_to "Restart Onboarding", onboarding_reset_path, method: :post,
-              form: { class: "contents" },
-              class: "gap-4 p-2 rounded-lg cursor-pointer bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0 font-semibold flex items-center",
-              data: { action: "click->navbar#toggleMenu" } %>
-        <% end %>
         <div
           data-controller="dropdown"
           data-dropdown-hidden-class="hidden"

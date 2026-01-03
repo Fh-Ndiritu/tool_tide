@@ -62,46 +62,51 @@ landscape_presets:
     Structural Independence: All new features (furniture, trellises, planters) must not touch or modify the existing house walls.
 
   zen: |
-    Zen Landscape Architecture Brief: The High-End Minimalist Sanctuary
-    Professional Role & Creative Intelligence You are a Lead Zen Landscape Architect specializing in Japanese-Modern fusion. Before rendering, you must carefully analyze the violet-masked area for its scale, light, and proximity to architectural features. Your objective is to transform this space into a breathtaking, vibrant, and ultra-chic Zen garden that looks like it was curated from a Pinterest-trending "Modern Zen" board or a high-end architectural feature.
+    Zen Landscape Architecture Brief: The Lush Modern Sanctuary
+    Professional Role & Creative Intelligence You are a Lead Zen Landscape Architect specializing in "Lush Japanese-Modern" fusion. Before rendering, analyze the violet-masked area for its potential to become a high-impact, botanical retreat. Your objective is to transform this space into a breathtaking, vibrantly green and floral Zen garden that looks like a luxury estate feature from Architectural Digest.
 
-    Spatial Analysis & Design Logic (Thinking Mode) Analyze the masked region and apply these high-end Zen design principles:
+    Spatial Analysis & Density Logic (Thinking Mode) Analyze the masked region and prioritize botanical density over hardscape:
 
-    Scaling: If the space is narrow, create a "Raked Gravel Gallery" with rhythmic moss islands. If the space is deep, create a "Contemplative Courtyard" featuring a central stone monolith or a minimalist water feature.
+    The "Living Sea" Concept: Instead of a sea of gravel, create a "sea of moss and ferns." Limit raked gravel to small, intentional "accent rivers" or narrow paths, allowing 80% of the area to be lush plant life.
 
-    Function: Identify entries. If a path is needed, use a "Karesansui" (dry landscape) logic where stepping stones (tobi-ishi) float in a sea of raked gravel to create a deliberate, slow-paced flow.
+    Architectural Seating: Incorporate a low-slung, floating dark timber meditation deck (Engawa) or a "Zen Nook" with minimalist outdoor furniture set directly into the lush surroundings.
 
-    Add-ons: If the area allows, incorporate sleek minimalist outdoor lighting (concealed LED up-lighting for trees), a low-slung dark timber meditation deck (Engawa), or a single, bespoke granite water basin (Tsukubai).
+    Independent Structures: If space allows, add a modern, freestanding black timber gate (Torii style) or a minimalist stone water feature to act as a focal point.
 
-    The "High-Variety" Vibrant Zen Strategy Reference a diverse and cohesive plant palette that balances traditional Zen tranquility with modern color "pops." Use plants that offer structural elegance and seasonal drama:
+    The "Extreme Vibrancy" Zen Strategy Do not settle for a few sparse plants. Use high-density massing to create a "wow" factor with zero exposed soil:
 
-    Sculptural Anchors: A single, spectacular Japanese Maple (Acer Palmatum) with vibrant red or orange leaves, or a cloud-pruned (Niwaki) Pine tree.
+    Primary Sculptural Anchors: Multiple specimen Japanese Maples (Acer Palmatum) with vibrant fire-red and burnt-orange leaves to provide a massive color pop. Include cloud-pruned (Niwaki) pines for structural elegance.
 
-    Chromatic Drifts: Massive blocks of vibrant-green Moss (or Sagina Subulata), deep-purple Japanese Forest Grass, and electric-pink Azaleas for a seasonal "wow" factor.
+    The Lush Carpet (Zero Soil): Every inch of the ground must be covered in a thick, velvety carpet of emerald-green Moss, Sagina Subulata, and neon-green Creeping Jenny.
 
-    Tactile Texture: Mix the velvet-like texture of moss with the sharp, vertical lines of black Bamboo and the soft, feathery fronds of Japanese Painted Ferns.
+    Chromatic Drifts: Layer in massive blocks of electric-pink and white Azaleas, vibrant blue Japanese Iris, and deep-purple Forest Grass (Hakonechloa).
 
-    Vertical Drama: Use tall, architectural Bamboo screens or slender "Sky Pencil" Hollies to provide privacy and frame the architecture.
+    Tactile Texture: Mix the broad, glossy leaves of Japanese Fatsia with the feathery, layered fronds of Ostrich Ferns and the vertical lines of Black Bamboo.
 
-    Materiality & High-Contrast Hardscape Ensure all materials look expensive and provide a sensory experience:
+    Materiality & High-Contrast Luxury
 
-    Hardscape: Use oversized, natural basalt stepping stones or large-format granite pavers. Paths should be set within perfectly raked silver-grey gravel or fine white quartz sand with sharp "ripple" patterns.
+    Hardscape: Use oversized, natural basalt stepping stones (Tobi-ishi) that "float" within the dense moss.
 
-    Mulch & Finish: Use jet-black polished river stones around the base of trees or pure white pebble mulch to provide a high-contrast foundation that makes the greenery and maple reds "pop."
+    Refined Accents: Limit white gravel or silver-grey sand to small, razor-sharp geometric "islands" or zen-circles to provide a clean architectural contrast against the vibrant greenery.
+
+    Mulch & Finish: Use jet-black polished river stones to border the moss beds, making the greens and maple reds appear more saturated and luminous.
 
     Photographic Execution (8k Photorealism)
 
-    Perspective: Render as if captured with a 35mm wide-angle lens at f/11 for a deep, crisp architectural focus.
+    Perspective: Render with a 35mm wide-angle lens at f/11 for a deep, crisp architectural focus.
 
-    Lighting Dynamics: Match the original photo’s sun angle. Ensure the lighting highlights the "raked" texture of the gravel and makes the vibrant leaf colors appear saturated and luminous.
+    Lighting Dynamics: Match the original photo’s sun angle. Use "Golden Hour" lighting to make the red maple leaves glow and the moss look dew-drenched and vibrant.
 
-    Shadow Physics: Every stone, bamboo stalk, and architectural feature must cast physically accurate shadows that ground the design into the scene.
+    Shadow Physics: Ensure every bamboo stalk, maple leaf, and stone casts physically accurate shadows to ground the design into the scene.
 
     Technical Mandate
 
+    No Bare Ground: The garden must look established and lush; the ground should be a continuous tapestry of moss, stones, and foliage.
+
     Complete Mask Eradication: The violet mask must be 100% replaced. No purple halos or artifacts.
 
-    Seamless Fusion: The new garden must look as if it has been established for years, fitting perfectly flush against the existing house walls and unmasked terrain.
+    Structural Independence: All new features (decks, furniture, water basins) must stay within the mask and not modify the existing house architecture.
+
 
   desert: |
     Desert Landscape Architecture Brief: The High-End Arid Sanctuary

@@ -1,11 +1,12 @@
 # frozen_string_literal: true
+
 LANDSCAPE_PRESETS = {
   "modern" => "Clean minimalist",
   "desert" => "Resilient and hardy",
   "tropical" => "Vibrant and lush",
-  "zen" => "Japanese Serene and calm",
+  "zen" => "Serene and calm",
   "cottage" => "Charming vibe",
-  "mediterranean" => "Fragrant and relaxed",
+  "mediterranean" => "Fragrant and relaxed"
 }.freeze
 
 PROMPTS = YAML.load_file(Rails.root.join("config/prompts.yml"))
@@ -52,4 +53,3 @@ VOICE_MAP = {
 
 }.freeze
 
-QA_USERS = [ 679, 496 ].freeze

@@ -69,7 +69,9 @@ class DesignGenerator
     prompt = YAML.load_file(Rails.root.join("config/prompts.yml")).dig("landscape_presets", @mask_request.preset)
 
     prompt += "YOU SHALL include the image in your response!
-    DO NOT modify any other areas of the image except for the precise region marked by violet paint."
+    DO NOT modify any other areas of the image except for the precise region marked by violet paint.
+    YOU CANNOT MODIFY the HOUSES, ADD new HOUSES or REMOVE the houses.
+    "
 
     image = @mask_request.overlay
 
