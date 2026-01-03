@@ -25,8 +25,6 @@
 - FEATURE_SKETCH_TO_3D: `https://hadaa.app/features/sketch-to-3d-rendering`
 - FEATURE_SHOPPING_LIST: `https://hadaa.app/features/shopping-list-planting-guide`
 - FEATURE_INTUITIVE_ONBOARDING: `https://hadaa.app/features/intuitive-onboarding`
-- FEATURE_CITY_DESIGNS: `https://hadaa.app/city-design-inspiration`
-- FEATURE_EVENT_LANDSCAPING: `https://hadaa.app/event-seasonal-landscaping`
 
 ## 2. PRICING AND ACCESS MODEL
 
@@ -75,12 +73,6 @@
 - FEATURE: **Preset Styles Selection**
     - LINK: `https://hadaa.app/features/preset-style-selection`
     - KEY_STYLES: **Cottage, Zen, Tropical, Modern, Xeriscape**.
-- FEATURE: **Event/Seasonal Landscaping**
-    - LINK: `https://hadaa.app/event-seasonal-landscaping`
-    - EVENTS_SUPPORTED_KEY: **Christmas, Halloween, Diwali, Lunar New Year, Thanksgiving**.
-- FEATURE: **City Designs Gallery**
-    - LINK: `https://hadaa.app/city-design-inspiration`
-    - RANKING: **Most popular** (user votes).
 
 ## 4. TECHNICAL STACK AND SECURITY CONSTRAINTS
 

@@ -27,7 +27,6 @@ Rails.application.routes.draw do
       get "features/shopping-list-planting-guide", to: "features#shopping_list_planting_guide", as: :features_shopping_list_planting_guide
       get "features/sketch-to-3d-rendering", to: "features#sketch_to_3d_rendering", as: :features_sketch_to_3d_rendering
       get "features/intuitive-onboarding", to: "features#intuitive_onboarding", as: :features_intuitive_onboarding
-      get "city-design-inspiration", to: "features#city_design_inspiration", as: :city_design_inspiration
 
       # Explore/Gallery
       get "explore", to: "explore#index", as: :explore

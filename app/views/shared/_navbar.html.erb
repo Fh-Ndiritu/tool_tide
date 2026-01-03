@@ -86,29 +86,25 @@
       "
     >
       <% if user_signed_in? %>
-        <% unless marketing_page? %>
           <%= render ButtonComponent.new(
           text: "Buy Credits",
           href: credits_path,
           classes: "#{active_item(credits_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
           data: { action: "click->navbar#toggleMenu" }
           ) %>
-        <% end %>
-        <% unless marketing_page? %>
           <%= render ButtonComponent.new(
           text: "New Design",
           href: new_canva_path,
           classes: "#{active_item(new_canva_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
           data: { action: "click->navbar#toggleMenu" }
           ) %>
-        <% end %>
         <%= render ButtonComponent.new(
         text: "Dashboard",
         href: mask_requests_path,
         classes: "#{active_item(mask_requests_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
         data: { action: "click->navbar#toggleMenu" }
         ) %>
-        <% if !marketing_page? && current_user.mask_requests.complete.exists? %>
+        <% if current_user.mask_requests.complete.exists? %>
           <%= render ButtonComponent.new(
             text: "Polish Designs",
             href: text_requests_path,
