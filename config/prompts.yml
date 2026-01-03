@@ -16,136 +16,269 @@ plant_detection: |
 
 landscape_presets:
   cottage: |
-    Your PRIMARY JOB is to landscape and design a neat, well-thought-out, and vibrant garden **EXCLUSIVELY within the area masked in violet on the image.**
-     **ABSOLUTELY NO MODIFICATIONS SHALL BE MADE TO ANY PIXEL OUTSIDE OF THE violet MASKED REGION.** The existing content of the unmasked areas must be preserved **IDENTICALLY and WITHOUT ALTERATION.**
+    Modern Chic Cottage: The Organized Vibrant Sanctuary
+    Professional Role & Creative Intelligence You are a Lead Modernist Landscape Architect specializing in "Chic Cottage Maximalism." Your goal is to transform the violet-masked area into a breathtaking, high-density floral garden that maintains rigorous geometric order. It must look like a high-end designer show-garden from the Chelsea Flower Show—vibrant, lush, but perfectly disciplined.
 
-     Follow these steps to provide a stunning design for the **masked area only**:
+    Spatial Analysis & Modern Geometry (Thinking Mode) Analyze the masked region and apply a "Linear Abundance" logic:
 
-     1.  **STRICTLY ENFORCE:** YOU SHALL NOT modify any other areas of the image except for the precise region marked by violet paint. **The violet mask is your canvas, and your canvas ONLY.**
-     2.  Analyze the unmasked areas of the image for features like doors or gates that lead into or border the violet masked area.
-     3.  Design neat, ultra-modern, and chic pathways for any identified doors or gates that lead into the now-garden (previously masked) area.
-     4.  Partition the remaining violet masked area further to create defined spaces for plant placement, using elements like concrete, strategic rock placement, or elegantly arranged potted plants.
-     5.  Adopt a **cottage-style design** for the garden ensuring thoughtul yet not overwhelming designs.
-     6.  Select unique, vibrant flowers that complement the existing architectural style and "language" of the house.
-     7.  Place these flowers in neat, well-landscaped designs within the designated spaces. Use shorter plants to ensure a comprehensive view of the entire design.
-     8.  Feel free to incorporate neat, manicured grass lawns where appropriate within the new garden design.
-     9.  The user may request other features, a change of plants, different flowers, etc. **ONLY use these when specifically requested to override these default instructions.**
-     10. **Carefully go through and adhere to each of these steps before making any design decisions.**
-     11. ENSURE YOU DO NOT modify anything outside the masked violet area that is set aside for the garden, the user intends to use the rest of the land in other ways.
-     12. The final output must be 8k resolution, highly detailed, professional, photorealistic, and display a vibrant design.
-     13. Return a stunning, neat, and modern-looking garden, meticulously landscaped in a cottage style.
-     14. **CRITICAL:** The area painted in violet **MUST be entirely replaced with the garden design.** **DO NOT return any violet painted areas, shadows from the mask, or visual remnants of the original mask.**
-    YOU SHALL include the image in your response!
+    The Modern Frame: Organize the garden into clean, repeating rows or geometric "blocks" of color. Avoid random scattering.
+
+    Architectural Seating: Carve out a clear, rectangular or circular "Destination Zone" featuring low-slung luxury furniture (e.g., charcoal metal frames with white linen) set upon a clean-edged stone terrace.
+
+    High-Contrast Paths: If a path is used, use oversized, rectangular ivory pavers with "razor-sharp" edges, surrounded by dark polished stones to define the walking route clearly.
+
+    The "Intense Vibrancy" Botanical Strategy Use an unapologetic, diverse plant palette organized by color and height to ensure zero "bushy" mess:
+
+    Saturated Color Blocks: Create massive, dense "drifts" of electric-purple Salvia, neon-pink Peonies, and vibrant "Goldenrod" Yellow. Each color should exist in its own clear, intentional zone.
+
+    Sculptural Spines: Instead of round bushes, use vertical "Sky Pencil" Hollies or Foxgloves (Digitalis) to provide rhythmic vertical accents that act like living columns.
+
+    The Living Carpet: Use a dense, low-growing "uniform" groundcover like silver-blue Dichondra or neon-green creeping thyme to fill every gap. There must be zero exposed soil.
+
+    Ordered Climbers: Use a freestanding, minimalist black steel trellis to host a "sheet" of vibrant Climbing Roses or Clematis. The growth must be manicured and contained within the frame.
+
+    Materiality & High-Contrast Hardscape
+
+    Hardscape: Use oversized, matte-finish ivory Porcelain or light Grey Travertine. The light-colored stone is essential to act as a "canvas" that makes the bright floral colors pop.
+
+    Edging: Use black powder-coated steel edging to create a 100% straight, visible line between the planting beds and the gravel/stone areas.
+
+    Mulch: Use pure white quartz pebbles or jet-black river stones to finish the beds, providing a clean, "magazine-ready" look.
+
+    Photographic Execution (8k Photorealism)
+
+    Perspective: Render with a 35mm wide-angle lens at f/11 for a deep, crisp architectural focus.
+
+    Lighting Dynamics: Match the original photo’s sun angle. Use "Golden Hour" lighting to saturate the reds, purples, and yellows, making the garden look like it is glowing.
+
+    Shadow Physics: Every flower spike and piece of furniture must cast a sharp, physically accurate shadow to ground the design into the scene.
+
+    Technical Mandate
+
+    Zero Mess: No overgrown or "wild" looks. All plants must look manicured and placed with intent.
+
+    Complete Mask Eradication: The violet mask must be 100% replaced. No purple halos.
+
+    Structural Independence: All new features (furniture, trellises, planters) must not touch or modify the existing house walls.
 
   zen: |
-    Your PRIMARY JOB is to landscape and design a neat, well-thought-out, and vibrant garden **EXCLUSIVELY within the area masked in violet on the image.**
-    **ABSOLUTELY NO MODIFICATIONS SHALL BE MADE TO ANY PIXEL OUTSIDE OF THE violet MASKED REGION.** The existing content of the unmasked areas must be preserved **IDENTICALLY and WITHOUT ALTERATION.**
+    Zen Landscape Architecture Brief: The High-End Minimalist Sanctuary
+    Professional Role & Creative Intelligence You are a Lead Zen Landscape Architect specializing in Japanese-Modern fusion. Before rendering, you must carefully analyze the violet-masked area for its scale, light, and proximity to architectural features. Your objective is to transform this space into a breathtaking, vibrant, and ultra-chic Zen garden that looks like it was curated from a Pinterest-trending "Modern Zen" board or a high-end architectural feature.
 
-    Follow these steps to provide a stunning design for the **masked area only**:
+    Spatial Analysis & Design Logic (Thinking Mode) Analyze the masked region and apply these high-end Zen design principles:
 
-    1.  **STRICTLY ENFORCE:** YOU SHALL NOT modify any other areas of the image except for the precise region marked by violet paint. **The violet mask is your canvas, and your canvas ONLY.**
-    2.  Analyze the unmasked areas of the image for features like doors or gates that lead into or border the violet masked area.
-    3.  Design neat, ultra-modern, and chic pathways for any identified doors or gates that lead into the now-garden (previously masked) area.
-    4.  Partition the remaining violet masked area further to create defined spaces for plant placement, using elements like concrete, strategic rock placement, or elegantly arranged potted plants.
-    5.  Adopt a **zen-style design** for the garden ensuring thoughtul yet not overwhelming designs.
-    6.  Select unique, vibrant flowers that complement the existing architectural style and "language" of the house.
-    7.  Place these flowers in neat, well-landscaped designs within the designated spaces. Use shorter plants to ensure a comprehensive view of the entire design.
-    8.  Feel free to incorporate neat, manicured grass lawns where appropriate within the new garden design.
-    9.  The user may request other features, a change of plants, different flowers, etc. **ONLY use these when specifically requested to override these default instructions.**
-    10. **Carefully go through and adhere to each of these steps before making any design decisions.**
-    11. ENSURE YOU DO NOT modify anything outside the masked violet area that is set aside for the garden, the user intends to use the rest of the land in other ways.
-    12. The final output must be 8k resolution, highly detailed, professional, photorealistic, and display a vibrant design.
-    13. Return a stunning, neat, and modern-looking garden, meticulously landscaped in a zen style.
-    14. **CRITICAL:** The area painted in violet **MUST be entirely replaced with the garden design.** **DO NOT return any violet painted areas, shadows from the mask, or visual remnants of the original mask.**
-    YOU SHALL include the image in your response!
+    Scaling: If the space is narrow, create a "Raked Gravel Gallery" with rhythmic moss islands. If the space is deep, create a "Contemplative Courtyard" featuring a central stone monolith or a minimalist water feature.
+
+    Function: Identify entries. If a path is needed, use a "Karesansui" (dry landscape) logic where stepping stones (tobi-ishi) float in a sea of raked gravel to create a deliberate, slow-paced flow.
+
+    Add-ons: If the area allows, incorporate sleek minimalist outdoor lighting (concealed LED up-lighting for trees), a low-slung dark timber meditation deck (Engawa), or a single, bespoke granite water basin (Tsukubai).
+
+    The "High-Variety" Vibrant Zen Strategy Reference a diverse and cohesive plant palette that balances traditional Zen tranquility with modern color "pops." Use plants that offer structural elegance and seasonal drama:
+
+    Sculptural Anchors: A single, spectacular Japanese Maple (Acer Palmatum) with vibrant red or orange leaves, or a cloud-pruned (Niwaki) Pine tree.
+
+    Chromatic Drifts: Massive blocks of vibrant-green Moss (or Sagina Subulata), deep-purple Japanese Forest Grass, and electric-pink Azaleas for a seasonal "wow" factor.
+
+    Tactile Texture: Mix the velvet-like texture of moss with the sharp, vertical lines of black Bamboo and the soft, feathery fronds of Japanese Painted Ferns.
+
+    Vertical Drama: Use tall, architectural Bamboo screens or slender "Sky Pencil" Hollies to provide privacy and frame the architecture.
+
+    Materiality & High-Contrast Hardscape Ensure all materials look expensive and provide a sensory experience:
+
+    Hardscape: Use oversized, natural basalt stepping stones or large-format granite pavers. Paths should be set within perfectly raked silver-grey gravel or fine white quartz sand with sharp "ripple" patterns.
+
+    Mulch & Finish: Use jet-black polished river stones around the base of trees or pure white pebble mulch to provide a high-contrast foundation that makes the greenery and maple reds "pop."
+
+    Photographic Execution (8k Photorealism)
+
+    Perspective: Render as if captured with a 35mm wide-angle lens at f/11 for a deep, crisp architectural focus.
+
+    Lighting Dynamics: Match the original photo’s sun angle. Ensure the lighting highlights the "raked" texture of the gravel and makes the vibrant leaf colors appear saturated and luminous.
+
+    Shadow Physics: Every stone, bamboo stalk, and architectural feature must cast physically accurate shadows that ground the design into the scene.
+
+    Technical Mandate
+
+    Complete Mask Eradication: The violet mask must be 100% replaced. No purple halos or artifacts.
+
+    Seamless Fusion: The new garden must look as if it has been established for years, fitting perfectly flush against the existing house walls and unmasked terrain.
 
   desert: |
-    Your PRIMARY JOB is to landscape and design a neat, well-thought-out, and vibrant garden **EXCLUSIVELY within the area masked in violet on the image.**
-    **ABSOLUTELY NO MODIFICATIONS SHALL BE MADE TO ANY PIXEL OUTSIDE OF THE violet MASKED REGION.** The existing content of the unmasked areas must be preserved **IDENTICALLY and WITHOUT ALTERATION.**
+    Desert Landscape Architecture Brief: The High-End Arid Sanctuary
+    Professional Role & Creative Intelligence You are a Lead Desert Landscape Architect specializing in luxury arid-scaping and "Desert Modern" design. Before rendering, you must carefully analyze the violet-masked area for its scale, light, and proximity to architectural features. Your objective is to transform this space into a breathtaking, vibrant, and ultra-chic desert garden that looks like it was curated from a Pinterest-trending "Palm Springs Modern" board or a Dwell magazine feature.
 
-    Follow these steps to provide a stunning design for the **masked area only**:
+    Spatial Analysis & Design Logic (Thinking Mode) Analyze the masked region and apply these high-end desert design principles:
 
-    1.  **STRICTLY ENFORCE:** YOU SHALL NOT modify any other areas of the image except for the precise region marked by violet paint. **The violet mask is your canvas, and your canvas ONLY.**
-    2.  Analyze the unmasked areas of the image for features like doors or gates that lead into or border the violet masked area.
-    3.  Design neat, ultra-modern, and chic pathways for any identified doors or gates that lead into the now-garden (previously masked) area.
-    4.  Partition the remaining violet masked area further to create defined spaces for plant placement, using elements like concrete, strategic rock placement, or elegantly arranged potted plants.
-    5.  Adopt a **desert-style design** for the garden ensuring thoughtul yet not overwhelming designs.
-    6.  Select unique, vibrant flowers that complement the existing architectural style and "language" of the house.
-    7.  Place these flowers in neat, well-landscaped designs within the designated spaces. Use shorter plants to ensure a comprehensive view of the entire design.
-    8.  Feel free to incorporate neat, manicured grass lawns where appropriate within the new garden design.
-    9.  The user may request other features, a change of plants, different flowers, etc. **ONLY use these when specifically requested to override these default instructions.**
-    10. **Carefully go through and adhere to each of these steps before making any design decisions.**
-    11. ENSURE YOU DO NOT modify anything outside the masked violet area that is set aside for the garden, the user intends to use the rest of the land in other ways.
-    12. The final output must be 8k resolution, highly detailed, professional, photorealistic, and display a vibrant design.
-    13. Return a stunning, neat, and modern-looking garden, meticulously landscaped in a desert style.
-    14. **CRITICAL:** The area painted in violet **MUST be entirely replaced with the garden design.** **DO NOT return any violet painted areas, shadows from the mask, or visual remnants of the original mask.**
-    YOU SHALL include the image in your response!
+    Scaling: If the space is narrow, create a "Xeric Border" with rhythmic cactus groupings. If the space is deep, create an "Arid Oasis" featuring a central specimen tree and a minimalist fire pit or structural boulder arrangement.
+
+    Function: Identify entries. If a path is needed, ensure it uses high-contrast, heat-reflective materials like white limestone or oversized sand-colored concrete pavers.
+
+    Add-ons: If the area allows, incorporate sleek minimalist outdoor lighting (LED path lights to highlight cactus silhouettes), a modern steel fire feature, or a few statement-sized architectural boulders (e.g., golden granite or red lava rock).
+
+    The "High-Variety" Vibrant Desert Strategy Reference a diverse and cohesive plant palette that proves desert gardens are incredibly vibrant and textured. Avoid simple dirt; choose plants with "wow factor":
+
+    Sculptural Anchors: Specimen Joshua Trees, multi-armed Saguaro cacti, or massive Golden Barrel cacti arranged in clusters.
+
+    Chromatic Drifts: Massive blocks of electric-red "Firecracker" plants (Russelia), neon-orange Aloe blooms, vibrant purple "Desert Sage," and silver-blue Agave Americana.
+
+    Tactile Texture: Mix the "spiky" aggression of Ocotillo with the soft, blue-grey fuzz of "Old Man" cacti and the fine, needle-like leaves of Palo Verde trees.
+
+    Vertical Drama: Use tall, slender "Mexican Fence Post" cacti to create organic, vertical screens that frame the architecture.
+
+    Materiality & High-Contrast Hardscape Ensure all materials scream "luxury" and handle the desert aesthetic:
+
+    Hardscape: Use oversized, matte-finish pavers in ivory or sand tones. Paths should feature clean, geometric lines.
+
+    Mulch & Finish: Use high-quality decomposed granite in "Apache Brown" or pure white crushed quartz to make the vivid greens and oranges of the succulents "pop." Integrate weathered Corten steel edging for a sharp, rusty-orange contrast against the desert floor.
+
+    Photographic Execution (8k Photorealism)
+
+    Perspective: Render as if captured with a 35mm wide-angle lens at f/11 for a deep, crisp architectural focus.
+
+    Lighting Dynamics: Match the original photo’s sun angle, but saturate the vibrant colors as if they were shot during a high-contrast midday sun or a glowing "Desert Sunset" for maximum pop.
+
+    Shadow Physics: Every cactus spine, boulder, and architectural leaf must cast long, physically accurate, and sharp shadows that ground the design into the scene.
+
+    Technical Mandate
+
+    Complete Mask Eradication: The violet mask must be 100% replaced. No purple halos or artifacts.
+
+    Seamless Fusion: The new garden must look as if it has been established for years, fitting perfectly flush against the existing house walls and unmasked terrain.
 
   mediterranean: |
-    Your PRIMARY JOB is to landscape and design a neat, well-thought-out, and vibrant garden **EXCLUSIVELY within the area masked in violet on the image.**
-    **ABSOLUTELY NO MODIFICATIONS SHALL BE MADE TO ANY PIXEL OUTSIDE OF THE violet MASKED REGION.** The existing content of the unmasked areas must be preserved **IDENTICALLY and WITHOUT ALTERATION.**
+    Mediterranean-Modern Fusion: The High-Impact Vibrant Coastal Sanctuary
+    Professional Role & Creative Intelligence You are a Lead Modernist Landscape Architect specializing in "High-End Mediterranean Maximalism." Your goal is to transform the violet-masked area into a breathtaking, overflowing floral sanctuary that feels incredibly lush, sun-drenched, and architecturally intentional. It must look like a multi-million dollar coastal estate featured in Architectural Digest.
 
-    Follow these steps to provide a stunning design for the **masked area only**:
+    Spatial Analysis & High-Impact Tiering (Thinking Mode) Analyze the masked region and apply a "Lush-but-Layered" logic:
 
-    1.  **STRICTLY ENFORCE:** YOU SHALL NOT modify any other areas of the image except for the precise region marked by violet paint. **The violet mask is your canvas, and your canvas ONLY.**
-    2.  Analyze the unmasked areas of the image for features like doors or gates that lead into or border the violet masked area.
-    3.  Design neat, ultra-modern, and chic pathways for any identified doors or gates that lead into the now-garden (previously masked) area.
-    4.  Partition the remaining violet masked area further to create defined spaces for plant placement, using elements like concrete, strategic rock placement, or elegantly arranged potted plants.
-    5.  Adopt a **mediterranean-style design** for the garden ensuring thoughtul yet not overwhelming designs.
-    6.  Select unique, vibrant flowers that complement the existing architectural style and "language" of the house.
-    7.  Place these flowers in neat, well-landscaped designs within the designated spaces. Use shorter plants to ensure a comprehensive view of the entire design.
-    8.  Feel free to incorporate neat, manicured grass lawns where appropriate within the new garden design.
-    9.  The user may request other features, a change of plants, different flowers, etc. **ONLY use these when specifically requested to override these default instructions.**
-    10. **Carefully go through and adhere to each of these steps before making any design decisions.**
-    11. ENSURE YOU DO NOT modify anything outside the masked violet area that is set aside for the garden, the user intends to use the rest of the land in other ways.
-    12. The final output must be 8k resolution, highly detailed, professional, photorealistic, and display a vibrant design.
-    13. Return a stunning, neat, and modern-looking garden, meticulously landscaped in a mediterranean style.
-    14. **CRITICAL:** The area painted in violet **MUST be entirely replaced with the garden design.** **DO NOT return any violet painted areas, shadows from the mask, or visual remnants of the original mask.**
-    YOU SHALL include the image in your response!
+    The Chromatic Mid-ground (The Heart): Fill the central mid-ground with an explosion of saturated color. Use dense, rounded shrubs of vibrant Lavender and Rosemary, punctuated by massive, waist-high clusters of blue Agapanthus.
+
+    Vertical Framing (The Spires): Use the tallest elements—slender Italian Cypress or gnarled, multi-trunk specimen Olive trees—at the extreme left and right edges of the mask to frame the house perfectly.
+
+    The Lifestyle Terrace: Carve out a clear, high-contrast zone for a modern patio featuring low-slung luxury furniture (white linen or teak) and a minimalist path of oversized honey-colored Travertine pavers.
+
+    The "Extreme Vibrancy" Mediterranean Strategy Use an unapologetic, diverse plant palette with massive scale and saturated colors:
+
+    Primary "Wow" Anchors: Massive, gnarled specimen Olive trees in oversized minimalist pots and tall, rhythmic Italian Cypress spires.
+
+    Intense Chromatic Drifts: Massive, dense groupings of electric-magenta Bougainvillea, neon-blue "Lily of the Nile," and vibrant orange Bird of Paradise.
+
+    Vertical Floral Drama: Use a freestanding modern timber pergola or metal trellis for an aggressive, overflowing display of vibrant Red Climbing Roses or purple Wisteria. Keep it lush and dense but independent of the house walls.
+
+    The Living Carpet: Every square inch of the mask must be covered. Use silver-grey Dichondra and vibrant green Moss to fill every gap between the larger flowering plants.
+
+    Materiality & High-Contrast Hardscape
+
+    Hardscape: Use oversized, matte-finish Travertine or Limestone pavers in warm ivory. The light stone must act as a reflector to make the floral magentas and purples appear 50% more saturated.
+
+    Contrast Accents: Integrate large, high-end glazed ceramic planters in cobalt blue or deep emerald green to provide permanent "pops" of geometric color.
+
+    Finish: Use fine-textured terracotta gravel or white river pebbles to maintain a clean, high-contrast foundation.
+
+    Photographic Execution (8k Photorealism)
+
+    Perspective: Render with a 35mm wide-angle lens at f/11 for edge-to-edge crispness and deep architectural focus.
+
+    Lighting Dynamics: Match the original photo’s sun angle. Use a crisp, clear "Golden Hour" light to make the terracotta tones feel warm and the flowering blooms look luminous and high-definition.
+
+    Shadow Physics: Ensure every cypress spire and flowering branch casts a physically accurate, textured shadow, creating a sense of "coastal depth."
+
+    Technical Mandate
+
+    Complete Mask Eradication: The violet mask must be 100% replaced. No purple halos or artifacts.
+
+    Structural Independence: All new features (pergolas, seating, trellises) must stay within the mask and not modify the house architecture.
+
+    Strategic Clearance: Maintain the house's architectural visibility by keeping the densest floral massing just below the window lines in the center.
 
   tropical: |
-    Your PRIMARY JOB is to landscape and design a neat, well-thought-out, and vibrant garden **EXCLUSIVELY within the area masked in violet on the image.**
-    **ABSOLUTELY NO MODIFICATIONS SHALL BE MADE TO ANY PIXEL OUTSIDE OF THE violet MASKED REGION.** The existing content of the unmasked areas must be preserved **IDENTICALLY and WITHOUT ALTERATION.**
+    I really have a hair-trigger finger today! I promise to keep the architect in the drafting room.
 
-    Follow these steps to provide a stunning design for the **masked area only**:
+    Here is the Tropical Modern adaptation. It maintains the architectural precision of the Modern prompt but swaps the palette for lush, oversized foliage and the intense, electric colors of a high-end Balinese or Brazilian resort.
 
-    1.  **STRICTLY ENFORCE:** YOU SHALL NOT modify any other areas of the image except for the precise region marked by violet paint. **The violet mask is your canvas, and your canvas ONLY.**
-    2.  Analyze the unmasked areas of the image for features like doors or gates that lead into or border the violet masked area.
-    3.  Design neat, ultra-modern, and chic pathways for any identified doors or gates that lead into the now-garden (previously masked) area.
-    4.  Partition the remaining violet masked area further to create defined spaces for plant placement, using elements like concrete, strategic rock placement, or elegantly arranged potted plants.
-    5.  Adopt a **tropical-style design** for the garden ensuring thoughtul yet not overwhelming designs.
-    6.  Select unique, vibrant flowers that complement the existing architectural style and "language" of the house.
-    7.  Place these flowers in neat, well-landscaped designs within the designated spaces. Use shorter plants to ensure a comprehensive view of the entire design.
-    8.  Feel free to incorporate neat, manicured grass lawns where appropriate within the new garden design.
-    9.  The user may request other features, a change of plants, different flowers, etc. **ONLY use these when specifically requested to override these default instructions.**
-    10. **Carefully go through and adhere to each of these steps before making any design decisions.**
-    11. ENSURE YOU DO NOT modify anything outside the masked violet area that is set aside for the garden, the user intends to use the rest of the land in other ways.
-    12. The final output must be 8k resolution, highly detailed, professional, photorealistic, and display a vibrant design.
-    13. Return a stunning, neat, and modern-looking garden, meticulously landscaped in a tropical style.
-    14. **CRITICAL:** The area painted in violet **MUST be entirely replaced with the garden design.** **DO NOT return any violet painted areas, shadows from the mask, or visual remnants of the original mask.**
-    YOU SHALL include the image in your response!
+    Tropical Modern Landscape Architecture Brief: The High-End Vibrant Jungle Sanctuary
+    Professional Role & Creative Intelligence You are a Lead Modernist Landscape Architect specializing in "Tropical Modernism" and luxury resort design. Before rendering, you must carefully analyze the violet-masked area for its scale, light, and proximity to architectural features. Your objective is to transform this space into a breathtaking, vibrant, and ultra-chic tropical garden that looks like it was curated from a Pinterest-trending "Tropical Modern" board or an Architectural Digest feature.
+
+    Spatial Analysis & Design Logic (Thinking Mode) Analyze the masked region and apply these high-end design principles:
+
+    Scaling: If the space is narrow, create a "Vertical Jungle Gallery" with layered heights. If the space is deep, create a "Tropical Destination Patio" with zones for luxury lounging or a minimalist stone water feature.
+
+    Function: Identify entries. If a path is needed, ensure it has high-contrast colors (e.g., White Quartzite vs. Dark Basalt) and creates a logical, rhythmic flow through the foliage.
+
+    Add-ons: If the area allows, incorporate sleek minimalist outdoor lighting (LED spike lights to highlight leaf textures), a modern patio area with low-slung furniture, or high-end oversized matte-black planters.
+
+    The "High-Variety" Tropical Vibrancy Strategy Reference a diverse, cohesive, and incredibly lush plant palette. Do not settle for common greenery; choose plants that provide "wow factor" through massive leaves and electric colors:
+
+    Sculptural Anchors: Giant "Bird of Paradise" (Strelitzia nicolai), multi-trunk Traveler's Palms, or specimen Monstera Deliciosa.
+
+    Chromatic Drifts: Massive blocks of "Black Magic" Colocasia, neon-red Anthuriums, electric-orange Bromeliads, and vibrant variegated Crotons (yellow, red, and green).
+
+    Tactile Texture: Mix the massive, glossy "shield" leaves of Alocasia with the feathery softness of Tree Ferns and the waxy, structural spikes of ornamental Ginger.
+
+    Vertical Drama: Use tall, slender Bamboo screens or freestanding trellises with modest climbing Passionflower or vibrant Red Mandevilla to frame the architecture.
+
+    Materiality & High-Contrast Hardscape Ensure all materials scream "luxury" and provide a crisp frame for the jungle:
+
+    Hardscape: Use oversized, matte-finish porcelain pavers in deep charcoal or volcanic black. If a path is chosen, consider an "in-moss" stepping stone look with razor-sharp edges.
+
+    Mulch & Finish: Use jet-black polished river stones or dark volcanic rock mulch to make the neon greens and deep reds of the tropical leaves appear more saturated and intense.
+
+    Photographic Execution (8k Photorealism)
+
+    Perspective: Render as if captured with a 35mm wide-angle lens at f/11 for a deep, crisp architectural focus.
+
+    Lighting Dynamics: Match the original photo’s sun angle, but saturate the vibrant colors as if they were shot during a humid, clear "Golden Hour" for maximum editorial pop.
+
+    Shadow Physics: Every massive leaf, palm frond, and piece of furniture must cast physically accurate, complex shadows that ground the design into the scene.
+
+    Technical Mandate
+
+    Complete Mask Eradication: The violet mask must be 100% replaced. No purple halos or artifacts.
+
+    Seamless Fusion: The new garden must look as if it has been established for years, fitting perfectly flush against the existing house walls and unmasked terrain.
 
   modern: |
-    Your PRIMARY JOB is to landscape and design a neat, well-thought-out, and vibrant garden **EXCLUSIVELY within the area masked in violet on the image.**
-    **ABSOLUTELY NO MODIFICATIONS SHALL BE MADE TO ANY PIXEL OUTSIDE OF THE violet MASKED REGION.** The existing content of the unmasked areas must be preserved **IDENTICALLY and WITHOUT ALTERATION.**
+    1. Professional Role & Creative Intelligence You are a Lead Modernist Landscape Architect.
+    Before rendering, you must carefully analyze the violet-masked area for its scale, light, and proximity to architectural features.
+    Your objective is to transform this space into a breathtaking, vibrant, and ultra-chic garden that looks like it was curated from a Pinterest-trending "Modern Home" board or an Architectural Digest feature.
 
-    Follow these steps to provide a stunning design for the **masked area only**:
+    2. Spatial Analysis & Design Logic (Thinking Mode) Analyze the masked region and apply these high-end design principles:
 
-    1.  **STRICTLY ENFORCE:** YOU SHALL NOT modify any other areas of the image except for the precise region marked by violet paint. **The violet mask is your canvas, and your canvas ONLY.**
-    2.  Analyze the unmasked areas of the image for features like doors or gates that lead into or border the violet masked area.
-    3.  Design neat, ultra-modern, and chic pathways for any identified doors or gates that lead into the now-garden (previously masked) area.
-    4.  Partition the remaining violet masked area further to create defined spaces for plant placement, using elements like concrete, strategic rock placement, or elegantly arranged potted plants.
-    5.  Adopt a **meodern-style design** for the garden ensuring thoughtul yet not overwhelming designs.
-    6.  Select unique, vibrant flowers that complement the existing architectural style and "language" of the house.
-    7.  Place these flowers in neat, well-landscaped designs within the designated spaces. Use shorter plants to ensure a comprehensive view of the entire design.
-    8.  Feel free to incorporate neat, manicured grass lawns where appropriate within the new garden design.
-    9.  The user may request other features, a change of plants, different flowers, etc. **ONLY use these when specifically requested to override these default instructions.**
-    10. **Carefully go through and adhere to each of these steps before making any design decisions.**
-    11. ENSURE YOU DO NOT modify anything outside the masked violet area that is set aside for the garden, the user intends to use the rest of the land in other ways.
-    12. The final output must be 8k resolution, highly detailed, professional, photorealistic, and display a vibrant design.
-    13. Return a stunning, neat, and modern-looking garden, meticulously landscaped in a meodern style.
-    14. **CRITICAL:** The area painted in violet **MUST be entirely replaced with the garden design.** **DO NOT return any violet painted areas, shadows from the mask, or visual remnants of the original mask.**
-    YOU SHALL include the image in your response!
+    Scaling: If the space is narrow, create a "Linear Gallery" of repeating plant patterns. If the space is deep, create a "Destination Patio" with zones for seating or structural art.
+
+    Function: Identify entries. If a path is needed, ensure it has high-contrast colors (e.g., White Quartzite vs. Black Basalt) and creates a logical flow.
+
+    Add-ons: If the area allows, incorporate sleek minimalist outdoor lighting (LED spike lights), a modern patio area with low-slung furniture, or a high-end Corten steel planter.
+
+    3. The "High-Variety" Vibrancy Strategy Reference a diverse, cohesive, and vibrant plant palette indicative of modern-luxury design. Do not settle for common shrubs; choose plants that provide "wow factor":
+
+    Sculptural Anchors: Agave Attenuata, specimen Cacti, or multi-trunk Dragon Trees.
+
+    Chromatic Drifts: Massive blocks of electric-purple Lavender, neon-chartreuse Heuchera, "Black Magic" Colocasia, and vibrant Orange Bird of Paradise.
+
+    Tactile Texture: Mix the "fuzz" of silver Lamb’s Ear with the broad, glossy sheen of Bird of Paradise leaves and the fine needles of Blue Fescue.
+
+    Vertical Drama: Use tall, slender "Sky Pencil" Hollies or Bamboo screens to frame the architecture.
+
+    4. Materiality & High-Contrast Hardscape Ensure all materials scream "luxury":
+
+    Hardscape: Use oversized, matte-finish porcelain pavers in deep charcoal or crisp ivory. If a path is chosen, consider an "in-grass" stepping stone look with razor-sharp lawn edges between stones.
+
+    Mulch & Finish: Use jet-black polished river stones or pure white pebble mulch to make the plant colors appear more saturated and vibrant.
+
+    5. Photographic Execution (8k Photorealism)
+
+    Perspective: Render as if captured with a 35mm wide-angle lens at f/11 for a deep, crisp architectural focus.
+
+    Lighting Dynamics: Match the original photo’s sun angle, but saturate the vibrant colors as if they were shot during the "Golden Hour" for maximum editorial pop.
+
+    Shadow Physics: Every structural leaf, planter, or piece of furniture must cast physically accurate shadows that ground the design into the scene.
+
+    6. Technical Mandate
+
+    Complete Mask Eradication: The violet mask must be 100% replaced. No purple halos or artifacts.
+
+    Seamless Fusion: The new garden must look as if it has been established for years, fitting perfectly flush against the existing house walls and unmasked terrain.
 
 prompt_qualification: |
     Role:

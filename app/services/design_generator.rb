@@ -66,7 +66,10 @@ class DesignGenerator
 
   def main_view
     @mask_request.main_view!
-    prompt = @mask_request.prompt
+    prompt = YAML.load_file(Rails.root.join("config/prompts.yml")).dig("landscape_presets", @mask_request.preset)
+
+    prompt += "YOU SHALL include the image in your response!
+    DO NOT modify any other areas of the image except for the precise region marked by violet paint."
 
     image = @mask_request.overlay
 
