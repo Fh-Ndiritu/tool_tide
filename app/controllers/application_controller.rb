@@ -62,6 +62,4 @@ class ApplicationController < ActionController::Base
       render plain: "Access Forbidden", status: :forbidden
     end
   end
-
-
 end

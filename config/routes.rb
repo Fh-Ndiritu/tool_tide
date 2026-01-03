@@ -4,16 +4,16 @@ Rails.application.routes.draw do
   # =========================================================
   # TENANT A: THE CLEAN SEO DOMAIN (hadaa.pro)
   # =========================================================
-  constraints DomainConstraint.new(['hadaa.pro']) do
-    scope module: 'marketing' do
-      root to: 'home#index', as: :marketing_root
-      get 'pricing', to: 'pricing#index'
+  constraints DomainConstraint.new([ "hadaa.pro" ]) do
+    scope module: "marketing" do
+      root to: "home#index", as: :marketing_root
+      get "pricing", to: "pricing#index"
 
       # Marketing Pages
-      get 'communities', to: 'pages#communities'
-      get 'privacy-policy', to: 'pages#privacy_policy'
-      get 'contact_us', to: 'pages#contact_us'
-      get 'full-faq', to: 'pages#full_faq'
+      get "communities", to: "pages#communities"
+      get "privacy-policy", to: "pages#privacy_policy"
+      get "contact_us", to: "pages#contact_us"
+      get "full-faq", to: "pages#full_faq"
 
       # Public Assets
       resources :public_assets, only: :show, param: :uuid
@@ -33,18 +33,18 @@ Rails.application.routes.draw do
       get "explore", to: "explore#index", as: :explore
 
       # Dynamic Robots.txt for SEO
-      get 'robots.txt', to: 'seo#robots'
+      get "robots.txt", to: "seo#robots"
     end
 
     # Cross-Domain Auth Navigation
-    get 'login', to: redirect('https://hadaa.app/users/sign_in')
-    get 'signup', to: redirect('https://hadaa.app/users/sign_up')
+    get "login", to: redirect("https://hadaa.app/users/sign_in")
+    get "signup", to: redirect("https://hadaa.app/users/sign_up")
   end
 
   # =========================================================
   # TENANT B: THE LEGACY APP DOMAIN (hadaa.app)
   # =========================================================
-  constraints DomainConstraint.new(['hadaa.app', 'localhost']) do
+  constraints DomainConstraint.new([ "hadaa.app", "localhost" ]) do
     # App root (Login/Dashboard) - temporarily directing to login for non-auth users
     devise_scope :user do
       root to: "devise/sessions#new"
@@ -57,7 +57,6 @@ Rails.application.routes.draw do
     resources :text_requests, except: [ :destroy, :create, :edit ]
 
     namespace :admin do
-
       resources :canvas, only: %i[create show]
       resources :text_requests, only: [ :index, :edit, :destroy, :show ]
       resources :mask_requests, only: [ :index, :edit, :destroy ]
@@ -111,12 +110,12 @@ Rails.application.routes.draw do
     get "up" => "rails/health#show", as: :rails_health_check
 
     # Robots.txt to block all crawling on app
-    get 'robots.txt', to: 'application#robots_block'
+    get "robots.txt", to: "application#robots_block"
 
     # 410 Gone "Black Hole" for Old SEO Pages
-    match '*path', to: 'application#render_410', via: :all, constraints: lambda { |req|
-     !req.path.start_with?('/assets') &&
-     !req.path.start_with?('/rails')
+    match "*path", to: "application#render_410", via: :all, constraints: lambda { |req|
+     !req.path.start_with?("/assets") &&
+     !req.path.start_with?("/rails")
     }
   end
 
