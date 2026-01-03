@@ -47,7 +47,11 @@ Rails.application.routes.draw do
   # TENANT B: THE LEGACY APP DOMAIN (hadaa.app)
   # =========================================================
   constraints DomainConstraint.new([ "hadaa.app", "localhost" ]) do
-    # App root (Login/Dashboard) - temporarily directing to login for non-auth users
+    # App root (Login/Dashboard)
+    authenticated :user do
+      root to: "mask_requests#index", as: :authenticated_root
+    end
+
     devise_scope :user do
       root to: "devise/sessions#new"
     end

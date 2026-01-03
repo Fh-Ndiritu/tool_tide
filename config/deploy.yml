@@ -24,7 +24,7 @@ proxy:
     - hadaa.app
     - hadaa.pro
   app_port: 3000
-  # forward_headers: true
+  forward_headers: true
 
 # Credentials for your image host.
 registry:
