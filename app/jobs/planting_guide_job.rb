@@ -11,6 +11,5 @@ class PlantingGuideJob < ApplicationJob
       partial: "mask_requests/planting_guide_section",
       locals: { mask_request: mask_request }
     )
-    mask_request.complete!
   end
 end

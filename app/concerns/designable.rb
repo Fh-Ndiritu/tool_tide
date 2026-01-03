@@ -97,9 +97,19 @@ module Designable
     @mask_request.reload
     image_count = [ @mask_request.main_view.attached?, @mask_request.rotated_view.attached?, @mask_request.drone_view.attached? ].count(true)
 
+    if image_count.zero?
+      @mask_request.update progress: :failed, error_msg: "Image generation failed.", user_error: "Image generation failed. Please try again."
+      return
+    end
+
     cost = GOOGLE_IMAGE_COST * image_count
 
-    @mask_request.canva.user.charge_pro_cost!(cost)
-    @mask_request.complete!
+    if cost.zero?
+      @mask_request.update progress: :failed, error_msg: "You have no credits left."
+    else
+      @mask_request.canva.user.charge_pro_cost!(cost)
+      @mask_request.complete!
+    end
+
   end
 end

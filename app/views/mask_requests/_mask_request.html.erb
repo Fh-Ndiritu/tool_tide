@@ -3,7 +3,7 @@
     <div class="bg-red-50 rounded-3xl p-8 border border-red-100 inline-block">
       <h3 class="text-2xl font-bold text-red-800 mb-2">Generation Failed</h3>
       <p class="text-red-600"><%= mask_request.user_error || "Something went wrong. Please try again." %></p>
-       <%= link_to "Try Again", edit_mask_request_path(mask_request), class: "mt-4 inline-block px-6 py-2 bg-red-600 text-white rounded-full hover:bg-red-700 transition" %>
+       <%= link_to "Try Again", new_canva_mask_request_path(mask_request.canva), class: "mt-4 inline-block px-6 py-2 bg-red-600 text-white rounded-full hover:bg-red-700 transition" %>
     </div>
   </div>
 <% elsif (mask_request.complete? || mask_request.fetching_plants?)  && mask_request.main_view.attached? %>

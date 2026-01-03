@@ -35,7 +35,7 @@ class DesignGenerator
 
     # Variations are now generated within main_view
 
-    charge_generation if @mask_request.canva.user.afford_generation?
+    charge_generation
 
   rescue Faraday::ServerError => e
     user_error = e.is_a?(Faraday::ServerError) ? "We are having some downtime, try again later ..." : "Something went wrong, try a different style."
