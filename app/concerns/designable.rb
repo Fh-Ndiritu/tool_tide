@@ -110,6 +110,5 @@ module Designable
       @mask_request.canva.user.charge_pro_cost!(cost)
       @mask_request.complete!
     end
-
   end
 end
