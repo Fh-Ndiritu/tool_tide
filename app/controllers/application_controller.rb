@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   before_action :set_active_storage_url_options
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :authenticate_user!
+  skip_before_action :authenticate_user!, only: [ :robots_block, :render_410 ]
 
   before_action :block_singapore_users
   before_action :redirect_to_canva, if: -> { user_signed_in? && devise_controller? }
@@ -18,6 +19,20 @@ class ApplicationController < ActionController::Base
     else
       super
     end
+  end
+
+  def render_410
+    respond_to do |format|
+      format.html { render file: "#{Rails.root}/public/410.html", layout: false, status: :gone }
+      format.all  { head :gone }
+    end
+  end
+
+  def robots_block
+    render plain: <<~ROBOTS
+      User-agent: *
+      Disallow: /
+    ROBOTS
   end
 
   private
@@ -47,4 +62,6 @@ class ApplicationController < ActionController::Base
       render plain: "Access Forbidden", status: :forbidden
     end
   end
+
+
 end

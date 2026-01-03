@@ -1,4 +1,4 @@
-class CanvasController < ApplicationController
+class CanvasController < AppController
   before_action :set_canva, only: %i[ show update destroy ]
 
   # GET /canvas/new

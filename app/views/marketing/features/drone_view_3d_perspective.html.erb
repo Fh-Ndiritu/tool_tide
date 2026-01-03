@@ -1,0 +1,373 @@
+<% content_for :title, "AI Drone View & 3D Perspective for Landscape Design" %>
+
+<% content_for :description, "Generate professional AI drone views and rotated camera angles for any site plan. Improve client visualization, site analysis, and project planning instantly with Hadaa." %>
+
+<% content_for :keywords, "AI drone view landscape design, rotated camera angle visualization tool, 3D perspective from 2D photo AI, bird's-eye view landscape rendering, AI site analysis tool, AI visualization for client proposals, vector transformation visualization, high-angle landscape design perspective" %>
+
+<div
+  class="
+    bg-neutral-900 text-white min-h-screen font-sans selection:bg-accent
+    selection:text-black
+  "
+>
+  <%# --- Hero Section --- %>
+  <section class="relative py-20 lg:py-32 overflow-hidden">
+    <div
+      class="
+        absolute inset-0 bg-gradient-to-b from-black/80 via-neutral-900/90
+        to-neutral-900 z-0
+      "
+    ></div>
+
+    <%# Background placeholder %>
+    <!-- PROMPT: Aerial drone shot of a large, complex landscape design project, bird's eye view, showing geometric patterns of pathways and planting beds, golden hour lighting, high resolution. -->
+    <div
+      class="absolute inset-0 bg-cover bg-center opacity-20"
+      style="background-image: url('<%= asset_path("features/drone_view_bg.png") %>')"
+    ></div>
+
+    <div class="container mx-auto px-6 relative z-10 text-center">
+      <span
+        class="
+          inline-block py-1 px-3 rounded-full bg-accent/10 border
+          border-accent/30 text-accent text-sm font-bold tracking-wider mb-6
+          animate-fade-in-up
+        "
+      >
+        PROFESSIONAL SITE ANALYSIS
+      </span>
+
+      <h1
+        class="
+          text-5xl md:text-7xl font-extrabold tracking-tight mb-8
+          leading-tight animate-fade-in-up delay-100
+        "
+      >
+        Drone View &
+        <br class="hidden md:block" />
+        <span
+          class="
+            text-transparent bg-clip-text bg-gradient-to-r from-accent
+            to-secondary
+          "
+        >
+          Rotated Camera Angles
+        </span>
+      </h1>
+
+      <p
+        class="
+          text-xl md:text-2xl text-neutral-300 max-w-4xl mx-auto
+          leading-relaxed mb-12 animate-fade-in-up delay-200 font-light
+        "
+      >
+        Hadaa delivers compelling, 3D-accurate vantage points from a single
+        uploaded image. Eliminate the cost of physical drone mapping and
+        generate persuasive client proposals instantly.
+      </p>
+
+      <div
+        class="
+          flex flex-col sm:flex-row justify-center gap-4 animate-fade-in-up
+          delay-300
+        "
+      >
+        <%= link_to "Try Drone View Free", new_user_registration_url(host: "hadaa.app"), rel: "nofollow noreferrer", class: "px-8 py-4 bg-accent text-black font-bold rounded-full hover:bg-white transition-all duration-300 transform hover:scale-105 shadow-[0_0_20px_rgba(0,172,193,0.4)]" %>
+        <%= link_to "See How It Works", "#how-it-works", class: "px-8 py-4 bg-transparent border border-white/30 text-white font-bold rounded-full hover:bg-white/10 transition-all duration-300 backdrop-blur-sm" %>
+      </div>
+    </div>
+  </section>
+
+  <%# --- Intro Content --- %>
+  <section class="py-16 bg-neutral-900">
+    <div class="container mx-auto px-6 max-w-6xl">
+      <div
+        class="
+          bg-neutral-800/50 rounded-3xl p-8 md:p-12 border border-white/5
+          shadow-2xl backdrop-blur-sm relative overflow-hidden
+        "
+      >
+        <h2 class="text-2xl md:text-3xl font-bold mb-8 text-white relative z-10">
+          How Does Hadaa Generate Drone Views with Accuracy?
+        </h2>
+
+        <p class="text-lg text-neutral-300 leading-relaxed mb-8 relative z-10">
+          We achieve superior perspective generation through sophisticated, SOTA
+          (State-of-the-Art) modeling, ensuring technical accuracy that goes far
+          beyond simple perspective shifts.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
+          <div
+            class="
+              space-y-4 p-6 bg-neutral-900/50 rounded-2xl border
+              border-white/5
+            "
+          >
+            <div
+              class="
+                w-12 h-12 rounded-2xl bg-accent/20 flex items-center
+                justify-center text-accent
+              "
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"
+                />
+              </svg>
+            </div>
+
+            <h3 class="text-xl font-bold text-white">Vector Transformation</h3>
+
+            <p class="text-neutral-400 leading-relaxed">
+              Hadaa’s proprietary models use vector transformation and agentic
+              workflows for hyper-accurate perspective generation, trained on
+              the largest dataset on earth.
+            </p>
+          </div>
+
+          <div
+            class="
+              space-y-4 p-6 bg-neutral-900/50 rounded-2xl border
+              border-white/5
+            "
+          >
+            <div
+              class="
+                w-12 h-12 rounded-2xl bg-secondary/20 flex items-center
+                justify-center text-secondary
+              "
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                />
+              </svg>
+            </div>
+
+            <h3 class="text-xl font-bold text-white">
+              Intelligent Angle Selection
+            </h3>
+
+            <p class="text-neutral-400 leading-relaxed">
+              The model automatically decides the optimal angle of rotation and
+              vertical pitch based on the area you masked, ensuring the clearest
+              view for site analysis.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <%# --- Seamless Integration Section --- %>
+  <section id="how-it-works" class="py-20 lg:py-32 relative">
+    <div class="container mx-auto px-6">
+      <div class="flex flex-col lg:flex-row items-center gap-16">
+        <%# Content %>
+        <div class="w-full lg:w-1/2">
+          <div class="flex items-center gap-4 mb-6">
+            <div
+              class="
+                w-12 h-12 rounded-2xl bg-accent flex items-center
+                justify-center text-black font-bold text-xl shadow-lg
+                shadow-accent/20
+              "
+            >
+              A
+            </div>
+            <h2 class="text-3xl md:text-4xl font-bold text-white">
+              Seamless Integration
+            </h2>
+          </div>
+
+          <h3 class="text-xl text-accent mb-8 font-medium">
+            Design Consistency
+          </h3>
+
+          <p class="text-lg text-neutral-300 mb-8 leading-relaxed">
+            To ensure the integrity of your design, the Drone View is fully
+            integrated into the Hadaa workflow.
+          </p>
+
+          <div class="space-y-6">
+            <%# Feature Item %>
+            <div
+              class="
+                group p-5 rounded-2xl bg-neutral-800/30 border
+                border-white/5 hover:border-accent/30 transition-colors
+              "
+            >
+              <h4 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-accent"></span>
+                Combined with AI Brush Tool
+              </h4>
+              <p class="text-sm text-neutral-400 pl-4 border-l border-white/10 ml-1">
+                The rotated view and drone view are always generated from the
+                main view, based on the Brush Tool mask and original image.
+              </p>
+            </div>
+
+            <%# Feature Item %>
+            <div
+              class="
+                group p-5 rounded-2xl bg-neutral-800/30 border
+                border-white/5 hover:border-accent/30 transition-colors
+              "
+            >
+              <h4 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-secondary"></span>
+                Guaranteed Consistency
+              </h4>
+              <p class="text-sm text-neutral-400 pl-4 border-l border-white/10 ml-1">
+                Plants, materials, and features selected in the Prompt Editor
+                are perfectly maintained across all perspectives.
+              </p>
+            </div>
+
+            <%# Feature Item %>
+            <div
+              class="
+                group p-5 rounded-2xl bg-neutral-800/30 border
+                border-white/5 hover:border-accent/30 transition-colors
+              "
+            >
+              <h4 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-white"></span>
+                Universal Application
+              </h4>
+              <p class="text-sm text-neutral-400 pl-4 border-l border-white/10 ml-1">
+                Works seamlessly on all environments (open yards, complex urban
+                spaces), providing professional results instantly.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <%# Visual %>
+        <div class="w-full lg:w-1/2">
+          <div
+            class="
+              relative rounded-3xl overflow-hidden border border-white/10
+              shadow-2xl bg-neutral-900
+            "
+          >
+            <div
+              class="
+                absolute inset-0 bg-accent/5 group-hover:bg-transparent
+                transition-colors duration-500 z-10 pointer-events-none
+              "
+            ></div>
+
+            <!-- PROMPT: Split screen showing a 2D site plan on the left and a 3D generated drone view on the right, interface elements showing camera angle and elevation data, professional CAD software look. -->
+            <%= image_tag "features/drone_view_analysis.png", alt: "Aerial angle landscape planner drone view interface - 3D Analysis", class: "w-full h-auto" %>
+
+            <%# Floating UI Element Mockup %>
+            <div
+              class="
+                absolute top-6 right-6 bg-black/80 backdrop-blur-md p-3
+                rounded-xl border border-white/10 z-20
+              "
+            >
+              <div class="flex flex-col gap-2">
+                <div class="flex items-center gap-2 text-xs text-white/80">
+                  <svg
+                    class="w-4 h-4 text-accent"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                    />
+                  </svg>
+                  <span>Angle: 45°</span>
+                </div>
+                <div class="flex items-center gap-2 text-xs text-white/80">
+                  <svg
+                    class="w-4 h-4 text-secondary"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                    />
+                  </svg>
+                  <span>Elevation: 15m</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <%# --- CTA Section --- %>
+  <section class="py-20">
+    <div class="container mx-auto px-6">
+      <div
+        class="
+          bg-gradient-to-r from-accent to-secondary rounded-3xl p-12 md:p-20
+          text-center shadow-2xl relative overflow-hidden
+        "
+      >
+        <!-- PROMPT: Subtle dark grain texture, monochrome noise, seamless pattern, high resolution. -->
+        <div
+          class="absolute inset-0 opacity-20 mix-blend-overlay"
+          style="background-image: url('<%= asset_path("features/noise_texture.png") %>');"
+        ></div>
+
+        <h2 class="text-4xl md:text-6xl font-black text-black mb-8 relative z-10">
+          Transform Your Project Planning
+        </h2>
+
+        <p
+          class="
+            text-xl text-black/80 max-w-2xl mx-auto mb-10 font-medium
+            relative z-10
+          "
+        >
+          Upgrade to Hadaa’s Drone View today.
+        </p>
+
+        <%= link_to "Start Free Trial", new_user_registration_url(host: "hadaa.app"), rel: "nofollow noreferrer", class: "inline-block px-10 py-5 bg-black text-white text-xl font-bold rounded-full hover:bg-neutral-900 transition-all duration-300 transform hover:scale-105 shadow-xl relative z-10" %>
+
+        <p class="mt-6 text-black/60 text-sm font-semibold relative z-10">
+          No credit card required • Instant access
+        </p>
+      </div>
+    </div>
+  </section>
+</div>

@@ -9,12 +9,13 @@
   "
 >
   <%# Background Gradient %>
-  <div
-    class="
-      absolute inset-0 bg-gradient-to-b from-black/80 via-neutral-900/90
-      to-neutral-900 z-0 pointer-events-none
-    "
-  ></div>
+  <%# Background Image %>
+  <%= image_tag "auth_background_login.png",
+      class: "absolute inset-0 w-full h-full object-cover z-0",
+      alt: "Background"
+  %>
+  <%# Dark Overlay %>
+  <div class="absolute inset-0 bg-black/70 z-0"></div>
 
   <div
     class="

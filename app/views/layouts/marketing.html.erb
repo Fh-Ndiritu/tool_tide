@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>
+      <%= content_for?(:title) ? yield(:title) : "AI Landscape Design Generator FREE – Editor, Drone View, No Card Required" %>
+    </title>
+
+    <meta name="language" content="en">
+    <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Transform your yard instantly with Hadaa's advanced AI tool. Use the Brush Designer & intelligent Prompt Editor for precision editing, get local plant recommendations, and generate shopping lists. Free trial, no credit card required." %>">
+
+    <meta property="og:title" content="<%= content_for?(:title) ? yield(:title) : "Hadaa: AI Landscape Design Generator FREE – No Card Required" %>" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="<%= request.original_url.split('?').first %>" />
+    <meta property="og:image" content="<%= asset_path("social_preview.jpg") %>" />
+    <meta property="twitter:image" content="<%= asset_path("social_preview.jpg") %>" />
+    <meta property="og:description" content="<%= content_for?(:description) ? yield(:description) : "Hadaa offers precision AI landscape design with a Brush Tool and Prompt Editor. Generate 3D drone views, local plant suggestions, and shopping lists. Start FREE today." %>" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@hadaa_app" />
+    <meta name="twitter:creator" content="@hadaa_app" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Relief:wght@400;700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+    <link rel="icon" type="image/png" sizes="32x32" href="<%= asset_path("favicon/favicon-32x32.png") %>">
+    <link rel="icon" type="image/png" sizes="16x16" href="<%= asset_path("favicon/favicon-16x16.png") %>">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="shortcut icon" href="<%= asset_path("favicon/favicon.ico") %>">
+
+    <% if content_for?(:schema_markup) %>
+      <%= yield :schema_markup %>
+    <% end %>
+
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= yield :head %>
+
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+
+    <% if content_for?(:head) %>
+      <%= yield :head %>
+    <% end %>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ESX8FF1NG8"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-ESX8FF1NG8');
+    </script>
+    <script src="https://unpkg.com/konva@9/konva.min.js"></script>
+    <%= Sentry.get_trace_propagation_meta.html_safe %>
+  </head>
+
+  <body class="bg-neutral-900 text-white font-sans antialiased selection:bg-accent selection:text-black">
+    <%= render "layouts/marketing_navbar" %>
+    <%= render "shared/flash" %>
+
+    <main class="<%= content_for(:main_classes) %>">
+      <div class="w-full m-auto block"><%= yield %></div>
+    </main>
+
+    <%= render "shared/footer" %>
+  </body>
+</html>

@@ -163,7 +163,9 @@ f="XMLHttpRequest",g._w={},g._w[f]=m[f],g._w[s]=m[s],m[s]&&(m[s]=function(){retu
   >
     <% show_loader = defined?(@mask_request) && @mask_request&.processing? %>
     <%= render partial: "layouts/shared/loader", locals: { record: (show_loader ? @mask_request : nil), klasses: "#{show_loader ? '' : 'hidden'} fixed" } %>
-    <%= render "shared/navbar" %>
+    <% if user_signed_in? %>
+      <%= render "shared/navbar" %>
+    <% end %>
     <%= render "shared/flash" %>
     <% if user_signed_in? %>
       <%= render "shared/onboarding_modal" %>
@@ -173,9 +175,5 @@ f="XMLHttpRequest",g._w={},g._w[f]=m[f],g._w[s]=m[s],m[s]&&(m[s]=function(){retu
     <main class="<%= content_for(:main_classes) %>">
       <div class="w-full m-auto block"><%= yield %></div>
     </main>
-
-    <% unless user_signed_in? %>
-      <%= render "shared/footer" %>
-    <% end %>
   </body>
 </html>

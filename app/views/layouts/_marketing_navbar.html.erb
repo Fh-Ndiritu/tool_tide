@@ -1,0 +1,172 @@
+<nav
+  class="px-4 shadow-md bg-accent-secondary sticky top-0 z-50"
+  data-controller="navbar"
+>
+  <div class="container mx-auto flex flex-col lg:flex-row justify-between items-center">
+    <div class="w-full lg:w-auto flex items-center mb-0 lg:mb-0 relative py-2">
+      <div class="flex-shrink-0">
+        <%= link_to root_path, class: "flex items-center" do %>
+          <%= image_tag "hadaa.png", alt: "Hadaa", class:"h-16 w-16 rounded-full mr-2" %>
+        <% end %>
+      </div>
+
+      <%# Mobile link button %>
+      <div
+        class="lg:hidden ml-auto"
+        data-action="click->navbar#toggleMenu"
+      >
+        <%= render ButtonComponent.new(
+                  text: "",
+                  classes: "bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
+                  svg: 'list',
+                  svg_classes: "bg-transparent h-6 w-6 text-neutral-900",
+                  ) %>
+      </div>
+    </div>
+
+    <div
+      id="navigation-links"
+      data-navbar-target="navigationLinks"
+      class="
+        lg:pr-4 flex justify-center lg:justify-end hidden lg:flex flex-col
+        lg:flex-row max-lg:w-full items-center space-y-2 lg:space-y-0
+        lg:space-x-4 lg:flex-1 pb-4 lg:pb-0
+      "
+    >
+        <%= render ButtonComponent.new(
+          text: "Home",
+          href: root_path,
+          classes: "#{active_item(root_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
+          data: { action: "click->navbar#toggleMenu" }
+          ) %>
+        <div
+          data-controller="dropdown"
+          data-dropdown-hidden-class="hidden"
+          class="relative w-full lg:w-auto"
+        >
+          <button
+            data-action="dropdown#toggle"
+            class="
+              flex items-center gap-4 bg-transparent hover:bg-secondary
+              focus:outline-none hover:bg-accent text-neutral-900
+              hover:text-white p-0 rounded-md transition duration-150
+              w-full lg:w-auto justify-center
+            "
+          >
+            <span class="font-bold">Features</span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 9l-7 7-7-7"
+              />
+            </svg>
+          </button>
+
+          <div
+            data-dropdown-target="menu"
+            data-dropdown-hidden-class="hidden"
+            class="
+              hidden relative w-full lg:absolute lg:w-72 lg:left-auto
+              lg:translate-x-0 mt-2 bg-white rounded-xl shadow-none lg:shadow-2xl p-2
+              z-50 ring-1 ring-black/5 origin-top-right lg:right-0
+            "
+          >
+            <%= link_to "/features/brush-prompt-editor", class: active_link_class("/features/brush-prompt-editor"), data: { action: "click->dropdown#hide" } do %>
+              <div class="font-bold mb-0.5">Brush Tool & Prompt Editor</div>
+              <div class="text-xs text-gray-500 group-hover:text-accent/80">
+                Precision editing for your landscape
+              </div>
+            <% end %>
+
+            <%= link_to "/features/intuitive-onboarding", class: active_link_class("/features/intuitive-onboarding"), data: { action: "click->dropdown#hide" } do %>
+              <div class="font-bold mb-0.5">Intuitive Onboarding</div>
+              <div class="text-xs text-gray-500 group-hover:text-accent/80">
+                Zero learning curve, instant results
+              </div>
+            <% end %>
+
+            <%= link_to "/features/ai-prompt-editor", class: active_link_class("/features/ai-prompt-editor"), data: { action: "click->dropdown#hide" } do %>
+              <div class="font-bold mb-0.5">Intelligent AI Prompt Editor</div>
+              <div class="text-xs text-gray-500 group-hover:text-accent/80">
+                Granular control for advanced designers
+              </div>
+            <% end %>
+
+            <%= link_to "/features/location-plant-suggestions", class: active_link_class("/features/location-plant-suggestions"), data: { action: "click->dropdown#hide" } do %>
+              <div class="font-bold mb-0.5">Location Plant Suggestions</div>
+              <div class="text-xs text-gray-500 group-hover:text-accent/80">
+                Sustainable, data-driven garden planning
+              </div>
+            <% end %>
+
+            <%= link_to "/features/drone-view-3d-perspective", class: active_link_class("/features/drone-view-3d-perspective"), data: { action: "click->dropdown#hide" } do %>
+              <div class="font-bold mb-0.5">Drone View & 3D Perspective</div>
+              <div class="text-xs text-gray-500 group-hover:text-accent/80">
+                Professional site analysis and visualization
+              </div>
+            <% end %>
+
+            <%= link_to "/features/shopping-list-planting-guide", class: active_link_class("/features/shopping-list-planting-guide"), data: { action: "click->dropdown#hide" } do %>
+              <div class="font-bold mb-0.5">Shopping List & Planting Guide</div>
+              <div class="text-xs text-gray-500 group-hover:text-accent/80">
+                Automated procurement and execution
+              </div>
+            <% end %>
+
+            <%= link_to "/features/sketch-to-3d-rendering", class: active_link_class("/features/sketch-to-3d-rendering"), data: { action: "click->dropdown#hide" } do %>
+              <div class="font-bold mb-0.5">Sketch to 3D Rendering</div>
+              <div class="text-xs text-gray-500 group-hover:text-accent/80">
+                Convert sketches to photorealistic 3D designs
+              </div>
+            <% end %>
+
+            <%= link_to "/city-design-inspiration", class: active_link_class("/city-design-inspiration"), data: { action: "click->dropdown#hide" } do %>
+              <div class="font-bold mb-0.5">City Design Inspiration</div>
+              <div class="text-xs text-gray-500 group-hover:text-accent/80">
+                Local landscape designs & inspiration gallery
+              </div>
+            <% end %>
+          </div>
+        </div>
+        <%= render ButtonComponent.new(
+          text: "Pricing",
+          href: pricing_path,
+          classes: "#{active_item(pricing_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
+          data: { action: "click->navbar#toggleMenu" }
+          ) %>
+        <%= render ButtonComponent.new(
+            text: "FAQ",
+            href: full_faq_path,
+            classes: " gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
+            data: { action: "click->navbar#toggleMenu" }
+            ) %>
+        <%= render ButtonComponent.new(
+        text: "Explore",
+        href: explore_path,
+        classes: "#{active_item(explore_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
+        data: { action: "click->navbar#toggleMenu" }
+        ) %>
+        <%= render ButtonComponent.new(
+          text: "Sign Up",
+          href: new_user_registration_url(host: Rails.env.production? ? "hadaa.app" : "localhost:3000"),
+          html_options: { rel: "nofollow noreferrer" },
+          classes: "gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0 font-bold",
+          data: { action: "click->navbar#toggleMenu" }
+          ) %>
+        <%= render ButtonComponent.new(
+          text: "Contact",
+          href: contact_us_path,
+          classes: "#{active_item(contact_us_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
+          data: { action: "click->navbar#toggleMenu" }
+          ) %>
+    </div>
+  </div>
+</nav>

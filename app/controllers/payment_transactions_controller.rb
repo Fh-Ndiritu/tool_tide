@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class PaymentTransactionsController < ApplicationController
+class PaymentTransactionsController < AppController
   def index; end
 
   def create

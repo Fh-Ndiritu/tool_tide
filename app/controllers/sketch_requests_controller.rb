@@ -1,4 +1,4 @@
-class SketchRequestsController < ApplicationController
+class SketchRequestsController < AppController
   before_action :set_canva, only: %i[create]
   before_action :set_sketch_request, only: %i[show new_mask_request]
 

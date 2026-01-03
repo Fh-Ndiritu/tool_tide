@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Admin
-  class BaseController < ApplicationController
+  class BaseController < AppController
     before_action :authenticate_user!
     before_action :authenticate_admin
 

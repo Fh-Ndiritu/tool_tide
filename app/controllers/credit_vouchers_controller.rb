@@ -1,4 +1,4 @@
-class CreditVouchersController < ApplicationController
+class CreditVouchersController < AppController
   before_action :authenticate_user!
 
   def redeem

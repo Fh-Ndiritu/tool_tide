@@ -1,4 +1,4 @@
-class TextRequestsController < ApplicationController
+class TextRequestsController < AppController
   before_action :set_text_request, only: %i[ show update ]
   before_action :authorize_user, only: %i[ update destroy ]
 

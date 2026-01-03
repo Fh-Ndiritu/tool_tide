@@ -5,10 +5,10 @@ class ButtonComponent < ViewComponent::Base
   DEFAULT_CLASSES = %w[flex flex-col items-center font-semibold py-2 px-2 rounded-lg cursor-pointer
                        hover:bg-primary hover:text-light text-center duration-200 bg-secondary text-text-light transition-all transition-duration-300 ease-in-out].freeze
 
-  attr_reader :text, :type, :svg, :href, :data, :name, :value, :svg_classes
+  attr_reader :text, :type, :svg, :href, :data, :name, :value, :svg_classes, :html_options
 
   def initialize(text: "Submit", type: "button", classes: "", svg: nil, href: nil, data: {}, name: "", value: "",
-                 svg_classes: "")
+                 svg_classes: "", html_options: {})
     @text = text
     @type = type
     @svg = svg
@@ -18,5 +18,6 @@ class ButtonComponent < ViewComponent::Base
     @value = value
     @classes = merge_classes(classes)
     @svg_classes = svg_classes
+    @html_options = html_options
   end
 end

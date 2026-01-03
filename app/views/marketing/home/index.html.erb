@@ -1,0 +1,666 @@
+<%# START: SEO/Metadata Definitions %>
+
+<% content_for(:title, "Hadaa: AI Landscape Design Generator – Free Plan, no card required") %>
+
+<% content_for(:description, "The most advanced AI landscape design tool. Upload a photo, use the brush editor and get 3D results. Intelligent editing with text prompts.") %>
+
+<% content_for(:keywords, "free AI landscaping design, free plan landscape design, AI garden design no credit card, generate garden images free, realistic landscape design, online landscaping tool, visualize outdoor spaces, garden planner, landscape creator, AI garden generator, Hadaa Ai, free mask designer, free AI editor") %>
+
+<% content_for(:og_title, "Try Hadaa Ai FREE | AI Landscaping Design Tool - No Credit Card") %>
+
+<% content_for(:og_description, "Start FREE with Hadaa Ai - no credit card needed! Try our Mask Designer and AI Editor to transform your landscaping visions into stunning, photorealistic designs. Perfect for homeowners, designers, and enthusiasts.") %>
+
+<% content_for(:og_image_alt, "Screenshot of Hadaa Ai generating a beautiful, realistic garden image") %>
+
+<% content_for(:twitter_title, "Try FREE AI Landscape Design | No Credit Card Required") %>
+
+<% content_for(:twitter_description, "Try Hadaa Ai FREE! Get one free mask design and AI edit - no credit card required. Experience instant, photorealistic landscaping transformations before you buy.") %>
+
+<% content_for(:twitter_image_alt, "Vibrant AI-generated landscaping image created by Hadaa Ai") %>
+
+<%= content_for(:schema_name, "Hadaa Ai - AI Landscaping Image Generator") %>
+
+<%= content_for(:schema_description, "Try Hadaa Ai FREE - no credit card required! Generate stunningly realistic, photorealistic landscaping images for your outdoor space with our Mask Designer and AI Editor. Then unlock unlimited designs with pay-as-you-go credits.") %>
+
+<%= content_for(:main_classes, "mx-0 pl-0 pr-0 max-w-[100vw] block") %>
+
+<%# END: SEO/Metadata Definitions %>
+
+<%# START: Hero Section %>
+
+<section
+  class="
+    relative h-auto min-h-[70vh] lg:h-[90vh] flex items-center
+    overflow-hidden bg-gray-900 py-10 lg:py-0
+  "
+>
+  <div
+    class="
+      absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-black
+      opacity-50
+    "
+  ></div>
+
+  <div class="px-4 md:px-8 lg:px-12 container mx-auto  relative z-10 w-full">
+    <div
+      class="
+        grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 md:gap-8
+        items-center w-full
+      "
+    >
+      <%# Heading - Order 1 on mobile, Order 1 on tablet (left col), Order 1 on desktop (left col) %>
+      <div
+        class="
+          w-full text-center lg:text-left text-white order-1 md:col-span-1
+          lg:col-span-1 lg:row-start-1
+        "
+      >
+        <h1
+          class="
+            text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-4 lg:mb-2 leading-snug
+            tracking-tight drop-shadow-lg
+          "
+        >
+          <span class="text-accent">Free</span> Ai <span class="text-secondary">garden design</span> software
+        </h1>
+        <span class="text-white block lg:inline fancy-text drop-shadow-lg text-2xl md:text-3xl lg:text-4xl">design your dreams</span>
+      </div>
+
+      <%# Phone Wrapper - Order 3 on mobile, Order 3 on tablet (right col), Order 3 on desktop (right col, spans rows) %>
+      <div
+        class="
+          w-full flex justify-center lg:justify-end order-3 md:col-span-1
+          md:col-start-2 md:row-start-1 md:row-span-3 mb-12
+          lg:mb-0
+        "
+      >
+        <style>
+          @keyframes phone-rock {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(-3deg); }
+          }
+          .phone-wrapper {
+            animation: phone-rock 3s ease-in-out infinite;
+            transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            cursor: pointer;
+          }
+          .phone-wrapper:hover, .phone-wrapper:active, .phone-wrapper:focus-within {
+            animation: none;
+            transform: rotate(0deg);
+          }
+        </style>
+        <div
+          class="
+            phone-wrapper relative mx-auto border-[#f37f3c] bg-[#f37f3c]
+            border-[14px] rounded-[2.5rem] h-[600px] w-[300px] shadow-2xl
+            shadow-accent/20 scale-90 md:scale-90 lg:scale-100 origin-center
+          "
+        >
+          <div
+            class="
+              w-[148px] h-[18px] bg-black top-0 rounded-b-[1rem] left-1/2
+              -translate-x-1/2 absolute z-20
+            "
+          ></div>
+
+          <div
+            class="
+              h-[32px] w-[3px] bg-[#f37f3c] absolute -left-[17px] top-[72px]
+              rounded-l-lg
+            "
+          ></div>
+
+          <div
+            class="
+              h-[46px] w-[3px] bg-[#f37f3c] absolute -left-[17px]
+              top-[124px] rounded-l-lg
+            "
+          ></div>
+
+          <div
+            class="
+              h-[46px] w-[3px] bg-[#f37f3c] absolute -left-[17px]
+              top-[178px] rounded-l-lg
+            "
+          ></div>
+
+          <div
+            class="
+              h-[64px] w-[3px] bg-[#f37f3c] absolute -right-[17px]
+              top-[142px] rounded-r-lg
+            "
+          ></div>
+
+          <div
+            class="
+              rounded-[2rem] overflow-hidden w-full h-full bg-black relative
+              z-10
+            "
+          >
+            <div
+              data-controller="carousel"
+              data-carousel-images-value="<%= ['carousel/carousel_cottage.png', 'carousel/carousel_mediterranean.png', 'carousel/carousel_zen.png', 'carousel/carousel_desert.png'].map { |v| asset_path(v) }.to_json %>"
+              class="w-full h-full bg-black relative overflow-hidden"
+            >
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <%# Description - Order 2 on mobile, Order 2 on tablet, Order 2 on desktop (left col, middle) %>
+      <div
+        class="
+          w-full text-center md:text-left text-white order-2 md:col-span-1
+          md:col-start-1 md:row-start-2 flex flex-col
+          items-center md:items-start
+        "
+      >
+        <%# Free Trial Badge %>
+        <%= link_to new_user_registration_url(host: "hadaa.app"),
+          rel: "nofollow noreferrer",
+          class: "
+            inline-flex items-center gap-3 bg-gradient-to-r from-accent/20
+            to-secondary/20 border-2 border-accent/50 rounded-full px-6 py-3
+            mb-4 hover:scale-105 transition-transform duration-300 group animate-pulse-scale hover:animate-none
+          " do %>
+          <span class="text-3xl animate-bounce">🎁</span>
+          <div class="text-left">
+            <p class="text-xs md:text-sm font-bold text-accent uppercase tracking-wide">
+              Signup and Try Free - No Credit Card
+            </p>
+            <p class="text-xs text-neutral-200">Mask Designer and Ai Editor</p>
+          </div>
+        <% end %>
+
+        <p
+          class="
+            text-lg md:text-xl max-w-2xl md:max-w-3xl mx-auto md:mx-0 mb-6
+            text-neutral-200
+          "
+        >
+          <b>Upload. Brush. Transform.</b>
+          Get photorealistic designs, smart plant recommendations, and a
+          complete shopping list.
+          <b class="text-accent">Signup and start your Free Plan</b>
+          - no credit card required.
+        </p>
+      </div>
+
+      <%# Buttons/CTA - Order 4 on mobile, Order 4 on tablet, Order 4 on desktop (left col, bottom) %>
+      <div
+        class="
+          w-full text-center md:text-left text-white order-4 md:col-span-1
+          md:col-start-1 md:row-start-3 flex flex-col
+          items-center md:items-start
+        "
+      >
+        <div
+          class="
+            flex flex-col sm:flex-row gap-4 justify-center md:justify-start
+            w-full
+          "
+        >
+          <%# START: ButtonComponent - Start Designing Today %>
+          <%= render ButtonComponent.new(
+              text: "Start Designing Today",
+              href: new_user_registration_url(host: "hadaa.app"),
+              html_options: { rel: "nofollow noreferrer" },
+              classes: "w-full sm:w-auto flex-shrink-0 bg-accent-secondary py-4 px-10 rounded-full shadow-3xl shadow-secondary/50 transition duration-300 transform hover:scale-105 border-white hover:border-primary hover:bg-white/10 text-black hover:text-white font-semibold py-4 px-10 rounded-full transition duration-300 transform hover:scale-[1.02]"
+          ) %>
+          <%# END: ButtonComponent - Start Designing Today %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%# END: Hero Section %>
+
+<%# START: Explore/FOMO Section %>
+
+<section
+  id="explore-fomo"
+  class="py-10 bg-neutral-900 text-white overflow-hidden"
+>
+  <div class="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+
+
+    <%# START: Design Grid/Gallery %>
+    <div class="text-center mb-16">
+      <h2
+        class="
+          text-4xl md:text-6xl font-extrabold mb-4 leading-tight text-white
+          drop-shadow-lg
+        "
+      >
+        Don't Just Dream It.
+        <span class="text-accent block sm:inline">See What's Possible.</span>
+      </h2>
+      <p class="text-xl md:text-2xl max-w-4xl mx-auto text-neutral-300">
+        Join the
+        <b>10,000+ designers</b>
+        turning ideas into reality. These designs were generated in the last 24
+        hours.
+      </p>
+    </div>
+
+    <div class="w-full justify-center mt-20">
+      <div
+        class="w-full max-w-full"
+        data-controller="masonry"
+        data-masonry-item-selector-value=".masonry-item"
+      >
+        <%# START: Mask Requests (Image-to-Image Designs) %>
+        <% @mask_requests.each_with_index do |request, index| %>
+          <% if image = request.face_image %>
+            <div class="masonry-item w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-0 mb-0">
+              <div
+                class="
+                  overflow-hidden cursor-pointer
+                  transition-all duration-300 ease-in-out
+                  hover:scale-[1.03] hover:z-10 relative group w-full
+                "
+              >
+                <%= image_tag url_for(image.variant(resize_to_limit: [400, 400])),
+                    loading: index < 10 ? :eager : :lazy,
+                    alt: "AI Landscaping Design in #{request.preset.humanize} Style - AI garden design example",
+                    title: "#{request.preset.humanize} Style Design",
+                    class: "w-full h-auto block" %>
+               <%= content_tag :h4, "#{request.preset.humanize} Style", class: "flex w-fit items-center absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/60 backdrop-blur-sm text-white text-sm font-medium px-4 py-1.5 rounded-full opacity-80 group-hover:opacity-100 transition-opacity duration-300" %>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+
+        <%# END: Mask Requests (Image-to-Image Designs) %>
+      </div>
+    </div>
+
+    <div class="text-center mt-12 mb-10">
+      <%= link_to explore_path, class: "inline-flex items-center justify-center gap-2 bg-gradient-to-r from-accent to-secondary text-black font-bold text-lg py-4 px-10 rounded-full hover:shadow-2xl hover:shadow-accent/50 transition-all duration-300 transform hover:scale-105" do %>
+        <span>Explore All Logic</span>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+        </svg>
+      <% end %>
+    </div>
+
+    <%# END: Design Grid/Gallery %>
+  </div>
+</section>
+
+<%# END: Explore/FOMO Section %>
+
+<%# START: How It Works Section (Stimulus Slider) %>
+
+<%# START: How It Works Section (Sticky Scrollytelling) %>
+
+<section
+  id="how_it_works"
+  class="py-20 bg-gray-900 text-white relative"
+  data-controller="scroll-spy"
+  data-scroll-spy-active-class="opacity-100 scale-100"
+>
+  <div class="container mx-auto px-6 max-w-7xl">
+    <div class="text-center mb-20">
+      <h2
+        class="
+          text-4xl md:text-6xl font-extrabold mb-6 leading-tight
+          drop-shadow-lg
+        "
+      >
+        Your Dream Garden in <span class="text-accent">Simple Steps</span>
+      </h2>
+      <p class="text-lg md:text-2xl max-w-3xl mx-auto text-neutral-300 font-light">
+        Stop guessing. Start designing. Watch your vision come to life.
+      </p>
+    </div>
+
+    <div class="flex flex-col md:flex-row gap-12 lg:gap-24">
+      <%# LEFT COLUMN: Sticky Image Container (Desktop) %>
+      <div class="hidden md:block w-1/2 relative">
+        <div
+          class="
+            sticky top-32 h-[60vh] min-h-[400px] max-h-[600px] w-full
+            bg-neutral-800 rounded-3xl overflow-hidden shadow-2xl border
+            border-neutral-700
+          "
+        >
+          <div
+            class="
+              absolute inset-0 bg-gradient-to-t from-black/60
+              via-transparent to-transparent z-10
+            "
+          ></div>
+
+          <%= image_tag 'how_it_works/step_1_modern.png',
+              class: "w-full h-full object-cover transition-opacity duration-300 ease-in-out",
+              alt: "AI landscape design generator upload photo step",
+              data: { scroll_spy_target: "image" } %>
+
+          <%# Decorative Elements %>
+          <div class="absolute bottom-8 left-8 z-20">
+            <div
+              class="
+                flex items-center gap-3 bg-black/50 backdrop-blur-md px-4
+                py-2 rounded-full border border-white/10
+              "
+            >
+              <div class="w-2 h-2 rounded-full bg-accent animate-pulse"></div>
+              <span class="text-sm font-medium text-white">Live Preview</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <%# RIGHT COLUMN: Scrolling Steps %>
+      <div class="w-full md:w-1/2 flex flex-col gap-24 md:py-10 lg:py-20">
+        <% steps = [
+          { title: "Upload Your Photo", desc: "Take or upload a photo of your area. Hadaa instantly uses it as the canvas for your AI design.", img: "how_it_works/step_1_modern.png", num: "01" },
+          { title: "Brush to Modify", desc: "Use our intuitive brush tool to highlight only the areas you want us to modify. Precision control at your fingertips.", img: "how_it_works/step_2_modern.png", num: "02" },
+          { title: "Select your Vibe", desc: "Choose a style from our collection of SOTA curated designs. From Zen Gardens to Modern Minimalist.", img: "how_it_works/step_3_modern.png", num: "03" },
+          { title: "Hadaa Magic", desc: "Get stunning transformations of your space. Our AI understands depth, lighting, and perspective for photorealistic results.", img: "how_it_works/step_4_modern.png", num: "04" },
+          { title: "Planting Guide", desc: "Receive a shopping list and planting guide to bring your final design to life. Know exactly what to buy.", img: "how_it_works/step_5_modern.png", num: "05" },
+          { title: "Take the Wheel!", desc: "Transform your results further with our clever, intuitive text editing model. Just type what you want to change.", img: "how_it_works/text_editor.png", num: "06" }
+        ] %>
+
+        <% steps.each_with_index do |step, index| %>
+          <div
+            class="
+              step-card flex flex-col gap-6 transition-all duration-500
+              ease-out opacity-40 scale-95 origin-left min-h-[50vh]
+              justify-center
+            "
+            data-scroll-spy-target="step"
+            data-step-index="<%= index %>"
+            data-image-url="<%= asset_path(step[:img]) %>"
+          >
+            <%# Mobile Image (Visible only on mobile) %>
+            <div
+              class="
+                md:hidden w-full h-64 md:h-96 rounded-2xl overflow-hidden
+                shadow-lg mb-4 relative group
+              "
+            >
+              <%= image_tag step[:img], class: "w-full h-full object-cover", alt: "#{step[:title]} - AI garden design step" %>
+              <div
+                class="
+                  absolute top-4 left-4 bg-black/60 backdrop-blur px-3 py-1
+                  rounded-full text-xs font-bold text-accent border
+                  border-accent/20
+                "
+              >
+                Step <%= step[:num] %>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-6">
+              <span
+                class="
+                  hidden md:block text-6xl font-black text-transparent
+                  bg-clip-text bg-gradient-to-br from-accent to-neutral-700
+                  opacity-50
+                "
+              >
+                <%= step[:num] %>
+              </span>
+              <div>
+                <h3 class="text-3xl md:text-4xl font-bold text-white mb-4">
+                  <%= step[:title] %>
+                </h3>
+                <p class="text-lg text-neutral-400 leading-relaxed max-w-md">
+                  <%= step[:desc] %>
+                </p>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="flex mt-20 w-full justify-center px-4">
+      <%= render ButtonComponent.new(
+          text: "Start Designing Now - It's Free!",
+          href: new_user_registration_url(host: "hadaa.app"),
+          html_options: { rel: "nofollow noreferrer" },
+          classes: "bg-accent hover:bg-accent/80 text-black font-extrabold text-xl py-5 px-12 rounded-full shadow-[0_10px_40px_-10px_rgba(0,172,193,1)] transition duration-300 ease-in-out transform hover:scale-[1.15]"
+        ) %>
+    </div>
+  </div>
+</section>
+
+<%# END: How It Works Section (Sticky Scrollytelling) %>
+
+
+<%# START: FAQ Section %>
+
+<section id="faq" class="py-16 md:py-32 bg-gray-800 text-white">
+  <div class="container mx-auto px-6 max-w-6xl">
+    <h2
+      class="
+        text-center text-4xl md:text-5xl font-extrabold mb-16 text-white
+        leading-tight drop-shadow-lg
+      "
+    >
+      Frequently Asked Questions
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+      <%# START: FAQ Item 0 - Free Trial %>
+      <div
+        class="
+          bg-gradient-to-br from-accent/10 to-secondary/10 rounded-xl shadow-2xl p-6 border-2 border-accent
+          transition duration-300 hover:scale-[1.02] hover:shadow-accent/50
+        "
+        data-accordion-target="item"
+      >
+        <h3
+          class="
+            text-xl font-bold mb-0 text-accent flex justify-between
+            items-center cursor-pointer
+          "
+          data-action="click->accordion#toggle"
+        >
+          Is there a free plan? 🎁
+        </h3>
+        <div>
+          <p class="text-base text-neutral-300 leading-relaxed mt-3">
+            <b class="text-accent">Yes! We have a generous Free Plan.</b>
+            Try Hadaa with
+            <b>40 free credits</b>
+            - no credit card required. Experience our photorealistic
+            transformations with zero commitment.
+          </p>
+        </div>
+      </div>
+
+      <%# END: FAQ Item 0 - Free Trial %>
+
+      <%# START: FAQ Item 1 - Pricing Model %>
+      <div
+        class="
+          bg-neutral-900 rounded-xl shadow-2xl p-6 border-l-4 border-primary
+          transition duration-300 hover:scale-[1.02] hover:shadow-primary/50
+        "
+        data-accordion-target="item"
+      >
+        <h3
+          class="
+            text-xl font-bold mb-0 text-primary flex justify-between
+            items-center cursor-pointer
+          "
+          data-action="click->accordion#toggle"
+        >
+          What is the pricing model for Hadaa AI Landscaper?
+        </h3>
+        <div>
+          <p class="text-base text-neutral-300 leading-relaxed mt-3">
+            <b class="text-accent">Start with our Free Plan!</b>
+            Try our Mask Designer and AI Editor with no credit card required.
+            After your free plan, Hadaa operates on a simple, transparent
+            <b>Pay-As-You-Go credit system</b>
+            . To begin, you purchase your first pack:
+            <b>$10 for 200 Usage Credits</b>
+            . You simply buy more credits when you need them.
+          </p>
+        </div>
+      </div>
+
+      <%# END: FAQ Item 1 - Pricing Model %>
+
+      <%# START: FAQ Item 2 - What is Hadaa %>
+      <div
+        class="
+          bg-neutral-900 rounded-xl shadow-2xl p-6 border-l-4 border-accent
+          transition duration-300 hover:scale-[1.02] hover:shadow-accent/50
+        "
+        data-accordion-target="item"
+      >
+        <h3
+          class="
+            text-xl font-bold mb-0 text-accent flex justify-between
+            items-center cursor-pointer
+          "
+          data-action="click->accordion#toggle"
+        >
+          What is Hadaa? How does the AI design work?
+        </h3>
+        <div>
+          <p class="text-base text-neutral-300 leading-relaxed mt-3">
+            Hadaa is an
+            <b>AI-powered landscape design tool</b>
+            . You upload a photo, use our unique
+            <b>brush tool</b>
+            and
+            <b>text prompts</b>
+            to define changes, and the AI generates a
+            <b>photorealistic</b>
+            new garden design instantly.
+          </p>
+        </div>
+      </div>
+
+      <%# END: FAQ Item 2 - What is Hadaa %>
+
+      <%# START: FAQ Item 3 - Text Editing %>
+      <div
+        class="
+          bg-neutral-900 rounded-xl shadow-2xl p-6 border-l-4 border-primary
+          transition duration-300 hover:scale-[1.02] hover:shadow-primary/50
+        "
+        data-accordion-target="item"
+      >
+        <h3
+          class="
+            text-xl font-bold mb-0 text-primary flex justify-between
+            items-center cursor-pointer
+          "
+          data-action="click->accordion#toggle"
+        >
+          Can I use text to edit my landscape design?
+        </h3>
+        <div>
+          <p class="text-base text-neutral-300 leading-relaxed mt-3">
+            Yes! Our latest feature allows you to
+            <b>edit via text prompts</b>
+            . Say "Add a Zen garden" or "Change the deck to pavers" to instantly
+            refine the areas you've brushed for
+            <b>precise AI modification</b>
+            .
+          </p>
+        </div>
+      </div>
+
+      <%# END: FAQ Item 3 - Text Editing %>
+
+      <%# START: FAQ Item 4 - Plant Recommendations %>
+      <div
+        class="
+          bg-neutral-900 rounded-xl shadow-2xl p-6 border-l-4 border-accent
+          transition duration-300 hover:scale-[1.02] hover:shadow-accent/50
+        "
+        data-accordion-target="item"
+      >
+        <h3
+          class="
+            text-xl font-bold mb-0 text-accent flex justify-between
+            items-center cursor-pointer
+          "
+          data-action="click->accordion#toggle"
+        >
+          Does Hadaa recommend plants for my specific area?
+        </h3>
+        <div>
+          <p class="text-base text-neutral-300 leading-relaxed mt-3">
+            Absolutely. Hadaa uses your
+            <b>location</b>
+            and
+            <b>climate zone</b>
+            to provide
+            <b>tailored plant recommendations</b>
+            guaranteed to thrive locally. This ensures your garden is resilient
+            and beautiful year-round.
+          </p>
+        </div>
+      </div>
+
+      <%# END: FAQ Item 4 - Plant Recommendations %>
+
+      <%# START: FAQ Item 5 - Shopping List %>
+      <div
+        class="
+          bg-neutral-900 rounded-xl shadow-2xl p-6 border-l-4 border-primary
+          transition duration-300 hover:scale-[1.02] hover:shadow-primary/50
+        "
+        data-accordion-target="item"
+      >
+        <h3
+          class="
+            text-xl font-bold mb-0 text-primary flex justify-between
+            items-center cursor-pointer
+          "
+          data-action="click->accordion#toggle"
+        >
+          Can I get a shopping list for my AI design?
+        </h3>
+        <div>
+          <p class="text-base text-neutral-300 leading-relaxed mt-3">
+            Yes! Every finalized design generates a
+            <b>comprehensive shopping list</b>
+            of materials and plants. We also provide
+            <b>planting instructions</b>
+            and local links to help you purchase and implement your project
+            seamlessly.
+          </p>
+        </div>
+      </div>
+
+      <%# END: FAQ Item 5 - Shopping List %>
+    </div>
+
+    <%# Full FAQ CTA %>
+    <div class="text-center mt-16">
+      <p class="text-lg text-neutral-300 mb-6">
+        Looking for more detailed information?
+      </p>
+      <%= link_to full_faq_path, class: "inline-flex items-center gap-2 bg-gradient-to-r from-accent to-secondary text-black font-bold text-lg py-4 px-8 rounded-full hover:shadow-2xl hover:shadow-accent/50 transition-all duration-300 transform hover:scale-105" do %>
+        <span>Explore Complete FAQ & Help Center</span>
+        <svg
+          class="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M13 7l5 5m0 0l-5 5m5-5H6"
+          />
+        </svg>
+      <% end %>
+    </div>
+  </div>
+</section>
+
+<%# END: FAQ Section %>

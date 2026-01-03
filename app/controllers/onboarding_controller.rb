@@ -1,4 +1,4 @@
-class OnboardingController < ApplicationController
+class OnboardingController < AppController
   def update
     if current_user.update(onboarding_stage: params[:stage])
       respond_to do |format|

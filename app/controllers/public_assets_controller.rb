@@ -1,4 +1,4 @@
-class PublicAssetsController < ApplicationController
+class PublicAssetsController < AppController
   skip_before_action :authenticate_user!, only: :show
 
   def show

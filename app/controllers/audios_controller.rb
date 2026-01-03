@@ -1,4 +1,4 @@
-class AudiosController < ApplicationController
+class AudiosController < AppController
   before_action :set_audio, only: %i[ show edit update destroy ]
 
   # GET /audios or /audios.json

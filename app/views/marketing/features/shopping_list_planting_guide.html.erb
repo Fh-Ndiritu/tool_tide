@@ -1,0 +1,364 @@
+<% content_for :title, "AI Shopping List & Local Planting Guide Generator" %>
+
+<% content_for :description, "Automatically generate an executable plant shopping list and localized planting guides. Simplify procurement, minimize waste, and ensure timely installation with Hadaa." %>
+
+<% content_for :keywords, "AI shopping list generator for landscape, landscape design plant quantity calculator, minimize material wastage AI design, automated plant procurement list, SOTA vision models landscape design, depth analysis garden planner, localized planting guide AI, live search planting time data, full-grown plant size visualization, garden logistics software" %>
+
+<div
+  class="
+    bg-neutral-900 text-white min-h-screen font-sans selection:bg-accent
+    selection:text-black
+  "
+>
+  <%# --- Hero Section --- %>
+  <section class="relative py-20 lg:py-32 overflow-hidden">
+    <div
+      class="
+        absolute inset-0 bg-gradient-to-b from-black/80 via-neutral-900/90
+        to-neutral-900 z-0
+      "
+    ></div>
+
+    <%# Background placeholder %>
+    <!-- PROMPT: Flat lay photography of gardening tools, seed packets, and a digital tablet showing a plant shopping list, rustic wooden table background, natural lighting, high resolution. -->
+    <div
+      class="absolute inset-0 bg-cover bg-center opacity-20"
+      style="background-image: url('<%= asset_path("features/shopping_list_bg.png") %>')"
+    ></div>
+
+    <div class="container mx-auto px-6 relative z-10 text-center">
+      <span
+        class="
+          inline-block py-1 px-3 rounded-full bg-accent/10 border
+          border-accent/30 text-accent text-sm font-bold tracking-wider mb-6
+          animate-fade-in-up
+        "
+      >
+        EXECUTION & LOGISTICS
+      </span>
+
+      <h1
+        class="
+          text-5xl md:text-7xl font-extrabold tracking-tight mb-8
+          leading-tight animate-fade-in-up delay-100
+        "
+      >
+        Automated Shopping List &
+        <br class="hidden md:block" />
+        <span
+          class="
+            text-transparent bg-clip-text bg-gradient-to-r from-accent
+            to-secondary
+          "
+        >
+          Localized Planting Guides
+        </span>
+      </h1>
+
+      <p
+        class="
+          text-xl md:text-2xl text-neutral-300 max-w-4xl mx-auto
+          leading-relaxed mb-12 animate-fade-in-up delay-200 font-light
+        "
+      >
+        Hadaa transforms your photorealistic design into an executable,
+        budget-friendly project plan. Eliminate material wastage and simplify
+        the entire procurement and installation process.
+      </p>
+
+      <div
+        class="
+          flex flex-col sm:flex-row justify-center gap-4 animate-fade-in-up
+          delay-300
+        "
+      >
+        <%= link_to "Generate My List", new_user_registration_url(host: "hadaa.app"), rel: "nofollow noreferrer", class: "px-8 py-4 bg-accent text-black font-bold rounded-full hover:bg-white transition-all duration-300 transform hover:scale-105 shadow-[0_0_20px_rgba(0,172,193,0.4)]" %>
+        <%= link_to "See How It Works", "#how-it-works", class: "px-8 py-4 bg-transparent border border-white/30 text-white font-bold rounded-full hover:bg-white/10 transition-all duration-300 backdrop-blur-sm" %>
+      </div>
+    </div>
+  </section>
+
+  <%# --- Shopping List Section --- %>
+  <section class="py-16 bg-neutral-900">
+    <div class="container mx-auto px-6 max-w-6xl">
+      <div
+        class="
+          bg-neutral-800/50 rounded-3xl p-8 md:p-12 border border-white/5
+          shadow-2xl backdrop-blur-sm relative overflow-hidden
+        "
+      >
+        <h2 class="text-2xl md:text-3xl font-bold mb-8 text-white relative z-10">
+          How Does Hadaa Generate an Executable Shopping List?
+        </h2>
+
+        <p class="text-lg text-neutral-300 leading-relaxed mb-12 relative z-10">
+          Hadaa starts the implementation by leveraging SOTA vision models and
+          depth analysis to automatically generate a complete list of materials.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
+          <div class="space-y-4">
+            <div
+              class="
+                w-12 h-12 rounded-2xl bg-accent/20 flex items-center
+                justify-center text-accent
+              "
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                />
+              </svg>
+            </div>
+
+            <h3 class="text-xl font-bold text-white">Precision Quantity</h3>
+
+            <p class="text-neutral-400 leading-relaxed">
+              Surgical accuracy based on masked area size and planting density
+              rules, using advanced vision models and depth analysis.
+            </p>
+          </div>
+
+          <div class="space-y-4">
+            <div
+              class="
+                w-12 h-12 rounded-2xl bg-secondary/20 flex items-center
+                justify-center text-secondary
+              "
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                />
+              </svg>
+            </div>
+
+            <h3 class="text-xl font-bold text-white">
+              Comprehensive Materials
+            </h3>
+
+            <p class="text-neutral-400 leading-relaxed">
+              Includes all required materials like pots, mulch, and fertilizer,
+              even if not explicitly mentioned, to minimize oversight.
+            </p>
+          </div>
+
+          <div class="space-y-4">
+            <div
+              class="
+                w-12 h-12 rounded-2xl bg-white/10 flex items-center
+                justify-center text-white
+              "
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            </div>
+
+            <h3 class="text-xl font-bold text-white">Minimize Wastage</h3>
+
+            <p class="text-neutral-400 leading-relaxed">
+              Exact, executable lists with no guesswork help you stay rigorously
+              on budget and reduce material waste.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <%# --- Planting Guide Section --- %>
+  <section id="how-it-works" class="py-20 lg:py-32 relative">
+    <div class="container mx-auto px-6">
+      <div class="flex flex-col lg:flex-row items-center gap-16">
+        <%# Content %>
+        <div class="w-full lg:w-1/2">
+          <div class="flex items-center gap-4 mb-6">
+            <div
+              class="
+                w-12 h-12 rounded-2xl bg-accent flex items-center
+                justify-center text-black font-bold text-xl shadow-lg
+                shadow-accent/20
+              "
+            >
+              A
+            </div>
+            <h2 class="text-3xl md:text-4xl font-bold text-white">
+              Localized Planting Guide
+            </h2>
+          </div>
+
+          <h3 class="text-xl text-accent mb-8 font-medium">
+            Timing, Technique, and Growth
+          </h3>
+
+          <p class="text-lg text-neutral-300 mb-8 leading-relaxed">
+            Beyond the shopping list, Hadaa provides the final, detailed
+            guidance necessary for successful installation and long-term
+            maintenance.
+          </p>
+
+          <div class="space-y-6">
+            <%# Feature Item %>
+            <div
+              class="
+                group p-5 rounded-2xl bg-neutral-800/30 border
+                border-white/5 hover:border-accent/30 transition-colors
+              "
+            >
+              <h4 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-accent"></span>
+                Localized Timing Information
+              </h4>
+              <p class="text-sm text-neutral-400 pl-4 border-l border-white/10 ml-1">
+                Optimal planting timing based on live search data for frost
+                dates and regional agricultural calendars.
+              </p>
+            </div>
+
+            <%# Feature Item %>
+            <div
+              class="
+                group p-5 rounded-2xl bg-neutral-800/30 border
+                border-white/5 hover:border-accent/30 transition-colors
+              "
+            >
+              <h4 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-secondary"></span>
+                Detailed Execution Instructions
+              </h4>
+              <p class="text-sm text-neutral-400 pl-4 border-l border-white/10 ml-1">
+                Comprehensive guidance including plant identification, growth
+                planning (size at maturity), and step-by-step care instructions.
+              </p>
+            </div>
+
+            <%# Feature Item %>
+            <div
+              class="
+                group p-5 rounded-2xl bg-neutral-800/30 border
+                border-white/5 hover:border-accent/30 transition-colors
+              "
+            >
+              <h4 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-white"></span>
+                Long-Term Care
+              </h4>
+              <p class="text-sm text-neutral-400 pl-4 border-l border-white/10 ml-1">
+                Personalized watering schedules and seasonal appearance previews
+                to ensure your garden thrives year-round.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <%# Visual %>
+        <div class="w-full lg:w-1/2">
+          <div
+            class="
+              relative rounded-3xl overflow-hidden border border-white/10
+              shadow-2xl bg-neutral-900
+            "
+          >
+            <div
+              class="
+                absolute inset-0 bg-accent/5 group-hover:bg-transparent
+                transition-colors duration-500 z-10 pointer-events-none
+              "
+            ></div>
+
+            <!-- PROMPT: Close up of a mobile app interface showing a checklist of plants to buy, with quantities and estimated prices, checked items, clean and organized UI. -->
+            <%= image_tag "features/shopping_list_interface.png", alt: "Location specific plant shopping list generator interface", class: "w-full h-auto" %>
+
+            <%# Floating UI Element Mockup %>
+            <div
+              class="
+                absolute bottom-6 left-6 right-6 bg-black/80
+                backdrop-blur-md p-4 rounded-xl border border-white/10 z-20
+              "
+            >
+              <div class="flex justify-between items-center mb-2">
+                <div class="flex items-center gap-2">
+                  <div class="w-2 h-2 rounded-full bg-accent animate-pulse"></div>
+                  <span class="text-xs font-bold text-accent uppercase">Planting Window</span>
+                </div>
+                <span class="text-xs text-neutral-500">Optimal: Oct 15 - Nov 10</span>
+              </div>
+              <div class="flex items-center justify-between text-xs text-white/80 mt-2">
+                <span>Lavender (Lavandula)</span>
+                <span class="font-bold">x12 Units</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <%# --- CTA Section --- %>
+  <section class="py-20">
+    <div class="container mx-auto px-6">
+      <div
+        class="
+          bg-gradient-to-r from-accent to-secondary rounded-3xl p-12 md:p-20
+          text-center shadow-2xl relative overflow-hidden
+        "
+      >
+        <!-- PROMPT: Subtle dark grain texture, monochrome noise, seamless pattern, high resolution. -->
+        <div
+          class="absolute inset-0 opacity-20 mix-blend-overlay"
+          style="background-image: url('<%= asset_path("features/noise_texture.png") %>');"
+        ></div>
+
+        <h2 class="text-4xl md:text-6xl font-black text-black mb-8 relative z-10">
+          Move from Concept to Construction
+        </h2>
+
+        <p
+          class="
+            text-xl text-black/80 max-w-2xl mx-auto mb-10 font-medium
+            relative z-10
+          "
+        >
+          Get your automated shopping list and planting guide instantly with
+          Hadaa.
+        </p>
+
+        <%= link_to "Start Free Trial", new_user_registration_url(host: "hadaa.app"), rel: "nofollow noreferrer", class: "inline-block px-10 py-5 bg-black text-white text-xl font-bold rounded-full hover:bg-neutral-900 transition-all duration-300 transform hover:scale-105 shadow-xl relative z-10" %>
+
+        <p class="mt-6 text-black/60 text-sm font-semibold relative z-10">
+          No credit card required • Instant access
+        </p>
+      </div>
+    </div>
+  </section>
+</div>

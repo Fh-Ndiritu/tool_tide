@@ -1,16 +1,12 @@
 <% if @href.present? %>
   <!-- Render as link -->
-  <a
-    href="<%= @href %>"
-    <%= @data.map { |key, value| "data-#{key}=\"#{value}\"" }.join(' ') %>
-    class="<%= @classes %>"
-  >
+  <%= link_to @href, @html_options.merge(class: @classes, data: @data) do %>
     <% if @svg %>
       <%= render(IconComponent.new(name: @svg, classes: @svg_classes)) %>
     <% end %>
     <!-- Button Text -->
     <span><%= @text %></span>
-  </a>
+  <% end %>
 <% else %>
   <!-- Render as button -->
   <button

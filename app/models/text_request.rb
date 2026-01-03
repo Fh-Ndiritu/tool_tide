@@ -3,8 +3,7 @@ class TextRequest < ApplicationRecord
 
   belongs_to :user
   has_ancestry
-  has_many :generation_taggings, as: :generation
-  has_many :tags, through: :generation_taggings
+
   has_many :favorites, as: :favoritable, dependent: :destroy
   has_many :favorited_by_users, through: :favorites, source: :user
 

@@ -1,4 +1,4 @@
-class FavoritesController < ApplicationController
+class FavoritesController < AppController
   before_action :authenticate_user!
 
   # POST /favorites (Action: Like or Dislike)

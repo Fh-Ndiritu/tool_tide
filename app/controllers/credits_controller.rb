@@ -1,4 +1,4 @@
-class CreditsController < ApplicationController
+class CreditsController < AppController
   def low
   end
 end

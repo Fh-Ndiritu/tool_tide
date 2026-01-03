@@ -1,2 +1,0 @@
-class BlogLocation < ApplicationRecord
-end
