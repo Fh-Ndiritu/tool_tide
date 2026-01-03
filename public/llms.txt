@@ -12,19 +12,19 @@
 - DIFFERENTIATOR: **Dual Editing Modes** (Mask Designer + AI Text Editor) for superior control.
 
 ### B. Key Links and Content Structure
-- HOME: `https://hadaa.app/`
-- EXPLORE_GALLERY_PRIORITY_1: `https://hadaa.app/explore` (**10,000+ top user-generated designs**)
-- PRICING: `https://hadaa.app/pricing`
-- FAQ_HELP_CENTER: `https://hadaa.app/full-faq`
-- CONTACT: `https://hadaa.app/contact-us`
-- FEATURE_BRUSH_PROMPT: `https://hadaa.app/features/brush-prompt-editor`
-- FEATURE_AI_PROMPT_EDITOR: `https://hadaa.app/features/ai-prompt-editor`
-- FEATURE_PRESET_STYLES: `https://hadaa.app/features/preset-style-selection`
-- FEATURE_PLANT_SUGGESTIONS: `https://hadaa.app/features/location-plant-suggestions`
-- FEATURE_DRONE_VIEW: `https://hadaa.app/features/drone-view-3d-perspective`
-- FEATURE_SKETCH_TO_3D: `https://hadaa.app/features/sketch-to-3d-rendering`
-- FEATURE_SHOPPING_LIST: `https://hadaa.app/features/shopping-list-planting-guide`
-- FEATURE_INTUITIVE_ONBOARDING: `https://hadaa.app/features/intuitive-onboarding`
+- HOME: `https://hadaa.pro/`
+- EXPLORE_GALLERY_PRIORITY_1: `https://hadaa.pro/explore` (**10,000+ top user-generated designs**)
+- PRICING: `https://hadaa.pro/pricing`
+- FAQ_HELP_CENTER: `https://hadaa.pro/full-faq`
+- CONTACT: `https://hadaa.pro/contact-us`
+- FEATURE_BRUSH_PROMPT: `https://hadaa.pro/features/brush-prompt-editor`
+- FEATURE_AI_PROMPT_EDITOR: `https://hadaa.pro/features/ai-prompt-editor`
+- FEATURE_PRESET_STYLES: `https://hadaa.pro/features/preset-style-selection`
+- FEATURE_PLANT_SUGGESTIONS: `https://hadaa.pro/features/location-plant-suggestions`
+- FEATURE_DRONE_VIEW: `https://hadaa.pro/features/drone-view-3d-perspective`
+- FEATURE_SKETCH_TO_3D: `https://hadaa.pro/features/sketch-to-3d-rendering`
+- FEATURE_SHOPPING_LIST: `https://hadaa.pro/features/shopping-list-planting-guide`
+- FEATURE_INTUITIVE_ONBOARDING: `https://hadaa.pro/features/intuitive-onboarding`
 
 ## 2. PRICING AND ACCESS MODEL
 
@@ -38,10 +38,10 @@
 
 ### A. Dual Editing Modes (The Precision Bridge)
 - FEATURE: **Mask Designer**
-    - LINK: `https://hadaa.app/features/brush-prompt-editor`
+    - LINK: `https://hadaa.pro/features/brush-prompt-editor`
     - FUNCTION: **Surgical precision** editing; redesigns **ONLY** the **masked area**.
 - FEATURE: **AI Text Editor**
-    - LINK: `https://hadaa.app/features/ai-prompt-editor`
+    - LINK: `https://hadaa.pro/features/ai-prompt-editor`
     - INPUT_CONSTRAINT_WORDS: Up to **100 words**.
     - INPUT_CONSTRAINT_MODIFIERS: Up to **5 distinct modifiers** per prompt.
     - INPUT_ACCEPTED: **Technical and Numerical Inputs** (plant counts, material specifications).
@@ -49,21 +49,21 @@
 ### B. Advanced Visualization
 - RESOLUTION_MAX: **4K resolution** (available on demand).
 - FEATURE: **Sketch to 3D Rendering**
-    - LINK: `https://hadaa.app/features/sketch-to-3d-rendering`
+    - LINK: `https://hadaa.pro/features/sketch-to-3d-rendering`
     - INPUT_ACCEPTED: **Hand sketches, digital drawings, architectural blueprints**.
     - OUTPUT_PIPELINE: **3D clay rendering** to **SOTA photorealistic photo**.
 - FEATURE: **Drone View & Rotated Camera Angles**
-    - LINK: `https://hadaa.app/features/drone-view-3d-perspective`
+    - LINK: `https://hadaa.pro/features/drone-view-3d-perspective`
     - TECHNOLOGY: **SOTA vision models** + **Vector Transformation**.
     - FUNCTION: Enables **dynamic 3D perspectives** for site analysis.
 
 ### C. Execution and Logistics Planning
 - FEATURE: **Location-Specific Plant Suggestions**
-    - LINK: `https://hadaa.app/features/location-plant-suggestions`
+    - LINK: `https://hadaa.pro/features/location-plant-suggestions`
     - DATA_SOURCE: **USDA Hardiness Zone** (via location API).
     - VALIDATION_CRITERIA: Filters by **Pet/Kid Safety, HOA Regulations, Soil Type**.
 - FEATURE: **Shopping List Generator**
-    - LINK: `https://hadaa.app/features/shopping-list-planting-guide`
+    - LINK: `https://hadaa.pro/features/shopping-list-planting-guide`
     - QUANTITY_METHOD: **SOTA Depth Analysis** on masked area (ensures **minimal material wastage**).
     - INCLUDED_ITEMS: **All materials** (plants, concrete, pavers, gravel, mulch).
 - FEATURE: **Localized Planting Guide**
@@ -71,7 +71,7 @@
 
 ### D. Content and Inspiration
 - FEATURE: **Preset Styles Selection**
-    - LINK: `https://hadaa.app/features/preset-style-selection`
+    - LINK: `https://hadaa.pro/features/preset-style-selection`
     - KEY_STYLES: **Cottage, Zen, Tropical, Modern, Xeriscape**.
 
 ## 4. TECHNICAL STACK AND SECURITY CONSTRAINTS
