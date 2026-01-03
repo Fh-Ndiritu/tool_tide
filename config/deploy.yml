@@ -20,9 +20,7 @@ servers:
 # Note: If using Cloudflare, set encryption mode in SSL/TLS setting to "Full" to enable CF-to-app encryption.
 proxy:
   ssl: true
-  host:
-   - hadaa.app
-   - hadaa.pro
+  host: hadaa.app,hadaa.pro
   app_port: 3000
   # forward_headers: true
 
