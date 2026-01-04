@@ -51,9 +51,7 @@
         <%= text_request.prompt.truncate(80) %>
       </p>
 
-      <p class="text-sm text-neutral-600 mt-2">
-        Tags: <%= text_request.tags.map(&:title).join(', ') if text_request.tags.any? %>
-      </p>
+
     </div>
 
     <div class="flex-shrink-0 mt-auto pt-2 border-t border-gray-300">
