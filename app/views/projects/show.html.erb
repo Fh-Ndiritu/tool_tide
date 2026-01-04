@@ -200,6 +200,7 @@
                 data: { unified_dashboard_target: "form", action: "submit->unified-dashboard#prepareSubmission" } do |f| %>
 
             <%= hidden_field_tag :mask_data, "", data: { unified_dashboard_target: "maskInput" } %> <!-- Hidden Mask Input -->
+            <%= hidden_field_tag :parent_layer_id, @initial_layer&.id, data: { unified_dashboard_target: "parentLayerInput" } %> <!-- Hidden Parent Layer Input -->
 
             <!-- Mode Toggle -->
             <div class="flex bg-[#111] p-1 rounded mb-4">

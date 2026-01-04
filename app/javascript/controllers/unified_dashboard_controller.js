@@ -8,8 +8,11 @@ export default class extends Controller {
     "presetSection", "customSection", "presetModeBtn", "customModeBtn",
     "maskInput", "form", "sidebarLayer", "generateBtn", "brushSizeDisplay",
     "brushTab", "plantTab", "sketchTab",
+    "brushSizeDisplay",
+    "brushTab", "plantTab", "sketchTab",
     "brushPanel", "plantPanel", "sketchPanel", "zoomLevel",
-    "brushRange", "sliderFill", "sliderThumb", "downloadBtn"
+    "brushRange", "sliderFill", "sliderThumb", "downloadBtn",
+    "parentLayerInput"
   ];
 
   static outlets = ["konva-canvas"];
@@ -159,6 +162,10 @@ export default class extends Controller {
 
     if (imageUrl && this.hasKonvaCanvasOutlet) {
       this.konvaCanvasOutlet.imageUrlValue = imageUrl;
+    }
+
+    if (this.hasParentLayerInputTarget) {
+      this.parentLayerInputTarget.value = layerId;
     }
   }
 
