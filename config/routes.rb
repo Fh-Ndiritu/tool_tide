@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   # =========================================================
   # TENANT A: THE CLEAN SEO DOMAIN (hadaa.pro)
   # =========================================================
-  constraints DomainConstraint.new([ "hadaa.pro" ]) do
+  constraints DomainConstraint.new([ "hadaa.pro", "localhost" ]) do
     scope module: "marketing" do
       root to: "home#index", as: :marketing_root
       get "pricing", to: "pricing#index"
