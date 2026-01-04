@@ -54,8 +54,12 @@
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
               <div class="flex items-center space-x-2">
-                <input type="text" readonly value="<%= public_asset_url(asset.uuid) %>" class="text-xs border-gray-300 rounded w-64 bg-gray-50" onclick="this.select()">
-                <%= link_to "View", public_asset_path(asset.uuid), target: "_blank", class: "text-indigo-600 hover:text-indigo-900 text-xs" %>
+                <%
+                  url_options = Rails.env.production? ? { host: "hadaa.pro", protocol: "https" } : {}
+                  asset_url = public_asset_url(asset.uuid, **url_options)
+                %>
+                <input type="text" readonly value="<%= asset_url %>" class="text-xs border-gray-300 rounded w-64 bg-gray-50" onclick="this.select()">
+                <%= link_to "View", asset_url, target: "_blank", class: "text-indigo-600 hover:text-indigo-900 text-xs" %>
               </div>
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
