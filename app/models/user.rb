@@ -115,7 +115,7 @@ class User < ApplicationRecord
     credits.create!(
       source: :signup,
       credit_type: :pro_engine,
-      amount: 40
+      amount: 60
     )
   end
 
