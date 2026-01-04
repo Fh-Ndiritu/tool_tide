@@ -5,14 +5,13 @@ const GREEN_COLOR = 'rgba(100 245 3 / 0.5)';
 const MASK_COLOR = 'rgba(100, 245, 3, 1)';
 const DEFAULT_MASK = 'rgba(12, 12, 12, 0)';
 const CURSOR_COLOR = 'aqua'; // New constant for the cursor color
+const CANVAS_PADDING = 40;
 
 export default class extends Controller {
   static targets = ['canvasContainer'];
 
   static values = {
     imageUrl: String,
-    displayWidth: Number,
-    displayHeight: Number,
     brushSize: { type: Number, default: 40 },
   };
 
@@ -42,69 +41,37 @@ export default class extends Controller {
     console.log('Display Width:', this.displayWidthValue);
     console.log('Display Height:', this.displayHeightValue);
 
-    if (
-      this.hasDisplayWidthValue &&
-      this.hasDisplayHeightValue &&
-      this.displayWidthValue > 0 &&
-      this.displayHeightValue > 0
-    ) {
-      this.initializeKonva();
+    if (this.hasImageUrlValue && this.imageUrlValue) {
+       this.loadImage(this.imageUrlValue);
     } else {
-      console.warn('Initial displayWidth or displayHeight not valid. Konva stage will not be initialized immediately.');
+       console.log('No Image URL provided initially.');
     }
 
-    requestAnimationFrame(() => {
-      if (this.hasImageUrlValue && this.imageUrlValue && this.stage) {
-        this.loadImage(this.imageUrlValue);
-      } else {
-        console.log('Image URL not yet set, or Konva stage not ready after RAF. Skipping initial image load.');
-      }
-    });
+    // Add resize listener
+    this.boundHandleResize = this.handleResize.bind(this);
+    window.addEventListener('resize', this.boundHandleResize);
   }
 
   disconnect() {
     console.log('Konva Canvas Controller disconnected.');
+    window.removeEventListener('resize', this.boundHandleResize);
     this.destroyKonva();
   }
 
   imageUrlValueChanged(url, oldUrl) {
-    if (url && url !== oldUrl && this.stage) {
+    if (url && url !== oldUrl) {
       console.log('imageUrlValue changed, loading new image:', url);
       this.loadImage(url);
     }
   }
 
-  displayWidthValueChanged() {
-    if (
-      this.stage &&
-      (this.stage.width() !== this.displayWidthValue || this.stage.height() !== this.displayHeightValue)
-    ) {
-      console.log('Konva stage dimensions changed, re-initializing.');
-      this.initializeKonva();
-
-      if (this.hasImageUrlValue && this.imageUrlValue) {
-        requestAnimationFrame(() => {
-          this.loadImage(this.imageUrlValue);
-        });
-      }
-    }
+  handleResize() {
+     if (this.imageNode && this.imageNode.image()) {
+         this.updateDimensions(this.imageNode.image());
+     }
   }
 
-  displayHeightValueChanged() {
-    if (
-      this.stage &&
-      (this.stage.width() !== this.displayWidthValue || this.stage.height() !== this.displayHeightValue)
-    ) {
-      console.log('Konva stage dimensions changed, re-initializing.');
-      this.initializeKonva();
 
-      if (this.hasImageUrlValue && this.imageUrlValue) {
-        requestAnimationFrame(() => {
-          this.loadImage(this.imageUrlValue);
-        });
-      }
-    }
-  }
 
   brushSizeValueChanged() {
     if (this.crosshairHorizontal && this.crosshairVertical) {
@@ -115,43 +82,22 @@ export default class extends Controller {
     }
   }
 
-  initializeKonva() {
-    if (
-      !this.hasDisplayWidthValue ||
-      !this.hasDisplayHeightValue ||
-      this.displayWidthValue <= 0 ||
-      this.displayHeightValue <= 0
-    ) {
-      console.warn('Cannot initialize Konva: displayWidth or displayHeight values are not valid.');
-      return;
-    }
-
+  initializeKonva(width, height) {
     if (this.stage) {
-      console.log('Destroying existing Konva stage for re-initialization.');
       this.stage.destroy();
-      this.stage = null;
-      this.layer = null;
-      this.maskLayer = null;
-      this.imageNode = null;
-      this.maskContext = null;
-      this.maskImageNode = null;
-      this.crosshairGroup = null;
-      this.crosshairHorizontal = null;
-      this.crosshairVertical = null;
     }
 
     const container = this.canvasContainerTarget;
-    container.style.width = `${this.displayWidthValue}px`;
-    container.style.height = `${this.displayHeightValue}px`;
-    container.style.maxWidth = '100%';
-    container.style.margin = '0 auto';
-    container.style.overflow = 'hidden';
-    container.innerHTML = '';
+    container.style.width = '100%';
+    container.style.height = '100%';
+    container.style.display = 'flex';
+    container.style.justifyContent = 'center';
+    container.style.alignItems = 'center';
 
     this.stage = new Konva.Stage({
       container: container,
-      width: this.displayWidthValue,
-      height: this.displayHeightValue,
+      width: width,
+      height: height,
     });
 
     this.layer = new Konva.Layer();
@@ -161,96 +107,115 @@ export default class extends Controller {
     this.stage.add(this.maskLayer);
 
     const maskCanvas = document.createElement('canvas');
-    maskCanvas.width = this.displayWidthValue;
-    maskCanvas.height = this.displayHeightValue;
+    maskCanvas.width = width;
+    maskCanvas.height = height;
     this.maskContext = maskCanvas.getContext('2d');
     this.maskContext.fillStyle = DEFAULT_MASK;
-    this.maskContext.fillRect(0, 0, this.displayWidthValue, this.displayHeightValue);
+    this.maskContext.fillRect(0, 0, width, height);
 
     this.maskImageNode = new Konva.Image({
       image: maskCanvas,
       x: 0,
       y: 0,
-      opacity: 0.7, // Set mask opacity to 0.7
+      opacity: 0.7,
     });
     this.maskLayer.add(this.maskImageNode);
 
-    this.crosshairGroup = new Konva.Group({
-      listening: false,
-      visible: false,
-    });
+    this.crosshairGroup = new Konva.Group({ listening: false, visible: false });
 
-    // Add the new circle
+    // Move cursor setup here so it's re-created with new stage
     this.cursorCircle = new Konva.Circle({
-      radius: this.brushSizeValue / 2,
-      stroke: CURSOR_COLOR,
-      strokeWidth: 1,
-      listening: false,
+        radius: this.brushSizeValue / 2,
+        stroke: CURSOR_COLOR,
+        strokeWidth: 1,
+        listening: false,
     });
 
     this.crosshairHorizontal = new Konva.Line({
-      points: [-10, 0, 10, 0],
-      stroke: CURSOR_COLOR,
-      strokeWidth: 3,
-      lineCap: 'butt',
-      listening: false,
+        points: [-10, 0, 10, 0],
+        stroke: CURSOR_COLOR,
+        strokeWidth: 3,
+        lineCap: 'butt',
+        listening: false,
     });
 
     this.crosshairVertical = new Konva.Line({
-      points: [0, -10, 0, 10],
-      stroke: CURSOR_COLOR,
-      strokeWidth: 3,
-      lineCap: 'butt',
-      listening: false,
+        points: [0, -10, 0, 10],
+        stroke: CURSOR_COLOR,
+        strokeWidth: 3,
+        lineCap: 'butt',
+        listening: false,
     });
 
     this.crosshairGroup.add(this.cursorCircle, this.crosshairHorizontal, this.crosshairVertical);
     this.maskLayer.add(this.crosshairGroup);
 
-    // Hide the default cursor icon
-    container.style.cursor = 'none';
+    // Hide default cursor
+    // The container style cursor is nice, but we need to ensure it applies to stage
+    this.stage.container().style.cursor = 'none';
+
 
     this.setupDrawingEvents();
     this.resetMaskHistory();
-    this.saveMaskState();
-    console.log(`Konva Stage initialized with dimensions: ${this.displayWidthValue}x${this.displayHeightValue}`);
+    this.saveMaskState(); // Initial save
+    console.log(`Konva initialized with ${width}x${height}`);
   }
 
   loadImage(imageDataURL) {
-    if (!this.stage) {
-      console.error('loadImage called but Konva stage is not initialized.');
-      return;
-    }
-
     return new Promise((resolve, reject) => {
       const img = new Image();
       img.crossOrigin = 'Anonymous';
       img.onload = () => {
-        if (this.imageNode) {
-          this.imageNode.destroy();
-        }
-        this.imageNode = new Konva.Image({
-          image: img,
-          x: 0,
-          y: 0,
-          width: this.stage.width(),
-          height: this.stage.height(),
-          draggable: false,
-        });
-
-        this.layer.add(this.imageNode);
-        this.layer.batchDraw();
-        this.resetMaskHistory();
-        this.saveMaskState();
-        console.log('Image loaded onto Konva canvas.');
+        this.updateDimensions(img);
         resolve();
       };
       img.onerror = (e) => {
-        console.error('Failed to load image onto Konva canvas.', e);
-        reject(new Error('Failed to load image onto Konva canvas.'));
+        console.error('Failed to load image.', e);
+        reject();
       };
       img.src = imageDataURL;
     });
+  }
+
+  updateDimensions(img) {
+      if (!this.hasCanvasContainerTarget) return;
+
+      const container = this.element.parentElement; // Parent container
+      // Apply padding to the available dimensions
+      const maxWidth = container.clientWidth - (CANVAS_PADDING * 2);
+      const maxHeight = container.clientHeight - (CANVAS_PADDING * 2);
+
+      const imgWidth = img.naturalWidth;
+      const imgHeight = img.naturalHeight;
+      const aspectRatio = imgWidth / imgHeight;
+
+      let displayWidth = maxWidth;
+      let displayHeight = maxWidth / aspectRatio;
+
+      if (displayHeight > maxHeight) {
+          displayHeight = maxHeight;
+          displayWidth = maxHeight * aspectRatio;
+      }
+
+      // Rounding
+      displayWidth = Math.floor(displayWidth);
+      displayHeight = Math.floor(displayHeight);
+
+      // Re-initialize Konva with new dimensions
+      this.initializeKonva(displayWidth, displayHeight);
+
+      this.imageNode = new Konva.Image({
+          image: img,
+          x: 0,
+          y: 0,
+          width: displayWidth,
+          height: displayHeight,
+          draggable: false
+      });
+
+      this.layer.add(this.imageNode);
+      this.imageNode.moveToBottom();
+      this.layer.batchDraw();
   }
 
   setupDrawingEvents() {
@@ -610,7 +575,11 @@ export default class extends Controller {
     finalMaskCanvas.height = originalHeight;
     const finalMaskContext = finalMaskCanvas.getContext('2d');
 
-    // Draw the original mask onto the new canvas
+    // scale factor
+    const scaleX = originalWidth / this.stage.width();
+    const scaleY = originalHeight / this.stage.height();
+
+    // Draw the original mask onto the new canvas, scaling it
     finalMaskContext.drawImage(
       this.maskContext.canvas,
       0,
@@ -633,26 +602,26 @@ export default class extends Controller {
       const g = data[i + 1];
       const b = data[i + 2];
 
-      // Check if the pixel is green (green channel is dominant)
+      // Check if the pixel is green. Note: Anti-aliasing might introduce other colors
+      // Simple Green check: Green is dominant
       if (g > 100 && g > r && g > b) {
         // Convert green to true violet (#7F00FF)
-        data[i] = 127; // R (true violet)
-        data[i + 1] = 0; // G (true violet)
-        data[i + 2] = 255; // B (true violet)
-        data[i + 3] = 255; // Alpha (fully opaque)
+        data[i] = 127; // R
+        data[i + 1] = 0; // G
+        data[i + 2] = 255; // B
+        data[i + 3] = 255; // Alpha
       } else {
         // Convert everything else to white
-        data[i] = 255; // R
-        data[i + 1] = 255; // G
-        data[i + 2] = 255; // B
-        data[i + 3] = 255; // Alpha (fully opaque)
+        data[i] = 255;
+        data[i + 1] = 255;
+        data[i + 2] = 255;
+        data[i + 3] = 255;
       }
     }
 
     // Put the modified pixel data back onto the canvas
     finalMaskContext.putImageData(imageData, 0, 0);
 
-    // Return the modified canvas as a data URL
     return finalMaskCanvas.toDataURL('image/png');
   }
 }

@@ -274,10 +274,10 @@
             <div class="flex items-center justify-between mb-4">
                <label class="text-xs text-gray-400">Variations</label>
                <div class="flex items-center gap-2">
-                 <%= f.range_field :variations, min: 1, max: 4, value: 1, step: 1,
+                 <%= f.range_field :variations, min: 1, max: 4, value: 2, step: 1,
                         class: "w-20 accent-green-500",
                         data: { action: "input->unified-dashboard#updateVariationCount", unified_dashboard_target: "variationSlider" } %>
-                 <span class="text-sm font-bold w-4 text-center" data-unified-dashboard-target="variationCount">1</span>
+                 <span class="text-sm font-bold w-4 text-center" data-unified-dashboard-target="variationCount">2</span>
                </div>
             </div>
 
@@ -286,7 +286,7 @@
                   data: { unified_dashboard_target: "generateBtn" },
                   disabled: true %>
           <% end %>
-          <p class="text-[10px] text-gray-500 text-center mt-2">Cost: ~<span id="cost-display" data-unified-dashboard-target="costDisplay">8</span> credits</p>
+          <p class="text-[10px] text-gray-500 text-center mt-2">Cost: ~<span id="cost-display" data-unified-dashboard-target="costDisplay">16</span> credits</p>
         </div>
       </div>
 
