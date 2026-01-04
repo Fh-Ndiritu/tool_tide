@@ -11,8 +11,8 @@
     <meta property="og:title" content="<%= content_for?(:title) ? yield(:title) : "Hadaa: AI Landscape Design Generator FREE – No Card Required" %>" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="<%= request.original_url.split('?').first %>" />
-    <meta property="og:image" content="<%= asset_path("social_preview.jpg") %>" />
-    <meta property="twitter:image" content="<%= asset_path("social_preview.jpg") %>" />
+    <meta property="og:image" content="<%= asset_url("social_preview.png") %>" />
+    <meta property="twitter:image" content="<%= asset_url("social_preview.png") %>" />
     <meta property="og:description" content="<%= content_for?(:description) ? yield(:description) : "Hadaa offers precision AI landscape design with a Brush Tool and Prompt Editor. Generate 3D drone views, local plant suggestions, and shopping lists. Start FREE today." %>" />
 
     <meta name="twitter:card" content="summary_large_image" />
