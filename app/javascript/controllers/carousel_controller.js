@@ -13,11 +13,14 @@ export default class extends Controller {
     // Ensure initial state
     if (this.hasImagesValue && this.imagesValue.length > 0) {
       this.setupInitialImage()
-      this.startCarousel()
+      this.startTimer = setTimeout(() => {
+        this.startCarousel()
+      }, 10000)
     }
   }
 
   disconnect() {
+    if (this.startTimer) clearTimeout(this.startTimer)
     this.stopCarousel()
   }
 
