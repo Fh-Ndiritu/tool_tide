@@ -118,10 +118,14 @@ Rails.application.routes.draw do
     get "robots.txt", to: "application#robots_block"
 
     # 410 Gone "Black Hole" for Old SEO Pages
-    match "*path", to: "application#render_410", via: :all, constraints: lambda { |req|
-     !req.path.start_with?("/assets") &&
-     !req.path.start_with?("/rails")
-    }
+    unless Rails.env.development?
+      match "*path", to: "application#render_410", via: :all, constraints: lambda { |req|
+       !req.path.start_with?("/assets") &&
+       !req.path.start_with?("/rails") &&
+       !req.path.start_with?("/404") &&
+       !req.path.start_with?("/500")
+      }
+    end
   end
 
   # Global error handling matches (outside constraints if needed, but here inside app constraint or global?
