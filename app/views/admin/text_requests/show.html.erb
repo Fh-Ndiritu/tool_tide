@@ -76,10 +76,7 @@
               <% end %>
             </div>
 
-            <div class="space-y-2">
-              <h4 class="text-lg font-bold text-neutral-900">Tags</h4>
-              <p class="text-neutral-700"><%= text_request.tags.map(&:title).join(', ') if text_request.tags.any? %></p>
-            </div>
+
 
              <div class="pt-4 border-t border-gray-300">
                  <% if text_request.trial_generation? || text_request.user.admin? %>
