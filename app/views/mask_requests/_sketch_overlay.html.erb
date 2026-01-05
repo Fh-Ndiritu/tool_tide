@@ -1,6 +1,10 @@
 <div id="sketch_overlays" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
   <div class="bg-gray-900 rounded-2xl max-w-4xl w-full p-6 md:p-8 space-y-8 border border-gray-700 shadow-2xl overflow-y-auto max-h-[90vh]">
     <div class="text-center space-y-4">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-yellow-500/10 border border-yellow-500/20 text-yellow-500 text-xs font-medium uppercase tracking-wider mb-2">
+        <span class="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse"></span>
+        Beta Feature
+      </div>
       <h2 class="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
         Sketch Detected!
       </h2>
@@ -18,7 +22,6 @@
            <div class="absolute inset-x-0 bottom-0 p-2 bg-gradient-to-t from-black/80 to-transparent flex items-end justify-center text-white font-medium z-10">3D Architectural Model</div>
            <%= image_tag "sketch_overlays/step_1_model.png", class: "w-full h-full object-cover group-hover:scale-105 transition duration-500" %>
         </div>
-        <p class="text-center text-gray-400 font-medium">1. ArchiCAD Model</p>
       </div>
       <div class="space-y-3">
         <div class="aspect-square rounded-xl bg-gray-800 overflow-hidden border border-gray-700 relative group">
@@ -27,7 +30,6 @@
            <%= image_tag "sketch_overlays/step_2_render.png", class: "w-full h-full object-cover group-hover:scale-105 transition duration-500" %>
 
         </div>
-        <p class="text-center text-gray-400 font-medium">2. Photorealistic</p>
       </div>
       <div class="space-y-3">
         <div class="aspect-square rounded-xl bg-gray-800 overflow-hidden border border-gray-700 relative group">
@@ -35,14 +37,12 @@
             <div class="absolute inset-x-0 bottom-0 p-2 bg-gradient-to-t from-black/80 to-transparent flex items-end justify-center text-white font-medium z-10">Rotated Perspective</div>
             <%= image_tag "sketch_overlays/step_3_angle.png", class: "w-full h-full object-cover group-hover:scale-105 transition duration-500" %>
         </div>
-        <p class="text-center text-gray-400 font-medium">3. Dynamic Angle</p>
       </div>
     </div>
 
     <div class="bg-gray-800/50 rounded-xl p-6 border border-gray-700/50">
       <div class="flex flex-col md:flex-row items-center justify-between gap-6">
         <div class="space-y-2">
-            <h3 class="text-xl font-semibold text-white">Full 3D Transformation</h3>
             <p class="text-gray-400 text-sm">
               Includes 3D White Model, Photorealistic Design, and a Dynamic Angle view.
               <br>

@@ -11,6 +11,11 @@ class SketchGenerationJob < ApplicationJob
   end
 
   def perform(sketch_request)
+    unless sketch_request.user.afford_generation?
+      sketch_request.update!(progress: :failed, error_msg: "Insufficient credits", user_error: "You need more credits to generate a 3D model.")
+      return
+    end
+
     # 1. Architectural View (ArchiCAD / White Mode)
     sketch_request.update!(progress: :processing_architectural)
     archi_prompt = YAML.load_file(Rails.root.join("config/prompts.yml")).dig("sketch_transformation", "archi_cad_render")
@@ -37,7 +42,7 @@ class SketchGenerationJob < ApplicationJob
     # Input is the Architectural View (architectural_view) - same as Step 2
     generate_view(sketch_request, :rotated_view, prompt_text, sketch_request.architectural_view)
 
-    sketch_request.update!(progress: :complete)
+    charge_generation(sketch_request)
 
   rescue => e
     Rails.logger.error("SketchGenerationJob Failure: #{e.message}")
@@ -68,6 +73,25 @@ class SketchGenerationJob < ApplicationJob
 
     if attachment_name == :architectural_view
       sketch_request.update!(analysis: response.dig("candidates", 0, "content", "parts", 0, "text"))
+    end
+  end
+
+  def charge_generation(sketch_request)
+    sketch_request.reload
+    image_count = [ sketch_request.architectural_view.attached?, sketch_request.photorealistic_view.attached?, sketch_request.rotated_view.attached? ].count(true)
+
+    if image_count.zero?
+      sketch_request.update progress: :failed, error_msg: "Image generation failed.", user_error: "Image generation failed. Please try again."
+      return
+    end
+
+    cost = GOOGLE_IMAGE_COST * image_count
+
+    if cost.zero?
+      sketch_request.update progress: :failed, error_msg: "System error: Cost calculation failed."
+    else
+      sketch_request.user.charge_pro_cost!(cost)
+      sketch_request.update!(progress: :complete)
     end
   end
 end

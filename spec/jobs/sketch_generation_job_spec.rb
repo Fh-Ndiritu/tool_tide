@@ -14,6 +14,9 @@ RSpec.describe SketchGenerationJob, type: :job do
       double(content: { "response" => { "analysis" => "Test Analysis", "angle" => "Test Angle" } })
     )
 
+    # User needs credits
+    user.update!(pro_engine_credits: 100)
+
     # Mock GCP Payload and Response
     allow_any_instance_of(SketchGenerationJob).to receive(:fetch_gcp_response).and_return({
       "candidates" => [
@@ -40,6 +43,12 @@ RSpec.describe SketchGenerationJob, type: :job do
 
       sketch_request.reload
       expect(sketch_request.progress).to eq("complete")
+    end
+
+    it 'charges the user' do
+      expect {
+        perform_enqueued_jobs { described_class.perform_later(sketch_request) }
+      }.to change { user.reload.pro_engine_credits }.by(-(GOOGLE_IMAGE_COST * 3))
     end
 
     it 'updates analysis' do
@@ -74,6 +83,21 @@ RSpec.describe SketchGenerationJob, type: :job do
         expect(sketch_request.progress).to eq("failed")
         expect(sketch_request.error_msg).to eq("GCP Failed")
         expect(sketch_request.user_error).to be_present
+      end
+    end
+
+    context 'when user has insufficient credits' do
+      before do
+        user.update!(pro_engine_credits: 0)
+      end
+
+      it 'fails immediately' do
+        perform_enqueued_jobs { described_class.perform_later(sketch_request) }
+
+        sketch_request.reload
+        expect(sketch_request.progress).to eq("failed")
+        expect(sketch_request.error_msg).to eq("Insufficient credits")
+        expect(sketch_request.architectural_view).not_to be_attached
       end
     end
   end
