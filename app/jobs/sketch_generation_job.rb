@@ -43,16 +43,6 @@ class SketchGenerationJob < ApplicationJob
     generate_view(sketch_request, :rotated_view, prompt_text, sketch_request.architectural_view)
 
     charge_generation(sketch_request)
-
-  rescue => e
-    Rails.logger.error("SketchGenerationJob Failure: #{e.message}")
-    pp e.backtrace
-    # Refund no longer needed as we don't charge upfront
-    sketch_request.update!(
-      progress: :failed,
-      error_msg: e.message,
-      user_error: "We couldn't generate your 3D model. Please try again or use a different image."
-    )
   end
 
   private
