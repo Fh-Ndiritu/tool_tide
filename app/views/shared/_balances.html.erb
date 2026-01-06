@@ -2,8 +2,8 @@
    is_cost_context = (controller_name == 'mask_requests' && (action_name == 'new' || action_name == 'edit')) || (controller_name == 'canvas' && action_name == 'new')
    cost = DEFAULT_IMAGE_COUNT * GOOGLE_IMAGE_COST
 
-   layout_classes = is_cost_context ? "flex flex-col" : "grid grid-cols-2 md:grid-cols-3"
-   base_classes = "#{layout_classes} gap-4 p-3 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl group no-underline text-inherit"
+   # Removed grid logic, enforced single column stack
+   base_classes = "flex flex-col gap-4 p-3 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl group no-underline text-inherit"
 
    if is_cost_context
      if current_user.pro_engine_credits < cost
@@ -40,12 +40,7 @@
           <% end %>
       </div>
     <% else %>
-      <div
-        class="
-          flex flex-col gap-2 border-b border-gray-200 pb-4 md:border-b-0
-          md:border-r md:pb-0 md:pr-4 col-span-2 md:col-span-1
-        "
-      >
+      <div class="flex flex-col gap-2 border-b border-gray-200 pb-4">
         <div class="flex items-center gap-3">
           <div class="p-2 bg-accent/10 rounded-full flex-shrink-0">
             <svg
@@ -78,7 +73,7 @@
           Manage Credits &rarr;
         </p>
       </div>
-      <div class="flex flex-col gap-1 border-r border-gray-200 pr-4">
+      <div class="flex flex-col gap-1 border-b border-gray-200 pb-4">
         <h4 class="text-xs font-medium text-gray-700 uppercase tracking-wider">
           Brush Edits
         </h4>
