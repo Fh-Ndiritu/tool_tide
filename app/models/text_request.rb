@@ -11,6 +11,7 @@ class TextRequest < ApplicationRecord
   after_update_commit :broadcast_progress, if: :saved_change_to_progress?
 
   default_scope -> { order(created_at: :desc) }
+  before_save :mark_as_trial_generation, if: -> { progress_changed? && complete? }
 
 
   scope :complete_or_in_progress, -> {
@@ -62,8 +63,14 @@ class TextRequest < ApplicationRecord
     if failed? || complete?
       Turbo::StreamsChannel.broadcast_refresh_to("#{user.id}_text_requests")
     else
-      Turbo::StreamsChannel.broadcast_update_to("#{user.id}_text_requests", target: "loader_overlay", partial: "layouts/shared/loader", locals: { record: self, klasses: " group embed absolute w-full h-full z-1" })
       Turbo::StreamsChannel.broadcast_update_to("#{user.id}_text_requests", target: dom_id(self, :loader), partial: "layouts/shared/loader", locals: { record: self, klasses: "group embed absolute !opacity-75 z-1 w-full h-full" })
+    end
+  end
+
+  def mark_as_trial_generation
+    unless user.has_purchased_credits_before?(created_at)
+      self.trial_generation = true
+      save!
     end
   end
 end

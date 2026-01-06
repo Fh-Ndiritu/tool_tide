@@ -10,6 +10,8 @@ class Admin::TextRequestsController < ApplicationController
       TextRequest.complete.by_admin
      elsif params[:visibility]
       TextRequest.complete.by_visibility(params[:visibility])
+     elsif params[:trial]
+      TextRequest.complete.where(trial_generation: true)
      else
       TextRequest.complete.where(updated_at: Time.zone.today.all_day)
      end

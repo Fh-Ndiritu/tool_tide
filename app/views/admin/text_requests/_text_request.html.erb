@@ -17,6 +17,21 @@
       h-full flex flex-col justify-between transition-shadow duration-300 group-hover:shadow-2xl
     "
   >
+    <div class="text-xs font-bold uppercase tracking-wider mb-2 border-b border-black/10 pb-1 text-gray-700">
+      <% if text_request.everyone? %>
+        Status: Public (Explore) • Visible to Everyone • Can be Hidden
+      <% elsif text_request.user.admin? %>
+        Status: Admin Internal • Visible to Admins Only • Can be Published or Deleted
+      <% else %>
+        Status: User Private • Visible to User
+        <% if text_request.trial_generation? %>
+          • Trial Gen (Can be Published)
+        <% else %>
+          • Paid Gen (No Actions)
+        <% end %>
+      <% end %>
+    </div>
+
     <% if text_request.result_image.attached? %>
       <div
         class="
@@ -55,6 +70,18 @@
     </div>
 
     <div class="flex-shrink-0 mt-auto pt-2 border-t border-gray-300">
+      <% if text_request.trial_generation? || text_request.user.admin? %>
+        <% if text_request.everyone? %>
+          <%= button_to "Hide from public",
+              admin_text_requests_toggle_display_path(id: text_request.id),
+              class: "w-full text-center cute-btn secondary-btn mb-2" %>
+        <% else %>
+           <%= button_to "List on Explore",
+              admin_text_requests_toggle_display_path(id: text_request.id),
+              class: "w-full text-center cute-btn primary-btn mb-2" %>
+        <% end %>
+      <% end %>
+
       <%= link_to "View Full", admin_text_request_path(text_request),
         data: { turbo_frame: "modal" },
         class: "w-full text-center cute-btn secondary-btn mb-2" %>

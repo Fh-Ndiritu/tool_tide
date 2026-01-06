@@ -11,6 +11,21 @@
   id="<%= dom_id(mask_request) %>"
 >
   <div class="<%= @main_color %> rounded-2xl shadow-2xl border border-gray-200 p-3 space-y-4">
+    <div class="text-xs font-bold uppercase tracking-wider mb-2 border-b border-black/10 pb-1 text-gray-700">
+      <% if mask_request.everyone? %>
+        Status: Public (Explore) • Visible to Everyone • Can be Hidden
+      <% elsif mask_request.user.admin? %>
+        Status: Admin Internal • Visible to Admins Only • Can be Published or Deleted
+      <% else %>
+        Status: User Private • Visible to User
+        <% if mask_request.trial_generation? %>
+          • Trial Gen (Can be Published)
+        <% else %>
+          • Paid Gen (No Actions)
+        <% end %>
+      <% end %>
+    </div>
+
     <div class="flex flex-col max-sm:items-center md:justify-between">
       <h3 class="text-xl font-extrabold leading-tight text-neutral-900">
         Results for <%= mask_request.preset.humanize %> Style Design

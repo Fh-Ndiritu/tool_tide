@@ -109,6 +109,10 @@ class User < ApplicationRecord
     email
   end
 
+  def has_purchased_credits_before?(time)
+    credits.where(source: :purchase).where("created_at <= ?", time).exists?
+  end
+
   private
 
   def issue_signup_credits

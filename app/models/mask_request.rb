@@ -22,6 +22,7 @@ class MaskRequest < ApplicationRecord
   delegate :user, to: :canva
 
   validate :preset_prompt, on: :update
+  before_save :mark_as_trial_generation, if: -> { progress_changed? && complete? }
   after_update_commit :broadcast_progress, if: :saved_change_to_progress?
   default_scope -> { order(created_at: :desc) }
 
@@ -163,5 +164,12 @@ enum :progress, {
 
     overlay.attach(blob)
     save!
+  end
+
+  def mark_as_trial_generation
+    unless user.has_purchased_credits_before?(created_at)
+      self.trial_generation = true
+      save!
+    end
   end
 end

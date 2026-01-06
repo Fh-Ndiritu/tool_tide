@@ -9,6 +9,8 @@ class Admin::MaskRequestsController < ApplicationController
       MaskRequest.complete.joins(canva: :user).where(user: { admin: true })
     elsif params[:visibility]
       MaskRequest.complete.where(visibility: params[:visibility])
+    elsif params[:trial]
+      MaskRequest.complete.where(trial_generation: true)
     else
       MaskRequest.complete.where(updated_at: Time.zone.today.all_day)
     end
