@@ -53,7 +53,7 @@ Rails.application.routes.draw do
     end
 
     devise_scope :user do
-      root to: "devise/sessions#new"
+      root to: "users/registrations#new"
     end
 
     resources :audios

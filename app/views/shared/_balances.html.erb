@@ -1,8 +1,9 @@
 <%
-   is_cost_context = (controller_name == 'mask_requests' && action_name == 'new') || (controller_name == 'canvas' && action_name == 'new')
+   is_cost_context = (controller_name == 'mask_requests' && (action_name == 'new' || action_name == 'edit')) || (controller_name == 'canvas' && action_name == 'new')
    cost = DEFAULT_IMAGE_COUNT * GOOGLE_IMAGE_COST
 
-   base_classes = "grid grid-cols-2 md:grid-cols-3 gap-4 p-5 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl group no-underline text-inherit"
+   layout_classes = is_cost_context ? "flex flex-col" : "grid grid-cols-2 md:grid-cols-3"
+   base_classes = "#{layout_classes} gap-4 p-3 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl group no-underline text-inherit"
 
    if is_cost_context
      if current_user.pro_engine_credits < cost
@@ -18,25 +19,25 @@
    end
 %>
 
-<div class="w-full my-8">
-  <%= link_to credits_path, class: "#{base_classes} #{color_classes}" do %>
+<div class="w-full my-4">
+  <div class="<%= "#{base_classes} #{color_classes}" %>">
     <% if is_cost_context %>
-      <div class="col-span-2 md:col-span-3 flex items-center justify-between">
-        <p class="text-sm <%= text_class %>">
-          You have
-          <strong class="<%= current_user.pro_engine_credits < cost ? 'text-red-800' : 'text-green-800' %>"><%= current_user.pro_engine_credits %></strong>
-          credits and this feature will cost
-          <strong class="text-secondary"><%= cost %></strong>
-          credits.
-        </p>
-        <p
-          class="
-            text-accent font-semibold text-xs transition-colors
-            duration-300 group-hover:text-accent-dark whitespace-nowrap ml-4
-          "
-        >
-          Manage Credits &rarr;
-        </p>
+      <div class="flex flex-col">
+          <p class="text-sm <%= text_class %>">
+            You have
+            <strong class="<%= current_user.pro_engine_credits < cost ? 'text-red-800' : 'text-green-800' %>"><%= current_user.pro_engine_credits %></strong>
+            credits and this feature will cost
+            <strong class="text-secondary"><%= cost %></strong>
+            credits.
+          </p>
+
+          <%# # if we are on canvas page, we let them know they can spend balance on smart fix %>
+          <% if current_user.pro_engine_credits < cost && current_user.pro_engine_credits >= GOOGLE_IMAGE_COST  && current_user.mask_requests.complete.present? %>
+            <div class="text-sm text-green-700 mt-1">
+              💡 Tip: You still have enough credits for surgical edits with
+              <%= button_to "Smart Fix", text_requests_path, method: :get, class: "cursor-pointer font-bold underline hover:text-green-900 bg-transparent border-0 p-0 inline align-baseline", form: { class: "inline-block ml-1" } %>
+            </div>
+          <% end %>
       </div>
     <% else %>
       <div
@@ -92,5 +93,5 @@
         <span class="text-xs text-gray-400 mt-0">/ edit request</span>
       </div>
     <% end %>
-  <% end %>
+  </div>
 </div>

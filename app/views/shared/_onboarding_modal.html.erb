@@ -19,20 +19,48 @@
       Welcome to Hadaa!
     </h2>
 
-    <p class="text-lg text-gray-600 mb-8 leading-relaxed">
-      You have
-      <span class="font-bold text-secondary bg-secondary/10 px-2 py-1 rounded">
+    <p class="text-lg text-gray-600 mb-6 leading-relaxed">
+      You've received
+      <span class="font-bold text-secondary bg-secondary/10 px-2 py-0.5 rounded-lg border border-secondary/20 whitespace-nowrap">
         <%= current_user.pro_engine_credits %> Free Credits
       </span>
-      to design your dream garden. Let's create your first design!
+      to start designing!
     </p>
+
+    <div class="bg-gray-50 rounded-xl p-5 mb-8 text-left border border-gray-100 shadow-sm relative overflow-hidden">
+      <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4 border-b border-gray-200 pb-2">
+        Recommended Workflow
+      </p>
+
+      <div class="space-y-4">
+        <div class="flex gap-4 items-start group">
+          <div class="bg-white p-2.5 rounded-xl shadow-sm border border-gray-100 text-xl group-hover:scale-110 transition-transform duration-200">🎨</div>
+          <div>
+            <h4 class="font-bold text-gray-900 text-sm">Create 2 Full Designs</h4>
+            <p class="text-xs text-gray-500 mt-1 leading-relaxed">
+              Use the Brush Tool to reimagine your entire space in different styles.
+            </p>
+          </div>
+        </div>
+
+        <div class="flex gap-4 items-start group">
+          <div class="bg-white p-2.5 rounded-xl shadow-sm border border-gray-100 text-xl group-hover:scale-110 transition-transform duration-200">✨</div>
+          <div>
+            <h4 class="font-bold text-gray-900 text-sm">Refine with SmartFix</h4>
+            <p class="text-xs text-gray-500 mt-1 leading-relaxed">
+              Use remaining credits to tweak specific details with surgical precision.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <button
       data-action="click->onboarding#closeModal"
       class="
         w-full bg-gradient-to-r from-primary to-secondary text-white
         font-bold text-lg py-4 px-8 rounded-xl shadow-lg hover:shadow-xl
-        hover:scale-[1.02] transition-all duration-200
+        hover:scale-[1.02] transition-all duration-200 cursor-pointer
       "
     >
       Let's Get Started

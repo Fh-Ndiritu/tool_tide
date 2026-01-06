@@ -14,6 +14,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def check_captcha
     return if verify_recaptcha || !Rails.env.production?
 
+    Rails.logger.warn("Recaptcha verification failed. Remote IP: #{request.remote_ip}. Flash Header Error: #{flash[:recaptcha_error]}")
+
     self.resource = resource_class.new sign_up_params
     resource.validate # Look for any other validation errors besides Recaptcha
     resource.errors.add(:base, "Recaptcha verification failed. Please try again.")
