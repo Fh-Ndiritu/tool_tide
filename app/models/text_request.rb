@@ -70,7 +70,6 @@ class TextRequest < ApplicationRecord
   def mark_as_trial_generation
     unless user.has_purchased_credits_before?(created_at)
       self.trial_generation = true
-      save!
     end
   end
 end

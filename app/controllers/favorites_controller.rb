@@ -48,7 +48,7 @@ class FavoritesController < AppController
   end
 
   def index
-    @favorites = current_user.favorites.includes(:favoritable).order(created_at: :desc)
+    @favorites = current_user.favorites.liked.includes(:favoritable).order(created_at: :desc)
   end
 
   private

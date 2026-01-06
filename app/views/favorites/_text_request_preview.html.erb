@@ -4,43 +4,44 @@
 
 <div
   class="
-    bg-[#c6d4ee] p-3 rounded-lg shadow-md
+    bg-white p-4 rounded-2xl shadow-sm border border-neutral-100
     flex flex-col md:flex-row justify-between items-start md:items-center
-    hover:bg-[#d1cbfc] hover:shadow-lg transition duration-200
+    hover:shadow-xl hover:border-neutral-200 transition-all duration-300 group
   "
 >
   <%# Left Section: Image and Text/Prompt (Always the link target) %>
   <%= link_to text_requests_path(current_request: favoritable.id), class: "flex items-start flex-grow min-w-0" do %>
     <%# Image Container (w-24 h-24) %>
-    <div class="flex-shrink-0 w-24 h-24 overflow-hidden rounded-md mr-4">
+    <div class="flex-shrink-0 w-24 h-24 overflow-hidden rounded-xl mr-5 border border-neutral-100">
       <% if favoritable.result_image.attached? %>
-        <%= image_tag favoritable.result_image.variant(resize_to_limit: [120, 120]), class: "w-full h-full object-cover" %>
+        <%= image_tag favoritable.result_image.variant(resize_to_limit: [120, 120]), class: "w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" %>
       <% else %>
-        <div class="w-full h-full bg-neutral-300 flex items-center justify-center">
-          <span class="text-neutral-700 text-xs">No Image</span>
+        <div class="w-full h-full bg-neutral-50 flex items-center justify-center">
+          <span class="text-neutral-400 text-xs font-medium">No Image</span>
         </div>
       <% end %>
     </div>
 
-    <%# Text Details: Primary and Secondary text colors adjusted %>
-    <div class="flex flex-col justify-center min-w-0 py-1">
-      <p class="text-sm font-semibold text-text-dark line-clamp-1">
-        AI Edit
-      </p>
+    <%# Text Details %>
+    <div class="flex flex-col justify-center min-w-0 py-1 space-y-1">
+      <div class="flex items-center gap-2">
+         <span class="bg-blue-100 text-blue-700 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
+           Smart Fix
+         </span>
+      </div>
 
-      <p class="text-xs text-neutral-700 line-clamp-2 mt-1">
+      <p class="text-sm text-neutral-600 line-clamp-2 leading-relaxed group-hover:text-neutral-900 transition-colors">
         <%= favoritable.prompt.truncate(80) %>
       </p>
 
-      <%# CHANGE: Increased contrast for source/date text (text-neutral-700) %>
-      <span class="text-xs text-neutral-700 mt-1">
-        Created: <%= favoritable.created_at.to_date.to_fs(:short) %>
-      </span>
+      <p class="text-xs text-neutral-500 font-medium pt-1">
+        Created <%= time_ago_in_words(favoritable.created_at) %> ago
+      </p>
     </div>
   <% end %>
 
   <%# Right Section: Favorite Button %>
-  <div class="mt-3 md:mt-0 md:ml-4 flex-shrink-0">
+  <div class="mt-4 md:mt-0 md:ml-6 flex-shrink-0 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-200">
     <%= render 'favorites/favorite_button',
         favoritable: favoritable,
         favorite: favorite %>

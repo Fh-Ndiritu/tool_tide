@@ -57,7 +57,7 @@
               <%= link_to favorites_path, class: active_link_class(favorites_path), data: { action: "click->dropdown#hide" } do %>
                 <div class="font-bold mb-0.5">Favorites</div>
                 <div class="text-xs text-gray-500 group-hover:text-accent/80">
-                  View your saved designs
+                  Quickly Access your favorite projects.
                 </div>
               <% end %>
 
@@ -218,9 +218,12 @@
             <% end %>
 
             <%= link_to favorites_path, class: active_link_class(favorites_path), data: { action: "click->dropdown#hide" } do %>
-              <div class="font-bold mb-0.5">Favorites</div>
-              <div class="text-xs text-gray-500 group-hover:text-accent/80">
-                View your saved designs
+              <div class="font-bold mb-0.5 flex items-center gap-2">
+                 <%= render(IconComponent.new(classes: "h-4 w-4 text-accent", name: "heart")) %>
+                 Favorites
+              </div>
+              <div class="text-xs text-gray-500 group-hover:text-accent/80 pl-6">
+                Quickly Access your favorite projects.
               </div>
             <% end %>
 

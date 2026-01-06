@@ -16,9 +16,7 @@
       md:pb-12 bg-neutral-800
     "
   >
-    <% if current_user == text_request.user && text_request.result_image.attached? %>
-      <%= link_to "HD Download",  rails_blob_path(text_request.result_image, disposition: :attachment), class: "md:!hidden mb-4 w-auto cute-btn secondary-btn" %>
-    <% end %>
+
     <div class="w-full lg:md:h-full max-w-[700px] flex flex-col">
       <%# ------------------------------------------------------------- %>
       <%# 2. IMAGE DISPLAY (Extracted from the form) %>
@@ -45,19 +43,27 @@
                 <%= render partial: "layouts/shared/loader", locals: { record: text_request, klasses: " group embed absolute w-full h-full z-1" } %>
               <% end %>
             </div>
+
             <% if text_request.result_image.attached? %>
               <div
                 class="
-                  absolute top-4 left-1/2 -translate-x-1/2 md:left-auto
-                  md:translate-x-0 md:right-4 z-20
+                  absolute top-2 left-1/2 -translate-x-1/2 md:left-auto
+                  md:translate-x-0 md:right-2 z-20 flex items-center gap-2
                 "
               >
+                <% if current_user == text_request.user && text_request.result_image.attached? %>
+                   <%= link_to rails_blob_path(text_request.result_image, disposition: :attachment), class: "icon-btn bg-white/90 hover:bg-white hover:scale-105 transition-all duration-300 rounded-full p-2 md:p-3 shadow-lg text-gray-700 hover:text-primary backdrop-blur-sm flex items-center justify-center", title: "Download HD" do %>
+                      <%= render(IconComponent.new(classes: "h-5 w-5 md:h-6 md:w-6 text-current stroke-current", name: "download")) %>
+                   <% end %>
+                <% end %>
+
                 <% favorite = current_user.favorites.find_by(favoritable: text_request) %>
                 <%= render 'favorites/favorite_button',
                     favoritable: text_request,
                     favorite: favorite %>
               </div>
             <% end %>
+
             <div
               class="relative m-auto w-full h-full flex z-10 juxtapose"
               data-startingposition="90"
@@ -245,10 +251,7 @@
               border-t border-neutral-700 pt-4
             "
           >
-            <%# HD Download Link %>
-            <% if current_user == text_request.user && text_request.result_image.attached? %>
-              <%= link_to "HD Download",  rails_blob_path(text_request.result_image, disposition: :attachment), class: "max-md:!hidden max-sm:!w-full cute-btn secondary-btn" %>
-            <% end %>
+
 
             <%# Favorite Button Block Moved to Image Overlay %>
           </div>
