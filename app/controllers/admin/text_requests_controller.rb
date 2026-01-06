@@ -2,19 +2,15 @@ class Admin::TextRequestsController < ApplicationController
   before_action :set_text_request, only: [ :edit, :toggle_display, :destroy ]
 
   def index
-     @text_requests = if params[:day].present?
-      TextRequest.complete.where(updated_at: params[:day].to_i.days.ago.all_day)
-     elsif params[:id]
-      TextRequest.complete.by_user(params[:id])
-     elsif params[:admin]
-      TextRequest.complete.by_admin
-     elsif params[:visibility]
-      TextRequest.complete.by_visibility(params[:visibility])
-     elsif params[:trial]
-      TextRequest.complete.where(trial_generation: true)
-     else
-      TextRequest.complete.where(updated_at: Time.zone.today.all_day)
-     end
+    @text_requests = TextRequest.complete
+
+    @text_requests = @text_requests.by_user(params[:id]) if params[:id].present?
+    @text_requests = @text_requests.by_admin if params[:admin].present?
+    @text_requests = @text_requests.by_visibility(params[:visibility]) if params[:visibility].present?
+    @text_requests = @text_requests.where(trial_generation: true) if params[:trial].present?
+
+    day_offset = params[:day].to_i
+    @text_requests = @text_requests.where(updated_at: day_offset.days.ago.all_day)
   end
 
   def show
