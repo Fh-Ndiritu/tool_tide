@@ -13,21 +13,21 @@
   data-controller="mask-request"
   data-mask-request-image-url-value="<%= @mask_request.image.attached? ? url_for(@mask_request.drawable_image) : '' %>"
   class="
-    h-auto bg-neutral-100 flex flex-col items-center justify-center p-2
-    sm:p-6 lg:p-8 font-sans text-text-dark w-full sm:max-w-lg lg:max-w-5xl m-auto
+    relative min-h-screen flex flex-col items-center justify-center p-2
+    sm:p-6 lg:p-8 font-sans text-neutral-200 w-full sm:max-w-lg lg:max-w-5xl m-auto
   "
 >
   <%= render 'shared/balances' %>
   <div
     class="
-      w-full max-w-full lg:max-w-6xl bg-white rounded-2xl shadow-2xl
-      overflow-hidden p-2 sm:p-8 border border-neutral-300
+      w-full bg-white/10 border border-white/20 backdrop-blur-xl rounded-3xl shadow-2xl
+      overflow-hidden p-2 sm:p-8
     "
   >
     <h1
       class="
-        text-2xl sm:text-3xl font-extrabold text-text-primary text-center
-        mb-3 md:mb-8 tracking-wide
+        text-2xl sm:text-3xl font-bold text-white text-center
+        mb-3 md:mb-6 tracking-tight
       "
     >
       Draw areas to modify
@@ -46,15 +46,15 @@
         <%= @canvas_dimensions %>
         data-konva-canvas-brush-size-value="40"
         class="
-          flex-1 bg-neutral-300 flex items-center justify-center relative
-          rounded-xl overflow-hidden shadow-inner
+          flex-1 bg-black/40 flex items-center justify-center relative
+          rounded-xl overflow-hidden shadow-inner border border-white/10
         "
       ></div>
       <div class="lg:w-1/3 flex flex-col space-y-4 p-2 pt-4 md:p-4">
         <div
           class="
             flex w-full flex-row items-center justify-between gap-4 pb-6
-            border-b-2 border-neutral-300
+            border-b border-white/10
           "
         >
           <div class="flex items-center gap-4">
@@ -72,7 +72,7 @@
               >
                 <%= render(IconComponent.new(name: "arrow-counter-clockwise", classes: "h-6 w-6")) %>
               </button>
-              <span class="text-xs font-medium text-neutral-600">Undo</span>
+              <span class="text-xs font-medium text-neutral-400">Undo</span>
             </div>
             <div class="flex flex-col items-center gap-1">
               <button
@@ -88,23 +88,22 @@
               >
                 <%= render(IconComponent.new(name: "arrow-clockwise", classes: "h-6 w-6")) %>
               </button>
-              <span class="text-xs font-medium text-neutral-600">Redo</span>
+              <span class="text-xs font-medium text-neutral-400">Redo</span>
             </div>
           </div>
           <div class="flex flex-col items-center gap-1">
             <button
               data-action="click->mask-request#clearSelection"
               class="
-                w-12 h-12 flex items-center justify-center p-2 bg-secondary
-                opacity-80 rounded-xl text-text-light hover:opacity-80
-                transition-colors duration-200 ease-in-out shadow-sm
+                opacity-80 rounded-xl text-neutral-400 hover:text-white hover:bg-red-500/20 hover:opacity-100
+                transition-all duration-200 ease-in-out shadow-sm border border-transparent hover:border-red-500/20
               "
               title="Clear Selection"
               data-onboarding-target="control"
             >
               <%= render(IconComponent.new(name: "x-circle", classes: "h-6 w-6")) %>
             </button>
-            <span class="text-xs font-medium text-neutral-600">Clear</span>
+            <span class="text-xs font-medium text-neutral-400">Clear</span>
           </div>
         </div>
 
@@ -114,10 +113,10 @@
           class="space-y-4 brush-slider"
         >
           <div class="flex items-center justify-between">
-            <label for="brush-size" class="text-sm font-medium text-gray-700">Brush Size</label>
+            <label for="brush-size" class="text-xs font-bold uppercase tracking-wider text-neutral-300">Brush Size</label>
             <div
               data-mask-request-target="brushSizeDisplay"
-              class="text-sm font-semibold text-indigo-600"
+              class="text-sm font-semibold text-[#00acc1]"
             >
               40px
             </div>
@@ -149,10 +148,10 @@
           id="location_tracker"
           data-controller="location"
           data-location-enable-url-value="<%= update_location_canva_mask_requests_path(@canva) %>"
-          class="border-t border-neutral-300 pt-4 hidden"
+          class="border-t border-white/10 pt-4 hidden"
         >
           <div class="flex items-center justify-between mb-2">
-            <label class="text-sm font-medium text-gray-700">Use Local Plants</label>
+            <label class="text-xs font-bold uppercase tracking-wider text-neutral-300">Use Local Plants</label>
             <label class="relative inline-flex items-center cursor-pointer">
               <input
                 type="checkbox"
@@ -165,7 +164,7 @@
             </label>
           </div>
 
-          <div id="user_location_info" class="text-xs text-neutral-500">
+          <div id="user_location_info" class="text-xs text-neutral-300">
              <%= render partial: "mask_requests/location_info", locals: { user: @mask_request.canva.user } %>
           </div>
         </div>
@@ -176,17 +175,17 @@
 
     <div
       class="
-        mt-8 p-6 bg-neutral-50 rounded-xl border border-neutral-200 text-sm
-        text-neutral-700
+        mt-6 p-5 bg-white/10 rounded-xl border border-white/20 text-sm
+        text-neutral-300 leading-relaxed
       "
     >
-      <h3 class="font-bold text-neutral-900 text-lg mb-3">
+      <h3 class="font-bold text-white text-lg mb-3">
         🖌️ Mastering the Brush Tool
       </h3>
 
       <p class="mb-3">
         The model modifies only the area
-        <strong class="text-neutral-900">directly covered by your brush strokes</strong>
+        <strong class="text-white">directly covered by your brush strokes</strong>
         .
       </p>
 

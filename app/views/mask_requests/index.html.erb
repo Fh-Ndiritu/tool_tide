@@ -4,9 +4,9 @@
 
 <div class="container mx-auto w-full px-4 sm:max-w-lg lg:max-w-5xl mt-4">
   <% if @has_complete_sketches %>
-    <div class="flex border-b border-gray-200 mb-6">
-       <% active_tab_class = "border-primary text-primary" %>
-       <% inactive_tab_class = "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300" %>
+    <div class="flex border-b border-white/20 mb-6">
+       <% active_tab_class = "border-[#00acc1] text-[#00acc1]" %>
+       <% inactive_tab_class = "border-transparent text-neutral-400 hover:text-white hover:border-white/20" %>
 
        <%= link_to mask_requests_path(tab: 'designs'), class: "w-1/2 py-4 px-1 text-center border-b-2 font-medium text-sm #{params[:tab] != 'sketches' ? active_tab_class : inactive_tab_class}" do %>
          Designs
@@ -23,8 +23,8 @@
       <% if @sketch_requests.any? %>
         <%= render partial: 'sketch_requests/sketch_request_compact', collection: @sketch_requests, as: :sketch_request %>
       <% else %>
-         <div class="col-span-full text-center my-10 p-8 bg-gray-50 rounded-lg border border-dashed border-gray-300">
-            <p class="text-lg text-gray-500">No sketch requests found.</p>
+         <div class="col-span-full text-center my-10 p-8 bg-white/10 rounded-2xl border border-dashed border-white/20">
+            <p class="text-lg text-neutral-400">No sketch requests found.</p>
          </div>
       <% end %>
     <% else %>
@@ -34,15 +34,15 @@
         <div
           class="
             col-span-full
-            text-center my-10 p-8 bg-gray-50 rounded-lg border border-dashed
-            border-gray-300
+            text-center my-10 p-8 bg-white/10 rounded-2xl border border-dashed
+            border-white/20
           "
         >
-          <p class="text-lg text-gray-500">
+          <p class="text-lg text-neutral-400">
             No design results have been created yet. Start a new project!
           </p>
 
-          <%= link_to "Start New Design", new_canva_path, class: "cute-btn btn-primary mt-4" %>
+          <%= link_to "Start New Design", new_canva_path, class: "group inline-flex items-center justify-center px-6 py-2 mt-4 text-sm font-bold text-white bg-gradient-to-r from-[#00acc1] to-[#26c6da] rounded-xl hover:scale-[1.02] shadow-lg transition-all" %>
         </div>
       <% end %>
     <% end %>

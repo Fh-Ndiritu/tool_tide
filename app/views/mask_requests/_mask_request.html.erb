@@ -8,11 +8,11 @@
   </div>
 <% elsif (mask_request.complete? || mask_request.fetching_plants?)  && mask_request.main_view.attached? %>
   <div class="container mx-auto py-8 <%= 'compact' if defined?(compact) %>">
-    <div class="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
+    <div class="bg-white/10 backdrop-blur-xl rounded-3xl shadow-xl border border-white/20 overflow-hidden">
       <!-- Header Section -->
       <div
         class="
-          px-8 py-8 border-b border-gray-100 flex flex-col md:flex-row
+          px-8 py-8 border-b border-white/20 flex flex-col md:flex-row
           md:items-center justify-between gap-6
         "
       >
@@ -20,16 +20,16 @@
           <div class="flex items-center gap-3 mb-2">
             <span
               class="
-                px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs
-                font-bold tracking-wide uppercase
+                px-3 py-1 rounded-full bg-green-500/20 text-green-300 text-xs
+                font-bold tracking-wide uppercase border border-green-500/30
               "
             >
               <%= mask_request.preset.humanize %>
             </span>
-            <span class="text-gray-400 text-sm"><%= time_ago_in_words(mask_request.created_at) %> ago</span>
+            <span class="text-neutral-300 text-sm"><%= time_ago_in_words(mask_request.created_at) %> ago</span>
           </div>
 
-          <h3 class="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">
+          <h3 class="text-3xl md:text-4xl font-bold text-white tracking-tight">
             Your Garden Design
           </h3>
 
@@ -98,12 +98,12 @@
                 </span>
               </h4>
 
-              <p class="text-gray-300 text-lg max-w-xl leading-relaxed">
+              <p class="text-neutral-300 text-lg max-w-xl leading-relaxed">
                 You do not need to draw or mask again, just click select style and experiment with various options.
               </p>
             </div>
 
-            <%= link_to edit_mask_request_path(mask_request, manual: true), data: { onboarding_target: "changeStyle" }, class: "group relative inline-flex items-center gap-3 bg-white text-gray-900 px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:bg-gray-50 transition-all duration-300 hover:shadow-xl hover:-translate-y-1" do %>
+            <%= link_to edit_mask_request_path(mask_request, manual: true), data: { onboarding_target: "changeStyle" }, class: "group relative inline-flex items-center gap-3 bg-white/10 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:bg-white/20 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-white/10" do %>
               <span>Select Style</span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -178,7 +178,7 @@
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
                       fill="currentColor"
-                      class="w-6 h-6 text-gray-900"
+                      class="w-6 h-6 text-black"
                     >
                       <path
                         fill-rule="evenodd"

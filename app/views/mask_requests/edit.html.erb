@@ -5,19 +5,19 @@
 <%= turbo_stream_from @mask_request.canva %>
 
 <div
-  class="flex w-full flex-col items-center min-h-screen bg-neutral-300 p-2"
+  class="flex w-full flex-col items-center min-h-screen p-2"
   id="styles"
 >
   <div class="w-full sm:max-w-lg lg:max-w-5xl">
-    <div class="bg-neutral-100 p-3 sm:p-4 rounded-2xl shadow-2xl my-8">
+    <div class="bg-white/10 backdrop-blur-xl border border-white/20 p-3 sm:p-4 rounded-3xl shadow-2xl my-8">
 
       <%= render 'shared/balances' %>
       <!-- Title Section -->
       <div class="mb-8 flex flex-col w-full items-center text-center">
-        <h3 class="text-3xl font-extrabold text-text-dark mb-2">
+        <h3 class="text-3xl font-extrabold text-white mb-2">
           Select your style
         </h3>
-        <p class="text-lg text-neutral-700">You can change this later.</p>
+        <p class="text-lg text-neutral-300">You can change this later.</p>
       </div>
 
       <!-- Presets Grid -->
@@ -32,14 +32,14 @@
           <% LANDSCAPE_PRESETS.each do |preset, description| %>
             <!-- Link for each preset, styled as a card -->
             <%= button_to mask_request_path(@mask_request, mask_request: {preset: preset}), method: :patch,
-          class: "block max-sm:mb-4 p-2 md:p-4 bg-neutral-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer border-2 #{@mask_request.preset == preset ? 'border-indigo-500 ring-2 ring-indigo-200' : 'border-transparent'}" do %>
+          class: "block max-sm:mb-4 p-2 md:p-4 bg-white/5 rounded-xl shadow-lg hover:shadow-xl hover:bg-white/15 transition-all duration-300 transform hover:-translate-y-1 cursor-pointer border-2 #{@mask_request.preset == preset ? 'border-[#00acc1] ring-2 ring-[#00acc1]/20 bg-white/10' : 'border-transparent hover:border-white/20'}" do %>
               <div class="flex flex-col items-center text-center">
                 <%= image_tag("presets/#{preset}.png", class: "w-full h-auto object-contain rounded-lg mb-4") %>
-                <div class="font-semibold text-lg text-text-dark mb-1">
+                <div class="font-semibold text-lg text-white mb-1">
                   <%= preset.humanize %>
                 </div>
 
-                <div class="text-sm text-neutral-500"><%= description %></div>
+                <div class="text-sm text-neutral-300"><%= description %></div>
               </div>
             <% end %>
           <% end %>

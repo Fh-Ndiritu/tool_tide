@@ -1,5 +1,5 @@
 <% if user.address.present? %>
-  <div class="flex items-center gap-1 text-green-600">
+  <div class="flex items-center gap-1 text-green-400">
     <%= render(IconComponent.new(name: "map_pin", classes: "h-3 w-3")) %>
     <span>Using location: <%= user.state_address %></span>
   </div>

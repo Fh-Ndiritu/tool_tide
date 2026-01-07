@@ -26,6 +26,5 @@ class OnboardingResponse < ApplicationRecord
       user.update(completed_survey: true)
       user.issue_signup_credits
     end
-
   end
 end

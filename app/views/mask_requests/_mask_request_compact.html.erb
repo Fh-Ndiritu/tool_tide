@@ -1,8 +1,8 @@
 <% if mask_request.complete? && mask_request.main_view.attached? %>
   <div
     class="
-      bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden
-      hover:shadow-xl transition-shadow duration-300
+      bg-white/10 rounded-2xl shadow-lg border border-white/20 overflow-hidden
+      hover:border-[#00acc1]/50 hover:shadow-[#00acc1]/10 transition-all duration-300
     "
   >
     <%= link_to mask_request_path(mask_request), class: "block relative group" do %>
@@ -17,16 +17,16 @@
       ></div>
 
       <div class="absolute bottom-4 left-4 right-4 text-white">
-        <h3 class="text-xl font-bold leading-tight shadow-black/50 drop-shadow-md">
+        <h3 class="text-xl font-bold leading-tight shadow-black/50 drop-shadow-md text-white">
           <%= mask_request.preset.humanize %> Design
         </h3>
-        <p class="text-sm font-medium opacity-90 mt-1">
+        <p class="text-sm font-medium opacity-90 mt-1 text-neutral-200">
           <%= time_ago_in_words(mask_request.created_at) %> ago
         </p>
       </div>
     <% end %>
 
-    <div class="p-5 flex items-center justify-between gap-4">
+    <div class="p-5 flex items-center justify-between gap-4 border-t border-white/10">
       <div class="flex-1">
         <% if mask_request.user_error.present? %>
           <p
@@ -38,13 +38,13 @@
         <% end %>
       </div>
 
-      <%= link_to mask_request_path(mask_request), class: "cute-btn btn-primary whitespace-nowrap !py-2 !px-5 flex items-center gap-2" do %>
+      <%= link_to mask_request_path(mask_request), class: "group inline-flex items-center justify-center px-4 py-2 text-sm font-bold text-white bg-white/10 rounded-xl hover:bg-[#00acc1] hover:text-white transition-all duration-300 gap-2" do %>
         <span>View Details</span>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
           fill="currentColor"
-          class="w-4 h-4"
+          class="w-4 h-4 group-hover:translate-x-1 transition-transform"
         >
           <path
             fill-rule="evenodd"

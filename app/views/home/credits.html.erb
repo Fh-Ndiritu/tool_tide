@@ -17,73 +17,75 @@
 <% end %>
 
 <div class="container mx-auto p-4 w-full lg:w-9/12">
-  <h1 class="text-3xl font-extrabold mb-10 text-neutral-800 mt-8 w-full text-center">
-    Your <span class="text-secondary">Credit</span> Balance
+  <h1 class="text-3xl font-extrabold mb-10 text-white mt-8 w-full text-center">
+    Your <span class="text-[#00acc1]">Design</span> Credits
   </h1>
 
   <div class="flex flex-col mb-12">
     <div
       class="
-        bg-accent-secondary text-neutral-900 rounded-2xl shadow-2xl p-8 border-4 border-secondary
-        transition-all duration-300 hover:shadow-secondary/50 hover:scale-[1.01]
+        bg-white/10 text-white rounded-3xl shadow-2xl p-8 border border-white/20 backdrop-blur-xl
+        transition-all duration-300 hover:shadow-[#00acc1]/20 hover:border-white/30
       "
     >
-      <div class="flex items-center space-x-3 mb-6">
-        <div class="bg-secondary text-neutral-100 p-3 rounded-full shadow-lg m-0">
-          <%= render(IconComponent.new(name: "crown", classes: "h-7 w-7")) %>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start">
+        <!-- Left Column: Balance & CTA -->
+        <div class="flex flex-col h-full justify-between">
+          <div>
+            <div class="flex items-center space-x-3 mb-6">
+              <div class="bg-[#00acc1]/20 text-[#00acc1] p-3 rounded-full shadow-lg m-0 border border-[#00acc1]/30">
+                <%= render(IconComponent.new(name: "crown", classes: "h-7 w-7")) %>
+              </div>
+              <h2 class="text-2xl font-bold text-white ml-2">
+                Available Credits
+              </h2>
+            </div>
+
+            <p class="text-6xl font-extrabold text-[#00acc1] mt-2 leading-tight">
+              <%= current_user.pro_engine_credits %>
+            </p>
+
+            <p class="text-lg text-neutral-300 mt-4">
+              Fuel for your next creative breakthrough.
+            </p>
+
+            <p class="text-md text-green-400 mt-2 font-semibold opacity-80">
+              <%= CREDITS_INFO %>
+            </p>
+          </div>
+
+          <div class="mt-8 md:mt-12">
+             <%= button_to "Add Credits", payment_transactions_path, data: {turbo: false}, method: :post, onclick: "gtag('event', 'begin_checkout', { 'currency': 'USD', 'value': #{DEFAULT_USD_PURCHASE_AMOUNT.to_f} });", class: "w-full md:w-auto cursor-pointer inline-block bg-[#00acc1] text-black font-bold py-4 px-8 rounded-2xl shadow-xl transition-all duration-300 transform hover:scale-[1.02] hover:bg-[#26c6da] ring-4 ring-[#00acc1]/30 text-center text-lg" %>
+          </div>
         </div>
-        <h2 class="text-2xl font-bold text-neutral-900 ml-2">
-          Your Usage Credits
-        </h2>
-      </div>
 
-      <p class="text-6xl font-extrabold text-accent mt-4 leading-tight">
-        <%= current_user.pro_engine_credits %>
-      </p>
+        <!-- Right Column: Benefits list -->
+        <div class="bg-white/5 rounded-2xl p-6 border border-white/10">
+          <h3 class="text-xl font-bold mb-6 text-white border-b border-white/10 pb-4">
+             Continue Creating Without Limits
+          </h3>
 
-      <p class="text-lg text-neutral-700 mt-2">
-        Remaining credits for all AI design features.
-      </p>
-
-      <p class="text-md text-green-700 mt-3 font-semibold">
-        <b><%= CREDITS_INFO %></b>
-      </p>
-
-      <% if defined?(current_user) && current_user.pro_engine_credits.positive? %>
-        <div class="flex justify-start mb-4 pt-4">
-          <%= link_to "Go to Design Editor →", new_canva_path, class: "text-lg font-semibold text-primary hover:text-secondary transition-colors duration-200" %>
+          <ul class="space-y-5">
+            <li class="flex items-start space-x-3">
+              <%= render(IconComponent.new(name: "check", classes: "h-5 w-5 text-[#00acc1] flex-shrink-0 mt-1")) %>
+              <span class="text-neutral-200 leading-snug">Create stunning, realistic <b>3D visualizations</b></span>
+            </li>
+            <li class="flex items-start space-x-3">
+              <%= render(IconComponent.new(name: "check", classes: "h-5 w-5 text-[#00acc1] flex-shrink-0 mt-1")) %>
+              <span class="text-neutral-200 leading-snug">Access our complete database of <b>local plants</b></span>
+            </li>
+            <li class="flex items-start space-x-3">
+              <%= render(IconComponent.new(name: "check", classes: "h-5 w-5 text-[#00acc1] flex-shrink-0 mt-1")) %>
+              <span class="text-neutral-200 leading-snug">
+                 Generate <b>instant shopping lists</b> for your projects
+              </span>
+            </li>
+            <li class="flex items-start space-x-3">
+              <%= render(IconComponent.new(name: "check", classes: "h-5 w-5 text-[#00acc1] flex-shrink-0 mt-1")) %>
+              <span class="text-neutral-200 leading-snug">Receive expert <b>planting & care guides</b></span>
+            </li>
+          </ul>
         </div>
-      <% end %>
-
-      <hr class="border-t border-neutral-300 my-8">
-
-      <h3 class="text-2xl font-extrabold mb-4 text-secondary">
-        Access Premium Features
-      </h3>
-
-      <ul class="space-y-4 mb-8">
-        <li class="flex items-start space-x-3">
-          <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 text-accent flex-shrink-0 mt-0.5")) %>
-          <span class="font-semibold text-neutral-900">More realistic and accurate generations</span>
-        </li>
-        <li class="flex items-start space-x-3">
-          <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 text-accent flex-shrink-0 mt-0.5")) %>
-          <span class="font-semibold text-neutral-900">Design with <b>local plants</b> available in your area.</span>
-        </li>
-        <li class="flex items-start space-x-3">
-          <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 text-accent flex-shrink-0 mt-0.5")) %>
-          <span class="font-semibold text-neutral-900">
-            Generate <b>comprehensive shopping lists</b> for your materials.
-          </span>
-        </li>
-        <li class="flex items-start space-x-3">
-          <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 text-accent flex-shrink-0 mt-0.5")) %>
-          <span class="font-semibold text-neutral-900">Get planting and maintenance guides for your final design.</span>
-        </li>
-      </ul>
-
-      <div class="flex w-full justify-center mt-8">
-        <%= button_to "Buy Credits", payment_transactions_path, data: {turbo: false}, method: :post, onclick: "gtag('event', 'begin_checkout', { 'currency': 'USD', 'value': #{DEFAULT_USD_PURCHASE_AMOUNT.to_f} });", class: "cursor-pointer inline-block bg-secondary text-white font-bold py-3 px-8 rounded-full shadow-xl transition-all duration-300 transform hover:scale-[1.03] hover:bg-cta-bg/90 ring-4 ring-cta-bg/50" %>
       </div>
     </div>
   </div>

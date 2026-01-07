@@ -5,7 +5,7 @@
 <div class="max-w-4xl mx-auto p-4 md:p-8">
   <h1 class="text-3xl font-bold text-accent mb-6">My Favorites</h1>
 
-  <p class="text-neutral-600 mb-8 text-base">
+  <p class="text-neutral-400 mb-8 text-base">
     Build your personal collection. Look for the
     <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-5 w-5 align-text-bottom text-green-400 mx-1" fill="currentColor" viewBox="0 0 256 256"><path d="M234,80.12A24,24,0,0,0,216,72H160V56a40,40,0,0,0-40-40,8,8,0,0,0-7.16,4.42L75.06,96H32a16,16,0,0,0-16,16v88a16,16,0,0,0,16,16H204a24,24,0,0,0,23.82-21l12-96A24,24,0,0,0,234,80.12ZM32,112H72v88H32ZM223.94,97l-12,96a8,8,0,0,1-7.94,7H88V105.89l36.71-73.43A24,24,0,0,1,144,56V80a8,8,0,0,0,8,8h64a8,8,0,0,1,7.94,9Z"></path></svg>
     and
@@ -24,7 +24,7 @@
                      locals: { favoritable: favoritable, favorite: favorite } %>
         <% else %>
           <%# Handles cases where the original record (text_request or mask_request) was deleted %>
-          <div class="bg-neutral-700 p-4 rounded-lg shadow-md text-neutral-400">
+          <div class="bg-white/10 border border-white/20 p-4 rounded-lg shadow-md text-neutral-400">
             Original item not found (ID:
             <%= favorite.favoritable_id %>
             ).
@@ -36,8 +36,8 @@
       <% end %>
     </div>
   <% else %>
-    <div class="text-center p-12 bg-neutral-800 rounded-2xl border border-neutral-700/50 shadow-xl">
-      <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-neutral-900/50 mb-6 text-neutral-500">
+    <div class="text-center p-12 bg-white/10 backdrop-blur-xl rounded-2xl border border-white/20 shadow-xl">
+      <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/10 mb-6 text-neutral-500">
         <%= render(IconComponent.new(classes: "h-8 w-8", name: "heart")) %>
       </div>
 
