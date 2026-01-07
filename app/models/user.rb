@@ -11,6 +11,7 @@ class User < ApplicationRecord
   has_many :canvas, dependent: :destroy
   has_many :credit_vouchers, dependent: :destroy
   has_many :mask_requests, through: :canvas
+  has_one :onboarding_response, dependent: :destroy
 
   has_many :credits, dependent: :destroy
   has_many :text_requests, dependent: :destroy
@@ -56,9 +57,9 @@ class User < ApplicationRecord
     end
   end
 
-  after_create_commit :issue_signup_credits
+  # Credits are now issued after onboarding survey completion
+  # after_create_commit :issue_signup_credits
   after_create_commit :schedule_welcome_follow_up
-
   def location_city
     return nil if address.blank?
     address["city"]
@@ -104,6 +105,11 @@ class User < ApplicationRecord
     pro_engine_credits >= GOOGLE_IMAGE_COST * DEFAULT_IMAGE_COUNT
   end
 
+  def can_skip_onboarding_survey?
+    # you can skip if you completed questions or received credits prior to implementation
+    onboarding_response&.completed? || credits.exists?
+  end
+
   def redacted_email
     email
     email[0..5] = "*" * 5
@@ -114,15 +120,22 @@ class User < ApplicationRecord
     credits.where(source: :purchase).where("created_at <= ?", time).exists?
   end
 
-  private
+  def signup_credits
+    credits.signup.first&.amount || 0
+  end
 
   def issue_signup_credits
+    return if credits.where(source: :signup).exists?
+
     credits.create!(
       source: :signup,
       credit_type: :pro_engine,
-      amount: 64
+      amount: TRIAL_CREDITS
     )
   end
+
+
+  private
 
   enum :restart_onboarding_status, {
     initial: 0,

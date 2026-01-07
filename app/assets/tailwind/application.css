@@ -579,3 +579,8 @@ input[type='checkbox'] {
   max-width: 100%;
   height: auto;
 }
+
+.selectable-card.selected {
+  border-color: #3b82f6;
+  background-color: #eff6ff;
+}

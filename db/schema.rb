@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_03_093116) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_07_165809) do
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -231,6 +231,18 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_03_093116) do
     t.index ["tool_call_id"], name: "index_messages_on_tool_call_id"
   end
 
+  create_table "onboarding_responses", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "role"
+    t.integer "intent"
+    t.integer "pain_point"
+    t.datetime "completed_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "completed"
+    t.index ["user_id"], name: "index_onboarding_responses_on_user_id"
+  end
+
   create_table "payment_transactions", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "uuid"
@@ -395,6 +407,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_03_093116) do
     t.integer "onboarding_stage", default: 0
     t.integer "restart_onboarding_status", default: 0
     t.datetime "feature_announcement_sent_at"
+    t.boolean "completed_survey"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
@@ -428,6 +441,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_03_093116) do
   add_foreign_key "landscapes", "users"
   add_foreign_key "mask_requests", "canvas"
   add_foreign_key "messages", "chats"
+  add_foreign_key "onboarding_responses", "users"
   add_foreign_key "payment_transactions", "users"
   add_foreign_key "plants", "mask_requests"
   add_foreign_key "project_layers", "project_layers", column: "parent_layer_id"

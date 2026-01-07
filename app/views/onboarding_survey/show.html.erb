@@ -1,0 +1,231 @@
+<div class="min-h-screen flex flex-col md:flex-row bg-[#1a1a1a] text-white font-sans selection:bg-[#00acc1] selection:text-black" data-controller="onboarding-survey">
+
+  <!-- Left Panel: Branding & Vision -->
+  <div class="md:w-5/12 relative overflow-hidden hidden md:flex flex-col justify-between p-12 z-0 border-r border-white/5">
+    <!-- Abstract Background -->
+    <div class="absolute inset-0 bg-gradient-to-br from-[#121212] via-[#1a1a1a] to-[#212121] z-0"></div>
+    <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay z-0"></div>
+    <!-- Decor blobs (Subtler) -->
+    <div class="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-[#5c6bc0]/10 rounded-full mix-blend-screen filter blur-[100px] animate-blob"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-[#00acc1]/10 rounded-full mix-blend-screen filter blur-[100px] animate-blob animation-delay-2000"></div>
+
+    <!-- Content -->
+    <div class="relative z-10">
+      <div class="flex items-center gap-3 mb-8 opacity-90">
+        <span class="text-2xl">🌱</span>
+        <span class="font-bold text-xl tracking-tight">Hadaa</span>
+      </div>
+    </div>
+
+    <div class="relative z-10 space-y-8 max-w-lg">
+      <h2 class="text-5xl lg:text-6xl font-extrabold leading-[1.1] tracking-tight text-white drop-shadow-sm">
+        See your future <br/>
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#00acc1] to-[#4dd0e1] animate-pulse-slow">outdoor space.</span>
+      </h2>
+
+      <div class="space-y-6">
+        <div class="flex gap-4 items-start">
+          <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10 shrink-0 text-xl">📸</div>
+          <div>
+            <h4 class="font-bold text-white mb-1">Instant Visualization</h4>
+            <p class="text-neutral-400 text-sm leading-relaxed">Upload a phone photo and see it transformed into a finished landscape in seconds.</p>
+          </div>
+        </div>
+
+        <div class="flex gap-4 items-start">
+           <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10 shrink-0 text-xl">🧠</div>
+          <div>
+            <h4 class="font-bold text-white mb-1">Smart Recommendations</h4>
+            <p class="text-neutral-400 text-sm leading-relaxed">Our engine picks plants that actually survive in your local climate and soil.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="relative z-10">
+      <div class="p-4 rounded-xl bg-white/5 border border-white/10 backdrop-blur-md">
+        <div class="flex items-center gap-3 mb-2">
+           <div class="flex -space-x-2">
+            <% 3.times do |i| %>
+              <div class="w-8 h-8 rounded-full border border-[#1a1a1a] bg-neutral-700 flex items-center justify-center text-[10px] text-white overflow-hidden">
+                <span class="opacity-50">User</span>
+              </div>
+            <% end %>
+           </div>
+           <div class="flex text-yellow-500 text-sm">★★★★★</div>
+        </div>
+        <p class="text-sm text-neutral-300 italic">"Finally, a tool that understands landscape design isn't just about pretty pictures, but constructible reality."</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Panel: Interaction Area -->
+  <div class="flex-1 flex flex-col min-h-screen relative z-10 bg-[#1a1a1a]">
+
+    <!-- Mobile Header -->
+    <div class="md:hidden p-6 bg-[#1a1a1a] border-b border-white/5 flex justify-between items-center sticky top-0 z-50">
+      <span class="font-bold text-xl">Hadaa</span>
+      <span class="text-xs bg-white/10 px-3 py-1 rounded-full border border-white/5">Step <span data-onboarding-survey-target="stepDisplay">1</span>/3</span>
+    </div>
+
+    <div class="flex-1 flex flex-col max-w-3xl w-full mx-auto p-6 md:p-12 lg:p-20 justify-center">
+
+      <!-- Progress Bar (Desktop) -->
+      <div class="hidden md:block mb-12">
+        <div class="flex justify-between items-end mb-4">
+           <span class="text-sm font-medium text-[#00acc1] tracking-wide uppercase text-xs">Onboarding</span>
+           <span class="text-xs text-neutral-500 font-mono">STEP <span data-onboarding-survey-target="stepDisplay">1</span>/3</span>
+        </div>
+        <div class="h-1 w-full bg-neutral-800 rounded-full overflow-hidden">
+          <div data-onboarding-survey-target="progressBar" class="h-full bg-gradient-to-r from-[#00acc1] to-[#26c6da] transition-all duration-700 ease-in-out relative shadow-[0_0_12px_rgba(0,172,193,0.6)]" style="width: 33%"></div>
+        </div>
+      </div>
+
+      <%= form_with model: @survey, url: onboarding_survey_path, method: :patch, id: "onboarding-form", class: "w-full" do |f| %>
+
+        <!-- Step 1: Role -->
+        <div data-onboarding-survey-target="step" data-step="0" class="animate-enter-up">
+          <div class="mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold mb-2 tracking-tight text-white">Who is designing?</h1>
+            <p class="text-neutral-400 text-base">Select your role to configure your workspace.</p>
+          </div>
+
+          <div class="grid grid-cols-1 gap-4">
+            <% OnboardingResponse.roles.keys.each do |role| %>
+              <label class="selectable-card group relative bg-[#2E2E2E] border border-white/5 p-4 md:p-6 rounded-2xl cursor-pointer hover:bg-[#383838] hover:border-white/20 transition-all duration-200 flex items-center gap-4 md:gap-6 overflow-hidden"
+                   data-action="click->onboarding-survey#select">
+                <%= f.radio_button :role, role, class: "hidden" %>
+
+                <!-- Selected border glow (shown via CSS on select) -->
+
+                <div class="w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-gradient-to-br from-[#00acc1]/20 to-[#00acc1]/5 text-2xl md:text-3xl flex items-center justify-center shrink-0 text-[#00acc1] shadow-inner group-hover:scale-110 transition-transform duration-300 border border-white/5">
+                  <%= role == 'homeowner' ? '🏠' : (role == 'professional' ? '🛠️' : '🏢') %>
+                </div>
+
+                <div class="flex-1 relative z-10">
+                  <h3 class="font-bold text-xl text-white group-hover:text-[#00acc1] transition-colors"><%= role.humanize %></h3>
+                  <p class="text-sm text-neutral-400 mt-1 font-light group-hover:text-neutral-300 transition-colors">
+                    <%= role == 'homeowner' ? 'Personal workspace & simple tools' : (role == 'professional' ? 'Client management & export tools' : 'Staging tools & fast rendering') %>
+                  </p>
+                </div>
+
+                <div class="w-6 h-6 rounded-full border border-neutral-600 group-hover:border-[#00acc1] flex items-center justify-center transition-colors relative z-10">
+                  <div class="w-3 h-3 rounded-full bg-[#00acc1] shadow-[0_0_8px_rgba(0,172,193,1)] opacity-0 group-[.selected]:opacity-100 transition-opacity"></div>
+                </div>
+              </label>
+            <% end %>
+          </div>
+        </div>
+
+        <!-- Step 2: Intent -->
+        <div data-onboarding-survey-target="step" data-step="1" class="hidden animate-enter-up">
+           <div class="mb-8">
+             <h1 class="text-3xl md:text-4xl font-bold mb-2 tracking-tight text-white">Primary Goal</h1>
+             <p class="text-neutral-400 text-base">What's the main outcome you need?</p>
+           </div>
+
+          <div class="grid grid-cols-1 gap-4">
+            <% OnboardingResponse.intents.keys.each do |intent| %>
+              <label class="selectable-card group relative bg-[#2E2E2E] border border-white/5 p-4 md:p-6 rounded-2xl cursor-pointer hover:bg-[#383838] hover:border-white/20 transition-all duration-200 flex items-center gap-4 md:gap-6 overflow-hidden"
+                   data-action="click->onboarding-survey#select">
+                <%= f.radio_button :intent, intent, class: "hidden" %>
+
+                <div class="w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-gradient-to-br from-[#f23faf]/20 to-[#f23faf]/5 flex items-center justify-center text-2xl md:text-3xl shrink-0 border border-white/5 shadow-inner group-hover:scale-105 transition-transform duration-300">
+                  <%= intent == 'inspiration' ? '✨' : (intent == 'renovation' ? '🔨' : (intent == 'client_pres' ? '🤝' : '🧑‍🤝‍🧑')) %>
+                </div>
+
+                <div class="flex-1 relative z-10">
+                  <h3 class="font-bold text-xl text-white group-hover:text-[#f23faf] transition-colors"><%= intent == 'client_pres' ? 'Client Presentation' : intent.humanize %></h3>
+                  <p class="text-sm text-neutral-400 mt-1 font-light group-hover:text-neutral-300">
+                    <%= intent == 'inspiration' ? "Explore styles & get inspired" : (intent == 'renovation' ? "Detailed planning & build prep" : (intent == 'client_pres' ? "Sell a vision to clients" : "Show partner/spouse")) %>
+                  </p>
+                </div>
+
+                <div class="w-6 h-6 rounded-full border border-neutral-600 group-hover:border-[#f23faf] flex items-center justify-center transition-colors relative z-10">
+                  <div class="w-3 h-3 rounded-full bg-[#f23faf] shadow-[0_0_8px_rgba(242,63,175,0.8)] opacity-0 group-[.selected]:opacity-100 transition-opacity"></div>
+                </div>
+              </label>
+            <% end %>
+          </div>
+        </div>
+
+        <!-- Step 3: Pain Point -->
+        <div data-onboarding-survey-target="step" data-step="2" class="hidden animate-enter-up">
+           <div class="mb-8">
+             <h1 class="text-3xl md:text-4xl font-bold mb-2 tracking-tight text-white">Biggest Challenge</h1>
+             <p class="text-neutral-400 text-base">Let our AI handle the heavy lifting for you.</p>
+           </div>
+
+          <div class="space-y-4">
+            <% OnboardingResponse.pain_points.keys.each do |pain| %>
+              <label class="selectable-card group relative bg-[#2E2E2E] border border-white/5 p-4 md:p-6 rounded-2xl cursor-pointer hover:bg-[#383838] hover:border-white/20 transition-all duration-200 flex items-center gap-4 md:gap-6"
+                   data-action="click->onboarding-survey#select">
+                <%= f.radio_button :pain_point, pain, class: "hidden" %>
+
+                <div class="w-10 h-10 md:w-14 md:h-14 rounded-2xl bg-gradient-to-br from-[#5c6bc0]/20 to-[#5c6bc0]/5 flex items-center justify-center text-xl md:text-2xl shrink-0 border border-white/5">
+                  <%= pain == 'visualization' ? '👁️' : (pain == 'knowledge' ? '🌿' : '✏️') %>
+                </div>
+                <div class="relative z-10">
+                  <h3 class="font-bold text-white text-lg group-hover:text-[#5c6bc0] transition-colors">
+                    <%= pain == 'visualization' ? 'Visualization' : (pain == 'knowledge' ? 'Plant Knowledge' : 'Artistic Skill') %>
+                  </h3>
+                  <p class="text-sm text-neutral-400 mt-1 font-light group-hover:text-neutral-300">
+                    <%= pain == 'visualization' ? 'I can\'t picture the end result.' : (pain == 'knowledge' ? 'I don\'t know which plants thrive here.' : 'I can\'t draw to save my life.') %>
+                  </p>
+                </div>
+
+                 <div class="w-6 h-6 rounded-full border border-neutral-600 group-hover:border-[#5c6bc0] flex items-center justify-center transition-colors relative z-10 ml-auto mr-0">
+                  <div class="w-3 h-3 rounded-full bg-[#5c6bc0] shadow-[0_0_8px_rgba(92,107,192,0.8)] opacity-0 group-[.selected]:opacity-100 transition-opacity"></div>
+                </div>
+              </label>
+            <% end %>
+          </div>
+        </div>
+
+      <% end %>
+
+      <div class="mt-10 md:mt-auto pt-10 text-center md:text-left">
+        <p class="text-xs text-neutral-500 font-medium">✨ Completing this unlocks <span class="text-[#00acc1] font-bold"><%= TRIAL_CREDITS %> pro credits</span></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  @keyframes enter-up {
+    0% {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes blob {
+    0% { transform: translate(0px, 0px) scale(1); }
+    33% { transform: translate(30px, -50px) scale(1.1); }
+    66% { transform: translate(-20px, 20px) scale(0.9); }
+    100% { transform: translate(0px, 0px) scale(1); }
+  }
+  .animate-enter-up {
+    animation: enter-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .animate-blob {
+    animation: blob 10s infinite;
+  }
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+
+  /* Selected state for Dark Theme - Refined */
+  .selectable-card.selected {
+    border-color: #00acc1;
+    background-color: #383838; /* Lighter than base */
+    box-shadow: 0 0 20px rgba(0, 172, 193, 0.15);
+  }
+
+  .animate-pulse-slow {
+      animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+</style>

@@ -58,6 +58,11 @@ Rails.application.routes.draw do
 
     resources :audios
     post "onboarding/update", to: "onboarding#update"
+
+    resource :onboarding_survey, only: [ :show, :update ], controller: "onboarding_survey" do
+      get :celebrate, on: :member
+    end
+
     resources :favorites, only: [ :create, :destroy, :index ]
 
     resources :text_requests, except: [ :destroy, :create, :edit ]

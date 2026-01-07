@@ -1,0 +1,94 @@
+<div class="min-h-screen flex flex-col items-center justify-center relative bg-[#1a1a1a] text-white font-sans selection:bg-[#00acc1] selection:text-black"
+     data-controller="onboarding-survey"
+     data-onboarding-survey-target="celebration">
+
+  <!-- Background Effects -->
+  <div class="absolute inset-0 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-[#121212] via-[#1a1a1a] to-[#212121] z-0"></div>
+    <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay z-0"></div>
+    <div class="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-[#5c6bc0]/10 rounded-full mix-blend-screen filter blur-[100px] animate-blob"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-[#00acc1]/10 rounded-full mix-blend-screen filter blur-[100px] animate-blob animation-delay-2000"></div>
+  </div>
+
+  <!-- Content Card -->
+  <div class="relative z-10 max-w-lg w-full px-6">
+    <div class="bg-white/5 border border-white/10 backdrop-blur-xl rounded-2xl p-6 md:p-8 text-center shadow-2xl animate-enter-up">
+
+      <div class="mb-2 transform h-16 flex items-center justify-center">
+        <span class="text-5xl md:text-6xl animate-bounce-slow">🎉</span>
+      </div>
+
+      <h1 class="text-3xl md:text-4xl font-extrabold mb-3 tracking-tight text-white">
+        Welcome to Hadaa!
+      </h1>
+
+      <p class="text-base text-neutral-300 mb-6 leading-relaxed font-light">
+        You've received
+        <span class="inline-flex items-center justify-center px-4 py-1 mx-1 rounded-full border border-[#f23faf]/30 bg-[#f23faf]/10 text-[#f23faf] font-bold text-base shadow-[0_0_15px_rgba(242,63,175,0.2)]">
+          <%= current_user.signup_credits %> Free Credits
+        </span>
+        to start designing your dream space.
+      </p>
+
+      <div class="bg-[#1a1a1a]/50 rounded-xl p-4 my-3 mb-6 text-left border border-white/5">
+         <p class="text-[10px] font-bold text-neutral-500 uppercase tracking-widest mb-3 border-b border-white/5 pb-2">
+          Pro Tips to get started
+        </p>
+        <div class="space-y-3">
+          <div class="flex gap-4 items-start group py-4">
+            <div class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-xl shrink-0 group-hover:bg-[#00acc1]/20 group-hover:border-[#00acc1]/30 transition-colors duration-300">🎨</div>
+            <div>
+              <h4 class="font-bold text-white text-sm mb-0.5 group-hover:text-[#00acc1] transition-colors">Create Full Designs</h4>
+              <p class="text-xs text-neutral-400 leading-relaxed">Use properties to reimagine your entire space instantly.</p>
+            </div>
+          </div>
+          <div class="flex gap-4 items-start group py-4">
+            <div class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-xl shrink-0 group-hover:bg-[#f23faf]/20 group-hover:border-[#f23faf]/30 transition-colors duration-300">✨</div>
+            <div>
+              <h4 class="font-bold text-white text-sm mb-0.5 group-hover:text-[#f23faf] transition-colors">Refine with Precision</h4>
+              <p class="text-xs text-neutral-400 leading-relaxed">Tweak specific details until they're absolutely perfect.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <%= link_to "Let's Get Started", new_canva_path,
+          class: "group w-full inline-flex items-center justify-center px-6 py-3 text-lg font-bold text-white bg-gradient-to-r from-[#00acc1] to-[#26c6da] rounded-xl hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(0,172,193,0.4)] transition-all duration-300 shadow-lg" %>
+    </div>
+  </div>
+</div>
+
+<style>
+  @keyframes enter-up {
+    0% {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes blob {
+    0% { transform: translate(0px, 0px) scale(1); }
+    33% { transform: translate(30px, -50px) scale(1.1); }
+    66% { transform: translate(-20px, 20px) scale(0.9); }
+    100% { transform: translate(0px, 0px) scale(1); }
+  }
+   @keyframes bounce-slow {
+    0%, 100% { transform: translateY(-5%); }
+    50% { transform: translateY(5%); }
+  }
+  .animate-enter-up {
+    animation: enter-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .animate-blob {
+    animation: blob 10s infinite;
+  }
+  .animate-bounce-slow {
+    animation: bounce-slow 3s infinite ease-in-out;
+  }
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+</style>

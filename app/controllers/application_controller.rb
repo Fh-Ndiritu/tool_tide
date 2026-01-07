@@ -8,12 +8,15 @@ class ApplicationController < ActionController::Base
   skip_before_action :authenticate_user!, only: [ :robots_block, :render_410 ]
 
   before_action :block_singapore_users
+  before_action :enforce_onboarding_survey
   before_action :redirect_to_canva, if: -> { user_signed_in? && devise_controller? }
 
 
   def after_sign_in_path_for(resource)
     if resource.is_a?(User) && resource.admin?
       admin_mask_requests_path
+    elsif !resource.can_skip_onboarding_survey?
+      onboarding_survey_path
     elsif resource.is_a?(User) && resource.onboarding_stage != "completed"
       new_canva_path
     else
@@ -37,10 +40,24 @@ class ApplicationController < ActionController::Base
 
   private
 
+  def enforce_onboarding_survey
+    return unless user_signed_in?
+    return if devise_controller?
+    return if controller_name == "onboarding_survey"
+
+    return if current_user.can_skip_onboarding_survey?
+
+    redirect_to onboarding_survey_path
+  end
+
   def redirect_to_canva
     # if the path is sign in and user is signed in, redirect to canva
     if request.path == "/users/sign_in" && user_signed_in?
-      redirect_to new_canva_path
+      if current_user.can_skip_onboarding_survey?
+        redirect_to new_canva_path
+      else
+        redirect_to onboarding_survey_path
+      end
     end
   end
 

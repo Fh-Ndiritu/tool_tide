@@ -3,6 +3,7 @@ class CanvasController < AppController
 
   # GET /canvas/new
   def new
+    redirect_to onboarding_survey_path if !current_user.can_skip_onboarding_survey?
     @canva = Canva.new
   end
 
