@@ -584,3 +584,13 @@ input[type='checkbox'] {
   border-color: #3b82f6;
   background-color: #eff6ff;
 }
+
+/* Recaptcha Responsive Scaling */
+@media screen and (max-width: 767px) {
+  .g-recaptcha {
+    transform: scale(0.77);
+    -webkit-transform: scale(0.77);
+    transform-origin: 50% 0;
+    -webkit-transform-origin: 50% 0;
+  }
+}
