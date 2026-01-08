@@ -205,7 +205,7 @@ export default class extends Controller {
 
     this.setupDrawingEvents();
     this.resetMaskHistory();
-    this.saveMaskState();
+    this.saveMaskState(true);
     console.log(`Konva Stage initialized with dimensions: ${this.displayWidthValue}x${this.displayHeightValue}`);
   }
 
@@ -234,7 +234,7 @@ export default class extends Controller {
         this.layer.add(this.imageNode);
         this.layer.batchDraw();
         this.resetMaskHistory();
-        this.saveMaskState();
+        this.saveMaskState(true);
         console.log('Image loaded onto Konva canvas.');
         resolve();
       };
@@ -400,7 +400,7 @@ export default class extends Controller {
       this.maskImageNode.image(this.maskContext.canvas);
       this.maskLayer.batchDraw();
     }
-    this.saveMaskState();
+    this.saveMaskState(false);
   }
 
   resetMaskHistory() {
@@ -418,7 +418,7 @@ export default class extends Controller {
     this._dispatchHistoryChangeEvent();
   }
 
-  saveMaskState() {
+  saveMaskState(isEmpty = false) {
     if (!this.maskContext) return;
 
     if (this.historyPointer < this.maskHistory.length - 1) {
@@ -426,14 +426,14 @@ export default class extends Controller {
     }
 
     const dataURL = this.maskContext.canvas.toDataURL();
-    this.maskHistory.push(dataURL);
+    this.maskHistory.push({ dataURL, isEmpty });
 
     if (this.maskHistory.length > this.MAX_HISTORY_STATES) {
       this.maskHistory.shift();
     }
 
     this.historyPointer = this.maskHistory.length - 1;
-    console.log('Mask state saved. History size:', this.maskHistory.length, 'Pointer:', this.historyPointer);
+    console.log('Mask state saved. History size:', this.maskHistory.length, 'Pointer:', this.historyPointer, 'Empty:', isEmpty);
     this._dispatchHistoryChangeEvent();
   }
 
@@ -461,9 +461,9 @@ export default class extends Controller {
   undo() {
     if (this.historyPointer > 0) {
       this.historyPointer--;
-      const dataURL = this.maskHistory[this.historyPointer];
-      if (dataURL) {
-        this.applyMaskState(dataURL);
+      const entry = this.maskHistory[this.historyPointer];
+      if (entry) {
+        this.applyMaskState(entry.dataURL);
       }
       console.log('Undo performed. History Pointer:', this.historyPointer);
     } else {
@@ -475,9 +475,9 @@ export default class extends Controller {
   redo() {
     if (this.historyPointer < this.maskHistory.length - 1) {
       this.historyPointer++;
-      const dataURL = this.maskHistory[this.historyPointer];
-      if (dataURL) {
-        this.applyMaskState(dataURL);
+      const entry = this.maskHistory[this.historyPointer];
+      if (entry) {
+        this.applyMaskState(entry.dataURL);
       }
       console.log('Redo performed. History Pointer:', this.historyPointer);
     } else {
@@ -487,12 +487,16 @@ export default class extends Controller {
   }
 
   _dispatchHistoryChangeEvent() {
+    const currentEntry = this.maskHistory[this.historyPointer];
+    const isEmpty = currentEntry ? currentEntry.isEmpty : true;
+
     this.element.dispatchEvent(
       new CustomEvent('konva:mask-history-changed', {
         bubbles: true,
         detail: {
           historyPointer: this.historyPointer,
           historyLength: this.maskHistory.length,
+          isEmpty: isEmpty,
         },
       })
     );
@@ -500,7 +504,9 @@ export default class extends Controller {
       'Dispatched konva:mask-history-changed event. Pointer:',
       this.historyPointer,
       'Length:',
-      this.maskHistory.length
+      this.maskHistory.length,
+      'isEmpty:',
+      isEmpty
     );
   }
 
@@ -537,7 +543,7 @@ export default class extends Controller {
         this.maskLayer.batchDraw();
       }
       console.log('Selections cleared.');
-      this.saveMaskState();
+      this.saveMaskState(true);
     }
   }
 

@@ -379,6 +379,8 @@ html {
   position: relative;
   width: 100%;
   height: 30px; /* Ensures space for the largest thumb and track */
+  display: flex;
+  align-items: center;
 }
 
 .brush-slider .slider-container input[type='range'] {
@@ -392,44 +394,53 @@ html {
   z-index: 2; /* Place it on top to capture events */
 }
 
-.brush-slider .slider-track {
+.brush-slider .slider-shape {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   width: 100%;
   height: var(--max-track-height, 10px);
-  background: #e5e7eb; /* gray-200 */
+  background: transparent;
+  clip-path: polygon(0 40%, 100% 0, 100% 100%, 0 60%);
+  pointer-events: none; /* Key fix: Let clicks pass to the input */
+}
+
+.brush-slider .slider-track {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(4px);
+  pointer-events: none;
 }
 
 .brush-slider .slider-fill {
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 0;
   left: 0;
-  height: var(--max-track-height, 10px);
+  height: 100%;
   width: var(--fill-percentage);
-  background: #4f46e5; /* indigo-600 */
-}
-
-/* The magic for the trapezoid shape */
-.brush-slider .slider-track,
-.brush-slider .slider-fill {
-  clip-path: polygon(0 50%, 100% 0%, 100% 100%, 0% 50%); /* Simplified for an increasing triangle */
-  /* For a true trapezoid, you would use more complex points */
-  /* E.g., clip-path: polygon(0 75%, 100% 0%, 100% 100%, 0 25%); */
+  background: linear-gradient(90deg, #00acc1, #f23faf);
+  box-shadow: 0 0 10px rgba(242, 63, 175, 0.5);
+  pointer-events: none;
 }
 
 .brush-slider .slider-thumb {
   position: absolute;
   top: 50%;
   transform: translate(-50%, -50%);
-  background: #4f46e5;
+  background: #ffffff;
   border-radius: 50%;
   z-index: 3;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5), 0 0 0 4px rgba(242, 63, 175, 0.2);
+  pointer-events: none;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   width: var(--thumb-size);
   height: var(--thumb-size);
   left: var(--thumb-left);
+  transition: none !important; /* Ensure instant 1:1 movement */
 }
 
 .grid-item {

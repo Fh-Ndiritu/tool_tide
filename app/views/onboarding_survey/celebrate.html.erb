@@ -35,20 +35,20 @@
           Pro Tips to get started
         </p>
         <div class="space-y-3">
-          <div class="flex gap-4 items-start group py-4">
+          <%= link_to new_canva_path, class: "flex gap-4 items-start group py-4" do %>
             <div class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-xl shrink-0 group-hover:bg-[#00acc1]/20 group-hover:border-[#00acc1]/30 transition-colors duration-300">🎨</div>
             <div>
               <h4 class="font-bold text-white text-sm mb-0.5 group-hover:text-[#00acc1] transition-colors">Create Full Designs</h4>
               <p class="text-xs text-neutral-400 leading-relaxed">Use properties to reimagine your entire space instantly.</p>
             </div>
-          </div>
-          <div class="flex gap-4 items-start group py-4">
+          <% end %>
+          <%= link_to new_canva_path, class: "flex gap-4 items-start group py-4" do %>
             <div class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-xl shrink-0 group-hover:bg-[#f23faf]/20 group-hover:border-[#f23faf]/30 transition-colors duration-300">✨</div>
             <div>
               <h4 class="font-bold text-white text-sm mb-0.5 group-hover:text-[#f23faf] transition-colors">Refine with Precision</h4>
               <p class="text-xs text-neutral-400 leading-relaxed">Tweak specific details until they're absolutely perfect.</p>
             </div>
-          </div>
+          <% end %>
         </div>
       </div>
 

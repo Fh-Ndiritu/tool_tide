@@ -2,21 +2,21 @@ class OnboardingResponse < ApplicationRecord
   belongs_to :user
 
   enum :role, {
-    homeowner: 0,
     professional: 1,
+    homeowner: 0,
     agent: 2
   }
 
   enum :intent, {
+    client_pres: 2,
     inspiration: 0,
     renovation: 1,
-    client_pres: 2,
     approval: 3
   }
 
   enum :pain_point, {
-    visualization: 0,
     knowledge: 1,
+    visualization: 0,
     sketch_quality: 2
   }
 

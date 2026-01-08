@@ -49,7 +49,7 @@
         <%= button_to user_google_oauth2_omniauth_authorize_path,
                 method: :post,
                 data: { turbo: false },
-                class: "w-[300px] mx-auto flex items-center justify-center space-x-3 px-4 py-3 border border-white/10 rounded-lg shadow-sm text-sm font-bold text-neutral-200 bg-black/20 hover:bg-black/40 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent transition duration-150 ease-in-out" do %>
+                class: "w-[250px] sm:w-[300px]  mx-auto flex items-center justify-center space-x-3 px-4 py-3 border border-white/10 rounded-lg shadow-sm text-sm font-bold text-neutral-200 bg-black/20 hover:bg-black/40 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent transition duration-150 ease-in-out" do %>
           <%= render(IconComponent.new(name: "google", classes: "h-5 w-5 text-white")) %>
           <span>Sign up with Google</span>
         <% end %>
@@ -84,7 +84,7 @@
             <legend class="text-xs font-medium text-neutral-300 group-focus-within:text-accent px-1 ml-auto mr-2">
               Password
               <% if @minimum_password_length %>
-                <span class="text-[10px] opacity-75 font-normal text-neutral-400 group-focus-within:text-accent">(<%= @minimum_password_length %> characters minimum)</span>
+                <span class="text-[10px] opacity-75 font-normal text-neutral-400 group-focus-within:text-accent">min <%= @minimum_password_length %> chars</span>
               <% end %>
             </legend>
             <%= f.password_field :password, autocomplete: "new-password", class: "w-full bg-transparent border-none focus:ring-0 focus:outline-none outline-none text-sm px-3 pb-2 pt-1 text-white placeholder-neutral-500 pr-10", data: {password_visibility_target: 'input'}, placeholder: "Password" %>
@@ -92,7 +92,7 @@
               type="button"
               data-action="password-visibility#toggle"
               class="
-                absolute right-0 top-0 bottom-0 px-3 flex items-center pt-2
+                absolute right-0 top-0 bottom-0 px-3 flex items-center pb-1
                 text-neutral-400 hover:text-neutral-200 focus:outline-none
               "
             >
@@ -128,7 +128,6 @@
             >
               Privacy Policy
             </a>
-            .
           </p>
         </div>
       <% end %>

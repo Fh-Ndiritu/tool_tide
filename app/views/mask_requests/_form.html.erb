@@ -32,13 +32,18 @@
     </button>
 
     <%= link_to "Cancel", new_canva_path, class: "!bg-white/10 hover:!bg-white/20 btn cute-btn text-white", data: { onboarding_target: "control" } %>
+
     <button
       data-action="mask-request#insertMask"
       data-onboarding-target="submit"
-      class="flex flex-col items-center btn cute-btn accent-btn"
+      data-mask-request-target="generateButton"
+      class="flex flex-col items-center btn cute-btn accent-btn ml-4
+      disabled:line-through disabled:opacity-50 disabled:cursor-not-allowed disabled:!bg-neutral-800 disabled:!text-neutral-500 disabled:!border-neutral-700 disabled:!shadow-none disabled:!scale-100 disabled:!from-transparent disabled:!to-transparent"
+      disabled
     >
       Generate Now
-      <span class="ml-2 text-sm">(<%= DEFAULT_IMAGE_COUNT * GOOGLE_IMAGE_COST %> credits)</span>
+      <span class="text-sm">(<%= DEFAULT_IMAGE_COUNT * GOOGLE_IMAGE_COST %> credits)</span>
     </button>
+
   </div>
 <% end %>

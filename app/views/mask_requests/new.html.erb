@@ -110,7 +110,7 @@
         <div
           data-mask-request-target="brushSizeControl"
           data-onboarding-target="brush"
-          class="space-y-4 brush-slider"
+          class="space-y-4 brush-slider max-sm:px-2"
         >
           <div class="flex items-center justify-between">
             <label for="brush-size" class="text-xs font-bold uppercase tracking-wider text-neutral-300">Brush Size</label>
@@ -134,9 +134,10 @@
             >
 
             <!-- The visual parts of the slider -->
-            <div class="slider-track"></div>
-
-            <div class="slider-fill" data-mask-request-target="fill"></div>
+            <div class="slider-shape">
+              <div class="slider-track" data-mask-request-target="track"></div>
+              <div class="slider-fill" data-mask-request-target="fill"></div>
+            </div>
 
             <div class="slider-thumb" data-mask-request-target="thumb"></div>
           </div>

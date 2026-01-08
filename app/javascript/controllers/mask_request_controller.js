@@ -34,6 +34,8 @@ export default class extends Controller {
     'fill',
     'display',
     'suggestionsSection',
+    'generateButton',
+    'track',
   ];
 
   static values = {
@@ -112,8 +114,12 @@ export default class extends Controller {
   }
 
   _handleKonvaHistoryChange(event) {
-    const { historyPointer, historyLength } = event.detail;
+    const { historyPointer, historyLength, isEmpty } = event.detail;
     this.updateUndoRedoButtonStates(historyPointer, historyLength);
+
+    if (this.hasGenerateButtonTarget) {
+      this.generateButtonTarget.disabled = isEmpty;
+    }
   }
 
   undoPaintAction() {
@@ -201,11 +207,23 @@ export default class extends Controller {
     const max = parseInt(this.brushRangeTarget.max, 10);
 
     const fillPercentage = (size - min) / (max - min);
-    const thumbSize = 10 + ((size - min) / (max - min)) * 15;
+
     const fillWidth = `${fillPercentage * 100}%`;
-    const thumbLeft = `calc(${fillPercentage * 100}% + (${15 - 5}px) * ${fillPercentage} - 5px)`;
+    const trackLeft = `${fillPercentage * 100}%`;
+    const trackWidth = `${(1 - fillPercentage) * 100}%`;
+
+    // Scale thumb based on brush size (20px to 40px range)
+    const baseThumbSize = 20;
+    const maxThumbSize = 40;
+    const thumbSize = baseThumbSize + (fillPercentage * (maxThumbSize - baseThumbSize));
+
+    const thumbLeft = `${fillPercentage * 100}%`;
 
     this.fillTarget.style.width = fillWidth;
+    if (this.hasTrackTarget) {
+      this.trackTarget.style.left = trackLeft;
+      this.trackTarget.style.width = trackWidth;
+    }
     this.thumbTarget.style.left = thumbLeft;
     this.thumbTarget.style.setProperty('--thumb-size', `${thumbSize}px`);
 
