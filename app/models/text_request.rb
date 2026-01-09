@@ -61,9 +61,9 @@ class TextRequest < ApplicationRecord
 
   def broadcast_progress
     if failed? || complete?
-      Turbo::StreamsChannel.broadcast_refresh_to("#{user.id}_text_requests")
+      Turbo::StreamsChannel.broadcast_refresh_to(self)
     else
-      Turbo::StreamsChannel.broadcast_update_to("#{user.id}_text_requests", target: dom_id(self, :loader), partial: "layouts/shared/loader", locals: { record: self, klasses: "group embed absolute !opacity-75 z-1 w-full h-full" })
+      Turbo::StreamsChannel.broadcast_update_to(self, target: dom_id(self, :loader), partial: "layouts/shared/loader", locals: { record: self, klasses: "group embed absolute !opacity-75 z-1 w-full h-full" })
     end
   end
 
