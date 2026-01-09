@@ -133,11 +133,7 @@ enum :progress, {
   def broadcast_progress
     return if performing_plant_generation?
 
-    if failed? || complete?
-      Turbo::StreamsChannel.broadcast_refresh_to(canva)
-    else
-      Turbo::StreamsChannel.broadcast_replace_to(canva, target: self, partial: "mask_requests/mask_request", locals: { mask_request: self.reload, current_user: user })
-    end
+    Turbo::StreamsChannel.broadcast_refresh_to(canva)
   end
 
   def preset_prompt
