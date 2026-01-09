@@ -42,6 +42,8 @@ export default class extends Controller {
     console.log('Display Width:', this.displayWidthValue);
     console.log('Display Height:', this.displayHeightValue);
 
+    this._boundHandleMouseUp = this._handleMouseUp.bind(this);
+
     if (
       this.hasDisplayWidthValue &&
       this.hasDisplayHeightValue &&
@@ -284,6 +286,10 @@ export default class extends Controller {
     if (!this.imageNode || !this.stage) return;
 
     this.isDrawing = true;
+
+    window.addEventListener('mouseup', this._boundHandleMouseUp);
+    window.addEventListener('touchend', this._boundHandleMouseUp);
+
     const pos = this.stage.getPointerPosition();
     if (!pos) return;
 
@@ -373,7 +379,12 @@ export default class extends Controller {
   }
 
   _handleMouseUp() {
+    if (!this.isDrawing) return;
     this.isDrawing = false;
+
+    window.removeEventListener('mouseup', this._boundHandleMouseUp);
+    window.removeEventListener('touchend', this._boundHandleMouseUp);
+
     if (this.currentTool === 'brush' || this.currentTool === 'eraser') {
       this.maskContext.closePath();
       if (this.lastLine) {

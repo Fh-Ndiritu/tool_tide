@@ -136,7 +136,7 @@ enum :progress, {
     if failed? || complete?
       Turbo::StreamsChannel.broadcast_refresh_to(canva)
     else
-      Turbo::StreamsChannel.broadcast_replace_to(canva, target: self, partial: "mask_requests/mask_request", locals: { mask_request: self, current_user: user })
+      Turbo::StreamsChannel.broadcast_replace_to(canva, target: self, partial: "mask_requests/mask_request", locals: { mask_request: self.reload, current_user: user })
     end
   end
 
