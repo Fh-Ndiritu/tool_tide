@@ -56,12 +56,7 @@ module ApplicationHelper
     when "overlaying"
       "Analyzing Garden Area"
     else
-      if request.path.include?("canvas")
-        "Analyzing the Image"
-      else
-        "Just a moment 🧘"
-      end
-
+      "Just a moment 🧘"
     end
   end
 

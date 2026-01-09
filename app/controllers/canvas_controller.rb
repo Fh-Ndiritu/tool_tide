@@ -13,8 +13,8 @@ class CanvasController < AppController
 
     respond_to do |format|
       if @canva.save
-        result = SketchAnalysisJob.perform_now(@canva)
-        redirect_path = new_canva_mask_request_path(@canva, sketch_detected: (result == "sketch"))
+        SketchAnalysisJob.perform_later(@canva)
+        redirect_path = new_canva_mask_request_path(@canva)
         format.html { redirect_to redirect_path, status: :see_other }
         format.turbo_stream { redirect_to redirect_path, status: :see_other }
       else

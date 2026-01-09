@@ -263,7 +263,7 @@ export default class extends Controller {
     } else {
       // Manual dismiss version with OK button
       messageDiv.innerHTML = `
-        <div class="bg-white p-6 rounded-lg shadow-xl text-center rounded-xl">
+        <div class="text-neutral-900 bg-white p-6 rounded-lg shadow-xl text-center rounded-xl ">
           <p class="mb-4 text-lg font-semibold">${message}</p>
           <div class="flex justify-center">
             <button id="ok-btn" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow-md transition duration-300 ease-in-out">OK</button>
@@ -282,7 +282,7 @@ export default class extends Controller {
     const confirmationDiv = document.createElement('div');
     confirmationDiv.className = 'fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50';
     confirmationDiv.innerHTML = `
-      <div class="bg-white p-6 rounded-lg shadow-xl text-center rounded-xl">
+      <div class="text-neutral-900 bg-white p-6 rounded-lg shadow-xl text-center rounded-xl">
         <p class="mb-4 text-lg font-semibold">${message}</p>
         <div class="flex justify-center space-x-4">
           <button id="confirm-btn" class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 shadow-md transition duration-300 ease-in-out">Yes</button>
