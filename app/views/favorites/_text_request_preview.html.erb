@@ -31,7 +31,7 @@
       </div>
 
       <p class="text-sm text-neutral-600 line-clamp-2 leading-relaxed group-hover:text-neutral-900 transition-colors">
-        <%= favoritable.prompt.truncate(80) %>
+        <%= favoritable.prompt %>
       </p>
 
       <p class="text-xs text-neutral-500 font-medium pt-1">
@@ -40,10 +40,5 @@
     </div>
   <% end %>
 
-  <%# Right Section: Favorite Button %>
-  <div class="mt-4 md:mt-0 md:ml-6 flex-shrink-0 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-200">
-    <%= render 'favorites/favorite_button',
-        favoritable: favoritable,
-        favorite: favorite %>
-  </div>
+
 </div>
