@@ -59,7 +59,6 @@ export default class extends Controller {
         this.startBrushTour()
         break
       case "mask_drawn":
-        this.startStyleTour()
         break
       case "style_selected":
         this.startPlantsTour()
@@ -194,20 +193,6 @@ export default class extends Controller {
     this.pulseElement(this.brushTarget)
   }
 
-  startStyleTour() {
-    if (!document.querySelector("#styles")) return
-
-     this.startTour([
-      {
-        element: "#styles",
-        popover: {
-          title: "Select a Style",
-          description: "Choose a design style that matches your vision."
-        }
-      }
-    ])
-  }
-
   startPlantsTour() {
     if (!this.hasPlantsButtonTarget) return
 
@@ -275,9 +260,11 @@ export default class extends Controller {
   }
 
   startTextEditTour() {
-    if (!this.hasTextEditTarget) return
-    // Only show if uploading (fresh request) or complete (show page)
-    if (this.currentRequestProgressValue !== 'uploading' && this.currentRequestProgressValue !== 'complete') return
+   return
+    // Relaxed check: As long as we have the target (Smart Fix button), we can show the tour.
+    // This supports the new streaming flow where 'complete' might not be the exact status yet,
+    // but the button is visible.
+    // if (this.currentRequestProgressValue !== 'uploading' && this.currentRequestProgressValue !== 'complete') return
 
     const steps = [
       {

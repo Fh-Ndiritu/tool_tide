@@ -134,9 +134,9 @@ enum :progress, {
     return if performing_plant_generation?
 
     if failed? || complete?
-      Turbo::StreamsChannel.broadcast_refresh_to(canva, target: "styles")
+      Turbo::StreamsChannel.broadcast_refresh_to(canva)
     else
-      Turbo::StreamsChannel.broadcast_replace_to(canva, target: "loader", partial: "layouts/shared/loader", locals: { record: self, klasses: "fixed " })
+      Turbo::StreamsChannel.broadcast_replace_to(canva, target: self, partial: "mask_requests/mask_request", locals: { mask_request: self, current_user: user })
     end
   end
 

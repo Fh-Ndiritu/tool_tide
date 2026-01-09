@@ -1,0 +1,82 @@
+<%# locals: (view:, title:, compact: false) %>
+<% full_url = rails_blob_path(view) %>
+<% metadata = view.metadata %>
+
+<div
+  class="
+    group relative rounded-2xl overflow-hidden shadow-md
+    hover:shadow-xl transition-all duration-300
+  "
+>
+  <a
+    href="<%= full_url %>"
+    data-pswp-src="<%= full_url %>"
+    data-pswp-width="<%= metadata['width'] || 1024 %>"
+    data-pswp-height="<%= metadata['height'] || 1024 %>"
+    data-onboarding-target="history"
+    target="_blank"
+    class="block relative aspect-[4/3]"
+  >
+    <%= image_tag(view.variant(resize_to_limit: [600, 600]), loading: :lazy, class: "w-full h-full object-cover transition-transform duration-700 group-hover:scale-105") %>
+    <div
+      class="
+        absolute inset-0 bg-black/0 group-hover:bg-black/10
+        transition-colors duration-300
+      "
+    ></div>
+
+    <!-- Hover Overlay Icon -->
+    <div
+      class="
+        absolute inset-0 flex items-center justify-center
+        opacity-0 group-hover:opacity-100 transition-opacity
+        duration-300
+      "
+    >
+      <div class="bg-white/90 backdrop-blur-sm p-3 rounded-full shadow-lg">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          class="w-6 h-6 text-black"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.689a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </div>
+    </div>
+  </a>
+
+  <div
+    class="
+      absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t
+      from-black/80 to-transparent
+    "
+  >
+      <p class="text-white font-medium text-sm">
+         <%= title %>
+      </p>
+  </div>
+
+  <div class="absolute bottom-3 right-4 z-20 flex space-x-2">
+    <a
+      href="javascript:void(0)"
+      onclick="this.closest('.group').querySelector('a[data-pswp-src]').click(); return false;"
+      class="icon-btn bg-black/40 hover:bg-black/60 text-white backdrop-blur-md border border-white/20 transition-all duration-300 hover:scale-110"
+      title="Zoom"
+    >
+      <%= render(IconComponent.new(classes: "h-5 w-5", name: "expand")) %>
+    </a>
+
+    <%= link_to rails_blob_path(view, disposition: :attachment), class: "icon-btn bg-black/40 hover:bg-black/60 text-white backdrop-blur-md border border-white/20 transition-all duration-300 hover:scale-110", title: "Download", data: { onboarding_target: "download" } do %>
+      <%= render(IconComponent.new(classes: "h-5 w-5", name: "download")) %>
+    <% end %>
+
+    <%= link_to new_text_request_path(signed_blob_id:  view.blob.signed_id), class: "icon-btn bg-white text-secondary hover:bg-secondary hover:text-white shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-secondary/50", title: "Refine with AI" do %>
+      <%= render(IconComponent.new(classes: "h-5 w-5", name: "pencil")) %>
+    <% end %>
+  </div>
+</div>

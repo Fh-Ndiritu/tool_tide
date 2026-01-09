@@ -6,8 +6,8 @@
        <%= link_to "Try Again", new_canva_mask_request_path(mask_request.canva), class: "mt-4 inline-block px-6 py-2 bg-red-600 text-white rounded-full hover:bg-red-700 transition" %>
     </div>
   </div>
-<% elsif (mask_request.complete? || mask_request.fetching_plants?)  && mask_request.main_view.attached? %>
-  <div class="container mx-auto py-8 <%= 'compact' if defined?(compact) %>">
+<% else %>
+  <div id="<%= dom_id(mask_request) %>" class="container mx-auto py-8">
     <div class="bg-white/10 backdrop-blur-xl rounded-3xl shadow-xl border border-white/20 overflow-hidden">
       <!-- Header Section -->
       <div
@@ -24,9 +24,12 @@
                 font-bold tracking-wide uppercase border border-green-500/30
               "
             >
-              <%= mask_request.preset.humanize %>
+              <%= mask_request.preset&.humanize %>
             </span>
             <span class="text-neutral-300 text-sm"><%= time_ago_in_words(mask_request.created_at) %> ago</span>
+            <% if mask_request.processing? %>
+               <span class="animate-pulse text-secondary text-sm font-medium ml-2"> Processing: <%= mask_request.progress.humanize %>...</span>
+            <% end %>
           </div>
 
           <h3 class="text-3xl md:text-4xl font-bold text-white tracking-tight">
@@ -48,6 +51,7 @@
 
       <div class="p-8 space-y-10">
         <!-- Refine with Prompts - Hero Section -->
+        <% if mask_request.main_view.attached? || mask_request.rotated_view.attached? || mask_request.drone_view.attached? %>
         <div
           class="
             relative overflow-hidden rounded-2xl bg-gradient-to-br
@@ -126,9 +130,9 @@
             <% end %>
           </div>
         </div>
+        <% end %>
 
         <!-- Gallery Grid -->
-        <% views = [mask_request.main_view, mask_request.rotated_view, mask_request.drone_view].compact.select(&:attached?) %>
         <link
           rel="stylesheet"
           href="https://unpkg.com/photoswipe@5.4.3/dist/photoswipe.css"
@@ -138,85 +142,54 @@
           class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
           data-controller="photoswipe"
         >
-          <% views.each_with_index do |view, index| %>
-            <% full_url = rails_blob_path(view) %>
-            <% metadata = view.metadata %>
-
-            <div
-              class="
-                group relative rounded-2xl overflow-hidden shadow-md
-                hover:shadow-xl transition-all duration-300
-              "
-            >
-              <a
-                href="<%= full_url %>"
-                data-pswp-src="<%= full_url %>"
-                data-pswp-width="<%= metadata['width'] || 1024 %>"
-                data-pswp-height="<%= metadata['height'] || 1024 %>"
-                data-onboarding-target="history"
-                target="_blank"
-                class="block relative aspect-[4/3]"
-              >
-                <%= image_tag(view.variant(resize_to_limit: [600, 600]), loading: :lazy, class: "w-full h-full object-cover transition-transform duration-700 group-hover:scale-105") %>
-                <div
-                  class="
-                    absolute inset-0 bg-black/0 group-hover:bg-black/10
-                    transition-colors duration-300
-                  "
-                ></div>
-
-                <!-- Hover Overlay Icon -->
-                <div
-                  class="
-                    absolute inset-0 flex items-center justify-center
-                    opacity-0 group-hover:opacity-100 transition-opacity
-                    duration-300
-                  "
-                >
-                  <div class="bg-white/90 backdrop-blur-sm p-3 rounded-full shadow-lg">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                      class="w-6 h-6 text-black"
-                    >
-                      <path
-                        fill-rule="evenodd"
-                        d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.689a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z"
-                        clip-rule="evenodd"
-                      />
-                    </svg>
-                  </div>
-                </div>
-              </a>
-
-              <div
-                class="
-                  absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t
-                  from-black/80 to-transparent
-                "
-              >
-                  <p class="text-white font-medium text-sm">
-                     <%= case view.name
-                          when "main_view" then "Option 1"
-                          when "rotated_view" then "Option 2"
-                          when "drone_view" then "Option 3"
-                          else view.name.humanize
-                          end %>
-                  </p>
-              </div>
-
-              <div class="absolute bottom-3 right-4 z-20 flex space-x-2">
-                <%= link_to rails_blob_path(view, disposition: :attachment), class: "icon-btn bg-black/40 hover:bg-black/60 text-white backdrop-blur-md border border-white/20 transition-all duration-300 hover:scale-110", title: "Download", data: { onboarding_target: "download" } do %>
-                  <%= render(IconComponent.new(classes: "h-5 w-5", name: "download")) %>
-                <% end unless defined?(compact) %>
-
-                <%= link_to new_text_request_path(signed_blob_id:  view.blob.signed_id), class: "icon-btn bg-white text-secondary hover:bg-secondary hover:text-white shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-secondary/50", title: "Refine with AI" do %>
-                  <%= render(IconComponent.new(classes: "h-5 w-5", name: "pencil")) %>
-                <% end %>
-              </div>
-            </div>
+          <!-- Option 1: Main View -->
+          <% if mask_request.main_view.attached? %>
+             <%= render partial: "mask_requests/mask_request_card", locals: { view: mask_request.main_view, title: "Option 1" } %>
+          <% else %>
+             <!-- Loading State for Option 1 -->
+              <div class="relative aspect-[4/3] rounded-2xl overflow-hidden bg-gray-800 border border-white/10 flex flex-col items-center justify-center p-6 text-center">
+                 <% if mask_request.processing? %>
+                  <div class="w-12 h-12 rounded-full border-4 border-secondary border-t-transparent animate-spin mb-4"></div>
+                  <p class="text-white font-medium animate-pulse">Generating Option 1...</p>
+                  <p class="text-gray-400 text-sm mt-2"><%= mask_request.progress.humanize %></p>
+                 <% else %>
+                   <div class="w-12 h-12 rounded-full bg-white/10 mb-4"></div>
+                   <p class="text-gray-500 font-medium">Waiting to start...</p>
+                 <% end %>
+               </div>
           <% end %>
+
+           <!-- Option 2: Rotated View -->
+           <% if mask_request.rotated_view.attached? %>
+              <%= render partial: "mask_requests/mask_request_card", locals: { view: mask_request.rotated_view, title: "Option 2" } %>
+           <% else %>
+               <!-- Loading State for Option 2 -->
+               <div class="relative aspect-[4/3] rounded-2xl overflow-hidden bg-gray-800 border border-white/10 flex flex-col items-center justify-center p-6 text-center">
+                   <% if mask_request.main_view.attached? && mask_request.processing? %>
+                       <div class="w-12 h-12 rounded-full border-4 border-primary border-t-transparent animate-spin mb-4"></div>
+                       <p class="text-white font-medium animate-pulse">Generating Option 2...</p>
+                   <% else %>
+                       <div class="w-12 h-12 rounded-full bg-white/5 mb-4"></div>
+                       <p class="text-gray-600 font-medium">Waiting for Option 1...</p>
+                   <% end %>
+               </div>
+           <% end %>
+
+            <!-- Option 3: Drone View -->
+            <% if mask_request.drone_view.attached? %>
+               <%= render partial: "mask_requests/mask_request_card", locals: { view: mask_request.drone_view, title: "Option 3" } %>
+            <% else %>
+               <!-- Loading State for Option 3 -->
+                <div class="relative aspect-[4/3] rounded-2xl overflow-hidden bg-gray-800 border border-white/10 flex flex-col items-center justify-center p-6 text-center">
+                    <% if mask_request.rotated_view.attached? && mask_request.processing? %>
+                        <div class="w-12 h-12 rounded-full border-4 border-accent border-t-transparent animate-spin mb-4"></div>
+                        <p class="text-white font-medium animate-pulse">Generating Option 3...</p>
+                    <% else %>
+                        <div class="w-12 h-12 rounded-full bg-white/5 mb-4"></div>
+                         <p class="text-gray-600 font-medium">Waiting for Option 2...</p>
+                    <% end %>
+                </div>
+            <% end %>
         </div>
 
         <!-- Action Buttons -->
@@ -247,8 +220,10 @@
               />
             </svg>
             New Design
-          <% end unless defined?(compact) %>
+          <% end %>
 
+
+           <% if mask_request.main_view.attached? %>
           <%= link_to new_text_request_path(signed_blob_id: mask_request.main_view.blob.signed_id), class: "cute-btn !bg-accent-secondary !text-gray-800 flex items-center gap-2", data: { onboarding_target: "textEdit" } do %>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -267,12 +242,11 @@
             </svg>
             Smart Fix
           <% end %>
+          <% end %>
         </div>
 
         <!-- Planting Guide Section -->
-        <% if !defined?(compact) %>
-           <%= render "mask_requests/planting_guide_section", mask_request: mask_request %>
-        <% end %>
+        <%= render "mask_requests/planting_guide_section", mask_request: mask_request %>
       </div>
     </div>
   </div>

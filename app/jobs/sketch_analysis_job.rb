@@ -51,5 +51,4 @@ class SketchAnalysisJob < ApplicationJob
       )
     end
   end
-
 end
