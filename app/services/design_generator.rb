@@ -76,27 +76,8 @@ class DesignGenerator
   def main_view
     @mask_request.main_view!
     prompts_config = YAML.load_file(Rails.root.join("config/prompts.yml"))
-    prompt = prompts_config.dig("landscape_preference_presets", @mask_request.preset)
-
-    user_preferences = ""
-    MaskRequest.stored_attributes[:preferences].each do |preference|
-      value = if @mask_request.send(preference)
-        @mask_request.send(preference)
-      else
-        false
-      end
-
-      prompt.gsub!("<<#{preference}>>", value.to_s)
-      user_preferences += "<#{preference}>#{value.to_s}</#{preference}> \n"
-    end
-    prompt.gsub!("<<user_preferences>>", user_preferences)
-
-    prompt += <<~SYSTEM_INSTRUCTIONS
-      YOU SHALL include the image in your response!
-      DO NOT modify any other areas of the image except for the precise region marked by violet paint.
-      YOU CANNOT MODIFY the HOUSES, ADD new HOUSES or REMOVE the houses.
-      ONLY MODIFY the precise region marked by violet paint.
-    SYSTEM_INSTRUCTIONS
+    prompt = load_prompt(@mask_request.preset)
+    prompt = add_system_instructions(prompt)
 
     image = @mask_request.overlay
 
@@ -123,5 +104,40 @@ class DesignGenerator
     @mask_request.update error_msg: e.message
   end
 
+  def load_prompt(preset)
+    prompts_config = YAML.load_file(Rails.root.join("config/prompts.yml"))
+
+    if !PRESETS_WITH_PREFERENCES.include?(preset)
+      return prompts_config.dig("landscape_presets", preset)
+    end
+
+    prompt = prompts_config.dig("landscape_preference_presets", preset)
+
+    user_preferences = ""
+    MaskRequest.stored_attributes[:preferences].each do |preference|
+      value = if @mask_request.send(preference)
+      @mask_request.send(preference)
+      else
+        false
+      end
+
+      prompt.gsub!("<<#{preference}>>", value.to_s)
+      user_preferences += "<#{preference}>#{value}</#{preference}> \n"
+    end
+
+    prompt.gsub!("<<user_preferences>>", user_preferences)
+
+    prompt
+  end
+
+  def add_system_instructions(prompt)
+    prompt += <<~SYSTEM_INSTRUCTIONS
+      YOU SHALL include the image in your response!
+      DO NOT modify any other areas of the image except for the precise region marked by violet paint.
+      YOU CANNOT MODIFY the HOUSES, ADD new HOUSES or REMOVE the houses.
+      ONLY MODIFY the precise region marked by violet paint.
+    SYSTEM_INSTRUCTIONS
+    prompt
+  end
 
 end

@@ -72,14 +72,14 @@ class MaskRequestsController < AppController
     respond_to do |format|
       if @mask_request.update(mask_request_params)
         # Check if we are coming from the Style Selection step (updating preset)
-        if mask_request_params[:preset].present?
+        if mask_request_params[:preset].present? && PRESETS_WITH_PREFERENCES.include?(mask_request_params[:preset])
           format.html { redirect_to preferences_mask_request_path(@mask_request), status: :see_other }
           format.turbo_stream { redirect_to preferences_mask_request_path(@mask_request), status: :see_other }
 
         # Check if we are coming from the Preferences step (submitting toggles)
         # We can detect this by checking for one of the toggle params or a hidden field,
         # but since we just updated the model, we can check if we should generate.
-        elsif preference_request?
+        elsif preference_request? || !PRESETS_WITH_PREFERENCES.include?(mask_request_params[:preset])
           if MaskRequest.joins(canva: :user).where(users: { id: current_user.id }).count == 1
             flash[:pql_event] = "true"
           end
@@ -92,7 +92,7 @@ class MaskRequestsController < AppController
           format.turbo_stream { redirect_to mask_request_path(@mask_request), status: :see_other }
 
         else
-          # Fallback / manual update case
+           # Fallback / manual update case
            format.html { redirect_to mask_request_path(@mask_request), status: :see_other }
         end
       else

@@ -9,6 +9,8 @@ LANDSCAPE_PRESETS = {
   "mediterranean" => "Fragrant and relaxed"
 }.freeze
 
+PRESETS_WITH_PREFERENCES = %w[modern].freeze
+
 PROMPTS = YAML.load_file(Rails.root.join("config/prompts.yml"))
 
 # currency credits
