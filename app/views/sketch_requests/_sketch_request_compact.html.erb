@@ -27,9 +27,6 @@
       ></div>
 
       <div class="absolute bottom-4 left-4 right-4 text-white">
-        <h3 class="text-xl font-bold leading-tight shadow-black/50 drop-shadow-md text-white">
-          <%= sketch_request.prompt.truncate(30) %>
-        </h3>
         <p class="text-sm font-medium opacity-90 mt-1 text-neutral-200">
           <%= time_ago_in_words(sketch_request.created_at) %> ago
         </p>
@@ -38,7 +35,7 @@
 
     <div class="p-5 flex items-center justify-between gap-4 border-t border-white/10">
       <div class="flex-1">
-        <% if sketch_request.status == 'failed' %>
+        <% if sketch_request.progress == 'failed' %>
           <p class="text-xs text-red-500 font-medium truncate">Generation Failed</p>
         <% end %>
       </div>

@@ -1,0 +1,140 @@
+<% content_for :title, "Customize Design | AI Landscape Design - Hadaa" %>
+<%= turbo_stream_from @mask_request.canva %>
+
+<div
+  class="flex w-full flex-col items-center min-h-screen p-2"
+  id="preferences"
+>
+  <div class="w-full max-w-lg mx-auto">
+    <div class="bg-gradient-to-b from-white/10 to-white/5 backdrop-blur-xl border border-white/20 p-6 sm:p-8 rounded-3xl shadow-2xl my-8">
+      <!-- Title Section -->
+      <div class="mb-8 flex flex-col w-full items-center text-center">
+        <h3 class="text-3xl font-extrabold text-white mb-2">
+          Customize Your Design
+        </h3>
+      </div>
+
+       <%= form_with(model: @mask_request, url: mask_request_path(@mask_request), method: :patch, data: {turbo: false}, class: "contents") do |form| %>
+
+      <div class="space-y-6">
+              <!-- Overlay Preview -->
+      <div class="flex flex-col items-center mb-6">
+        <% if @mask_request.overlay.attached? %>
+          <%= image_tag @mask_request.overlay.variant(resize_to_limit: [200, 200]), class: "w-32 h-32 object-cover rounded-xl border-2 border-white/20 shadow-lg mb-4" %>
+        <% end %>
+        <p class="text-xs text-neutral-400 max-w-xs text-center border border-white/10 bg-white/5 p-3 rounded-lg">
+          Select the features you want to add to the <span class="text-purple-400 font-bold">HIGHLIGHTED</span> area that you brushed.
+        </p>
+      </div>
+
+            <!-- Location Section -->
+            <div
+              id="location_tracker"
+              data-controller="location"
+              data-location-enable-url-value="<%= update_location_canva_mask_requests_path(@canva) %>"
+              class="border-b border-white/10 pb-6"
+            >
+              <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-3">
+                    <div class="p-2 bg-emerald-500/20 rounded-lg text-emerald-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                          <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <label class="text-sm font-bold uppercase tracking-wider text-neutral-200">Use Local Plants & Climate</label>
+                        <p class="text-xs text-neutral-400 mt-1">optimize for your specific hardiness zone</p>
+                    </div>
+                </div>
+
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <%= form.check_box :use_location,
+                      data: {
+                        location_target: "input",
+                        action: "change->location#toggle"
+                      },
+                      class: "sr-only peer" %>
+                  <div class="w-11 h-6 bg-white/20 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+                </label>
+              </div>
+
+              <div id="user_location_info" class="text-xs text-neutral-300 bg-white/5 p-3 rounded-lg border border-white/10">
+                 <%= render partial: "mask_requests/location_info", locals: { user: @mask_request.canva.user, use_location: @mask_request.use_location } %>
+              </div>
+            </div>
+
+            <!-- Landscaping Toggles -->
+            <div class="space-y-4 pt-2">
+
+                <h3 class="text-xs font-bold uppercase tracking-wider text-neutral-200 mb-2">Landscape Features</h3>
+
+                <!-- Seating -->
+                <div class="group flex items-center justify-between p-3 rounded-xl bg-white/5 hover:bg-orange-500/10 transition-all duration-300 border border-transparent hover:border-orange-500/30">
+                  <div class="flex items-center gap-4 pr-4">
+                    <div class="p-2 bg-orange-500/20 rounded-lg text-orange-400 group-hover:scale-110 transition-transform duration-300">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M3.5 2a.5.5 0 0 0-.5.5v12a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5v-12a.5.5 0 0 0-.5-.5h-9zM4 14V3h1.5v10h-1.5zm2.5-1V4h1.5v9h-1.5zm2.5-1V5h1.5v7h-1.5zm2.5-1V6h1.5v5h-1.5z"/>
+                      </svg>
+                    </div>
+                    <div class="flex flex-col">
+                      <label class="text-sm font-medium text-neutral-200 cursor-pointer group-hover:text-white transition-colors" for="mask_request_add_seating">Add Seating Area</label>
+                      <p class="text-xs text-neutral-400 mt-0.5 group-hover:text-neutral-300 transition-colors">This will add outdoor seats/pergola/benches based on space available.</p>
+                    </div>
+                  </div>
+                  <label class="relative inline-flex items-center cursor-pointer shrink-0">
+                    <%= form.check_box :add_seating, class: "sr-only peer" %>
+                    <div class="w-11 h-6 bg-white/20 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+                  </label>
+                </div>
+
+                <!-- Trees -->
+                <div class="group flex items-center justify-between p-3 rounded-xl bg-white/5 hover:bg-green-500/10 transition-all duration-300 border border-transparent hover:border-green-500/30">
+                  <div class="flex items-center gap-4 pr-4">
+                    <div class="p-2 bg-green-500/20 rounded-lg text-green-400 group-hover:scale-110 transition-transform duration-300">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M8.416.223a.5.5 0 0 0-.832 0l-3 4.5A.5.5 0 0 0 5 5.5h.098L3.076 8.735A.5.5 0 0 0 3.5 9.5h.191l-1.638 3.276a.5.5 0 0 0 .447.724H7V16h2v-2.5h4.5a.5.5 0 0 0 .447-.724L12.31 9.5h.191a.5.5 0 0 0 .424-.765L10.902 5.5H11a.5.5 0 0 0 .416-.777l-3-4.5z"/>
+                      </svg>
+                    </div>
+                    <div class="flex flex-col">
+                      <label class="text-sm font-medium text-neutral-200 cursor-pointer group-hover:text-white transition-colors" for="mask_request_use_trees">Use Trees</label>
+                      <p class="text-xs text-neutral-400 mt-0.5 group-hover:text-neutral-300 transition-colors">Will add tall trees and shrubs according to style</p>
+                    </div>
+                  </div>
+                  <label class="relative inline-flex items-center cursor-pointer shrink-0">
+                    <%= form.check_box :use_trees, class: "sr-only peer" %>
+                    <div class="w-11 h-6 bg-white/20 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+                  </label>
+                </div>
+
+                <!-- Water -->
+                <div class="group flex items-center justify-between p-3 rounded-xl bg-white/5 hover:bg-cyan-500/10 transition-all duration-300 border border-transparent hover:border-cyan-500/30">
+                   <div class="flex items-center gap-4 pr-4">
+                    <div class="p-2 bg-cyan-500/20 rounded-lg text-cyan-400 group-hover:scale-110 transition-transform duration-300">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M7.21.8C7.69.295 8 0 8 0c.109.363.234.708.371 1.038.812 1.946 2.073 3.35 3.197 4.6C12.878 7.096 14 8.345 14 10a6 6 0 0 1-12 0C2 6.668 5.58 2.517 7.21.8zm.413 1.021A31.25 31.25 0 0 0 5.794 3.99c-.726.95-1.436 2.008-1.96 3.07C3.304 8.133 3 9.138 3 10a5 5 0 0 0 10 0c0-1.201-.796-2.157-2.181-3.7l-.03-.032C9.75 5.11 8.5 3.72 7.623 1.82z"/>
+                        <path d="M4.553 7.776c.82-1.641 1.717-2.753 2.093-3.13l.708.708c-.29.29-1.128 1.311-1.907 2.87l-.894-.448z"/>
+                      </svg>
+                    </div>
+                    <div class="flex flex-col">
+                      <label class="text-sm font-medium text-neutral-200 cursor-pointer group-hover:text-white transition-colors" for="mask_request_add_water">Add Water Features</label>
+                      <p class="text-xs text-neutral-400 mt-0.5 group-hover:text-neutral-300 transition-colors">Might add a pond or fountain</p>
+                    </div>
+                  </div>
+                  <label class="relative inline-flex items-center cursor-pointer shrink-0">
+                    <%= form.check_box :add_water, class: "sr-only peer" %>
+                    <div class="w-11 h-6 bg-white/20 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+                  </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex w-full items-center gap-4 mt-8 pt-6 border-t border-white/10">
+            <%= link_to "Change Style", edit_mask_request_path(@mask_request), class: "flex-1 justify-center !bg-white/10 hover:!bg-white/20 btn cute-btn text-white w-full !py-4" %>
+
+            <%= form.submit "Generate Now", class: "flex-1 justify-center btn cute-btn accent-btn w-full !py-4" %>
+        </div>
+
+      <% end %>
+    </div>
+  </div>
+</div>

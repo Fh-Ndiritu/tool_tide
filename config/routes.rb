@@ -101,6 +101,7 @@ Rails.application.routes.draw do
 
         member do
           post :generate_planting_guide
+          get :preferences
         end
       end
     end

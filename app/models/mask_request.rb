@@ -10,6 +10,10 @@ class MaskRequest < ApplicationRecord
 
   has_one_attached :mask
 
+  serialize :dimensions, coder: JSON
+  store_accessor :preferences, :add_seating, :use_trees, :add_water, :use_location
+
+
   has_one_attached :main_view
   has_one_attached :rotated_view
   has_one_attached :drone_view

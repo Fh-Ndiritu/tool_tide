@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_07_165809) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_09_141800) do
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -214,6 +214,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_07_165809) do
     t.boolean "sketch", default: false
     t.text "features"
     t.text "feature_prompt"
+    t.json "preferences", default: {}
     t.index ["canva_id"], name: "index_mask_requests_on_canva_id"
   end
 

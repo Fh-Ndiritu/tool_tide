@@ -573,3 +573,62 @@ blog:
     Output Format: RETURN ONLY the HTML content with no commentary, or ANY extra text besides
 
     IMPORTANT: DO NOT enclose the HTML in markdown tags or any other formatting. Just return the raw HTML content.
+
+landscape_preference_presets:
+  modern: |
+    Dynamic Modern Landscape Architecture Brief: The Ultimate Expert Design
+    Professional Role & Creative Intelligence You are a Lead Modernist Landscape Architect. Your primary mandate is to act as the Ultimate Expert Designer. You must evaluate the violet-masked area as a single, unified canvas. You have the creative authority to scale or omit features that do not fit the physical reality of the mask, ensuring the final render is breathtaking, vibrant, and architecturally sound.
+
+    Strategic Design Consolidation (Spatial Thinking Mode) Before selecting plants or materials, perform a Canvas Size Audit of the violet-masked area:
+
+    Small/Narrow Scale (e.g., < 2m deep): Prioritize verticality and density. If "Trees" or "Seating" are requested, translate them into "Columnar Sculptural Plants" and "Built-in Architectural Ledges" to save space. Avoid wide paths; use narrow "Floating Rills."
+
+    Large/Deep Scale: Create distinct, intersecting geometric zones. Ensure paths serve as connectors between focal points rather than occupying the majority of the space.
+
+    Feasibility Filter: If a requested feature (like a pool or large tree) would overcrowd the canvas or touch the house, modify it into a "Sleek Water Feature" or "Specimen Multi-trunk Shrub" to maintain a chic, breathable aesthetic.
+
+    User Preference Integration (Conditional Logic) Adjust the spatial design based on these variables, filtered through your Expert Design Logic:
+
+    <User Preferences> <<user_preferences>> </User Preferences>
+
+    Seating (add_seating: <<add_seating>>): - If True: Integrate a bespoke seating area (e.g., low-slung white linen lounge, outdoor sofa or floating concrete bench).
+
+    If False: Replace with a "Massed Botanical focal point".
+
+    Trees (use_trees: <<use_trees>>): - If True: Place ONE spectacular specimen tree (e.g., Japanese Maple,Joshua Tree, Multi-trunk Olive or a locally native tree) at a safe distance from the house.
+
+    If False: Focus on "Tall Structural Grasses" and "Sky Pencil" Hollies for height.
+
+    Water (add_water: <<add_water>>): - If True: Assess space. If tight, use a minimalist black granite water basin. If expansive, incorporate a sleek, rectangular infinity-edge feature or lap pool.
+
+    If False: Replace with a "Textural Rock Zen-Zone" or a cluster of architectural Agaves.
+
+    Location (use_location: <<use_location>>): - Use the hardiness zone of <<location>> to select a high-variety, vibrant plant list. Ensure 8+ distinct species are used to avoid limited selection.
+
+    The "High-Variety" Vibrancy Strategy Maintain high-density massing with zero exposed soil. Every inch must be "Living Carpet" or "Premium Hardscape":
+
+    Sculptural Anchors:
+      - Yucca rostrata, Phormium tenax, Dasylirion wheeleri, Dracaena draco, Agave attenuata, Cycas revoluta, Aloe thraskii, Furcraea foetida or Xanthorrhoea johnsonii .
+      - If the user wants to use plants that are available in their location, you MUST use local alternatives for the sculptural anchors.
+
+    Chromatic Drifts:
+      - Massive blocks of flowers such as electric-purple Lavender, neon-chartreuse Heuchera,vibrant Bird of Paradise, Anigozanthos flavidus, Senecio mandraliscae, Salvia leucantha, Euphorbia tirucalli, Pennisetum setaceum, Phormium tenax, Kniphofia uvaria, Canna indica or Helichrysum petiolare.
+      - If the user wants to use plants that are available in their location, you MUST use local alternatives for the chromatic drifts.
+
+    Vertical Drama:
+      - Tall Bamboo, slender hollies, Italian Cypress, Sky Pencil Holly, Equisetum hyemale, Taxus baccata Fastigiata, Calamagrostis x acutiflora, Sansevieria trifasciata, Fargesia robusta, Carpinus betulus Fastigiata or Juniperus virginiana Skyrocket to frame the architecture without touching it.
+      - If the user wants to use plants that are available in their location, you MUST use local alternatives for the vertical drama options.
+
+    Materiality & High-Contrast Hardscape
+
+    Hardscape: Reduce path width to prioritize plants. Use oversized, matte-finish porcelain pavers (Charcoal or Ivory).
+
+    Finishing: Use jet-black polished river stones to border the "Living Carpet," making colors appear 50% more saturated.
+
+    Photographic Execution & Technical Mandate
+
+    Perspective: 35mm wide-angle, f/11. Match the sun angle but saturate for a "Golden Hour" editorial pop.
+
+    Complete Mask Eradication: 100% replacement. No purple artifacts.
+
+    Structural Independence: All features must be freestanding and contained within the mask.

@@ -145,30 +145,7 @@
 
 
 
-        <div
-          id="location_tracker"
-          data-controller="location"
-          data-location-enable-url-value="<%= update_location_canva_mask_requests_path(@canva) %>"
-          class="border-t border-white/10 pt-4 hidden"
-        >
-          <div class="flex items-center justify-between mb-2">
-            <label class="text-xs font-bold uppercase tracking-wider text-neutral-200">Use Local Plants</label>
-            <label class="relative inline-flex items-center cursor-pointer">
-              <input
-                type="checkbox"
-                data-location-target="input"
-                data-action="change->location#toggle"
-                class="sr-only peer"
-                <%= @mask_request.canva.user.latitude.present? ? 'checked' : '' %>
-              >
-              <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
-            </label>
-          </div>
 
-          <div id="user_location_info" class="text-xs text-neutral-200">
-             <%= render partial: "mask_requests/location_info", locals: { user: @mask_request.canva.user } %>
-          </div>
-        </div>
 
         <%= render "form", mask_request: @mask_request, canva: @canva %>
       </div>

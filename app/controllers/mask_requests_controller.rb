@@ -1,5 +1,5 @@
 class MaskRequestsController < AppController
-  before_action :set_mask_request, only: %i[ show edit update destroy generate_planting_guide]
+  before_action :set_mask_request, only: %i[ show edit update destroy generate_planting_guide preferences]
   before_action :set_canva, only: %i[new create update_location]
 
 
@@ -70,15 +70,31 @@ class MaskRequestsController < AppController
 
   def update
     respond_to do |format|
-      if @mask_request.update!(preset_params)
-        if MaskRequest.joins(canva: :user).where(users: { id: current_user.id }).count == 1
-          flash[:pql_event] = "true"
+      if @mask_request.update(mask_request_params)
+        # Check if we are coming from the Style Selection step (updating preset)
+        if mask_request_params[:preset].present?
+          format.html { redirect_to preferences_mask_request_path(@mask_request), status: :see_other }
+          format.turbo_stream { redirect_to preferences_mask_request_path(@mask_request), status: :see_other }
+
+        # Check if we are coming from the Preferences step (submitting toggles)
+        # We can detect this by checking for one of the toggle params or a hidden field,
+        # but since we just updated the model, we can check if we should generate.
+        elsif preference_request?
+          if MaskRequest.joins(canva: :user).where(users: { id: current_user.id }).count == 1
+            flash[:pql_event] = "true"
+          end
+          current_user.style_selected!
+
+          DesignGeneratorJob.perform_later(@mask_request.id)
+          @mask_request.validating!
+
+          format.html { redirect_to mask_request_path(@mask_request), status: :see_other }
+          format.turbo_stream { redirect_to mask_request_path(@mask_request), status: :see_other }
+
+        else
+          # Fallback / manual update case
+           format.html { redirect_to mask_request_path(@mask_request), status: :see_other }
         end
-        current_user.style_selected!
-        DesignGeneratorJob.perform_later(@mask_request.id)
-        @mask_request.validating!
-        format.html { redirect_to mask_request_path(@mask_request), status: :see_other }
-        format.turbo_stream { redirect_to mask_request_path(@mask_request), status: :see_other }
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.turbo_stream { render :edit, status: :unprocessable_entity }
@@ -86,8 +102,10 @@ class MaskRequestsController < AppController
     end
   end
 
-
-
+  def preferences
+    @canva = @mask_request.canva
+    redirect_to low_credits_path and return unless @canva.user.afford_generation?
+  end
 
   # POST /mask_requests or /mask_requests.json
   def destroy
@@ -132,6 +150,9 @@ class MaskRequestsController < AppController
   end
 
   private
+    def preference_request?
+      params[:commit] == "Generate Now" || mask_request_params[:add_seating].present? || mask_request_params[:use_trees].present? || mask_request_params[:add_water].present?
+    end
     # Use callbacks to share common setup or constraints between actions.
     def set_mask_request
       @mask_request = MaskRequest.includes(:plants, canva: :user).find(params.expect(:id))
@@ -139,7 +160,13 @@ class MaskRequestsController < AppController
 
     # Only allow a list of trusted parameters through.
     def mask_request_params
-      params.expect(mask_request: [ :mask, :device_width, :error_msg, :progress, results: [], progess: 0 ])
+      safe_params = params.expect(mask_request: [ :mask, :device_width, :error_msg, :progress, :add_seating, :use_trees, :add_water, :preset, :use_location, results: [], progess: 0 ])
+
+      %i[add_seating use_trees add_water use_location].each do |key|
+        safe_params[key] = ActiveModel::Type::Boolean.new.cast(safe_params[key]) if safe_params.key?(key)
+      end
+
+      safe_params
     end
 
     def set_canva

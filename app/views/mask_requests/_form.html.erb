@@ -19,6 +19,8 @@
     <%= form.file_field :mask,  class:"block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", data: {mask_request_target: 'mask'} %>
   </div>
 
+
+
   <div class="flex w-full justify-between">
     <button
       type="submit"
@@ -41,7 +43,7 @@
       disabled:line-through disabled:opacity-50 disabled:cursor-not-allowed disabled:!bg-neutral-800 disabled:!text-neutral-500 disabled:!border-neutral-700 disabled:!shadow-none disabled:!scale-100 disabled:!from-transparent disabled:!to-transparent"
       disabled
     >
-      Generate Now
+      Select Style &rarr;
       <span class="text-sm">(<%= DEFAULT_IMAGE_COUNT * GOOGLE_IMAGE_COST %> credits)</span>
     </button>
 
