@@ -14,7 +14,10 @@ class MaskRequest < ApplicationRecord
   store_accessor :preferences, :add_seating, :use_trees, :add_water, :use_location
 
 
-  has_one_attached :main_view
+  has_one_attached :main_view do |attachable|
+    attachable.variant(:dashboard, resize_to_limit: [400, 400])
+  end
+
   has_one_attached :rotated_view
   has_one_attached :drone_view
 

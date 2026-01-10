@@ -13,7 +13,7 @@ Rails.application.routes.draw do
       get "pricing", to: "pricing#index"
 
       # Marketing Pages
-      get "communities", to: "pages#communities"
+
       get "privacy-policy", to: "pages#privacy_policy"
       get "contact_us", to: "pages#contact_us"
       get "full-faq", to: "pages#full_faq"

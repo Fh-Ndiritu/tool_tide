@@ -25,10 +25,8 @@ class DesignGenerator
     @mask_request.purge_views
 
     unless @mask_request.overlay.attached?
-      @mask_request.resize_mask
-
-      @mask_request.overlaying!
-      @mask_request.overlay_mask
+      MaskOverlayJob.perform_now(@mask_request.id)
+      @mask_request.reload
     end
 
     main_view
@@ -139,5 +137,4 @@ class DesignGenerator
     SYSTEM_INSTRUCTIONS
     prompt
   end
-
 end

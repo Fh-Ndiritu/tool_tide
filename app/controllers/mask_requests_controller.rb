@@ -59,6 +59,7 @@ class MaskRequestsController < AppController
           @mask_request.destroy
           format.html { redirect_to new_canva_mask_request_path(@mask_request.canva),  status: :see_other }
         else
+          MaskOverlayJob.perform_later(@mask_request.id)
           current_user.mask_drawn!
           format.html { redirect_to edit_mask_request_path(@mask_request),  status: :see_other }
         end

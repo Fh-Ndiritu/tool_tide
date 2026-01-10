@@ -13,7 +13,7 @@ SitemapGenerator::Sitemap.create do
   add privacy_policy_path, priority: 0.5, changefreq: "monthly"
   add contact_us_path, priority: 0.5, changefreq: "monthly"
   add full_faq_path, priority: 0.6, changefreq: "monthly"
-  add communities_path, priority: 0.6, changefreq: "weekly"
+
   add pricing_path, priority: 0.8, changefreq: "weekly"
 
   # Explore

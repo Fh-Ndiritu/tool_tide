@@ -6,7 +6,7 @@
     "
   >
     <%= link_to mask_request_path(mask_request), class: "block relative group" do %>
-      <%= image_tag(mask_request.main_view.variant(resize_to_limit: [800, 600]), loading: :lazy, class: "w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105", alt: "#{mask_request.preset.humanize} AI landscape design - #{mask_request.created_at.strftime('%B %Y')}") %>
+      <%= image_tag(mask_request.main_view.variant(:dashboard).processed, loading: :lazy, class: "w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105", alt: "#{mask_request.preset.humanize} AI landscape design - #{mask_request.created_at.strftime('%B %Y')}") %>
 
       <div
         class="

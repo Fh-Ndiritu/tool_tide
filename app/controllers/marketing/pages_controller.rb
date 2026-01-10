@@ -1,7 +1,6 @@
 module Marketing
   class PagesController < MarketingController
-    def communities
-    end
+
 
     def privacy_policy
     end

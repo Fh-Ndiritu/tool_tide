@@ -1,3 +1,5 @@
+<% unless record.is_a?(MaskRequest) && record.progress_before_type_cast > 20%>
+
 <div id="loader" class="z-[2147483647]">
   <% is_fullscreen = klasses.include?('fixed') %>
 
@@ -66,3 +68,4 @@
     <% end %>
   </div>
 </div>
+<% end %>
