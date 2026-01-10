@@ -4,7 +4,7 @@ module Marketing
     rate_limit to: 8, within: 20.minutes, by: -> { request.ip }, name: "longterm_home_index"
 
     def index
-      @mask_requests = MaskRequest.complete.everyone.order(id: :desc).limit(12)
+      @mask_requests = MaskRequest.complete.everyone.order(id: :desc).limit(11)
     end
   end
 end
