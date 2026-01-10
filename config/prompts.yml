@@ -591,7 +591,7 @@ landscape_preference_presets:
 
     <User Preferences> <<user_preferences>> </User Preferences>
 
-    Seating (add_seating: <<add_seating>>): - If True: Integrate a bespoke seating area (e.g., low-slung white linen lounge, outdoor sofa or floating concrete bench).
+    Seating (add_seating: <<add_seating>>): - If True: Integrate a bespoke seating area (e.g., low-slung white linen lounge, modern outdoor sofa or chic floating concrete bench).
 
     If False: Replace with a "Massed Botanical focal point".
 
@@ -601,7 +601,7 @@ landscape_preference_presets:
 
     Water (add_water: <<add_water>>): - If True: Assess space. If tight, use a minimalist black granite water basin. If expansive, incorporate a sleek, rectangular infinity-edge feature or lap pool.
 
-    If False: Replace with a "Textural Rock Zen-Zone" or a cluster of architectural Agaves.
+    If False: Replace with a "Massed Botanical focal point".
 
     Location (use_location: <<use_location>>): - Use the hardiness zone of <<location>> to select a high-variety, vibrant plant list. Ensure 8+ distinct species are used to avoid limited selection.
 
@@ -621,9 +621,9 @@ landscape_preference_presets:
 
     Materiality & High-Contrast Hardscape
 
-    Hardscape: Reduce path width to prioritize plants. Use oversized, matte-finish porcelain pavers (Charcoal or Ivory).
+    Hardscape: Reduce paths to prioritize plants. Use oversized, matte-finish porcelain pavers (Charcoal or Ivory).
 
-    Finishing: Use jet-black polished river stones to border the "Premium Softscape," making colors appear 50% more saturated.
+    Finishing: Use jet-black polished river stones for bordering, which makes colors appear 50% more saturated.
 
     Photographic Execution & Technical Mandate
 
@@ -631,4 +631,4 @@ landscape_preference_presets:
 
     Complete Mask Eradication: 100% replacement. No purple artifacts.
 
-    Structural Independence: All features must be freestanding and contained within the mask.
+    Structural Independence: All features must be contained within the mask.

@@ -22,6 +22,29 @@ export default class extends Controller {
     });
 
     this.lightbox.init();
+
+    // Observe for new images added via Turbo/updates
+    this.mutationObserver = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        mutation.addedNodes.forEach((node) => {
+          if (node.nodeType === 1) {
+             const links = node.matches && node.matches('a[data-pswp-src]') ? [node] : node.querySelectorAll('a[data-pswp-src]');
+             links.forEach(link => {
+               const img = link.querySelector('img');
+               if (img) {
+                 if (img.complete) {
+                   this.updateDimensions(img);
+                 } else {
+                   img.onload = () => this.updateDimensions(img);
+                 }
+               }
+             });
+          }
+        });
+      });
+    });
+
+    this.mutationObserver.observe(this.element, { childList: true, subtree: true });
   }
 
   updateDimensions(img) {
@@ -33,6 +56,10 @@ export default class extends Controller {
   }
 
   disconnect() {
+    if (this.mutationObserver) {
+      this.mutationObserver.disconnect();
+    }
+
     if (this.lightbox) {
       this.lightbox.destroy();
       this.lightbox = null;
