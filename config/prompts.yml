@@ -595,7 +595,7 @@ landscape_preference_presets:
 
     If False: Replace with a "Massed Botanical focal point".
 
-    Trees (use_trees: <<use_trees>>): - If True: Place ONE spectacular specimen tree (e.g., Japanese Maple,Joshua Tree, Multi-trunk Olive or a locally native tree) at a safe distance from the house.
+    Trees (use_trees: <<use_trees>>): - If True: Place ONE spectacular specimen tree that is compatible with a modern landscape at a safe distance from the house.
 
     If False: Focus on "Tall Structural Grasses" and "Sky Pencil" Hollies for height.
 
@@ -605,15 +605,15 @@ landscape_preference_presets:
 
     Location (use_location: <<use_location>>): - Use the hardiness zone of <<location>> to select a high-variety, vibrant plant list. Ensure 8+ distinct species are used to avoid limited selection.
 
-    The "High-Variety" Vibrancy Strategy Maintain high-density massing with zero exposed soil. Every inch must be "Living Carpet" or "Premium Hardscape":
+    The "High-Variety" Vibrancy Strategy Maintain high-density massing with zero exposed soil. Every inch must be "Premium thriving and vibrant Softscape" .
 
     Sculptural Anchors:
       - Yucca rostrata, Phormium tenax, Dasylirion wheeleri, Dracaena draco, Agave attenuata, Cycas revoluta, Aloe thraskii, Furcraea foetida or Xanthorrhoea johnsonii .
-      - If the user wants to use plants that are available in their location, you MUST use local alternatives for the sculptural anchors.
+      - If the user wants to use plants that are available in their location, you MUST use LOCAL alternatives for the sculptural anchors.
 
     Chromatic Drifts:
       - Massive blocks of flowers such as electric-purple Lavender, neon-chartreuse Heuchera,vibrant Bird of Paradise, Anigozanthos flavidus, Senecio mandraliscae, Salvia leucantha, Euphorbia tirucalli, Pennisetum setaceum, Phormium tenax, Kniphofia uvaria, Canna indica or Helichrysum petiolare.
-      - If the user wants to use plants that are available in their location, you MUST use local alternatives for the chromatic drifts.
+      - If the user wants to use plants that are available in their location, you MUST use LOCAL alternatives for the chromatic drifts.
 
     Vertical Drama:
       - Tall Bamboo, slender hollies, Italian Cypress, Sky Pencil Holly, Equisetum hyemale, Taxus baccata Fastigiata, Calamagrostis x acutiflora, Sansevieria trifasciata, Fargesia robusta, Carpinus betulus Fastigiata or Juniperus virginiana Skyrocket to frame the architecture without touching it.
@@ -623,7 +623,7 @@ landscape_preference_presets:
 
     Hardscape: Reduce path width to prioritize plants. Use oversized, matte-finish porcelain pavers (Charcoal or Ivory).
 
-    Finishing: Use jet-black polished river stones to border the "Living Carpet," making colors appear 50% more saturated.
+    Finishing: Use jet-black polished river stones to border the "Premium Softscape," making colors appear 50% more saturated.
 
     Photographic Execution & Technical Mandate
 

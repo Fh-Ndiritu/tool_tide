@@ -15,7 +15,7 @@ class MaskRequest < ApplicationRecord
 
 
   has_one_attached :main_view do |attachable|
-    attachable.variant(:dashboard, resize_to_limit: [400, 400])
+    attachable.variant(:dashboard, resize_to_limit: [ 400, 400 ])
   end
 
   has_one_attached :rotated_view
