@@ -5,7 +5,7 @@ The **Projects** feature in ToolTide allows users to manage and iterate on their
 ## Key Features
 
 ### 1. Project Creation
-- **New Project Workflow**: Users can start a new project from scratch by uploading an initial photo of their space (e.g., a backyard or patio).
+- **New Project Workflow**: Users can start a new project from scratch by uploading an initial photo of their space (e.g., a backyard or patio).s
 - **Integration**: Projects can also be created from existing `MaskRequests`, aiming to seamlessly transition from a quick request to a persistent workspace.
 
 ### 2. The Workspace (Canvas)
