@@ -1,0 +1,61 @@
+<% is_active = project_layer.design && project_layer.design.active_layer == project_layer %>
+<% is_processing = !project_layer.complete? && !project_layer.failed? && !project_layer.original? %>
+<% is_viewed = project_layer.viewed? %>
+
+<!-- Thumbnail -->
+<div class="relative w-10 h-10 flex-shrink-0 rounded overflow-hidden shadow-sm transition-all duration-200
+            <%= is_active ? 'ring-2 ring-blue-500 ring-offset-1 ring-offset-gray-900' : 'ring-1 ring-gray-700' %>
+            <%= is_processing ? 'opacity-80' : '' %>">
+  <% if project_layer.display_image.attached? %>
+     <%= image_tag project_layer.display_image, class: "w-full h-full object-cover" %>
+  <% else %>
+     <div class="w-full h-full flex items-center justify-center bg-gray-800 text-[8px] text-gray-500">
+       <% if is_processing %>
+         <div class="w-full h-full animate-pulse bg-gray-700"></div>
+       <% else %>
+         N/A
+       <% end %>
+     </div>
+  <% end %>
+
+  <% if is_processing %>
+     <div class="absolute inset-0 bg-black/40 flex items-center justify-center backdrop-blur-[1px]">
+        <svg class="animate-spin h-4 w-4 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+     </div>
+  <% end %>
+</div>
+
+<!-- Info -->
+<div class="flex-1 min-w-0 flex flex-col justify-center">
+   <div class="flex items-center justify-between">
+      <span class="text-xs font-medium truncate transition-colors
+                  <%= is_active ? 'text-blue-400' : 'text-gray-300 group-hover/layer:text-white' %>">
+        <% if project_layer.original? %>
+          Original Upload
+        <% else %>
+          Layer <%= project_layer.layer_number %>
+        <% end %>
+      </span>
+      <% unless is_viewed || is_processing %>
+        <span class="flex h-2 w-2 relative">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+        </span>
+      <% end %>
+   </div>
+
+   <div class="flex items-center gap-1.5 text-[10px] leading-none mt-0.5">
+      <% if is_processing %>
+        <span class="text-blue-400 font-medium animate-pulse">Processing...</span>
+      <% elsif project_layer.failed? %>
+        <span class="text-red-400 font-medium">Generation Failed</span>
+      <% else %>
+        <span class="text-gray-500"><%= project_layer.preset&.titleize || "Normal" %></span>
+        <span class="text-gray-600">&bull;</span>
+        <span class="text-gray-600"><%= time_ago_in_words(project_layer.created_at) %></span>
+      <% end %>
+   </div>
+</div>

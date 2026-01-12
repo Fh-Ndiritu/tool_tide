@@ -87,6 +87,12 @@ export default class extends Controller {
     layerLink.classList.remove("border-transparent", "bg-gray-700")
     layerLink.classList.add("border-blue-500", "bg-gray-600")
 
+    // Optimistically hide the "Unviewed" indicator (blue dot)
+    const unviewedIndicator = layerLink.querySelector('[title="New"]')
+    if (unviewedIndicator) {
+      unviewedIndicator.classList.add("hidden")
+    }
+
     // Sync active layer ID to canvas controller
     const layerId = parseInt(layerLink.dataset.layerId, 10)
     const controller = this.projectCanvasController

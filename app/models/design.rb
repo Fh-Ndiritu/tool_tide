@@ -1,14 +1,16 @@
 class Design < ApplicationRecord
   belongs_to :project
+  belongs_to :current_project_layer, class_name: "ProjectLayer", optional: true
   has_many :project_layers, dependent: :destroy
 
   before_destroy :nullify_current_design_in_project
 
-  after_create_commit -> {
-    broadcast_append_to [project, :layers],
-      target: "designs_tabs",
-      partial: "designs/design_tab",
-      locals: { design: self, active_design: project.current_design }
+  def active_layer
+    current_project_layer || project_layers.complete.order(created_at: :desc).first || project_layers.original.first
+  end
+
+  after_commit -> {
+    broadcast_refresh_to [project, :layers]
   }
 
   validates :title, presence: true

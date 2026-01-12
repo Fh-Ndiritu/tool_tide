@@ -4,6 +4,8 @@ class ProjectLayersController < ApplicationController
   before_action :set_project_layer, only: %i[show update]
 
   def show
+    @project_layer.mark_as_viewed!
+    @project_layer.design.update(current_project_layer: @project_layer)
   end
 
   def create
@@ -40,12 +42,11 @@ class ProjectLayersController < ApplicationController
       end
     end
 
+    # Force active layer to remain on parent (to prevent jumping to new incomplete layer)
+    @design.update(current_project_layer: parent_layer) if parent_layer
+
     respond_to do |format|
-      format.turbo_stream {
-         render turbo_stream: created_layers.map { |l|
-           turbo_stream.append("layers_list", partial: "project_layers/project_layer", locals: { project_layer: l })
-         }
-      }
+      format.turbo_stream { head :ok }
       format.html { redirect_to project_path(@project, design_id: @design.id), notice: "#{variations_count} variations starting." }
     end
   rescue StandardError => e

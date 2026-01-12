@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_12_173304) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_12_195455) do
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -147,6 +147,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_12_173304) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "project_layers_count", default: 0
+    t.integer "current_project_layer_id"
+    t.index ["current_project_layer_id"], name: "index_designs_on_current_project_layer_id"
     t.index ["project_id"], name: "index_designs_on_project_id"
   end
 
@@ -312,6 +314,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_12_173304) do
     t.datetime "updated_at", null: false
     t.boolean "ai_assist", default: false
     t.integer "layer_number"
+    t.datetime "viewed_at"
     t.index ["ancestry"], name: "index_project_layers_on_ancestry"
     t.index ["design_id"], name: "index_project_layers_on_design_id"
     t.index ["project_id"], name: "index_project_layers_on_project_id"
@@ -453,6 +456,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_12_173304) do
   add_foreign_key "credit_spendings", "users"
   add_foreign_key "credit_vouchers", "users"
   add_foreign_key "credits", "users"
+  add_foreign_key "designs", "project_layers", column: "current_project_layer_id"
   add_foreign_key "designs", "projects"
   add_foreign_key "favorites", "users"
   add_foreign_key "generation_taggings", "tags"
