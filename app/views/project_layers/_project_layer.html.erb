@@ -21,7 +21,7 @@
      <!-- Main Item Link -->
      <%= link_to project_design_project_layer_path(project_layer.project, project_layer.design, project_layer),
                  class: "flex-1 flex items-center gap-2 p-1.5 rounded-lg bg-gray-800/40 border border-transparent hover:bg-gray-700 hover:border-gray-600 transition-colors min-w-0",
-                 data: { turbo_frame: "canvas_frame", action: "click->projects#setActiveLayer" } do %>
+                 data: { turbo_frame: "canvas_frame", action: "click->projects#setActiveLayer", layer_id: project_layer.id } do %>
 
        <!-- Thumbnail -->
        <div class="w-10 h-10 flex-shrink-0 bg-gray-700 rounded overflow-hidden relative shadow-sm">

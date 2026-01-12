@@ -86,6 +86,13 @@ export default class extends Controller {
     const layerLink = event.currentTarget
     layerLink.classList.remove("border-transparent", "bg-gray-700")
     layerLink.classList.add("border-blue-500", "bg-gray-600")
+
+    // Sync active layer ID to canvas controller
+    const layerId = parseInt(layerLink.dataset.layerId, 10)
+    const controller = this.projectCanvasController
+    if (controller && layerId) {
+      controller.layerIdValue = layerId
+    }
   }
 
   // --- Project Canvas Delegation ---

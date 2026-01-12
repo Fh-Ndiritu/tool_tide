@@ -4,7 +4,7 @@ class ProjectLayer < ApplicationRecord
   before_create :set_layer_number
 
 
-  has_ancestry
+  has_ancestry ancestry_format: :materialized_path
 
   has_one_attached :image
   has_one_attached :mask

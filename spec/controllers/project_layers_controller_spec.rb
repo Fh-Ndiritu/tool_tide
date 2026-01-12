@@ -26,7 +26,13 @@ RSpec.describe ProjectLayersController, type: :controller do
 
   describe "PATCH #update" do
     it "updates the layer prompt and returns turbo stream" do
+      p "SPEC DEBUG: Layer ID: #{layer.id}, Ancestry: #{layer.ancestry.inspect}"
       patch :update, params: { project_id: project.id, design_id: design.id, id: layer.id, project_layer: { prompt: "New Prompt" } }, format: :turbo_stream
+      if response.status == 422
+         p "SPEC DEBUG: FAILED with 422"
+         layer.reload
+         p "SPEC DEBUG: Reloaded Ancestry: #{layer.ancestry.inspect}"
+      end
       expect(response).to be_successful
       expect(response.media_type).to eq Mime[:turbo_stream]
       expect(layer.reload.prompt).to eq("New Prompt")

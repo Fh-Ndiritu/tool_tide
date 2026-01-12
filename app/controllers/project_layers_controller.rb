@@ -55,9 +55,15 @@ class ProjectLayersController < ApplicationController
 
   def update
     if @project_layer.update(project_layer_params)
-      render turbo_stream: turbo_stream.replace(@project_layer)
+      respond_to do |format|
+        format.turbo_stream { render turbo_stream: turbo_stream.replace(@project_layer) }
+        format.html { redirect_to project_path(@project, design_id: @project_layer.design_id) }
+      end
     else
-      render status: :unprocessable_entity
+      respond_to do |format|
+        format.turbo_stream { head :unprocessable_content }
+        format.html { render :show, status: :unprocessable_content }
+      end
     end
   end
 

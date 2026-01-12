@@ -1,11 +1,15 @@
 class ProjectGenerationJob < ApplicationJob
+  class InsufficientCreditsError < StandardError; end
   queue_as :default
 
-  retry_on StandardError, attempts: 3
+  retry_on StandardError, attempts: 3 do |job, error|
+    raise error if error.is_a?(InsufficientCreditsError)
+  end
 
   # When retries are exhausted, refund the user
+  # We do not need tries on low credits errors
   discard_on StandardError do |job, error|
-    job.send(:handle_final_failure, error)
+    job.send(:handle_final_failure, error) unless error.is_a?(InsufficientCreditsError)
   end
 
   def perform(layer_id)
@@ -35,7 +39,7 @@ class ProjectGenerationJob < ApplicationJob
   def charge_user!(user, layer, cost)
     user.with_lock do
       if user.pro_engine_credits < cost
-        raise "Insufficient credits"
+        raise InsufficientCreditsError, "Insufficient credits"
       end
 
       user.pro_engine_credits -= cost
