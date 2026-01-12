@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_12_203503) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_12_215445) do
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -325,7 +325,10 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_12_203503) do
     t.boolean "ai_assist", default: false
     t.integer "layer_number"
     t.datetime "viewed_at"
+    t.integer "generation_type", default: 0
+    t.integer "auto_fix_id"
     t.index ["ancestry"], name: "index_project_layers_on_ancestry"
+    t.index ["auto_fix_id"], name: "index_project_layers_on_auto_fix_id"
     t.index ["design_id"], name: "index_project_layers_on_design_id"
     t.index ["project_id"], name: "index_project_layers_on_project_id"
   end
@@ -478,6 +481,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_12_203503) do
   add_foreign_key "onboarding_responses", "users"
   add_foreign_key "payment_transactions", "users"
   add_foreign_key "plants", "mask_requests"
+  add_foreign_key "project_layers", "auto_fixes"
   add_foreign_key "project_layers", "designs"
   add_foreign_key "project_layers", "projects"
   add_foreign_key "projects", "designs", column: "current_design_id"

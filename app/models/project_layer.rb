@@ -1,7 +1,9 @@
 class ProjectLayer < ApplicationRecord
   belongs_to :project
   belongs_to :design, counter_cache: true
+  belongs_to :auto_fix, optional: true
   before_create :set_layer_number
+  before_destroy :nullify_current_project_layer_in_design
 
   after_commit -> {
     broadcast_refresh_to [design, :layers]
@@ -40,6 +42,13 @@ class ProjectLayer < ApplicationRecord
     generated: 1
   }
 
+  enum :generation_type, {
+    not_specified: 0,
+    style_preset: 10,
+    smart_fix: 20,
+    autofix: 30
+  }
+
   validates :layer_type, presence: true
 
   def display_image
@@ -52,4 +61,11 @@ class ProjectLayer < ApplicationRecord
     # Assign sequential number based on existing implementation for this design
     self.layer_number = (design.project_layers.maximum(:layer_number) || 0) + 1
   end
+
+  def nullify_current_project_layer_in_design
+    if design.current_project_layer_id == id
+      design.update_columns(current_project_layer_id: nil)
+    end
+  end
+
 end

@@ -36,3 +36,9 @@
     <% end %>
   </template>
 </turbo-stream>
+
+<turbo-stream action="update" target="project_title_context">
+  <template>
+    <%= render partial: "projects/project_title", locals: { project: @project }, formats: [:html] %>
+  </template>
+</turbo-stream>

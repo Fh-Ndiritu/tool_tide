@@ -117,6 +117,22 @@ export default class extends Controller {
     if (controller && layerId) {
       controller.layerIdValue = layerId
     }
+
+    // Switch Tab based on Generation Type
+    const generationType = layerLink.dataset.generationType
+    const preset = layerLink.dataset.preset
+
+    if (generationType === "style_preset") {
+      this.switchTab("Style Presets")
+      if (preset && this.hasStylePresetInputTarget) {
+        const input = this.stylePresetInputTargets.find(i => i.value === preset)
+        if (input) input.checked = true
+      }
+    } else if (generationType === "smart_fix") {
+      this.switchTab("SmartFix")
+    } else if (generationType === "autofix") {
+      this.switchTab("AutoFix")
+    }
   }
 
   // --- Project Canvas Delegation ---
@@ -296,27 +312,38 @@ export default class extends Controller {
     formData.append("mask_data", maskData)
     formData.append("parent_layer_id", parentLayerId)
 
-    // Determine Mode via Tabs (Basic check: see which input has value or is visible)
-    // Or just grab both and let backend prioritize.
-    // Presets:
-    if (this.hasStylePresetInputTarget) {
-      const selectedPreset = this.stylePresetInputTargets.find(input => input.checked)
-      if (selectedPreset) {
-        formData.append("preset", selectedPreset.value)
+    // Determine Mode via Tools Tabs
+    const toolsController = this.toolsController
+    let activeTabName = ""
+    if (toolsController) {
+      const activeTab = toolsController.tabTargets.find(t => t.classList.contains(...toolsController.activeClasses))
+      if (activeTab) activeTabName = activeTab.innerText.trim()
+    }
+
+    // Presets Flow:
+    if (activeTabName === "Style Presets") {
+      if (this.hasStylePresetInputTarget) {
+        const selectedPreset = this.stylePresetInputTargets.find(input => input.checked)
+        if (selectedPreset) {
+          formData.append("preset", selectedPreset.value)
+        }
       }
     }
 
-    // Prompt:
-    if (this.hasPromptInputTarget && this.promptInputTarget.value.trim().length > 0) {
-      formData.append("prompt", this.promptInputTarget.value)
+    // SmartFix Flow:
+    if (activeTabName === "SmartFix") {
+      // Prompt:
+      if (this.hasPromptInputTarget && this.promptInputTarget.value.trim().length > 0) {
+        formData.append("prompt", this.promptInputTarget.value)
+      }
+
+      // AI Assist:
+      if (this.hasAiAssistToggleTarget) {
+        formData.append("ai_assist", this.aiAssistToggleTarget.checked)
+      }
     }
 
-    // AI Assist:
-    if (this.hasAiAssistToggleTarget) {
-      formData.append("ai_assist", this.aiAssistToggleTarget.checked)
-    }
-
-    // Variations
+    // Variations (Applicable to both)
     if (this.hasVariationsInputTarget) {
       formData.append("variations", this.variationsInputTarget.value)
     }
@@ -443,6 +470,110 @@ export default class extends Controller {
     } finally {
       button.disabled = false
       button.innerHTML = originalText
+    }
+  }
+
+  // --- Context Specific Actions ---
+
+  selectPresetFromTopBar(event) {
+    const preset = event.currentTarget.dataset.preset
+    this.switchTab("Style Presets")
+
+    if (this.hasStylePresetInputTarget) {
+      const input = this.stylePresetInputTargets.find(i => i.value === preset)
+      if (input) {
+        input.checked = true
+        // Trigger any associated logic if needed, but usually just checking is enough for the UI
+      }
+    }
+  }
+
+  reuseStyle(event) {
+    const preset = event.currentTarget.dataset.preset
+    const parentId = event.currentTarget.dataset.parentId
+
+    // 1. Select Parent Layer
+    this._selectLayerById(parentId)
+
+    // 2. Select Tab
+    this.switchTab("Style Presets")
+
+    // 3. Select Preset
+    if (this.hasStylePresetInputTarget) {
+      const input = this.stylePresetInputTargets.find(i => i.value === preset)
+      if (input) input.checked = true
+    }
+  }
+
+  reusePrompt(event) {
+    const prompt = event.currentTarget.dataset.prompt
+    const parentId = event.currentTarget.dataset.parentId
+
+    // 1. Select Parent Layer
+    this._selectLayerById(parentId)
+
+    // 2. Select Tab
+    this.switchTab("SmartFix")
+
+    // 3. Populate Prompt
+    if (this.hasPromptInputTarget) {
+      this.promptInputTarget.value = prompt
+    }
+
+    // 4. Toggle AI Assist ON
+    if (this.hasAiAssistToggleTarget) {
+      this.aiAssistToggleTarget.checked = true
+      this.toggleAiAssistLabel()
+    }
+  }
+
+  redoFix(event) {
+    const fixId = event.currentTarget.dataset.fixId
+    const parentId = event.currentTarget.dataset.parentId
+
+    // 1. Select Parent Layer
+    this._selectLayerById(parentId)
+
+    // 2. Select Tab
+    this.switchTab("AutoFix")
+
+    // 3. Highlight/Open Fix (This might need a bit more logic to find the item in the list)
+    // We'll rely on the existing toggle logic or data-auto-fix-id attributes
+    setTimeout(() => {
+      const item = this.autoFixItemTargets.find(el => {
+        const btn = el.querySelector('[data-auto-fix-id]')
+        return btn && btn.dataset.autoFixId === fixId
+      })
+      if (item) {
+        const header = item.querySelector('[data-action*="toggleAutoFix"]')
+        if (header) header.click()
+      }
+    }, 300) // Small delay to allow Turbo to render the list if it was empty
+  }
+
+  // --- Helpers ---
+
+  switchTab(tabName) {
+    const toolsController = this.toolsController
+    if (toolsController) {
+      const tabButton = toolsController.tabTargets.find(t => t.innerText.trim() === tabName)
+      if (tabButton) tabButton.click()
+    }
+  }
+
+  get toolsController() {
+    const toolsElement = document.querySelector('[data-controller="tools"]')
+    if (toolsElement) {
+      return this.application.getControllerForElementAndIdentifier(toolsElement, "tools")
+    }
+    return null
+  }
+
+  _selectLayerById(layerId) {
+    if (!layerId) return
+    const link = this.layerLinkTargets.find(l => l.dataset.layerId === layerId)
+    if (link) {
+      link.click()
     }
   }
 

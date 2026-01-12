@@ -53,7 +53,12 @@
       <% elsif project_layer.failed? %>
         <span class="text-red-400 font-medium">Generation Failed</span>
       <% else %>
-        <span class="text-gray-500"><%= project_layer.preset&.titleize || "Normal" %></span>
+        <span class="text-gray-500">
+          <%= project_layer.generation_type.titleize %>
+          <% if project_layer.style_preset? && project_layer.preset.present? %>
+            &bull; <%= project_layer.preset.titleize %>
+          <% end %>
+        </span>
         <span class="text-gray-600">&bull;</span>
         <span class="text-gray-600"><%= time_ago_in_words(project_layer.created_at) %></span>
       <% end %>

@@ -21,10 +21,22 @@ class ProjectLayersController < ApplicationController
 
     ActiveRecord::Base.transaction do
       variations_count.times do |i|
+        generation_type = if params[:auto_fix_id].present?
+                            :autofix
+                          elsif params[:preset].present?
+                            :style_preset
+                          elsif params[:ai_assist] == "true"
+                            :smart_fix
+                          else
+                            :not_specified
+                          end
+
         layer = @design.project_layers.build(
           project: @project,
           parent: parent_layer,
           layer_type: "generated",
+          generation_type: generation_type,
+          auto_fix_id: params[:auto_fix_id],
           prompt: params[:prompt],
           preset: params[:preset],
           ai_assist: params[:ai_assist] == "true",
