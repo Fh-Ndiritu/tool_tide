@@ -28,7 +28,6 @@ SitemapGenerator::Sitemap.create do
   add "/features/shopping-list-planting-guide", priority: 0.8, changefreq: "weekly"
   add "/features/sketch-to-3d-rendering", priority: 0.8, changefreq: "weekly"
   add "/features/intuitive-onboarding", priority: 0.8, changefreq: "weekly"
-  add "/city-design-inspiration", priority: 0.8, changefreq: "weekly"
 end
 
 IndexNowService.new.broadcast
