@@ -276,41 +276,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_09_141800) do
     t.index ["mask_request_id"], name: "index_plants_on_mask_request_id"
   end
 
-  create_table "project_layers", force: :cascade do |t|
-    t.integer "project_id", null: false
-    t.integer "layer_type"
-    t.text "prompt"
-    t.string "preset"
-    t.integer "parent_layer_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "status"
-    t.integer "transformation_type"
-    t.integer "views_count", default: 0, null: false
-    t.integer "sketch_status"
-    t.index ["parent_layer_id"], name: "index_project_layers_on_parent_layer_id"
-    t.index ["project_id"], name: "index_project_layers_on_project_id"
-  end
-
-  create_table "project_plants", force: :cascade do |t|
-    t.integer "project_id", null: false
-    t.integer "plant_id", null: false
-    t.integer "quantity"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["plant_id"], name: "index_project_plants_on_plant_id"
-    t.index ["project_id"], name: "index_project_plants_on_project_id"
-  end
-
-  create_table "projects", force: :cascade do |t|
-    t.string "title"
-    t.integer "user_id", null: false
-    t.integer "status"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_projects_on_user_id"
-  end
-
   create_table "public_assets", force: :cascade do |t|
     t.string "uuid"
     t.string "name"
@@ -445,11 +410,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_09_141800) do
   add_foreign_key "onboarding_responses", "users"
   add_foreign_key "payment_transactions", "users"
   add_foreign_key "plants", "mask_requests"
-  add_foreign_key "project_layers", "project_layers", column: "parent_layer_id"
-  add_foreign_key "project_layers", "projects"
-  add_foreign_key "project_plants", "plants"
-  add_foreign_key "project_plants", "projects"
-  add_foreign_key "projects", "users"
   add_foreign_key "sketch_requests", "canvas"
   add_foreign_key "sketch_requests", "users"
   add_foreign_key "suggested_plants", "landscape_requests"
