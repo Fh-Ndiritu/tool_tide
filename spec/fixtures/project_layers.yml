@@ -1,0 +1,13 @@
+one:
+  project: one
+  design: one
+  layer_type: 1
+  progress: 0
+  views_count: 0
+
+two:
+  project: two
+  design: two
+  layer_type: 1
+  progress: 0
+  views_count: 0

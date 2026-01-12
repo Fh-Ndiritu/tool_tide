@@ -1,0 +1,266 @@
+<% content_for :hide_navbar, true %>
+<div class="flex h-screen bg-gray-900 text-white overflow-hidden"
+     data-controller="projects"
+     data-projects-generation-url-value="<%= project_design_project_layers_path(@project, @active_design) %>"
+     data-projects-image-cost-value="<%= GOOGLE_IMAGE_COST %>">
+  <!-- Left Sidebar: Layers -->
+  <div class="w-64 bg-gray-800 border-r border-gray-700 flex flex-col">
+    <!-- Sidebar Top: Back & Credits -->
+    <div class="p-4 space-y-4 border-b border-gray-700">
+       <!-- Back Link -->
+       <%= link_to projects_path, class: "flex items-center gap-2 text-gray-400 hover:text-white transition-colors group" do %>
+         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 group-hover:-translate-x-0.5 transition-transform">
+           <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+         </svg>
+         <span class="text-xs font-bold uppercase tracking-wider">Back</span>
+       <% end %>
+
+       <!-- Credits Card -->
+       <div class="bg-gray-900 rounded-xl p-3 border border-gray-700 shadow-sm">
+         <div class="flex items-center justify-between mb-2">
+           <span class="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Credits</span>
+           <span class="text-xs font-bold text-[#00acc1]"><%= current_user.pro_engine_credits %></span>
+         </div>
+         <%= link_to "Manage", "#", class: "block w-full py-1 text-[10px] font-bold uppercase tracking-wide text-gray-400 bg-gray-800 hover:bg-gray-700 hover:text-white rounded text-center transition-colors border border-gray-700" %>
+       </div>
+    </div>
+
+    <div class="px-4 py-3 border-b border-gray-700 font-semibold text-sm text-gray-200">Layers</div>
+    <div id="layers_list" class="flex-1 overflow-y-scroll p-4 space-y-2 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent">
+      <%= turbo_stream_from @project, :layers %>
+      <!-- Original Image Layer -->
+      <!-- Root Layers -->
+      <%= render partial: "project_layers/project_layer", collection: @active_design.project_layers.roots, as: :project_layer %>
+      <!-- Nested layers will go here -->
+    </div>
+  </div>
+
+  <!-- Center: Canvas Workspace -->
+  <div class="flex-1 flex flex-col relative bg-gray-900">
+    <!-- Top Bar: Global Project Controls -->
+    <div class="h-14 bg-gray-800 border-b border-gray-700 flex items-center px-4 gap-4">
+      <!-- Editable Title -->
+      <%= render "projects/project_title", project: @project %>
+    </div>
+
+    <!-- Design Controls Bar -->
+    <div class="h-12 bg-gray-900 border-b border-gray-700 flex items-center justify-between px-4">
+      <!-- Left: Design Tabs -->
+      <div class="flex items-center gap-1 overflow-x-auto no-scrollbar">
+         <% @project.designs.each do |design| %>
+           <%= link_to project_path(@project, design_id: design.id),
+               class: "px-3 py-1.5 rounded-md text-sm font-medium transition-colors whitespace-nowrap #{design == @active_design ? 'bg-gray-800 text-white shadow-sm' : 'text-gray-400 hover:text-gray-200 hover:bg-gray-800/50'}" do %>
+              <%= design_title_for(design) %>
+           <% end %>
+         <% end %>
+      </div>
+
+      <!-- Right: Actions -->
+      <div class="flex items-center gap-2">
+        <!-- Download -->
+        <% if @active_design.project_layers.first&.image&.attached? %>
+          <%= link_to rails_blob_path(@active_design.project_layers.first.image, disposition: "attachment"),
+              class: "p-1.5 text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition-colors",
+              title: "Download",
+              target: "_blank",
+              data: { turbo: false } do %>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+            </svg>
+          <% end %>
+        <% end %>
+
+        <!-- Zoom Controls -->
+        <div class="flex items-center bg-gray-800 rounded-lg p-1 gap-1 border border-gray-700">
+           <!-- Reset Button (Hidden by default until zoomed/panned) -->
+           <button class="px-2 text-xs font-medium hover:text-white text-blue-500 hidden"
+                   data-action="projects#resetZoom"
+                   data-projects-target="resetZoomBtn"
+                   title="Reset View">
+             Reset
+           </button>
+
+           <div class="h-3 w-px bg-gray-700 mx-1" data-projects-target="resetZoomBtn" class="hidden"></div>
+
+           <button class="p-1 hover:text-white text-gray-400" data-action="projects#zoomOut" title="Zoom Out">
+             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+               <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12h-15" />
+             </svg>
+           </button>
+
+           <span class="text-xs font-mono w-10 text-center text-gray-400" data-projects-target="scaleDisplay">100%</span>
+
+           <button class="p-1 hover:text-white text-gray-400" data-action="projects#zoomIn" title="Zoom In">
+             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+               <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+             </svg>
+           </button>
+        </div>
+
+        <!-- Pan Tool -->
+        <button class="p-1.5 text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition-colors border border-transparent"
+                data-action="projects#setPanTool"
+                title="Pan Tool (Hand)">
+           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+             <path stroke-linecap="round" stroke-linejoin="round" d="M10.05 4.575a1.575 1.575 0 1 0-3.15 0v3m3.15-3v-1.5a1.575 1.575 0 0 1 3.15 0v1.5m-3.15 0 .075 5.925m3.075.75V4.575m0 0a1.575 1.575 0 0 1 3.15 0V15M6.9 7.575a1.575 1.575 0 1 0-3.15 0v8.175a6.75 6.75 0 0 0 6.75 6.75h2.018a5.25 5.25 0 0 0 3.712-1.538l1.732-1.732a5.25 5.25 0 0 0 1.538-3.712l.003-2.024a.668.668 0 0 1 .198-.471 1.575 1.575 0 1 0-2.428-2.228 3.818 3.818 0 0 0-.743 1.055l-.447 1.063a.5.5 0 0 1-.579.29 l-2.41-.482a.5.5 0 0 1-.41-.49V7.575" />
+           </svg>
+        </button>
+
+        <div class="h-4 w-px bg-gray-700 mx-1"></div>
+
+        <!-- New Design Upload -->
+        <%= form_with url: project_designs_path(@project), method: :post, local: true, class: "flex items-center" do |f| %>
+          <label class="flex items-center gap-2 px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium rounded-lg transition-colors shadow-lg shadow-blue-900/20 cursor-pointer">
+             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+               <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+             </svg>
+             New Design
+             <%= f.file_field :image, class: "hidden", onchange: "this.form.requestSubmit()" %>
+          </label>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Canvas Area -->
+    <div class="flex-1 overflow-hidden flex items-center justify-center p-8 relative">
+       <!-- Canvas Logic/Controller will be attached here -->
+       <%= turbo_frame_tag "canvas_frame" do %>
+         <div class="relative w-full h-[80vh] flex items-center justify-center bg-gray-800 rounded-lg overflow-hidden shadow-inner" id="canvas-container">
+           <% if @active_design.project_layers.first&.image&.attached? %>
+             <div data-controller="project-canvas"
+                  data-project-canvas-target="canvasContainer"
+                  data-project-canvas-layer-id-value="<%= @active_design.project_layers.first&.id %>"
+                  data-project-canvas-image-url-value="<%= url_for(@active_design.project_layers.first.image) %>"
+                  data-project-canvas-display-width-value="800"
+                  data-project-canvas-display-height-value="600"
+                  data-project-canvas-brush-size-value="60"
+                  class="bg-transparent">
+             </div>
+           <% else %>
+              <div class="text-gray-500">No image loaded</div>
+           <% end %>
+         </div>
+       <% end %>
+    </div>
+  </div>
+
+  <!-- Right Sidebar: Tools -->
+  <div class="w-80 bg-gray-800 border-l border-gray-700 flex flex-col"
+       data-controller="tools"
+       data-tools-active-class="text-blue-400 border-blue-400"
+       data-tools-inactive-class="text-gray-400 border-transparent hover:text-gray-200">
+
+     <!-- Tabs Header -->
+     <div class="flex border-b border-gray-700">
+        <button class="flex-1 py-3 text-sm font-medium border-b-2 text-blue-400 border-blue-400 transition-colors"
+                data-tools-target="tab"
+                data-action="tools#switch">
+          Style Presets
+        </button>
+        <button class="flex-1 py-3 text-sm font-medium border-b-2 text-gray-400 border-transparent hover:text-gray-200 transition-colors"
+                data-tools-target="tab"
+                data-action="tools#switch">
+          SmartFix
+        </button>
+        <button class="flex-1 py-3 text-sm font-medium border-b-2 text-gray-400 border-transparent hover:text-gray-200 transition-colors"
+                data-tools-target="tab"
+                data-action="tools#switch">
+          AutoFix
+        </button>
+     </div>
+
+     <!-- Content Area -->
+     <div class="flex-1 overflow-y-auto relative">
+         <!-- Tab 1: Style Presets -->
+         <div data-tools-target="panel" class="p-4 space-y-6">
+            <!-- Landscape Preset Selection -->
+            <div>
+               <label class="block text-sm font-medium text-gray-400 mb-2">Choose a Landscape Preset (<%= LANDSCAPE_PRESETS.count %>)</label>
+               <div class="relative border border-gray-700 rounded-lg bg-gray-900/30">
+                  <div class="grid grid-cols-2 gap-2 max-h-60 overflow-y-auto p-2 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent">
+                     <% LANDSCAPE_PRESETS.each do |preset, description| %>
+                       <label class="cursor-pointer relative group">
+                         <input type="radio" name="style_preset" value="<%= preset %>" class="peer sr-only" data-projects-target="stylePresetInput">
+                         <div class="border border-gray-600 rounded-lg overflow-hidden bg-gray-700 peer-checked:border-blue-500 peer-checked:ring-1 peer-checked:ring-blue-500 hover:border-gray-500 transition-all">
+                        <div class="aspect-video relative overflow-hidden">
+                           <%= image_tag "presets/#{preset}.png", class: "w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-120", loading: "lazy" %>
+                        </div>
+                        <div class="p-2 text-center relative z-10 bg-gray-700">
+                           <div class="text-[10px] font-semibold text-white truncate"><%= preset.titleize %></div>
+                        </div>
+                     </div>
+                       </label>
+                     <% end %>
+                  </div>
+                  <!-- Scroll Hint Gradient -->
+                  <div class="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-gray-800 to-transparent pointer-events-none rounded-b-lg"></div>
+               </div>
+            </div>
+         </div>
+
+         <!-- Tab 2: SmartFix -->
+         <div data-tools-target="panel" class="p-4 space-y-6 hidden">
+            <!-- AI Assist Description -->
+            <p class="text-xs text-gray-400 leading-snug">
+              AI Assist converts your text into actionable edits based on the current Layer.
+            </p>
+
+            <!-- AI Assist Toggle -->
+           <div class="flex items-center justify-between bg-gray-800/50 p-2 rounded-lg border border-gray-700/50">
+             <label for="ai-assist-toggle" class="text-xs font-medium text-gray-300 cursor-pointer" data-projects-target="aiAssistLabel">AI Assist On</label>
+             <div class="relative inline-block w-9 align-middle select-none transition duration-200 ease-in">
+                <input type="checkbox" name="ai_assist" id="ai-assist-toggle" checked
+                       class="toggle-checkbox absolute block w-4 h-4 rounded-full bg-white border-2 appearance-none cursor-pointer checked:right-0 checked:border-blue-600"
+                       data-projects-target="aiAssistToggle"
+                       data-action="change->projects#toggleAiAssistLabel"/>
+                <label for="ai-assist-toggle" class="toggle-label block overflow-hidden h-4 rounded-full bg-gray-600 cursor-pointer"></label>
+             </div>
+           </div>
+
+            <!-- Instructions -->
+            <div>
+              <label class="block text-sm font-medium text-gray-400 mb-2">Instructions</label>
+              <textarea class="w-full h-32 bg-gray-700 border border-gray-600 rounded-lg p-3 text-white placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500 resize-none"
+                        placeholder="Describe the changes you want to make, you can be brief with 'Ai Assist on' or type lengthy commands when turned off."
+                        data-projects-target="promptInput"></textarea>
+            </div>
+         </div>
+
+         <!-- Shared Tools Section (Collapsible) -->
+         <div class="border-t border-gray-700 mx-4 mb-4">
+            <button class="w-full flex items-center justify-between py-4 group" data-action="click->projects#toggleTools">
+               <span class="text-xs font-bold uppercase text-gray-500 tracking-wider group-hover:text-gray-300 transition-colors">Tools</span>
+               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                    class="w-4 h-4 text-gray-500 transition-transform duration-200"
+                    data-projects-target="toolsToggleIcon">
+                 <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+               </svg>
+            </button>
+            <div data-projects-target="toolsPanel" class="space-y-6">
+               <%= render "projects/tools/brush_controls" %>
+               <%= render "projects/tools/variations_controls" %>
+            </div>
+
+            <div class="mt-6">
+               <button class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-lg shadow-lg shadow-blue-900/50 transition-all"
+                       data-action="click->projects#generate">
+                  Generate Now
+               </button>
+            </div>
+         </div>
+
+        <!-- Tab 3: AutoFix (Milestone 6) -->
+        <div data-tools-target="panel" class="p-4 hidden">
+           <div class="flex flex-col items-center justify-center h-64 text-center">
+              <div class="text-gray-500 mb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 mx-auto mb-2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z" />
+                </svg>
+                <h3 class="font-medium">AutoFix</h3>
+              </div>
+              <p class="text-sm text-gray-500">Coming soon in Milestone 6</p>
+           </div>
+        </div>
+     </div>
+  </div>
+</div>

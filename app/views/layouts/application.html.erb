@@ -187,7 +187,7 @@ f="XMLHttpRequest",g._w={},g._w[f]=m[f],g._w[s]=m[s],m[s]&&(m[s]=function(){retu
   >
     <% show_loader = defined?(@mask_request) && @mask_request&.processing? && !current_page?(mask_request_path(@mask_request)) && !current_page?(preferences_mask_request_path(@mask_request)) %>
     <%= render partial: "layouts/shared/loader", locals: { record: (show_loader ? @mask_request : nil), klasses: "#{show_loader ? '' : 'hidden'} fixed" } %>
-    <% if user_signed_in? %>
+    <% if user_signed_in? && !content_for?(:hide_navbar) %>
       <%= render "shared/navbar" %>
     <% end %>
     <%= render "shared/flash" %>

@@ -1,0 +1,69 @@
+<div data-controller="toggle"
+     data-toggle-hidden-class="hidden"
+     data-toggle-rotate-class="rotate-90"
+     class="group/layer">
+
+  <div class="flex items-center gap-1 mb-1 relative">
+     <!-- Toggle Button (Absolute or Flex) -->
+     <div class="w-4 flex justify-center flex-shrink-0">
+       <% if project_layer.has_children? %>
+         <button type="button"
+                 data-action="toggle#toggle"
+                 class="text-gray-600 hover:text-gray-300 transition-transform duration-200 rotate-90 p-0.5"
+                 data-toggle-target="icon">
+           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3 h-3">
+             <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+           </svg>
+         </button>
+       <% end %>
+     </div>
+
+     <!-- Main Item Link -->
+     <%= link_to project_design_project_layer_path(project_layer.project, project_layer.design, project_layer),
+                 class: "flex-1 flex items-center gap-2 p-1.5 rounded-lg bg-gray-800/40 border border-transparent hover:bg-gray-700 hover:border-gray-600 transition-colors min-w-0",
+                 data: { turbo_frame: "canvas_frame", action: "click->projects#setActiveLayer" } do %>
+
+       <!-- Thumbnail -->
+       <div class="w-10 h-10 flex-shrink-0 bg-gray-700 rounded overflow-hidden relative shadow-sm">
+         <% if project_layer.image.attached? %>
+            <%= image_tag project_layer.image, class: "w-full h-full object-cover" %>
+         <% else %>
+            <div class="w-full h-full flex items-center justify-center text-[8px] text-gray-500">N/A</div>
+         <% end %>
+
+         <!-- Loader Overlay -->
+         <% unless project_layer.complete? || project_layer.failed? || project_layer.original? %>
+            <div class="absolute inset-0 bg-black/50 flex items-center justify-center backdrop-blur-[1px]">
+               <svg class="animate-spin h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+               </svg>
+            </div>
+         <% end %>
+       </div>
+
+       <!-- Text Info -->
+       <div class="flex-1 min-w-0">
+          <div class="flex items-center justify-between">
+             <span class="text-xs font-medium text-gray-300 truncate group-hover/layer:text-white transition-colors">Layer <%= project_layer.layer_number %></span>
+          </div>
+
+          <div class="flex items-center gap-1 text-[10px] text-gray-500 leading-none mt-0.5">
+             <% if project_layer.original? %>
+               <span class="font-medium text-gray-400">Uploaded</span>
+             <% else %>
+               <span class="<%= project_layer.complete? ? 'text-gray-400' : 'text-blue-400 font-medium' %>"><%= project_layer.progress.humanize %></span>
+               <span class="text-gray-600">&bull;</span>
+               <span class="text-gray-600"><%= time_ago_in_words(project_layer.created_at) %></span>
+             <% end %>
+          </div>
+       </div>
+     <% end %>
+  </div>
+
+  <% if project_layer.has_children? %>
+    <div data-toggle-target="content" class="ml-2 pl-2 border-l border-gray-700 space-y-1">
+      <%= render partial: "project_layers/project_layer", collection: project_layer.children, as: :project_layer %>
+    </div>
+  <% end %>
+</div>

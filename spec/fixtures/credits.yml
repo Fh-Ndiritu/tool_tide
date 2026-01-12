@@ -1,0 +1,7 @@
+one:
+  user: one
+  amount: 10
+  source: 0 # signup
+  credit_type: 0 # pro_engine
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>

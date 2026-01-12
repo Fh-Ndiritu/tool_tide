@@ -1,6 +1,13 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  get "project_layers/show"
+  get "project_layers/update"
+  resources :projects, only: %i[index show create update] do
+    resources :designs, only: [:create] do
+      resources :project_layers, only: %i[show update create]
+    end
+  end
   # Reveal health status on /up that otherwise be unable to shut down due to host constraint
   get "up" => "rails/health#show", as: :rails_health_check
 

@@ -1,0 +1,16 @@
+<%= turbo_frame_tag "canvas_frame" do %>
+  <div class="relative w-full h-[80vh] flex items-center justify-center bg-gray-900/50 rounded-lg overflow-hidden" id="canvas-container">
+    <% if @project_layer.image.attached? %>
+      <div data-controller="konva-canvas"
+           data-konva-canvas-target="canvasContainer"
+           data-konva-canvas-image-url-value="<%= url_for(@project_layer.image) %>"
+           data-konva-canvas-display-width-value="800"
+           data-konva-canvas-display-height-value="600"
+           data-konva-canvas-brush-size-value="40"
+           class="bg-transparent">
+      </div>
+    <% else %>
+       <div class="text-gray-500">No image loaded</div>
+    <% end %>
+  </div>
+<% end %>

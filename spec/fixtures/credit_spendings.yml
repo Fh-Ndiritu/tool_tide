@@ -1,0 +1,11 @@
+# one:
+#   user: one
+#   amount: 8
+#   transaction_type: 0 # spend
+#   trackable: one (ProjectLayer)
+
+# two:
+#   user: two
+#   amount: 8
+#   transaction_type: 1 # refund
+#   trackable: two (ProjectLayer)

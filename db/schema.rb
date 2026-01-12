@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_09_141800) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_12_173304) do
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -108,6 +108,18 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_09_141800) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "credit_spendings", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "amount"
+    t.integer "transaction_type"
+    t.string "trackable_type", null: false
+    t.integer "trackable_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["trackable_type", "trackable_id"], name: "index_credit_spendings_on_trackable"
+    t.index ["user_id"], name: "index_credit_spendings_on_user_id"
+  end
+
   create_table "credit_vouchers", force: :cascade do |t|
     t.string "token", null: false
     t.integer "user_id", null: false
@@ -127,6 +139,15 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_09_141800) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_credits_on_user_id"
+  end
+
+  create_table "designs", force: :cascade do |t|
+    t.string "title"
+    t.integer "project_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "project_layers_count", default: 0
+    t.index ["project_id"], name: "index_designs_on_project_id"
   end
 
   create_table "favorites", force: :cascade do |t|
@@ -276,6 +297,36 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_09_141800) do
     t.index ["mask_request_id"], name: "index_plants_on_mask_request_id"
   end
 
+  create_table "project_layers", force: :cascade do |t|
+    t.integer "project_id", null: false
+    t.integer "design_id", null: false
+    t.string "ancestry"
+    t.integer "layer_type"
+    t.integer "status"
+    t.integer "progress", default: 0
+    t.integer "transformation_type"
+    t.integer "views_count", default: 0
+    t.text "prompt"
+    t.string "preset"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "ai_assist", default: false
+    t.integer "layer_number"
+    t.index ["ancestry"], name: "index_project_layers_on_ancestry"
+    t.index ["design_id"], name: "index_project_layers_on_design_id"
+    t.index ["project_id"], name: "index_project_layers_on_project_id"
+  end
+
+  create_table "projects", force: :cascade do |t|
+    t.string "title"
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "current_design_id"
+    t.index ["current_design_id"], name: "index_projects_on_current_design_id"
+    t.index ["user_id"], name: "index_projects_on_user_id"
+  end
+
   create_table "public_assets", force: :cascade do |t|
     t.string "uuid"
     t.string "name"
@@ -399,8 +450,10 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_09_141800) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "audios", "vlogs"
   add_foreign_key "canvas", "users"
+  add_foreign_key "credit_spendings", "users"
   add_foreign_key "credit_vouchers", "users"
   add_foreign_key "credits", "users"
+  add_foreign_key "designs", "projects"
   add_foreign_key "favorites", "users"
   add_foreign_key "generation_taggings", "tags"
   add_foreign_key "landscape_requests", "landscapes"
@@ -410,6 +463,10 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_09_141800) do
   add_foreign_key "onboarding_responses", "users"
   add_foreign_key "payment_transactions", "users"
   add_foreign_key "plants", "mask_requests"
+  add_foreign_key "project_layers", "designs"
+  add_foreign_key "project_layers", "projects"
+  add_foreign_key "projects", "designs", column: "current_design_id"
+  add_foreign_key "projects", "users"
   add_foreign_key "sketch_requests", "canvas"
   add_foreign_key "sketch_requests", "users"
   add_foreign_key "suggested_plants", "landscape_requests"

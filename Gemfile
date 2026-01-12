@@ -81,6 +81,7 @@ group :test do
   gem "shoulda-matchers", "~> 6.0"
   gem "simplecov", require: false
   gem "webdrivers"
+  gem "rails-controller-testing"
 end
 
 # Validating attached document
