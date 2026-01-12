@@ -26,7 +26,7 @@
 
     <link rel="icon" type="image/png" sizes="16x16" href="<%= asset_path("favicon/favicon-16x16.png") %>">
     <link rel="icon" type="image/png" sizes="32x32" href="<%= asset_path("favicon/favicon-32x32.png") %>">
-    <link rel="icon" type="image/png" sizes="48x48" href="<%= asset_path("favicon/favicon-32x32.png") %>"> <%# Fallback to 32x32 if explicit 48x48 missing, but ideally multi-res ico handles it %>
+    <link rel="icon" type="image/png" sizes="48x48" href="<%= asset_path("favicon/favicon-48x48.png") %>">
     <link rel="icon" type="image/png" sizes="192x192" href="<%= asset_path("favicon/android-chrome-192x192.png") %>">
     <link rel="icon" type="image/png" sizes="512x512" href="<%= asset_path("favicon/android-chrome-512x512.png") %>">
     <link rel="apple-touch-icon" href="<%= asset_path("favicon/apple-touch-icon.png") %>">
@@ -34,6 +34,8 @@
 
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
+    <meta name="apple-mobile-web-app-title" content="Hadaa">
+    <link rel="icon" type="image/png" sizes="96x96" href="<%= asset_path("favicon/favicon-96x96.png") %>">
     <link rel="shortcut icon" href="/favicon.ico">
 
     <% if content_for?(:schema_markup) %>
