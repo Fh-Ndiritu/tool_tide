@@ -3,6 +3,27 @@ class ProjectLayer < ApplicationRecord
   belongs_to :design, counter_cache: true
   before_create :set_layer_number
 
+  after_create_commit -> {
+    if ancestry.nil?
+      broadcast_append_to [project, :layers],
+        target: "layers_list",
+        partial: "project_layers/project_layer",
+        locals: { project_layer: self }
+    else
+      broadcast_append_to [project, :layers],
+        target: ActionView::RecordIdentifier.dom_id(parent) + "_children",
+        partial: "project_layers/project_layer",
+        locals: { project_layer: self }
+    end
+  }
+
+  after_update_commit -> {
+    broadcast_replace_to [project, :layers],
+      target: ActionView::RecordIdentifier.dom_id(self),
+      partial: "project_layers/project_layer",
+      locals: { project_layer: self }
+  }
+
 
   has_ancestry ancestry_format: :materialized_path
 
@@ -10,7 +31,7 @@ class ProjectLayer < ApplicationRecord
   has_one_attached :mask
   has_one_attached :overlay
   has_one_attached :result_image
-  has_many :credit_spendings, as: :trackable
+  has_many :credit_spendings, as: :trackable, dependent: :destroy
 
   enum :progress, {
     preparing: 0,

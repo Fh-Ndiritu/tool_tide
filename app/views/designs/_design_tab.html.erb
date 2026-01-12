@@ -1,0 +1,5 @@
+<%= link_to project_path(design.project, design_id: design.id),
+    id: dom_id(design),
+    class: "px-3 py-1.5 rounded-md text-sm font-medium transition-colors whitespace-nowrap #{design == (local_assigns[:active_design]) ? 'bg-gray-800 text-white shadow-sm' : 'text-gray-400 hover:text-gray-200 hover:bg-gray-800/50'}" do %>
+   <%= design_title_for(design) %>
+<% end %>

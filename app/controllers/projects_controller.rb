@@ -19,17 +19,15 @@ class ProjectsController < ApplicationController
       @project.update(current_design: @active_design) if @active_design
     end
 
-    # Fallback if no design exists (shouldn't happen with valid project creation)
+    # Fallback if no design exists
     unless @active_design
-      # Try one last time to find ANY design if for some reason the above failed silently
       @active_design = @project.designs.last
       if @active_design
          @project.update(current_design: @active_design)
-      else
-         redirect_to projects_path, alert: "Project has no designs."
-         return
       end
     end
+
+    @is_new_design_session = params[:new_design] == "true" || @active_design.nil?
 
     render layout: "application"
   end

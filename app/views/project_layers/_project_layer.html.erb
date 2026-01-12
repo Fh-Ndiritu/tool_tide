@@ -1,4 +1,5 @@
-<div data-controller="toggle"
+<div id="<%= dom_id(project_layer) %>"
+     data-controller="toggle"
      data-toggle-hidden-class="hidden"
      data-toggle-rotate-class="rotate-90"
      class="group/layer">
@@ -61,9 +62,9 @@
      <% end %>
   </div>
 
-  <% if project_layer.has_children? %>
-    <div data-toggle-target="content" class="ml-2 pl-2 border-l border-gray-700 space-y-1">
-      <%= render partial: "project_layers/project_layer", collection: project_layer.children, as: :project_layer %>
-    </div>
-  <% end %>
+  <div id="<%= dom_id(project_layer) %>_children"
+       data-toggle-target="content"
+       class="ml-2 pl-2 border-l border-gray-700 space-y-1 <%= 'hidden' unless project_layer.has_children? %>">
+    <%= render partial: "project_layers/project_layer", collection: project_layer.children, as: :project_layer %>
+  </div>
 </div>
