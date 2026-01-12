@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_12_195455) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_12_203503) do
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -66,6 +66,16 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_12_195455) do
     t.string "error_msg"
     t.integer "vlog_id"
     t.index ["vlog_id"], name: "index_audios_on_vlog_id"
+  end
+
+  create_table "auto_fixes", force: :cascade do |t|
+    t.integer "project_layer_id", null: false
+    t.string "title"
+    t.text "description"
+    t.integer "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_layer_id"], name: "index_auto_fixes_on_project_layer_id"
   end
 
   create_table "blog_locations", force: :cascade do |t|
@@ -452,6 +462,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_12_195455) do
 
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "audios", "vlogs"
+  add_foreign_key "auto_fixes", "project_layers"
   add_foreign_key "canvas", "users"
   add_foreign_key "credit_spendings", "users"
   add_foreign_key "credit_vouchers", "users"

@@ -1,10 +1,13 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["brushSizeControl", "brushSizeDisplay", "brushRange", "fill", "track", "thumb", "scaleDisplay", "resetZoomBtn", "stylePresetInput", "promptInput", "variationsCount", "variationsInput", "costDisplay", "aiAssistToggle", "aiAssistLabel", "toolsPanel", "toolsToggleIcon"]
+  static targets = ["brushSizeControl", "brushSizeDisplay", "brushRange", "fill", "track", "thumb", "scaleDisplay", "resetZoomBtn", "stylePresetInput", "promptInput", "variationsCount", "variationsInput", "costDisplay", "aiAssistToggle", "aiAssistLabel", "toolsPanel", "toolsToggleIcon", "autoFixResults", "autoFixItem", "autoFixHeader", "autoFixContent", "autoFixChevron", "autoFixDescriptionInput", "layerLink"]
   static values = {
     generationUrl: String,
-    imageCost: Number
+    imageCost: Number,
+    selectedAutoFixId: Number,
+    selectedAutoFixTitle: String,
+    selectedAutoFixDescription: String
   }
 
   connect() {
@@ -22,35 +25,49 @@ export default class extends Controller {
 
   incrementVariations(event) {
     if (event) event.preventDefault()
-    let current = parseInt(this.variationsInputTarget.value, 10) || 1
+    const container = event.currentTarget.closest('.flex.items-center.gap-1') || this.element
+    const input = container.querySelector('[data-projects-target="variationsInput"]') || this.variationsInputTarget
+    const display = container.querySelector('[data-projects-target="variationsCount"]') || this.variationsCountTarget
+
+    let current = parseInt(input.value, 10) || 1
     if (current < 4) {
       current++
-      this.updateVariationsUI(current)
+      this.updateVariationsUI(current, input, display)
     }
   }
 
   decrementVariations(event) {
     if (event) event.preventDefault()
-    let current = parseInt(this.variationsInputTarget.value, 10) || 1
+    const container = event.currentTarget.closest('.flex.items-center.gap-1') || this.element
+    const input = container.querySelector('[data-projects-target="variationsInput"]') || this.variationsInputTarget
+    const display = container.querySelector('[data-projects-target="variationsCount"]') || this.variationsCountTarget
+
+    let current = parseInt(input.value, 10) || 1
     if (current > 1) {
       current--
-      this.updateVariationsUI(current)
+      this.updateVariationsUI(current, input, display)
     }
   }
 
-  updateVariationsUI(count) {
-    if (this.hasVariationsInputTarget) this.variationsInputTarget.value = count
-    if (this.hasVariationsCountTarget) this.variationsCountTarget.textContent = count
-    this.updateCost()
+  updateVariationsUI(count, input, display) {
+    if (input) input.value = count
+    if (display) display.textContent = count
+    this.updateCost(input)
   }
 
-  updateCost() {
-    if (!this.hasCostDisplayTarget || !this.hasVariationsInputTarget) return
+  updateCost(inputElement = null) {
+    const input = inputElement || this.variationsInputTarget
+    if (!input) return
 
-    const count = parseInt(this.variationsInputTarget.value, 10) || 1
-    const cost = count * (this.imageCostValue || 8) // Fallback to 8 if value not set yet
+    const container = input.closest('.mb-4') || this.element
+    const costDisplay = container.querySelector('[data-projects-target="costDisplay"]') || this.costDisplayTarget
 
-    this.costDisplayTarget.textContent = `${cost} credits`
+    if (!costDisplay) return
+
+    const count = parseInt(input.value, 10) || 1
+    const cost = count * (this.imageCostValue || 8)
+
+    costDisplay.textContent = `${cost} credits`
   }
 
   toggleAiAssistLabel() {
@@ -77,7 +94,7 @@ export default class extends Controller {
 
   setActiveLayer(event) {
     // Remove active state from all layers
-    this.element.querySelectorAll('a[data-action="click->projects#setActiveLayer"]').forEach(el => {
+    this.layerLinkTargets.forEach(el => {
       el.classList.remove("border-blue-500", "bg-gray-600")
       el.classList.add("border-transparent", "bg-gray-700")
     })
@@ -86,6 +103,7 @@ export default class extends Controller {
     const layerLink = event.currentTarget
     layerLink.classList.remove("border-transparent", "bg-gray-700")
     layerLink.classList.add("border-blue-500", "bg-gray-600")
+    this.selectedAutoFixIdValue = null
 
     // Optimistically hide the "Unviewed" indicator (blue dot)
     const unviewedIndicator = layerLink.querySelector('[title="New"]')
@@ -337,6 +355,94 @@ export default class extends Controller {
     } finally {
       button.disabled = false
       button.innerText = originalText
+    }
+  }
+
+  // --- AutoFix Actions ---
+
+  toggleAutoFix(event) {
+    const item = event.currentTarget.closest('[data-projects-target="autoFixItem"]')
+    const content = item.querySelector('[data-projects-target="autoFixContent"]')
+    const chevron = item.querySelector('[data-projects-target="autoFixChevron"]')
+
+    // Collapse others
+    this.autoFixItemTargets.forEach(other => {
+      if (other !== item) {
+        other.querySelector('[data-projects-target="autoFixContent"]').classList.add("hidden")
+        other.querySelector('[data-projects-target="autoFixChevron"]').classList.remove("rotate-180")
+        other.classList.remove("border-blue-500", "ring-1", "ring-blue-500/50")
+      }
+    })
+
+    // Toggle current
+    const isHidden = content.classList.toggle("hidden")
+    chevron.classList.toggle("rotate-180", !isHidden)
+    item.classList.toggle("border-blue-500", !isHidden)
+    item.classList.toggle("ring-1", !isHidden)
+    item.classList.toggle("ring-blue-500/50", !isHidden)
+  }
+
+  async performAutoFix(event) {
+    if (event) event.preventDefault()
+
+    const item = event.currentTarget.closest('[data-projects-target="autoFixItem"]')
+    const descriptionInput = item.querySelector('[data-projects-target="autoFixDescriptionInput"]')
+    const variationsInput = item.querySelector('[data-projects-target="variationsInput"]')
+    const fixId = event.currentTarget.dataset.autoFixId
+    const fixTitle = event.currentTarget.dataset.autoFixTitle
+
+    const controller = this.projectCanvasController
+    if (!controller) {
+      console.error("No canvas controller found")
+      return
+    }
+
+    const parentLayerId = controller.layerIdValue
+    if (!parentLayerId) {
+      alert("No parent layer selected.")
+      return
+    }
+
+    // Construct the prompt from AutoFix title + (potentially edited) description
+    const prompt = `${fixTitle}: ${descriptionInput.value}`
+
+    const formData = new FormData()
+    formData.append("parent_layer_id", parentLayerId)
+    formData.append("prompt", prompt)
+    formData.append("ai_assist", "true")
+    formData.append("auto_fix_id", fixId)
+    formData.append("layer_type", "generated")
+    formData.append("variations", variationsInput.value)
+
+    // Disable button
+    const button = event.currentTarget
+    const originalText = button.innerHTML
+    button.disabled = true
+    button.innerText = "Generating..."
+
+    try {
+      const response = await fetch(this.generationUrlValue, {
+        method: "POST",
+        headers: {
+          "Accept": "text/vnd.turbo-stream.html",
+          "X-CSRF-Token": this.csrfToken
+        },
+        body: formData
+      })
+
+      if (response.ok) {
+        console.log("AutoFix generation started successfully")
+        // Optionally collapse or show success state
+      } else {
+        console.error("AutoFix generation failed", response)
+        alert("Generation failed. Please try again.")
+      }
+    } catch (error) {
+      console.error("Network error during AutoFix generation", error)
+      alert("Network error. Please try again.")
+    } finally {
+      button.disabled = false
+      button.innerHTML = originalText
     }
   }
 

@@ -6,6 +6,11 @@ class ProjectLayersController < ApplicationController
   def show
     @project_layer.mark_as_viewed!
     @project_layer.design.update(current_project_layer: @project_layer)
+
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_to project_path(@project, design_id: @project_layer.design_id) }
+    end
   end
 
   def create
@@ -39,6 +44,12 @@ class ProjectLayersController < ApplicationController
 
         created_layers << layer
         ProjectGenerationJob.perform_later(layer.id)
+      end
+
+      # Mark AutoFix as applied if provided
+      if params[:auto_fix_id].present?
+        auto_fix = AutoFix.find_by(id: params[:auto_fix_id])
+        auto_fix&.applied!
       end
     end
 

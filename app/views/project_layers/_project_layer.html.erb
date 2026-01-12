@@ -24,7 +24,7 @@
      <% if is_clickable %>
        <%= link_to project_design_project_layer_path(project_layer.project, project_layer.design, project_layer),
                    class: "flex-1 flex items-center gap-2 p-1.5 rounded-lg bg-gray-800/40 border border-transparent hover:bg-gray-700 hover:border-gray-600 transition-colors min-w-0",
-                   data: { turbo_frame: "canvas_frame", action: "click->projects#setActiveLayer", layer_id: project_layer.id } do %>
+                   data: { action: "click->projects#setActiveLayer", layer_id: project_layer.id, turbo_stream: true, projects_target: "layerLink" } do %>
           <%= render "project_layers/layer_content", project_layer: project_layer %>
        <% end %>
      <% else %>

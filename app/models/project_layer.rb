@@ -15,6 +15,9 @@ class ProjectLayer < ApplicationRecord
   has_one_attached :mask
   has_one_attached :overlay
   has_one_attached :result_image
+
+  has_many :auto_fixes, dependent: :destroy
+
   def mark_as_viewed!
     update_column(:viewed_at, Time.current) if viewed_at.nil?
   end

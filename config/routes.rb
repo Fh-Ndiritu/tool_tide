@@ -5,7 +5,9 @@ Rails.application.routes.draw do
   get "project_layers/update"
   resources :projects, only: %i[index show create update] do
     resources :designs, only: [:create] do
-      resources :project_layers, only: %i[show update create]
+      resources :project_layers, only: [:show, :create, :update] do
+        resources :auto_fixes, only: [:create, :show]
+      end
     end
   end
   # Reveal health status on /up that otherwise be unable to shut down due to host constraint

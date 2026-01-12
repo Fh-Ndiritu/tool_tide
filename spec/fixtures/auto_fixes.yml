@@ -1,0 +1,17 @@
+pending_fix:
+  project_layer: one
+  title: "Add Swimming Pool"
+  description: "Install a rectangular pool in the top right quadrant next to the existing patio area."
+  status: 0
+
+applied_fix:
+  project_layer: one
+  title: "Remove Dead Tree"
+  description: "Remove the dying oak tree in the bottom left corner and replace with mulch bed."
+  status: 10
+
+discarded_fix:
+  project_layer: one
+  title: "Add Garden Shed"
+  description: "Construct a small wooden garden shed in the far back corner behind the fence."
+  status: 20
