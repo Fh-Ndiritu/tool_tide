@@ -551,6 +551,14 @@ export default class extends Controller {
     }, 300) // Small delay to allow Turbo to render the list if it was empty
   }
 
+  updateBrushHint(event) {
+    const tabName = event.currentTarget.innerText.trim()
+    const canvasController = this.projectCanvasController
+    if (canvasController) {
+      canvasController.updateBrushHintVisibility(tabName)
+    }
+  }
+
   // --- Helpers ---
 
   switchTab(tabName) {
@@ -558,6 +566,11 @@ export default class extends Controller {
     if (toolsController) {
       const tabButton = toolsController.tabTargets.find(t => t.innerText.trim() === tabName)
       if (tabButton) tabButton.click()
+    }
+
+    const canvasController = this.projectCanvasController
+    if (canvasController) {
+      canvasController.updateBrushHintVisibility(tabName)
     }
   }
 

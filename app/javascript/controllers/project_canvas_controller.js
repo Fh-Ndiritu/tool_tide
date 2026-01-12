@@ -29,9 +29,9 @@ export default class extends Controller {
   startRectX = 0;
   startRectY = 0;
   currentRect = null;
-  crosshairGroup = null;
-  crosshairHorizontal = null;
   crosshairVertical = null;
+  brushHint = null;
+  brushHintVisible = false;
 
   maskHistory = [];
   historyPointer = -1;
@@ -143,8 +143,8 @@ export default class extends Controller {
       this.maskContext = null;
       this.maskImageNode = null;
       this.crosshairGroup = null;
-      this.crosshairHorizontal = null;
       this.crosshairVertical = null;
+      this.brushHint = null;
     }
 
     const container = this.canvasContainerTarget;
@@ -213,6 +213,20 @@ export default class extends Controller {
 
     this.crosshairGroup.add(this.cursorCircle, this.crosshairHorizontal, this.crosshairVertical);
     this.maskLayer.add(this.crosshairGroup);
+
+    // Brush Hint Text
+    this.brushHint = new Konva.Text({
+      text: 'Draw on Me',
+      fontSize: 48,
+      fontVariant: 'bold',
+      fontFamily: 'system-ui, -apple-system, sans-serif',
+      fill: 'white',
+      opacity: 0.4, // Increased opacity as requested
+      listening: false,
+      visible: false
+    });
+    this.maskLayer.add(this.brushHint);
+    this._syncInitialBrushHintVisibility();
 
     // Hide the default cursor icon
     this.canvasContainerTarget.style.cursor = 'none';
@@ -302,6 +316,12 @@ export default class extends Controller {
 
   _handleMouseDown(e) {
     if (!this.imageNode || !this.stage) return;
+
+    // Hide hint on first brush
+    if (this.brushHint && this.brushHint.visible()) {
+      this.brushHint.visible(false);
+      this.maskLayer.batchDraw();
+    }
 
     this.isDrawing = true;
 
@@ -801,21 +821,56 @@ export default class extends Controller {
     const x = this.stage.x();
     const y = this.stage.y();
 
-    // Check if reset (defaults: scale=1, x=0, y=0)
-    // Floating point comparison safety not explicitly needed if always setting exact 1,0,0 but good practice.
-    const isReset = (Math.abs(scale - 1) < 0.001) && (Math.abs(x) < 0.1) && (Math.abs(y) < 0.1);
-
     this.element.dispatchEvent(
-      new CustomEvent('project-canvas:transform-changed', {
+      new CustomEvent('konva:transform-changed', {
         bubbles: true,
         detail: {
           scale: scale,
           x: x,
-          y: y,
-          isReset: isReset
-        }
+          y: y
+        },
       })
     );
+    this._centerBrushHint();
+  }
+
+  // --- Brush Hint Logic ---
+
+  updateBrushHintVisibility(activeTabName) {
+    if (!this.brushHint) return;
+
+    const shouldShow = ["Style Presets", "SmartFix"].includes(activeTabName.trim());
+    this.brushHint.visible(shouldShow);
+    this._centerBrushHint();
+    this.maskLayer.batchDraw();
+  }
+
+  _centerBrushHint() {
+    if (!this.brushHint || !this.stage) return;
+
+    const stageWidth = this.stage.width();
+    const stageHeight = this.stage.height();
+    const scale = this.stage.scaleX();
+    const x = this.stage.x();
+    const y = this.stage.y();
+
+    // Calculate center in stage coordinates
+    // We want the text to stay centered in the viewport even when zoomed/panned
+    const centerX = (stageWidth / 2 - x) / scale;
+    const centerY = (stageHeight / 2 - y) / scale;
+
+    this.brushHint.setAttrs({
+      x: centerX - (this.brushHint.width() / 2),
+      y: centerY - (this.brushHint.height() / 2)
+    });
+  }
+
+  _syncInitialBrushHintVisibility() {
+    // Look for the active tab in the DOM
+    const activeTab = document.querySelector('[data-tools-target="tab"].text-blue-400');
+    if (activeTab) {
+      this.updateBrushHintVisibility(activeTab.innerText.trim());
+    }
   }
 
   toggleZoom() {
