@@ -605,3 +605,31 @@ input[type='checkbox'] {
     -webkit-transform-origin: 50% 0;
   }
 }
+
+/* Custom Premium Scrollbar - Overrides Global Defaults */
+.premium-scrollbar {
+  scrollbar-width: thin !important;
+  scrollbar-color: rgba(255, 255, 255, 0.15) transparent !important;
+}
+
+.premium-scrollbar::-webkit-scrollbar {
+  width: 6px !important;
+  height: 6px !important;
+}
+
+.premium-scrollbar::-webkit-scrollbar-track {
+  background: transparent !important;
+  border-radius: 0 !important;
+  border: none !important;
+}
+
+.premium-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  border-radius: 20px !important;
+  border: none !important; /* Overrides the global 2px solid border */
+  cursor: default !important;
+}
+
+.premium-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.3) !important;
+}

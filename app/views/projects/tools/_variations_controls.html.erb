@@ -1,11 +1,16 @@
-<div class="mt-8">
-   <!-- Variation Count: Stepper -->
-   <div class="mb-4">
-      <div class="flex items-center justify-between mb-2">
-        <span class="text-xs font-bold uppercase text-gray-500 tracking-wider">Variations</span>
-        <span class="text-xs font-bold text-[#00acc1]" data-projects-target="costDisplay"><%= 2 * GOOGLE_IMAGE_COST %> credits</span>
+<div class="mb-6">
+  <details class="group" open>
+    <summary class="flex items-center justify-between cursor-pointer list-none mb-2">
+      <div class="flex flex-1 items-center justify-between mr-2">
+         <span class="text-xs font-bold uppercase text-gray-500 tracking-wider group-hover:text-gray-300 transition-colors">Variations</span>
+         <span class="text-xs font-bold text-[#00acc1]" data-projects-target="costDisplay"><%= 2 * GOOGLE_IMAGE_COST %> credits</span>
       </div>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-gray-500 transition-transform duration-200 group-open:rotate-180">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+      </svg>
+    </summary>
 
+    <div class="space-y-4 pt-2">
       <div class="flex items-center justify-between bg-gray-800 p-1 rounded-lg border border-gray-700">
          <span class="text-sm text-gray-400 ml-2">Quantity</span>
          <div class="flex items-center gap-1">
@@ -25,5 +30,6 @@
          </div>
          <input type="hidden" name="variations" value="2" data-projects-target="variationsInput">
       </div>
-   </div>
+    </div>
+  </details>
 </div>

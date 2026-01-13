@@ -1,5 +1,9 @@
-<%= link_to project_path(design.project, design_id: design.id),
-    id: dom_id(design),
-    class: "px-3 py-1.5 rounded-md text-sm font-medium transition-colors whitespace-nowrap #{design == (local_assigns[:active_design]) ? 'bg-gray-800 text-white shadow-sm' : 'text-gray-400 hover:text-gray-200 hover:bg-gray-800/50'}" do %>
-   <%= design_title_for(design) %>
-<% end %>
+<% is_active = design == (local_assigns[:active_design]) %>
+<div id="<%= dom_id(design) %>" class="px-1 flex-1 min-w-[80px] h-9 rounded-full transition-all relative group <%= is_active ? 'active-design-tab max-w-[160px] bg-gray-800 text-white shadow-sm ring-1 ring-white/10' : 'max-w-[120px] bg-white/5 text-gray-500 hover:bg-white/10 hover:text-gray-200 hover:shadow-sm' %>">
+  <%= link_to project_path(design.project, design_id: design.id), class: "w-full h-full flex items-center justify-center truncate text-xs font-bold text-center" do %>
+     <%= design_title_for(design) %>
+  <% end %>
+  <% if is_active %>
+    <span class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-blue-400 rounded-full shadow-[0_0_8px_rgba(96,165,250,0.8)] pointer-events-none"></span>
+  <% end %>
+</div>

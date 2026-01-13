@@ -1,66 +1,23 @@
- <div class="flex items-center gap-4">
-    <div id="<%= dom_id(project, :title) %>" data-controller="inline-edit" class="flex items-center gap-2 group">
-       <div data-inline-edit-target="view" class="flex items-center gap-2">
-         <div class="font-semibold text-lg text-white"><%= project.title %></div>
-         <button data-action="click->inline-edit#toggle" class="text-gray-500 hover:text-white opacity-0 group-hover:opacity-100 transition-opacity p-1">
-           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-             <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-           </svg>
-         </button>
-       </div>
+<div class="flex items-center gap-4">
+   <div id="<%= dom_id(project, :title) %>" data-controller="inline-edit" class="flex items-center gap-2 group">
+      <div data-inline-edit-target="view" class="flex items-center gap-2">
+        <div class="font-semibold text-lg text-white"><%= project.title %></div>
+        <button data-action="click->inline-edit#toggle" class="text-gray-500 hover:text-white opacity-0 group-hover:opacity-100 transition-opacity p-1">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+          </svg>
+        </button>
+      </div>
 
-       <%= form_with model: project, class: "hidden flex items-center gap-2", data: { inline_edit_target: "form" } do |f| %>
-         <%= f.text_field :title,
-             class: "bg-gray-800 text-white border border-blue-500 rounded px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500",
-             data: { inline_edit_target: "input", action: "keydown->inline-edit#submitOnEnter" } %>
-         <button type="button" data-action="click->inline-edit#toggle" class="text-gray-400 hover:text-white p-1">
-           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-           </svg>
-         </button>
-       <% end %>
-    </div>
-
-    <div id="project_title_context" class="flex items-center gap-3">
-      <% if active_layer = project.current_design&.active_layer %>
-        <% if !active_layer.not_specified? %>
-          <div class="h-6 w-px bg-gray-700 mx-2"></div>
-          <div class="flex items-center gap-3" id="layer_context_indicator">
-            <div class="flex items-center gap-2 px-2 py-1 bg-gray-800 rounded-lg border border-gray-700">
-               <span class="text-[10px] font-bold text-gray-500 uppercase tracking-wider"><%= active_layer.generation_type.titleize %></span>
-               <% if active_layer.style_preset? && active_layer.preset.present? %>
-                 <span class="text-xs font-semibold text-blue-400 cursor-pointer hover:underline"
-                       data-action="click->projects#selectPresetFromTopBar"
-                       data-preset="<%= active_layer.preset %>">
-                   <%= active_layer.preset.titleize %>
-                 </span>
-               <% end %>
-            </div>
-
-            <% if active_layer.style_preset? %>
-              <button class="text-xs font-bold text-white bg-blue-600 hover:bg-blue-500 px-3 py-1 rounded-lg transition-colors shadow-sm"
-                      data-action="projects#reuseStyle"
-                      data-preset="<%= active_layer.preset %>"
-                      data-parent-id="<%= active_layer.parent_id %>">
-                Reuse Style
-              </button>
-            <% elsif active_layer.smart_fix? %>
-              <button class="text-xs font-bold text-white bg-blue-600 hover:bg-blue-500 px-3 py-1 rounded-lg transition-colors shadow-sm"
-                      data-action="projects#reusePrompt"
-                      data-prompt="<%= active_layer.prompt %>"
-                      data-parent-id="<%= active_layer.parent_id %>">
-                Reuse Prompt
-              </button>
-            <% elsif active_layer.autofix? %>
-              <button class="text-xs font-bold text-white bg-purple-600 hover:bg-purple-500 px-3 py-1 rounded-lg transition-colors shadow-sm"
-                      data-action="projects#redoFix"
-                      data-fix-id="<%= active_layer.auto_fix_id %>"
-                      data-parent-id="<%= active_layer.parent_id %>">
-                Redo Fix
-              </button>
-            <% end %>
-          </div>
-        <% end %>
+      <%= form_with model: project, class: "hidden flex items-center gap-2", data: { inline_edit_target: "form" } do |f| %>
+        <%= f.text_field :title,
+            class: "bg-gray-800 text-white border border-blue-500 rounded px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500",
+            data: { inline_edit_target: "input", action: "keydown->inline-edit#submitOnEnter" } %>
+        <button type="button" data-action="click->inline-edit#toggle" class="text-gray-400 hover:text-white p-1">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+          </svg>
+        </button>
       <% end %>
-    </div>
- </div>
+   </div>
+</div>

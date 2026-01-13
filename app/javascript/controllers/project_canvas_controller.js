@@ -37,11 +37,10 @@ export default class extends Controller {
   historyPointer = -1;
   MAX_HISTORY_STATES = 10;
 
+  resizeObserver = null;
+
   connect() {
     console.log('Konva Canvas Controller connected.');
-    console.log('Image URL:', this.imageUrlValue);
-    console.log('Display Width:', this.displayWidthValue);
-    console.log('Display Height:', this.displayHeightValue);
 
     this._boundHandleMouseUp = this._handleMouseUp.bind(this);
     this._boundHandleWheel = this._handleWheel.bind(this);
@@ -52,22 +51,23 @@ export default class extends Controller {
     // Add wheel listener to container (non-passive to prevent default browser zoom)
     this.canvasContainerTarget.addEventListener('wheel', this._boundHandleWheel, { passive: false });
 
-    if (
-      this.hasDisplayWidthValue &&
-      this.hasDisplayHeightValue &&
-      this.displayWidthValue > 0 &&
-      this.displayHeightValue > 0
-    ) {
-      this.initializeKonva();
-    } else {
-      console.warn('Initial displayWidth or displayHeight not valid. Konva stage will not be initialized immediately.');
-    }
+    // Initialize ResizeObserver
+    this.resizeObserver = new ResizeObserver(entries => {
+      for (let entry of entries) {
+        if (entry.target === this.canvasContainerTarget) {
+             // Use requestAnimationFrame to avoid ResizeObserver loop notification error
+             requestAnimationFrame(() => this.resizeStage(entry.contentRect));
+        }
+      }
+    });
+    this.resizeObserver.observe(this.canvasContainerTarget);
+
+    // Initial init
+    this.initializeKonva();
 
     requestAnimationFrame(() => {
       if (this.hasImageUrlValue && this.imageUrlValue && this.stage) {
         this.loadImage(this.imageUrlValue);
-      } else {
-        console.log('Image URL not yet set, or Konva stage not ready after RAF. Skipping initial image load.');
       }
     });
   }
@@ -78,40 +78,68 @@ export default class extends Controller {
     if (this.hasCanvasContainerTarget) {
       this.canvasContainerTarget.removeEventListener('wheel', this._boundHandleWheel);
     }
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+    }
     this.destroyKonva();
   }
 
-  displayWidthValueChanged() {
-    if (
-      this.stage &&
-      (this.stage.width() !== this.displayWidthValue || this.stage.height() !== this.displayHeightValue)
-    ) {
-      console.log('Konva stage dimensions changed, re-initializing.');
-      this.initializeKonva();
+  resizeStage(rect) {
+      const width = rect.width;
+      const height = rect.height;
+      if (!this.stage || width === 0 || height === 0) return;
 
-      if (this.hasImageUrlValue && this.imageUrlValue) {
-        requestAnimationFrame(() => {
-          this.loadImage(this.imageUrlValue);
-        });
+      this.stage.width(width);
+      this.stage.height(height);
+
+      if (this.imageNode) {
+          this.imageNode.width(width);
+          this.imageNode.height(height);
       }
-    }
+
+      // Non-destructive Mask Resize
+      this.resizeMask(width, height);
+
+      this.stage.batchDraw();
   }
 
-  displayHeightValueChanged() {
-    if (
-      this.stage &&
-      (this.stage.width() !== this.displayWidthValue || this.stage.height() !== this.displayHeightValue)
-    ) {
-      console.log('Konva stage dimensions changed, re-initializing.');
-      this.initializeKonva();
+  resizeMask(width, height) {
+      if (!this.maskContext) return;
 
-      if (this.hasImageUrlValue && this.imageUrlValue) {
-        requestAnimationFrame(() => {
-          this.loadImage(this.imageUrlValue);
-        });
+      // 1. Save content
+      // catch error if canvas is 0x0
+      try {
+        const savedData = this.maskContext.getImageData(0,0, this.maskContext.canvas.width, this.maskContext.canvas.height);
+
+        // 2. Resize Canvas
+        this.maskContext.canvas.width = width;
+        this.maskContext.canvas.height = height;
+
+        // 3. Restore Context Props
+        this.maskContext.fillStyle = 'rgba(12, 12, 12, 0)'; // DEFAULT_MASK literal
+        this.maskContext.fillRect(0, 0, width, height);
+
+        // 4. Restore content
+        const tempCanvas = document.createElement('canvas');
+        tempCanvas.width = savedData.width;
+        tempCanvas.height = savedData.height;
+        tempCanvas.getContext('2d').putImageData(savedData, 0, 0);
+
+        this.maskContext.drawImage(tempCanvas, 0, 0, width, height);
+      } catch (e) {
+        console.warn("Resize mask failed", e);
       }
-    }
+
+      this._updateContextConfig();
   }
+
+  _updateContextConfig() {
+      if (!this.maskContext) return;
+      this.maskContext.lineJoin = 'round';
+      this.maskContext.lineCap = 'round';
+  }
+
+  // Removed displayWidth/Height change handlers
 
   brushSizeValueChanged() {
     if (this.crosshairHorizontal && this.crosshairVertical) {
@@ -123,15 +151,16 @@ export default class extends Controller {
   }
 
   initializeKonva() {
-    if (
-      !this.hasDisplayWidthValue ||
-      !this.hasDisplayHeightValue ||
-      this.displayWidthValue <= 0 ||
-      this.displayHeightValue <= 0
-    ) {
-      console.warn('Cannot initialize Konva: displayWidth or displayHeight values are not valid.');
-      return;
-    }
+    const container = this.canvasContainerTarget;
+    const rect = container.getBoundingClientRect();
+    let width = rect.width;
+    let height = rect.height;
+
+    // Fallback logic
+    if (width === 0 && this.hasDisplayWidthValue) width = this.displayWidthValue;
+    if (height === 0 && this.hasDisplayHeightValue) height = this.displayHeightValue;
+    if (width <= 0) width = 800;
+    if (height <= 0) height = 600;
 
     if (this.stage) {
       console.log('Destroying existing Konva stage for re-initialization.');
@@ -147,18 +176,16 @@ export default class extends Controller {
       this.brushHint = null;
     }
 
-    const container = this.canvasContainerTarget;
-    container.style.width = `${this.displayWidthValue}px`;
-    container.style.height = `${this.displayHeightValue}px`;
-    container.style.maxWidth = '100%';
-    container.style.margin = '0 auto';
+    // Ensure container styling for Konva
+    // We do NOT set fixed width/height on container style, letting CSS handle it.
+    container.style.padding = '0';
     container.style.overflow = 'hidden';
     container.innerHTML = '';
 
     this.stage = new Konva.Stage({
       container: container,
-      width: this.displayWidthValue,
-      height: this.displayHeightValue,
+      width: width,
+      height: height,
     });
 
     this.layer = new Konva.Layer();
@@ -168,11 +195,11 @@ export default class extends Controller {
     this.stage.add(this.maskLayer);
 
     const maskCanvas = document.createElement('canvas');
-    maskCanvas.width = this.displayWidthValue;
-    maskCanvas.height = this.displayHeightValue;
+    maskCanvas.width = width;
+    maskCanvas.height = height;
     this.maskContext = maskCanvas.getContext('2d');
     this.maskContext.fillStyle = DEFAULT_MASK;
-    this.maskContext.fillRect(0, 0, this.displayWidthValue, this.displayHeightValue);
+    this.maskContext.fillRect(0, 0, width, height);
 
     this.maskImageNode = new Konva.Image({
       image: maskCanvas,
@@ -821,13 +848,16 @@ export default class extends Controller {
     const x = this.stage.x();
     const y = this.stage.y();
 
+    const isReset = (scale === 1 && x === 0 && y === 0);
+
     this.element.dispatchEvent(
-      new CustomEvent('konva:transform-changed', {
+      new CustomEvent('project-canvas:transform-changed', {
         bubbles: true,
         detail: {
           scale: scale,
           x: x,
-          y: y
+          y: y,
+          isReset: isReset
         },
       })
     );

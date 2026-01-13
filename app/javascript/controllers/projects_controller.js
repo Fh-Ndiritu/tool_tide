@@ -278,11 +278,15 @@ export default class extends Controller {
     }
 
     if (this.hasResetZoomBtnTarget) {
-      if (isReset) {
-        this.resetZoomBtnTarget.classList.add('hidden');
-      } else {
-        this.resetZoomBtnTarget.classList.remove('hidden');
-      }
+      this.resetZoomBtnTargets.forEach(el => {
+        if (isReset) {
+          el.removeAttribute('data-visible');
+          el.classList.add('invisible');
+        } else {
+          el.setAttribute('data-visible', 'true');
+          el.classList.remove('invisible');
+        }
+      });
     }
   }
 
@@ -473,6 +477,43 @@ export default class extends Controller {
     }
   }
 
+  handleDockClick(event) {
+    const tabName = event.currentTarget.dataset.tabName
+    if (!tabName) return
+
+    const layout = this.layoutController
+    const tools = this.toolsController
+
+    if (!layout || !tools) {
+        // Fallback if controllers missing
+        this.switchTab(tabName)
+        return
+    }
+
+    // Check availability via DOM for now as layout state might be on element
+    const rightSidebar = document.querySelector('[data-layout-target="sidebarRight"]')
+    const isExpanded = rightSidebar && rightSidebar.getAttribute("aria-expanded") === "true"
+
+    // Check if Active
+    const tabIndex = tools.tabTargets.findIndex(t => t.innerText.trim() === tabName)
+    const panel = tools.panelTargets[tabIndex]
+    const isActive = panel && !panel.classList.contains("hidden")
+
+    if (isExpanded && isActive) {
+        layout.closeRight()
+    } else {
+        layout.openRight()
+        this.switchTab(tabName)
+    }
+  }
+
+  switchDesign(event) {
+    const url = event.target.value
+    if (url) {
+      window.location.href = url
+    }
+  }
+
   // --- Context Specific Actions ---
 
   selectPresetFromTopBar(event) {
@@ -578,6 +619,14 @@ export default class extends Controller {
     const toolsElement = document.querySelector('[data-controller="tools"]')
     if (toolsElement) {
       return this.application.getControllerForElementAndIdentifier(toolsElement, "tools")
+    }
+    return null
+  }
+
+  get layoutController() {
+    const layoutElement = document.querySelector('[data-controller~="layout"]')
+    if (layoutElement) {
+      return this.application.getControllerForElementAndIdentifier(layoutElement, "layout")
     }
     return null
   }
