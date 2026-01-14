@@ -4,7 +4,7 @@ import { Turbo } from "@hotwired/turbo-rails"
 //Used by Projects
 
 export default class extends Controller {
-  static targets = ["scaleDisplay", "resetZoomBtn", "stylePresetInput", "promptInput", "variationsInput", "aiAssistToggle", "aiAssistLabel", "autoFixResults", "autoFixItem", "autoFixHeader", "autoFixContent", "autoFixChevron", "autoFixDescriptionInput", "layerLink", "generateButton"]
+  static targets = ["scaleDisplay", "resetZoomBtn", "stylePresetInput", "promptInput", "variationsInput", "aiAssistToggle", "aiAssistLabel", "autoFixResults", "autoFixItem", "autoFixHeader", "autoFixContent", "autoFixChevron", "autoFixDescriptionInput", "layerLink", "generateButton", "canvasToolbar"]
   static values = {
     generationUrl: String,
     imageCost: Number,
@@ -23,7 +23,58 @@ export default class extends Controller {
 
     // Initialize UI
     this.validateInputs()
+    this.detectInitialTab()
   }
+
+  detectInitialTab() {
+    // Find active tab by looking for the one with active styling (blue border/text)
+    const activeTab = this.element.querySelector('[data-tools-target="tab"].text-blue-400')
+    if (activeTab) {
+      this.updateToolbarVisibility(activeTab.innerText.trim())
+    }
+  }
+
+  updateToolbarVisibility(tabName) {
+    if (this.hasCanvasToolbarTarget) {
+      if (tabName === "AutoFix") {
+        this.canvasToolbarTarget.classList.add("hidden")
+        // Also hide logic from canvas controller if needed?
+        // Usually CSS hidden is enough to prevent interaction.
+      } else {
+        this.canvasToolbarTarget.classList.remove("hidden")
+      }
+    }
+  }
+
+
+
+  updateBrushHint(event) {
+    const tabName = event.currentTarget.innerText.trim()
+    this.updateToolbarVisibility(tabName)
+
+    const canvasController = this.projectCanvasController
+    if (canvasController) {
+      canvasController.updateBrushHintVisibility(tabName)
+    }
+  }
+
+  // --- Helpers ---
+
+  switchTab(tabName) {
+    const toolsController = this.toolsController
+    if (toolsController) {
+      const tabButton = toolsController.tabTargets.find(t => t.innerText.trim() === tabName)
+      if (tabButton) tabButton.click()
+    }
+
+    this.updateToolbarVisibility(tabName)
+
+    const canvasController = this.projectCanvasController
+    if (canvasController) {
+      canvasController.updateBrushHintVisibility(tabName)
+    }
+  }
+
 
   validateInputs() {
     // Validate Style Preset Panel
@@ -418,6 +469,7 @@ export default class extends Controller {
     formData.append("ai_assist", "true")
     formData.append("auto_fix_id", fixId)
     formData.append("layer_type", "generated")
+    formData.append("generation_type", "autofix")
     formData.append("variations", variationsInput.value)
 
     // Disable button
@@ -436,9 +488,12 @@ export default class extends Controller {
         body: formData
       })
 
-      if (response.ok) {
-        console.log("AutoFix generation started successfully")
-        // Optionally collapse or show success state
+      const contentType = response.headers.get("content-type")
+      if (contentType && contentType.includes("turbo-stream")) {
+           const html = await response.text()
+           await Turbo.renderStreamMessage(html)
+      } else if (response.ok) {
+           console.log("AutoFix generation started successfully")
       } else {
         console.error("AutoFix generation failed", response)
         alert("Generation failed. Please try again.")
@@ -567,28 +622,7 @@ export default class extends Controller {
     }, 300) // Small delay to allow Turbo to render the list if it was empty
   }
 
-  updateBrushHint(event) {
-    const tabName = event.currentTarget.innerText.trim()
-    const canvasController = this.projectCanvasController
-    if (canvasController) {
-      canvasController.updateBrushHintVisibility(tabName)
-    }
-  }
 
-  // --- Helpers ---
-
-  switchTab(tabName) {
-    const toolsController = this.toolsController
-    if (toolsController) {
-      const tabButton = toolsController.tabTargets.find(t => t.innerText.trim() === tabName)
-      if (tabButton) tabButton.click()
-    }
-
-    const canvasController = this.projectCanvasController
-    if (canvasController) {
-      canvasController.updateBrushHintVisibility(tabName)
-    }
-  }
 
   get toolsController() {
     const toolsElement = document.querySelector('[data-controller="tools"]')
