@@ -6,7 +6,12 @@ export default class extends Controller {
 
   connect() {
     this.handleResize = this.handleResize.bind(this)
-    window.addEventListener("resize", this.handleResize)
+    // Debounce resize to prevent thrashing
+    this.resizeTimeout = null
+    window.addEventListener("resize", () => {
+      clearTimeout(this.resizeTimeout)
+      this.resizeTimeout = setTimeout(this.handleResize, 100)
+    })
     this.handleResize() // Initial check
   }
 
@@ -32,9 +37,6 @@ export default class extends Controller {
 
     // Reset classes
     this.element.dataset.layoutMode = mode
-
-    // Broadcast event for other controllers (like canvas) to react if needed
-    this.dispatch("modeChanged", { detail: { mode } })
 
     this.updateSidebarState()
   }
@@ -71,6 +73,12 @@ export default class extends Controller {
   setSidebarState(sidebar, expanded) {
       sidebar.setAttribute("aria-expanded", expanded)
       sidebar.dataset.state = expanded ? "expanded" : "collapsed"
+
+      // Dispatch event to notify canvas to check its size after transition
+      // The CSS transition is 300ms, so we check a bit after
+      setTimeout(() => {
+        window.dispatchEvent(new Event('resize'));
+      }, 350)
   }
 
   updateSidebarState() {

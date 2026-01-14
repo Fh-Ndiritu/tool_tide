@@ -69,7 +69,7 @@
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: var(--color-primary);
+  background-color: var(--color-accent);
 }
 
 * {
@@ -422,8 +422,8 @@ html {
   left: 0;
   height: 100%;
   width: var(--fill-percentage);
-  background: linear-gradient(90deg, #00acc1, #f23faf);
-  box-shadow: 0 0 10px rgba(242, 63, 175, 0.5);
+  background: var(--color-accent); /* Cyan */
+  box-shadow: 0 0 10px rgba(0, 172, 193, 0.5); /* Cyan glow */
   pointer-events: none;
 }
 
@@ -434,7 +434,7 @@ html {
   background: #ffffff;
   border-radius: 50%;
   z-index: 3;
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5), 0 0 0 4px rgba(242, 63, 175, 0.2);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5), 0 0 0 4px rgba(0, 172, 193, 0.2); /* Cyan ring */
   pointer-events: none;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   width: var(--thumb-size);
@@ -474,15 +474,15 @@ input[type='checkbox'] {
 
 @keyframes ring-pulse {
   0% {
-    box-shadow: 0 0 0 0 rgba(242, 63, 175, 0.8);
+    box-shadow: 0 0 0 0 rgba(0, 172, 193, 0.8);
     transform: scale(1);
   }
   50% {
-    box-shadow: 0 0 0 25px rgba(242, 63, 175, 0);
+    box-shadow: 0 0 0 25px rgba(0, 172, 193, 0);
     transform: scale(1.02);
   }
   100% {
-    box-shadow: 0 0 0 0 rgba(242, 63, 175, 0);
+    box-shadow: 0 0 0 0 rgba(0, 172, 193, 0);
     transform: scale(1);
   }
 }
@@ -592,8 +592,8 @@ input[type='checkbox'] {
 }
 
 .selectable-card.selected {
-  border-color: #3b82f6;
-  background-color: #eff6ff;
+  border-color: var(--color-accent);
+  background-color: rgba(0, 172, 193, 0.1); /* Cyan tint */
 }
 
 /* Recaptcha Responsive Scaling */

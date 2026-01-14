@@ -92,46 +92,32 @@ export default class extends Controller {
       this.stage.width(width);
       this.stage.height(height);
 
-      if (this.imageNode) {
-          this.imageNode.width(width);
-          this.imageNode.height(height);
-      }
-
-      // Non-destructive Mask Resize
-      this.resizeMask(width, height);
-
+      this.fitContentToView();
       this.stage.batchDraw();
   }
 
-  resizeMask(width, height) {
-      if (!this.maskContext) return;
+  fitContentToView() {
+      if (!this.worldWidth || !this.worldHeight) return;
 
-      // 1. Save content
-      // catch error if canvas is 0x0
-      try {
-        const savedData = this.maskContext.getImageData(0,0, this.maskContext.canvas.width, this.maskContext.canvas.height);
+      const stageWidth = this.stage.width();
+      const stageHeight = this.stage.height();
 
-        // 2. Resize Canvas
-        this.maskContext.canvas.width = width;
-        this.maskContext.canvas.height = height;
+      const scaleX = stageWidth / this.worldWidth;
+      const scaleY = stageHeight / this.worldHeight;
+      const scale = Math.min(scaleX, scaleY); // 100% fit (contain)
 
-        // 3. Restore Context Props
-        this.maskContext.fillStyle = 'rgba(12, 12, 12, 0)'; // DEFAULT_MASK literal
-        this.maskContext.fillRect(0, 0, width, height);
+      this.stage.scale({ x: scale, y: scale });
 
-        // 4. Restore content
-        const tempCanvas = document.createElement('canvas');
-        tempCanvas.width = savedData.width;
-        tempCanvas.height = savedData.height;
-        tempCanvas.getContext('2d').putImageData(savedData, 0, 0);
+      const newWidth = this.worldWidth * scale;
+      const newHeight = this.worldHeight * scale;
 
-        this.maskContext.drawImage(tempCanvas, 0, 0, width, height);
-      } catch (e) {
-        console.warn("Resize mask failed", e);
-      }
-
-      this._updateContextConfig();
+      this.stage.position({
+          x: (stageWidth - newWidth) / 2,
+          y: (stageHeight - newHeight) / 2
+      });
   }
+
+  // Removed resizeMask as it is no longer needed (mask size is fixed to world size)
 
   _updateContextConfig() {
       if (!this.maskContext) return;
@@ -162,6 +148,11 @@ export default class extends Controller {
     if (width <= 0) width = 800;
     if (height <= 0) height = 600;
 
+    // Use default values for World Dimensions until image loads
+    // This prevents 0x0 issues
+    this.worldWidth = this.hasDisplayWidthValue ? this.displayWidthValue : 800;
+    this.worldHeight = this.hasDisplayHeightValue ? this.displayHeightValue : 600;
+
     if (this.stage) {
       console.log('Destroying existing Konva stage for re-initialization.');
       this.stage.destroy();
@@ -182,6 +173,7 @@ export default class extends Controller {
     container.style.overflow = 'hidden';
     container.innerHTML = '';
 
+    // Stage is Viewport Size
     this.stage = new Konva.Stage({
       container: container,
       width: width,
@@ -195,19 +187,24 @@ export default class extends Controller {
     this.stage.add(this.maskLayer);
 
     const maskCanvas = document.createElement('canvas');
-    maskCanvas.width = width;
-    maskCanvas.height = height;
+    maskCanvas.width = this.worldWidth;
+    maskCanvas.height = this.worldHeight;
     this.maskContext = maskCanvas.getContext('2d');
     this.maskContext.fillStyle = DEFAULT_MASK;
-    this.maskContext.fillRect(0, 0, width, height);
+    this.maskContext.fillRect(0, 0, this.worldWidth, this.worldHeight);
 
     this.maskImageNode = new Konva.Image({
       image: maskCanvas,
       x: 0,
       y: 0,
+      width: this.worldWidth,
+      height: this.worldHeight,
       opacity: 0.7, // Set mask opacity to 0.7
     });
     this.maskLayer.add(this.maskImageNode);
+
+    // Fit initial default content
+    this.fitContentToView();
 
     this.crosshairGroup = new Konva.Group({
       listening: false,
@@ -248,7 +245,7 @@ export default class extends Controller {
       fontVariant: 'bold',
       fontFamily: 'system-ui, -apple-system, sans-serif',
       fill: 'white',
-      opacity: 0.4, // Increased opacity as requested
+      opacity: 0.5, // Increased opacity as requested
       listening: false,
       visible: false
     });
@@ -278,6 +275,16 @@ export default class extends Controller {
       const img = new Image();
       img.crossOrigin = 'Anonymous';
       img.onload = () => {
+        this.worldWidth = img.naturalWidth;
+        this.worldHeight = img.naturalHeight;
+
+        // Resize Mask Canvas to match new World Dimensions
+        this.maskContext.canvas.width = this.worldWidth;
+        this.maskContext.canvas.height = this.worldHeight;
+        this.maskContext.fillStyle = DEFAULT_MASK;
+        this.maskContext.fillRect(0, 0, this.worldWidth, this.worldHeight);
+        this._updateContextConfig(); // Restore context settings
+
         if (this.imageNode) {
           this.imageNode.destroy();
         }
@@ -285,16 +292,23 @@ export default class extends Controller {
           image: img,
           x: 0,
           y: 0,
-          width: this.stage.width(),
-          height: this.stage.height(),
+          width: this.worldWidth,
+          height: this.worldHeight,
           draggable: false,
         });
 
+        // Update Mask Image Node Size
+        if (this.maskImageNode) {
+            this.maskImageNode.width(this.worldWidth);
+            this.maskImageNode.height(this.worldHeight);
+        }
+
         this.layer.add(this.imageNode);
+        this.fitContentToView(); // Auto-fit new image
         this.layer.batchDraw();
         this.resetMaskHistory();
         this.saveMaskState(true);
-        console.log('Image loaded onto Konva canvas.');
+        console.log(`Image loaded ${this.worldWidth}x${this.worldHeight}. Fitted to view.`);
         resolve();
       };
       img.onerror = (e) => {

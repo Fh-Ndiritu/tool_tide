@@ -1,17 +1,16 @@
 <% content_for :hide_navbar, true %>
-<div class="grid grid-cols-[auto_1fr_auto] h-screen bg-gray-900 text-white overflow-hidden relative group/layout"
+<div class="fixed inset-0 w-screen h-screen bg-gray-900 text-white overflow-hidden grid grid-cols-[auto_1fr_auto] group/layout"
      data-controller="layout projects"
      data-projects-generation-url-value="<%= @active_design ? project_design_project_layers_path(@project, @active_design) : '' %>"
      data-projects-image-cost-value="<%= GOOGLE_IMAGE_COST %>"
-     data-layout-target="mainWrapper">
 
   <!-- Left Side: Sidebar + Dock Wrapper -->
-  <div class="relative z-30 transition-[width] duration-300 ease-in-out w-[280px] data-[state=collapsed]:w-[60px]"
+  <div class="relative z-30 transition-[width] duration-300 ease-in-out w-[280px] data-[state=collapsed]:w-[60px] group/leftSidebar"
        data-layout-target="sidebarLeft"
        data-state="expanded"
        aria-expanded="true">
     <!-- Expanded Content -->
-    <div class="w-[280px] bg-gray-900/90 backdrop-blur-xl border-r border-white/10 flex flex-col h-full transition-all duration-300 origin-left overflow-hidden data-[state=collapsed]:w-0 data-[state=collapsed]:opacity-0"
+    <div class="w-[280px] bg-gray-900/90 backdrop-blur-xl border-r border-white/10 flex flex-col h-full transition-all duration-300 origin-left overflow-hidden group-data-[state=collapsed]/leftSidebar:w-0 group-data-[state=collapsed]/leftSidebar:opacity-0"
          data-layout-target="leftContent">
 
       <!-- Sidebar Top: Back & Credits -->
@@ -25,9 +24,9 @@
              <% end %>
 
              <!-- Collapse Button -->
-             <button class="p-1 text-gray-400 hover:text-white transition-colors" data-action="layout#toggleLeft">
+             <button class="p-1 text-gray-400 hover:text-white transition-colors" data-action="layout#toggleLeft" title="Toggle Sidebar">
                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3 3 3m5.25-12h-2.25" />
                </svg>
              </button>
          </div>
@@ -51,7 +50,7 @@
       <% end %>
 
       <div class="px-4 py-3 border-b border-white/10 font-semibold text-sm text-gray-200">Layers</div>
-      <div id="layers_list" class="flex-1 overflow-y-scroll p-4 space-y-2 premium-scrollbar">
+      <div id="layers_list" class="flex-1 overflow-y-auto min-h-0 p-4 space-y-2 premium-scrollbar">
         <% if @active_design %>
           <%= turbo_stream_from @active_design, :layers %>
           <%= render partial: "project_layers/project_layer", collection: @active_design.project_layers.roots, as: :project_layer %>
@@ -68,14 +67,14 @@
     </div>
 
     <!-- Icon Dock (Visible when collapsed) -->
-    <div class="w-[60px] bg-gray-900 border-r border-white/10 flex flex-col items-center py-4 absolute inset-y-0 left-0 transition-opacity duration-300 pointer-events-none opacity-0 data-[visible=true]:opacity-100 data-[visible=true]:pointer-events-auto"
+    <div class="w-[60px] bg-gray-900 border-r border-white/10 flex flex-col items-center py-4 absolute inset-y-0 left-0 transition-opacity duration-300 pointer-events-none opacity-0 group-data-[state=collapsed]/leftSidebar:opacity-100 group-data-[state=collapsed]/leftSidebar:pointer-events-auto"
          data-layout-target="leftDock">
          <button class="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-all mb-4 relative group"
                  data-action="layout#toggleLeft"
                  title="Layers">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6 6.878V6a2.25 2.25 0 0 1 2.25-2.25h7.5A2.25 2.25 0 0 1 18 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.75.128m-12 0A2.25 2.25 0 0 0 4.5 9v.878m13.5-3A2.25 2.25 0 0 1 19.5 9v.878m-15 0a2.25 2.25 0 0 0-1.5 2.122v5.25a2.25 2.25 0 0 0 2.25 2.25h13.5a2.25 2.25 0 0 0 2.25-2.25v-5.25a2.25 2.25 0 0 0-1.5-2.122M12 12h.008v.008H12V12Zm0 3h.008v.008H12V15Z" />
-            </svg>
+             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+               <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+             </svg>
             <!-- Pulse indicator if generating -->
             <span class="absolute top-1 right-1 w-2 h-2 bg-green-500 rounded-full animate-pulse border border-gray-900 hidden"></span>
          </button>
@@ -83,12 +82,13 @@
   </div>
 
   <!-- Center: Canvas Workspace -->
-  <div class="flex flex-col relative bg-gray-900 transition-all duration-300 min-w-0 overflow-hidden"
+  <div class="flex flex-col relative bg-gray-900 transition-all duration-300 min-w-0 overflow-hidden h-full"
        data-layout-target="canvasWrapper">
-    <!-- Top Bar: Unified Header -->
-    <div class="h-16 bg-gray-900/80 backdrop-blur-xl border-b border-white/5 flex items-center justify-between px-4 gap-4 relative z-20">
+
+    <!-- Row 1: Header -->
+    <div class="h-16 flex-none bg-gray-900/80 backdrop-blur-xl border-b border-white/5 flex items-center justify-between px-4 gap-4 relative z-20">
       <!-- Left: Title & Context -->
-      <div class="flex-shrink-0 min-w-[200px]">
+      <div class="flex-shrink-0 min-w-0">
         <%= render "projects/project_title", project: @project %>
       </div>
 
@@ -152,7 +152,7 @@
       </div>
 
       <!-- Right: Primary Actions -->
-      <div class="flex items-center gap-3 flex-shrink-0 min-w-[200px] justify-end">
+      <div class="flex items-center gap-3 flex-shrink-0 min-w-0 justify-end">
         <!-- New Design Upload -->
         <%= form_with url: project_designs_path(@project), method: :post, local: true, class: "flex items-center" do |f| %>
           <label class="flex items-center gap-2 px-3 py-1.5 bg-white text-gray-900 hover:bg-gray-100 text-xs font-bold uppercase tracking-wide rounded-full transition-all shadow-lg shadow-white/5 cursor-pointer border border-white/50 group">
@@ -166,15 +166,19 @@
       </div>
     </div>
 
-    <!-- Canvas Area -->
-    <div class="flex-1 w-full h-full min-w-0 min-h-0 overflow-hidden relative bg-gray-950">
-       <!-- Canvas Logic/Controller will be attached here -->
-       <div class="absolute inset-0 p-12 flex items-center justify-center">
+    <!-- Row 2: Fixed Canvas Workspace -->
+    <div class="w-full h-[calc(100vh-8rem)] relative bg-gray-950 overflow-hidden">
+       <!-- Absolute Centering Container -->
+       <div class="absolute inset-0 flex items-center justify-center p-4 sm:p-6 overflow-hidden">
+          <!-- Fixed Dimensions Container (Responsive) -->
+          <div class="relative w-full h-full max-w-full max-h-full border border-white/5 bg-gray-900 shadow-2xl rounded-lg overflow-hidden"
+               id="canvas-fixed-wrapper">
+
          <%= turbo_frame_tag "canvas_frame", class: "w-full h-full block" do %>
-           <div class="relative w-full h-full flex items-center justify-center <%= @is_new_design_session ? 'bg-gray-900 shadow-xl' : 'bg-gray-800 shadow-2xl' %> rounded-lg overflow-hidden border border-white/5" id="canvas-container">
+           <div class="relative w-full h-full flex items-center justify-center" id="canvas-container">
            <% if @is_new_design_session %>
               <!-- New Design Minimal Upload State -->
-              <div class="max-w-md w-full p-8 text-center space-y-6 bg-gray-800 border border-gray-700 rounded-3xl shadow-2xl shadow-black/50">
+              <div class="max-w-md w-full p-8 text-center space-y-6 bg-gray-800 border border-gray-700 rounded-3xl shadow-2xl shadow-black/50 mx-auto">
                 <div class="space-y-3">
                   <div class="w-12 h-12 bg-blue-600/10 rounded-full flex items-center justify-center mx-auto border border-blue-500/20">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-blue-400">
@@ -201,8 +205,8 @@
                   data-project-canvas-target="canvasContainer"
                   data-project-canvas-layer-id-value="<%= @active_design.active_layer.id %>"
                   data-project-canvas-image-url-value="<%= url_for(@active_design.active_layer.display_image) %>"
-                  data-project-canvas-display-width-value="800"
-                  data-project-canvas-display-height-value="600"
+                  data-project-canvas-display-width-value="<%= @active_design.active_layer.display_image.metadata['width'] || 800 %>"
+                  data-project-canvas-display-height-value="<%= @active_design.active_layer.display_image.metadata['height'] || 600 %>"
                   data-project-canvas-brush-size-value="60"
                   class="bg-transparent w-full h-full">
              </div>
@@ -212,9 +216,12 @@
          </div>
        <% end %>
        </div>
+       </div> <!-- End Absolute Centering -->
+    </div>
 
-       <!-- Floating Canvas Toolbar (Bottom Center) -->
-       <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 p-1.5 bg-gray-900/90 backdrop-blur-xl border border-white/10 rounded-full shadow-2xl shadow-black/50 transition-all duration-300 hover:bg-gray-800/90">
+    <!-- Row 3: Footer Controls (Repositioned) -->
+    <div class="h-16 flex-none bg-gray-900 border-t border-white/5 flex items-center justify-center relative z-20">
+       <div class="flex items-center gap-2 p-1.5 rounded-full">
           <!-- Zoom Controls -->
           <div class="flex items-center gap-1 pr-2 border-r border-white/10">
              <!-- Reset Button -->
@@ -277,14 +284,15 @@
     </div>
   </div>
 
-  <!-- Right Side: Sidebar + Dock Wrapper -->
-  <div class="relative z-30 transition-[width] duration-300 ease-in-out w-[350px] data-[state=collapsed]:w-[60px]"
+  <!-- Right Side: Tool Sidebar + Dock -->
+  <div class="relative z-30 transition-[width] duration-300 ease-in-out w-[350px] data-[state=collapsed]:w-[60px] group/rightSidebar"
        data-layout-target="sidebarRight"
        data-state="expanded"
        aria-expanded="true">
 
      <!-- Icon Dock (Visible when collapsed) -->
-     <div class="w-[60px] bg-gray-900 border-l border-white/10 flex flex-col items-center py-4 absolute inset-y-0 right-0 transition-opacity duration-300 pointer-events-none opacity-0 data-[visible=true]:opacity-100 data-[visible=true]:pointer-events-auto"
+     <!-- Icon Dock (Visible when collapsed) -->
+     <div class="w-[60px] bg-gray-900 border-l border-white/10 flex flex-col items-center py-4 absolute inset-y-0 right-0 transition-opacity duration-300 pointer-events-none opacity-0 group-data-[state=collapsed]/rightSidebar:opacity-100 group-data-[state=collapsed]/rightSidebar:pointer-events-auto"
           data-layout-target="rightDock">
 
           <button class="p-2.5 rounded-xl hover:bg-white/10 text-gray-400 hover:text-white transition-all mb-2"
@@ -316,7 +324,7 @@
      </div>
 
     <!-- Expanded Content -->
-    <div class="w-[350px] bg-gray-900/90 backdrop-blur-xl border-l border-white/10 flex flex-col h-full transition-all duration-300 origin-right overflow-hidden data-[state=collapsed]:w-0 data-[state=collapsed]:opacity-0"
+    <div class="w-[350px] bg-gray-900/90 backdrop-blur-xl border-l border-white/10 flex flex-col h-full transition-all duration-300 origin-right overflow-hidden group-data-[state=collapsed]/rightSidebar:w-0 group-data-[state=collapsed]/rightSidebar:opacity-0"
          data-layout-target="rightContent"
          data-controller="tools"
          data-tools-active-class="text-blue-400 border-blue-400"
@@ -324,9 +332,9 @@
 
         <div class="flex items-center justify-between p-2 border-b border-white/10">
            <!-- Collapse Button -->
-           <button class="p-1 text-gray-400 hover:text-white transition-colors" data-action="layout#toggleRight">
+           <button class="p-1 text-gray-400 hover:text-white transition-colors" data-action="layout#toggleRight" title="Toggle Tools">
                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                 <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                 <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m3-3 3 3-3 3m-5.25-12h2.25" />
                </svg>
            </button>
            <span class="text-xs font-bold uppercase tracking-wider text-gray-500">Tools</span>
@@ -354,14 +362,22 @@
 
        <!-- Content Area -->
        <!-- Content Area -->
-       <div class="flex-1 overflow-y-auto relative p-4 space-y-4 premium-scrollbar">
+       <!-- Content Area -->
+       <div class="flex-1 overflow-hidden relative flex flex-col">
            <!-- Tab 1: Style Presets -->
-           <div data-tools-target="panel" class="space-y-6">
-              <!-- Landscape Preset Selection -->
-              <div>
-                 <label class="block text-sm font-medium text-gray-400 mb-2">Choose a Landscape Preset (<%= LANDSCAPE_PRESETS.count %>)</label>
-                 <div class="relative border border-white/10 rounded-lg bg-gray-900/30">
-                    <div class="grid grid-cols-2 gap-2 max-h-60 overflow-y-auto p-2 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent">
+            <div data-tools-target="panel" class="flex flex-col h-full relative" data-controller="preset-expansion">
+              <div class="flex-1 overflow-y-auto min-h-0 p-4 pb-24 space-y-6 premium-scrollbar">
+               <!-- Landscape Preset Selection -->
+               <div>
+                  <div class="flex items-center justify-between mb-2">
+                     <label class="text-sm font-medium text-gray-400">Choose a Landscape Preset (<%= LANDSCAPE_PRESETS.count %>)</label>
+                     <button class="text-xs font-bold text-blue-400 hover:text-blue-300 transition-colors"
+                             data-action="preset-expansion#toggle"
+                             data-preset-expansion-target="toggleText">Show All</button>
+                  </div>
+                  <div class="relative border border-white/10 rounded-lg bg-gray-900/30">
+                     <div class="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto p-2 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent transition-all duration-300"
+                          data-preset-expansion-target="list">
                        <% LANDSCAPE_PRESETS.each do |preset, description| %>
                          <label class="cursor-pointer relative group">
                            <input type="radio" name="style_preset" value="<%= preset %>" class="peer sr-only" data-projects-target="stylePresetInput">
@@ -381,32 +397,49 @@
                  </div>
               </div>
 
-              <!-- Tools Section for Style Presets -->
-              <div class="border-t border-white/10 pt-4">
-                 <button class="w-full flex items-center justify-between py-2 group" data-action="click->projects#toggleTools">
-                    <span class="text-xs font-bold uppercase text-gray-500 tracking-wider group-hover:text-gray-300 transition-colors">Tools</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                         class="w-4 h-4 text-gray-500 transition-transform duration-200"
-                         data-projects-target="toolsToggleIcon">
-                       <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                    </svg>
-                 </button>
-                 <div data-projects-target="toolsPanel" class="space-y-6 mt-2">
+               <!-- Tools Section for Style Presets -->
+               <div class="border-t border-white/10 pt-4" data-preset-expansion-target="tools">
+                 <div data-controller="collapsible" data-collapsible-hidden-class="hidden">
+                    <button class="w-full flex items-center justify-between py-2 group" data-action="collapsible#toggle click->preset-expansion#collapsePresets">
+                       <span class="text-xs font-bold uppercase text-gray-500 tracking-wider group-hover:text-gray-300 transition-colors">Tools</span>
+                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                            class="w-4 h-4 text-gray-500 transition-transform duration-200"
+                            data-collapsible-target="icon">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                       </svg>
+                    </button>
+                    <div data-collapsible-target="panel" class="space-y-6 mt-2 max-h-96 overflow-y-auto premium-scrollbar pr-2">
                     <%= render "projects/tools/brush_controls" %>
                     <%= render "projects/tools/variations_controls" %>
                  </div>
-
-                 <div class="mt-6">
-                    <button class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-lg shadow-lg shadow-blue-900/50 transition-all"
-                            data-action="click->projects#generate">
-                       Generate Now
-                    </button>
                  </div>
               </div>
-           </div>
+              </div>
+
+               <!-- Fixed Footer -->
+               <div class="absolute bottom-0 left-0 right-0 p-4 bg-gray-900 border-t border-white/10 z-20">
+                  <button class="w-full bg-[#00acc1] hover:bg-[#00838f] text-white font-bold py-3 rounded-lg shadow-lg shadow-cyan-900/20 transition-all border border-white/10"
+                          data-action="click->projects#generate">
+                     Generate Now
+                  </button>
+               </div>
+            </div>
 
            <!-- Tab 2: SmartFix -->
-           <div data-tools-target="panel" class="space-y-6 hidden">
+           <div data-tools-target="panel" class="flex flex-col h-full relative hidden" data-controller="smart-fix-layout">
+              <div class="flex-1 overflow-y-auto min-h-0 p-4 pb-24 space-y-6 premium-scrollbar">
+                 <div data-smart-fix-layout-target="inputs" data-controller="collapsible" data-collapsible-hidden-class="hidden">
+                    <div class="border-b border-white/10 pb-2 mb-4">
+                       <button class="w-full flex items-center justify-between py-2 group" data-action="collapsible#toggle click->smart-fix-layout#onInputsClicked">
+                          <span class="text-xs font-bold uppercase text-gray-500 tracking-wider group-hover:text-gray-300 transition-colors">Request Details</span>
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                               class="w-4 h-4 text-gray-500 transition-transform duration-200"
+                               data-collapsible-target="icon">
+                             <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                          </svg>
+                       </button>
+                    </div>
+                    <div data-collapsible-target="panel" class="space-y-6">
               <!-- AI Assist Description -->
               <p class="text-xs text-gray-400 leading-snug">
                 AI Assist converts your text into actionable edits based on the current Layer.
@@ -432,31 +465,38 @@
                           data-projects-target="promptInput"></textarea>
               </div>
 
-              <!-- Tools Section for SmartFix -->
-              <div class="border-t border-white/10 pt-4">
-                 <button class="w-full flex items-center justify-between py-2 group" data-action="click->projects#toggleTools">
-                    <span class="text-xs font-bold uppercase text-gray-500 tracking-wider group-hover:text-gray-300 transition-colors">Tools</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                         class="w-4 h-4 text-gray-500 transition-transform duration-200">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                    </svg>
-                 </button>
-                 <div class="space-y-6 mt-2">
+                    </div>
+                 </div>
+               <!-- Tools Section for SmartFix -->
+               <div class="border-t border-white/10 pt-4" data-smart-fix-layout-target="tools">
+                 <div data-controller="collapsible" data-collapsible-hidden-class="hidden">
+                    <button class="w-full flex items-center justify-between py-2 group" data-action="collapsible#toggle click->smart-fix-layout#onToolsClicked">
+                       <span class="text-xs font-bold uppercase text-gray-500 tracking-wider group-hover:text-gray-300 transition-colors">Tools</span>
+                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                            class="w-4 h-4 text-gray-500 transition-transform duration-200"
+                            data-collapsible-target="icon">
+                         <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                       </svg>
+                    </button>
+                    <div data-collapsible-target="panel" class="space-y-6 mt-2 max-h-96 overflow-y-auto premium-scrollbar pr-2">
                     <%= render "projects/tools/brush_controls" %>
                     <%= render "projects/tools/variations_controls" %>
                  </div>
-
-                 <div class="mt-6">
-                    <button class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-lg shadow-lg shadow-blue-900/50 transition-all"
-                            data-action="click->projects#generate">
-                       Generate Now
-                    </button>
                  </div>
               </div>
-           </div>
+              </div>
+
+               <!-- Fixed Footer -->
+               <div class="absolute bottom-0 left-0 right-0 p-4 bg-gray-900 border-t border-white/10 z-20">
+                  <button class="w-full bg-[#00acc1] hover:bg-[#00838f] text-white font-bold py-3 rounded-lg shadow-lg shadow-cyan-900/20 transition-all border border-white/10"
+                          data-action="click->projects#generate">
+                     Generate Now
+                  </button>
+               </div>
+            </div>
 
           <!-- Tab 3: AutoFix -->
-          <div data-tools-target="panel" class="space-y-4 hidden">
+          <div data-tools-target="panel" class="flex flex-col h-full relative hidden"  ><div class="flex-1 overflow-y-auto min-h-0 p-4 space-y-4 premium-scrollbar">
              <!-- Description -->
              <p class="text-xs text-gray-400 leading-snug">
                AutoFix detects changes you can make to your yard and generates a variety of prompts you can choose from.
@@ -477,7 +517,7 @@
                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 group-hover:scale-110 transition-transform">
                          <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z" />
                        </svg>
-                       Generate Fixes
+                       Recommend Fixes
                      <% end %>
                    </div>
                  <% end %>
@@ -487,6 +527,7 @@
                  Select a layer to detect fixes.
                </div>
              <% end %>
+          </div>
           </div>
        </div>
     </div>

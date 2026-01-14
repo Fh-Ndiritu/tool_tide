@@ -1,34 +1,16 @@
-// app/javascript/controllers/collapsible_controller.js
-import { Controller } from '@hotwired/stimulus';
+import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ['content', 'text', 'icon'];
+  static targets = ["panel", "icon"]
+  static classes = ["hidden", "rotate"]
 
-  connect() {
-    this.isExpanded = false;
-    this.updateToggleState();
-  }
+  toggle(event) {
+    if (event) event.preventDefault()
 
-  toggle() {
-    this.isExpanded = !this.isExpanded;
-    this.updateToggleState();
-  }
+    this.panelTarget.classList.toggle(this.hiddenClass)
 
-  updateToggleState() {
-    const content = this.contentTarget;
-    const icon = this.iconTarget;
-    const text = this.textTarget;
-
-    if (this.isExpanded) {
-      // EXPAND
-      content.style.maxHeight = content.scrollHeight + 'px';
-      icon.classList.add('rotate-180');
-      text.textContent = 'Hide Editing Guide';
-    } else {
-      // COLLAPSE
-      content.style.maxHeight = '0';
-      icon.classList.remove('rotate-180');
-      text.textContent = 'View Editing Guide';
+    if (this.hasIconTarget) {
+      this.iconTarget.classList.toggle("rotate-180")
     }
   }
 }

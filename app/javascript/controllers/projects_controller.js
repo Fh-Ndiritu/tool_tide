@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["brushSizeControl", "brushSizeDisplay", "brushRange", "fill", "track", "thumb", "scaleDisplay", "resetZoomBtn", "stylePresetInput", "promptInput", "variationsCount", "variationsInput", "costDisplay", "aiAssistToggle", "aiAssistLabel", "toolsPanel", "toolsToggleIcon", "autoFixResults", "autoFixItem", "autoFixHeader", "autoFixContent", "autoFixChevron", "autoFixDescriptionInput", "layerLink"]
+  static targets = ["scaleDisplay", "resetZoomBtn", "stylePresetInput", "promptInput", "variationsCount", "variationsInput", "costDisplay", "aiAssistToggle", "aiAssistLabel", "autoFixResults", "autoFixItem", "autoFixHeader", "autoFixContent", "autoFixChevron", "autoFixDescriptionInput", "layerLink"]
   static values = {
     generationUrl: String,
     imageCost: Number,
@@ -19,7 +19,6 @@ export default class extends Controller {
     this.element.addEventListener('project-canvas:transform-changed', this.updateScaleDisplay.bind(this))
 
     // Initialize UI
-    this.initializeBrushSize()
     this.updateCost()
   }
 
@@ -76,21 +75,9 @@ export default class extends Controller {
     }
   }
 
-  toggleTools() {
-    if (this.hasToolsPanelTarget) {
-      this.toolsPanelTarget.classList.toggle("hidden")
-    }
-    if (this.hasToolsToggleIconTarget) {
-      this.toolsToggleIconTarget.classList.toggle("rotate-180")
-    }
-  }
 
-  initializeBrushSize() {
-      if (this.hasBrushRangeTarget) {
-          const initialSize = parseInt(this.brushRangeTarget.value, 10) || 60
-          this.setBrushSize(initialSize)
-      }
-  }
+
+
 
   setActiveLayer(event) {
     // Remove active state from all layers
@@ -132,6 +119,9 @@ export default class extends Controller {
       this.switchTab("SmartFix")
     } else if (generationType === "autofix") {
       this.switchTab("AutoFix")
+    } else {
+      // Default / Original Layer -> Style Presets
+      this.switchTab("Style Presets")
     }
   }
 
@@ -173,57 +163,15 @@ export default class extends Controller {
     const parent = button.parentElement
     if (parent) {
       parent.querySelectorAll('button').forEach(btn => {
-         btn.classList.remove('bg-gray-600', 'text-white', 'border-blue-500', 'border')
-         btn.classList.add('text-gray-400', 'hover:bg-gray-600')
+         btn.classList.remove('bg-white', 'text-gray-900', 'shadow-lg', 'ring-1', 'ring-gray-200')
+         btn.classList.add('bg-white/5', 'text-gray-400', 'hover:bg-white/10', 'hover:text-white')
       })
-      button.classList.remove('text-gray-400', 'hover:bg-gray-600')
-      button.classList.add('bg-gray-600', 'text-white', 'border', 'border-blue-500')
+      button.classList.remove('bg-white/5', 'text-gray-400', 'hover:bg-white/10', 'hover:text-white')
+      button.classList.add('bg-white', 'text-gray-900', 'shadow-lg', 'ring-1', 'ring-gray-200')
     }
   }
 
-  updateBrushSize(event) {
-    const size = parseInt(event.target.value, 10);
-    this.setBrushSize(size);
 
-    const controller = this.projectCanvasController
-    if (controller) {
-       controller.brushSizeValue = size
-       // Force update if needed, though value change usually triggers it
-       controller.brushSizeValueChanged()
-    }
-  }
-
-  setBrushSize(size) {
-    // Update Custom Slider UI (reused logic from mask_request_controller)
-    if (!this.hasBrushRangeTarget) return;
-
-    const min = parseInt(this.brushRangeTarget.min, 10);
-    const max = parseInt(this.brushRangeTarget.max, 10);
-    const fillPercentage = (size - min) / (max - min);
-
-    const fillWidth = `${fillPercentage * 100}%`;
-    const trackLeft = `${fillPercentage * 100}%`;
-    const trackWidth = `${(1 - fillPercentage) * 100}%`;
-
-    // Thumb positioning logic
-    const baseThumbSize = 20;
-    const maxThumbSize = 40;
-    const thumbSize = baseThumbSize + (fillPercentage * (maxThumbSize - baseThumbSize));
-    const thumbLeft = `${fillPercentage * 100}%`;
-
-    if (this.hasFillTarget) this.fillTarget.style.width = fillWidth;
-    if (this.hasTrackTarget) {
-      this.trackTarget.style.left = trackLeft;
-      this.trackTarget.style.width = trackWidth;
-    }
-    if (this.hasThumbTarget) {
-      this.thumbTarget.style.left = thumbLeft;
-      this.thumbTarget.style.setProperty('--thumb-size', `${thumbSize}px`);
-    }
-    if (this.hasBrushSizeDisplayTarget) {
-      this.brushSizeDisplayTarget.textContent = `${size}PX`;
-    }
-  }
 
   undo() {
     const controller = this.projectCanvasController
