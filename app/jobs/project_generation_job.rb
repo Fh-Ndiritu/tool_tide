@@ -9,7 +9,20 @@ class ProjectGenerationJob < ApplicationJob
   # When retries are exhausted, refund the user
   # We do not need tries on low credits errors
   discard_on StandardError do |job, error|
-    job.send(:handle_final_failure, error) unless error.is_a?(InsufficientCreditsError)
+    if error.is_a?(InsufficientCreditsError)
+      layer_id = job.arguments.first
+      layer = ProjectLayer.find_by(id: layer_id)
+      return unless layer
+
+      layer.update!(
+        progress: :failed,
+        error_msg: error.message,
+        user_msg: "Insufficient credits. Please top up to continue."
+      )
+    else
+      job.send(:handle_final_failure, error)
+    end
+    return
   end
 
   def perform(layer_id)
@@ -37,6 +50,7 @@ class ProjectGenerationJob < ApplicationJob
   private
 
   def charge_user!(user, layer, cost)
+
     user.with_lock do
       if user.pro_engine_credits < cost
         raise InsufficientCreditsError, "Insufficient credits"
@@ -66,6 +80,20 @@ class ProjectGenerationJob < ApplicationJob
     Rails.logger.error("ProjectGenerationJob Failed permanently: #{error.message}")
 
     user.with_lock do
+      # Verify that the user was actually charged for this layer
+      has_been_charged = CreditSpending.exists?(
+        user: user,
+        trackable: layer,
+        transaction_type: :spend
+      )
+
+      unless has_been_charged
+        Rails.logger.info("Skipping refund for layer #{layer.id} - User was not charged.")
+        layer.update(progress: :failed, error_msg: error.message)
+        broadcast_update(layer)
+        return
+      end
+
       user.pro_engine_credits += cost
       user.save!
       CreditSpending.create!(

@@ -51,7 +51,7 @@
       <% if is_processing %>
         <span class="text-blue-400 font-medium animate-pulse">Processing...</span>
       <% elsif project_layer.failed? %>
-        <span class="text-red-400 font-medium">Generation Failed</span>
+        <span class="text-red-400 font-medium"><%= project_layer.user_msg.presence || "Generation Failed" %></span>
       <% else %>
         <span class="text-gray-400">
           <%=  project_layer.not_specified? ? 'Uploaded' : project_layer.generation_type.titleize %>
