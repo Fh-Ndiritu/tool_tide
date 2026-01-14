@@ -358,7 +358,7 @@
                  <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m3-3 3 3-3 3m-5.25-12h2.25" />
                </svg>
            </button>
-           <span class="text-xs font-bold uppercase tracking-wider text-gray-400">Tools</span>
+           <span class="text-xs font-bold uppercase tracking-wider text-gray-400">Ai Tools</span>
            <div class="w-5"></div>
         </div>
 
@@ -386,18 +386,15 @@
        <!-- Content Area -->
        <div class="flex-1 overflow-hidden relative flex flex-col">
            <!-- Tab 1: Style Presets -->
-            <div data-tools-target="panel" class="flex flex-col h-full relative" data-controller="preset-expansion">
+            <div data-tools-target="panel" class="flex flex-col h-full relative">
               <div class="flex-1 overflow-y-auto min-h-0 p-4 pb-24 space-y-6 premium-scrollbar">
                <!-- Landscape Preset Selection -->
                <div>
-                  <div class="flex items-center justify-between mb-2">
+                  <div class="mb-2">
                      <label class="text-sm font-medium text-gray-300">Choose a Landscape Preset (<%= LANDSCAPE_PRESETS.count %>)</label>
-                     <button class="text-xs font-bold text-blue-400 hover:text-blue-300 transition-colors"
-                             data-action="preset-expansion#toggle"
-                             data-preset-expansion-target="toggleText">Show All</button>
                   </div>
                   <div class="relative border border-white/10 rounded-lg bg-gray-900/30">
-                     <div class="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto p-2 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent transition-all duration-300"
+                     <div class="grid grid-cols-2 gap-2 flex-1 overflow-y-auto p-2 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent transition-all duration-300"
                           data-preset-expansion-target="list">
                        <% LANDSCAPE_PRESETS.each do |preset, description| %>
                          <label class="cursor-pointer relative group">
@@ -418,27 +415,12 @@
                  </div>
               </div>
 
-               <!-- Tools Section for Style Presets -->
-               <div class="border-t border-white/10 pt-4" data-preset-expansion-target="tools">
-                 <div data-controller="collapsible" data-collapsible-hidden-class="hidden">
-                    <button class="w-full flex items-center justify-between py-2 group" data-action="collapsible#toggle click->preset-expansion#collapsePresets">
-                       <span class="text-xs font-bold uppercase text-gray-400 tracking-wider group-hover:text-gray-300 transition-colors">Tools</span>
-                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                            class="w-4 h-4 text-gray-500 transition-transform duration-200"
-                            data-collapsible-target="icon">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                       </svg>
-                    </button>
-                    <div data-collapsible-target="panel" class="space-y-6 mt-2 max-h-96 overflow-y-auto premium-scrollbar pr-2">
-                    <%= render "projects/tools/brush_controls" %>
-                    <%= render "projects/tools/variations_controls" %>
-                 </div>
-                 </div>
-              </div>
               </div>
 
                <!-- Fixed Footer -->
                <div class="absolute bottom-0 left-0 right-0 p-4 bg-gray-900 border-t border-white/10 z-20">
+                  <p class="text-[12px] text-gray-400 text-center mb-2 leading-tight">AI edits based on the active layer. Please brush on the image if you have specific areas you want to edit.</p>
+                  <%= render "projects/tools/variations_controls" %>
                   <button class="w-full bg-[#00acc1] hover:bg-[#00838f] text-white font-bold py-3 rounded-lg shadow-lg shadow-cyan-900/20 transition-all border border-white/10"
                           data-action="click->projects#generate">
                      Generate Now
@@ -449,18 +431,8 @@
            <!-- Tab 2: SmartFix -->
            <div data-tools-target="panel" class="flex flex-col h-full relative hidden" data-controller="smart-fix-layout">
               <div class="flex-1 overflow-y-auto min-h-0 p-4 pb-24 space-y-6 premium-scrollbar">
-                 <div data-smart-fix-layout-target="inputs" data-controller="collapsible" data-collapsible-hidden-class="hidden">
-                    <div class="border-b border-white/10 pb-2 mb-4">
-                       <button class="w-full flex items-center justify-between py-2 group" data-action="collapsible#toggle click->smart-fix-layout#onInputsClicked">
-                          <span class="text-xs font-bold uppercase text-gray-400 tracking-wider group-hover:text-gray-300 transition-colors">Request Details</span>
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                               class="w-4 h-4 text-gray-500 transition-transform duration-200"
-                               data-collapsible-target="icon">
-                             <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                          </svg>
-                       </button>
-                    </div>
-                    <div data-collapsible-target="panel" class="space-y-6">
+                 <div data-smart-fix-layout-target="inputs">
+                    <div class="space-y-6">
               <!-- AI Assist Description -->
               <p class="text-xs text-gray-300 leading-snug">
                 AI Assist converts your text into actionable edits based on the current Layer.
@@ -480,35 +452,20 @@
 
               <!-- Instructions -->
               <div>
-                <label class="block text-sm font-medium text-gray-300 mb-2">Instructions</label>
-                <textarea class="w-full h-32 bg-gray-900/50 border border-white/10 rounded-lg p-3 text-white placeholder-gray-500 focus:ring-blue-500 focus:border-blue-500 resize-none"
+                <label class="block text-xs font-bold uppercase text-gray-400 tracking-wider mb-2">Instructions</label>
+                <textarea class="w-full h-64 bg-black/40 border border-white/10 rounded-xl p-4 text-sm text-gray-200 placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 resize-none shadow-inner transition-all premium-scrollbar"
                           placeholder="Describe the changes you want to make..."
                           data-projects-target="promptInput"></textarea>
               </div>
 
                     </div>
                  </div>
-               <!-- Tools Section for SmartFix -->
-               <div class="border-t border-white/10 pt-4" data-smart-fix-layout-target="tools">
-                 <div data-controller="collapsible" data-collapsible-hidden-class="hidden">
-                    <button class="w-full flex items-center justify-between py-2 group" data-action="collapsible#toggle click->smart-fix-layout#onToolsClicked">
-                       <span class="text-xs font-bold uppercase text-gray-400 tracking-wider group-hover:text-gray-300 transition-colors">Tools</span>
-                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                            class="w-4 h-4 text-gray-400 transition-transform duration-200"
-                            data-collapsible-target="icon">
-                         <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                       </svg>
-                    </button>
-                    <div data-collapsible-target="panel" class="space-y-6 mt-2 max-h-96 overflow-y-auto premium-scrollbar pr-2">
-                    <%= render "projects/tools/brush_controls" %>
-                    <%= render "projects/tools/variations_controls" %>
-                 </div>
-                 </div>
-              </div>
               </div>
 
                <!-- Fixed Footer -->
                <div class="absolute bottom-0 left-0 right-0 p-4 bg-gray-900 border-t border-white/10 z-20">
+                  <p class="text-[12px] text-gray-400 text-center mb-2 leading-tight">AI edits based on the active layer. Please brush on the image if you have specific areas you want to edit.</p>
+                  <%= render "projects/tools/variations_controls" %>
                   <button class="w-full bg-[#00acc1] hover:bg-[#00838f] text-white font-bold py-3 rounded-lg shadow-lg shadow-cyan-900/20 transition-all border border-white/10"
                           data-action="click->projects#generate">
                      Generate Now
