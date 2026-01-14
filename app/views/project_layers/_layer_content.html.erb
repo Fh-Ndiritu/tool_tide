@@ -4,7 +4,7 @@
 
 <!-- Thumbnail -->
 <div class="relative w-10 h-10 flex-shrink-0 rounded overflow-hidden shadow-sm transition-all duration-200
-            <%= is_active ? 'ring-2 ring-blue-500 ring-offset-1 ring-offset-gray-900' : 'ring-1 ring-gray-700' %>
+            <%= is_active ? 'ring-2 ring-blue-500 ring-offset-1 ring-offset-gray-900 opacity-100' : 'ring-1 ring-gray-700 opacity-60 group-hover/layer:opacity-100' %>
             <%= is_processing ? 'opacity-80' : '' %>">
   <% if project_layer.display_image.attached? %>
      <%= image_tag project_layer.display_image, class: "w-full h-full object-cover" %>
@@ -32,7 +32,7 @@
 <div class="flex-1 min-w-0 flex flex-col justify-center">
    <div class="flex items-center justify-between">
       <span class="text-xs font-medium truncate transition-colors
-                  <%= is_active ? 'text-blue-400' : 'text-gray-300 group-hover/layer:text-white' %>">
+                  <%= is_active ? 'text-blue-400' : 'text-gray-200 group-hover/layer:text-white' %>">
         <% if project_layer.original? %>
           Original Upload
         <% else %>
@@ -53,14 +53,14 @@
       <% elsif project_layer.failed? %>
         <span class="text-red-400 font-medium">Generation Failed</span>
       <% else %>
-        <span class="text-gray-500">
-          <%= project_layer.generation_type.titleize %>
+        <span class="text-gray-400">
+          <%=  project_layer.not_specified? ? 'Uploaded' : project_layer.generation_type.titleize %>
           <% if project_layer.style_preset? && project_layer.preset.present? %>
             &bull; <%= project_layer.preset.titleize %>
           <% end %>
         </span>
-        <span class="text-gray-600">&bull;</span>
-        <span class="text-gray-600"><%= time_ago_in_words(project_layer.created_at) %></span>
+        <span class="text-gray-500">&bull;</span>
+        <span class="text-gray-500"><%= time_ago_in_words(project_layer.created_at) %></span>
       <% end %>
    </div>
 </div>

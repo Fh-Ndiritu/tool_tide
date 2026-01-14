@@ -623,13 +623,22 @@ input[type='checkbox'] {
   border: none !important;
 }
 
+.premium-scrollbar:hover {
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent !important;
+}
+
 .premium-scrollbar::-webkit-scrollbar-thumb {
   background-color: rgba(255, 255, 255, 0.15) !important;
   border-radius: 20px !important;
   border: none !important; /* Overrides the global 2px solid border */
   cursor: default !important;
+  transition: background-color 0.2s ease;
+}
+
+.premium-scrollbar:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.3) !important;
 }
 
 .premium-scrollbar::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(255, 255, 255, 0.3) !important;
+  background-color: rgba(255, 255, 255, 0.5) !important;
 }
