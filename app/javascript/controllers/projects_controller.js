@@ -213,9 +213,31 @@ export default class extends Controller {
   }
 
   setPanTool(event) {
-    this._updateToolUI("pan", event.currentTarget)
     const controller = this.projectCanvasController
-    if (controller) controller.setTool({ params: { tool: 'pan' } })
+    if (!controller) return
+
+    const panBtn = event.currentTarget
+
+    if (controller.currentTool === 'pan') {
+       // Toggle OFF -> Revert to Brush
+       // Note: Brush button is in a different container (toolbar) than Pan button (footer)
+       const brushBtn = document.querySelector('[data-action="projects#setBrushTool"]')
+       if (brushBtn) {
+         this._updateToolUI("brush", brushBtn)
+         controller.setTool({ params: { tool: 'brush' } })
+
+         // Manually reset Pan button to inactive state
+         panBtn.classList.remove('bg-white', 'text-gray-900', 'shadow-lg', 'ring-1', 'ring-gray-200')
+         panBtn.classList.add('bg-white/5', 'text-gray-400', 'hover:bg-white/10', 'hover:text-white', 'border-transparent')
+       }
+    } else {
+       // Toggle ON -> Set to Pan
+       // We can simply add active classes here, but _updateToolUI might rely on siblings which Pan doesn't check against Toolbar
+       panBtn.classList.remove('bg-white/5', 'text-gray-400', 'hover:bg-white/10', 'hover:text-white', 'border-transparent')
+       panBtn.classList.add('bg-white', 'text-gray-900', 'shadow-lg', 'ring-1', 'ring-gray-200')
+
+       controller.setTool({ params: { tool: 'pan' } })
+    }
   }
 
   updateScaleDisplay(event) {

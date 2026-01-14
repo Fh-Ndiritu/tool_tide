@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["sidebarLeft", "sidebarRight", "mainWrapper", "canvasWrapper"]
+  static targets = ["sidebarLeft", "sidebarRight", "mainWrapper", "canvasWrapper", "focusButton"]
   static classes = ["overlay", "push", "dock"]
 
   connect() {
@@ -13,6 +13,7 @@ export default class extends Controller {
       this.resizeTimeout = setTimeout(this.handleResize, 100)
     })
     this.handleResize() // Initial check
+    this._updateFocusButtonState()
   }
 
   disconnect() {
@@ -79,6 +80,8 @@ export default class extends Controller {
       setTimeout(() => {
         window.dispatchEvent(new Event('resize'));
       }, 350)
+
+      this._updateFocusButtonState()
   }
 
   updateSidebarState() {
@@ -104,6 +107,25 @@ export default class extends Controller {
       this.closeRight()
     } else {
       this.updateSidebarState()
+    }
+  }
+
+  _updateFocusButtonState() {
+    if (!this.hasFocusButtonTarget) return
+
+    const isLeftOpen = this.sidebarLeftTarget.getAttribute("aria-expanded") === "true"
+    const isRightOpen = this.sidebarRightTarget.getAttribute("aria-expanded") === "true"
+    const isFocusMode = !isLeftOpen && !isRightOpen
+
+    const btn = this.focusButtonTarget
+    if (isFocusMode) {
+       // Active Style (White)
+       btn.classList.remove('text-gray-400', 'hover:text-white', 'hover:bg-white/10')
+       btn.classList.add('bg-white', 'text-gray-200', 'shadow-lg')
+    } else {
+       // Inactive Style (Gray)
+       btn.classList.remove('bg-white', 'text-gray-200', 'shadow-lg')
+       btn.classList.add('text-gray-400', 'hover:text-white', 'hover:bg-white/10')
     }
   }
 }

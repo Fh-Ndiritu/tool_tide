@@ -111,10 +111,20 @@ export default class extends Controller {
       const newWidth = this.worldWidth * scale;
       const newHeight = this.worldHeight * scale;
 
+      const newX = (stageWidth - newWidth) / 2;
+      const newY = (stageHeight - newHeight) / 2;
+
       this.stage.position({
-          x: (stageWidth - newWidth) / 2,
-          y: (stageHeight - newHeight) / 2
+          x: newX,
+          y: newY
       });
+
+      // Store the fitted state for reference (used to determine if "Reset" button should show)
+      this.fitState = {
+          scale: scale,
+          x: newX,
+          y: newY
+      };
   }
 
   // Removed resizeMask as it is no longer needed (mask size is fixed to world size)
@@ -823,8 +833,7 @@ export default class extends Controller {
 
   resetZoom() {
     if (!this.stage) return;
-    this.stage.scale({ x: 1, y: 1 });
-    this.stage.position({ x: 0, y: 0 });
+    this.fitContentToView();
     this.stage.batchDraw();
     this._dispatchTransformChangeEvent();
   }
@@ -874,7 +883,18 @@ export default class extends Controller {
     const x = this.stage.x();
     const y = this.stage.y();
 
-    const isReset = (scale === 1 && x === 0 && y === 0);
+    // Determine if we are at the "Reset" / "Fitted" state
+    let isReset = false;
+    if (this.fitState) {
+        // Use a small epsilon for float comparison
+        const epsilon = 0.001;
+        isReset = Math.abs(scale - this.fitState.scale) < epsilon &&
+                  Math.abs(x - this.fitState.x) < 1 && // 1px tolerance for position
+                  Math.abs(y - this.fitState.y) < 1;
+    } else {
+        // Fallback checks if fitState isn't set yet (though it should be initialized early)
+        isReset = (scale === 1 && x === 0 && y === 0);
+    }
 
     this.element.dispatchEvent(
       new CustomEvent('project-canvas:transform-changed', {
