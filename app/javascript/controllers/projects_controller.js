@@ -242,10 +242,11 @@ export default class extends Controller {
 
   updateScaleDisplay(event) {
     // Also updates reset button visibility
-    const { scale, isReset } = event.detail;
+    const { scale, relativeScale, isReset } = event.detail;
 
     if (this.hasScaleDisplayTarget) {
-      const percentage = Math.round(scale * 100);
+      const zoomValue = relativeScale || scale;
+      const percentage = Math.round(zoomValue * 100);
       this.scaleDisplayTarget.textContent = `${percentage}%`;
     }
 

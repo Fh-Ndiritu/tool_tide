@@ -17,6 +17,13 @@ export default class extends Controller {
     layerId: Number,
   };
 
+  get scaledBrushSize() {
+    if (!this.worldHeight) return this.brushSizeValue;
+    // 150 (max slider) = 20% of image height
+    const maxBrushSize = this.worldHeight * 0.2;
+    return (this.brushSizeValue / 150) * maxBrushSize;
+  }
+
   stage = null;
   layer = null;
   imageNode = null;
@@ -119,12 +126,12 @@ export default class extends Controller {
           y: newY
       });
 
-      // Store the fitted state for reference (used to determine if "Reset" button should show)
       this.fitState = {
           scale: scale,
           x: newX,
           y: newY
       };
+      this._dispatchTransformChangeEvent();
   }
 
   // Removed resizeMask as it is no longer needed (mask size is fixed to world size)
@@ -139,7 +146,7 @@ export default class extends Controller {
 
   brushSizeValueChanged() {
     if (this.crosshairHorizontal && this.crosshairVertical) {
-      const halfBrushSize = this.brushSizeValue / 2;
+      const halfBrushSize = this.scaledBrushSize / 2;
       this.crosshairHorizontal.points([-halfBrushSize, 0, halfBrushSize, 0]);
       this.crosshairVertical.points([0, -halfBrushSize, 0, halfBrushSize]);
       this.maskLayer.batchDraw();
@@ -224,7 +231,7 @@ export default class extends Controller {
 
     // Add the new circle
     this.cursorCircle = new Konva.Circle({
-      radius: this.brushSizeValue / 2,
+      radius: this.scaledBrushSize / 2,
       stroke: CURSOR_COLOR,
       strokeWidth: 1,
       shadowColor: 'black',
@@ -396,7 +403,7 @@ export default class extends Controller {
 
     this.maskContext.globalCompositeOperation = this.currentTool === 'eraser' ? 'destination-out' : 'source-over';
     this.maskContext.strokeStyle = this.currentTool === 'eraser' ? 'rgba(255,255,255, 0.7)' : GREEN_COLOR;
-    this.maskContext.lineWidth = this.brushSizeValue;
+    this.maskContext.lineWidth = this.scaledBrushSize;
     this.maskContext.lineJoin = 'round';
     this.maskContext.lineCap = 'round';
 
@@ -406,7 +413,7 @@ export default class extends Controller {
       this.lastLine = new Konva.Line({
         points: [x, y],
         stroke: this.currentTool === 'eraser' ? 'rgba(255,255,255, 0.7)' : GREEN_COLOR,
-        strokeWidth: this.brushSizeValue,
+        strokeWidth: this.scaledBrushSize,
         lineCap: 'round',
         lineJoin: 'round',
       });
@@ -443,7 +450,7 @@ export default class extends Controller {
 
     if (this.crosshairGroup && (this.currentTool === 'brush' || this.currentTool === 'eraser')) {
       this.crosshairGroup.position({ x: x, y: y });
-      const halfBrushSize = this.brushSizeValue / 2;
+      const halfBrushSize = this.scaledBrushSize / 2;
       this.crosshairHorizontal.points([-halfBrushSize, 0, halfBrushSize, 0]);
       this.crosshairVertical.points([0, -halfBrushSize, 0, halfBrushSize]);
       this.crosshairGroup.visible(true);
@@ -841,10 +848,16 @@ export default class extends Controller {
   setScale(newScale) {
     if (!this.stage) return;
 
-    // Clamp scale
-    const MIN_SCALE = 0.5;
-    const MAX_SCALE = 5;
-    newScale = Math.max(MIN_SCALE, Math.min(MAX_SCALE, newScale));
+    // Clamp scale relative to fitted state
+    let minScale = 0.5;
+    let maxScale = 5;
+
+    if (this.fitState && this.fitState.scale > 0) {
+      minScale = this.fitState.scale * 0.5; // 50% of fitted size
+      maxScale = this.fitState.scale * 5.0; // 500% of fitted size
+    }
+
+    newScale = Math.max(minScale, Math.min(maxScale, newScale));
 
     const oldScale = this.stage.scaleX();
 
@@ -896,11 +909,17 @@ export default class extends Controller {
         isReset = (scale === 1 && x === 0 && y === 0);
     }
 
+    let relativeScale = 1;
+    if (this.fitState && this.fitState.scale > 0) {
+      relativeScale = scale / this.fitState.scale;
+    }
+
     this.element.dispatchEvent(
       new CustomEvent('project-canvas:transform-changed', {
         bubbles: true,
         detail: {
           scale: scale,
+          relativeScale: relativeScale,
           x: x,
           y: y,
           isReset: isReset
