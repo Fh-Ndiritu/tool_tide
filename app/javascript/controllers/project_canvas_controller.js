@@ -149,6 +149,13 @@ export default class extends Controller {
       const halfBrushSize = this.scaledBrushSize / 2;
       this.crosshairHorizontal.points([-halfBrushSize, 0, halfBrushSize, 0]);
       this.crosshairVertical.points([0, -halfBrushSize, 0, halfBrushSize]);
+
+      // Dynamic thickness based on scaled brush size
+      const thickness = Math.max(1.5, Math.sqrt(this.scaledBrushSize) * 0.8);
+      this.crosshairHorizontal.strokeWidth(thickness);
+      this.crosshairVertical.strokeWidth(thickness);
+      if (this.cursorCircle) this.cursorCircle.strokeWidth(Math.max(1, thickness / 2));
+
       this.maskLayer.batchDraw();
     }
   }
@@ -453,6 +460,13 @@ export default class extends Controller {
       const halfBrushSize = this.scaledBrushSize / 2;
       this.crosshairHorizontal.points([-halfBrushSize, 0, halfBrushSize, 0]);
       this.crosshairVertical.points([0, -halfBrushSize, 0, halfBrushSize]);
+
+      // Dynamic thickness based on scaled brush size
+      const thickness = Math.max(1.5, Math.sqrt(this.scaledBrushSize) * 0.8);
+      this.crosshairHorizontal.strokeWidth(thickness);
+      this.crosshairVertical.strokeWidth(thickness);
+      if (this.cursorCircle) this.cursorCircle.strokeWidth(Math.max(1, thickness / 2));
+
       this.crosshairGroup.visible(true);
       const crosshairColor = this.currentTool === 'eraser' ? '#FF3333' : CURSOR_COLOR;
       this.crosshairHorizontal.stroke(crosshairColor);
