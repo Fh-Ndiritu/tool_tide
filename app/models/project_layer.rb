@@ -55,6 +55,10 @@ class ProjectLayer < ApplicationRecord
     result_image.attached? ? result_image : image
   end
 
+  def conclusive?
+    complete? || original? || failed?
+  end
+
   private
 
   def set_layer_number

@@ -196,7 +196,7 @@
             <% end %>
 
             <%= turbo_frame_tag "canvas_frame", class: "w-full h-full block" do %>
-           <div class="relative w-full h-full flex items-center justify-center" id="canvas-container">
+           <div class="relative w-full h-full flex items-center justify-center" id="canvas-container-<%= @active_design&.active_layer&.id %>" data-turbo-permanent>
            <% if @is_new_design_session %>
               <!-- New Design Minimal Upload State -->
               <div class="max-w-md w-full p-8 text-center space-y-6 bg-gray-800 border border-gray-700 rounded-3xl shadow-2xl shadow-black/50 mx-auto">

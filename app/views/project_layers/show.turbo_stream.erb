@@ -1,7 +1,7 @@
 <turbo-stream action="replace" target="canvas_frame">
   <template>
     <%= turbo_frame_tag "canvas_frame" do %>
-      <div class="relative w-full h-[80vh] flex items-center justify-center bg-gray-800 shadow-inner rounded-lg overflow-hidden" id="canvas-container">
+      <div class="relative w-full h-[80vh] flex items-center justify-center bg-gray-800 shadow-inner rounded-lg overflow-hidden" id="canvas-container-<%= @project_layer.id %>" data-turbo-permanent>
         <div data-controller="project-canvas"
              data-project-canvas-target="canvasContainer"
              data-project-canvas-layer-id-value="<%= @project_layer.id %>"

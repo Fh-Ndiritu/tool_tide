@@ -346,8 +346,8 @@ export default class extends Controller {
       if (response.ok) {
         // Success: Turbo Stream will update the UI
         console.log("Generation started successfully")
-        // Clear selection on success?
-        controller.clearSelection()
+        // Do not clear selection immediately, let user stay on parent layer
+        // controller.clearSelection() - REMOVED
       } else {
         console.error("Generation failed", response)
         alert("Generation failed. Please try again.")
