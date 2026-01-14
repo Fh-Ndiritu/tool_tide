@@ -18,7 +18,7 @@
 
 <turbo-stream action="update" target="auto_fix_results">
   <template>
-    <% auto_fixes = @project_layer.auto_fixes.pending %>
+    <% auto_fixes = @project_layer.auto_fixes %>
     <% if auto_fixes.any? %>
       <%= render partial: "auto_fixes/auto_fix_item", collection: auto_fixes, as: :auto_fix, formats: [:html] %>
     <% else %>
@@ -37,7 +37,7 @@
   </template>
 </turbo-stream>
 
-<turbo-stream action="update" target="project_sidebar_actions">
+<turbo-stream action="replace" target="project_sidebar_status">
   <template>
     <%= render partial: "projects/project_context_actions", locals: { project: @project }, formats: [:html] %>
   </template>

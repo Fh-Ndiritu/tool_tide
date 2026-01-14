@@ -400,7 +400,18 @@ export default class extends Controller {
       return
     }
 
-    const parentLayerId = controller.layerIdValue
+    const fixParentLayerId = parseInt(event.currentTarget.dataset.parentLayerId, 10)
+    let parentLayerId = controller.layerIdValue
+
+    if (fixParentLayerId && fixParentLayerId !== parentLayerId) {
+      // Highlight/Switch to the parent layer
+      this._selectLayerById(String(fixParentLayerId))
+      parentLayerId = fixParentLayerId
+      // Ensure local controller value is updated synchronously if needed,
+      // though _selectLayerById triggers a click which updates it.
+      // We'll rely on the updated parentLayerId for the request below.
+    }
+
     if (!parentLayerId) {
       alert("No parent layer selected.")
       return

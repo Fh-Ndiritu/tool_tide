@@ -10,6 +10,7 @@ class Design < ApplicationRecord
   end
 
   after_commit -> {
+    broadcast_refresh_to [self, :layers]
     broadcast_refresh_to [project, :layers]
   }
 

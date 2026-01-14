@@ -485,7 +485,7 @@
              <% if @active_design&.active_layer %>
                <!-- Results Container -->
                <div id="auto_fix_results" data-projects-target="autoFixResults" class="space-y-3">
-                 <% auto_fixes = @active_design.active_layer.auto_fixes.pending %>
+                 <% auto_fixes = @active_design.active_layer.auto_fixes %>
                  <% if auto_fixes.any? %>
                    <%= render partial: "auto_fixes/auto_fix_item", collection: auto_fixes, as: :auto_fix %>
                  <% else %>
