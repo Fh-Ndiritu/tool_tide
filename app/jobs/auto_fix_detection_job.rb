@@ -22,7 +22,7 @@ class AutoFixDetectionJob < ApplicationJob
 
   def broadcast_status(layer, message)
     Turbo::StreamsChannel.broadcast_update_to(
-      layer.project, :layers,
+      layer.design, :layers,
       target: "auto_fix_results",
       html: render_status(message)
     )
@@ -32,7 +32,7 @@ class AutoFixDetectionJob < ApplicationJob
     auto_fixes = layer.auto_fixes.pending
 
     Turbo::StreamsChannel.broadcast_update_to(
-      layer.project, :layers,
+      layer.design, :layers,
       target: "auto_fix_results",
       partial: "auto_fixes/auto_fix_list",
       locals: { auto_fixes: auto_fixes, project_layer: layer },
