@@ -51,6 +51,9 @@ class ProjectLayer < ApplicationRecord
 
   validates :layer_type, presence: true
 
+  validates :preset, presence: { message: "Please select a Style Preset." }, if: -> { style_preset? && generated? }
+  validates :prompt, presence: { message: "Please enter a prompt for Smart Fix." }, if: -> { smart_fix? && generated? }
+
   def display_image
     result_image.attached? ? result_image : image
   end

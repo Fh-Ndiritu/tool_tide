@@ -1,9 +1,10 @@
 import { Controller } from "@hotwired/stimulus"
+import { Turbo } from "@hotwired/turbo-rails"
 
 //Used by Projects
 
 export default class extends Controller {
-  static targets = ["scaleDisplay", "resetZoomBtn", "stylePresetInput", "promptInput", "variationsCount", "variationsInput", "costDisplay", "aiAssistToggle", "aiAssistLabel", "autoFixResults", "autoFixItem", "autoFixHeader", "autoFixContent", "autoFixChevron", "autoFixDescriptionInput", "layerLink"]
+  static targets = ["scaleDisplay", "resetZoomBtn", "stylePresetInput", "promptInput", "variationsInput", "aiAssistToggle", "aiAssistLabel", "autoFixResults", "autoFixItem", "autoFixHeader", "autoFixContent", "autoFixChevron", "autoFixDescriptionInput", "layerLink", "generateButton"]
   static values = {
     generationUrl: String,
     imageCost: Number,
@@ -21,54 +22,29 @@ export default class extends Controller {
     this.element.addEventListener('project-canvas:transform-changed', this.updateScaleDisplay.bind(this))
 
     // Initialize UI
-    this.updateCost()
+    this.validateInputs()
   }
 
-  incrementVariations(event) {
-    if (event) event.preventDefault()
-    const container = event.currentTarget.closest('.flex.items-center.gap-1') || this.element
-    const input = container.querySelector('[data-projects-target="variationsInput"]') || this.variationsInputTarget
-    const display = container.querySelector('[data-projects-target="variationsCount"]') || this.variationsCountTarget
-
-    let current = parseInt(input.value, 10) || 1
-    if (current < 4) {
-      current++
-      this.updateVariationsUI(current, input, display)
+  validateInputs() {
+    // Validate Style Preset Panel
+    const stylePanel = this.element.querySelector('input[name="generation_type"][value="style_preset"]')?.closest('[data-tools-target="panel"]')
+    if (stylePanel) {
+       // Look for the inputs within this specific panel/scope to be safe
+       const inputs = stylePanel.querySelectorAll('input[name="style_preset"]')
+       const hasSelection = Array.from(inputs).some(r => r.checked)
+       const btn = stylePanel.querySelector('[data-projects-target="generateButton"]')
+       if (btn) btn.disabled = !hasSelection
     }
-  }
 
-  decrementVariations(event) {
-    if (event) event.preventDefault()
-    const container = event.currentTarget.closest('.flex.items-center.gap-1') || this.element
-    const input = container.querySelector('[data-projects-target="variationsInput"]') || this.variationsInputTarget
-    const display = container.querySelector('[data-projects-target="variationsCount"]') || this.variationsCountTarget
-
-    let current = parseInt(input.value, 10) || 1
-    if (current > 1) {
-      current--
-      this.updateVariationsUI(current, input, display)
+    // Validate Smart Fix Panel
+    const fixPanel = this.element.querySelector('input[name="generation_type"][value="smart_fix"]')?.closest('[data-tools-target="panel"]')
+    if (fixPanel) {
+        // Use the target if available or query
+        const textarea = fixPanel.querySelector('textarea[data-projects-target="promptInput"]')
+        const hasText = textarea && textarea.value.trim().length > 0
+        const btn = fixPanel.querySelector('[data-projects-target="generateButton"]')
+        if (btn) btn.disabled = !hasText
     }
-  }
-
-  updateVariationsUI(count, input, display) {
-    if (input) input.value = count
-    if (display) display.textContent = count
-    this.updateCost(input)
-  }
-
-  updateCost(inputElement = null) {
-    const input = inputElement || this.variationsInputTarget
-    if (!input) return
-
-    const container = input.closest('.mb-4') || this.element
-    const costDisplay = container.querySelector('[data-projects-target="costDisplay"]') || this.costDisplayTarget
-
-    if (!costDisplay) return
-
-    const count = parseInt(input.value, 10) || 1
-    const cost = count * (this.imageCostValue || 8)
-
-    costDisplay.textContent = `${cost} credits`
   }
 
   toggleAiAssistLabel() {
@@ -325,8 +301,22 @@ export default class extends Controller {
       formData.append("variations", this.variationsInputTarget.value)
     }
 
-    // Provide a default 'generated' type or let backend handle
-    formData.append("layer_type", "generated")
+    // Determine Generation Type from the active panel's hidden input
+    if (this.toolsController) {
+      // Find the visible panel (the one without 'hidden' class)
+      const activePanel = this.toolsController.panelTargets.find(panel => !panel.classList.contains('hidden'))
+      if (activePanel) {
+        const typeInput = activePanel.querySelector('input[name="generation_type"]')
+        if (typeInput) {
+          formData.append("generation_type", typeInput.value)
+        }
+      }
+    }
+
+    // Fallback if not found (though logic above should cover it)
+    if (!formData.has("generation_type")) {
+       formData.append("generation_type", "style_preset")
+    }
 
     // Disable button state to prevent double submit
     const button = event.currentTarget
@@ -344,11 +334,12 @@ export default class extends Controller {
         body: formData
       })
 
-      if (response.ok) {
-        // Success: Turbo Stream will update the UI
-        console.log("Generation started successfully")
-        // Do not clear selection immediately, let user stay on parent layer
-        // controller.clearSelection() - REMOVED
+      const contentType = response.headers.get("content-type")
+      if (contentType && contentType.includes("turbo-stream")) {
+           const html = await response.text()
+           await Turbo.renderStreamMessage(html)
+      } else if (response.ok) {
+           console.log("Generation started successfully")
       } else {
         console.error("Generation failed", response)
         alert("Generation failed. Please try again.")

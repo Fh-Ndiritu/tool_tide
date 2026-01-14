@@ -389,6 +389,7 @@
            <!-- Tab 1: Style Presets -->
             <div data-tools-target="panel" class="flex flex-col h-full relative">
               <div class="flex-1 overflow-y-auto min-h-0 p-4 pb-24 space-y-6 premium-scrollbar">
+                <input type="hidden" name="generation_type" value="style_preset">
                <!-- Landscape Preset Selection -->
                <div>
                   <div class="mb-2">
@@ -399,7 +400,9 @@
                           data-preset-expansion-target="list">
                        <% LANDSCAPE_PRESETS.each do |preset, description| %>
                          <label class="cursor-pointer relative group">
-                           <input type="radio" name="style_preset" value="<%= preset %>" class="peer sr-only" data-projects-target="stylePresetInput">
+                           <input type="radio" name="style_preset" value="<%= preset %>" class="peer sr-only"
+                                  data-projects-target="stylePresetInput"
+                                  data-action="change->projects#validateInputs">
                            <div class="border border-white/10 rounded-lg overflow-hidden bg-white/5 peer-checked:border-blue-500 peer-checked:ring-1 peer-checked:ring-blue-500 hover:border-white/20 transition-all">
                           <div class="aspect-video relative overflow-hidden">
                              <%= image_tag "presets/#{preset}.png", class: "w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-120", loading: "lazy" %>
@@ -422,8 +425,10 @@
                <div class="absolute bottom-0 left-0 right-0 p-4 bg-gray-900 border-t border-white/10 z-20">
                   <p class="text-[12px] text-gray-400 text-center mb-2 leading-tight">AI edits based on the active layer. Please brush on the image if you have specific areas you want to edit.</p>
                   <div class="mb-3"><%= render "projects/tools/variations_controls" %></div>
-                  <button class="w-full bg-[#00acc1] hover:bg-[#00838f] text-white font-bold py-3 rounded-lg shadow-lg shadow-cyan-900/20 transition-all border border-white/10"
-                          data-action="click->projects#generate">
+                  <button class="w-full bg-[#00acc1] hover:bg-[#00838f] disabled:bg-gray-700 disabled:text-gray-500 disabled:cursor-not-allowed text-white font-bold py-3 rounded-lg shadow-lg shadow-cyan-900/20 transition-all border border-white/10"
+                          data-action="click->projects#generate"
+                          data-projects-target="generateButton"
+                          disabled>
                      Generate Now
                   </button>
                </div>
@@ -432,6 +437,7 @@
            <!-- Tab 2: SmartFix -->
            <div data-tools-target="panel" class="flex flex-col h-full relative hidden" data-controller="smart-fix-layout">
               <div class="flex-1 overflow-y-auto min-h-0 p-4 pb-24 space-y-6 premium-scrollbar">
+                 <input type="hidden" name="generation_type" value="smart_fix">
                  <div data-smart-fix-layout-target="inputs">
                     <div class="space-y-6">
               <!-- AI Assist Description -->
@@ -456,7 +462,8 @@
                 <label class="block text-xs font-bold uppercase text-gray-400 tracking-wider mb-2">Instructions</label>
                 <textarea class="w-full h-64 bg-black/40 border border-white/10 rounded-xl p-4 text-sm text-gray-200 placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 resize-none shadow-inner transition-all premium-scrollbar"
                           placeholder="Describe the changes you want to make..."
-                          data-projects-target="promptInput"></textarea>
+                          data-projects-target="promptInput"
+                          data-action="input->projects#validateInputs"></textarea>
               </div>
 
                     </div>
@@ -467,8 +474,10 @@
                <div class="absolute bottom-0 left-0 right-0 p-4 bg-gray-900 border-t border-white/10 z-20">
                   <p class="text-[12px] text-gray-400 text-center mb-2 leading-tight">AI edits based on the active layer. Please brush on the image if you have specific areas you want to edit.</p>
                   <div class="mb-3"><%= render "projects/tools/variations_controls" %></div>
-                  <button class="w-full bg-[#00acc1] hover:bg-[#00838f] text-white font-bold py-3 rounded-lg shadow-lg shadow-cyan-900/20 transition-all border border-white/10"
-                          data-action="click->projects#generate">
+                  <button class="w-full bg-[#00acc1] hover:bg-[#00838f] disabled:bg-gray-700 disabled:text-gray-500 disabled:cursor-not-allowed text-white font-bold py-3 rounded-lg shadow-lg shadow-cyan-900/20 transition-all border border-white/10"
+                          data-action="click->projects#generate"
+                          data-projects-target="generateButton"
+                          disabled>
                      Generate Now
                   </button>
                </div>
@@ -477,7 +486,8 @@
           <!-- Tab 3: AutoFix -->
           <div data-tools-target="panel" class="flex flex-col h-full relative hidden">
              <div class="flex-1 overflow-y-auto min-h-0 p-4 pb-24 space-y-4 premium-scrollbar">
-             <!-- Description -->
+              <input type="hidden" name="generation_type" value="autofix">
+              <!-- Description -->
              <p class="text-xs text-gray-400 leading-snug">
                AutoFix detects changes you can make to your yard and generates a variety of prompts you can choose from.
              </p>

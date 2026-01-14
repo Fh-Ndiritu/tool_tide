@@ -21,15 +21,8 @@ class ProjectLayersController < ApplicationController
 
     ActiveRecord::Base.transaction do
       variations_count.times do |i|
-        generation_type = if params[:auto_fix_id].present?
-                            :autofix
-                          elsif params[:preset].present?
-                            :style_preset
-                          elsif params[:ai_assist] == "true"
-                            :smart_fix
-                          else
-                            :not_specified
-                          end
+        # Use explicit generation_type from frontend, fallback to style_preset logic as safety
+        generation_type = params[:generation_type].presence || :style_preset
 
         layer = @design.project_layers.build(
           project: @project,
@@ -43,19 +36,31 @@ class ProjectLayersController < ApplicationController
           progress: :preparing
         )
 
-        layer.save!
+        if layer.save
+          if params[:mask_data].present?
+             decoded_data = Base64.decode64(params[:mask_data].split(',')[1])
+             layer.mask.attach(
+               io: StringIO.new(decoded_data),
+               filename: "mask.png",
+               content_type: 'image/png'
+             )
+          end
 
-        if params[:mask_data].present?
-           decoded_data = Base64.decode64(params[:mask_data].split(',')[1])
-           layer.mask.attach(
-             io: StringIO.new(decoded_data),
-             filename: "mask.png",
-             content_type: 'image/png'
-           )
+          created_layers << layer
+          ProjectGenerationJob.perform_later(layer.id)
+        else
+          # Collect error from first failing layer and return
+          error_message = layer.errors.full_messages.to_sentence
+          flash.now[:alert] = error_message
+
+          respond_to do |format|
+            format.turbo_stream {
+              render turbo_stream: turbo_stream.replace("flash", partial: "shared/flash")
+            }
+            format.html { redirect_to project_path(@project, design_id: @design.id), alert: error_message }
+          end
+          raise ActiveRecord::Rollback
         end
-
-        created_layers << layer
-        ProjectGenerationJob.perform_later(layer.id)
       end
 
       # Mark AutoFix as applied if provided
@@ -64,6 +69,9 @@ class ProjectLayersController < ApplicationController
         auto_fix&.applied!
       end
     end
+
+    # Guard against double render if validation failed inside transaction
+    return if performed?
 
     # Force active layer to remain on parent (to prevent jumping to new incomplete layer)
     @design.update(current_project_layer: parent_layer) if parent_layer
