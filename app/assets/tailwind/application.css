@@ -608,13 +608,13 @@ input[type='checkbox'] {
 
 /* Custom Premium Scrollbar - Overrides Global Defaults */
 .premium-scrollbar {
-  scrollbar-width: thin !important;
+  scrollbar-width: 4px !important;
   scrollbar-color: rgba(255, 255, 255, 0.15) transparent !important;
 }
 
 .premium-scrollbar::-webkit-scrollbar {
-  width: 6px !important;
-  height: 6px !important;
+  width: 4px !important;
+  height: 4px !important;
 }
 
 .premium-scrollbar::-webkit-scrollbar-track {
@@ -629,7 +629,7 @@ input[type='checkbox'] {
 
 .premium-scrollbar::-webkit-scrollbar-thumb {
   background-color: rgba(255, 255, 255, 0.15) !important;
-  border-radius: 20px !important;
+  border-radius: 10px !important;
   border: none !important; /* Overrides the global 2px solid border */
   cursor: default !important;
   transition: background-color 0.2s ease;

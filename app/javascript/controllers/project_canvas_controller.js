@@ -4,7 +4,7 @@ import { Controller } from '@hotwired/stimulus';
 const GREEN_COLOR = 'rgba(100 245 3 / 0.5)';
 const MASK_COLOR = 'rgba(100, 245, 3, 1)';
 const DEFAULT_MASK = 'rgba(12, 12, 12, 0)';
-const CURSOR_COLOR = 'aqua'; // New constant for the cursor color
+const CURSOR_COLOR = '#00fff7'; // New constant for the cursor color
 
 export default class extends Controller {
   static targets = ['canvasContainer'];
@@ -206,6 +206,7 @@ export default class extends Controller {
     // Fit initial default content
     this.fitContentToView();
 
+    // Pro Cursor Group
     this.crosshairGroup = new Konva.Group({
       listening: false,
       visible: false,
@@ -216,6 +217,9 @@ export default class extends Controller {
       radius: this.brushSizeValue / 2,
       stroke: CURSOR_COLOR,
       strokeWidth: 1,
+      shadowColor: 'black',
+      shadowBlur: 2,
+      shadowOpacity: 1,
       listening: false,
     });
 
@@ -224,6 +228,9 @@ export default class extends Controller {
       stroke: CURSOR_COLOR,
       strokeWidth: 3,
       lineCap: 'butt',
+      shadowColor: 'black',
+      shadowBlur: 2,
+      shadowOpacity: 1,
       listening: false,
     });
 
@@ -232,6 +239,9 @@ export default class extends Controller {
       stroke: CURSOR_COLOR,
       strokeWidth: 3,
       lineCap: 'butt',
+      shadowColor: 'black',
+      shadowBlur: 2,
+      shadowOpacity: 1,
       listening: false,
     });
 
@@ -427,9 +437,10 @@ export default class extends Controller {
       this.crosshairHorizontal.points([-halfBrushSize, 0, halfBrushSize, 0]);
       this.crosshairVertical.points([0, -halfBrushSize, 0, halfBrushSize]);
       this.crosshairGroup.visible(true);
-      const crosshairColor = this.currentTool === 'eraser' ? 'rgba(255,255,255, 0.7)' : CURSOR_COLOR;
+      const crosshairColor = this.currentTool === 'eraser' ? '#FF3333' : CURSOR_COLOR;
       this.crosshairHorizontal.stroke(crosshairColor);
       this.crosshairVertical.stroke(crosshairColor);
+      if(this.cursorCircle) this.cursorCircle.stroke(crosshairColor);
     } else if (this.crosshairGroup) {
       this.crosshairGroup.visible(false);
     }
@@ -621,9 +632,10 @@ export default class extends Controller {
     if (this.crosshairGroup) {
       if (this.currentTool === 'brush' || this.currentTool === 'eraser') {
         this.crosshairGroup.visible(true);
-        const crosshairColor = this.currentTool === 'eraser' ? 'rgba(255,255,255, 0.7)' : CURSOR_COLOR;
+        const crosshairColor = this.currentTool === 'eraser' ? '#FF3333' : CURSOR_COLOR;
         this.crosshairHorizontal.stroke(crosshairColor);
         this.crosshairVertical.stroke(crosshairColor);
+        if(this.cursorCircle) this.cursorCircle.stroke(crosshairColor);
       } else {
         this.crosshairGroup.visible(false);
       }

@@ -1,0 +1,57 @@
+<div class="absolute top-6 left-1/2 -translate-x-1/2 bg-gray-900/90 backdrop-blur-xl border border-white/10 rounded-full px-2 py-1.5 shadow-2xl z-40 flex items-center gap-2">
+
+  <!-- Brush Tool (Pencil) -->
+  <button data-action="projects#setBrushTool"
+          class="p-2 rounded-full text-gray-300 hover:text-white hover:bg-white/10 transition-colors group relative"
+          title="Brush Tool">
+      <%= render IconComponent.new(name: "paint_brush", classes: "w-5 h-5") %>
+  </button>
+
+  <!-- Eraser Tool (Backspace/Block) -->
+  <button data-action="projects#setEraserTool"
+          class="p-2 rounded-full text-gray-300 hover:text-white hover:bg-white/10 transition-colors group"
+          title="Eraser Tool">
+      <%= render IconComponent.new(name: "eraser", classes: "w-5 h-5") %>
+  </button>
+
+  <!-- Divider -->
+  <div class="w-px h-6 bg-white/10 mx-1"></div>
+
+  <!-- Size Slider (Circle) -->
+  <div class="flex items-center gap-2 px-2" data-controller="brush-settings">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-gray-400">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z" />
+      </svg>
+      <input type="range"
+             min="20"
+             max="150"
+             value="80"
+             class="w-24 h-1.5 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-500 hover:accent-blue-400"
+             data-action="input->brush-settings#updateSize"
+             data-brush-settings-target="range">
+      <span class="text-[10px] font-mono text-gray-300 w-6" data-brush-settings-target="display">60</span>
+  </div>
+
+  <!-- Divider -->
+  <div class="w-px h-6 bg-white/10 mx-1"></div>
+
+  <!-- History Actions -->
+  <button data-action="projects#undo" class="p-2 rounded-full text-gray-300 hover:text-white hover:bg-white/10 transition-colors" title="Undo">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+         <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
+      </svg>
+  </button>
+
+  <button data-action="projects#redo" class="p-2 rounded-full text-gray-300 hover:text-white hover:bg-white/10 transition-colors" title="Redo">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+         <path stroke-linecap="round" stroke-linejoin="round" d="m15 15 6-6m0 0-6-6m6 6H9a6 6 0 0 0 0 12h3" />
+      </svg>
+  </button>
+
+  <button data-action="projects#clear" class="p-2 rounded-full text-gray-300 hover:text-red-400 hover:bg-red-900/20 transition-colors" title="Clear Mask">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+  </button>
+</div>

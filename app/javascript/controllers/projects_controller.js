@@ -1,5 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
+//Used by Projects
+
 export default class extends Controller {
   static targets = ["scaleDisplay", "resetZoomBtn", "stylePresetInput", "promptInput", "variationsCount", "variationsInput", "costDisplay", "aiAssistToggle", "aiAssistLabel", "autoFixResults", "autoFixItem", "autoFixHeader", "autoFixContent", "autoFixChevron", "autoFixDescriptionInput", "layerLink"]
   static values = {

@@ -190,7 +190,12 @@
           <div class="relative w-full h-full max-w-full max-h-full border border-white/5 bg-gray-900 shadow-2xl rounded-lg overflow-hidden"
                id="canvas-fixed-wrapper">
 
-         <%= turbo_frame_tag "canvas_frame", class: "w-full h-full block" do %>
+            <!-- Floating Canvas Toolbar -->
+            <% if @active_design&.active_layer&.display_image&.attached? %>
+               <%= render "projects/tools/canvas_toolbar" %>
+            <% end %>
+
+            <%= turbo_frame_tag "canvas_frame", class: "w-full h-full block" do %>
            <div class="relative w-full h-full flex items-center justify-center" id="canvas-container">
            <% if @is_new_design_session %>
               <!-- New Design Minimal Upload State -->

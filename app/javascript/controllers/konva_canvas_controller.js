@@ -1,4 +1,5 @@
 // app/javascript/controllers/konva_canvas_controller.js
+// USEd by mask_requests
 import { Controller } from '@hotwired/stimulus';
 
 const GREEN_COLOR = 'rgba(100 245 3 / 0.5)';
