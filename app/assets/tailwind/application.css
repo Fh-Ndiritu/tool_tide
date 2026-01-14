@@ -607,9 +607,15 @@ input[type='checkbox'] {
 }
 
 /* Custom Premium Scrollbar - Overrides Global Defaults */
+/* Custom Premium Scrollbar - Overrides Global Defaults */
 .premium-scrollbar {
   scrollbar-width: 4px !important;
-  scrollbar-color: rgba(255, 255, 255, 0.15) transparent !important;
+  scrollbar-color: transparent transparent !important;
+  transition: scrollbar-color 0.3s ease;
+}
+
+.premium-scrollbar:hover {
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent !important;
 }
 
 .premium-scrollbar::-webkit-scrollbar {
@@ -623,20 +629,16 @@ input[type='checkbox'] {
   border: none !important;
 }
 
-.premium-scrollbar:hover {
-  scrollbar-color: rgba(255, 255, 255, 0.3) transparent !important;
-}
-
 .premium-scrollbar::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.15) !important;
+  background-color: transparent !important;
   border-radius: 10px !important;
   border: none !important; /* Overrides the global 2px solid border */
   cursor: default !important;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.3s ease;
 }
 
 .premium-scrollbar:hover::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.3) !important;
+  background-color: rgba(255, 255, 255, 0.2) !important;
 }
 
 .premium-scrollbar::-webkit-scrollbar-thumb:hover {
