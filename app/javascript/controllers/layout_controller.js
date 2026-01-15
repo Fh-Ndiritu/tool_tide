@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["sidebarLeft", "sidebarRight", "mainWrapper", "canvasWrapper", "focusButton"]
+  static targets = ["sidebarLeft", "sidebarRight", "mainWrapper", "canvasWrapper", "focusButton", "header"]
   static classes = ["overlay", "push", "dock"]
 
   connect() {
@@ -14,6 +14,7 @@ export default class extends Controller {
     })
     this.handleResize() // Initial check
     this._updateFocusButtonState()
+    this.updateHeaderPadding()
   }
 
   disconnect() {
@@ -40,6 +41,7 @@ export default class extends Controller {
     this.element.dataset.layoutMode = mode
 
     this.updateSidebarState()
+    this.updateHeaderPadding()
   }
 
   toggleLeft() {
@@ -82,6 +84,7 @@ export default class extends Controller {
       }, 350)
 
       this._updateFocusButtonState()
+      this.updateHeaderPadding()
   }
 
   updateSidebarState() {
@@ -106,7 +109,8 @@ export default class extends Controller {
       this.closeLeft()
       this.closeRight()
     } else {
-      this.updateSidebarState()
+      this.openLeft()
+      this.openRight()
     }
   }
 
@@ -126,6 +130,26 @@ export default class extends Controller {
        // Inactive Style (Gray)
        btn.classList.remove('bg-white', 'text-gray-200', 'shadow-lg')
        btn.classList.add('text-gray-400', 'hover:text-white', 'hover:bg-white/10')
+    }
+  }
+
+  updateHeaderPadding() {
+    if (!this.hasHeaderTarget) return
+
+    if (this.currentMode === "overlay") {
+      // Left Sidebar
+      const leftExpanded = this.sidebarLeftTarget.getAttribute("aria-expanded") === "true"
+      const leftWidth = leftExpanded ? 280 : 60
+      this.headerTarget.style.paddingLeft = `${leftWidth + 20}px`
+
+      // Right Sidebar
+      const rightExpanded = this.sidebarRightTarget.getAttribute("aria-expanded") === "true"
+      const rightWidth = rightExpanded ? 350 : 60
+      this.headerTarget.style.paddingRight = `${rightWidth + 20}px`
+    } else {
+      // Reset to default (let Grid handle it)
+      this.headerTarget.style.paddingLeft = ""
+      this.headerTarget.style.paddingRight = ""
     }
   }
 }
