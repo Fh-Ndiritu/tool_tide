@@ -550,6 +550,7 @@ export default class extends Controller {
 
   selectPresetFromTopBar(event) {
     const preset = event.currentTarget.dataset.preset
+    this.layoutController?.openRight()
     this.switchTab("Style Presets")
 
     if (this.hasStylePresetInputTarget) {
@@ -569,6 +570,7 @@ export default class extends Controller {
     this._selectLayerById(parentId)
 
     // 2. Select Tab
+    this.layoutController?.openRight()
     this.switchTab("Style Presets")
 
     // 3. Select Preset
@@ -586,6 +588,7 @@ export default class extends Controller {
     this._selectLayerById(parentId)
 
     // 2. Select Tab
+    this.layoutController?.openRight()
     this.switchTab("SmartFix")
 
     // 3. Populate Prompt
@@ -608,6 +611,7 @@ export default class extends Controller {
     this._selectLayerById(parentId)
 
     // 2. Select Tab
+    this.layoutController?.openRight()
     this.switchTab("AutoFix")
 
     // 3. Highlight/Open Fix (This might need a bit more logic to find the item in the list)
