@@ -92,7 +92,7 @@
 
   </head>
 
-  <body class="bg-neutral-900 text-white font-sans antialiased selection:bg-accent selection:text-black">
+  <body class="bg-neutral-900 text-white font-sans antialiased selection:bg-accent selection:text-black <%= 'fs-unmask' if user_signed_in? %>">
     <%= render "layouts/marketing_navbar" %>
     <%= render "shared/flash" %>
 
