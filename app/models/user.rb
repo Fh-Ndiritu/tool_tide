@@ -136,6 +136,12 @@ class User < ApplicationRecord
     )
   end
 
+  def first_name
+    if name.present?
+      name.split(" ").first
+    end
+  end
+
 
   private
 

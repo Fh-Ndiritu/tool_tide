@@ -1,0 +1,45 @@
+<div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; color: #333;">
+
+  <div style="text-align: center; margin-bottom: 30px;">
+      <%= image_tag "projectsview.png", style: "width: 100%; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);", alt: "Hadaa Projects Preview" %>
+  </div>
+
+  <h1 style="color: #1a1a1a; font-size: 24px; font-weight: bold; margin-bottom: 16px; text-align: center;">
+    Experience the All-New Desktop Projects Mode
+  </h1>
+
+  <p style="font-size: 16px; line-height: 1.6; margin-bottom: 24px; color: #4a4a4a; text-align: center;">
+    Hi <%= @user.first_name || "there" %>,<br><br>
+    We are thrilled to introduce <strong>Projects</strong> — a powerful new way to design on your desktop. You can now convert your existing mask requests into full-featured projects, or simply upload files directly to get started.
+  </p>
+
+  <div style="background-color: #f9fafb; border-radius: 12px; padding: 24px; margin-bottom: 32px;">
+    <h3 style="font-size: 18px; font-weight: 600; margin-top: 0; margin-bottom: 20px; color: #1a1a1a;">
+      What's New in Projects?
+    </h3>
+
+    <div style="margin-bottom: 16px;">
+      <strong style="color: #2563eb;">1. Style Presets</strong>
+      <p style="margin: 4px 0 0; font-size: 15px; color: #4b5563;">Instantly visualize your scene with curated landscape styles.</p>
+    </div>
+
+    <div style="margin-bottom: 16px;">
+      <strong style="color: #9333ea;">2. Automated Fixes</strong>
+      <p style="margin: 4px 0 0; font-size: 15px; color: #4b5563;">Automatically clean up water, fix grass, or add elements with a single click.</p>
+    </div>
+
+    <div style="margin-bottom: 0;">
+      <strong style="color: #db2777;">3. AI Text Edits</strong>
+      <p style="margin: 4px 0 0; font-size: 15px; color: #4b5563;">Simply describe what you want to change, and let our AI handle the rest.</p>
+    </div>
+  </div>
+
+  <div style="text-align: center; margin-bottom: 40px;">
+    <%= link_to "Try Projects Now", projects_url, style: "display: inline-block; background: linear-gradient(to right, #2563eb, #9333ea); color: white; font-weight: bold; text-decoration: none; padding: 14px 32px; border-radius: 9999px; font-size: 16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);" %>
+  </div>
+
+  <p style="text-align: center; font-size: 14px; color: #6b7280;">
+    Happy Designing,<br>
+    The Hadaa Team
+  </p>
+</div>

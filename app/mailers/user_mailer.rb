@@ -31,4 +31,12 @@ class UserMailer < ApplicationMailer
       subject: "Winnie from Hadaa"
     )
   end
+  def desktop_projects_announcement_email
+    @user = params[:user]
+
+    mail(
+      to: @user.email,
+      subject: "Introducing Projects: A New Way to Design"
+    )
+  end
 end

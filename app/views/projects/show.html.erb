@@ -412,8 +412,11 @@
                 <input type="hidden" name="generation_type" value="style_preset">
                <!-- Landscape Preset Selection -->
                <div>
-                  <div class="mb-2">
-                     <label class="text-sm font-medium text-gray-300">Choose a Landscape Preset (<%= LANDSCAPE_PRESETS.count %>)</label>
+                  <div class="mb-2 flex flex-col">
+                     <label class="text-sm font-medium text-gray-300 mb-2">Choose a Landscape Preset (<%= LANDSCAPE_PRESETS.count %>)</label>
+                     <%# We add some text tip on what this does %>
+
+                     <span class="text-xs text-gray-400">Instantly visualize your scene with a different style</span>
                   </div>
                   <div class="relative border border-white/10 rounded-lg bg-gray-900/30">
                      <div class="grid grid-cols-2 gap-2 flex-1 overflow-y-auto p-2 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent transition-all duration-300"
