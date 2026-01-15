@@ -109,6 +109,13 @@
         </div>
 
         <%= f.hidden_field :privacy_policy, value: true %>
+        <%= f.hidden_field :last_sign_in_device_type, id: "user_last_sign_in_device_type" %>
+        <script>
+          (function() {
+            var field = document.getElementById('user_last_sign_in_device_type');
+            if (field) field.value = window.innerWidth > 580 ? 'desktop' : 'mobile';
+          })();
+        </script>
 
         <div class="mt-4 mb-3 p-2 bg-accent/10 border border-accent/20 rounded-xl flex flex-col items-center justify-center gap-3 text-center mx-auto max-w-full">
 

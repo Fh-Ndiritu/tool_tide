@@ -2,11 +2,18 @@
 
 class Users::RegistrationsController < Devise::RegistrationsController
   before_action :check_captcha, only: [ :create ]
+  before_action :configure_sign_up_params, only: [:create]
 
   def create
     super do |resource|
       cookies.permanent[:last_login_method] = "email"
     end
+  end
+
+  protected
+
+  def configure_sign_up_params
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:last_sign_in_device_type])
   end
 
   private

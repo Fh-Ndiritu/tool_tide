@@ -165,21 +165,24 @@
               </p>
             </div>
 
-            <% if mask_request.project %>
-              <%= link_to project_path(mask_request.project), class: "group relative inline-flex items-center gap-2 bg-white/10 text-white px-5 py-2.5 rounded-lg font-bold text-sm shadow-lg hover:bg-white/20 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-white/10" do %>
+          <div class="hidden min-[580px]:block">
+              <% if mask_request.project %>
+              <%= link_to project_path(mask_request.project), class: "hidden min-[580px]:inline-flex group relative items-center gap-2 bg-white/10 text-white px-5 py-2.5 rounded-lg font-bold text-sm shadow-lg hover:bg-white/20 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-white/10" do %>
                  <span>Open Project</span>
                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-secondary group-hover:scale-110 transition-transform">
                     <path fill-rule="evenodd" d="M2.5 4A1.5 1.5 0 001 5.5V6h18v-.5A1.5 1.5 0 0017.5 4h-15zM19 8.5H1v6A1.5 1.5 0 002.5 16h15a1.5 1.5 0 001.5-1.5v-6zM3 13.25a.75.75 0 01.75-.75h1.5a.75.75 0 010 1.5h-1.5a.75.75 0 01-.75-.75zm4.75-.75a.75.75 0 000 1.5h1.5a.75.75 0 000-1.5h-1.5z" clip-rule="evenodd" />
                  </svg>
               <% end %>
             <% else %>
-               <%= button_to convert_to_project_projects_path(mask_request_id: mask_request.id), method: :post, class: "group relative inline-flex items-center gap-2 bg-white/10 text-white px-5 py-2.5 rounded-lg font-bold text-sm shadow-lg hover:bg-white/20 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-white/10" do %>
+               <%= button_to convert_to_project_projects_path(mask_request_id: mask_request.id), method: :post, class: "hidden min-[580px]:inline-flex group relative items-center gap-2 bg-white/10 text-white px-5 py-2.5 rounded-lg font-bold text-sm shadow-lg hover:bg-white/20 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-white/10" do %>
                  <span>Convert to Project</span>
                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-secondary group-hover:scale-110 transition-transform">
                     <path fill-rule="evenodd" d="M2.5 4A1.5 1.5 0 001 5.5V6h18v-.5A1.5 1.5 0 0017.5 4h-15zM19 8.5H1v6A1.5 1.5 0 002.5 16h15a1.5 1.5 0 001.5-1.5v-6zM3 13.25a.75.75 0 01.75-.75h1.5a.75.75 0 010 1.5h-1.5a.75.75 0 01-.75-.75zm4.75-.75a.75.75 0 000 1.5h1.5a.75.75 0 000-1.5h-1.5z" clip-rule="evenodd" />
                  </svg>
                <% end %>
             <% end %>
+            </div>
+
           </div>
         </div>
         <% end %>
@@ -337,14 +340,14 @@
           <% end %>
 
           <% if mask_request.project %>
-            <%= link_to project_path(mask_request.project), class: "cute-btn btn-primary hidden min-[580px]:!inline-flex items-center gap-2 !px-5 !py-2.5 !text-sm !rounded-lg", data: { onboarding_target: "openProject" } do %>
+            <%= link_to project_path(mask_request.project), class: "cute-btn btn-primary !hidden min-[580px]:!inline-flex items-center gap-2 !px-5 !py-2.5 !text-sm !rounded-lg", data: { onboarding_target: "openProject" } do %>
                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
                   <path fill-rule="evenodd" d="M2.5 4A1.5 1.5 0 001 5.5V6h18v-.5A1.5 1.5 0 0017.5 4h-15zM19 8.5H1v6A1.5 1.5 0 002.5 16h15a1.5 1.5 0 001.5-1.5v-6zM3 13.25a.75.75 0 01.75-.75h1.5a.75.75 0 010 1.5h-1.5a.75.75 0 01-.75-.75zm4.75-.75a.75.75 0 000 1.5h1.5a.75.75 0 000-1.5h-1.5z" clip-rule="evenodd" />
                </svg>
                Open Project
             <% end %>
           <% else %>
-             <%= button_to convert_to_project_projects_path(mask_request_id: mask_request.id), method: :post, class: "cute-btn btn-primary hidden min-[580px]:!inline-flex items-center gap-2 !px-5 !py-2.5 !text-sm !rounded-lg", data: { onboarding_target: "convertProject" } do %>
+             <%= button_to convert_to_project_projects_path(mask_request_id: mask_request.id), method: :post, class: "cute-btn btn-primary !hidden min-[580px]:!inline-flex items-center gap-2 !px-5 !py-2.5 !text-sm !rounded-lg", data: { onboarding_target: "convertProject" } do %>
                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
                   <path fill-rule="evenodd" d="M2.5 4A1.5 1.5 0 001 5.5V6h18v-.5A1.5 1.5 0 0017.5 4h-15zM19 8.5H1v6A1.5 1.5 0 002.5 16h15a1.5 1.5 0 001.5-1.5v-6zM3 13.25a.75.75 0 01.75-.75h1.5a.75.75 0 010 1.5h-1.5a.75.75 0 01-.75-.75zm4.75-.75a.75.75 0 000 1.5h1.5a.75.75 0 000-1.5h-1.5z" clip-rule="evenodd" />
                </svg>

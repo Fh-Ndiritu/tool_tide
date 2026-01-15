@@ -3,7 +3,18 @@ class ProjectsController < ApplicationController
 
   def index
     @projects = current_user.projects.order(created_at: :desc)
+
+    if @projects.empty?
+      flash.keep
+      redirect_to new_project_path
+      return
+    end
+
     @new_project = Project.new
+  end
+
+  def new
+    @project = Project.new
   end
 
   def show

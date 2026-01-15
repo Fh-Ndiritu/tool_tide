@@ -110,7 +110,10 @@
         classes: "#{active_item(mask_requests_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
         data: { action: "click->navbar#toggleMenu" }
         ) %>
-        <% if current_user.mask_requests.complete.exists? %>
+        <%# Mobile: show if mask_requests exist (they can access legacy flow) %>
+        <%# Desktop: show only if text_requests exist (enforce project-first for new users) %>
+        <% show_smart_fix = current_user.last_sign_in_device_type == "desktop" && current_user.text_requests.complete.exists? || current_user.mask_requests.complete.exists?%>
+        <% if show_smart_fix %>
           <%= render ButtonComponent.new(
             text: "Smart Fix",
             href: text_requests_path,

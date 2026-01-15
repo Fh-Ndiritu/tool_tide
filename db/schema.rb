@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_15_090526) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_15_190209) do
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -335,6 +335,15 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_15_090526) do
     t.index ["project_id"], name: "index_project_layers_on_project_id"
   end
 
+  create_table "project_onboardings", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "step", default: 0
+    t.datetime "completed_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_project_onboardings_on_user_id"
+  end
+
   create_table "projects", force: :cascade do |t|
     t.string "title"
     t.integer "user_id", null: false
@@ -446,6 +455,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_15_090526) do
     t.datetime "feature_announcement_sent_at"
     t.boolean "completed_survey"
     t.datetime "desktop_projects_announcement_sent_at"
+    t.string "last_sign_in_device_type"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
@@ -489,6 +499,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_15_090526) do
   add_foreign_key "project_layers", "auto_fixes"
   add_foreign_key "project_layers", "designs"
   add_foreign_key "project_layers", "projects"
+  add_foreign_key "project_onboardings", "users"
   add_foreign_key "projects", "designs", column: "current_design_id"
   add_foreign_key "projects", "mask_requests"
   add_foreign_key "projects", "users"

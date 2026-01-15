@@ -1,0 +1,102 @@
+<% content_for :title, "Start New Project | Hadaa" %>
+
+<div class="min-h-screen flex flex-col items-center justify-center bg-neutral-950 relative overflow-hidden" data-controller="project-upload">
+
+  <!-- Premium Background Effects -->
+  <div class="absolute inset-0 pointer-events-none">
+    <div class="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-primary/10 rounded-full blur-[100px] animate-blob mix-blend-screen"></div>
+    <div class="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-secondary/10 rounded-full blur-[100px] animate-blob animation-delay-4000 mix-blend-screen"></div>
+    <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
+  </div>
+
+  <div class="relative z-10 w-full max-w-5xl px-6 flex flex-col items-center">
+
+    <!-- Hero Header -->
+    <div class="text-center mb-12 animate-enter-up">
+      <h1 class="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white via-white to-white/50 mb-6 drop-shadow-2xl">
+        Start Your Masterpiece.
+      </h1>
+      <p class="text-lg md:text-xl text-neutral-400 max-w-2xl mx-auto font-light leading-relaxed">
+        Upload a photo of your outdoor space to instantly begin your AI-powered landscape design journey.
+      </p>
+    </div>
+
+    <!-- Upload Card -->
+    <%= form_with url: projects_path, method: :post, local: false, multipart: true,
+        data: { project_upload_target: "form" },
+        class: "w-full max-w-3xl animate-enter-up animation-delay-200" do |f| %>
+
+      <div
+        data-project-upload-target="dropZone"
+        data-action="click->project-upload#triggerInput drop->project-upload#handleDrop dragover->project-upload#handleDragOver dragleave->project-upload#handleDragLeave"
+        class="
+          group relative w-full aspect-[16/10] md:aspect-[21/9]
+          bg-white/5 hover:bg-white/10 backdrop-blur-2xl
+          border border-white/10 hover:border-primary/50
+          rounded-3xl flex flex-col items-center justify-center
+          transition-all duration-500 ease-out
+          cursor-pointer shadow-2xl shadow-black/50
+          overflow-hidden
+        "
+      >
+        <!-- Inner Border Effect -->
+        <div class="absolute inset-4 border-2 border-dashed border-white/5 group-hover:border-primary/30 rounded-2xl transition-colors duration-500 pointer-events-none"></div>
+
+        <div class="drop-zone-content flex flex-col items-center z-10 p-8 text-center transition-transform duration-500 group-hover:scale-105">
+          <div class="mb-6 p-5 bg-gradient-to-br from-white/10 to-white/5 rounded-2xl shadow-inner ring-1 ring-white/10 group-hover:ring-primary/50 transition-all duration-300">
+             <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white/80 group-hover:text-primary transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+             </svg>
+          </div>
+          <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-primary transition-colors">
+            Click to Upload
+          </h3>
+          <p class="text-neutral-400 font-medium">
+            Supports high-res JPG, PNG, WEBP
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Hidden Input -->
+      <%= f.file_field :image,
+          class: "hidden",
+          accept: "image/*",
+          data: {
+            project_upload_target: "input",
+            action: "change->project-upload#handleFileSelect"
+          }
+      %>
+    <% end %>
+
+    <!-- Footer Links -->
+    <div class="mt-12 flex gap-8 animate-enter-up animation-delay-400">
+      <% if current_user.projects.any? %>
+        <%= link_to projects_path, class: "group flex items-center gap-2 text-neutral-500 hover:text-white transition-colors" do %>
+          <svg class="w-4 h-4 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+          Back to Projects
+        <% end %>
+      <% end %>
+    </div>
+
+  </div>
+</div>
+
+<style>
+  @keyframes enter-up {
+    0% { opacity: 0; transform: translateY(30px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes blob {
+    0% { transform: translate(0px, 0px) scale(1); }
+    33% { transform: translate(30px, -50px) scale(1.1); }
+    66% { transform: translate(-20px, 20px) scale(0.9); }
+    100% { transform: translate(0px, 0px) scale(1); }
+  }
+  .animate-enter-up { animation: enter-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
+  .animate-blob { animation: blob 20s infinite; }
+  .animation-delay-200 { animation-delay: 0.1s; }
+  .animation-delay-400 { animation-delay: 0.2s; }
+  .animation-delay-2000 { animation-delay: 2s; }
+  .animation-delay-4000 { animation-delay: 4s; }
+</style>

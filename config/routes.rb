@@ -3,7 +3,7 @@
 Rails.application.routes.draw do
   get "project_layers/show"
   get "project_layers/update"
-  resources :projects, only: %i[index show create update] do
+  resources :projects, only: %i[index show create update new] do
     post :convert_to_project, on: :collection
     resources :designs, only: [:create] do
       resources :project_layers, only: [:show, :create, :update] do
