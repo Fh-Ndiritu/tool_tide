@@ -428,6 +428,12 @@ export default class extends Controller {
     item.classList.toggle("border-blue-500", !isHidden)
     item.classList.toggle("ring-1", !isHidden)
     item.classList.toggle("ring-blue-500/50", !isHidden)
+
+    if (!isHidden) {
+      setTimeout(() => {
+        item.scrollIntoView({ behavior: "smooth", block: "nearest" })
+      }, 200)
+    }
   }
 
   async performAutoFix(event) {
