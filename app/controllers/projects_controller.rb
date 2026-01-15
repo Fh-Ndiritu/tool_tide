@@ -63,6 +63,19 @@ class ProjectsController < ApplicationController
     redirect_to projects_path, alert: "Failed to create project: #{e.message}"
   end
 
+  def convert_to_project
+    @mask_request = MaskRequest.find(params[:mask_request_id])
+
+    redirect_to project_path(@mask_request.project) and return if @mask_request.project
+
+    begin
+      @project = @mask_request.convert_to_project
+      redirect_to project_path(@project)
+    rescue StandardError => e
+      redirect_to mask_requests_path, alert: "Conversion failed: #{e.message}"
+    end
+  end
+
   private
 
   def set_project

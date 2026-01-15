@@ -98,6 +98,12 @@
           classes: "#{active_item(new_canva_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
           data: { action: "click->navbar#toggleMenu" }
           ) %>
+        <%= link_to projects_path, class: "#{active_item(projects_path)} hidden lg:flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-500 hover:to-purple-500 px-5 py-2 rounded-full font-bold shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 border border-white/20", data: { action: "click->navbar#toggleMenu" } do %>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
+             <path fill-rule="evenodd" d="M9 4.5a.75.75 0 01.721.544l.813 2.846a3.75 3.75 0 002.576 2.576l2.846.813a.75.75 0 010 1.442l-2.846.813a3.75 3.75 0 00-2.576 2.576l-.813 2.846a.75.75 0 01-1.442 0l-.813-2.846a3.75 3.75 0 00-2.576-2.576l-2.846-.813a.75.75 0 010-1.442l2.846-.813a3.75 3.75 0 002.576-2.576l.813-2.846A.75.75 0 019 4.5zM9 15a.75.75 0 01.721.544l.195.682a2.25 2.25 0 001.483 1.483l.682.195a.75.75 0 010 1.442l-.682.195a2.25 2.25 0 00-1.483 1.483l-.195.682a.75.75 0 01-1.442 0l-.195-.682a2.25 2.25 0 00-1.483-1.483l-.682-.195a.75.75 0 010-1.442l.682-.195a2.25 2.25 0 001.483-1.483l.195-.682A.75.75 0 019 15z" clip-rule="evenodd" />
+          </svg>
+          Projects
+        <% end %>
         <%= render ButtonComponent.new(
         text: "Dashboard",
         href: mask_requests_path,

@@ -8,6 +8,7 @@ class MaskRequest < ApplicationRecord
   has_many :favorites, as: :favoritable, dependent: :destroy
   has_many :favorited_by_users, through: :favorites, source: :user
 
+  has_one :project
   has_one_attached :mask
 
   serialize :dimensions, coder: JSON
@@ -63,6 +64,45 @@ enum :progress, {
     main_view.purge
     rotated_view.purge
     drone_view.purge
+  end
+
+  def convert_to_project
+    return if project.present?
+
+    transaction do
+      proj = user.projects.create!(
+        title: "Project from #{preset&.humanize || 'Canvas'}",
+        mask_request: self
+      )
+
+      # Design 1: Your Upload (Original)
+      d1 = proj.designs.create!(title: "Your Upload")
+      l1 = d1.project_layers.create!(project: proj, layer_type: :original, progress: :complete)
+      l1.image.attach(canva.api_image_blob)
+
+      # Design 2: Option 1 (Main View)
+      if main_view.attached?
+        d2 = proj.designs.create!(title: "Option 1")
+        l2 = d2.project_layers.create!(project: proj, layer_type: :original, progress: :complete)
+        l2.image.attach(main_view.blob)
+      end
+
+      # Design 3: Option 2 (Rotated View)
+      if rotated_view.attached?
+        d3 = proj.designs.create!(title: "Option 2")
+        l3 = d3.project_layers.create!(project: proj, layer_type: :original, progress: :complete)
+        l3.image.attach(rotated_view.blob)
+      end
+
+      # Design 4: Option 3 (Drone View)
+      if drone_view.attached?
+        d4 = proj.designs.create!(title: "Option 3")
+        l4 = d4.project_layers.create!(project: proj, layer_type: :original, progress: :complete)
+        l4.image.attach(drone_view.blob)
+      end
+
+      proj
+    end
   end
 
   def copy

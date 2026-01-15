@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_14_193113) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_15_075114) do
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -341,7 +341,9 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_14_193113) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "current_design_id"
+    t.integer "mask_request_id"
     t.index ["current_design_id"], name: "index_projects_on_current_design_id"
+    t.index ["mask_request_id"], name: "index_projects_on_mask_request_id"
     t.index ["user_id"], name: "index_projects_on_user_id"
   end
 
@@ -487,6 +489,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_14_193113) do
   add_foreign_key "project_layers", "designs"
   add_foreign_key "project_layers", "projects"
   add_foreign_key "projects", "designs", column: "current_design_id"
+  add_foreign_key "projects", "mask_requests"
   add_foreign_key "projects", "users"
   add_foreign_key "sketch_requests", "canvas"
   add_foreign_key "sketch_requests", "users"

@@ -76,7 +76,7 @@
           <div
             class="
               relative z-10 p-8 md:p-10 flex flex-col md:flex-row
-              items-center justify-between gap-8
+              items-center justify-between gap-8 min-[580px]:!hidden
             "
           >
             <div class="flex-1 space-y-4">
@@ -107,14 +107,14 @@
               </p>
             </div>
 
-            <%= link_to edit_mask_request_path(mask_request, manual: true), data: { onboarding_target: "changeStyle" }, class: "group relative inline-flex items-center gap-3 bg-white/10 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:bg-white/20 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-white/10" do %>
+            <%= link_to edit_mask_request_path(mask_request, manual: true), data: { onboarding_target: "changeStyle" }, class: "group relative inline-flex items-center gap-2 bg-white/10 text-white px-5 py-2.5 rounded-lg font-bold text-sm shadow-lg hover:bg-white/20 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-white/10" do %>
               <span>Change Style</span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"
                 fill="currentColor"
                 class="
-                  w-6 h-6 text-secondary group-hover:scale-110
+                  w-5 h-5 text-secondary group-hover:scale-110
                   transition-transform
                 "
               >
@@ -127,6 +127,58 @@
                   d="M9.75 13.25a.75.75 0 000 1.5h4.5a.75.75 0 000-1.5h-4.5z"
                 />
               </svg>
+            <% end %>
+          </div>
+
+          <!-- Desktop Hero Content (Project Upsell) -->
+          <div
+            class="
+              relative z-10 p-8 md:p-10 flex flex-col md:flex-row
+              items-center justify-between gap-8 hidden min-[580px]:!flex
+            "
+          >
+            <div class="flex-1 space-y-4">
+              <div
+                class="
+                  flex items-center gap-3 text-secondary font-bold
+                  tracking-wider uppercase text-sm
+                "
+              >
+                <span class="flex h-2 w-2 rounded-full bg-secondary animate-pulse"></span>
+                Advanced AI Tools
+              </div>
+
+              <h4 class="text-2xl md:text-3xl font-bold leading-tight">
+                Take your design further
+                <span
+                  class="
+                    text-transparent bg-clip-text bg-gradient-to-r
+                    from-blue-400 to-purple-400
+                  "
+                >
+                  with AI Tools.
+                </span>
+              </h4>
+
+              <p class="text-neutral-300 text-lg max-w-xl leading-relaxed">
+                 Convert to a Project to try presets, automated fixes, and even text edits with AI assist.
+              </p>
+            </div>
+
+            <% if mask_request.project %>
+              <%= link_to project_path(mask_request.project), class: "group relative inline-flex items-center gap-2 bg-white/10 text-white px-5 py-2.5 rounded-lg font-bold text-sm shadow-lg hover:bg-white/20 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-white/10" do %>
+                 <span>Open Project</span>
+                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-secondary group-hover:scale-110 transition-transform">
+                    <path fill-rule="evenodd" d="M2.5 4A1.5 1.5 0 001 5.5V6h18v-.5A1.5 1.5 0 0017.5 4h-15zM19 8.5H1v6A1.5 1.5 0 002.5 16h15a1.5 1.5 0 001.5-1.5v-6zM3 13.25a.75.75 0 01.75-.75h1.5a.75.75 0 010 1.5h-1.5a.75.75 0 01-.75-.75zm4.75-.75a.75.75 0 000 1.5h1.5a.75.75 0 000-1.5h-1.5z" clip-rule="evenodd" />
+                 </svg>
+              <% end %>
+            <% else %>
+               <%= button_to convert_to_project_projects_path(mask_request_id: mask_request.id), method: :post, class: "group relative inline-flex items-center gap-2 bg-white/10 text-white px-5 py-2.5 rounded-lg font-bold text-sm shadow-lg hover:bg-white/20 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-white/10" do %>
+                 <span>Convert to Project</span>
+                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-secondary group-hover:scale-110 transition-transform">
+                    <path fill-rule="evenodd" d="M2.5 4A1.5 1.5 0 001 5.5V6h18v-.5A1.5 1.5 0 0017.5 4h-15zM19 8.5H1v6A1.5 1.5 0 002.5 16h15a1.5 1.5 0 001.5-1.5v-6zM3 13.25a.75.75 0 01.75-.75h1.5a.75.75 0 010 1.5h-1.5a.75.75 0 01-.75-.75zm4.75-.75a.75.75 0 000 1.5h1.5a.75.75 0 000-1.5h-1.5z" clip-rule="evenodd" />
+                 </svg>
+               <% end %>
             <% end %>
           </div>
         </div>
@@ -265,7 +317,7 @@
 
 
            <% if mask_request.main_view.attached? %>
-          <%= link_to new_text_request_path(signed_blob_id: mask_request.main_view.blob.signed_id), class: "cute-btn !bg-accent-secondary !text-gray-800 flex items-center gap-2", data: { onboarding_target: "textEdit" } do %>
+          <%= link_to new_text_request_path(signed_blob_id: mask_request.main_view.blob.signed_id), class: "cute-btn !bg-accent-secondary !text-gray-800 flex items-center gap-2 min-[580px]:!hidden", data: { onboarding_target: "textEdit" } do %>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -282,6 +334,22 @@
               />
             </svg>
             Smart Fix
+          <% end %>
+
+          <% if mask_request.project %>
+            <%= link_to project_path(mask_request.project), class: "cute-btn btn-primary hidden min-[580px]:!inline-flex items-center gap-2 !px-5 !py-2.5 !text-sm !rounded-lg", data: { onboarding_target: "openProject" } do %>
+               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                  <path fill-rule="evenodd" d="M2.5 4A1.5 1.5 0 001 5.5V6h18v-.5A1.5 1.5 0 0017.5 4h-15zM19 8.5H1v6A1.5 1.5 0 002.5 16h15a1.5 1.5 0 001.5-1.5v-6zM3 13.25a.75.75 0 01.75-.75h1.5a.75.75 0 010 1.5h-1.5a.75.75 0 01-.75-.75zm4.75-.75a.75.75 0 000 1.5h1.5a.75.75 0 000-1.5h-1.5z" clip-rule="evenodd" />
+               </svg>
+               Open Project
+            <% end %>
+          <% else %>
+             <%= button_to convert_to_project_projects_path(mask_request_id: mask_request.id), method: :post, class: "cute-btn btn-primary hidden min-[580px]:!inline-flex items-center gap-2 !px-5 !py-2.5 !text-sm !rounded-lg", data: { onboarding_target: "convertProject" } do %>
+               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                  <path fill-rule="evenodd" d="M2.5 4A1.5 1.5 0 001 5.5V6h18v-.5A1.5 1.5 0 0017.5 4h-15zM19 8.5H1v6A1.5 1.5 0 002.5 16h15a1.5 1.5 0 001.5-1.5v-6zM3 13.25a.75.75 0 01.75-.75h1.5a.75.75 0 010 1.5h-1.5a.75.75 0 01-.75-.75zm4.75-.75a.75.75 0 000 1.5h1.5a.75.75 0 000-1.5h-1.5z" clip-rule="evenodd" />
+               </svg>
+               Convert to Project
+             <% end %>
           <% end %>
           <% end %>
         </div>

@@ -75,7 +75,7 @@
       <%= render(IconComponent.new(classes: "h-5 w-5", name: "download")) %>
     <% end %>
 
-    <%= link_to new_text_request_path(signed_blob_id:  view.blob.signed_id), class: "icon-btn bg-white text-secondary hover:bg-secondary hover:text-white shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-secondary/50", title: "Refine with AI" do %>
+    <%= link_to new_text_request_path(signed_blob_id:  view.blob.signed_id), class: "icon-btn bg-white text-secondary hover:bg-secondary hover:text-white shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-secondary/50 min-[580px]:!hidden", title: "Refine with AI" do %>
       <%= render(IconComponent.new(classes: "h-5 w-5", name: "pencil")) %>
     <% end %>
   </div>

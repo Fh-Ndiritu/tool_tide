@@ -1,6 +1,10 @@
 class Project < ApplicationRecord
   belongs_to :user
   belongs_to :current_design, class_name: "Design", optional: true
+  belongs_to :mask_request, optional: true
+
+
+
 
   has_many :designs, dependent: :destroy
   has_many :project_layers, dependent: :destroy
