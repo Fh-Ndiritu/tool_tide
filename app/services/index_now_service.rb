@@ -3,8 +3,8 @@ class IndexNowService
   require "open-uri"
 
   INDEX_NOW_URL = "https://api.indexnow.org/indexnow"
-  HOST = "hadaa.app"
-  KEY = "a4c43fd6df474f61afcf7970f6352710"
+  HOST = "hadaa.pro"
+  KEY = "4db450da45524514ad47d1a067244edf"
   KEY_LOCATION = "https://#{HOST}/#{KEY}.txt"
 
   def self.broadcast
