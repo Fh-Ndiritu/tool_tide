@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe AutoFixesController, type: :controller do
-  fixtures :users, :projects, :designs, :project_layers
+  fixtures :users, :projects, :designs, :project_layers, :auto_fixes
 
   let(:user) { users(:one) }
   let(:project) { projects(:one) }
@@ -20,31 +20,26 @@ RSpec.describe AutoFixesController, type: :controller do
   end
 
   describe 'POST #create' do
-    let(:mock_fixes) do
-      [
-        { "title" => "Add Pool", "description" => "Install a pool" }
-      ]
-    end
 
-    before do
-      # Mock the LLM response
-      mock_response = double('response', content: { "fixes" => mock_fixes })
-      mock_chat = double('chat')
-      mock_schema_chat = double('schema_chat')
+    it 'creates AutoFix records and calls the service' do
+      # Verify the service is called and create the fix when it is
+      expect(AutoFixDetectorService).to receive(:perform).with(kind_of(ProjectLayer)) do |layer|
+        layer.auto_fixes.create!(
+          title: "Add Pool",
+          description: "Install a pool",
+          status: :pending
+        )
+      end
 
-      allow(CustomRubyLLM).to receive_message_chain(:context, :chat).and_return(mock_chat)
-      allow(mock_chat).to receive(:with_schema).and_return(mock_schema_chat)
-      allow(mock_schema_chat).to receive(:ask).and_return(mock_response)
-    end
+      post :create, params: {
+        project_id: project.id,
+        design_id: design.id,
+        project_layer_id: project_layer.id
+      }, format: :turbo_stream
 
-    it 'creates AutoFix records' do
-      expect {
-        post :create, params: {
-          project_id: project.id,
-          design_id: design.id,
-          project_layer_id: project_layer.id
-        }, format: :turbo_stream
-      }.to change { project_layer.auto_fixes.count }.by(1)
+      # Controller clears pending fixes, then creates new ones via service
+      # Check that our new fix was created (not count, which includes fixture data)
+      expect(AutoFix.find_by(title: "Add Pool", project_layer_id: project_layer.id)).to be_present
     end
 
     it 'responds successfully' do

@@ -17,7 +17,6 @@ class ProjectLayersController < ApplicationController
     parent_layer = @design.project_layers.find_by(id: params[:parent_layer_id]) || @design.project_layers.roots.first
 
     variations_count = (params[:variations].presence || 1).to_i.clamp(1, 4)
-    created_layers = []
 
     ActiveRecord::Base.transaction do
       variations_count.times do |i|
@@ -46,7 +45,6 @@ class ProjectLayersController < ApplicationController
              )
           end
 
-          created_layers << layer
           ProjectGenerationJob.perform_later(layer.id)
         else
           # Collect error from first failing layer and return

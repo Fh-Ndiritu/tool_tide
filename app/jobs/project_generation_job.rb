@@ -12,7 +12,7 @@ class ProjectGenerationJob < ApplicationJob
     if error.is_a?(InsufficientCreditsError)
       layer_id = job.arguments.first
       layer = ProjectLayer.find_by(id: layer_id)
-      return unless layer
+      next unless layer
 
       layer.update!(
         progress: :failed,
@@ -22,7 +22,7 @@ class ProjectGenerationJob < ApplicationJob
     else
       job.send(:handle_final_failure, error)
     end
-    return
+    next
   end
 
   def perform(layer_id)

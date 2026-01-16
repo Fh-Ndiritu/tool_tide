@@ -49,7 +49,7 @@
 
    <div class="flex items-center gap-1.5 text-[10px] leading-none mt-0.5">
       <% if is_processing %>
-        <span class="text-blue-400 font-medium animate-pulse">Processing...</span>
+        <span class="text-blue-400 font-medium animate-pulse"><%= project_layer.progress.titleize %>...</span>
       <% elsif project_layer.failed? %>
         <span class="text-red-400 font-medium"><%= project_layer.user_msg.presence || "Generation Failed" %></span>
       <% else %>
