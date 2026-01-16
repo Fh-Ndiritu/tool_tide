@@ -2,7 +2,7 @@
 
 class Users::RegistrationsController < Devise::RegistrationsController
   before_action :check_captcha, only: [ :create ]
-  before_action :configure_sign_up_params, only: [:create]
+
 
   def create
     super do |resource|
@@ -12,8 +12,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   protected
 
-  def configure_sign_up_params
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:last_sign_in_device_type])
+  def sign_up_params
+    device_type = browser.device.mobile? ? "mobile" : "desktop"
+    super.merge(last_sign_in_device_type: device_type)
   end
 
   private

@@ -104,6 +104,7 @@ GEM
       addressable (~> 2.3, >= 2.3.0)
       json (~> 2.1, >= 2.1.0)
       typhoeus (~> 1.0, >= 1.0.1)
+    browser (6.2.0)
     builder (3.3.0)
     bundler-audit (0.9.2)
       bundler (>= 1.2.0, < 3)
@@ -669,6 +670,7 @@ DEPENDENCIES
   bootsnap
   brakeman
   brevo
+  browser
   bundler-audit (~> 0.9.2)
   capybara
   database_cleaner-active_record

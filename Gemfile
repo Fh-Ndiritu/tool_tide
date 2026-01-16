@@ -122,6 +122,8 @@ gem "brevo"
 
 gem "dry-monads", "~> 1.9"
 
+gem "browser"
+
 
 
 gem "ancestry", "~> 4.3"
