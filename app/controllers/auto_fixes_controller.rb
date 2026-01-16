@@ -11,8 +11,7 @@ class AutoFixesController < ApplicationController
       @auto_fixes = @project_layer.auto_fixes.reload
       @success = true
     rescue StandardError => e
-      Rails.logger.error("AutoFix detect
-      ion failed: #{e.message}")
+      Rails.logger.error("AutoFix detection failed: #{e.message}")
       @success = false
       @error_message = "Analysis failed. Please try again."
     end

@@ -40,10 +40,11 @@ class SmartFixImprover
     # Downsize image to max 600px to optimize performance and reduce latency
     image_context = @layer.overlay.variant(resize_to_limit: [600, 600]).processed
 
+    full_prompt = "#{system_prompt}\n\nRefine this request: #{user_input}"
+
     response = CustomRubyLLM.context.chat.with_schema(RecommendationSchema).ask(
-       "Refine this request: #{user_input}",
-       system: system_prompt,
-       with: image_context
+      full_prompt,
+      with: image_context
     )
 
     optimized = response.content["optimized_prompt"]
@@ -53,5 +54,6 @@ class SmartFixImprover
     end
   rescue StandardError => e
     Rails.logger.error("SmartFixImprover Error: #{e.message}")
+    raise # Re-raise to propagate to job level for proper retry/discard handling
   end
 end

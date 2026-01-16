@@ -74,37 +74,35 @@ class ProjectGenerationJob < ApplicationJob
     return unless layer
 
     user = layer.project.user
-    cost = GOOGLE_IMAGE_COST # Should ideally be passed or stored?
-    # For now constant is fine as long as prices don't change dynamically mid-job.
+    cost = GOOGLE_IMAGE_COST
 
     Rails.logger.error("ProjectGenerationJob Failed permanently: #{error.message}")
 
+    # Check charge status and handle refund inside lock
     user.with_lock do
-      # Verify that the user was actually charged for this layer
       has_been_charged = CreditSpending.exists?(
         user: user,
         trackable: layer,
         transaction_type: :spend
       )
 
-      unless has_been_charged
+      if has_been_charged
+        # Refund the user
+        user.pro_engine_credits += cost
+        user.save!
+        CreditSpending.create!(
+          user: user,
+          amount: cost,
+          transaction_type: :refund,
+          trackable: layer
+        )
+      else
         Rails.logger.info("Skipping refund for layer #{layer.id} - User was not charged.")
-        layer.update(progress: :failed, error_msg: error.message)
-        broadcast_update(layer)
-        return
       end
-
-      user.pro_engine_credits += cost
-      user.save!
-      CreditSpending.create!(
-        user: user,
-        amount: cost,
-        transaction_type: :refund,
-        trackable: layer
-      )
     end
 
-    layer.update(progress: :failed)
+    # Always mark layer as failed (outside the lock)
+    layer.update(progress: :failed, error_msg: error.message)
     broadcast_update(layer)
   end
 
