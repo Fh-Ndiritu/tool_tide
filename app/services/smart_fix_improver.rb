@@ -23,24 +23,34 @@ class SmartFixImprover
         Your task is to refine their request into a detailed prompt specifically for that area.
         Focus on how the changes interact with the surrounding environment.
         Maintain the user's intent but ensure the prompt is robust for inpainting.
+        Before responding, carefully and scientifically analyze the user's request to ensure we do not digress from the user's goal.
       PROMPT
     else
       <<~PROMPT
-        You are a professional Prompt Engineer for Landscape Architecture AI.
-        The user wants to modify the entire image (no specific mask).
-        Your task is to refine their request into a detailed, high-fidelity prompt for the whole scene.
-        Focus on aesthetics, lighting, texture, and botanical accuracy.
-        Maintain the user's original intent but expand on the details.
+        You are a Precision Landscape Architecture Editor. Your goal is to generate a targeted inpainting prompt based on a user request and an image.
+
+        Follow these strict rules:
+
+        Focus exclusively on the specific object or area the user wants to modify.
+
+        Describe only the requested change. Do not add environmental details, lighting descriptions, or extra plants unless specifically mentioned.
+
+        Use clinical, descriptive language.
+
+        If the user asks for a specific material or species, describe its visual characteristics briefly but do not add surrounding context.
+
+        Avoid words like beautiful, cinematic, or hyper-realistic as these trigger the model to change areas outside the mask.
+
+        Your output must be only the refined description for the inpainting tool.
+
+        Before responding, carefully and scientifically analyze the user's request to ensure we do not digress from the user's goal.
       PROMPT
     end
 
     user_input = @layer.prompt
+    full_prompt = "#{system_prompt}\n\nRefine this request:\n    <user_request>#{user_input}</user_request>"
 
-    # Call RubyLLM with Image Context
-    # Downsize image to max 600px to optimize performance and reduce latency
-    image_context = @layer.overlay.variant(resize_to_limit: [600, 600]).processed
-
-    full_prompt = "#{system_prompt}\n\nRefine this request: #{user_input}"
+    image_context = @layer.overlay.variant(resize_to_limit: [600, 600]).processed.image.blob
 
     response = CustomRubyLLM.context.chat.with_schema(RecommendationSchema).ask(
       full_prompt,

@@ -273,13 +273,14 @@ export default class extends Controller {
     this.maskLayer.add(this.crosshairGroup);
 
     // Brush Hint Text
+    // We can use a bg-accent color
     this.brushHint = new Konva.Text({
       text: 'Draw on Me',
       fontSize: 48,
       fontVariant: 'bold',
       fontFamily: 'system-ui, -apple-system, sans-serif',
-      fill: 'white',
-      opacity: 0.5, // Increased opacity as requested
+      fill: '#48ff00',
+      opacity: 0.7, // Increased opacity as requested
       listening: false,
       visible: false
     });
