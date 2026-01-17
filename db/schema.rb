@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_15_190209) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_17_174832) do
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -377,6 +377,19 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_15_190209) do
     t.integer "visibility", default: 0
     t.index ["canva_id"], name: "index_sketch_requests_on_canva_id"
     t.index ["user_id"], name: "index_sketch_requests_on_user_id"
+  end
+
+  create_table "social_posts", force: :cascade do |t|
+    t.text "content"
+    t.text "prompt"
+    t.integer "status", default: 0
+    t.string "platform", default: "facebook"
+    t.datetime "published_at"
+    t.decimal "performance_score"
+    t.json "performance_metrics"
+    t.json "tags", default: []
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "suggested_plants", force: :cascade do |t|

@@ -84,6 +84,9 @@ Rails.application.routes.draw do
       resources :sketch_requests, only: [ :index, :edit, :destroy, :show ]
       resources :blogs, only: [ :index, :new, :create, :show ]
       resources :public_assets, only: [ :index, :create, :destroy ]
+      resources :social_posts, only: [:index, :show, :update] do
+        post :generate, on: :collection
+      end
 
       post "mask_requests/toggle_display"
       post "text_requests/toggle_display"
