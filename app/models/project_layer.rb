@@ -5,6 +5,8 @@ class ProjectLayer < ApplicationRecord
   before_create :set_layer_number
   before_destroy :nullify_current_project_layer_in_design
 
+  after_create_commit :analyze_image, if: -> { original? && image.attached? }
+
   after_commit -> {
     broadcast_refresh_to [design, :layers]
     broadcast_refresh_to [project, :layers]
@@ -73,6 +75,10 @@ class ProjectLayer < ApplicationRecord
     if design.current_project_layer_id == id
       design.update_columns(current_project_layer_id: nil)
     end
+  end
+
+  def analyze_image
+    SketchAnalysisJob.perform_later(self)
   end
 
 end

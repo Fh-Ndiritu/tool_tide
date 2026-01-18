@@ -1,5 +1,7 @@
 <% content_for :hide_navbar, true %>
 
+<div id="project_notifications" class="fixed top-0 left-0 right-0 z-[200] flex flex-col pointer-events-none"></div>
+
 <!-- Mobile Blocker (< 580px) -->
 <div class="fixed inset-0 z-[100] bg-gray-900 flex flex-col items-center justify-center p-8 text-center min-[580px]:hidden">
   <div class="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center mb-6 border border-white/10">
@@ -22,7 +24,7 @@
 <div class="fixed inset-0 w-screen h-screen bg-gray-900 text-white overflow-hidden grid grid-cols-[auto_1fr_auto] group/layout group-data-[layout-mode=overlay]/layout:block"
      data-controller="layout projects"
      data-projects-generation-url-value="<%= @active_design ? project_design_project_layers_path(@project, @active_design) : '' %>"
-     data-projects-image-cost-value="<%= GOOGLE_IMAGE_COST %>"
+     data-projects-image-cost-value="<%= GOOGLE_IMAGE_COST %>">
 
   <!-- Left Side: Sidebar + Dock Wrapper -->
   <div class="relative z-30 transition-[width] duration-300 ease-in-out w-[280px] data-[state=collapsed]:w-[60px] group/leftSidebar group-data-[layout-mode=overlay]/layout:absolute group-data-[layout-mode=overlay]/layout:left-0 group-data-[layout-mode=overlay]/layout:h-full group-data-[layout-mode=overlay]/layout:z-50"

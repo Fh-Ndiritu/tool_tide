@@ -10,7 +10,7 @@ class MaskValidatorJob < ApplicationJob
       return
     end
 
-    threshold = 5
+    threshold = 1
     if painted_percentage < threshold
       @mask_request.update!(user_error: I18n.t("permitted_errors.missing_drawing", progress: :mask_invalid))
       return

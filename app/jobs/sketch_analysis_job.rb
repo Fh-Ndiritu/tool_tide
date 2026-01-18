@@ -8,8 +8,8 @@ class SketchAnalysisJob < ApplicationJob
     end
   end
 
-  def perform(canva)
-    return unless canva.image.attached?
+  def perform(record)
+    return unless record.image.attached?
 
     # We analyse the image to see if it is a sketch/drawing, a satellite image or a real photo
     # If it is a photo, we proceed as normal
@@ -19,36 +19,45 @@ class SketchAnalysisJob < ApplicationJob
 
     response = CustomRubyLLM.context.chat.with_schema(ImageAnalysisSchema).ask(
       prompt,
-      with: canva.image
+      with: record.image
     )
 
     result = response.content.dig("result", "image_type")
 
     if result == "photo"
-      canva.update!(treat_as: :photo)
+      record.update!(treat_as: :photo) if record.respond_to?(:treat_as)
     else
       # If sketch or satellite, we just broadcast to the UI to show the notification.
       # The UI will subscribe to the turbo stream and show the overlay.
     end
 
-    broadcast_result(canva, result)
+    broadcast_result(record, result)
     result
   end
 
   private
 
-  def broadcast_result(canva, result)
+  def broadcast_result(record, result)
     # Replaces the loader with the appropriate content
     # If photo -> standard loader or nothing (as it proceeds)
     # If sketch/satellite -> notification overlay
 
-    if %w[sketch satellite].include?(result)
+    return unless %w[sketch satellite].include?(result)
+
+    if record.is_a?(Canva)
        Turbo::StreamsChannel.broadcast_update_to(
-        canva,
+        record,
         target: "sketch_notification_container",
         partial: "mask_requests/sketch_notification",
-        locals: { canva: canva, result: result }
+        locals: { canva: record, result: result }
       )
+    elsif record.is_a?(ProjectLayer)
+        Turbo::StreamsChannel.broadcast_append_to(
+          [record.design, :layers],
+          target: "project_notifications",
+          partial: "project_layers/sketch_notification",
+          locals: { result: result, project_layer: record }
+        )
     end
   end
 end
