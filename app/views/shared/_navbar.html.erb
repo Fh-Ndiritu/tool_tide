@@ -179,6 +179,13 @@
                 </div>
               <% end %>
 
+              <%= link_to admin_projects_path, class: active_link_class(admin_projects_path), data: { action: "click->dropdown#hide" } do %>
+                <div class="font-bold mb-0.5">Projects</div>
+                <div class="text-xs text-gray-500 group-hover:text-accent/80">
+                  User Projects & Results
+                </div>
+              <% end %>
+
               <%= link_to admin_social_posts_path, class: active_link_class(admin_social_posts_path), data: { action: "click->dropdown#hide" } do %>
                 <div class="font-bold mb-0.5">Social Posts</div>
                 <div class="text-xs text-gray-500 group-hover:text-accent/80">

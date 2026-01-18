@@ -85,6 +85,7 @@ Rails.application.routes.draw do
       resources :social_posts, only: [:index, :show, :update] do
         post :generate, on: :collection
       end
+      resources :projects, only: [:index, :show]
 
       post "mask_requests/toggle_display"
       post "text_requests/toggle_display"

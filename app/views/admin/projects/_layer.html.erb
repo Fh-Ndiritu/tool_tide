@@ -1,0 +1,68 @@
+<div class="relative pl-6 border-l-2 border-gray-200 ml-4 group">
+  <!-- Connector line -->
+  <div class="absolute top-8 left-0 w-6 h-0.5 bg-gray-200"></div>
+
+  <div class="border rounded-lg overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow mb-6 flex flex-col md:flex-row">
+    <!-- Image Section -->
+    <div class="w-full md:w-64 h-48 md:h-auto relative bg-gray-100 border-b md:border-b-0 md:border-r border-gray-200 flex-shrink-0">
+      <% if layer.display_image.attached? %>
+        <%= image_tag layer.display_image.variant(resize_to_limit: [400, 300]), class: "w-full h-full object-contain" %>
+      <% else %>
+        <div class="flex items-center justify-center h-full text-gray-400 text-sm">No Image</div>
+      <% end %>
+
+      <div class="absolute top-2 left-2 bg-black/60 text-white text-xs px-2 py-1 rounded backdrop-blur-sm">
+        Layer <%= layer.layer_number %>
+      </div>
+
+      <div class="absolute bottom-2 right-2 flex gap-1">
+         <% if layer.original? %>
+           <span class="px-2 py-0.5 bg-blue-500/90 text-white text-[10px] font-bold uppercase rounded">Original</span>
+         <% elsif layer.generated? %>
+           <span class="px-2 py-0.5 bg-purple-500/90 text-white text-[10px] font-bold uppercase rounded">Generated</span>
+         <% end %>
+      </div>
+    </div>
+
+    <!-- Content Section -->
+    <div class="p-4 flex-1 flex flex-col justify-center">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+           <div class="mb-3">
+             <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Type</div>
+             <div class="text-sm font-medium text-gray-900"><%= layer.layer_type.titleize %></div>
+           </div>
+
+           <div class="mb-3">
+             <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Created</div>
+             <div class="text-sm text-gray-700"><%= layer.created_at.strftime("%B %d, %H:%M") %></div>
+           </div>
+        </div>
+
+        <div>
+           <% if layer.generated? %>
+             <div class="mb-3">
+               <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Prompt</div>
+               <div class="text-sm text-gray-700 leading-snug"><%= layer.prompt.presence || "No prompt" %></div>
+             </div>
+             <% if layer.preset.present? %>
+               <div class="mb-3">
+                 <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Preset</div>
+                 <div class="text-sm font-mono bg-gray-100 px-2 py-1 rounded inline-block text-gray-700"><%= layer.preset %></div>
+               </div>
+             <% end %>
+           <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recursive Children -->
+  <% if layer.children.any? %>
+    <div class="mt-4">
+      <% layer.children.order(:created_at).each do |child| %>
+        <%= render partial: "admin/projects/layer", locals: { layer: child } %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
