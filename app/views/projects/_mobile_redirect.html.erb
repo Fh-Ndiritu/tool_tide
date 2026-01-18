@@ -1,0 +1,60 @@
+<!-- Mobile Redirection Overlay (< 580px) -->
+<div class="fixed inset-0 z-[200] bg-gray-950 text-white flex flex-col items-center justify-center p-6 text-center min-[580px]:hidden"
+     data-controller="redirect"
+     data-redirect-url-value="<%= new_canva_path %>"
+     data-redirect-seconds-value="10">
+
+  <div class="max-w-xs mx-auto space-y-8 animate-in fade-in zoom-in duration-500">
+
+    <!-- Icon/Brand Element -->
+    <div class="w-20 h-20 mx-auto relative flex items-center justify-center">
+        <!-- SVG Ring for Countdown -->
+        <svg class="transform -rotate-90 w-20 h-20 absolute inset-0">
+            <circle
+                class="text-gray-800"
+                stroke-width="4"
+                stroke="currentColor"
+                fill="transparent"
+                r="36"
+                cx="40"
+                cy="40"
+            />
+            <circle
+                data-redirect-target="countdownRing"
+                class="text-blue-500 transition-all duration-1000 ease-linear"
+                stroke-width="4"
+                stroke-dasharray="226.19"
+                stroke-dashoffset="0"
+                stroke-linecap="round"
+                stroke="currentColor"
+                fill="transparent"
+                r="36"
+                cx="40"
+                cy="40"
+            />
+        </svg>
+
+        <div class="text-2xl font-bold font-mono" data-redirect-target="counter">10</div>
+    </div>
+
+
+    <div class="space-y-4">
+        <h2 class="text-2xl font-bold tracking-tight">Project Studio</h2>
+        <p class="text-gray-400 text-sm leading-relaxed">
+        The Project Studio is available to use on desktop and larger devices.
+        <br><br>
+        For the best experience on mobile we are redirecting you to the Mask editor.
+        </p>
+    </div>
+
+    <%= link_to new_canva_path,
+        class: "block w-full py-4 bg-white text-gray-900 font-bold rounded-xl shadow-lg shadow-white/10 active:scale-95 transition-all text-sm uppercase tracking-wide",
+        data: { action: "click->redirect#redirectNow" } do %>
+        Redirect Now
+    <% end %>
+
+    <div class="text-[10px] text-gray-600 font-mono">
+        Auto-redirecting...
+    </div>
+  </div>
+</div>
