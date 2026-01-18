@@ -31,8 +31,8 @@ module SocialMedia
     private
 
     def build_context
-      last_posts = SocialPost.order(created_at: :desc).limit(5).map do |p|
-        "Post: #{p.content} | Score: #{p.performance_score || 'N/A'}"
+      last_posts = SocialPost.where.not(performance_score: nil).order(performance_score: :desc).limit(5).map do |p|
+        "Post: #{p.content} | Score: #{p.performance_score}"
       end.join("\n")
 
 
