@@ -56,7 +56,9 @@
       <!-- Copy Text Button -->
       <button
         data-controller="clipboard"
-        data-clipboard-content-value="<%= j post.content %>"
+        data-clipboard-content-value="<%= post.content %>
+
+<%= post.tags.to_a.map { |t| "#{t}" }.join(" ") %>"
         data-action="click->clipboard#copy"
         class="flex items-center justify-center gap-2 py-2 px-4 rounded-xl bg-neutral-700 hover:bg-neutral-600 transition-colors text-sm font-medium text-neutral-300">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

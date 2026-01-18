@@ -88,7 +88,9 @@
            </div>
            <button
               data-controller="clipboard"
-              data-clipboard-content-value="<%= j @social_post.content %>"
+              data-clipboard-content-value="<%= @social_post.content %>
+
+<%= @social_post.tags.to_a.map { |t| "##{t}" }.join(" ") %>"
               data-action="click->clipboard#copy"
               class="mt-4 text-accent text-sm font-bold hover:text-white transition-colors flex items-center gap-2">
              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

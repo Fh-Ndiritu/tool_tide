@@ -53,7 +53,9 @@ module SocialMedia
         Select different archetypes for variety.
         Ensure strict adherence to the JSON Output Schema.
         Hashtags must be carefully selected to maximize reach and engagement and use only one `#` symbol per tag.
+        Do not use placeholder links, use https://hadaa.pro when you need a link.
       SYSTEM
+
 
       # Using standard RubyLLM with schema
       response = RubyLLM.chat
