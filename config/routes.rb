@@ -89,6 +89,8 @@ Rails.application.routes.draw do
 
       post "mask_requests/toggle_display"
       post "text_requests/toggle_display"
+
+      resource :hn_dashboard, only: :show, controller: "hn_dashboard"
     end
 
 

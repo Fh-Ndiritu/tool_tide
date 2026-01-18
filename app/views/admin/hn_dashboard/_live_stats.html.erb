@@ -1,0 +1,19 @@
+<% if snapshot %>
+  <div class="inline-flex items-center rounded-full bg-green-50 px-3 py-1 text-sm font-medium text-green-700 ring-1 ring-inset ring-green-600/20"
+       data-latest-count="<%= snapshot.items_count %>"
+       data-latest-bucket="<%= snapshot.time_bucket %>">
+    <span class="relative flex h-2 w-2 mr-2">
+      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+      <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+    </span>
+    Last Update: <%= snapshot.created_at.strftime("%H:%M") %> (<%= snapshot.items_count %> items)
+    <span class="ml-2 text-green-800 opacity-75 border-l border-green-600/30 pl-2">
+       Next check <%= time_ago_in_words(@next_update_at) %> from now
+    </span>
+  </div>
+<% else %>
+  <div class="inline-flex items-center rounded-full bg-gray-50 px-3 py-1 text-sm font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
+    <span class="mr-2 h-2 w-2 rounded-full bg-gray-400"></span>
+    Waiting for data...
+  </div>
+<% end %>

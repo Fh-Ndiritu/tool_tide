@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_18_100310) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_18_120826) do
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -182,6 +182,18 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_18_100310) do
     t.index ["generation_type", "generation_id"], name: "index_generation_taggings_on_generation"
     t.index ["tag_id", "generation_id", "generation_type"], name: "idx_on_tag_id_generation_id_generation_type_9189069e36", unique: true
     t.index ["tag_id"], name: "index_generation_taggings_on_tag_id"
+  end
+
+  create_table "hn_activity_snapshots", force: :cascade do |t|
+    t.bigint "max_item_id", null: false
+    t.integer "items_count", default: 0, null: false
+    t.integer "day_of_week"
+    t.integer "time_bucket"
+    t.string "uuid"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["day_of_week", "time_bucket"], name: "index_hn_activity_snapshots_on_day_of_week_and_time_bucket"
+    t.index ["uuid"], name: "index_hn_activity_snapshots_on_uuid", unique: true
   end
 
   create_table "landscape_requests", force: :cascade do |t|
