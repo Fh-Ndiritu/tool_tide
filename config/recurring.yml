@@ -16,4 +16,4 @@ production:
 
   hn_poll_task:
     class: HnPollJob
-    schedule: every 2 minutes
+    schedule: every 30 minutes
