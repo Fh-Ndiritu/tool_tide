@@ -35,24 +35,11 @@ module SocialMedia
         "Post: #{p.content} | Score: #{p.performance_score}"
       end.join("\n")
 
-
-
-      features = [
-        "AI Brush: Paint materials like gravel or mulch.",
-        "Prompt Editor: Change styles instantly (Modern, Cottage, Zen).",
-        "Planting Guide: Get a shopping list of plants.",
-        "Drone View: See your garden from above.",
-        "Auto Fix: Detects issues with your garden and provides solutions you can apply with a single click."
-      ].join("\n")
-
       <<~CONTEXT
         Previous Content Performance:
         #{last_posts}
 
-
-
-        Hadaa.Pro Features:
-        #{features}
+        Hadaa.Pro link: https://hadaa.pro
       CONTEXT
     end
 
@@ -65,6 +52,7 @@ module SocialMedia
         Generate 3 viral Facebook post ideas based on the context provided.
         Select different archetypes for variety.
         Ensure strict adherence to the JSON Output Schema.
+        Hashtags must be carefully selected to maximize reach and engagement and use only one `#` symbol per tag.
       SYSTEM
 
       # Using standard RubyLLM with schema
@@ -103,6 +91,12 @@ module SocialMedia
         Rails.logger.error("Image Generation Failed for Post #{post.id}: #{e.message}")
         # We allow the post to exist without image for debugging, or we could destroy it.
       end
+
+      # Broadcast the new post to the admin dashboard
+      post.broadcast_prepend_to "social_posts",
+          target: "social_posts_grid",
+          partial: "admin/social_posts/social_post",
+          locals: { post: post }
 
       post
     end

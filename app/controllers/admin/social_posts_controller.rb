@@ -2,15 +2,15 @@ class Admin::SocialPostsController < Admin::BaseController
 
 
     def index
-      @social_posts = SocialPost.order(created_at: :desc).limit(50)
+      @social_posts = SocialPost.images_and_previews.order(created_at: :desc).limit(50)
     end
 
     def show
-      @social_post = SocialPost.find(params[:id])
+      @social_post = SocialPost.images_and_previews.find(params[:id])
     end
 
     def generate
-      SocialMedia::ContentGenerator.perform
+      SocialPostGenerationJob.perform_later
       redirect_to admin_social_posts_path, notice: "Generating posts in background..."
     rescue StandardError => e
       redirect_to admin_social_posts_path, alert: "Generation failed: #{e.message}"
