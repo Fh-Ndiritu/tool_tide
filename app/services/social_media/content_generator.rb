@@ -2,11 +2,14 @@ module SocialMedia
   class ContentGenerationSchema < RubyLLM::Schema
     array :posts do
       object do
-        string :content, description: "Engaging Facebook caption with emojis and a hook."
-        string :prompt, description: "Detailed image generation prompt for a photorealistic garden/landscape."
-        array :tags, description: "List of relevant hashtags." do
-          string :tag
-        end
+        string :internal_title, description: "Unique ID for the post"
+        string :selected_archetype, description: "The chosen archetype from the menu"
+        string :category_tag, description: "Marketing, Education, or Viral Aesthetic"
+        string :visual_description, description: "Detailed description of the image content"
+        string :image_generation_prompt, description: "Detailed prompt for 9:16 vertical image generation"
+        string :facebook_caption, description: "Full post text with hook, body, and CTA"
+        string :safe_zone_check, description: "Confirmation of text/key elements in safe zone (Yes/No)"
+        string :hashtags, description: "Space-separated hashtags string"
       end
     end
   end
@@ -54,17 +57,18 @@ module SocialMedia
     end
 
     def generate_ideas(context)
+      guidelines = File.read(Rails.root.join("app/services/social_media/prompts/facebook_guidelines.md"))
       system_prompt = <<~SYSTEM
-        You are a Social Media Manager for Hadaa.pro (Garden Design AI) with link (https://hadaa.pro).
-        Generate 3 viral Facebook post ideas.
-        Use the provided context to align with SEO and features.
-        Each post must have a caption, tags, and an image prompt.
-        ALWAYS ENSURE PHOTOREALISM IN YOUR IMAGES.
-        Each hastag can only have 1 # symbol.
+        #{guidelines}
+
+        TASK:
+        Generate 3 viral Facebook post ideas based on the context provided.
+        Select different archetypes for variety.
+        Ensure strict adherence to the JSON Output Schema.
       SYSTEM
 
       # Using standard RubyLLM with schema
-      response = RubyLLM.chat()
+      response = RubyLLM.chat
                         .with_schema(ContentGenerationSchema)
                         .ask(context + "\n\n" + system_prompt)
 
@@ -72,10 +76,14 @@ module SocialMedia
     end
 
     def create_post(idea)
+      # Split hashtags string into an array if needed, or keep as string depending on model
+      # Assuming tags is an array, we split the string.
+      tags_array = idea["hashtags"].scan(/#\w+/)
+
       post = SocialPost.create!(
-        content: idea["content"],
-        prompt: idea["prompt"],
-        tags: idea["tags"],
+        content: idea["facebook_caption"],
+        prompt: idea["image_generation_prompt"],
+        tags: tags_array,
         platform: 'facebook',
         status: :generated
       )
@@ -83,7 +91,7 @@ module SocialMedia
       # Generate Image
       retry_count = 0
       begin
-        image_blob = ImageGenerator.perform(idea["prompt"])
+        image_blob = ImageGenerator.perform(idea["image_generation_prompt"])
         if image_blob
           post.image.attach(
             io: image_blob,

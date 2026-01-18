@@ -19,7 +19,7 @@ class Admin::SocialPostsController < Admin::BaseController
     def update
       @social_post = SocialPost.find(params[:id])
       if @social_post.update(social_post_params)
-        PerformanceAnalyzer.perform(@social_post)
+        SocialMedia::PerformanceAnalyzer.perform(@social_post)
         redirect_to admin_social_post_path(@social_post), notice: "Screenshot uploaded. Analyzing..."
       else
         render :show, alert: "Failed to upload."
