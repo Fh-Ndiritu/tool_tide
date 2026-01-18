@@ -38,7 +38,6 @@ Rails.application.routes.draw do
       get "features/location-plant-suggestions", to: "features#location_plant_suggestions", as: :features_location_plant_suggestions
       get "features/drone-view-3d-perspective", to: "features#drone_view_3d_perspective", as: :features_drone_view_3d_perspective
       get "features/shopping-list-planting-guide", to: "features#shopping_list_planting_guide", as: :features_shopping_list_planting_guide
-      get "features/sketch-to-3d-rendering", to: "features#sketch_to_3d_rendering", as: :features_sketch_to_3d_rendering
       get "features/intuitive-onboarding", to: "features#intuitive_onboarding", as: :features_intuitive_onboarding
 
       # Explore/Gallery
@@ -81,7 +80,6 @@ Rails.application.routes.draw do
       resources :canvas, only: %i[create show]
       resources :text_requests, only: [ :index, :edit, :destroy, :show ]
       resources :mask_requests, only: [ :index, :edit, :destroy ]
-      resources :sketch_requests, only: [ :index, :edit, :destroy, :show ]
       resources :blogs, only: [ :index, :new, :create, :show ]
       resources :public_assets, only: [ :index, :create, :destroy ]
       resources :social_posts, only: [:index, :show, :update] do
@@ -90,7 +88,6 @@ Rails.application.routes.draw do
 
       post "mask_requests/toggle_display"
       post "text_requests/toggle_display"
-      post "sketch_requests/toggle_display"
     end
 
 
@@ -102,12 +99,8 @@ Rails.application.routes.draw do
     # For now, let them 410 if not defined, or we can redirect if critical.
     # User said "disable access to all landscaping guides prefix/routes". Matches 410.
 
-    resources :canvas, shallow: true, except: [ :index, :edit, :show ] do
-      resources :sketch_requests, only: %i[create show] do
-        post :new_mask_request, on: :member
-      end
-
-      resources :mask_requests do
+      resources :canvas, shallow: true, except: [ :index, :edit, :show ] do
+        resources :mask_requests do
         collection do
           patch :update_location
         end

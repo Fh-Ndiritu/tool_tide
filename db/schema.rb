@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_17_174832) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_18_100310) do
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -364,21 +364,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_17_174832) do
     t.index ["uuid"], name: "index_public_assets_on_uuid"
   end
 
-  create_table "sketch_requests", force: :cascade do |t|
-    t.integer "canva_id", null: false
-    t.integer "progress", default: 0
-    t.string "error_msg"
-    t.string "user_error"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.text "analysis"
-    t.string "recommended_angle"
-    t.integer "user_id", null: false
-    t.integer "visibility", default: 0
-    t.index ["canva_id"], name: "index_sketch_requests_on_canva_id"
-    t.index ["user_id"], name: "index_sketch_requests_on_user_id"
-  end
-
   create_table "social_posts", force: :cascade do |t|
     t.text "content"
     t.text "prompt"
@@ -516,8 +501,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_17_174832) do
   add_foreign_key "projects", "designs", column: "current_design_id"
   add_foreign_key "projects", "mask_requests"
   add_foreign_key "projects", "users"
-  add_foreign_key "sketch_requests", "canvas"
-  add_foreign_key "sketch_requests", "users"
   add_foreign_key "suggested_plants", "landscape_requests"
   add_foreign_key "text_requests", "users"
   add_foreign_key "tool_calls", "messages"

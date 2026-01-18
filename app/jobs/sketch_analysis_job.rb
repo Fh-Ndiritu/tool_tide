@@ -4,18 +4,18 @@ class SketchAnalysisJob < ApplicationJob
 
   class ImageAnalysisSchema < RubyLLM::Schema
     object :result do
-      string :image_type, description: "The type of the image", enum: %w[photo sketch]
+      string :image_type, description: "The type of the image", enum: %w[photo sketch satellite]
     end
   end
 
   def perform(canva)
     return unless canva.image.attached?
 
-    # We analyse the image to see if it is a sketch/drawing or a real photo
+    # We analyse the image to see if it is a sketch/drawing, a satellite image or a real photo
     # If it is a photo, we proceed as normal
-    # If it is a sketch, we update the UI to show the sketch options
+    # If it is a sketch or satellite, we update the UI to show the notification
 
-    prompt = "Analyze this image and determine if it is a real photo or a sketch/drawing/architecture plan. Return 'photo' or 'sketch'."
+    prompt = "Analyze this image and determine if it is a real photo, a sketch/drawing/architecture plan, or a satellite/aerial map view. Return 'photo', 'sketch' or 'satellite'."
 
     response = CustomRubyLLM.context.chat.with_schema(ImageAnalysisSchema).ask(
       prompt,
@@ -27,7 +27,7 @@ class SketchAnalysisJob < ApplicationJob
     if result == "photo"
       canva.update!(treat_as: :photo)
     else
-      # If sketch, we don't set treat_as yet. We broadcast to the UI to show the overlay.
+      # If sketch or satellite, we just broadcast to the UI to show the notification.
       # The UI will subscribe to the turbo stream and show the overlay.
     end
 
@@ -40,14 +40,14 @@ class SketchAnalysisJob < ApplicationJob
   def broadcast_result(canva, result)
     # Replaces the loader with the appropriate content
     # If photo -> standard loader or nothing (as it proceeds)
-    # If sketch -> sketch overlay
+    # If sketch/satellite -> notification overlay
 
-    if result == "sketch"
+    if %w[sketch satellite].include?(result)
        Turbo::StreamsChannel.broadcast_update_to(
         canva,
         target: "sketch_notification_container",
         partial: "mask_requests/sketch_notification",
-        locals: { canva: canva }
+        locals: { canva: canva, result: result }
       )
     end
   end
