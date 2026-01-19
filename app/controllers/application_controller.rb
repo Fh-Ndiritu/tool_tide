@@ -8,7 +8,6 @@ class ApplicationController < ActionController::Base
   before_action :block_singapore_users
   before_action :enforce_onboarding_survey
   before_action :redirect_to_canva, if: -> { user_signed_in? && devise_controller? }
-  before_action :decorate_user, if: ->{ user_signed_in? }
 
   def after_sign_in_path_for(resource)
     if resource.is_a?(User) && resource.admin?
@@ -36,9 +35,15 @@ class ApplicationController < ActionController::Base
     ROBOTS
   end
 
-  def decorate_user
-    @user =UserDecorator.new(current_user)
+  def current_user
+    raw_user = super
+
+    return nil unless raw_user
+
+    @_decorated_current_user ||= UserDecorator.new(raw_user)
   end
+
+  helper_method :current_user
 
   private
 
