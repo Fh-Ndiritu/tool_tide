@@ -11,9 +11,9 @@ module Designable
     )
   end
 
-  def gcp_connection
+  def gcp_connection(model: "gemini-2.5-flash-image")
     Faraday.new(
-      url: "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent",
+      url: "https://generativelanguage.googleapis.com/v1beta/models/#{model}:generateContent",
       headers: {
         "Content-Type" => "application/json",
         "x-goog-api-key" => ENV["GEMINI_API_KEYS"].split("____").sample
@@ -29,10 +29,10 @@ module Designable
     end
   end
 
-  def fetch_gcp_response(payload, max_retries = 3)
+  def fetch_gcp_response(payload, max_retries = 3, model: "gemini-2.5-flash-image")
     retries = 0
     begin
-      response = gcp_connection.post("") do |req|
+      response = gcp_connection(model: model).post("") do |req|
         req.body = payload.to_json
       end
       JSON.parse(response.body)
@@ -45,8 +45,8 @@ module Designable
   end
 
 
-  def gcp_payload(prompt:, image:)
-    {
+  def gcp_payload(prompt:, image:, config: {})
+    payload = {
       "contents" => [
         {
           "parts" => [
@@ -64,6 +64,12 @@ module Designable
         }
       ]
     }
+
+    if config.present?
+      payload.merge!(config)
+    end
+
+    payload
   end
 
   # rotated_landscape_prompt and aerial_landscape_prompt removed as we now generate 3 variations of the same prompt.

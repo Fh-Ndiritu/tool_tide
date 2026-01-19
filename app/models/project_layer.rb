@@ -32,7 +32,7 @@ class ProjectLayer < ApplicationRecord
 
   enum :progress, {
     preparing: 0,
-    main_view: 10,
+    generating: 10,
     processed: 20,
     complete: 30,
     failed: 40,
@@ -48,7 +48,8 @@ class ProjectLayer < ApplicationRecord
     not_specified: 0,
     style_preset: 10,
     smart_fix: 20,
-    autofix: 30
+    autofix: 30,
+    upscale: 40
   }
 
   validates :layer_type, presence: true

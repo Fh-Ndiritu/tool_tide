@@ -28,11 +28,11 @@ class ProjectGenerationJob < ApplicationJob
   def perform(layer_id)
     layer = ProjectLayer.find(layer_id)
     user = layer.project.user
-    cost = GOOGLE_IMAGE_COST
+    cost = layer.generation_type == "upscale" ? GOOGLE_UPSCALE_COST : GOOGLE_IMAGE_COST
 
     charge_user!(user, layer, cost)
     layer.update!(progress: :processed)
-    layer.main_view!
+    layer.generating!
     broadcast_update(layer)
 
     has_mask = ProjectOverlayGenerator.perform(layer)
@@ -74,7 +74,7 @@ class ProjectGenerationJob < ApplicationJob
     return unless layer
 
     user = layer.project.user
-    cost = GOOGLE_IMAGE_COST
+    cost = layer.generation_type == "upscale" ? GOOGLE_UPSCALE_COST : GOOGLE_IMAGE_COST
 
     Rails.logger.error("ProjectGenerationJob Failed permanently: #{error.message}")
 

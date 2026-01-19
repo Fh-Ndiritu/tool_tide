@@ -23,8 +23,21 @@ class ProjectGeneratorService
 
     input_image = resolve_input_image
 
-    payload = gcp_payload(prompt: prompt, image: input_image)
-    response = fetch_gcp_response(payload)
+    model = "gemini-2.5-flash-image"
+    config = {}
+    if @layer.generation_type == "upscale"
+      config = {
+        "generationConfig" => {
+          "responseModalities" => [ "TEXT", "IMAGE" ],
+          "imageConfig" => { "imageSize" => "4K" }
+        }
+      }
+      model = "gemini-3-pro-image-preview"
+    end
+
+    payload = gcp_payload(prompt: prompt, image: input_image, config: config)
+
+    response = fetch_gcp_response(payload, model: model)
     blob = save_gcp_results(response)
 
     @layer.result_image.attach(blob)
@@ -36,6 +49,8 @@ class ProjectGeneratorService
   private
 
   def construct_prompt
+    return "Upscale this image to 4k resolution." if @layer.generation_type == "upscale"
+
     prompts_config = YAML.load_file(Rails.root.join("config/prompts.yml"))
     base = if @layer.preset.present?
       load_preset_prompt(@layer.preset, prompts_config)

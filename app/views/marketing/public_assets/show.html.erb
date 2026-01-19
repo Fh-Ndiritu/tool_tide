@@ -8,18 +8,36 @@
 
     <div class="p-0 bg-gray-900 flex justify-center">
       <% if @public_asset.image.attached? %>
-        <%= image_tag @public_asset.image, class: "max-h-[80vh] w-auto max-w-full object-contain", alt: "Hadaa AI Landscape Design Asset - #{@public_asset.name}" %>
+        <% if @public_asset.image.content_type.start_with?("video/") %>
+          <video controls class="max-h-[80vh] w-auto max-w-full outline-none" preload="metadata">
+            <source src="<%= url_for(@public_asset.image) %>" type="<%= @public_asset.image.content_type %>">
+            Your browser does not support the video tag.
+          </video>
+        <% else %>
+          <%= image_tag @public_asset.image, class: "max-h-[80vh] w-auto max-w-full object-contain", alt: "Hadaa AI Landscape Design Asset - #{@public_asset.name}" %>
+        <% end %>
       <% else %>
         <div class="p-12 text-center text-gray-500">
-          Image not available
+          Media not available
         </div>
       <% end %>
     </div>
 
-    <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-center">
+    <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex items-center justify-between">
         <a href="<%= root_path %>" class="text-sm text-gray-600 hover:text-indigo-600 font-medium">
             Powered by Hadaa AI Landscaper
         </a>
+
+        <% if @public_asset.image.attached? %>
+          <%= link_to rails_blob_path(@public_asset.image, disposition: "attachment"),
+              class: "inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-md transition-colors shadow-sm",
+              data: { turbo: false } do %>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+            </svg>
+            Download
+          <% end %>
+        <% end %>
     </div>
   </div>
 </div>

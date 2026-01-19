@@ -18,7 +18,7 @@ RSpec.describe ProjectLayersController, type: :controller do
 
   describe "GET #show" do
     it "returns success and renders the show template" do
-      get :show, params: { project_id: project.id, design_id: design.id, id: layer.id }
+      get :show, params: { project_id: project.id, design_id: design.id, id: layer.id }, format: :turbo_stream
       expect(response).to be_successful
       expect(response).to render_template(:show)
     end

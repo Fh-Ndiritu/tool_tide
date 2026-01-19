@@ -4,7 +4,7 @@ RubyLLM.configure do |config|
   config.gemini_api_key = ENV["GEMINI_API_KEY"]
   config.mistral_api_key = ENV["MISTRAL_API_KEY"]
 
-  config.default_model = "gemini-2.0-flash"
+  config.default_model = "gemini-2.5-flash"
 
   config.request_timeout = 300
   config.max_retries = 4
@@ -15,7 +15,7 @@ RubyLLM.configure do |config|
   config.retry_interval_randomness = 0.5 # Jitter to prevent thundering herd (default: 0.5)
 end
 
-class CustomRubyLLM
+class CustomRubyLLM´
   attr_accessor :context
 
   def initialize(*_params)
