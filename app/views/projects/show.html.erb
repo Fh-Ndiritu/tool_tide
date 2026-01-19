@@ -349,6 +349,7 @@
             </svg>
           </button>
 
+          <!--
           <button class="p-2.5 rounded-xl hover:bg-white/10 text-gray-300 hover:text-white transition-all"
                   data-action="click->projects#handleDockClick"
                   data-tab-name="Export tools"
@@ -357,6 +358,7 @@
               <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
             </svg>
           </button>
+          -->
      </div>
 
     <!-- Expanded Content -->
@@ -394,11 +396,13 @@
                   data-action="tools#switch click->projects#updateBrushHint">
             AutoFix
           </button>
+           <!--
            <button class="flex-1 py-3 text-sm font-medium border-b-2 text-gray-300 border-transparent hover:text-gray-200 transition-colors"
                   data-tools-target="tab"
                   data-action="tools#switch click->projects#updateBrushHint">
             Export tools
           </button>
+          -->
        </div>
 
        <!-- Content Area -->
@@ -542,40 +546,40 @@
           </div>
            </div>
 
-           <!-- Tab 4: Export Tools -->
-           <div data-tools-target="panel" class="h-full relative hidden overflow-hidden">
-             <div class="absolute inset-0 overflow-y-auto p-4 space-y-4 premium-scrollbar">
-                <input type="hidden" name="generation_type" value="upscale">
-                <!-- Warning -->
-                <div class="bg-red-500/10 border border-red-500/20 rounded-xl p-4">
-                  <div class="flex items-start gap-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-red-400 mt-0.5">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
-                    </svg>
-                    <div class="space-y-1">
-                      <p class="text-sm font-medium text-red-200">High Cost Action</p>
-                      <p class="text-xs text-red-300/80 leading-relaxed">
-                        This tool uses advanced computation to upscale your layer to 4k.
-                        It costs <strong><%= GOOGLE_UPSCALE_COST %> credits</strong>.
-                        Only use this when you are completely satisfied with your design.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Action -->
-                 <div class="py-4">
-                   <button class="w-full py-4 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-xl shadow-lg shadow-amber-900/30 transition-all flex items-center justify-center gap-3 group"
-                           data-action="click->projects#generate"
-                           data-projects-target="generateButton">
-                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 group-hover:scale-110 transition-transform">
-                       <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15" />
+            <!-- Tab 4: Export Tools -->
+            <!--
+            <div data-tools-target="panel" class="h-full relative hidden overflow-hidden">
+              <div class="absolute inset-0 overflow-y-auto p-4 space-y-4 premium-scrollbar">
+                 <input type="hidden" name="generation_type" value="upscale">
+                 <div class="bg-red-500/10 border border-red-500/20 rounded-xl p-4">
+                   <div class="flex items-start gap-3">
+                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-red-400 mt-0.5">
+                       <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
                      </svg>
-                     Upscale to 4k
-                   </button>
+                     <div class="space-y-1">
+                       <p class="text-sm font-medium text-red-200">High Cost Action</p>
+                       <p class="text-xs text-red-300/80 leading-relaxed">
+                         This tool uses advanced computation to upscale your layer to 4k.
+                         It costs <strong><%= GOOGLE_UPSCALE_COST %> credits</strong>.
+                         Only use this when you are completely satisfied with your design.
+                       </p>
+                     </div>
+                   </div>
                  </div>
-             </div>
-           </div>
+
+                  <div class="py-4">
+                    <button class="w-full py-4 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-xl shadow-lg shadow-amber-900/30 transition-all flex items-center justify-center gap-3 group"
+                            data-action="click->projects#generate"
+                            data-projects-target="generateButton">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 group-hover:scale-110 transition-transform">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15" />
+                      </svg>
+                      Upscale to 4k
+                    </button>
+                  </div>
+              </div>
+            </div>
+            -->
 
         </div>
        </div>
