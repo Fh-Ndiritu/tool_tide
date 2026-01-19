@@ -1,6 +1,7 @@
 <div class="min-h-screen bg-gray-50 py-8"
      data-controller="hn-dashboard"
-     data-hn-dashboard-averages-value="<%= @averages.to_json %>"
+     data-hn-dashboard-averages-day-value="<%= @averages_day_of_week.to_json %>"
+     data-hn-dashboard-averages-time-value="<%= @averages_time_of_day.to_json %>"
      data-hn-dashboard-today-value="<%= @todays_snapshots.to_json %>">
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

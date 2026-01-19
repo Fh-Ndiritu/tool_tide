@@ -4,7 +4,8 @@ import Chart from "chart.js/auto"
 export default class extends Controller {
   static targets = ["canvas", "stats"]
   static values = {
-    averages: Object,
+    averagesDay: Object,
+    averagesTime: Object,
     today: Object
   }
 
@@ -16,20 +17,37 @@ export default class extends Controller {
     const ctx = this.canvasTarget.getContext("2d")
 
     // Prepare Data
-    // Averages: Key is HHMM (0, 30, 100 ... 2330). Need to sort labels.
-    const allTimeBuckets = Object.keys(this.averagesValue).map(Number).sort((a, b) => a - b)
+    // Backend sends data keys as UTC integer HHMM (e.g. 1430).
+    const utcBuckets = Object.keys(this.averagesDayValue).map(Number)
 
-    // Format labels (HH:MM)
-    const labels = allTimeBuckets.map(t => {
-      const h = Math.floor(t / 100).toString().padStart(2, '0')
-      const m = (t % 100).toString().padStart(2, '0')
-      return `${h}:${m}`
+    // Helper to Convert UTC HHMM -> Local HH:MM string and sortable value
+    const bucketData = utcBuckets.map(utc => {
+      const h = Math.floor(utc / 100)
+      const m = utc % 100
+
+      const date = new Date()
+      date.setUTCHours(h, m, 0, 0)
+
+      // Local time buckets for sorting (hours * 60 + mins)
+      const localMinutes = date.getHours() * 60 + date.getMinutes()
+
+      // Label
+      const label = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })
+
+      return { utc, localMinutes, label }
     })
 
-    const avgData = allTimeBuckets.map(t => this.averagesValue[t] || 0)
+    // Sort by local time
+    bucketData.sort((a, b) => a.localMinutes - b.localMinutes)
 
-    // Today: might be partial. Map to same buckets.
-    const todayData = allTimeBuckets.map(t => this.todayValue[t] || null)
+    const labels = bucketData.map(b => b.label)
+
+    // Map data using the *sorted* original UTC keys
+    const avgDayData = bucketData.map(b => this.averagesDayValue[b.utc] || 0)
+    const avgTimeData = bucketData.map(b => this.averagesTimeValue[b.utc] || 0)
+
+    // Today: might be partial.
+    const todayData = bucketData.map(b => this.todayValue[b.utc] || null)
     // using null to break line if we haven't reached that time yet?
     // Or 0? If it's "future", better be null.
     // Assuming backend provided todayValue for *past* buckets only.
@@ -49,14 +67,26 @@ export default class extends Controller {
         labels: labels,
         datasets: [
           {
-            label: 'Historical Average',
-            data: avgData,
+            label: 'Avg (This Day)',
+            data: avgDayData,
             borderColor: '#3b82f6', // blue-500
             backgroundColor: gradientAvg,
             borderWidth: 2,
             pointRadius: 0,
             pointHoverRadius: 4,
-            fill: true,
+            fill: false,
+            tension: 0.4
+          },
+          {
+            label: 'Avg (All Time)',
+            data: avgTimeData,
+            borderColor: '#8b5cf6', // violet-500
+            backgroundColor: 'transparent',
+            borderWidth: 2,
+            pointRadius: 0,
+            pointHoverRadius: 4,
+            borderDash: [5, 5],
+            fill: false,
             tension: 0.4
           },
           {
@@ -149,15 +179,24 @@ export default class extends Controller {
   addDataPoint(timeBucket, count) {
     if (!this.chart) return
 
-    // Find index of bucket
-    // We assume buckets are fixed (0, 30, ... 2330).
-    // Re-calculating index is safest.
-    const allTimeBuckets = Object.keys(this.averagesValue).map(Number).sort((a, b) => a - b)
-    const index = allTimeBuckets.indexOf(timeBucket)
+    // Re-generate the sorted order to find the correct index for this UTC bucket
+    const utcBuckets = Object.keys(this.averagesDayValue).map(Number)
+    const bucketData = utcBuckets.map(utc => {
+      const h = Math.floor(utc / 100)
+      const m = utc % 100
+      const date = new Date()
+      date.setUTCHours(h, m, 0, 0)
+      const localMinutes = date.getHours() * 60 + date.getMinutes()
+      return { utc, localMinutes }
+    })
+    bucketData.sort((a, b) => a.localMinutes - b.localMinutes)
+
+    // Find index of the incoming UTC bucket
+    const index = bucketData.findIndex(b => b.utc === timeBucket)
 
     if (index !== -1) {
-      // Update Today's dataset (index 1)
-      this.chart.data.datasets[1].data[index] = count
+      // Update Today's dataset (index 2)
+      this.chart.data.datasets[2].data[index] = count
       this.chart.update()
     }
   }

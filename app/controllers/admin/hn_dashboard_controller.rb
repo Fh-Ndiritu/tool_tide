@@ -1,13 +1,21 @@
 module Admin
   class HnDashboardController < BaseController
     def show
-      # 1. Historical Data (Average per time bucket for current day)
-      # We want a line chart of averages for today's day_of_week
-      day = Time.current.wday
+      # 1. Historical Data
 
-      # Group by time_bucket, calculate average items_count
-      # Result: { 0 => 12.5, 30 => 14.0, ... 2330 => ... }
-      @averages = HnActivitySnapshot.where(day_of_week: day)
+      # A. Average for this Day of Week (excluding today)
+      # 1. Historical Data
+
+      # A. Average for this Day of Week (excluding today)
+      @averages_day_of_week = HnActivitySnapshot.where(day_of_week: Time.current.wday)
+                                    .where("created_at < ?", Time.current.beginning_of_day)
+                                    .group(:time_bucket)
+                                    .average(:items_count)
+                                    .transform_values(&:to_f)
+                                    .sort.to_h
+
+      # B. Average for this Time of Day (All days, excluding today)
+      @averages_time_of_day = HnActivitySnapshot.where("created_at < ?", Time.current.beginning_of_day)
                                     .group(:time_bucket)
                                     .average(:items_count)
                                     .transform_values(&:to_f)
@@ -28,7 +36,7 @@ module Admin
       @last_snapshot = HnActivitySnapshot.order(created_at: :desc).first
       if @last_snapshot
         @current_velocity = @last_snapshot.items_count
-        @current_avg = @averages[@last_snapshot.time_bucket] || 0
+        @current_avg = @averages_day_of_week[@last_snapshot.time_bucket] || 0
 
         # Traffic Load: (Current / Avg) * 100
         if @current_avg.positive?
