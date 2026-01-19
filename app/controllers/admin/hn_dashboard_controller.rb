@@ -4,9 +4,6 @@ module Admin
       # 1. Historical Data
 
       # A. Average for this Day of Week (excluding today)
-      # 1. Historical Data
-
-      # A. Average for this Day of Week (excluding today)
       @averages_day_of_week = HnActivitySnapshot.where(day_of_week: Time.current.wday)
                                     .where("created_at < ?", Time.current.beginning_of_day)
                                     .group(:time_bucket)

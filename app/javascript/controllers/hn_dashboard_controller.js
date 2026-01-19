@@ -18,7 +18,13 @@ export default class extends Controller {
 
     // Prepare Data
     // Backend sends data keys as UTC integer HHMM (e.g. 1430).
-    const utcBuckets = Object.keys(this.averagesDayValue).map(Number)
+    // Combine keys from all datasets to ensure we show a full X-axis
+    const allKeys = new Set([
+      ...Object.keys(this.averagesDayValue),
+      ...Object.keys(this.averagesTimeValue),
+      ...Object.keys(this.todayValue)
+    ])
+    const utcBuckets = Array.from(allKeys).map(Number)
 
     // Helper to Convert UTC HHMM -> Local HH:MM string and sortable value
     const bucketData = utcBuckets.map(utc => {
@@ -180,7 +186,16 @@ export default class extends Controller {
     if (!this.chart) return
 
     // Re-generate the sorted order to find the correct index for this UTC bucket
-    const utcBuckets = Object.keys(this.averagesDayValue).map(Number)
+    // Must use same union logic as initChart to match the X-axis
+    const allKeys = new Set([
+      ...Object.keys(this.averagesDayValue),
+      ...Object.keys(this.averagesTimeValue),
+      ...Object.keys(this.todayValue)
+    ])
+    // Ensure the new point's bucket is included if it wasn't already (unlikely for fixed buckets but safe)
+    allKeys.add(String(timeBucket))
+
+    const utcBuckets = Array.from(allKeys).map(Number)
     const bucketData = utcBuckets.map(utc => {
       const h = Math.floor(utc / 100)
       const m = utc % 100
