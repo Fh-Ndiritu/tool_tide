@@ -60,6 +60,8 @@ env:
     - IPINFO_API_TOKEN
     - RECAPTCHA_SITE_KEY
     - RECAPTCHA_SECRET_KEY
+    - TELEGRAM_CHAT_ID
+    - TELEGRAM_BOT_TOKEN
 
   clear:
     # Run the Solid Queue Supervisor inside the web server's Puma process to do jobs.
