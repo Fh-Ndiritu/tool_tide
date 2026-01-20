@@ -349,21 +349,33 @@ export default class extends Controller {
       }
     }
 
-    // Variations (Applicable to both)
-    if (this.hasVariationsInputTarget) {
-      formData.append("variations", this.variationsInputTarget.value)
+    // Determine Active Panel to scope inputs (Generation Type & Variations)
+    let activePanel = null
+    if (this.toolsController) {
+      activePanel = this.toolsController.panelTargets.find(panel => !panel.classList.contains('hidden'))
     }
 
-    // Determine Generation Type from the active panel's hidden input
-    if (this.toolsController) {
-      // Find the visible panel (the one without 'hidden' class)
-      const activePanel = this.toolsController.panelTargets.find(panel => !panel.classList.contains('hidden'))
-      if (activePanel) {
+    // Variations: Prefer input inside active panel, fallback to generic target
+    let variationsInput = null
+    if (activePanel) {
+        variationsInput = activePanel.querySelector('[data-projects-target="variationsInput"]')
+    }
+
+    // If not found in active panel (or no active panel), try the first generic target as fallback
+    if (!variationsInput && this.hasVariationsInputTarget) {
+        variationsInput = this.variationsInputTarget
+    }
+
+    if (variationsInput) {
+      formData.append("variations", variationsInput.value)
+    }
+
+    // Generation Type
+    if (activePanel) {
         const typeInput = activePanel.querySelector('input[name="generation_type"]')
         if (typeInput) {
           formData.append("generation_type", typeInput.value)
         }
-      }
     }
 
     // Fallback if not found (though logic above should cover it)
@@ -607,6 +619,9 @@ export default class extends Controller {
       this.aiAssistToggleTarget.checked = true
       this.toggleAiAssistLabel()
     }
+
+    // 5. Validate Inputs to update button state
+    this.validateInputs()
   }
 
   redoFix(event) {

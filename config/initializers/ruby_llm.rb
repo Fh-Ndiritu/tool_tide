@@ -15,7 +15,7 @@ RubyLLM.configure do |config|
   config.retry_interval_randomness = 0.5 # Jitter to prevent thundering herd (default: 0.5)
 end
 
-class CustomRubyLLM´
+class CustomRubyLLM
   attr_accessor :context
 
   def initialize(*_params)

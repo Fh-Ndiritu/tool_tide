@@ -19,6 +19,7 @@ class ProjectGenerationJob < ApplicationJob
         error_msg: error.message,
         user_msg: "Insufficient credits. Please top up to continue."
       )
+      job.send(:notify_telegram, error, layer)
     else
       job.send(:handle_final_failure, error)
     end
@@ -31,7 +32,6 @@ class ProjectGenerationJob < ApplicationJob
     cost = layer.generation_type == "upscale" ? GOOGLE_UPSCALE_COST : GOOGLE_IMAGE_COST
 
     charge_user!(user, layer, cost)
-    layer.update!(progress: :processed)
     layer.generating!
     broadcast_update(layer)
 
@@ -104,6 +104,21 @@ class ProjectGenerationJob < ApplicationJob
     # Always mark layer as failed (outside the lock)
     layer.update(progress: :failed, error_msg: error.message)
     broadcast_update(layer)
+    notify_telegram(error, layer)
+  end
+
+  def notify_telegram(error, layer)
+    user = layer.project.user
+    message = "❌ **Project Generation Error**\n\n" \
+              "**User:** #{user.email} (ID: #{user.id})\n" \
+              "**Layer ID:** #{layer.id}\n" \
+              "**Error Type:** #{error.class.name}\n" \
+              "**Message:** #{error.message}\n" \
+              "**Prompt:** #{layer.prompt&.truncate(100) || 'N/A'}"
+
+    TelegramNotifier::Dispatcher.new.dispatch(message)
+  rescue StandardError => e
+    Rails.logger.error("Failed to send Telegram notification: #{e.message}")
   end
 
   def broadcast_update(layer)
