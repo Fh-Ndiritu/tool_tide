@@ -9,8 +9,6 @@
     bg-neutral-900 text-white min-h-screen font-sans selection:bg-accent
     selection:text-black
   "
-  itemscope
-  itemtype="https://schema.org/FAQPage"
 >
   <%# --- Hero Section --- %>
   <section class="relative py-20 lg:py-32 overflow-hidden">
@@ -96,12 +94,9 @@
                 open:bg-neutral-800 open:border-accent/50 open:shadow-2xl open:shadow-accent/5
                 open:ring-1 open:ring-white/5
               "
-              itemscope
-              itemprop="mainEntity"
-              itemtype="https://schema.org/Question"
             >
               <summary class="flex items-center justify-between cursor-pointer p-6 list-none [&::-webkit-details-marker]:hidden focus:outline-none focus:ring-2 focus:ring-accent focus:ring-opacity-50 rounded-2xl">
-                <h3 class="font-semibold text-xl text-white pr-6 transition-colors group-hover:text-accent" itemprop="name">
+                <h3 class="font-semibold text-xl text-white pr-6 transition-colors group-hover:text-accent">
                   <%= item[:question] %>
                 </h3>
                 <div class="text-accent transition-transform duration-300 group-open:rotate-180 flex-shrink-0">
@@ -112,11 +107,8 @@
               </summary>
               <div
                 class=" py-4 px-6 pb-6 text-neutral-300 leading-relaxed animate-fade-in-down"
-                itemscope
-                itemprop="acceptedAnswer"
-                itemtype="https://schema.org/Answer"
               >
-                <div itemprop="text">
+                <div>
                   <p><%= item[:answer].html_safe %></p>
                 </div>
               </div>
