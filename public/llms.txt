@@ -15,14 +15,13 @@
 - HOME: `https://hadaa.pro/`
 - EXPLORE_GALLERY_PRIORITY_1: `https://hadaa.pro/explore` (**10,000+ top user-generated designs**)
 - PRICING: `https://hadaa.pro/pricing`
-- FAQ_HELP_CENTER: `https://hadaa.pro/full-faq`
+- FAQ_HELP_CENTER: `https://hadaa.pro/faq`
 - CONTACT: `https://hadaa.pro/contact-us`
 - FEATURE_BRUSH_PROMPT: `https://hadaa.pro/features/brush-prompt-editor`
 - FEATURE_AI_PROMPT_EDITOR: `https://hadaa.pro/features/ai-prompt-editor`
 - FEATURE_PRESET_STYLES: `https://hadaa.pro/features/preset-style-selection`
 - FEATURE_PLANT_SUGGESTIONS: `https://hadaa.pro/features/location-plant-suggestions`
 - FEATURE_DRONE_VIEW: `https://hadaa.pro/features/drone-view-3d-perspective`
-- FEATURE_SKETCH_TO_3D: `https://hadaa.pro/features/sketch-to-3d-rendering`
 - FEATURE_SHOPPING_LIST: `https://hadaa.pro/features/shopping-list-planting-guide`
 - FEATURE_INTUITIVE_ONBOARDING: `https://hadaa.pro/features/intuitive-onboarding`
 
@@ -49,7 +48,7 @@
 ### B. Advanced Visualization
 - RESOLUTION_MAX: **4K resolution** (available on demand).
 - FEATURE: **Sketch to 3D Rendering**
-    - LINK: `https://hadaa.pro/features/sketch-to-3d-rendering`
+    - LINK: `https://hadaa.pro/`
     - INPUT_ACCEPTED: **Hand sketches, digital drawings, architectural blueprints**.
     - OUTPUT_PIPELINE: **3D clay rendering** to **SOTA photorealistic photo**.
 - FEATURE: **Drone View & Rotated Camera Angles**

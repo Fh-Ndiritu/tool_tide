@@ -12,7 +12,7 @@ SitemapGenerator::Sitemap.create do
   # Static Marketing Pages
   add privacy_policy_path, priority: 0.5, changefreq: "monthly"
   add contact_us_path, priority: 0.5, changefreq: "monthly"
-  add full_faq_path, priority: 0.6, changefreq: "monthly"
+  add faq_path, priority: 0.8, changefreq: "monthly"
 
   add pricing_path, priority: 0.8, changefreq: "weekly"
 
@@ -22,12 +22,11 @@ SitemapGenerator::Sitemap.create do
   # Features Features
   add "/features/brush-prompt-editor", priority: 0.8, changefreq: "weekly"
   add "/features/ai-prompt-editor", priority: 0.8, changefreq: "weekly"
-  add "/features/preset-style-selection", priority: 0.8, changefreq: "weekly"
+  add "/features/intuitive-onboarding", priority: 0.8, changefreq: "weekly"
   add "/features/location-plant-suggestions", priority: 0.8, changefreq: "weekly"
+  add "/features/preset-style-selection", priority: 0.8, changefreq: "weekly"
   add "/features/drone-view-3d-perspective", priority: 0.8, changefreq: "weekly"
   add "/features/shopping-list-planting-guide", priority: 0.8, changefreq: "weekly"
-  add "/features/sketch-to-3d-rendering", priority: 0.8, changefreq: "weekly"
-  add "/features/intuitive-onboarding", priority: 0.8, changefreq: "weekly"
 end
 
 IndexNowService.new.broadcast

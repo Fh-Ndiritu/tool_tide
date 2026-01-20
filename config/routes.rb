@@ -26,7 +26,7 @@ Rails.application.routes.draw do
 
       get "privacy-policy", to: "pages#privacy_policy"
       get "contact_us", to: "pages#contact_us"
-      get "full-faq", to: "pages#full_faq"
+      get "faq", to: "pages#full_faq"
 
       # Public Assets
       resources :public_assets, only: :show, param: :uuid
