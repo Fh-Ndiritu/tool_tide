@@ -134,24 +134,9 @@ export default class extends Controller {
       controller.layerIdValue = layerId
     }
 
-    // Switch Tab based on Generation Type
-    const generationType = layerLink.dataset.generationType
-    const preset = layerLink.dataset.preset
-
-    if (generationType === "style_preset") {
-      this.switchTab("Style Presets")
-      if (preset && this.hasStylePresetInputTarget) {
-        const input = this.stylePresetInputTargets.find(i => i.value === preset)
-        if (input) input.checked = true
-      }
-    } else if (generationType === "smart_fix") {
-      this.switchTab("SmartFix")
-    } else if (generationType === "autofix") {
-      this.switchTab("AutoFix")
-    } else {
-      // Default / Original Layer -> Style Presets
-      this.switchTab("Style Presets")
-    }
+    // NOTE: We no longer auto-switch tabs when clicking layers.
+    // Users can use "Reuse Prompt/Style" buttons if they want to replicate a generation.
+    // This prevents losing work when a new layer loads and tabs change forcibly.
   }
 
   // --- Project Canvas Delegation ---
@@ -403,6 +388,7 @@ export default class extends Controller {
       if (contentType && contentType.includes("turbo-stream")) {
            const html = await response.text()
            await Turbo.renderStreamMessage(html)
+           this.projectOnboardingController?.startStylePresetsLayerHint()
       } else if (response.ok) {
            console.log("Generation started successfully")
       } else {
@@ -413,8 +399,11 @@ export default class extends Controller {
       console.error("Network error during generation", error)
       alert("Network error. Please try again.")
     } finally {
-      button.disabled = false
-      button.innerText = originalText
+      // 3-second cooldown before re-enabling button to prevent rage clicking
+      setTimeout(() => {
+        button.disabled = false
+        button.innerText = originalText
+      }, 3000)
     }
   }
 
@@ -522,8 +511,11 @@ export default class extends Controller {
       console.error("Network error during AutoFix generation", error)
       alert("Network error. Please try again.")
     } finally {
-      button.disabled = false
-      button.innerHTML = originalText
+      // 4-second cooldown before re-enabling button to prevent rage clicking
+      setTimeout(() => {
+        button.disabled = false
+        button.innerHTML = originalText
+      }, 6000)
     }
   }
 
@@ -663,6 +655,14 @@ export default class extends Controller {
     const layoutElement = document.querySelector('[data-controller~="layout"]')
     if (layoutElement) {
       return this.application.getControllerForElementAndIdentifier(layoutElement, "layout")
+    }
+    return null
+  }
+
+  get projectOnboardingController() {
+    const onboardingElement = document.querySelector('[data-controller~="project-onboarding"]')
+    if (onboardingElement) {
+      return this.application.getControllerForElementAndIdentifier(onboardingElement, "project-onboarding")
     }
     return null
   }

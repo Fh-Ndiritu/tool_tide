@@ -1,1 +1,3 @@
-<%= render partial: "auto_fixes/auto_fix_item", collection: auto_fixes, as: :auto_fix %>
+<% auto_fixes.each_with_index do |auto_fix, index| %>
+  <%= render partial: "auto_fixes/auto_fix_item", locals: { auto_fix: auto_fix, iteration: index } %>
+<% end %>

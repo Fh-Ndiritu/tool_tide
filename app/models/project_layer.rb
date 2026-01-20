@@ -2,6 +2,7 @@ class ProjectLayer < ApplicationRecord
   belongs_to :project
   belongs_to :design, counter_cache: true
   belongs_to :auto_fix, optional: true
+
   before_create :set_layer_number
   before_destroy :nullify_current_project_layer_in_design
 

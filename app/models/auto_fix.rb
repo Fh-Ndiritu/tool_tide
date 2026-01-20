@@ -1,5 +1,6 @@
 class AutoFix < ApplicationRecord
   belongs_to :project_layer
+  has_many :project_layers, dependent: :destroy
 
   enum :status, {
     pending: 0,

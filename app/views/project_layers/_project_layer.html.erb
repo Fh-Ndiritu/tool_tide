@@ -34,13 +34,9 @@
                      end
                     }",
                     data: {
-                      action: "click->projects#setActiveLayer",
-                      layer_id: project_layer.id,
-                      generation_type: project_layer.generation_type,
-                      preset: project_layer.preset,
-                      turbo_stream: true,
-                      projects_target: "layerLink"
-                    } do %>
+                       projects_target: "layerLink",
+                       project_onboarding_target: "layerLink"
+                     } do %>
           <%= render "project_layers/layer_content", project_layer: project_layer %>
        <% end %>
       <% else %>

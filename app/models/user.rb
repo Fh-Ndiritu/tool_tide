@@ -12,6 +12,7 @@ class User < ApplicationRecord
   has_many :credit_vouchers, dependent: :destroy
   has_many :mask_requests, through: :canvas
   has_one :onboarding_response, dependent: :destroy
+  has_one :project_onboarding, dependent: :destroy
 
   has_many :credits, dependent: :destroy
   has_many :credit_spendings, dependent: :destroy

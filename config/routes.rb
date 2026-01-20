@@ -68,6 +68,7 @@ Rails.application.routes.draw do
 
     resources :audios
     post "onboarding/update", to: "onboarding#update"
+    post "project_onboarding/update", to: "project_onboardings#update"
 
     resource :onboarding_survey, only: [ :show, :update ], controller: "onboarding_survey" do
       get :celebrate, on: :member

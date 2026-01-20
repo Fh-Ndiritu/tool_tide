@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_18_120826) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_20_190405) do
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -192,6 +192,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_18_120826) do
     t.string "uuid"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.date "data_for_date"
     t.index ["day_of_week", "time_bucket"], name: "index_hn_activity_snapshots_on_day_of_week_and_time_bucket"
     t.index ["uuid"], name: "index_hn_activity_snapshots_on_uuid", unique: true
   end
@@ -353,6 +354,9 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_18_120826) do
     t.datetime "completed_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "style_presets_status"
+    t.integer "smart_fix_status"
+    t.integer "auto_fix_status"
     t.index ["user_id"], name: "index_project_onboardings_on_user_id"
   end
 
