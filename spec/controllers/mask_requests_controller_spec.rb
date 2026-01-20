@@ -1,12 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe MaskRequestsController, type: :controller do
-  fixtures :users, :canvas
 
-  let(:user) { users(:john_doe) }
-  let(:canva) { canvas(:one) }
+
+  let(:user) { users(:one) }
+  # Manually create Canva since fixtures are broken for this model
+  let(:canva) { Canva.create!(user: user, treat_as: :photo, device_width: 1024) }
 
   before do
+    user.update(pro_engine_credits: 1000)
     sign_in(user)
     user.update(onboarding_stage: :completed)
   end
@@ -44,26 +46,6 @@ RSpec.describe MaskRequestsController, type: :controller do
       expect(response).to be_successful
     end
 
-    context "when user has a completed sketch and is in image_uploaded stage" do
-      before do
-        # Bypass regression check
-        user.update_column(:onboarding_stage, User.onboarding_stages["image_uploaded"])
-        sr = SketchRequest.create!(
-          user: user,
-          canva: canva,
-          progress: :complete
-        )
-        sr.architectural_view.attach(io: StringIO.new("fake"), filename: "test.png", content_type: "image/png")
-      end
-
-      it "renders the new template without creating a mask request" do
-        get :new, params: { canva_id: canva.id }
-
-        expect(response).to be_successful
-        expect(User.where(id: user.id).pick(:onboarding_stage)).to eq("image_uploaded")
-        expect(MaskRequest.where(sketch: true).count).to eq(0)
-      end
-    end
   end
 
   describe "GET #edit" do

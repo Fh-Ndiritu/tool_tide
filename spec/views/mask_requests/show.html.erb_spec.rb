@@ -6,6 +6,7 @@ RSpec.describe "mask_requests/show", type: :view do
   let(:mask_request) { MaskRequest.create!(canva: canva) }
 
   before do
+    sign_in user
     assign(:mask_request, mask_request)
     # Mock turbo_stream_from to avoid errors if helper is missing or needs setup
     allow(view).to receive(:turbo_stream_from).and_return("")

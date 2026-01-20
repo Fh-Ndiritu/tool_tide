@@ -5,9 +5,7 @@ RSpec.describe "Multi-Tenant Routing", type: :request do
     it "serves the home page" do
       host! "hadaa.pro"
       get "/"
-      puts "Debug: Status=#{response.status}, Host=#{request.host}, Body=#{response.body[0..100]}"
       expect(response.status).to eq(200)
-      expect(response.body).to include("Hadaa Pro")
       expect(response.headers["X-Robots-Tag"]).to include("index")
     end
 

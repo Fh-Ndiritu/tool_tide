@@ -28,7 +28,7 @@ RSpec.describe TextRequestsController, type: :controller do
     # TextRequest. As you add validations to TextRequest, be sure to
     # adjust the attributes here as well.
     fixtures(:users)
-    let(:user) { users(:john_doe) }
+    let(:user) { users(:one) }
 
     before do
       sign_in(user)

@@ -9,11 +9,13 @@ RSpec.describe PlantingGuideJob, type: :job do
       # Mock DesignGenerator
       generator = instance_double(DesignGenerator)
       allow(DesignGenerator).to receive(:new).with(mask_request).and_return(generator)
-      expect(generator).to receive(:generate_planting_guide)
+      expect(generator).to receive(:generate_planting_guide) do
+        mask_request.update(progress: :plant_suggestions_ready)
+      end
 
       # Mock Turbo Broadcast
       expect(Turbo::StreamsChannel).to receive(:broadcast_replace_to).with(
-        "canva_#{canva.id}",
+        canva,
         target: "planting_guide_section",
         partial: "mask_requests/planting_guide_section",
         locals: { mask_request: mask_request }

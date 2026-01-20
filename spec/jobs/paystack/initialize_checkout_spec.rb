@@ -13,7 +13,7 @@ RSpec.describe Paystack::InitializeCheckout do
 
   subject { described_class.new(transaction) }
 
-  let(:current_user) { users(:john_doe) }
+  let(:current_user) { users(:one) }
   let(:transaction) { PaymentTransaction.new_transaction(current_user) }
   let(:valid_response) { { status: true, data: { access_code: "ACC_123", authorization_url: "https://paystack.com/authorize", reference: transaction.uuid } } }
   let(:invalid_response) { { status: false, data: {} } }

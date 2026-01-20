@@ -4,7 +4,7 @@ require "rails_helper"
 
 RSpec.describe PaymentTransactionsController, type: :controller do
   fixtures(:users)
-  let(:user) { users(:john_doe) }
+  let(:user) { users(:one) }
   let(:transaction) { double("PaymentTransaction", authorization_url: "https://paystack.com/authorize") }
 
   before do

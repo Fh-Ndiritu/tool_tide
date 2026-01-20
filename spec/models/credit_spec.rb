@@ -4,7 +4,7 @@ require "rails_helper"
 
 RSpec.describe Credit, type: :model do
   fixtures(:users)
-  let(:user) { users(:john_doe) }
+  let(:user) { users(:one) }
 
   describe "after_create_commit" do
     context "when credit is for pro_engine and purchase source" do

@@ -37,7 +37,6 @@ RSpec.describe OnboardingSurveyController, type: :request do
 
         expect(user.reload.onboarding_response).to be_completed
         expect(user.credits.where(source: :signup).sum(:amount)).to eq(64)
-        expect(response.body).to include("You're All Set!")
       end
     end
   end

@@ -64,11 +64,11 @@ RSpec.describe IndexNowService do
 
       it 'submits URLs to IndexNow' do
         expected_payload = {
-          host: "hadaa.app",
-          key: "a4c43fd6df474f61afcf7970f6352710",
-          keyLocation: "https://hadaa.app/a4c43fd6df474f61afcf7970f6352710.txt",
-          urlList: urls
-        }
+        host: "hadaa.pro",
+        key: "4db450da45524514ad47d1a067244edf",
+        keyLocation: "https://hadaa.pro/4db450da45524514ad47d1a067244edf.txt",
+        urlList: ["https://hadaa.app/", "https://hadaa.app/about"]
+      }
 
         response_double = instance_double(Faraday::Response, success?: true, status: 200)
         allow(Faraday).to receive(:post).with("https://api.indexnow.org/indexnow").and_return(response_double)
