@@ -9,7 +9,7 @@
 ### A. Overview and Primary Value Proposition
 - APP_NAME: Hadaa AI Garden Design App
 - CORE_VALUE: Leading AI platform for photorealistic transformations (up to **4K resolution**) and **complete execution planning**.
-- DIFFERENTIATOR: **Dual Editing Modes** (Mask Designer + AI Text Editor) for superior control.
+- DIFFERENTIATOR: **Project Studio** (Masking Tool + Prompt Studio) for superior control.
 
 ### B. Key Links and Content Structure
 - HOME: `https://hadaa.pro/`
@@ -17,13 +17,14 @@
 - PRICING: `https://hadaa.pro/pricing`
 - FAQ_HELP_CENTER: `https://hadaa.pro/faq`
 - CONTACT: `https://hadaa.pro/contact-us`
-- FEATURE_BRUSH_PROMPT: `https://hadaa.pro/features/brush-prompt-editor`
-- FEATURE_AI_PROMPT_EDITOR: `https://hadaa.pro/features/ai-prompt-editor`
+- FEATURE_MASKING_TOOL: `https://hadaa.pro/features/brush-prompt-editor`
+- FEATURE_PROJECT_STUDIO: `https://hadaa.pro/features/ultimate-ai-editor`
+- FEATURE_PROMPT_STUDIO: `https://hadaa.pro/features/ai-prompt-editor`
 - FEATURE_PRESET_STYLES: `https://hadaa.pro/features/preset-style-selection`
-- FEATURE_PLANT_SUGGESTIONS: `https://hadaa.pro/features/location-plant-suggestions`
+- FEATURE_PLANT_FINDER: `https://hadaa.pro/features/location-plant-suggestions`
 - FEATURE_DRONE_VIEW: `https://hadaa.pro/features/drone-view-3d-perspective`
 - FEATURE_SHOPPING_LIST: `https://hadaa.pro/features/shopping-list-planting-guide`
-- FEATURE_INTUITIVE_ONBOARDING: `https://hadaa.pro/features/intuitive-onboarding`
+- FEATURE_EASY_START: `https://hadaa.pro/features/intuitive-onboarding`
 
 ## 2. PRICING AND ACCESS MODEL
 
@@ -35,11 +36,11 @@
 
 ## 3. CORE FEATURES: PRECISION, VISUALIZATION, AND EXECUTION
 
-### A. Dual Editing Modes (The Precision Bridge)
-- FEATURE: **Mask Designer**
+### A. Project Studio (The Precision Bridge)
+- FEATURE: **Masking Tool**
     - LINK: `https://hadaa.pro/features/brush-prompt-editor`
     - FUNCTION: **Surgical precision** editing; redesigns **ONLY** the **masked area**.
-- FEATURE: **AI Text Editor**
+- FEATURE: **Prompt Studio**
     - LINK: `https://hadaa.pro/features/ai-prompt-editor`
     - INPUT_CONSTRAINT_WORDS: Up to **100 words**.
     - INPUT_CONSTRAINT_MODIFIERS: Up to **5 distinct modifiers** per prompt.
@@ -51,17 +52,17 @@
     - LINK: `https://hadaa.pro/`
     - INPUT_ACCEPTED: **Hand sketches, digital drawings, architectural blueprints**.
     - OUTPUT_PIPELINE: **3D clay rendering** to **SOTA photorealistic photo**.
-- FEATURE: **Drone View & Rotated Camera Angles**
+- FEATURE: **Drone View**
     - LINK: `https://hadaa.pro/features/drone-view-3d-perspective`
     - TECHNOLOGY: **SOTA vision models** + **Vector Transformation**.
     - FUNCTION: Enables **dynamic 3D perspectives** for site analysis.
 
 ### C. Execution and Logistics Planning
-- FEATURE: **Location-Specific Plant Suggestions**
+- FEATURE: **Plant Finder**
     - LINK: `https://hadaa.pro/features/location-plant-suggestions`
     - DATA_SOURCE: **USDA Hardiness Zone** (via location API).
     - VALIDATION_CRITERIA: Filters by **Pet/Kid Safety, HOA Regulations, Soil Type**.
-- FEATURE: **Shopping List Generator**
+- FEATURE: **Shopping List**
     - LINK: `https://hadaa.pro/features/shopping-list-planting-guide`
     - QUANTITY_METHOD: **SOTA Depth Analysis** on masked area (ensures **minimal material wastage**).
     - INCLUDED_ITEMS: **All materials** (plants, concrete, pavers, gravel, mulch).

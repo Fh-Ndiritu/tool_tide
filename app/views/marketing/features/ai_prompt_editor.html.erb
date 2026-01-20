@@ -1,13 +1,13 @@
-<% content_for :title, "Intelligent AI Prompt Editor for Landscape Design" %>
+<% content_for :title, "Prompt Studio: Advanced AI Landscape Design Control" %>
 
-<% content_for :description, "Fine-tune AI landscape designs with Hadaa's Intelligent Prompt Editor. Get granular control over plant species, materials, and lighting for iterative, professional workflows." %>
+<% content_for :description, "Master your landscape design with the Prompt Studio. Edit AI prompts for granular control over plants, materials, and hardscapes." %>
 
-<% content_for :keywords, "advanced AI landscape prompt editor, edit specific features of generated landscape with AI, fine-tuning AI garden design prompts for plant species, material swap AI landscape design, AI landscape design with numerical input, specify plant count and location AI, AI growth stage rendering, iterative AI landscape design, professional AI visualization control, AI design with version history" %>
+<% content_for :keywords, "AI landscape prompt editor, granular garden design control, edit landscape prompts AI, advanced landscape design software, specify plants in AI design, hardscape material selection AI, professional landscape architect tool, detailed garden visualization settings" %>
 
 <div
   class="
-    bg-neutral-900 text-white min-h-screen font-sans selection:bg-secondary
-    selection:text-white
+    bg-neutral-900 text-white min-h-screen font-sans selection:bg-accent
+    selection:text-black
   "
 >
   <%# --- Hero Section --- %>
@@ -20,18 +20,18 @@
     ></div>
 
     <%# Background placeholder %>
-    <%# Background placeholder %>
+    <!-- PROMPT: A close-up of a high-tech, minimalist interface on a tablet screen, showing text prompts being edited with corresponding changes appearing in a garden image. Dark mode UI, neon accents. -->
     <div
       class="absolute inset-0 bg-cover bg-center opacity-20"
-      style="background-image: url('<%= asset_path('features/ai_prompt_bg.png') %>')"
+      style="background-image: url('<%= asset_path("features/ai_prompt_bg.png") %>')"
     ></div>
 
     <div class="container mx-auto px-6 relative z-10 text-center">
       <span
         class="
-          inline-block py-1 px-3 rounded-full bg-secondary/10 border
-          border-secondary/30 text-secondary text-sm font-bold
-          tracking-wider mb-6 animate-fade-in-up
+          inline-block py-1 px-3 rounded-full bg-accent/10 border
+          border-accent/30 text-accent text-sm font-bold tracking-wider mb-6
+          animate-fade-in-up
         "
       >
         GRANULAR CONTROL
@@ -43,15 +43,15 @@
           leading-tight animate-fade-in-up delay-100
         "
       >
-        Intelligent AI Prompt Editor:
+        The Prompt Studio
         <br class="hidden md:block" />
         <span
           class="
-            text-transparent bg-clip-text bg-gradient-to-r from-secondary
-            to-accent
+            text-transparent bg-clip-text bg-gradient-to-r from-accent
+            to-secondary
           "
         >
-          Granular Control for Advanced Designers
+          Speak Your Vision
         </span>
       </h1>
 
@@ -72,7 +72,7 @@
           delay-300
         "
       >
-        <%= link_to "Try Prompt Editor Free", new_user_registration_url(host: "hadaa.app"), rel: "nofollow noreferrer", class: "px-8 py-4 bg-secondary text-white font-bold rounded-full hover:bg-white hover:text-black transition-all duration-300 transform hover:scale-105 shadow-[0_0_20px_rgba(139,92,246,0.4)]" %>
+        <%= link_to "Try Prompt Studio", new_user_registration_url(host: "hadaa.app"), rel: "nofollow noreferrer", class: "px-8 py-4 bg-accent text-black font-bold rounded-full hover:bg-white transition-all duration-300 transform hover:scale-105 shadow-[0_0_20px_rgba(0,172,193,0.4)]" %>
         <%= link_to "See How It Works", "#how-it-works", class: "px-8 py-4 bg-transparent border border-white/30 text-white font-bold rounded-full hover:bg-white/10 transition-all duration-300 backdrop-blur-sm" %>
       </div>
     </div>
@@ -88,55 +88,58 @@
         "
       >
         <h2 class="text-2xl md:text-3xl font-bold mb-6 text-white">
-          Why is an Advanced AI Prompt Editor Necessary?
+          Why "Text-to-Design" Matters
         </h2>
 
         <p class="text-lg text-neutral-300 leading-relaxed mb-6">
-          The core challenge in AI design is maintaining control over specific
-          details. Advanced designers, architects, and detail-oriented clients
-          require the ability to make surgical changes without having to
-          regenerate the entire image.
+          Most AI tools feel like a "black box" &mdash; you get what you get. The
+          <strong>Prompt Studio</strong>
+          opens the box. By giving you direct access to the descriptive language
+          that guides the AI, we empower you to act as the Creative Director,
+          fine-tuning the output to match your client's exact requests.
         </p>
 
         <p class="text-lg text-neutral-300 leading-relaxed">
-          The Intelligent Prompt Editor is designed to accept complex, natural
-          language inputs and translate them into focused, immediate
-          modifications, functioning as the most advanced AI landscape prompt
-          editor on the market.
+          From specifying "drought-tolerant succulents" to requesting a "modern
+          corton steel fire pit," the Prompt Studio turns your words into visual
+          reality, bridging the gap between your expertise and the AI's rendering
+          power.
         </p>
       </div>
     </div>
   </section>
 
-  <%# --- Complexity & Precision Section --- %>
+  <%# --- Feature Details Section --- %>
   <section id="how-it-works" class="py-20 lg:py-32 relative">
     <div class="container mx-auto px-6">
-      <div class="flex flex-col lg:flex-row items-center gap-16">
+      <%# Feature 1: Keyword weighting %>
+      <div class="flex flex-col lg:flex-row items-center gap-16 mb-24">
         <%# Content %>
-        <div class="w-full lg:w-1/2">
+        <div class="w-full lg:w-1/2 order-2 lg:order-1">
           <div class="flex items-center gap-4 mb-6">
             <div
               class="
-                w-12 h-12 rounded-2xl bg-secondary flex items-center
-                justify-center text-white font-bold text-xl shadow-lg
-                shadow-secondary/20
+                w-12 h-12 rounded-2xl bg-accent flex items-center
+                justify-center text-black font-bold text-xl shadow-lg
+                shadow-accent/20
               "
             >
-              A
+              1
             </div>
             <h2 class="text-3xl md:text-4xl font-bold text-white">
-              Complexity and Precision
+              Edit the Narrative
             </h2>
           </div>
 
-          <h3 class="text-xl text-secondary mb-8 font-medium">
-            Technical Inputs for Fidelity
+          <h3 class="text-xl text-accent mb-8 font-medium">
+            Project Studio Refinement
           </h3>
 
           <p class="text-lg text-neutral-300 mb-8 leading-relaxed">
-            Our editor handles prompts up to 100 words and supports up to 5
-            distinct modifiers in a single command, ensuring both efficiency and
-            high accuracy in generation.
+            Hadaa automatically generates a detailed prompt based on your photo
+            and style selection. The Prompt Studio lets you step in and edit
+            this text. Add specific plant names, remove unwanted elements, or
+            adjust the mood of the lighting.
           </p>
 
           <div class="space-y-8">

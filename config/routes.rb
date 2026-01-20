@@ -39,6 +39,7 @@ Rails.application.routes.draw do
       get "features/drone-view-3d-perspective", to: "features#drone_view_3d_perspective", as: :features_drone_view_3d_perspective
       get "features/shopping-list-planting-guide", to: "features#shopping_list_planting_guide", as: :features_shopping_list_planting_guide
       get "features/intuitive-onboarding", to: "features#intuitive_onboarding", as: :features_intuitive_onboarding
+      get "features/project-studio", to: "features#project_studio", as: :features_project_studio
 
       # Explore/Gallery
       get "explore", to: "explore#index", as: :explore

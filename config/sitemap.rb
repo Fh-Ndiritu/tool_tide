@@ -20,13 +20,14 @@ SitemapGenerator::Sitemap.create do
   add explore_path, priority: 0.9, changefreq: "daily"
 
   # Features Features
-  add "/features/brush-prompt-editor", priority: 0.8, changefreq: "weekly"
-  add "/features/ai-prompt-editor", priority: 0.8, changefreq: "weekly"
-  add "/features/intuitive-onboarding", priority: 0.8, changefreq: "weekly"
-  add "/features/location-plant-suggestions", priority: 0.8, changefreq: "weekly"
-  add "/features/preset-style-selection", priority: 0.8, changefreq: "weekly"
-  add "/features/drone-view-3d-perspective", priority: 0.8, changefreq: "weekly"
-  add "/features/shopping-list-planting-guide", priority: 0.8, changefreq: "weekly"
+  add "/features/brush-prompt-editor", priority: 0.9, changefreq: "weekly"
+  add "/features/ai-prompt-editor", priority: 0.9, changefreq: "weekly"
+  add "/features/intuitive-onboarding", priority: 0.9, changefreq: "weekly"
+  add "/features/location-plant-suggestions", priority: 0.9, changefreq: "weekly"
+  add "/features/preset-style-selection", priority: 0.9, changefreq: "weekly"
+  add "/features/drone-view-3d-perspective", priority: 0.9, changefreq: "weekly"
+  add "/features/shopping-list-planting-guide", priority: 0.9, changefreq: "weekly"
+  add "/features/project-studio", priority: 0.9, changefreq: "weekly"
 end
 
 IndexNowService.new.broadcast

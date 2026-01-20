@@ -79,43 +79,49 @@
               z-50 ring-1 ring-black/5 origin-top-right lg:right-0
             "
           >
+            <%= link_to "/features/project-studio", class: active_link_class("/features/project-studio"), data: { action: "click->dropdown#hide" } do %>
+              <div class="font-bold mb-0.5">Project Studio</div>
+              <div class="text-xs text-gray-500 group-hover:text-accent/80">
+                Precision Control, Presets & AutoFix
+              </div>
+            <% end %>
             <%= link_to "/features/brush-prompt-editor", class: active_link_class("/features/brush-prompt-editor"), data: { action: "click->dropdown#hide" } do %>
-              <div class="font-bold mb-0.5">Brush Tool & Prompt Editor</div>
+              <div class="font-bold mb-0.5">Masking Tool</div>
               <div class="text-xs text-gray-500 group-hover:text-accent/80">
                 Precision editing for your landscape
               </div>
             <% end %>
 
             <%= link_to "/features/intuitive-onboarding", class: active_link_class("/features/intuitive-onboarding"), data: { action: "click->dropdown#hide" } do %>
-              <div class="font-bold mb-0.5">Intuitive Onboarding</div>
+              <div class="font-bold mb-0.5">Easy Start</div>
               <div class="text-xs text-gray-500 group-hover:text-accent/80">
                 Zero learning curve, instant results
               </div>
             <% end %>
 
             <%= link_to "/features/ai-prompt-editor", class: active_link_class("/features/ai-prompt-editor"), data: { action: "click->dropdown#hide" } do %>
-              <div class="font-bold mb-0.5">Intelligent AI Prompt Editor</div>
+              <div class="font-bold mb-0.5">Prompt Studio</div>
               <div class="text-xs text-gray-500 group-hover:text-accent/80">
                 Granular control for advanced designers
               </div>
             <% end %>
 
             <%= link_to "/features/location-plant-suggestions", class: active_link_class("/features/location-plant-suggestions"), data: { action: "click->dropdown#hide" } do %>
-              <div class="font-bold mb-0.5">Location Plant Suggestions</div>
+              <div class="font-bold mb-0.5">Plant Finder</div>
               <div class="text-xs text-gray-500 group-hover:text-accent/80">
                 Sustainable, data-driven garden planning
               </div>
             <% end %>
 
             <%= link_to "/features/drone-view-3d-perspective", class: active_link_class("/features/drone-view-3d-perspective"), data: { action: "click->dropdown#hide" } do %>
-              <div class="font-bold mb-0.5">Drone View & 3D Perspective</div>
+              <div class="font-bold mb-0.5">Drone View</div>
               <div class="text-xs text-gray-500 group-hover:text-accent/80">
                 Professional site analysis and visualization
               </div>
             <% end %>
 
             <%= link_to "/features/shopping-list-planting-guide", class: active_link_class("/features/shopping-list-planting-guide"), data: { action: "click->dropdown#hide" } do %>
-              <div class="font-bold mb-0.5">Shopping List & Planting Guide</div>
+              <div class="font-bold mb-0.5">Shopping List</div>
               <div class="text-xs text-gray-500 group-hover:text-accent/80">
                 Automated procurement and execution
               </div>

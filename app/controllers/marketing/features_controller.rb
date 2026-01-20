@@ -29,5 +29,8 @@ module Marketing
 
     def intuitive_onboarding
     end
+
+    def project_studio
+    end
   end
 end
