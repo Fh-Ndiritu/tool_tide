@@ -54,7 +54,7 @@
       >
         Hadaa is engineered to be the essential bridge between professional
         design accuracy and photorealistic visualization. Move beyond generic
-        "style selection" with unprecedented command over your rendering
+        "<%= link_to 'style selection', features_preset_style_selection_path, class: 'text-neutral-300 underline hover:text-white transition-colors' %>" with unprecedented command over your rendering
         process.
       </p>
 
@@ -87,7 +87,7 @@
           Our two advanced control features—the
           <strong>Masking Tool</strong>
           and the
-          <strong>Prompt Studio</strong>
+          <strong><%= link_to "Prompt Studio", features_ai_prompt_editor_path, class: "text-white underline hover:no-underline" %></strong>
           —position Hadaa as the necessary upgrade for seasoned professionals
           who demand granular, reliable, and iterative control over their design
           output.

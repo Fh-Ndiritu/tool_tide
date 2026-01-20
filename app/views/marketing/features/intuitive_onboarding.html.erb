@@ -257,7 +257,7 @@
               </h4>
               <p class="text-sm text-neutral-400 pl-4 border-l border-white/10 ml-1">
                 Simply upload your photo. Then, our guided "Driver" tool
-                highlights the Brush tool, showing you exactly where to paint
+                highlights the <%= link_to "Brush tool", features_brush_prompt_editor_path, class: "text-neutral-400 underline hover:text-white transition-colors" %>, showing you exactly where to paint
                 over the areas you want to transform (like grass or old fences).
               </p>
             </div>
@@ -274,7 +274,7 @@
                 Step 3 & 4: Style & Plants
               </h4>
               <p class="text-sm text-neutral-400 pl-4 border-l border-white/10 ml-1">
-                Next, the guide points you to our preset styles. Once a style is
+                Next, the guide points you to our <%= link_to "preset styles", features_preset_style_selection_path, class: "text-neutral-400 underline hover:text-white transition-colors" %>. Once a style is
                 chosen, it automatically suggests plants that thrive in your
                 specific location, taking the guesswork out of horticulture.
               </p>
@@ -292,7 +292,7 @@
                 Step 5 & 6: Refinement & Generation
               </h4>
               <p class="text-sm text-neutral-400 pl-4 border-l border-white/10 ml-1">
-                Finally, the tour introduces the AI Text Editor for specific
+                Finally, the tour introduces the <%= link_to "AI Text Editor", features_ai_prompt_editor_path, class: "text-neutral-400 underline hover:text-white transition-colors" %> for specific
                 tweaks ("add a firepit"). With one click, you generate your
                 professional design in seconds.
               </p>

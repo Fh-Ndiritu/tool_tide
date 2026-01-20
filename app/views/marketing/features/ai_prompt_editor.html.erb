@@ -132,12 +132,12 @@
           </div>
 
           <h3 class="text-xl text-accent mb-8 font-medium">
-            Project Studio Refinement
+            <%= link_to "Project Studio", features_project_studio_path, class: "hover:underline" %> Refinement
           </h3>
 
           <p class="text-lg text-neutral-300 mb-8 leading-relaxed">
             Hadaa automatically generates a detailed prompt based on your photo
-            and style selection. The Prompt Studio lets you step in and edit
+            and <%= link_to "style selection", features_preset_style_selection_path, class: "text-accent hover:text-white transition-colors" %>. The Prompt Studio lets you step in and edit
             this text. Add specific plant names, remove unwanted elements, or
             adjust the mood of the lighting.
           </p>

@@ -278,7 +278,7 @@
 
     <div class="text-center mt-12 mb-10">
       <%= link_to explore_path, class: "inline-flex items-center justify-center gap-2 bg-gradient-to-r from-accent to-secondary text-black font-bold text-lg py-4 px-10 rounded-full hover:shadow-2xl hover:shadow-accent/50 transition-all duration-300 transform hover:scale-105" do %>
-        <span>Explore All Logic</span>
+        <span>Explore All Designs</span>
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
         </svg>
@@ -357,10 +357,10 @@
       <div class="w-full md:w-1/2 flex flex-col gap-24 md:py-10 lg:py-20">
         <% steps = [
           { title: "Upload Your Photo", desc: "Take or upload a photo of your area. Hadaa instantly uses it as the canvas for your AI design.", img: "how_it_works/step_1_modern.png", num: "01" },
-          { title: "Brush to Modify", desc: "Use our intuitive brush tool to highlight only the areas you want us to modify. Precision control at your fingertips.", img: "how_it_works/step_2_modern.png", num: "02" },
+          { title: "Brush to Modify", desc: "Use our intuitive #{link_to 'brush tool', features_brush_prompt_editor_path, class: 'text-accent hover:underline'} to highlight only the areas you want us to modify. Precision control at your fingertips.", img: "how_it_works/step_2_modern.png", num: "02" },
           { title: "Select your Vibe", desc: "Choose a style from our collection of SOTA curated designs. From Zen Gardens to Modern Minimalist.", img: "how_it_works/step_3_modern.png", num: "03" },
           { title: "Hadaa Magic", desc: "Get stunning transformations of your space. Our AI understands depth, lighting, and perspective for photorealistic results.", img: "how_it_works/step_4_modern.png", num: "04" },
-          { title: "Planting Guide", desc: "Receive a shopping list and planting guide to bring your final design to life. Know exactly what to buy.", img: "how_it_works/step_5_modern.png", num: "05" },
+          { title: "Planting Guide", desc: "Receive a #{link_to 'shopping list', features_shopping_list_planting_guide_path, class: 'text-accent hover:underline'} and planting guide to bring your final design to life. Know exactly what to buy.", img: "how_it_works/step_5_modern.png", num: "05" },
           { title: "Take the Wheel!", desc: "Transform your results further with our clever, intuitive text editing model. Just type what you want to change.", img: "how_it_works/text_editor.png", num: "06" }
         ] %>
 

@@ -25,11 +25,11 @@ module PagesHelper
         items: [
           {
             question: "What are Style Presets and how do they help?",
-            answer: "<b>Style Presets</b> are the fastest way to jumpstart your design. Instead of writing prompts from scratch, simply select a curated style (like <b>Modern, Cottage, Zen, or Tropical</b>) and the AI will instantly reimagine your masked area in that aesthetic, selecting plants and materials that fit the vibe."
+            answer: "<b>#{link_to 'Style Presets', features_preset_style_selection_path, class: 'text-accent hover:underline'}</b> are the fastest way to jumpstart your design. Instead of writing prompts from scratch, simply select a curated style (like <b>Modern, Cottage, Zen, or Tropical</b>) and the AI will instantly reimagine your masked area in that aesthetic, selecting plants and materials that fit the vibe."
           },
           {
             question: "What is SmartFix?",
-            answer: "<b>SmartFix</b> is our intelligent AI prompt editor. It allows you to describe exactly what you want (e.g., 'replace grass with clover', 'add a fire pit'). It features an <b>AI Assist</b> toggle that can add creative flair to your prompts, or you can turn it off for <b>precision control</b> when you need to specify exact details like plant counts or material types."
+            answer: "<b>#{link_to 'SmartFix', features_ai_prompt_editor_path, class: 'text-accent hover:underline'}</b> is our intelligent AI prompt editor. It allows you to describe exactly what you want (e.g., 'replace grass with clover', 'add a fire pit'). It features an <b>AI Assist</b> toggle that can add creative flair to your prompts, or you can turn it off for <b>precision control</b> when you need to specify exact details like plant counts or material types."
           },
           {
             question: "What is AutoFix?",
@@ -37,7 +37,7 @@ module PagesHelper
           },
           {
             question: "How does the 'Precision Bridge' (Masking) feature work?",
-            answer: "The Precision Bridge allows you to make <b>surgical edits</b> via the Brush Tool. Instead of changing the whole image, you mask only specific areas (e.g., just the front lawn). This masking technology ensures that edits applied via <b>Presets, SmartFix, or AutoFix</b> only affect the designated area, leaving the rest of your original photo 100% untouched."
+            answer: "The Precision Bridge allows you to make <b>surgical edits</b> via the #{link_to 'Brush Tool', features_brush_prompt_editor_path, class: 'text-accent hover:underline text-inherit'}. Instead of changing the whole image, you mask only specific areas (e.g., just the front lawn). This masking technology ensures that edits applied via <b>Presets, SmartFix, or AutoFix</b> only affect the designated area, leaving the rest of your original photo 100% untouched."
           }
         ]
       },
@@ -51,7 +51,7 @@ module PagesHelper
           },
           {
             question: "How does the Drone View feature work?",
-            answer: "Hadaa uses advanced <b>Vector Transformation</b> and agentic workflows to re-render your ground-level photo from a <b>bird's-eye perspective</b>. This helps you visualize the layout and flow of the entire property without needing a physical drone survey."
+            answer: "Hadaa uses advanced <b>Vector Transformation</b> and agentic workflows to re-render your ground-level photo from a <b>#{link_to "bird's-eye perspective", features_drone_view_3d_perspective_path, class: 'text-white hover:underline'}</b>. This helps you visualize the layout and flow of the entire property without needing a physical drone survey."
           }
         ]
       },
@@ -61,11 +61,11 @@ module PagesHelper
         items: [
           {
             question: "Will the plants suggested actually grow in my yard?",
-            answer: "<b>Yes.</b> We prioritize survivability. Our recommendations are filtered through your local <b>USDA Hardiness Zone</b>. We also consider practical factors like <b>Pet/Kid Safety</b> (toxicity), <b>HOA Regulations</b>, and <b>Soil Type</b> to ensure the plants are safer, compliant, and thriving in your specific environment."
+            answer: "<b>Yes.</b> We prioritize survivability. Our recommendations are filtered through your local <b>#{link_to 'USDA Hardiness Zone', features_location_plant_suggestions_path, class: 'text-white hover:underline'}</b>. We also consider practical factors like <b>Pet/Kid Safety</b> (toxicity), <b>HOA Regulations</b>, and <b>Soil Type</b> to ensure the plants are safer, compliant, and thriving in your specific environment."
           },
           {
             question: "How accurate is the Shopping List?",
-            answer: "Highly accurate. We use <b>Depth Analysis</b> vision models to calculate the real-world square footage of your masked area. This allows us to generate a precise <b>Shopping List</b> with exact quantities for plants, mulch, gravel, and pavers, minimizing expensive material waste."
+            answer: "Highly accurate. We use <b>Depth Analysis</b> vision models to calculate the real-world square footage of your masked area. This allows us to generate a precise <b>#{link_to 'Shopping List', features_shopping_list_planting_guide_path, class: 'text-white hover:underline'}</b> with exact quantities for plants, mulch, gravel, and pavers, minimizing expensive material waste."
           }
         ]
       },

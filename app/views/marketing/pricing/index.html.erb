@@ -68,15 +68,15 @@
           </li>
           <li class="flex items-start">
             <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-3 mt-0.5 text-green-400 flex-shrink-0")) %>
-            <span>Free Mask Brush Editor</span>
+            <span><%= link_to "Free Mask Brush Editor", features_brush_prompt_editor_path, class: "text-neutral-300 hover:text-white underline hover:no-underline transition-colors" %></span>
           </li>
           <li class="flex items-start">
             <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-3 mt-0.5 text-green-400 flex-shrink-0")) %>
-            <span>Free Plants & Localizations</span>
+            <span><%= link_to "Free Plants & Localizations", features_location_plant_suggestions_path, class: "text-neutral-300 hover:text-white underline hover:no-underline transition-colors" %></span>
           </li>
           <li class="flex items-start">
             <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-3 mt-0.5 text-green-400 flex-shrink-0")) %>
-            <span>Free Text Editor</span>
+            <span><%= link_to "Free Text Editor", features_ai_prompt_editor_path, class: "text-neutral-300 hover:text-white underline hover:no-underline transition-colors" %></span>
           </li>
           <li class="flex items-start">
             <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-3 mt-0.5 text-green-400 flex-shrink-0")) %>
