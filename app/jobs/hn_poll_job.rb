@@ -63,12 +63,6 @@ class HnPollJob < ApplicationJob
         "Activity appears low (< #{ABSOLUTE_LOW_THRESHOLD} items).\n" \
         "#{cold_start_note}"
       )
-    elsif snapshot.items_count > ABSOLUTE_HIGH_THRESHOLD
-      dispatch_alert(
-        "⚠️ **High Activity Warning**\n\n#{description}\n" \
-        "Activity is high (> #{ABSOLUTE_HIGH_THRESHOLD} items) — consider waiting.\n" \
-        "#{cold_start_note}"
-      )
     end
   end
 

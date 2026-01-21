@@ -35,15 +35,13 @@ class ApplicationController < ActionController::Base
     ROBOTS
   end
 
-  def current_user
-    raw_user = super
+  def user
+    return nil unless current_user
 
-    return nil unless raw_user
-
-    @_decorated_current_user ||= UserDecorator.new(raw_user)
+    @_user ||= UserDecorator.new(current_user)
   end
 
-  helper_method :current_user
+  helper_method :user
 
   private
 
