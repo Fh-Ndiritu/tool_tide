@@ -11,7 +11,7 @@ class WelcomeFollowUpJob < ApplicationJob
 
     activity_type = if user.mask_requests.any?
       :mask
-    elsif user.sketch_requests.any?
+    elsif user.text_requests.any?
       :text
     else
       :none
