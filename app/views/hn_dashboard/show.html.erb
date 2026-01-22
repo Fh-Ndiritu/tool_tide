@@ -1,0 +1,64 @@
+<div class="min-h-screen bg-gray-50 py-8"
+     data-controller="hn-dashboard"
+     data-hn-dashboard-averages-day-value="<%= @averages_day_of_week.to_json %>"
+     data-hn-dashboard-averages-time-value="<%= @averages_time_of_day.to_json %>"
+     data-hn-dashboard-today-value="<%= @todays_snapshots.to_json %>">
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="md:flex md:items-center md:justify-between mb-8">
+      <div class="min-w-0 flex-1">
+        <h2 class="text-3xl font-bold leading-9 text-gray-900 tracking-tight">
+          Hacker News Velocity
+        </h2>
+        <p class="mt-1 text-sm text-gray-500">
+          Real-time activity tracking to optimize post timing.
+        </p>
+      </div>
+      <div class="mt-4 flex md:ml-4 md:mt-0">
+        <!-- Live Status Indicator -->
+        <div id="hn_live_stats" data-hn-dashboard-target="stats">
+           <%= render partial: "live_stats", locals: { snapshot: @last_snapshot } %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chart Section -->
+    <div class="bg-white overflow-hidden shadow-sm rounded-xl border border-gray-100 mb-8">
+      <div class="p-6">
+        <h3 class="text-lg font-medium leading-6 text-gray-900 mb-4">Activity Trend (Current Day)</h3>
+        <div class="relative h-[500px] w-full">
+          <canvas data-hn-dashboard-target="canvas"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Future Stats Cards (Placeholder) -->
+    <div class="grid grid-cols-1 gap-5 sm:grid-cols-3">
+      <div class="bg-white overflow-hidden shadow rounded-lg px-4 py-5 sm:p-6">
+        <dt class="text-sm font-medium text-gray-500 truncate">Current Velocity (30m)</dt>
+        <dd class="mt-1 text-3xl font-semibold text-gray-900"><%= @current_velocity %></dd>
+      </div>
+      <div class="bg-white overflow-hidden shadow rounded-lg px-4 py-5 sm:p-6">
+        <dt class="text-sm font-medium text-gray-500 truncate">Avg. for this Time</dt>
+        <dd class="mt-1 text-3xl font-semibold text-gray-900"><%= @current_avg.is_a?(Numeric) ? @current_avg.round(1) : @current_avg %></dd>
+      </div>
+       <div class="bg-white overflow-hidden shadow rounded-lg px-4 py-5 sm:p-6">
+        <dt class="text-sm font-medium text-gray-500 truncate">Traffic Load</dt>
+        <dd class="mt-1 text-3xl font-semibold text-gray-900">
+           <% if @traffic_percentage.is_a?(Numeric) %>
+             <span class="<%= @traffic_percentage < 80 ? 'text-green-600' : 'text-red-600' %>">
+               <%= @traffic_percentage %>%
+             </span>
+             <span class="text-sm font-normal text-gray-500">
+               <%= @traffic_percentage < 80 ? '(Quiet)' : '(Busy)' %>
+             </span>
+           <% else %>
+             -
+           <% end %>
+        </dd>
+      </div>
+    </div>
+
+  </div>
+</div>

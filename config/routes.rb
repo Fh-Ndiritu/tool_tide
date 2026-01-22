@@ -95,6 +95,8 @@ Rails.application.routes.draw do
       resource :hn_dashboard, only: :show, controller: "hn_dashboard"
     end
 
+    resource :hn_dashboard, only: :show, controller: "hn_dashboard"
+
 
 
 
