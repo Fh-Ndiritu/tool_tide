@@ -468,7 +468,7 @@
             </div>
 
            <!-- Tab 2: SmartFix -->
-           <div data-tools-target="panel" class="flex flex-col h-full relative hidden" data-controller="smart-fix-layout">
+           <div data-tools-target="panel" data-projects-target="smartFixPanel" class="flex flex-col h-full relative hidden" data-controller="smart-fix-layout">
               <div class="flex-1 overflow-y-auto min-h-0 p-4 pb-24 space-y-6 premium-scrollbar">
                  <input type="hidden" name="generation_type" value="smart_fix">
                  <div data-smart-fix-layout-target="inputs">
@@ -485,7 +485,7 @@
                   <input type="checkbox" name="ai_assist" id="ai-assist-toggle" checked
                          class="toggle-checkbox absolute block w-4 h-4 rounded-full bg-white border-2 appearance-none cursor-pointer checked:right-0 checked:border-blue-600"
                          data-projects-target="aiAssistToggle"
-                         data-action="change->projects#toggleAiAssistLabel"/>
+                         data-action="change->projects#toggleAiAssist"/>
                   <label for="ai-assist-toggle" class="toggle-label block overflow-hidden h-4 rounded-full bg-gray-600 cursor-pointer"></label>
                </div>
              </div>

@@ -4,7 +4,7 @@ import { Turbo } from "@hotwired/turbo-rails"
 //Used by Projects
 
 export default class extends Controller {
-  static targets = ["scaleDisplay", "resetZoomBtn", "stylePresetInput", "promptInput", "variationsInput", "aiAssistToggle", "aiAssistLabel", "autoFixResults", "autoFixItem", "autoFixHeader", "autoFixContent", "autoFixChevron", "autoFixDescriptionInput", "layerLink", "generateButton", "canvasToolbar"]
+  static targets = ["scaleDisplay", "resetZoomBtn", "stylePresetInput", "promptInput", "variationsInput", "aiAssistToggle", "aiAssistLabel", "autoFixResults", "autoFixItem", "autoFixHeader", "autoFixContent", "autoFixChevron", "autoFixDescriptionInput", "layerLink", "generateButton", "canvasToolbar", "smartFixPanel"]
   static values = {
     generationUrl: String,
     imageCost: Number,
@@ -24,6 +24,7 @@ export default class extends Controller {
     // Initialize UI
     this.validateInputs()
     this.detectInitialTab()
+    this.toggleAiAssist()
   }
 
   detectInitialTab() {
@@ -98,9 +99,24 @@ export default class extends Controller {
     }
   }
 
-  toggleAiAssistLabel() {
+  toggleAiAssist() {
     if (this.hasAiAssistToggleTarget && this.hasAiAssistLabelTarget) {
-      this.aiAssistLabelTarget.textContent = this.aiAssistToggleTarget.checked ? "AI Assist On" : "AI Assist Off"
+      const isOn = this.aiAssistToggleTarget.checked
+      this.aiAssistLabelTarget.textContent = isOn ? "AI Assist On" : "AI Assist Off"
+
+      if (isOn) {
+        this.aiAssistLabelTarget.classList.remove("text-gray-300")
+        this.aiAssistLabelTarget.classList.add("text-green-400", "font-bold")
+        if (this.hasSmartFixPanelTarget) {
+          this.smartFixPanelTarget.classList.add("bg-green-900/20")
+        }
+      } else {
+        this.aiAssistLabelTarget.classList.add("text-gray-300")
+        this.aiAssistLabelTarget.classList.remove("text-green-400", "font-bold")
+        if (this.hasSmartFixPanelTarget) {
+          this.smartFixPanelTarget.classList.remove("bg-green-900/20")
+        }
+      }
     }
   }
 
