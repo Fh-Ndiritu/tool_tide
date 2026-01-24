@@ -40,6 +40,7 @@ module SocialMedia
         #{last_posts}
 
         Hadaa.Pro link: https://hadaa.pro
+        Any past Post with less than a score of 60 is not desirable, we need to keep trying variations and improving.
       CONTEXT
     end
 
