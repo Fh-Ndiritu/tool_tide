@@ -56,13 +56,14 @@ class SketchAnalysisJob < ApplicationJob
 
 
     # Use service_url if available for public access, otherwise url
-    image_url = if Rails.env.local?
-      nil
-    else
-      image_url = record.image.attached? ? record.image.url : nil
+    # Upload image directly to Telegram to avoid URL access issues
+    image_io = if record.image.attached?
+      # Resize to max 400x400 to save bandwidth and avoid payload limits
+      variant = record.image.variant(resize_to_limit: [400, 400]).processed
+      StringIO.new(variant.download)
     end
 
-    TelegramNotifier::Dispatcher.new.dispatch(message, image_url: image_url)
+    TelegramNotifier::Dispatcher.new.dispatch(message, image_io: image_io)
   rescue StandardError => e
     Rails.logger.error("Failed to send Telegram notification: #{e.message}")
   end

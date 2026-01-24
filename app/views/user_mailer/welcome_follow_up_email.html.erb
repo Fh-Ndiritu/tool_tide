@@ -1,31 +1,18 @@
-<div style="font-family: sans-serif; line-height: 1.5; color: #333;">
-<p>Hi
-<% if @user.name %>
-  <%= @user.name.split.first %>
-<% else %>
-  there
-<% end %>
-,</p>
-  <p>
-    <% case @activity_type.to_s %>
-    <% when 'mask' %>
-      I noticed you brushed an area you want to modify in your yard.
-    <% when 'sketch' %>
-      I noticed you made a sketch to 3D transformation.
-    <% when 'text' %>
-      I noticed you struggled to make prompt edits for your designs.
-    <% else %>
-      I noticed you signed up but haven't started a design yet.
-    <% end %>
-  </p>
+<div style="font-family: sans-serif; line-height: 1.6; color: #222; max-width: 600px;">
+  <p>Hi <%= @user.name.present? ? @user.name.split.first : "there" %>,</p>
 
-  <p>I wanted to reach out and see how your experience has been so far.</p>
-
-  <p>Are you finding inspiration or doing professional editing? Is there any way we can help?</p>
-
-  <p>Did the free credits help you try out all the tools?</p>
-
-  <p>I would love to make sure you get the most out of the tool.</p>
-
-  <p>I read all replies and I'm looking forward to yours.</p>
+  <% case @activity_type.to_s %>
+  <% when 'mobile_project_studio' %>
+    <p>I saw you were checking out Hadaa on your phone earlier. If you get a chance, try logging in on a desktop.</p>
+    <p>The <strong>Magic Mask</strong> tool is a lot easier to use with a mouse for precision editing—it's a bit of a game-changer for surgical customizations that are tough on a small screen.</p>
+  <% when 'desktop_no_projects' %>
+    <p>How is everything going so far? I noticed you haven't started a project yet.</p>
+    <p>If you're stuck on where to begin, I'd recommend starting a quick project in the Studio just to see how the AI tools handle your ideas. It’s the best way to get a feel for the workflow.</p>
+  <% when 'desktop_style' %>
+    <p>Quick tip for your next design: have you tried the Style Presets yet?</p>
+    <p>They’re basically a one-click way to see your project in a completely different light. It usually saves people a ton of time when they're looking for a specific professional direction.</p>
+  <% else %>
+    <p>It looks like you've already explored most of what Hadaa can do—thanks for being such an active user!</p>
+    <p>Is there anything we could add or change to make the tools more useful for you? I'd love to hear your thoughts.</p>
+  <% end %>
 </div>

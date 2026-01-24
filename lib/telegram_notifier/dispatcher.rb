@@ -1,4 +1,5 @@
 require "faraday"
+require "faraday/multipart"
 
 module TelegramNotifier
   class Dispatcher
@@ -10,20 +11,20 @@ module TelegramNotifier
       @config = TelegramNotifier.config
     end
 
-    def dispatch(message, image_url: nil)
+    def dispatch(message, image_url: nil, image_io: nil)
       return unless @config.enabled
 
       return if @config.bot_token.blank? || @config.chat_id.blank?
 
       # Use a hash of the message to debounce identical errors
-      message_hash = Digest::SHA256.hexdigest(message + image_url.to_s)
+      message_hash = Digest::SHA256.hexdigest(message + image_url.to_s + image_io.to_s)
       return if cooling_off?(message_hash)
 
       token = @config.bot_token.to_s.strip
       # Ensure accidental 'bot' prefix from copy-paste is handled if user added it
       token = token.sub(/^bot/i, "") if token.match?(/^bot\d+:/i)
 
-      endpoint = image_url ? "sendPhoto" : "sendMessage"
+      endpoint = (image_url || image_io) ? "sendPhoto" : "sendMessage"
 
       begin
         response = client.post("/bot#{token}/#{endpoint}") do |req|
@@ -35,12 +36,24 @@ module TelegramNotifier
           if image_url
             payload[:photo] = image_url
             payload[:caption] = message
+          elsif image_io
+            payload[:photo] = Faraday::Multipart::FilePart.new(
+              image_io,
+              "image/jpeg", # Default to jpeg, or detect if possible, but Telegram usually handles it
+              "image.jpg"
+            )
+            payload[:caption] = message
           else
             payload[:text] = message
           end
 
-          req.body = payload.to_json
-          req.headers["Content-Type"] = "application/json"
+          unless image_io
+            req.body = payload.to_json
+            req.headers["Content-Type"] = "application/json"
+          else
+            req.body = payload
+            # Content-Type header is set automatically by multipart middleware
+          end
         end
 
         unless response.success?
@@ -57,6 +70,7 @@ module TelegramNotifier
 
     def client
       @client ||= Faraday.new(url: TELEGRAM_API_URL) do |f|
+        f.request :multipart
         f.request :retry, max: 2, interval: 0.5
         f.adapter Faraday.default_adapter
       end
