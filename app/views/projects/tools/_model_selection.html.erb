@@ -1,0 +1,57 @@
+<% user = local_assigns[:user] || (defined?(current_user) ? current_user : nil) %>
+<% has_purchased = user ? user.has_purchased_credits_before? : false %>
+<% selected_model = local_assigns[:selected_model] %>
+<% selected_model = MODEL_ALIAS_PRO if selected_model.blank? %>
+<% input_name = local_assigns[:input_name] || "model" %>
+
+<div class="flex-1 bg-black/40 rounded-lg p-0.5 flex text-[10px] font-medium relative"
+     data-controller="model-selection"
+     data-model-selection-default-value="<%= MODEL_ALIAS_PRO %>">
+
+   <%
+     unique_suffix = SecureRandom.hex(4)
+     pro_id = "#{input_name.parameterize}_pro_#{unique_suffix}"
+     standard_id = "#{input_name.parameterize}_standard_#{unique_suffix}"
+   %>
+
+   <!-- Pro Mode (Default) -->
+   <label class="flex-1 relative cursor-pointer group" for="<%= pro_id %>">
+     <input type="radio" name="<%= input_name %>" value="<%= MODEL_ALIAS_PRO %>" id="<%= pro_id %>"
+            class="peer sr-only"
+            <%= "checked" if selected_model == MODEL_ALIAS_PRO %>
+            data-action="change->model-selection#updateCost"
+            <%= "disabled" unless has_purchased %>>
+
+     <div class="h-full w-full flex items-center justify-center rounded-[6px] py-1.5 transition-all
+                 text-gray-400 hover:text-gray-200
+                 peer-checked:bg-[#3e747b] peer-checked:text-white peer-checked:shadow-sm
+                 <%= (selected_model == MODEL_ALIAS_PRO) ? 'bg-[#3e747b] text-white shadow-sm' : '' %>">
+       Pro Mode
+     </div>
+   </label>
+
+   <!-- Standard Mode -->
+   <label class="flex-1 relative cursor-pointer group <%= 'opacity-50 cursor-not-allowed' unless has_purchased %>" for="<%= standard_id %>">
+     <input type="radio" name="<%= input_name %>" value="<%= MODEL_ALIAS_STANDARD %>" id="<%= standard_id %>"
+            class="peer sr-only"
+            <%= "checked" if selected_model == MODEL_ALIAS_STANDARD %>
+            data-action="change->model-selection#updateCost"
+            <%= "disabled" unless has_purchased %>>
+
+     <div class="h-full w-full flex items-center justify-center rounded-[6px] py-1.5 transition-all
+                 text-gray-400 hover:text-gray-200
+                 peer-checked:bg-[#00acc1] peer-checked:text-white peer-checked:shadow-sm
+                 <%= (selected_model == MODEL_ALIAS_STANDARD) ? 'bg-[#00acc1] text-white shadow-sm' : '' %>">
+       Standard
+     </div>
+
+     <% unless has_purchased %>
+       <!-- Lock Icon -->
+       <div class="absolute -top-1 -right-1 text-amber-400 bg-gray-900 rounded-full border border-gray-800">
+         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3 h-3 p-0.5">
+           <path fill-rule="evenodd" d="M10 1a4.5 4.5 0 0 0-4.5 4.5V9H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-.5V5.5A4.5 4.5 0 0 0 10 1Zm3 8V5.5a3 3 0 1 0-6 0V9h6Z" clip-rule="evenodd" />
+         </svg>
+       </div>
+     <% end %>
+   </label>
+</div>

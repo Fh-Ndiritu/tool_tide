@@ -1,6 +1,6 @@
 class ProjectLayersController < ApplicationController
   before_action :set_project
-  before_action :set_design, only: [:create]
+  before_action :set_design, only: [ :create ]
   before_action :set_project_layer, only: %i[show update]
 
   def show
@@ -32,16 +32,17 @@ class ProjectLayersController < ApplicationController
           prompt: params[:prompt],
           preset: params[:preset],
           ai_assist: params[:ai_assist] == "true",
-          progress: :preparing
+          progress: :preparing,
+          model: params[:model]
         )
 
         if layer.save
           if params[:mask_data].present?
-             decoded_data = Base64.decode64(params[:mask_data].split(',')[1])
+             decoded_data = Base64.decode64(params[:mask_data].split(",")[1])
              layer.mask.attach(
                io: StringIO.new(decoded_data),
                filename: "mask.png",
-               content_type: 'image/png'
+               content_type: "image/png"
              )
           end
 
@@ -123,6 +124,6 @@ class ProjectLayersController < ApplicationController
   end
 
   def project_layer_params
-    params.require(:project_layer).permit(:prompt, :preset, :transformation_type)
+    params.require(:project_layer).permit(:prompt, :preset, :transformation_type, :model)
   end
 end

@@ -29,7 +29,11 @@ class ProjectGenerationJob < ApplicationJob
   def perform(layer_id)
     layer = ProjectLayer.find(layer_id)
     user = layer.project.user
-    cost = layer.generation_type == "upscale" ? GOOGLE_UPSCALE_COST : GOOGLE_IMAGE_COST
+    cost = if layer.generation_type == "upscale"
+             GOOGLE_UPSCALE_COST
+    else
+             MODEL_COST_MAP[layer.model] || GOOGLE_PRO_IMAGE_COST
+    end
 
     charge_user!(user, layer, cost)
     layer.generating!
@@ -50,7 +54,6 @@ class ProjectGenerationJob < ApplicationJob
   private
 
   def charge_user!(user, layer, cost)
-
     user.with_lock do
       if user.pro_engine_credits < cost
         raise InsufficientCreditsError, "Insufficient credits"
@@ -74,7 +77,11 @@ class ProjectGenerationJob < ApplicationJob
     return unless layer
 
     user = layer.project.user
-    cost = layer.generation_type == "upscale" ? GOOGLE_UPSCALE_COST : GOOGLE_IMAGE_COST
+    cost = if layer.generation_type == "upscale"
+             GOOGLE_UPSCALE_COST
+    else
+             MODEL_COST_MAP[layer.model] || GOOGLE_PRO_IMAGE_COST
+    end
 
     Rails.logger.error("ProjectGenerationJob Failed permanently: #{error.message}")
 

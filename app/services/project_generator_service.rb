@@ -23,7 +23,6 @@ class ProjectGeneratorService
 
     input_image = resolve_input_image
 
-    model = "gemini-2.5-flash-image"
     config = {}
     if @layer.generation_type == "upscale"
       config = {
@@ -32,12 +31,17 @@ class ProjectGeneratorService
           "imageConfig" => { "imageSize" => "4K" }
         }
       }
-      model = "gemini-3-pro-image-preview"
     end
 
     payload = gcp_payload(prompt: prompt, image: input_image, config: config)
 
-    response = fetch_gcp_response(payload, model: model)
+    payload = gcp_payload(prompt: prompt, image: input_image, config: config)
+
+    # Use MODEL_NAME_MAP to get the real model name from the alias
+    # Standard Mode -> "gemini-2.5-flash-image"
+    # Pro Mode -> "gemini-3-pro-image-preview" (fallback)
+    actual_model = MODEL_NAME_MAP[@layer.model] || MODEL_NAME_MAP[MODEL_ALIAS_PRO]
+    response = fetch_gcp_response(payload, model: actual_model)
     blob = save_gcp_results(response)
 
     @layer.result_image.attach(blob)

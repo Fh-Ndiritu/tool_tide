@@ -38,7 +38,7 @@ class AutoFixDetectionJob < ApplicationJob
         target: "auto_fix_results",
         partial: "auto_fixes/auto_fix_list",
         locals: { auto_fixes: auto_fixes, project_layer: layer },
-        formats: [:html]
+        formats: [ :html ]
       )
     else
       Turbo::StreamsChannel.broadcast_update_to(
@@ -53,7 +53,7 @@ class AutoFixDetectionJob < ApplicationJob
     ApplicationController.render(
       partial: "auto_fixes/empty_state",
       locals: { project_layer: layer },
-      formats: [:html]
+      formats: [ :html ]
     )
   end
 
@@ -61,7 +61,7 @@ class AutoFixDetectionJob < ApplicationJob
     ApplicationController.render(
       partial: "auto_fixes/loading_state",
       locals: { message: message },
-      formats: [:html]
+      formats: [ :html ]
     )
   end
 
@@ -77,7 +77,7 @@ class AutoFixDetectionJob < ApplicationJob
     ApplicationController.render(
       partial: "auto_fixes/error_state",
       locals: { project_layer: layer, message: message },
-      formats: [:html]
+      formats: [ :html ]
     )
   end
 end

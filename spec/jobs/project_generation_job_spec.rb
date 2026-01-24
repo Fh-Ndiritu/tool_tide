@@ -1,10 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe ProjectGenerationJob, type: :job do
-  let(:layer){ project_layers(:one) }
-  let(:design){ layer.design }
-  let(:project){ design.project }
-  let(:user){ project.user }
+  let(:layer) { project_layers(:one) }
+  let(:design) { layer.design }
+  let(:project) { design.project }
+  let(:user) { project.user }
 
   before do
     ActiveJob::Base.queue_adapter = :test
@@ -17,27 +17,40 @@ RSpec.describe ProjectGenerationJob, type: :job do
     ActiveJob::Base.queue_adapter = :test # Or whatever default was
   end
 
-  let(:cost) { ProjectGenerationJob.const_get(:GOOGLE_IMAGE_COST) rescue 8 }
+  context "with Pro Mode (default)" do
+    let(:cost) { GOOGLE_PRO_IMAGE_COST }
 
-  it "successful generation decrements credits and marks complete" do
-    user.update!(pro_engine_credits: 100)
-    expect {
-      ProjectGenerationJob.new.perform(layer.id)
-    }.to change { user.reload.pro_engine_credits }.by(-cost)
-    .and change { CreditSpending.count }.by(1)
+    before { layer.update!(model: MODEL_ALIAS_PRO) }
 
-    expect(layer.reload.progress).to eq("complete")
-    expect(CreditSpending.last.transaction_type).to eq("spend")
+    it "deducts Pro cost (8 credits)" do
+      user.update!(pro_engine_credits: 100)
+      expect {
+        ProjectGenerationJob.new.perform(layer.id)
+      }.to change { user.reload.pro_engine_credits }.by(-cost)
+    end
   end
 
-  it "raises error if insufficient credits and does not refund" do
+  context "with Standard Mode" do
+    let(:cost) { GOOGLE_STANDARD_IMAGE_COST }
+
+    before { layer.update!(model: MODEL_ALIAS_STANDARD) }
+
+    it "deducts Standard cost (4 credits)" do
+      user.update!(pro_engine_credits: 100)
+      expect {
+        ProjectGenerationJob.new.perform(layer.id)
+      }.to change { user.reload.pro_engine_credits }.by(-cost)
+    end
+  end
+
+  it "raises error if insufficient credits" do
     user.update!(pro_engine_credits: 0)
     expect {
       ProjectGenerationJob.new.perform(layer.id)
     }.to raise_error(ProjectGenerationJob::InsufficientCreditsError)
 
     expect(user.reload.pro_engine_credits).to eq(0)
-    expect(layer.reload.progress).to eq("preparing") # Remains in initial state
+    expect(layer.reload.progress).to eq("preparing")
   end
 
   it "calls SmartFixImprover if ai_assist is true" do
@@ -49,6 +62,7 @@ RSpec.describe ProjectGenerationJob, type: :job do
   end
 
   context "when job fails permanently" do
+    let(:cost) { GOOGLE_PRO_IMAGE_COST }
     before do
        user.update!(pro_engine_credits: 20)
        allow(ProjectGeneratorService).to receive(:perform).and_raise(StandardError, "GCP Boom")

@@ -108,7 +108,7 @@ module Designable
       return
     end
 
-    cost = GOOGLE_IMAGE_COST * image_count
+    cost = GOOGLE_PRO_IMAGE_COST * image_count
 
     if cost.zero?
       @mask_request.update progress: :failed, error_msg: "You have no credits left."

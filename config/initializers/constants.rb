@@ -16,9 +16,31 @@ PROMPTS = YAML.load_file(Rails.root.join("config/prompts.yml"))
 # currency credits
 PRO_CREDITS_PER_USD = 20
 
-GOOGLE_IMAGE_COST = 8
-GOOGLE_UPSCALE_COST = GOOGLE_IMAGE_COST * 4
+
 LOCALIZED_PLANT_COST = 2
+
+# === Model Aliases & Costs ===
+MODEL_ALIAS_PRO = "pro_mode".freeze
+MODEL_ALIAS_STANDARD = "standard_mode".freeze
+
+GOOGLE_PRO_IMAGE_COST = 8
+GOOGLE_STANDARD_IMAGE_COST = 4
+
+# Map alias -> Cost
+MODEL_COST_MAP = {
+  MODEL_ALIAS_PRO => GOOGLE_PRO_IMAGE_COST,
+  MODEL_ALIAS_STANDARD => GOOGLE_STANDARD_IMAGE_COST
+}.freeze
+
+# Map alias -> Real Model Name (Separation of Concerns)
+MODEL_NAME_MAP = {
+  MODEL_ALIAS_PRO => "gemini-3-pro-image-preview",
+  MODEL_ALIAS_STANDARD => "gemini-2.5-flash-image"
+}.freeze
+
+GOOGLE_2K_UPSCALE_COST = GOOGLE_PRO_IMAGE_COST
+GOOGLE_4K_UPSCALE_COST = GOOGLE_PRO_IMAGE_COST * 3
+GOOGLE_UPSCALE_COST = GOOGLE_4K_UPSCALE_COST
 DEFAULT_IMAGE_COUNT = 3
 DEFAULT_USD_PURCHASE_AMOUNT = BigDecimal(10)
 CREDITS_INFO = "$#{DEFAULT_USD_PURCHASE_AMOUNT.to_i} for #{(DEFAULT_USD_PURCHASE_AMOUNT * PRO_CREDITS_PER_USD).to_i} credits".freeze

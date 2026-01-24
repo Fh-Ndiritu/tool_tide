@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_20_190405) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_24_154859) do
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -342,6 +342,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_20_190405) do
     t.integer "auto_fix_id"
     t.string "error_msg"
     t.string "user_msg"
+    t.string "model", default: "pro_mode"
     t.index ["ancestry"], name: "index_project_layers_on_ancestry"
     t.index ["auto_fix_id"], name: "index_project_layers_on_auto_fix_id"
     t.index ["design_id"], name: "index_project_layers_on_design_id"

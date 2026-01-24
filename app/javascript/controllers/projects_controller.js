@@ -4,7 +4,7 @@ import { Turbo } from "@hotwired/turbo-rails"
 //Used by Projects
 
 export default class extends Controller {
-  static targets = ["scaleDisplay", "resetZoomBtn", "stylePresetInput", "promptInput", "variationsInput", "aiAssistToggle", "aiAssistLabel", "autoFixResults", "autoFixItem", "autoFixHeader", "autoFixContent", "autoFixChevron", "autoFixDescriptionInput", "layerLink", "generateButton", "canvasToolbar", "smartFixPanel"]
+  static targets = ["scaleDisplay", "resetZoomBtn", "stylePresetInput", "promptInput", "variationsInput", "aiAssistToggle", "aiAssistLabel", "autoFixResults", "autoFixItem", "autoFixHeader", "autoFixContent", "autoFixChevron", "autoFixDescriptionInput", "layerLink", "generateButton", "generateLabel", "generateLoader", "canvasToolbar", "smartFixPanel"]
   static values = {
     generationUrl: String,
     imageCost: Number,
@@ -379,6 +379,28 @@ export default class extends Controller {
         }
     }
 
+    // Model Selection
+    if (activePanel) {
+        // Try specific name first
+        let modelInput = activePanel.querySelector('input[name="project_layer[model]"]:checked')
+
+        // Fallback: Try generic name "model" if specific one not found (for robustness)
+        if (!modelInput) {
+             modelInput = activePanel.querySelector('input[name="model"]:checked')
+        }
+
+        if (modelInput) {
+            formData.append("model", modelInput.value)
+        } else {
+            console.warn("Model selection input not found in active panel", activePanel)
+            // Default to PRO if not found to prevent server error
+            formData.append("model", "pro_mode")
+        }
+    } else {
+        // Fallback if no panel active (shouldn't happen usually)
+        formData.append("model", "pro_mode")
+    }
+
     // Fallback if not found (though logic above should cover it)
     if (!formData.has("generation_type")) {
        formData.append("generation_type", "style_preset")
@@ -386,9 +408,16 @@ export default class extends Controller {
 
     // Disable button state to prevent double submit
     const button = event.currentTarget
-    const originalText = button.innerText
     button.disabled = true
-    button.innerText = "Generating..."
+
+    // Toggle Loader if targets exist
+    if (this.hasGenerateLabelTarget && this.hasGenerateLoaderTarget) {
+       this.generateLabelTarget.classList.add("invisible")
+       this.generateLoaderTarget.classList.remove("hidden")
+    } else {
+       // Fallback
+       button.innerText = "Generating..."
+    }
 
     try {
       const response = await fetch(this.generationUrlValue, {
@@ -416,9 +445,15 @@ export default class extends Controller {
       alert("Network error. Please try again.")
     } finally {
       // 3-second cooldown before re-enabling button to prevent rage clicking
+      // 3-second cooldown before re-enabling button to prevent rage clicking
       setTimeout(() => {
         button.disabled = false
-        button.innerText = originalText
+        if (this.hasGenerateLabelTarget && this.hasGenerateLoaderTarget) {
+           this.generateLabelTarget.classList.remove("invisible")
+           this.generateLoaderTarget.classList.add("hidden")
+        } else {
+           button.innerText = "Generate" // approximate restore
+        }
       }, 3000)
     }
   }
