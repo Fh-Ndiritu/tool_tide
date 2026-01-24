@@ -2,11 +2,11 @@ class SocialPost < ApplicationRecord
   enum :status, { draft: 0, generated: 1, published: 2 }
 
   has_one_attached :image do |attachable|
-    attachable.variant :preview, resize_to_limit: [300, 300]
+    attachable.variant :preview, resize_to_limit: [200, 200]
   end
 
   has_one_attached :performance_screenshot do |attachable|
-    attachable.variant :preview, resize_to_limit: [300, 300]
+    attachable.variant :preview, resize_to_limit: [200, 200]
   end
 
   validates :platform, presence: true
