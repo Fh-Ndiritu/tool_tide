@@ -41,18 +41,25 @@ class SketchAnalysisJob < ApplicationJob
 
   def notify_telegram(record, result)
     user = record.user
-    message = "⚠️ **Sketch/Satellite Detected**\n\n" \
-              "**User:** #{user.email} (ID: #{user.id})\n" \
-              "**Record Type:** #{record.class.name}\n" \
-              "**Record ID:** #{record.id}\n" \
-              "**Detected Type:** #{result}"
+    message = <<~MESSAGE
+      ⚠️ **Sketch/Satellite Detected**
+
+      **User:** #{user&.name}
+      **User ID:** #{user&.id}
+      **User Email:** #{user&.email}
+
+
+      **Record Type:** #{record.class.name}
+      **Record ID:** #{record.id}
+      **Detected Type:** #{result}
+    MESSAGE
+
 
     # Use service_url if available for public access, otherwise url
-    image_url = record.image.attached? ? record.image.url : nil
-
-    # Telegram cannot access localhost, so we skip the image in that case and send text only
-    if image_url && (image_url.include?("localhost") || image_url.include?("127.0.0.1"))
-      image_url = nil
+    image_url = if Rails.env.local?
+      nil
+    else
+      image_url = record.image.attached? ? record.image.url : nil
     end
 
     TelegramNotifier::Dispatcher.new.dispatch(message, image_url: image_url)

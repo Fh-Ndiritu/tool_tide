@@ -61,13 +61,16 @@ class ProjectsController < ApplicationController
     @project = current_user.projects.create(title: "Untitled Project")
     @design = @project.designs.create(title: params[:image].original_filename)
 
-    @layer = @design.project_layers.create(
+    @layer = @design.project_layers.new(
       project: @project,
       layer_type: :original,
-      progress: :complete
+      progress: :complete,
+      image: params[:image]
     )
 
-    @layer.image.attach(params[:image])
+    if @layer.save
+      SketchAnalysisJob.perform_later(@layer)
+    end
 
     redirect_to project_path(@project)
   rescue StandardError => e

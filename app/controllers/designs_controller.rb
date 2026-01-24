@@ -17,16 +17,21 @@ class DesignsController < ApplicationController
     @design = @project.designs.create!(title: design_title)
 
     # Create the initial layer
-    @design.project_layers.create!(
+    layer = @design.project_layers.new(
       project: @project,
       layer_type: :original,
       image: image,
       progress: :complete
     )
 
-    @project.update(current_design: @design)
+    if layer.save
+      SketchAnalysisJob.perform_later(layer)
+      @project.update(current_design: @design)
 
-    redirect_to project_path(@project, design_id: @design.id), notice: "New design created!"
+      redirect_to project_path(@project, design_id: @design.id), notice: "New design created!"
+    else
+      render :new, alert: "Failed to create design: #{layer.errors.full_messages.join(', ')}"
+    end
   end
 
   private

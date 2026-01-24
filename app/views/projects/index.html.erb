@@ -7,7 +7,7 @@
     <%= form_with url: projects_path, local: true, multipart: true, class: "flex items-center gap-4" do |f| %>
       <label class="cursor-pointer bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
         <span>+ New Project</span>
-        <%= f.file_field :image, class: "hidden", onchange: "this.form.submit()" %>
+        <%= f.file_field :image, class: "hidden", accept: "image/*", onchange: "this.form.submit()" %>
       </label>
     <% end %>
   </div>
