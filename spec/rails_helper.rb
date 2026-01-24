@@ -24,7 +24,6 @@ require "rspec/rails"
 
 # Add additional requires below this line. Rails is not loaded until this point!
 require "capybara/rails"
-require "webdrivers" # Automatically downloads browser drivers
 require "database_cleaner/active_record" # Specific for ActiveRecord
 require "shoulda/matchers"
 

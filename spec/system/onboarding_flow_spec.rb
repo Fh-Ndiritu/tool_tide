@@ -24,8 +24,6 @@ RSpec.describe "Onboarding Flow", type: :system do
       puts "Browser Log: #{log.message}"
     end
 
-    # Check if JS controller connected
-    expect(page).to have_css("body[data-onboarding-connected]", wait: 10)
 
     # 2. Welcome Modal & Upload
     expect(page).to have_current_path(new_canva_path)

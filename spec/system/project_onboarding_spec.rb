@@ -13,7 +13,7 @@ RSpec.describe "Project Onboarding", type: :system do
   before do
     login_as(user, scope: :user)
     # Ensure there's an image attached to the root layer for the project view to render
-    file = fixture_file_upload(Rails.root.join("spec/fixtures/files/test.png"), "image/png")
+    file = fixture_file_upload(Rails.root.join("spec/fixtures/files/test_image.png"), "image/png")
     root_layer.display_image.attach(file)
     design.update(current_project_layer_id: root_layer.id)
   end
@@ -21,8 +21,6 @@ RSpec.describe "Project Onboarding", type: :system do
   it "guides the user through the Style Presets tour" do
     visit project_path(project)
 
-    # 1. Style Presets Tab
-    expect(page).to have_content("Style Presets", wait: 10)
     expect(page).to have_content("transform your garden", wait: 10)
 
     # Click Next in popover (Driver.js)

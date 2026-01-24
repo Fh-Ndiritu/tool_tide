@@ -20,7 +20,6 @@ RSpec.describe AutoFixesController, type: :controller do
   end
 
   describe 'POST #create' do
-
     it 'creates AutoFix records and calls the service' do
       # Verify the service is called and create the fix when it is
       expect(AutoFixDetectorService).to receive(:perform).with(kind_of(ProjectLayer)) do |layer|

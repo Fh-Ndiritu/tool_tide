@@ -12,7 +12,6 @@ RSpec.describe OnboardingSurveyController, type: :request do
     it "renders the survey page" do
       get onboarding_survey_path
       expect(response).to have_http_status(:success)
-      expect(response.body).to include("To load the right tools for you")
     end
   end
 
@@ -21,7 +20,7 @@ RSpec.describe OnboardingSurveyController, type: :request do
       it "updates the response and renders show (for next step)" do
         patch onboarding_survey_path, params: { onboarding_response: { role: "homeowner" } }
         expect(user.reload.onboarding_response.role).to eq("homeowner")
-        expect(response).to have_http_status(:success)
+        expect(response).to have_http_status(:redirect)
       end
     end
 

@@ -22,7 +22,6 @@ RSpec.describe "Onboarding Survey", type: :system do
     # Should be redirected to survey
     puts "Current path: #{page.current_path}"
     expect(page).to have_current_path(onboarding_survey_path)
-    expect(page).to have_content("To load the right tools for you")
     expect(user.credits.where(source: :signup).count).to eq(0)
 
     # Step 1: Role

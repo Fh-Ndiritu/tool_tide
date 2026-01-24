@@ -53,7 +53,7 @@ class ProjectLayersController < ApplicationController
 
           respond_to do |format|
             format.turbo_stream {
-              render turbo_stream: turbo_stream.replace("flash", partial: "shared/flash")
+              render turbo_stream: turbo_stream.replace("flash", partial: "shared/flash"), status: :unprocessable_content
             }
             format.html { redirect_to project_path(@project, design_id: @design.id), alert: error_message }
           end
@@ -80,7 +80,13 @@ class ProjectLayersController < ApplicationController
     end
   rescue StandardError => e
     Rails.logger.error("Layer Create Error: #{e.message}")
-    render status: :unprocessable_entity
+    flash.now[:alert] = "An unexpected error occurred: #{e.message}"
+    respond_to do |format|
+      format.turbo_stream {
+        render turbo_stream: turbo_stream.replace("flash", partial: "shared/flash"), status: :unprocessable_content
+      }
+      format.html { redirect_to project_path(@project, design_id: @design.id), alert: "An unexpected error occurred." }
+    end
   end
 
   def update

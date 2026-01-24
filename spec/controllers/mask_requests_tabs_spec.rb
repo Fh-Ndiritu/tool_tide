@@ -33,6 +33,5 @@ RSpec.describe MaskRequestsController, type: :controller do
         expect(response.body).to include("Design") # "Design" text is in the partial
       end
     end
-
   end
 end
