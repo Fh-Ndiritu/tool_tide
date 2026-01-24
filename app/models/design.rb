@@ -18,6 +18,8 @@ class Design < ApplicationRecord
 
   before_validation :set_default_title, on: :create
 
+  delegate :user, to: :project
+
   private
 
   def nullify_current_design_in_project

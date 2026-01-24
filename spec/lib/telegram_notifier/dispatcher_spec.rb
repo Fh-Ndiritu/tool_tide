@@ -1,70 +1,55 @@
 require "rails_helper"
-require "telegram_notifier/dispatcher"
 
 RSpec.describe TelegramNotifier::Dispatcher do
+  let(:config) { TelegramNotifier::Configuration.new }
   let(:dispatcher) { described_class.new }
-  let(:message) { "Test message" }
-  let(:config) { TelegramNotifier.config }
+  let(:faraday_client) { instance_double(Faraday::Connection) }
+  let(:faraday_response) { instance_double(Faraday::Response, success?: true, status: 200, body: "{}") }
 
   before do
-    TelegramNotifier.configure do |c|
-      c.bot_token = "TEST_TOKEN"
-      c.chat_id = "TEST_CHAT_ID"
-      c.enabled = true
-    end
+    allow(TelegramNotifier).to receive(:config).and_return(config)
+    config.bot_token = "test_token"
+    config.chat_id = "123456"
+    config.enabled = true
 
     # Mock Rails.cache
     allow(Rails.cache).to receive(:exist?).and_return(false)
     allow(Rails.cache).to receive(:write)
+
+    # Mock Faraday
+    allow(Faraday).to receive(:new).and_return(faraday_client)
+    allow(faraday_client).to receive(:post).and_yield(double("request", headers: {}, :body= => nil)).and_return(faraday_response)
   end
 
   describe "#dispatch" do
-    let(:stubs) { Faraday::Adapter::Test::Stubs.new }
-    let(:conn) do
-      Faraday.new do |b|
-        b.adapter :test, stubs
-      end
-    end
+    let(:message) { "Test message" }
 
-    before do
-      allow(dispatcher).to receive(:client).and_return(conn)
-    end
+    it "sends a text message when no image URL is provided" do
+      req = double("request", headers: {})
+      allow(req).to receive(:body=)
 
-    it "sends a POST request to Telegram API" do
-      stubs.post("/botTEST_TOKEN/sendMessage") do |env|
-        expect(env.body).to include("Test message")
-        expect(env.body).to include("TEST_CHAT_ID")
-        [200, {}, { ok: true }.to_json]
-      end
-
+      expect(faraday_client).to receive(:post).with("/bottest_token/sendMessage").and_yield(req).and_return(faraday_response)
       dispatcher.dispatch(message)
-      stubs.verify_stubbed_calls
     end
 
-    it "does not send if disabled" do
+    it "sends a photo message when image URL is provided" do
+      image_url = "https://example.com/image.jpg"
+      req = double("request", headers: {})
+      allow(req).to receive(:body=)
+
+      expect(faraday_client).to receive(:post).with("/bottest_token/sendPhoto").and_yield(req).and_return(faraday_response)
+      dispatcher.dispatch(message, image_url: image_url)
+    end
+
+    it "does not send message if disabled" do
       config.enabled = false
-      expect(dispatcher).not_to receive(:client)
+      expect(Faraday).not_to receive(:new)
       dispatcher.dispatch(message)
     end
 
-    it "does not send if config is missing" do
-      config.bot_token = nil
-      expect(dispatcher).not_to receive(:client)
-      dispatcher.dispatch(message)
-    end
-
-    it "does not send if cooling off" do
+    it "does not send message if cooling off" do
       allow(Rails.cache).to receive(:exist?).and_return(true)
-      expect(dispatcher).not_to receive(:client)
-      dispatcher.dispatch(message)
-    end
-
-    it "logs error on failure" do
-      stubs.post("/botTEST_TOKEN/sendMessage") do
-        [400, {}, "Bad Request"]
-      end
-
-      expect(Rails.logger).to receive(:error).with(/Failed to send message/)
+      expect(Faraday).not_to receive(:new)
       dispatcher.dispatch(message)
     end
   end

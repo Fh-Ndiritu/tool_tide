@@ -10,6 +10,7 @@ class SketchAnalysisJob < ApplicationJob
 
   def perform(record)
     return unless record.image.attached?
+    return unless record.image.content_type.start_with?("image/")
 
     # We analyse the image to see if it is a sketch/drawing, a satellite image or a real photo
     # If it is a photo, we proceed as normal
@@ -29,6 +30,7 @@ class SketchAnalysisJob < ApplicationJob
     else
       # If sketch or satellite, we just broadcast to the UI to show the notification.
       # The UI will subscribe to the turbo stream and show the overlay.
+      notify_telegram(record, result)
     end
 
     broadcast_result(record, result)
@@ -36,6 +38,27 @@ class SketchAnalysisJob < ApplicationJob
   end
 
   private
+
+  def notify_telegram(record, result)
+    user = record.user
+    message = "⚠️ **Sketch/Satellite Detected**\n\n" \
+              "**User:** #{user.email} (ID: #{user.id})\n" \
+              "**Record Type:** #{record.class.name}\n" \
+              "**Record ID:** #{record.id}\n" \
+              "**Detected Type:** #{result}"
+
+    # Use service_url if available for public access, otherwise url
+    image_url = record.image.attached? ? record.image.url : nil
+
+    # Telegram cannot access localhost, so we skip the image in that case and send text only
+    if image_url && (image_url.include?("localhost") || image_url.include?("127.0.0.1"))
+      image_url = nil
+    end
+
+    TelegramNotifier::Dispatcher.new.dispatch(message, image_url: image_url)
+  rescue StandardError => e
+    Rails.logger.error("Failed to send Telegram notification: #{e.message}")
+  end
 
   def broadcast_result(record, result)
     # Replaces the loader with the appropriate content

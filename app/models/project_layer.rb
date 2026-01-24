@@ -53,6 +53,8 @@ class ProjectLayer < ApplicationRecord
     upscale: 40
   }
 
+  delegate :user, to: :project
+
   validates :layer_type, presence: true
 
   validates :preset, presence: { message: "Please select a Style Preset." }, if: -> { style_preset? && generated? }
