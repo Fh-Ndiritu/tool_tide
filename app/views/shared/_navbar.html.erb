@@ -87,39 +87,92 @@
     >
       <% if user_signed_in? %>
           <%= render ButtonComponent.new(
-          text: "Buy Credits",
+          text: "Manage Credits",
           href: credits_path,
           classes: "#{active_item(credits_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
           data: { action: "click->navbar#toggleMenu" }
           ) %>
-          <%= render ButtonComponent.new(
-          text: "New Design",
-          href: new_canva_path,
-          classes: "#{active_item(new_canva_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
-          data: { action: "click->navbar#toggleMenu" }
-          ) %>
+          <% if current_user.last_sign_in_device_type != "desktop" %>
+            <%= render ButtonComponent.new(
+            text: "New Design",
+            href: new_canva_path,
+            classes: "#{active_item(new_canva_path)}  gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
+            data: { action: "click->navbar#toggleMenu" }
+            ) %>
+          <% end %>
         <%= link_to projects_path, class: "#{active_item(projects_path)} hidden lg:flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-500 hover:to-purple-500 px-5 py-2 rounded-full font-bold shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 border border-white/20", data: { action: "click->navbar#toggleMenu" } do %>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
              <path fill-rule="evenodd" d="M9 4.5a.75.75 0 01.721.544l.813 2.846a3.75 3.75 0 002.576 2.576l2.846.813a.75.75 0 010 1.442l-2.846.813a3.75 3.75 0 00-2.576 2.576l-.813 2.846a.75.75 0 01-1.442 0l-.813-2.846a3.75 3.75 0 00-2.576-2.576l-2.846-.813a.75.75 0 010-1.442l2.846-.813a3.75 3.75 0 002.576-2.576l.813-2.846A.75.75 0 019 4.5zM9 15a.75.75 0 01.721.544l.195.682a2.25 2.25 0 001.483 1.483l.682.195a.75.75 0 010 1.442l-.682.195a2.25 2.25 0 00-1.483 1.483l-.195.682a.75.75 0 01-1.442 0l-.195-.682a2.25 2.25 0 00-1.483-1.483l-.682-.195a.75.75 0 010-1.442l.682-.195a2.25 2.25 0 001.483-1.483l.195-.682A.75.75 0 019 15z" clip-rule="evenodd" />
           </svg>
-          Projects
+          Project Studio
         <% end %>
-        <%= render ButtonComponent.new(
-        text: "Dashboard",
-        href: mask_requests_path,
-        classes: "#{active_item(mask_requests_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
-        data: { action: "click->navbar#toggleMenu" }
-        ) %>
-        <%# Mobile: show if mask_requests exist (they can access legacy flow) %>
-        <%# Desktop: show only if text_requests exist (enforce project-first for new users) %>
-        <% show_smart_fix = current_user.last_sign_in_device_type == "desktop" && current_user.text_requests.complete.exists? || current_user.mask_requests.complete.exists?%>
-        <% if show_smart_fix %>
+        <% has_mask_requests = current_user.mask_requests.complete.exists? %>
+        <% has_text_requests = current_user.text_requests.complete.exists? %>
+        <%# Mobile: Always show Dashboard %>
+        <% if current_user.last_sign_in_device_type != "desktop" %>
           <%= render ButtonComponent.new(
-            text: "Smart Fix",
-            href: text_requests_path,
-            classes: "#{active_item(text_requests_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
-            data: { action: "click->navbar#toggleMenu" }
+          text: "Dashboard",
+          href: mask_requests_path,
+          classes: "#{active_item(mask_requests_path)} gap-4 bg-transparent hover:bg-secondary focus:outline-none hover:bg-accent text-neutral-900 hover:text-white p-0",
+          data: { action: "click->navbar#toggleMenu" }
           ) %>
+        <% end %>
+
+        <%# Desktop: Legacy Tools Dropdown %>
+        <% if current_user.last_sign_in_device_type == "desktop" && (has_mask_requests || has_text_requests) %>
+          <div data-controller="dropdown" class="relative">
+            <button
+              data-action="dropdown#toggle"
+              class="
+                flex items-center gap-2 bg-transparent hover:bg-secondary
+                focus:outline-none hover:bg-accent text-neutral-900
+                hover:text-white p-0 rounded-md transition duration-150
+                w-full lg:w-auto justify-center px-4 py-2
+              "
+            >
+              <span class="font-bold">Legacy Tools</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
+            <div
+              data-dropdown-target="menu"
+              data-dropdown-hidden-class="hidden"
+              class="
+                hidden relative w-full lg:absolute lg:w-48 lg:left-auto
+                lg:translate-x-0 mt-2 bg-white rounded-xl shadow-none lg:shadow-2xl p-2
+                z-50 ring-1 ring-black/5 origin-top-right lg:right-0
+              "
+            >
+              <% if has_text_requests %>
+                <%= link_to text_requests_path, class: active_link_class(text_requests_path), data: { action: "click->dropdown#hide" } do %>
+                  <div class="font-bold mb-0.5">Smart Fix</div>
+                  <div class="text-xs text-gray-500 group-hover:text-accent/80">
+                    Legacy Text Edits
+                  </div>
+                <% end %>
+              <% end %>
+              <% if has_mask_requests %>
+                <%= link_to mask_requests_path, class: active_link_class(mask_requests_path), data: { action: "click->dropdown#hide" } do %>
+                  <div class="font-bold mb-0.5">Dashboard</div>
+                  <div class="text-xs text-gray-500 group-hover:text-accent/80">
+                     Legacy Mask Edits
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
         <% end %>
         <% if current_user.admin? %>
           <div data-controller="dropdown" class="relative">
