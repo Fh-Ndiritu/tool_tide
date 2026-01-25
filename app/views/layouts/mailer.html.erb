@@ -1,90 +1,30 @@
 <!DOCTYPE html>
-
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <style>
-      /* Email styles need to be inline */
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        font-size: 16px;
+        line-height: 1.5;
+        color: #333333;
+      }
+      .signature {
+        margin-top: 24px;
+        border-top: 1px solid #eeeeee;
+        padding-top: 12px;
+        color: #555555;
+      }
     </style>
   </head>
 
   <body>
     <%= yield %>
-    <div><br></div>
-    <div><br></div>
-    <div class="zmail_signature_below">
-      <div
-        id="Zm-_Id_-Sgn"
-        data-zbluepencil-ignore="true"
-        data-sigid="946451000000010002"
-      >
-        <div>
-          Best,
-          <br>
-        </div>
 
-        <div><br></div>
-
-        <div>
-          Winnie
-          <br>
-        </div>
-
-        <div><br></div>
-
-        <div>
-          <div><br></div>
-
-          <table
-            style="font-size:10pt; font-family:Verdana, Arial, Helvetica, sans-serif; border-collapse:collapse; border:none"
-            cellspacing="2"
-            cellpadding="2"
-          >
-            <tbody>
-              <tr>
-                <td style="border:none; vertical-align:top; width:147.812px">
-                  <div>
-                    <div>
-                      <img
-                        width="100%"
-                        style=""
-                        alt="logo"
-                        src="<%= image_url('hadaa.png') %>"
-                      >
-                      <br>
-                    </div>
-                    <div><br></div>
-                  </div>
-                </td>
-                <td style="border:none; vertical-align:top; width:398.188px">
-                  <div><br></div>
-
-                  <div><b>Winnie Astrid,</b><br></div>
-
-                  <div><br></div>
-
-                  <div>
-                    Client Success Partner,
-                    <br>
-                  </div>
-
-                  <div><br></div>
-
-                  <div>
-                    Hadaa AI
-                    <b></b>
-                    <br>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-
-          <div><br></div>
-        </div>
-
-        <div><br></div>
-      </div>
+    <div class="signature">
+      Best,<br>
+      <strong>Winnie Astrid</strong><br>
+      Client Success Partner, Hadaa AI
     </div>
   </body>
 </html>

@@ -11,8 +11,9 @@ RSpec.describe SketchAnalysisJob, type: :job do
   before do
     # Mock ActiveStorage
     allow(canva).to receive_message_chain(:image, :attached?).and_return(true)
-    allow(canva).to receive_message_chain(:image, :url).and_return("https://example.com/image.jpg")
     allow(canva).to receive_message_chain(:image, :content_type).and_return("image/jpeg")
+    # Mock variant logic
+    allow(canva).to receive_message_chain(:image, :variant, :processed, :download).and_return("fake image content")
 
     # Mock LLM
     allow(CustomRubyLLM).to receive_message_chain(:context, :chat).and_return(chat_context)
@@ -26,7 +27,7 @@ RSpec.describe SketchAnalysisJob, type: :job do
   describe "#perform" do
     it "sends telegram notification when sketch is detected" do
       expect_any_instance_of(TelegramNotifier::Dispatcher).to receive(:dispatch)
-        .with(include("Sketch/Satellite Detected"), image_url: "https://example.com/image.jpg")
+        .with(include("Sketch/Satellite Detected"), image_io: instance_of(StringIO))
 
       described_class.perform_now(canva)
     end
@@ -50,17 +51,6 @@ RSpec.describe SketchAnalysisJob, type: :job do
       end
     end
 
-    context "when image url is localhost" do
-      before do
-        allow(canva).to receive_message_chain(:image, :url).and_return("http://localhost:3000/image.jpg")
-      end
 
-      it "sends telegram notification without image" do
-        expect_any_instance_of(TelegramNotifier::Dispatcher).to receive(:dispatch)
-          .with(include("Sketch/Satellite Detected"), image_url: nil)
-
-        described_class.perform_now(canva)
-      end
-    end
   end
 end
