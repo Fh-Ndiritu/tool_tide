@@ -23,8 +23,7 @@
                   <span class="text-xs text-gray-300 font-medium truncate max-w-[120px]"><%= active_layer.generation_type.titleize %></span>
               </div>
 
-              <% if active_layer.style_preset? %>
-                <% if active_layer.preset.present? %>
+              <% if active_layer.style_preset? && active_layer.preset.present? %>
                    <div class="text-[10px] text-gray-500 flex justify-between">
                       <span>Preset:</span>
                       <span class="text-blue-400 cursor-pointer hover:underline"
@@ -33,37 +32,53 @@
                         <%= active_layer.preset.titleize %>
                       </span>
                    </div>
-                <% end %>
-                <button class="w-full text-xs font-bold text-white bg-blue-600 hover:bg-blue-500 py-1.5 rounded-md transition-all shadow-sm flex items-center justify-center gap-2 mt-1"
-                        data-action="projects#reuseStyle"
-                        data-preset="<%= active_layer.preset %>"
-                        data-parent-id="<%= active_layer.parent_id %>">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
-                  </svg>
-                  Reuse Style
-                </button>
-              <% elsif active_layer.smart_fix? %>
-                <button class="w-full text-xs font-bold text-white bg-blue-600 hover:bg-blue-500 py-1.5 rounded-md transition-all shadow-sm flex items-center justify-center gap-2 mt-1"
-                        data-action="projects#reusePrompt"
-                        data-prompt="<%= active_layer.prompt %>"
-                        data-parent-id="<%= active_layer.parent_id %>">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
-                  </svg>
-                  Reuse Prompt
-                </button>
-              <% elsif active_layer.autofix? %>
-                <button class="w-full text-xs font-bold text-white bg-purple-600 hover:bg-purple-500 py-1.5 rounded-md transition-all shadow-sm flex items-center justify-center gap-2 mt-1"
-                        data-action="projects#redoFix"
-                        data-fix-id="<%= active_layer.auto_fix_id %>"
-                        data-parent-id="<%= active_layer.parent_id %>">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
-                  </svg>
-                  Redo Fix
-                </button>
               <% end %>
+
+              <div class="flex items-center gap-2 mt-2">
+                  <% if active_layer.style_preset? %>
+                    <button class="flex-1 text-xs font-bold text-white bg-white/10 hover:bg-white/20 border border-white/10 py-1.5 rounded-md transition-all shadow-sm flex items-center justify-center gap-2"
+                            data-action="projects#reuseStyle"
+                            data-preset="<%= active_layer.preset %>"
+                            data-parent-id="<%= active_layer.parent_id %>">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+                      </svg>
+                      Reuse
+                    </button>
+                  <% elsif active_layer.smart_fix? %>
+                    <button class="flex-1 text-xs font-bold text-white bg-white/10 hover:bg-white/20 border border-white/10 py-1.5 rounded-md transition-all shadow-sm flex items-center justify-center gap-2"
+                            data-action="projects#reusePrompt"
+                            data-prompt="<%= active_layer.prompt %>"
+                            data-parent-id="<%= active_layer.parent_id %>">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+                      </svg>
+                      Reuse
+                    </button>
+                  <% elsif active_layer.autofix? %>
+                    <button class="flex-1 text-xs font-bold text-white bg-white/10 hover:bg-white/20 border border-white/10 py-1.5 rounded-md transition-all shadow-sm flex items-center justify-center gap-2"
+                            data-action="projects#redoFix"
+                            data-fix-id="<%= active_layer.auto_fix_id %>"
+                            data-parent-id="<%= active_layer.parent_id %>">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+                      </svg>
+                      Redo Fix
+                    </button>
+                  <% end %>
+
+                  <!-- Create Design Action -->
+                  <%= button_to project_designs_path(project, project_layer_id: active_layer.id),
+                      method: :post,
+                      class: "w-full text-xs font-bold text-white bg-white/10 hover:bg-white/20 border border-white/10 py-1.5 rounded-md transition-all shadow-sm flex items-center justify-center gap-2 group",
+                      form_class: "flex-1",
+                      data: { turbo: false } do %>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5 text-gray-400 group-hover:text-white transition-colors">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                    </svg>
+                    New Design
+                  <% end %>
+              </div>
           </div>
       <% end %>
     <% end %>
