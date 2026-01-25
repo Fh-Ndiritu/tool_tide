@@ -13,6 +13,9 @@ class User < ApplicationRecord
   has_many :mask_requests, through: :canvas
   has_one :onboarding_response, dependent: :destroy
   has_one :project_onboarding, dependent: :destroy
+  has_one :user_setting, dependent: :destroy
+  delegate :default_model, :default_variations, to: :user_setting_with_fallback
+
 
   has_many :credits, dependent: :destroy
   has_many :credit_spendings, dependent: :destroy
@@ -153,6 +156,9 @@ class User < ApplicationRecord
     end
   end
 
+  def user_setting_with_fallback
+    user_setting || create_user_setting(default_model: "pro_mode", default_variations: 2)
+  end
 
   private
 

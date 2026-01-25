@@ -1,12 +1,12 @@
 <% user = local_assigns[:user] || (defined?(current_user) ? current_user : nil) %>
 <% has_purchased = user ? user.has_purchased_credits_before? : false %>
 <% selected_model = local_assigns[:selected_model] %>
-<% selected_model = MODEL_ALIAS_PRO if selected_model.blank? %>
+<% selected_model = user&.default_model || MODEL_ALIAS_PRO if selected_model.blank? %>
 <% input_name = local_assigns[:input_name] || "model" %>
 
 <div class="flex-1 bg-black/40 rounded-lg p-0.5 flex text-[10px] font-medium relative"
      data-controller="model-selection"
-     data-model-selection-default-value="<%= MODEL_ALIAS_PRO %>">
+     data-model-selection-default-model-value="<%= MODEL_ALIAS_PRO %>">
 
    <%
      unique_suffix = SecureRandom.hex(4)
@@ -18,14 +18,14 @@
    <label class="flex-1 relative cursor-pointer group" for="<%= pro_id %>">
      <input type="radio" name="<%= input_name %>" value="<%= MODEL_ALIAS_PRO %>" id="<%= pro_id %>"
             class="peer sr-only"
+            data-model-selection-target="input"
             <%= "checked" if selected_model == MODEL_ALIAS_PRO %>
             data-action="change->model-selection#updateCost"
             <%= "disabled" unless has_purchased %>>
 
      <div class="h-full w-full flex items-center justify-center rounded-[6px] py-1.5 transition-all
                  text-gray-400 hover:text-gray-200
-                 peer-checked:bg-[#3e747b] peer-checked:text-white peer-checked:shadow-sm
-                 <%= (selected_model == MODEL_ALIAS_PRO) ? 'bg-[#3e747b] text-white shadow-sm' : '' %>">
+                 peer-checked:bg-gray-600 peer-checked:text-white peer-checked:shadow-sm">
        Pro Mode
      </div>
    </label>
@@ -34,14 +34,14 @@
    <label class="flex-1 relative cursor-pointer group <%= 'opacity-50 cursor-not-allowed' unless has_purchased %>" for="<%= standard_id %>">
      <input type="radio" name="<%= input_name %>" value="<%= MODEL_ALIAS_STANDARD %>" id="<%= standard_id %>"
             class="peer sr-only"
+            data-model-selection-target="input"
             <%= "checked" if selected_model == MODEL_ALIAS_STANDARD %>
             data-action="change->model-selection#updateCost"
             <%= "disabled" unless has_purchased %>>
 
      <div class="h-full w-full flex items-center justify-center rounded-[6px] py-1.5 transition-all
                  text-gray-400 hover:text-gray-200
-                 peer-checked:bg-[#00acc1] peer-checked:text-white peer-checked:shadow-sm
-                 <%= (selected_model == MODEL_ALIAS_STANDARD) ? 'bg-[#00acc1] text-white shadow-sm' : '' %>">
+                 peer-checked:bg-gray-600 peer-checked:text-white peer-checked:shadow-sm">
        Standard
      </div>
 

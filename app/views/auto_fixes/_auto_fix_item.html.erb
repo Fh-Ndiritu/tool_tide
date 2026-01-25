@@ -1,19 +1,20 @@
 <div class="auto-fix-item mb-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-all duration-300 overflow-hidden group"
      data-projects-target="autoFixItem"
      <%= 'data-project-onboarding-target="firstFixItem"' if local_assigns[:iteration] == 0 %>
-     data-auto-fix-id="<%= auto_fix.id %>">
+     data-auto-fix-id="<%= auto_fix.id %>"
+     data-auto-fix-title="<%= auto_fix.title %>"
+     data-parent-layer-id="<%= auto_fix.project_layer_id %>">
 
   <!-- Collapsed State: Button -->
   <button type="button"
           class="w-full text-left p-4 flex items-center justify-between transition-colors"
-          data-action="click->projects#toggleAutoFix"
+          data-action="click->projects#selectAutoFix"
           data-projects-target="autoFixHeader">
     <div class="flex items-center gap-3">
-      <!-- Magic Icon Indicator -->
-      <div class="w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-400 group-hover:bg-blue-500/20 transition-colors">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456Z" />
-        </svg>
+      <!-- Selection Radio Indicator -->
+      <div class="w-5 h-5 shrink-0 rounded-full border-2 border-gray-500 flex items-center justify-center transition-colors auto-fix-radio"
+           data-projects-target="autoFixRadio">
+        <div class="w-2.5 h-2.5 rounded-full bg-purple-500 opacity-0 transition-opacity"></div>
       </div>
       <span class="font-semibold text-sm text-gray-200 group-hover:text-white transition-colors"><%= auto_fix.title %></span>
     </div>
@@ -29,32 +30,13 @@
   <!-- Expanded State: Content -->
   <div class="hidden border-t border-white/5 bg-black/20"
        data-projects-target="autoFixContent">
-    <div class="p-4 space-y-6">
+    <div class="p-4 space-y-4">
 
       <!-- Input Section -->
       <div>
-        <label class="block text-[10px] font-bold uppercase text-gray-500 tracking-wider mb-2 pl-1">Refine Fix Description</label>
-        <textarea class="w-full h-40 bg-black/40 border border-white/10 rounded-xl p-4 text-sm text-gray-200 placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 resize-none shadow-inner transition-all premium-scrollbar leading-relaxed"
+        <label class="block text-[10px] font-bold uppercase text-gray-400 tracking-wider mb-2 pl-1">Edit Changes</label>
+        <textarea class="w-full h-42 bg-black/40 border border-white/10 rounded-xl p-4 text-sm text-gray-200 placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500/50 resize-none shadow-inner transition-all premium-scrollbar leading-relaxed"
                   data-projects-target="autoFixDescriptionInput"><%= auto_fix.description %></textarea>
-      </div>
-
-      <!-- Controls Section -->
-      <div class="space-y-3">
-        <%= render "projects/tools/generation_card",
-                   model_input_name: "project_layer[model]",
-                   selected_model: local_assigns[:selected_model] || auto_fix.project_layer.model,
-                   user: auto_fix.project_layer.user %>
-
-        <button class="w-full py-3 bg-[#00acc1] hover:bg-[#00838f] text-white font-bold rounded-xl shadow-lg shadow-cyan-900/20 transition-all flex items-center justify-center gap-2 group border border-white/10"
-                data-action="click->projects#performAutoFix"
-                data-auto-fix-id="<%= auto_fix.id %>"
-                data-auto-fix-title="<%= auto_fix.title %>"
-                data-parent-layer-id="<%= auto_fix.project_layer_id %>">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 group-hover:scale-110 transition-transform">
-             <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z" />
-          </svg>
-          <%= auto_fix.applied? ? "Reuse Prompt" : "Generate Fix" %>
-        </button>
       </div>
     </div>
   </div>

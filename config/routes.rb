@@ -5,9 +5,9 @@ Rails.application.routes.draw do
   get "project_layers/update"
   resources :projects, only: %i[index show create update new] do
     post :convert_to_project, on: :collection
-    resources :designs, only: [:create] do
-      resources :project_layers, only: [:show, :create, :update] do
-        resources :auto_fixes, only: [:create, :show]
+    resources :designs, only: [ :create ] do
+      resources :project_layers, only: [ :show, :create, :update ] do
+        resources :auto_fixes, only: [ :create, :show ]
       end
     end
   end
@@ -58,6 +58,8 @@ Rails.application.routes.draw do
   # =========================================================
   constraints DomainConstraint.new([ "hadaa.app", "localhost" ]) do
     # App root (Login/Dashboard)
+    resource :user_setting, only: [ :update ]
+
     authenticated :user do
       root to: "mask_requests#index", as: :authenticated_root
     end
@@ -84,10 +86,10 @@ Rails.application.routes.draw do
       resources :mask_requests, only: [ :index, :edit, :destroy ]
       resources :blogs, only: [ :index, :new, :create, :show ]
       resources :public_assets, only: [ :index, :create, :destroy ]
-      resources :social_posts, only: [:index, :show, :update] do
+      resources :social_posts, only: [ :index, :show, :update ] do
         post :generate, on: :collection
       end
-      resources :projects, only: [:index, :show]
+      resources :projects, only: [ :index, :show ]
 
       post "mask_requests/toggle_display"
       post "text_requests/toggle_display"
@@ -102,9 +104,9 @@ Rails.application.routes.draw do
 
     get :low_credits, to: "credits#low"
 
-    # REDIRECT: Old public routes to marketing domain? Or 410?
-    # For now, let them 410 if not defined, or we can redirect if critical.
-    # User said "disable access to all landscaping guides prefix/routes". Matches 410.
+      # REDIRECT: Old public routes to marketing domain? Or 410?
+      # For now, let them 410 if not defined, or we can redirect if critical.
+      # User said "disable access to all landscaping guides prefix/routes". Matches 410.
 
       resources :canvas, shallow: true, except: [ :index, :edit, :show ] do
         resources :mask_requests do
