@@ -15,7 +15,7 @@ export default class extends Controller {
       this.setupInitialImage()
       this.startTimer = setTimeout(() => {
         this.startCarousel()
-      }, 10000)
+      }, 5000)
     }
   }
 
