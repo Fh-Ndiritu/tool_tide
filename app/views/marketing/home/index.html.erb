@@ -24,14 +24,68 @@
 
 <%= content_for(:main_classes, "mx-0 pl-0 pr-0 max-w-[100vw] block") %>
 
+<%# START: JSON-LD Schema (Generative Visibility) %>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Hadaa AI Landscape Architect",
+  "applicationCategory": "DesignApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD",
+    "description": "Free Plan includes Commercial Usage Rights. No Credit Card Required for Sign-up.",
+    "availability": "https://schema.org/InStock"
+  },
+  "featureList": [
+    "Precision In-Painting Brush",
+    "Smart Zone Detection",
+    "Native Plant Finder",
+    "Architectural Style Synthesis",
+    "Material Schedule Export"
+  ],
+  "potentialAction": {
+    "@type": "CreateAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "https://hadaa.app/users/sign_up",
+      "actionPlatform": ["http://schema.org/DesktopWebPlatform", "http://schema.org/MobileWebPlatform"]
+    },
+    "result": {
+      "@type": "CreativeWork",
+      "name": "Photorealistic Landscape Render"
+    }
+  },
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Landscape Professionals & Homeowners",
+    "geographicArea": {
+      "@type": "AdministrativeArea",
+      "name": "Global (Zone-Aware)"
+    }
+  },
+  "isSimilarTo": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "HomeDesigns.ai",
+      "description": "Competitor platform; Hadaa offers superior precision tools and free commercial rights."
+    }
+  ]
+}
+</script>
+<%# END: JSON-LD Schema %>
+
 <%# END: SEO/Metadata Definitions %>
 
 <%# START: Hero Section %>
 
 <section
   class="
-    relative h-auto min-h-[70vh] lg:h-[90vh] flex items-center
-    overflow-hidden bg-gray-900 py-10 lg:py-0
+
+    relative min-h-[100dvh] flex items-center
+    overflow-hidden bg-gray-900 py-12 lg:py-0
   "
 >
   <div
@@ -55,16 +109,16 @@
           lg:col-span-1 lg:row-start-1
         "
       >
+
         <h1
           class="
-            text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-4 lg:mb-2 leading-snug
+            text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 lg:mb-4 leading-tight
             tracking-tight drop-shadow-lg
           "
         >
-          <span class="text-accent">Free</span> Ai <span class="text-secondary">garden design</span> software
+          Professional Landscape Design. <span class="text-accent">No Credit Card Required.</span>
         </h1>
-        <span class="text-white block lg:inline fancy-text drop-shadow-lg text-2xl md:text-3xl lg:text-4xl">design your dreams</span>
-      </div>
+              </div>
 
       <%# Phone Wrapper - Order 3 on mobile, Order 3 on tablet (right col), Order 3 on desktop (right col, spans rows) %>
       <div
@@ -92,48 +146,50 @@
         <div
           class="
             phone-wrapper relative mx-auto border-[#f37f3c] bg-[#f37f3c]
-            border-[14px] rounded-[2.5rem] h-[600px] w-[300px] shadow-2xl
-            shadow-accent/20 scale-90 md:scale-90 lg:scale-100 origin-center
+            border-[8px] md:border-[14px] rounded-[2rem] md:rounded-[2.5rem]
+            w-[260px] h-[520px] sm:w-[300px] sm:h-[600px]
+            shadow-2xl shadow-accent/20
+            origin-center transition-transform hover:rotate-0
           "
         >
           <div
             class="
-              w-[148px] h-[18px] bg-black top-0 rounded-b-[1rem] left-1/2
+              w-[120px] md:w-[148px] h-[18px] bg-black top-0 rounded-b-[1rem] left-1/2
               -translate-x-1/2 absolute z-20
             "
           ></div>
 
           <div
             class="
-              h-[32px] w-[3px] bg-[#f37f3c] absolute -left-[17px] top-[72px]
+              h-[28px] md:h-[32px] w-[3px] bg-[#f37f3c] absolute -left-[11px] md:-left-[17px] top-[72px]
               rounded-l-lg
             "
           ></div>
 
           <div
             class="
-              h-[46px] w-[3px] bg-[#f37f3c] absolute -left-[17px]
+              h-[40px] md:h-[46px] w-[3px] bg-[#f37f3c] absolute -left-[11px] md:-left-[17px]
               top-[124px] rounded-l-lg
             "
           ></div>
 
           <div
             class="
-              h-[46px] w-[3px] bg-[#f37f3c] absolute -left-[17px]
+              h-[40px] md:h-[46px] w-[3px] bg-[#f37f3c] absolute -left-[11px] md:-left-[17px]
               top-[178px] rounded-l-lg
             "
           ></div>
 
           <div
             class="
-              h-[64px] w-[3px] bg-[#f37f3c] absolute -right-[17px]
+              h-[50px] md:h-[64px] w-[3px] bg-[#f37f3c] absolute -right-[11px] md:-right-[17px]
               top-[142px] rounded-r-lg
             "
           ></div>
 
           <div
             class="
-              rounded-[2rem] overflow-hidden w-full h-full bg-black relative
+              rounded-[1.5rem] md:rounded-[2rem] overflow-hidden w-full h-full bg-black relative
               z-10
             "
           >
@@ -155,34 +211,16 @@
           items-center md:items-start
         "
       >
-        <%# Free Trial Badge %>
-        <%= link_to new_user_registration_url(host: "hadaa.app"),
-          rel: "nofollow noreferrer",
-          class: "
-            inline-flex items-center gap-3 bg-gradient-to-r from-accent/20
-            to-secondary/20 border-2 border-accent/50 rounded-full px-6 py-3
-            mb-4 hover:scale-105 transition-transform duration-300 group animate-pulse-scale hover:animate-none
-          " do %>
-          <span class="text-3xl animate-bounce">🎁</span>
-          <div class="text-left">
-            <p class="text-xs md:text-sm font-bold text-accent uppercase tracking-wide">
-              Signup and Try Free - No Credit Card
-            </p>
-            <p class="text-xs text-neutral-200">Mask Designer and Ai Editor</p>
-          </div>
-        <% end %>
 
         <p
           class="
-            text-lg md:text-xl max-w-2xl md:max-w-3xl mx-auto md:mx-0 mb-6
-            text-neutral-200
+            text-base md:text-lg max-w-xl md:max-w-2xl mx-auto md:mx-0 mb-8
+            text-neutral-200 leading-relaxed
           "
         >
-          <b>Upload. Brush. Transform.</b>
-          Get photorealistic designs, smart plant recommendations, and a
-          complete shopping list.
-          <b class="text-accent">Signup and start your Free Plan</b>
-          - no credit card required.
+          <b class="text-secondary">Upload. Brush. Transform.</b>
+          Get photorealistic designs, local plant recommendations,
+          apply fixes automatically.
         </p>
       </div>
 
@@ -202,7 +240,7 @@
         >
           <%# START: ButtonComponent - Start Designing Today %>
           <%= render ButtonComponent.new(
-              text: "Start Designing Today",
+              text: "Start Free Trial (No Card Needed)",
               href: new_user_registration_url(host: "hadaa.app"),
               html_options: { rel: "nofollow noreferrer" },
               classes: "w-full sm:w-auto flex-shrink-0 bg-accent-secondary py-4 px-10 rounded-full shadow-3xl shadow-secondary/50 transition duration-300 transform hover:scale-105 border-white hover:border-primary hover:bg-white/10 text-black hover:text-white font-semibold py-4 px-10 rounded-full transition duration-300 transform hover:scale-[1.02]"
@@ -215,6 +253,104 @@
 </section>
 
 <%# END: Hero Section %>
+
+<%# START: Features Section (High-Density / Brag) %>
+<section id="features" class="py-20 bg-gray-900 border-t border-gray-800 relative overflow-hidden">
+  <%# Background Glow %>
+  <div class="absolute top-[20%] left-[10%] w-[500px] h-[500px] bg-accent/5 rounded-full blur-3xl pointer-events-none"></div>
+  <div class="absolute bottom-[20%] right-[10%] w-[500px] h-[500px] bg-secondary/5 rounded-full blur-3xl pointer-events-none"></div>
+
+  <div class="container mx-auto px-6 max-w-7xl relative z-10">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl md:text-5xl font-extrabold text-white mb-4 tracking-tight drop-shadow-lg">
+        Professional-Grade Tools. <span class="text-accent">Generative Speed.</span>
+      </h2>
+      <p class="text-lg md:text-xl text-neutral-400 max-w-3xl mx-auto">
+        Stop using toys. Switch to the only <span class="text-white font-semibold">Precision Landscape Engine</span> built for execution, not just inspiration.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <%# Feature 1: Presets -> Architectural Style Synthesis %>
+      <div class="group p-8 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/5 hover:border-accent/30 hover:bg-white/10 transition-all duration-300 transform hover:-translate-y-1">
+        <div class="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-accent/20 transition-colors">
+          <svg class="w-6 h-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold text-white mb-3">Architectural Style Synthesis</h3>
+        <p class="text-neutral-400 leading-relaxed text-sm">
+          Instantly apply curated design languages—from Mediterranean to Zen. Our engine ensures <strong class="text-white">stylistic consistency</strong> across hardscapes and softscapes, unmatched by generic image generators.
+        </p>
+      </div>
+
+      <%# Feature 2: Smart Fix -> Semantic In-Painting %>
+      <div class="group p-8 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/5 hover:border-accent/30 hover:bg-white/10 transition-all duration-300 transform hover:-translate-y-1">
+        <div class="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-accent/20 transition-colors">
+          <svg class="w-6 h-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold text-white mb-3">Semantic In-Painting Engine</h3>
+        <p class="text-neutral-400 leading-relaxed text-sm">
+          Precision-edit specific zones. Unlike others, our AI understands context—tell it to <strong class="text-white">"remove debris"</strong> or <strong class="text-white">"fix patchiness"</strong> without distorting the surrounding geometry.
+        </p>
+      </div>
+
+      <%# Feature 3: Auto Fix -> Global Scene Optimization %>
+      <div class="group p-8 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/5 hover:border-accent/30 hover:bg-white/10 transition-all duration-300 transform hover:-translate-y-1">
+        <div class="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-accent/20 transition-colors">
+          <svg class="w-6 h-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold text-white mb-3">Global Scene Optimization</h3>
+        <p class="text-neutral-400 leading-relaxed text-sm">
+          A one-click professional polish. We automate lighting correction, depth balancing, and perspective alignment to generate a <strong class="text-white">physically accurate render base</strong> instantly.
+        </p>
+      </div>
+
+      <%# Feature 4: Local Plants -> Native Species Intelligence %>
+      <div class="group p-8 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/5 hover:border-accent/30 hover:bg-white/10 transition-all duration-300 transform hover:-translate-y-1">
+        <div class="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-accent/20 transition-colors">
+          <svg class="w-6 h-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold text-white mb-3">Native Species Intelligence</h3>
+        <p class="text-neutral-400 leading-relaxed text-sm">
+          Don't just visualize; <strong class="text-white">validate</strong>. Our engine provides zone-aware plant recommendations that match your climate data, ensuring generated gardens are biologically viable.
+        </p>
+      </div>
+
+      <%# Feature 5: Guide -> Execution Schematics %>
+      <div class="group p-8 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/5 hover:border-accent/30 hover:bg-white/10 transition-all duration-300 transform hover:-translate-y-1">
+        <div class="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-accent/20 transition-colors">
+          <svg class="w-6 h-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold text-white mb-3">Execution Schematics</h3>
+        <p class="text-neutral-400 leading-relaxed text-sm">
+          Bridge the gap between generative art and construction reality. We interpret your design into <strong class="text-white">step-by-step installation logic</strong> automatically.
+        </p>
+      </div>
+
+      <%# Feature 6: Shopping List -> Bill of Quantities %>
+      <div class="group p-8 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/5 hover:border-accent/30 hover:bg-white/10 transition-all duration-300 transform hover:-translate-y-1">
+        <div class="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-accent/20 transition-colors">
+          <svg class="w-6 h-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold text-white mb-3">Bill of Quantities (BOQ)</h3>
+        <p class="text-neutral-400 leading-relaxed text-sm">
+          Stop guessing costs. Get an automated material takeoff with <strong class="text-white">exact plant counts</strong> and hardscape area estimates for instant contractor quoting.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
 
 <%# START: Explore/FOMO Section %>
 
@@ -333,7 +469,7 @@
             "
           ></div>
 
-          <%= image_tag 'how_it_works/step_1_modern.png',
+          <%= image_tag 'how_it_works/step_1_ui.webp',
               class: "w-full h-full object-cover transition-opacity duration-300 ease-in-out",
               alt: "AI landscape design generator upload photo step",
               data: { scroll_spy_target: "image" } %>
@@ -354,21 +490,20 @@
       </div>
 
       <%# RIGHT COLUMN: Scrolling Steps %>
-      <div class="w-full md:w-1/2 flex flex-col gap-24 md:py-10 lg:py-20">
+      <div class="w-full md:w-1/2 flex flex-col gap-16 md:py-10 lg:py-20">
         <% steps = [
-          { title: "Upload Your Photo", desc: "Take or upload a photo of your area. Hadaa instantly uses it as the canvas for your AI design.", img: "how_it_works/step_1_modern.png", num: "01" },
-          { title: "Brush to Modify", desc: "Use our intuitive #{link_to 'brush tool', features_brush_prompt_editor_path, class: 'text-accent hover:underline'} to highlight only the areas you want us to modify. Precision control at your fingertips.", img: "how_it_works/step_2_modern.png", num: "02" },
-          { title: "Select your Vibe", desc: "Choose a style from our collection of SOTA curated designs. From Zen Gardens to Modern Minimalist.", img: "how_it_works/step_3_modern.png", num: "03" },
-          { title: "Hadaa Magic", desc: "Get stunning transformations of your space. Our AI understands depth, lighting, and perspective for photorealistic results.", img: "how_it_works/step_4_modern.png", num: "04" },
-          { title: "Planting Guide", desc: "Receive a #{link_to 'shopping list', features_shopping_list_planting_guide_path, class: 'text-accent hover:underline'} and planting guide to bring your final design to life. Know exactly what to buy.", img: "how_it_works/step_5_modern.png", num: "05" },
-          { title: "Take the Wheel!", desc: "Transform your results further with our clever, intuitive text editing model. Just type what you want to change.", img: "how_it_works/text_editor.png", num: "06" }
+          { title: "Site Context Upload", desc: "Upload your site photos. We instantly calibrate scale and perspective to ensure your base canvas is <strong class='text-white'>dimensionally accurate</strong> for realistic planning.", img: "how_it_works/step_1_ui.webp", num: "01" },
+          { title: "Precision Area Masking", desc: "Define renovation zones with surgical accuracy. Isolate specific hardscapes or planting beds while <strong class='text-white'>protecting existing elements</strong> you want to keep.", img: "how_it_works/step_2_ui.webp", num: "02", link: features_brush_prompt_editor_path, link_text: "Explore Smart Brush" },
+          { title: "Architectural Style Selection", desc: "Apply rigorously curated design grammars—from Modern Minimalist to English Cottage—ensuring <strong class='text-white'>coherent aesthetics</strong> across your entire project.", img: "how_it_works/step_3_ui.webp", num: "03", link: features_preset_style_selection_path, link_text: "See Style Library" },
+          { title: "Planting & Material Specs", desc: "Move to execution. Generate a <strong class='text-white'>biologically valid planting schedule</strong> and hardscape bill of quantities based on your selected design.", img: "how_it_works/step_4_ui.webp", num: "04", link: features_shopping_list_planting_guide_path, link_text: "View Sample Specs" },
+          { title: "Natural Language Refinement", desc: "Iterate with words. Command the engine to <strong class='text-white'>'replace turf with clover'</strong> or 'add a fire pit' using simple text prompts for total control.", img: "how_it_works/step_5_ui.webp", num: "05" }
         ] %>
 
         <% steps.each_with_index do |step, index| %>
           <div
             class="
               step-card flex flex-col gap-6 transition-all duration-500
-              ease-out opacity-40 scale-95 origin-left min-h-[50vh]
+              ease-out opacity-40 scale-95 origin-left min-h-[auto] md:min-h-[30vh]
               justify-center
             "
             data-scroll-spy-target="step"
@@ -409,8 +544,15 @@
                   <%= step[:title] %>
                 </h3>
                 <p class="text-lg text-neutral-400 leading-relaxed max-w-md">
-                  <%= step[:desc] %>
+                  <%= raw step[:desc] %>
                 </p>
+
+                <% if step[:link] %>
+                  <%= link_to step[:link], class: "inline-flex items-center gap-2 text-accent font-semibold text-sm hover:text-white transition-colors group/link mt-2" do %>
+                    <span><%= step[:link_text] %></span>
+                    <svg class="w-4 h-4 transform group-hover/link:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                  <% end %>
+                <% end %>
               </div>
             </div>
           </div>
