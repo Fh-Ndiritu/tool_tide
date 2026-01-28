@@ -5,7 +5,8 @@ export default class extends Controller {
   static values = {
     min: { type: Number, default: 1 },
     max: { type: Number, default: 4 },
-    imageCost: { type: Number, default: 2 } // Initial default, can be overridden
+    proCost: { type: Number, default: 8 },
+    standardCost: { type: Number, default: 4 }
   }
 
   connect() {
@@ -37,8 +38,22 @@ export default class extends Controller {
     }
 
     if (this.hasCostTarget) {
-      const totalCost = count * this.imageCostValue
+      const perImageCost = this.resolvePerImageCost()
+      const totalCost = count * perImageCost
       this.costTarget.textContent = `${totalCost} credits`
     }
+  }
+
+  resolvePerImageCost() {
+    // Look for checked radio button within this controller's element
+    const checkedModel = this.element.querySelector('input[type="radio"]:checked')
+
+    // Check value against known aliases (matching what is in constants.rb/views)
+    if (checkedModel && checkedModel.value === "standard_mode") {
+      return this.standardCostValue
+    }
+
+    // Default to Pro cost (pro_mode or fallback)
+    return this.proCostValue
   }
 }

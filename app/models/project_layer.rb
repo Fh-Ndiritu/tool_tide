@@ -7,8 +7,8 @@ class ProjectLayer < ApplicationRecord
   before_destroy :nullify_current_project_layer_in_design
 
   after_commit -> {
-    broadcast_refresh_to [design, :layers]
-    broadcast_refresh_to [project, :layers]
+    broadcast_refresh_to [ design, :layers ]
+    broadcast_refresh_to [ project, :layers ]
   }
 
 
@@ -31,6 +31,7 @@ class ProjectLayer < ApplicationRecord
 
   enum :progress, {
     preparing: 0,
+    processing: 5,
     generating: 10,
     processed: 20,
     complete: 30,
@@ -78,5 +79,4 @@ class ProjectLayer < ApplicationRecord
       design.update_columns(current_project_layer_id: nil)
     end
   end
-
 end

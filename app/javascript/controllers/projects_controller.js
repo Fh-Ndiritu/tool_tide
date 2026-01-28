@@ -4,7 +4,7 @@ import { Turbo } from "@hotwired/turbo-rails"
 //Used by Projects
 
 export default class extends Controller {
-  static targets = ["scaleDisplay", "resetZoomBtn", "stylePresetInput", "promptInput", "variationsInput", "aiAssistToggle", "aiAssistLabel", "autoFixResults", "autoFixItem", "autoFixHeader", "autoFixContent", "autoFixChevron", "autoFixDescriptionInput", "layerLink", "generateButton", "canvasToolbar", "smartFixPanel"]
+  static targets = ["scaleDisplay", "resetZoomBtn", "stylePresetInput", "promptInput", "variationsInput", "aiAssistToggle", "aiAssistLabel", "autoFixResults", "autoFixItem", "autoFixHeader", "autoFixContent", "autoFixChevron", "autoFixDescriptionInput", "layerLink", "generateButton", "generateLabel", "generateLoader", "canvasToolbar", "smartFixPanel"]
   static values = {
     generationUrl: String,
     imageCost: Number,
@@ -62,10 +62,15 @@ export default class extends Controller {
   // --- Helpers ---
 
   switchTab(tabName) {
-    const toolsController = this.toolsController
-    if (toolsController) {
-      const tabButton = toolsController.tabTargets.find(t => t.innerText.trim() === tabName)
-      if (tabButton) tabButton.click()
+    // Legacy support or fallback
+    // Since we moved to Vanilla JS, we map names to IDs
+    let innerTabId = ''
+    if (tabName === "Style Presets") innerTabId = 'style_presets'
+    if (tabName === "SmartFix") innerTabId = 'smart_fix'
+    if (tabName === "AutoFix") innerTabId = 'auto_fix'
+
+    if (innerTabId && window.switchInnerTab) {
+        window.switchInnerTab(innerTabId)
     }
 
     this.updateToolbarVisibility(tabName)
@@ -78,24 +83,30 @@ export default class extends Controller {
 
 
   validateInputs() {
-    // Validate Style Preset Panel
-    const stylePanel = this.element.querySelector('input[name="generation_type"][value="style_preset"]')?.closest('[data-tools-target="panel"]')
+    // Validate Style Preset Panel (using new ID-based selector)
+    const stylePanel = document.getElementById('panel_style_presets')
     if (stylePanel) {
-       // Look for the inputs within this specific panel/scope to be safe
        const inputs = stylePanel.querySelectorAll('input[name="style_preset"]')
        const hasSelection = Array.from(inputs).some(r => r.checked)
        const btn = stylePanel.querySelector('[data-projects-target="generateButton"]')
        if (btn) btn.disabled = !hasSelection
     }
 
-    // Validate Smart Fix Panel
-    const fixPanel = this.element.querySelector('input[name="generation_type"][value="smart_fix"]')?.closest('[data-tools-target="panel"]')
+    // Validate Smart Fix Panel (using new ID-based selector)
+    const fixPanel = document.getElementById('panel_smart_fix')
     if (fixPanel) {
-        // Use the target if available or query
         const textarea = fixPanel.querySelector('textarea[data-projects-target="promptInput"]')
         const hasText = textarea && textarea.value.trim().length > 0
         const btn = fixPanel.querySelector('[data-projects-target="generateButton"]')
         if (btn) btn.disabled = !hasText
+    }
+
+    // Validate AutoFix Panel - enable when an auto_fix is selected
+    const autoFixPanel = document.getElementById('panel_auto_fix')
+    if (autoFixPanel) {
+        const selectedItem = autoFixPanel.querySelector('.auto-fix-item.selected')
+        const btn = autoFixPanel.querySelector('[data-projects-target="generateButton"]')
+        if (btn) btn.disabled = !selectedItem
     }
   }
 
@@ -106,15 +117,15 @@ export default class extends Controller {
 
       if (isOn) {
         this.aiAssistLabelTarget.classList.remove("text-gray-300")
-        this.aiAssistLabelTarget.classList.add("text-green-400", "font-bold")
+        this.aiAssistLabelTarget.classList.add("text-purple-300", "font-bold")
         if (this.hasSmartFixPanelTarget) {
-          this.smartFixPanelTarget.classList.add("bg-green-900/20")
+          this.smartFixPanelTarget.classList.add("bg-purple-900/20")
         }
       } else {
         this.aiAssistLabelTarget.classList.add("text-gray-300")
-        this.aiAssistLabelTarget.classList.remove("text-green-400", "font-bold")
+        this.aiAssistLabelTarget.classList.remove("text-purple-300", "font-bold")
         if (this.hasSmartFixPanelTarget) {
-          this.smartFixPanelTarget.classList.remove("bg-green-900/20")
+          this.smartFixPanelTarget.classList.remove("bg-purple-900/20")
         }
       }
     }
@@ -240,6 +251,11 @@ export default class extends Controller {
     if (controller) controller.resetZoom()
   }
 
+  toggleDebugOverlay() {
+    const controller = this.projectCanvasController
+    if (controller) controller.toggleDebugOverlay()
+  }
+
   setPanTool(event) {
     const controller = this.projectCanvasController
     if (!controller) return
@@ -319,12 +335,47 @@ export default class extends Controller {
     formData.append("mask_data", maskData)
     formData.append("parent_layer_id", parentLayerId)
 
-    // Determine Mode via Tools Tabs
-    const toolsController = this.toolsController
+    // Determine Mode via Tab Visibility (Vanilla JS decoupling)
     let activeTabName = ""
-    if (toolsController) {
-      const activeTab = toolsController.tabTargets.find(t => t.classList.contains(...toolsController.activeClasses))
-      if (activeTab) activeTabName = activeTab.innerText.trim()
+    const stylePanel = document.getElementById("panel_style_presets")
+    const smartPanel = document.getElementById("panel_smart_fix")
+    const autoPanel = document.getElementById("panel_auto_fix")
+
+    if (stylePanel && !stylePanel.classList.contains("hidden")) activeTabName = "Style Presets"
+    if (smartPanel && !smartPanel.classList.contains("hidden")) activeTabName = "SmartFix"
+    if (autoPanel && !autoPanel.classList.contains("hidden")) activeTabName = "AutoFix"
+
+    // Fallback if none found
+    if (!activeTabName) {
+        // Checking for Outer Tab "Settings" or just default
+        activeTabName = "Style Presets"
+    }
+
+    // AutoFix Flow:
+    if (activeTabName === "AutoFix") {
+        const item = autoPanel.querySelector('.auto-fix-item.selected')
+        if (item) {
+            const fixId = item.dataset.autoFixId
+            const fixTitle = item.dataset.autoFixTitle
+            const parentLayerId = item.dataset.parentLayerId
+            const desc = item.querySelector('[data-projects-target="autoFixDescriptionInput"]').value
+            const prompt = `${fixTitle}: ${desc}`
+
+            formData.append("prompt", prompt)
+            formData.append("auto_fix_id", fixId)
+            formData.append("parent_layer_id", parentLayerId)
+            formData.append("ai_assist", "true")
+            formData.append("layer_type", "generated")
+
+            // Switch to parent layer if needed
+            const controller = this.projectCanvasController
+            if (controller && controller.layerIdValue != parentLayerId) {
+                this._selectLayerById(String(parentLayerId))
+            }
+        } else {
+            alert("Please select a fix first.")
+            return
+        }
     }
 
     // Presets Flow:
@@ -352,8 +403,13 @@ export default class extends Controller {
 
     // Determine Active Panel to scope inputs (Generation Type & Variations)
     let activePanel = null
-    if (this.toolsController) {
-      activePanel = this.toolsController.panelTargets.find(panel => !panel.classList.contains('hidden'))
+    if (activeTabName === "Style Presets") activePanel = stylePanel
+    if (activeTabName === "SmartFix") activePanel = smartPanel
+    if (activeTabName === "AutoFix") activePanel = autoPanel
+
+    if (!activePanel) {
+        // Fallback
+        activePanel = document.querySelector('[id^="panel_"]:not(.hidden)')
     }
 
     // Variations: Prefer input inside active panel, fallback to generic target
@@ -379,6 +435,28 @@ export default class extends Controller {
         }
     }
 
+    // Model Selection
+    if (activePanel) {
+        // Try specific name first
+        let modelInput = activePanel.querySelector('input[name="project_layer[model]"]:checked')
+
+        // Fallback: Try generic name "model" if specific one not found (for robustness)
+        if (!modelInput) {
+             modelInput = activePanel.querySelector('input[name="model"]:checked')
+        }
+
+        if (modelInput) {
+            formData.append("model", modelInput.value)
+        } else {
+            console.warn("Model selection input not found in active panel", activePanel)
+            // Default to PRO if not found to prevent server error
+            formData.append("model", "pro_mode")
+        }
+    } else {
+        // Fallback if no panel active (shouldn't happen usually)
+        formData.append("model", "pro_mode")
+    }
+
     // Fallback if not found (though logic above should cover it)
     if (!formData.has("generation_type")) {
        formData.append("generation_type", "style_preset")
@@ -386,9 +464,16 @@ export default class extends Controller {
 
     // Disable button state to prevent double submit
     const button = event.currentTarget
-    const originalText = button.innerText
     button.disabled = true
-    button.innerText = "Generating..."
+
+    // Toggle Loader if targets exist
+    if (this.hasGenerateLabelTarget && this.hasGenerateLoaderTarget) {
+       this.generateLabelTarget.classList.add("invisible")
+       this.generateLoaderTarget.classList.remove("hidden")
+    } else {
+       // Fallback
+       button.innerText = "Generating..."
+    }
 
     try {
       const response = await fetch(this.generationUrlValue, {
@@ -405,8 +490,10 @@ export default class extends Controller {
            const html = await response.text()
            await Turbo.renderStreamMessage(html)
            this.projectOnboardingController?.startStylePresetsLayerHint()
+           controller.clearSelection()
       } else if (response.ok) {
            console.log("Generation started successfully")
+           controller.clearSelection()
       } else {
         console.error("Generation failed", response)
         alert("Generation failed. Please try again.")
@@ -416,123 +503,70 @@ export default class extends Controller {
       alert("Network error. Please try again.")
     } finally {
       // 3-second cooldown before re-enabling button to prevent rage clicking
+      // 3-second cooldown before re-enabling button to prevent rage clicking
       setTimeout(() => {
         button.disabled = false
-        button.innerText = originalText
+        if (this.hasGenerateLabelTarget && this.hasGenerateLoaderTarget) {
+           this.generateLabelTarget.classList.remove("invisible")
+           this.generateLoaderTarget.classList.add("hidden")
+        } else {
+           button.innerText = "Generate" // approximate restore
+        }
       }, 3000)
     }
   }
 
   // --- AutoFix Actions ---
 
-  toggleAutoFix(event) {
-    const item = event.currentTarget.closest('[data-projects-target="autoFixItem"]')
-    const content = item.querySelector('[data-projects-target="autoFixContent"]')
-    const chevron = item.querySelector('[data-projects-target="autoFixChevron"]')
+  // --- AutoFix Actions ---
 
-    // Collapse others
+  selectAutoFix(event) {
+    const item = event.currentTarget.closest('[data-projects-target="autoFixItem"]')
+    if (!item) return
+
+    // Exclusive Selection: Deselect and collapse all others
     this.autoFixItemTargets.forEach(other => {
       if (other !== item) {
-        other.querySelector('[data-projects-target="autoFixContent"]').classList.add("hidden")
-        other.querySelector('[data-projects-target="autoFixChevron"]').classList.remove("rotate-180")
-        other.classList.remove("border-blue-500", "ring-1", "ring-blue-500/50")
+        other.classList.remove("selected", "border-purple-500", "ring-1", "ring-purple-500/50")
+
+        // Collapse content
+        const content = other.querySelector('[data-projects-target="autoFixContent"]')
+        if (content) content.classList.add("hidden")
+
+        // Reset chevron
+        const chevron = other.querySelector('[data-projects-target="autoFixChevron"]')
+        if (chevron) chevron.classList.remove("rotate-180")
+
+        // Reset Radio
+        const radio = other.querySelector('[data-projects-target="autoFixRadio"] div')
+        if (radio) radio.classList.remove("opacity-100")
+        if (radio) radio.classList.add("opacity-0")
       }
     })
 
-    // Toggle current
-    const isHidden = content.classList.toggle("hidden")
-    chevron.classList.toggle("rotate-180", !isHidden)
-    item.classList.toggle("border-blue-500", !isHidden)
-    item.classList.toggle("ring-1", !isHidden)
-    item.classList.toggle("ring-blue-500/50", !isHidden)
+    // Select/Expand Current
+    item.classList.add("selected", "border-purple-500", "ring-1", "ring-purple-500/50")
 
-    if (!isHidden) {
-      setTimeout(() => {
-        item.scrollIntoView({ behavior: "smooth", block: "nearest" })
-      }, 200)
-    }
-  }
+    // Expand content
+    const content = item.querySelector('[data-projects-target="autoFixContent"]')
+    if (content) content.classList.remove("hidden")
 
-  async performAutoFix(event) {
-    if (event) event.preventDefault()
+    // Rotate chevron
+    const chevron = item.querySelector('[data-projects-target="autoFixChevron"]')
+    if (chevron) chevron.classList.add("rotate-180")
 
-    const item = event.currentTarget.closest('[data-projects-target="autoFixItem"]')
-    const descriptionInput = item.querySelector('[data-projects-target="autoFixDescriptionInput"]')
-    const variationsInput = item.querySelector('[data-projects-target="variationsInput"]')
-    const fixId = event.currentTarget.dataset.autoFixId
-    const fixTitle = event.currentTarget.dataset.autoFixTitle
+    // Activate Radio
+    const radio = item.querySelector('[data-projects-target="autoFixRadio"] div')
+    if (radio) radio.classList.remove("opacity-0")
+    if (radio) radio.classList.add("opacity-100")
 
-    const controller = this.projectCanvasController
-    if (!controller) {
-      console.error("No canvas controller found")
-      return
-    }
+    // Scroll into view
+    setTimeout(() => {
+      item.scrollIntoView({ behavior: "smooth", block: "nearest" })
+    }, 200)
 
-    const fixParentLayerId = parseInt(event.currentTarget.dataset.parentLayerId, 10)
-    let parentLayerId = controller.layerIdValue
-
-    if (fixParentLayerId && fixParentLayerId !== parentLayerId) {
-      // Highlight/Switch to the parent layer
-      this._selectLayerById(String(fixParentLayerId))
-      parentLayerId = fixParentLayerId
-      // Ensure local controller value is updated synchronously if needed,
-      // though _selectLayerById triggers a click which updates it.
-      // We'll rely on the updated parentLayerId for the request below.
-    }
-
-    if (!parentLayerId) {
-      alert("No parent layer selected.")
-      return
-    }
-
-    // Construct the prompt from AutoFix title + (potentially edited) description
-    const prompt = `${fixTitle}: ${descriptionInput.value}`
-
-    const formData = new FormData()
-    formData.append("parent_layer_id", parentLayerId)
-    formData.append("prompt", prompt)
-    formData.append("ai_assist", "true")
-    formData.append("auto_fix_id", fixId)
-    formData.append("layer_type", "generated")
-    formData.append("generation_type", "autofix")
-    formData.append("variations", variationsInput.value)
-
-    // Disable button
-    const button = event.currentTarget
-    const originalText = button.innerHTML
-    button.disabled = true
-    button.innerText = "Generating..."
-
-    try {
-      const response = await fetch(this.generationUrlValue, {
-        method: "POST",
-        headers: {
-          "Accept": "text/vnd.turbo-stream.html",
-          "X-CSRF-Token": this.csrfToken
-        },
-        body: formData
-      })
-
-      const contentType = response.headers.get("content-type")
-      if (contentType && contentType.includes("turbo-stream")) {
-           const html = await response.text()
-           await Turbo.renderStreamMessage(html)
-      } else if (response.ok) {
-           console.log("AutoFix generation started successfully")
-      } else {
-        console.error("AutoFix generation failed", response)
-        alert("Generation failed. Please try again.")
-      }
-    } catch (error) {
-      console.error("Network error during AutoFix generation", error)
-      alert("Network error. Please try again.")
-    } finally {
-      // 4-second cooldown before re-enabling button to prevent rage clicking
-      setTimeout(() => {
-        button.disabled = false
-        button.innerHTML = originalText
-      }, 6000)
-    }
+    // Re-validate inputs to enable the main Generate button
+    this.validateInputs()
   }
 
   handleDockClick(event) {
@@ -542,7 +576,7 @@ export default class extends Controller {
     const layout = this.layoutController
     const tools = this.toolsController
 
-    if (!layout || !tools) {
+    if (!layout) {
         // Fallback if controllers missing
         this.switchTab(tabName)
         return
@@ -552,16 +586,41 @@ export default class extends Controller {
     const rightSidebar = document.querySelector('[data-layout-target="sidebarRight"]')
     const isExpanded = rightSidebar && rightSidebar.getAttribute("aria-expanded") === "true"
 
+    // Ensure we are on the correct Outer Tab (AI Tools) unless user clicked something else (Settings)
+    let isSettings = false
+    if (tabName === "Settings") {
+        isSettings = true
+    }
+
+    if (isSettings) {
+        if (window.switchOuterTab) window.switchOuterTab('settings')
+    } else {
+        if (window.switchOuterTab) window.switchOuterTab('ai_tools')
+    }
+
     // Check if Active
-    const tabIndex = tools.tabTargets.findIndex(t => t.innerText.trim() === tabName)
-    const panel = tools.panelTargets[tabIndex]
-    const isActive = panel && !panel.classList.contains("hidden")
+    let isActive = false
+    if (isSettings) {
+        const settingsPanel = document.getElementById("panel_settings")
+        isActive = settingsPanel && !settingsPanel.classList.contains("hidden")
+    } else {
+        // Check inner tab
+        let innerTabId = ''
+        if (tabName === "Style Presets") innerTabId = 'panel_style_presets'
+        if (tabName === "SmartFix") innerTabId = 'panel_smart_fix'
+        if (tabName === "AutoFix") innerTabId = 'panel_auto_fix'
+
+        const innerPanel = document.getElementById(innerTabId)
+        isActive = innerPanel && !innerPanel.classList.contains("hidden")
+    }
 
     if (isExpanded && isActive) {
         layout.closeRight()
     } else {
         layout.openRight()
-        this.switchTab(tabName)
+        if (!isSettings) {
+           this.switchTab(tabName)
+        }
     }
   }
 

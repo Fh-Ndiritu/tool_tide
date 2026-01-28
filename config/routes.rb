@@ -58,6 +58,8 @@ Rails.application.routes.draw do
     get "privacy-policy", to: "pages#privacy_policy"
 
     # App root (Login/Dashboard)
+    resource :user_setting, only: [ :update ]
+
     authenticated :user do
       root to: "mask_requests#index", as: :authenticated_root
     end

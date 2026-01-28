@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_20_190405) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_25_091927) do
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -342,6 +342,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_20_190405) do
     t.integer "auto_fix_id"
     t.string "error_msg"
     t.string "user_msg"
+    t.string "model", default: "pro_mode"
     t.index ["ancestry"], name: "index_project_layers_on_ancestry"
     t.index ["auto_fix_id"], name: "index_project_layers_on_auto_fix_id"
     t.index ["design_id"], name: "index_project_layers_on_design_id"
@@ -437,6 +438,15 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_20_190405) do
     t.index ["tool_call_id"], name: "index_tool_calls_on_tool_call_id"
   end
 
+  create_table "user_settings", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "default_model"
+    t.integer "default_variations"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_user_settings_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -520,5 +530,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_20_190405) do
   add_foreign_key "suggested_plants", "landscape_requests"
   add_foreign_key "text_requests", "users"
   add_foreign_key "tool_calls", "messages"
+  add_foreign_key "user_settings", "users"
   add_foreign_key "video_clips", "vlogs"
 end

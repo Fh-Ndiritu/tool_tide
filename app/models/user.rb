@@ -13,6 +13,9 @@ class User < ApplicationRecord
   has_many :mask_requests, through: :canvas
   has_one :onboarding_response, dependent: :destroy
   has_one :project_onboarding, dependent: :destroy
+  has_one :user_setting, dependent: :destroy
+  delegate :default_model, :default_variations, to: :user_setting_with_fallback
+
 
   has_many :credits, dependent: :destroy
   has_many :credit_spendings, dependent: :destroy
@@ -92,11 +95,11 @@ class User < ApplicationRecord
   end
 
   def afford_generation?
-    pro_engine_credits >= GOOGLE_IMAGE_COST * 3
+    pro_engine_credits >= GOOGLE_PRO_IMAGE_COST * 3
   end
 
   def afford_text_editing?
-    pro_engine_credits >= GOOGLE_IMAGE_COST
+    pro_engine_credits >= GOOGLE_PRO_IMAGE_COST
   end
 
   def charge_pro_cost!(cost)
@@ -105,7 +108,12 @@ class User < ApplicationRecord
 
   def sufficient_pro_credits?
     # this means you can afford the next minimum pro cost
-    pro_engine_credits >= GOOGLE_IMAGE_COST * DEFAULT_IMAGE_COUNT
+    pro_engine_credits >= GOOGLE_PRO_IMAGE_COST * DEFAULT_IMAGE_COUNT
+  end
+
+  def can_afford_generation?(model_alias, count = 1)
+    cost_per_image = MODEL_COST_MAP[model_alias] || GOOGLE_PRO_IMAGE_COST
+    pro_engine_credits >= cost_per_image * count
   end
 
   def can_skip_onboarding_survey?
@@ -119,8 +127,12 @@ class User < ApplicationRecord
     email
   end
 
-  def has_purchased_credits_before?(time)
-    credits.where(source: :purchase).where("created_at <= ?", time).exists?
+  def has_purchased_credits_before?(time = nil)
+    if time
+      credits.where(source: :purchase).where("created_at <= ?", time).exists?
+    else
+      credits.where(source: :purchase).exists?
+    end
   end
 
   def signup_credits
@@ -143,6 +155,9 @@ class User < ApplicationRecord
     end
   end
 
+  def user_setting_with_fallback
+    user_setting || create_user_setting(default_model: "pro_mode", default_variations: 2)
+  end
 
   private
 

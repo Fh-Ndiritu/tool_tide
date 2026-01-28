@@ -77,7 +77,7 @@ class TextEditor
   def charge_generation
     if @text_request.reload.result_image.attached?
       if @text_request.user.afford_text_editing?
-        cost = GOOGLE_IMAGE_COST * 1
+        cost = GOOGLE_PRO_IMAGE_COST * 1
         @text_request.user.charge_pro_cost!(cost)
       end
       @text_request.user.refinement_generated!

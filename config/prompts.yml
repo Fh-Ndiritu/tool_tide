@@ -632,3 +632,290 @@ landscape_preference_presets:
     Complete Mask Eradication: 100% replacement. No purple artifacts.
 
     Structural Independence: All features must be contained within the mask.
+
+
+projects:
+  presets:
+    modern: |
+      1. Environmental Context & Constraints
+      : You are a Lead Modernist Landscape Architect.
+
+      Setting: This is strictly an Exterior Design.
+
+      Density Mandate: Every inch of the violet mask must be filled. Avoid "Wide Outdoor Spacing." Do not include large gravel paths or empty gaps unless specifically requested. Prioritize high-density botanical massing.
+
+      2. Smart Logic Gates (Fallbacks)
+      Before generating, evaluate the following variables:
+
+      Location (<<location>>):
+
+      If Location is provided: Use the specific hardiness zone to select 8+ unique, regional species.
+
+      If Location is empty: Rotate through three distinct global styles (High-Desert Chic, Tropical Modernism, or Lush Temperate) to ensure variety. Never use the same palette twice in a row.
+
+      Preferences (<<user_preferences>>):
+
+      If RolePreferences are provided: Follow them strictly.
+
+      If Preferences are empty: Default to a "Botanical Focal Point" strategy—maximize plant variety and texture with zero furniture or hardscape.
+
+      3. The "Diversity Engine" (Plant Selection)
+      To prevent repetition, you must not use a fixed list. Build your palette using these Functional Roles:
+
+      Structural Anchors (20%): Select plants with bold, architectural silhouettes.
+
+      Textural Contrast (50%): Mix species with drastically different leaf shapes (e.g., fine/feathery next to broad/glossy).
+
+      Chromatic Drifts (30%): Use plants with high-saturation foliage (deep purples, neon chartreuse, or vibrant flower spikes).
+
+      Negative Constraint: Avoid the standard "AI defaults" (Basic Lavender, Boxwood, or simple Agave) unless they are the primary native species of the specific <<location>>.
+
+      4. Scale-Relative Architecture
+      Small/Narrow Masks: Prioritize verticality. Use tall, slender structural plants (bamboo-style, columnar evergreens) and "built-in" look features.
+
+      Large/Deep Masks: Create layered, geometric botanical zones that overlap. Use oversized porcelain pavers or matte-finish stones only as borders to separate plant drifts.
+
+      5. Materiality & Technical Execution
+      Finish: Use jet-black polished river stones or charcoal gravel as a "mulch" layer. This provides high contrast against the green foliage.
+
+      Mask Integrity: 100% replacement of violet pixels. Ensure no purple artifacts remain and no features "bleed" onto existing house structures or windows.
+
+      Style: 35mm wide-angle, f/11. Match the sun angle but saturate the colors for a "Golden Hour" editorial look.
+
+    tropical: |
+      1. Environmental Context & Constraints
+
+      Role: You are a Lead Modernist Landscape Architect specializing in Tropical Urbanism.
+
+      Setting: This is strictly an Exterior Design.
+
+      Density Mandate: Every inch of the violet mask must be filled with lush, overlapping greenery. Avoid "Wide Outdoor Spacing." Do not include large gravel paths or empty gaps. Prioritize a "Managed Jungle" aesthetic—high-density botanical massing with zero exposed soil.
+
+      2. Smart Logic Gates (Fallbacks)
+      Before generating, evaluate the following variables:
+
+      Location (<<location>>):
+
+      If Location is provided: Use the specific hardiness zone to select 8+ unique, regional tropical or sub-tropical species.
+
+      If Location is empty: Rotate through three distinct tropical styles (Equatorial Rainforest, Caribbean Resort Modern, or Southeast Asian Minimalist) to ensure variety. Never use the same palette twice in a row.
+
+      Preferences (<<user_preferences>>):
+
+      If Preferences are provided: Follow them strictly.
+
+      If Preferences are empty: Default to a "Botanical Focal Point" strategy—maximize exotic plant variety and leaf texture with zero furniture or hardscape.
+
+      3. The "Diversity Engine" (Plant Selection)
+      To prevent repetition, you must build your tropical palette using these Functional Roles:
+
+      Structural Anchors (20%): Select plants with bold, architectural silhouettes such as Fan Palms, Traveler's Palms, Giant Bird of Paradise, or multi-trunk Dracaenas.
+
+      Textural Contrast (50%): Mix extreme textures. Pair "Broad & Glossy" (Monstera, Alocasia, Philodendron) with "Fine & Feathery" (Tree Ferns, Fishtail Palms, or delicate Bamboo).
+
+      Chromatic Drifts (30%): Use plants with high-saturation exotic foliage or blooms, such as neon-pink Cordylines, electric-orange Heliconias, Red Ginger, or vibrant Bromeliads.
+
+      Negative Constraint: Avoid temperate "AI defaults" (Lavender, Boxwood, Roses, or Pine). Everything must feel humid, lush, and exotic.
+
+      4. Scale-Relative Architecture
+      Small/Narrow Masks: Prioritize "Vertical Jungle" drama. Use tall, slender clumping bamboo, Areca palms, or trellised climbing vines (like Monstera adansonii) to create height without bulk.
+
+      Large/Deep Masks: Create deep, layered tiers. Place giant-leaf specimens in the rear and low, colorful creeping groundcovers (like Sweet Potato Vine or Tradescantia) in the front. Use warm timber decking or basalt stone only for necessary accents.
+
+      5. Materiality & Technical Execution
+      Finish: Use jet-black polished river stones or dark organic wood mulch. This provides a high-contrast backdrop that makes the tropical greens and neon florals "pop" by 50%.
+
+      Mask Integrity: 100% replacement of violet pixels. Ensure no purple artifacts remain and no foliage "bleeds" onto existing windows.
+
+      Style: 35mm wide-angle, f/11. Match the sun angle but saturate for a "High-Humidity Golden Hour" editorial look, emphasizing the sheen on waxy leaves.
+
+    desert: |
+      1. Environmental Context & Constraints
+      Role: You are a Lead Modernist Landscape Architect specializing in Xeriscaping and Sustainable Urbanism.
+
+      Setting: This is strictly an Exterior Design.
+
+      Density Mandate: Every inch of the violet mask must be filled with a "Water-Wise Tapestry." Avoid Zeroscaping. Do not default to a sparse gravel pit with isolated plants. Use high-density, drought-tolerant botanical massing. Every square inch must be covered by either specialized xeric plants or high-contrast, permeable architectural mulch.
+
+      2. Smart Logic Gates (Fallbacks)
+      Before generating, evaluate the following variables:
+
+      Location (<<location>>):
+
+      If Location is provided: Use the specific hardiness zone to select 8+ unique, drought-resilient species native or adapted to that region.
+
+      If Location is empty: Rotate through three distinct xeric styles (California Native Modern, Mediterranean Xeric, or High-Altitude Steppe) to ensure variety. Never use the same palette twice in a row.
+
+      Preferences (<<user_preferences>>):
+
+      If Preferences are provided: Follow them strictly.
+
+      If Preferences are empty: Default to a "Meadow-Style Xeriscape"—maximize textural grasses and pollinator-friendly xeric blooms with zero furniture.
+
+      3. The "Diversity Engine" (Plant Selection)
+      To prevent repetition, build your xeric palette using these Functional Roles:
+
+      Structural Anchors (20%): Select bold silhouettes that thrive on neglect, such as Blue Glow Agave, Hesperaloe parviflora (Red Yucca), or architectural Dragon Trees.
+
+      Textural Contrast (50%): Mix "Fine-Woven" textures (Mexican Feather Grass, Blue Fescue, or Lavender) with "Bold & Fleshy" succulents (Echeveria drifts, Sedum 'Autumn Joy', or Senecio mandraliscae).
+
+      Chromatic Drifts (30%): Use high-impact, low-water colors: deep purples (Russian Sage), vibrant oranges (California Poppies or Aloe flowers), and neon-yellows (Moonshine Yarrow).
+
+      Negative Constraint: Avoid high-transpiration plants (Lawns, Hydrangeas, Tropical Ferns, or large-leafed Maples).
+
+      4. Scale-Relative Architecture
+      Small/Narrow Masks: Prioritize "Vertical Permeability." Use tall, slender xeric grasses and narrow columnar succulents to create a screen without needing high-volume soil or water.
+
+      Large/Deep Masks: Create "Hydro-zoned" drifts—grouping plants by their sculptural form and color. Use permeable surfaces like decomposed granite or matte-finish porcelain pavers only as clean geometric borders.
+
+      5. Materiality & Technical Execution
+      Finish: Use high-contrast "Inert Cover" such as charcoal slate chips, crushed basalt, or recycled glass mulch. This highlights the silvery and sage-green tones common in xeric foliage.
+
+      Mask Integrity: 100% replacement of violet pixels. Ensure no purple artifacts remain. All features must be contained within the mask.
+
+      Style: 35mm wide-angle, f/11. Match the sun angle but saturate for a "Vibrant Sustainability" look, emphasizing the varied textures of the xeric species.
+
+      Key Adjustments for Xeriscaping
+      Terminology Shift: Moved from "Desert" to "Water-Wise Tapestry" to prevent the model from over-using sand and cacti.
+
+      Diversity Fallbacks: Included "California Native" and "High-Altitude Steppe" to differentiate from "Tropical" or "Desert" themes.
+
+      The "Inert Cover" Mandate: Ensures that if mulch is used, it is high-contrast and architectural (charcoal/basalt) rather than standard brown wood chips.
+
+    mediterranean: |
+      1. Environmental Context & Constraints
+      Role: You are a Lead Mediterranean Landscape Architect.
+
+      Setting: This is strictly an Exterior Design.
+
+      Density Mandate: Every inch of the violet mask must be filled. Avoid "Wide Arid Spacing." Do not include large gravel paths or empty gaps unless specifically requested. Prioritize High-Density Mediterranean Massing (lush, layered, and water-wise).
+
+      2. Smart Logic Gates (Fallbacks)
+      Location (<<location>>):
+
+      If Location is provided: Use the specific Mediterranean subtype (e.g., Coastal Greek, Spanish Courtyard, or Provençal) to select 8+ unique, regional species.
+
+      If Location is empty: Rotate through three distinct styles (Rustic-Chic, Modern-Moorish, or Coastal Italian) to ensure variety. Never use the same palette twice in a row.
+
+      Preferences (<<user_preferences>>):
+
+      If RolePreferences are provided: Follow them strictly.
+
+      If Preferences are empty: Default to a "Textural Oasis" strategy—maximize silver-green foliage, aromatic herbs, and flowering spikes with zero furniture or hardscape.
+
+      3. The "Diversity Engine" (Plant Selection)
+      To prevent repetition, build your palette using these Mediterranean Functional Roles:
+
+      Structural Anchors (20%): Select plants with sculptural, gnarled, or columnar silhouettes (e.g., ancient trunk forms or tall, tapered accents).
+
+      Textural Contrast (50%): Mix "Soft & Silver" (velvety or needle-like foliage) with "Broad & Leathery" (drought-resistant glossy leaves).
+
+      Chromatic Drifts (30%): Use plants with sun-bleached silver foliage, deep ochre stems, or high-saturation floral spikes (terracotta oranges, deep magentas, or electric blues).
+
+      Negative Constraint: Avoid the standard "AI defaults" (Basic Lavender, Rosemary, or Olive Trees) unless they are the primary native species of the specific <<location>>.
+
+      4. Scale-Relative Architecture
+      Small/Narrow Masks: Prioritize verticality. Use "Wall-Hugging" climbers, columnar Mediterranean evergreens, and tiered planter logic.
+
+      Large/Deep Masks: Create layered, sweeping drifts of aromatic shrubs. Use weathered terracotta or sun-bleached limestone only as borders to separate distinct botanical textures.
+
+      5. Materiality & Technical Execution
+      Finish: Use warm-toned, crushed limestone or weathered ochre gravel as a "mulch" layer. This provides high contrast against the silver and deep green foliage.
+
+      Mask Integrity: 100% replacement of violet pixels. Ensure no purple artifacts remain and no features "bleed" onto existing house structures or windows.
+
+      Style: 35mm wide-angle, f/11. Match the sun angle but saturate the colors for a "Mediterranean Golden Hour" editorial look, emphasizing high-noon shadows and warm highlights.
+
+    cottage: |
+      Modern Chic Cottage: The Organized Vibrant Sanctuary
+      Professional Role & Creative Intelligence You are a Lead Modernist Landscape Architect specializing in "Chic Cottage Maximalism." Your goal is to transform the violet-masked area into a breathtaking, high-density floral garden that maintains rigorous geometric order. It must look like a high-end designer show-garden from the Chelsea Flower Show—vibrant, lush, but perfectly disciplined.
+
+      Spatial Analysis & Modern Geometry (Thinking Mode) Analyze the masked region and apply a "Linear Abundance" logic:
+
+      The Modern Frame: Organize the garden into clean, repeating rows or geometric "blocks" of color. Avoid random scattering.
+
+      Architectural Seating: Carve out a clear, rectangular or circular "Destination Zone" featuring low-slung luxury furniture (e.g., charcoal metal frames with white linen) set upon a clean-edged stone terrace.
+
+      High-Contrast Paths: If a path is used, use oversized, rectangular ivory pavers with "razor-sharp" edges, surrounded by dark polished stones to define the walking route clearly.
+
+      The "Intense Vibrancy" Botanical Strategy Use an unapologetic, diverse plant palette organized by color and height to ensure zero "bushy" mess:
+
+      Saturated Color Blocks: Create massive, dense "drifts" of electric-purple Salvia, neon-pink Peonies, and vibrant "Goldenrod" Yellow. Each color should exist in its own clear, intentional zone.
+
+      Sculptural Spines: Instead of round bushes, use vertical "Sky Pencil" Hollies or Foxgloves (Digitalis) to provide rhythmic vertical accents that act like living columns.
+
+      The Living Carpet: Use a dense, low-growing "uniform" groundcover like silver-blue Dichondra or neon-green creeping thyme to fill every gap. There must be zero exposed soil.
+
+      Ordered Climbers: Use a freestanding, minimalist black steel trellis to host a "sheet" of vibrant Climbing Roses or Clematis. The growth must be manicured and contained within the frame.
+
+      Materiality & High-Contrast Hardscape
+
+      Hardscape: Use oversized, matte-finish ivory Porcelain or light Grey Travertine. The light-colored stone is essential to act as a "canvas" that makes the bright floral colors pop.
+
+      Edging: Use black powder-coated steel edging to create a 100% straight, visible line between the planting beds and the gravel/stone areas.
+
+      Mulch: Use pure white quartz pebbles or jet-black river stones to finish the beds, providing a clean, "magazine-ready" look.
+
+      Photographic Execution (8k Photorealism)
+
+      Perspective: Render with a 35mm wide-angle lens at f/11 for a deep, crisp architectural focus.
+
+      Lighting Dynamics: Match the original photo’s sun angle. Use "Golden Hour" lighting to saturate the reds, purples, and yellows, making the garden look like it is glowing.
+
+      Shadow Physics: Every flower spike and piece of furniture must cast a sharp, physically accurate shadow to ground the design into the scene.
+
+      Technical Mandate
+
+      Zero Mess: No overgrown or "wild" looks. All plants must look manicured and placed with intent.
+
+      Complete Mask Eradication: The violet mask must be 100% replaced. No purple halos.
+
+      Structural Independence: All new features (furniture, trellises, planters) must not touch or modify the existing house walls.
+
+    zen: |
+      The issue with your current prompt is that it uses too many "fluff" adjectives and broad metaphors ("Living Sea," "Extreme Vibrancy") that confuse the AI's spatial logic. To get those high-end Architectural Digest results, we need to replace the flowery language with structured hierarchy and specific botanical layering.
+
+      Here is the refined, high-performance version of your prompt.
+
+      Zen Landscape Architecture Brief: The High-Contrast Botanical Sanctuary
+      1. Professional Identity & Spatial Logic
+
+      Role: Lead Zen Landscape Architect (Lush-Modernist Specialist).
+
+      Core Objective: Transform the violet-masked area into a High-Density Botanical Installation.
+
+      The "Ma" Reinterpretation: Replace traditional "empty space" with Negative Green Space—using low-growing, uniform moss carpets to act as the "void" instead of gravel or sand.
+
+      2. The Layered Density Protocol (Ground Up) Every pixel of the mask must follow this three-tier vertical hierarchy:
+
+      Tier 1: The Continuous Carpet (0–6"): 100% coverage. No exposed soil. Interleave Sagina subulata (Neon Green) with Ophiopogon planiscapus 'Nigrescens' (Black Mondo Grass) for high-contrast "shadow" paths.
+
+      Tier 2: The Mid-Story Tapestry (1–4ft): Mass-planting of Satsuki Azaleas (pruned into tight "Tamazukuri" spheres) and Hakonechloa macra (cascading gold forest grass). Incorporate electric-blue Japanese Iris for seasonal chromatic spikes.
+
+      Tier 3: Structural Specimen Anchors (5ft+): Feature 2–3 "Niwaki" (cloud-pruned) Pinus thunbergii and one primary Acer palmatum 'Bloodgood' (Deep Crimson) to provide a central architectural focal point.
+
+      3. Architectural Hardscape & Integration
+
+      Floating Geometry: Insert oversized, charcoal-grey Basalt "Tobi-ishi" stepping stones. They must appear "sunken" into the moss, with moss creeping over the stone edges.
+
+      The "Engawa" Element: If the mask is adjacent to a wall, render a minimalist, charred-timber (Shou Sugi Ban) floating deck.
+
+      The Water Feature: A single, minimalist Tsukubai (stone water basin) with a slow-drip bamboo pipe, surrounded by high-density Ostrich Ferns.
+
+      4. Materiality & Color Grading
+
+      Chroma Control: Force a "Cool-Toned Forest" palette. Saturate the greens and deep reds; desaturate the greys and browns.
+
+      The "Rain-Slick" Finish: Apply a global "Wet" shader to all stones and foliage to increase specular highlights and make the colors appear "dew-drenched."
+
+      Contrast Bordering: Use jet-black polished river stones as a "precision border" between the plant drifts and any existing house structures.
+
+      5. Technical Execution & Render Specs
+
+      Optics: 35mm wide-angle, f/11 aperture for edge-to-edge sharpness.
+
+      Lighting: Match original plate sun-angle. Use "Post-Rain Golden Hour" lighting to create long, soft shadows and glowing leaf edges.
+
+      Mask Integrity: Absolute zero-tolerance for violet artifacts. Ensure botanical edges "nestle" against the house geometry with physically accurate contact shadows.
+
+      No AI Defaults: Strictly avoid generic cherry blossoms or yellow bamboo. Use Black Bamboo (Phyllostachys nigra) and Japanese Cedar (Cryptomeria) for a premium, custom look.

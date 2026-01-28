@@ -1,6 +1,6 @@
 <%
    is_cost_context = (controller_name == 'mask_requests' && (action_name == 'new' || action_name == 'edit')) || (controller_name == 'canvas' && action_name == 'new')
-   cost = DEFAULT_IMAGE_COUNT * GOOGLE_IMAGE_COST
+   cost = DEFAULT_IMAGE_COUNT * GOOGLE_PRO_IMAGE_COST
 
    # Removed grid logic, enforced single column stack
    base_classes = "flex flex-col gap-4 p-3 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl group no-underline text-inherit"
@@ -32,7 +32,7 @@
           </p>
 
           <%# # if we are on canvas page, we let them know they can spend balance on smart fix %>
-          <% if current_user.pro_engine_credits < cost && current_user.pro_engine_credits >= GOOGLE_IMAGE_COST  && current_user.mask_requests.complete.present? %>
+          <% if current_user.pro_engine_credits < cost && current_user.pro_engine_credits >= GOOGLE_PRO_IMAGE_COST  && current_user.mask_requests.complete.present? %>
             <div class="text-sm text-green-400 mt-1">
               💡 Tip: You still have enough credits for surgical edits with
               <%= button_to "Smart Fix", text_requests_path, method: :get, class: "cursor-pointer font-bold underline hover:text-green-300 bg-transparent border-0 p-0 inline align-baseline", form: { class: "inline-block ml-1" } %>

@@ -7,7 +7,7 @@
 <div class="fixed inset-0 w-screen h-screen bg-gray-900 text-white overflow-hidden grid grid-cols-[auto_1fr_auto] group/layout group-data-[layout-mode=overlay]/layout:block"
      data-controller="layout projects project-onboarding"
      data-projects-generation-url-value="<%= @active_design ? project_design_project_layers_path(@project, @active_design) : '' %>"
-     data-projects-image-cost-value="<%= GOOGLE_IMAGE_COST %>"
+     data-projects-image-cost-value="<%= GOOGLE_PRO_IMAGE_COST %>"
      data-project-onboarding-style-presets-status-value="<%= current_user.project_onboarding&.style_presets_status || 'not_started' %>"
      data-project-onboarding-smart-fix-status-value="<%= current_user.project_onboarding&.smart_fix_status || 'not_started' %>"
      data-project-onboarding-auto-fix-status-value="<%= current_user.project_onboarding&.auto_fix_status || 'not_started' %>">
@@ -184,7 +184,7 @@
              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5 text-gray-900 group-hover:scale-110 transition-transform">
                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
              </svg>
-             <span class="hidden xl:inline">New Design</span>
+             <span class="hidden xl:inline">Upload Image</span>
              <%= f.file_field :image, class: "hidden", accept: "image/*", onchange: "this.form.requestSubmit()" %>
           </label>
         <% end %>
@@ -235,6 +235,9 @@
                   data-project-canvas-target="canvasContainer"
                   data-project-canvas-layer-id-value="<%= @active_design.active_layer.id %>"
                   data-project-canvas-image-url-value="<%= url_for(@active_design.active_layer.display_image) %>"
+                  <% if @active_design.active_layer.overlay.attached? %>
+                    data-project-canvas-overlay-url-value="<%= url_for(@active_design.active_layer.overlay) %>"
+                  <% end %>
                   data-project-canvas-display-width-value="<%= @active_design.active_layer.display_image.metadata['width'] || 800 %>"
                   data-project-canvas-display-height-value="<%= @active_design.active_layer.display_image.metadata['height'] || 600 %>"
                   data-project-canvas-brush-size-value="60"
@@ -310,6 +313,19 @@
               </svg>
             <% end %>
           <% end %>
+
+           <% if Rails.env.local? %>
+              <div class="h-4 w-px bg-white/10 mx-1"></div>
+              <button class="p-2 text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition-colors relative group"
+                      data-action="click->projects#toggleDebugOverlay"
+                      title="Toggle Debug Overlay">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-yellow-500">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                </svg>
+                <div class="absolute -top-1 -right-1 w-2 h-2 bg-yellow-500 rounded-full"></div>
+              </button>
+           <% end %>
        </div>
     </div>
   </div>
@@ -352,6 +368,17 @@
             </svg>
           </button>
 
+          <!-- Settings Dock Item -->
+          <button class="p-2.5 rounded-xl hover:bg-white/10 text-gray-300 hover:text-white transition-all mt-auto mb-2"
+                  data-action="click->projects#handleDockClick"
+                  data-tab-name="Settings"
+                  title="Settings">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 0 1 0 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 0 1 0-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.581-.495.644-.869l.214-1.281Z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+            </svg>
+          </button>
+
           <!--
           <button class="p-2.5 rounded-xl hover:bg-white/10 text-gray-300 hover:text-white transition-all"
                   data-action="click->projects#handleDockClick"
@@ -366,10 +393,7 @@
 
     <!-- Expanded Content -->
     <div class="w-[350px] bg-gray-900/90 backdrop-blur-xl border-l border-white/10 flex flex-col h-full transition-all duration-300 origin-right overflow-hidden group-data-[state=collapsed]/rightSidebar:w-0 group-data-[state=collapsed]/rightSidebar:opacity-0"
-         data-layout-target="rightContent"
-         data-controller="tools"
-         data-tools-active-class="text-blue-400 border-blue-400"
-         data-tools-inactive-class="text-gray-400 border-transparent hover:text-gray-200">
+         data-layout-target="rightContent">
 
         <div class="flex items-center justify-between p-2 border-b border-white/10">
            <!-- Collapse Button -->
@@ -378,37 +402,48 @@
                  <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m3-3 3 3-3 3m-5.25-12h2.25" />
                </svg>
            </button>
-           <span class="text-xs font-bold uppercase tracking-wider text-gray-400">Ai Tools</span>
+
+           <!-- Outer Tabs (Tools vs Settings) -->
+           <div class="flex bg-black/40 rounded-lg p-0.5" id="outer_tabs_container">
+             <button class="px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-[6px] transition-all bg-gray-700 text-white shadow-sm"
+                     id="tab_ai_tools"
+                     onclick="switchOuterTab('ai_tools')">
+               AI Tools
+             </button>
+             <button class="px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-[6px] transition-all text-gray-400 hover:text-gray-200"
+                     id="tab_settings"
+                     onclick="switchOuterTab('settings')">
+               Settings
+             </button>
+           </div>
+
            <div class="w-5"></div>
         </div>
 
-       <!-- Tabs Header -->
-       <div class="flex border-b border-white/10">
+        <div class="flex-1 overflow-hidden relative flex flex-col">
+            <!-- Outer Tab 1: AI Tools (Existing Content Wrapper) -->
+            <div id="panel_ai_tools" class="flex flex-col h-full relative">
+
+       <!-- Tabs Header (Vanilla JS) -->
+       <div class="flex border-b border-white/10" id="inner_tabs_container">
           <button class="flex-1 py-3 text-sm font-medium border-b-2 text-blue-400 border-blue-400 transition-colors"
-                  data-tools-target="tab"
-          data-project-onboarding-target="stylePresetsTab"
-          data-action="tools#switch click->projects#updateBrushHint click->project-onboarding#initOnboarding">
+                  id="tab_style_presets"
+                  onclick="switchInnerTab('style_presets')"
+                  data-action="click->projects#updateBrushHint click->project-onboarding#initOnboarding">
             Style Presets
           </button>
            <button class="flex-1 py-3 text-sm font-medium border-b-2 text-gray-300 border-transparent hover:text-gray-200 transition-colors"
-                  data-tools-target="tab"
-                  data-project-onboarding-target="smartFixTab"
-                  data-action="tools#switch click->projects#updateBrushHint click->project-onboarding#initOnboarding">
+                  id="tab_smart_fix"
+                  onclick="switchInnerTab('smart_fix')"
+                  data-action="click->projects#updateBrushHint click->project-onboarding#initOnboarding">
             SmartFix
           </button>
            <button class="flex-1 py-3 text-sm font-medium border-b-2 text-gray-300 border-transparent hover:text-gray-200 transition-colors"
-                  data-tools-target="tab"
-                  data-project-onboarding-target="autoFixTab"
-                  data-action="tools#switch click->projects#updateBrushHint click->project-onboarding#initOnboarding">
+                  id="tab_auto_fix"
+                  onclick="switchInnerTab('auto_fix')"
+                  data-action="click->projects#updateBrushHint click->project-onboarding#initOnboarding">
             AutoFix
           </button>
-           <!--
-           <button class="flex-1 py-3 text-sm font-medium border-b-2 text-gray-300 border-transparent hover:text-gray-200 transition-colors"
-                  data-tools-target="tab"
-                  data-action="tools#switch click->projects#updateBrushHint">
-            Export tools
-          </button>
-          -->
        </div>
 
        <!-- Content Area -->
@@ -416,7 +451,7 @@
        <!-- Content Area -->
        <div class="flex-1 overflow-hidden relative flex flex-col">
            <!-- Tab 1: Style Presets -->
-            <div data-tools-target="panel" class="flex flex-col h-full relative">
+            <div id="panel_style_presets" class="flex flex-col h-full relative">
               <div class="flex-1 overflow-y-auto min-h-0 p-4 pb-24 space-y-6 premium-scrollbar">
                 <input type="hidden" name="generation_type" value="style_preset">
                <!-- Landscape Preset Selection -->
@@ -457,18 +492,17 @@
                <!-- Fixed Footer -->
                <div class="absolute bottom-0 left-0 right-0 p-4 bg-gray-900 border-t border-white/10 z-20">
                   <p class="text-[12px] text-gray-400 text-center mb-2 leading-tight">AI edits based on the active layer. Please brush on the image if you have specific areas you want to edit.</p>
-                  <div class="mb-3"><%= render "projects/tools/variations_controls" %></div>
-                  <button class="w-full bg-[#00acc1] hover:bg-[#00838f] disabled:bg-gray-700 disabled:text-gray-500 disabled:cursor-not-allowed text-white font-bold py-3 rounded-lg shadow-lg shadow-cyan-900/20 transition-all border border-white/10"
-                          data-action="click->projects#generate"
-                          data-projects-target="generateButton"
-                          disabled>
-                     Generate Now
-                  </button>
+                  <div class="mb-3">
+                     <%= render "projects/tools/generation_card",
+                                model_input_name: "project_layer[model]",
+                                selected_model: @active_design&.active_layer&.model,
+                                user: current_user %>
+                  </div>
                </div>
             </div>
 
            <!-- Tab 2: SmartFix -->
-           <div data-tools-target="panel" data-projects-target="smartFixPanel" class="flex flex-col h-full relative hidden" data-controller="smart-fix-layout">
+           <div id="panel_smart_fix" data-projects-target="smartFixPanel" class="flex flex-col h-full relative hidden" data-controller="smart-fix-layout">
               <div class="flex-1 overflow-y-auto min-h-0 p-4 pb-24 space-y-6 premium-scrollbar">
                  <input type="hidden" name="generation_type" value="smart_fix">
                  <div data-smart-fix-layout-target="inputs">
@@ -479,14 +513,14 @@
               </p>
 
               <!-- AI Assist Toggle -->
-             <div class="flex items-center justify-between bg-white/5 p-2 rounded-lg border border-white/10" data-project-onboarding-target="aiAssistToggle">
-               <label for="ai-assist-toggle" class="text-xs font-medium text-gray-300 cursor-pointer" data-projects-target="aiAssistLabel">AI Assist On</label>
+             <div class="flex items-center justify-between bg-purple-500/10 p-2 rounded-lg border border-purple-500/30" data-project-onboarding-target="aiAssistToggle">
+               <label for="ai-assist-toggle" class="text-xs font-medium text-purple-200 cursor-pointer" data-projects-target="aiAssistLabel">AI Assist On</label>
                <div class="relative inline-block w-9 align-middle select-none transition duration-200 ease-in">
                   <input type="checkbox" name="ai_assist" id="ai-assist-toggle" checked
-                         class="toggle-checkbox absolute block w-4 h-4 rounded-full bg-white border-2 appearance-none cursor-pointer checked:right-0 checked:border-blue-600"
+                         class="toggle-checkbox absolute block w-4 h-4 rounded-full bg-white border-2 appearance-none cursor-pointer checked:right-0 checked:border-purple-500"
                          data-projects-target="aiAssistToggle"
                          data-action="change->projects#toggleAiAssist"/>
-                  <label for="ai-assist-toggle" class="toggle-label block overflow-hidden h-4 rounded-full bg-gray-600 cursor-pointer"></label>
+                  <label for="ai-assist-toggle" class="toggle-label block overflow-hidden h-4 rounded-full bg-gray-600 peer-checked:bg-purple-600 cursor-pointer"></label>
                </div>
              </div>
 
@@ -506,19 +540,19 @@
                <!-- Fixed Footer -->
                <div class="absolute bottom-0 left-0 right-0 p-4 bg-gray-900 border-t border-white/10 z-20">
                   <p class="text-[12px] text-gray-400 text-center mb-2 leading-tight">AI edits based on the active layer. Please brush on the image if you have specific areas you want to edit.</p>
-                  <div class="mb-3"><%= render "projects/tools/variations_controls" %></div>
-                  <button class="w-full bg-[#00acc1] hover:bg-[#00838f] disabled:bg-gray-700 disabled:text-gray-500 disabled:cursor-not-allowed text-white font-bold py-3 rounded-lg shadow-lg shadow-cyan-900/20 transition-all border border-white/10"
-                          data-action="click->projects#generate"
-                          data-projects-target="generateButton"
-                          disabled>
-                     Generate Now
-                  </button>
-               </div>
+                  <div class="mb-3">
+                     <%= render "projects/tools/generation_card",
+                                model_input_name: "project_layer[model]",
+                                selected_model: @active_design&.active_layer&.model,
+                                user: current_user %>
+                  </div>
+
+            </div>
             </div>
 
           <!-- Tab 3: AutoFix -->
-          <div data-tools-target="panel" class="h-full relative hidden overflow-hidden">
-             <div class="absolute inset-0 overflow-y-auto p-4 space-y-4 premium-scrollbar">
+          <div id="panel_auto_fix" class="h-full relative hidden overflow-hidden">
+             <div class="absolute inset-0 overflow-y-auto p-4 space-y-4 premium-scrollbar pb-40">
               <input type="hidden" name="generation_type" value="autofix">
               <!-- Description -->
              <p class="text-xs text-gray-400 leading-snug">
@@ -553,9 +587,19 @@
                </div>
              <% end %>
           </div>
-           </div>
 
-            <!-- Tab 4: Export Tools -->
+          <!-- Fixed Footer -->
+          <div class="absolute bottom-0 left-0 right-0 p-4 bg-gray-900 border-t border-white/10 z-20">
+             <div class="mb-3">
+                <%= render "projects/tools/generation_card",
+                           model_input_name: "project_layer[model]",
+                           selected_model: @active_design&.active_layer&.model,
+                           user: current_user %>
+             </div>
+          </div>
+          </div>
+
+            <!-- Tab 4: Export Tools (Commented Out) -->
             <!--
             <div data-tools-target="panel" class="h-full relative hidden overflow-hidden">
               <div class="absolute inset-0 overflow-y-auto p-4 space-y-4 premium-scrollbar">
@@ -575,22 +619,106 @@
                      </div>
                    </div>
                  </div>
-
-                  <div class="py-4">
-                    <button class="w-full py-4 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-xl shadow-lg shadow-amber-900/30 transition-all flex items-center justify-center gap-3 group"
-                            data-action="click->projects#generate"
-                            data-projects-target="generateButton">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 group-hover:scale-110 transition-transform">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15" />
-                      </svg>
-                      Upscale to 4k
-                    </button>
-                  </div>
+                 <div class="py-4">
+                   <button class="w-full py-4 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-xl shadow-lg shadow-amber-900/30 transition-all flex items-center justify-center gap-3 group"
+                           data-action="click->projects#generate"
+                           data-projects-target="generateButton">
+                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 group-hover:scale-110 transition-transform">
+                       <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15" />
+                     </svg>
+                     Upscale to 4k
+                   </button>
+                 </div>
               </div>
             </div>
             -->
 
         </div>
+        </div> <!-- End Outer Tab 1: AI Tools -->
+
+            <!-- Outer Tab 2: Settings -->
+            <div id="panel_settings" class="hidden h-full relative overflow-y-auto premium-scrollbar">
+               <%= render "user_settings/form" %>
+            </div>
+       </div>
+
+    <!-- Simple Vanilla JS for Tabs Switching -->
+    <script>
+      // Persistence Config
+      const STORAGE_KEY_OUTER = 'tool_tide_outer_tab';
+      const STORAGE_KEY_INNER = 'tool_tide_inner_tab';
+
+      document.addEventListener("turbo:load", () => {
+         // Restore Outer Tab
+         const savedOuter = localStorage.getItem(STORAGE_KEY_OUTER);
+         if (savedOuter) {
+            switchOuterTab(savedOuter, false); // false = don't save again
+         }
+
+         // Restore Inner Tab (if active)
+         const savedInner = localStorage.getItem(STORAGE_KEY_INNER);
+         if (savedInner) {
+            switchInnerTab(savedInner, false);
+         }
+      });
+
+      function switchOuterTab(tabName, save = true) {
+        if (save) localStorage.setItem(STORAGE_KEY_OUTER, tabName);
+
+        const aiToolsBtn = document.getElementById('tab_ai_tools');
+        const settingsBtn = document.getElementById('tab_settings');
+        const aiToolsPanel = document.getElementById('panel_ai_tools');
+        const settingsPanel = document.getElementById('panel_settings');
+
+        const activeClasses = ['bg-gray-700', 'text-white', 'shadow-sm'];
+        const inactiveClasses = ['text-gray-400', 'hover:text-gray-200'];
+
+        if (tabName === 'ai_tools') {
+          // Activate AI Tools
+          aiToolsBtn?.classList.add(...activeClasses);
+          aiToolsBtn?.classList.remove(...inactiveClasses);
+          aiToolsPanel?.classList.remove('hidden');
+
+          // Deactivate Settings
+          settingsBtn?.classList.remove(...activeClasses);
+          settingsBtn?.classList.add(...inactiveClasses);
+          settingsPanel?.classList.add('hidden');
+        } else {
+          // Activate Settings
+          settingsBtn?.classList.add(...activeClasses);
+          settingsBtn?.classList.remove(...inactiveClasses);
+          settingsPanel?.classList.remove('hidden');
+
+          // Deactivate AI Tools
+          aiToolsBtn?.classList.remove(...activeClasses);
+          aiToolsBtn?.classList.add(...inactiveClasses);
+          aiToolsPanel?.classList.add('hidden');
+        }
+      }
+
+      function switchInnerTab(tabName, save = true) {
+        if (save) localStorage.setItem(STORAGE_KEY_INNER, tabName);
+
+        const tabs = ['style_presets', 'smart_fix', 'auto_fix'];
+        const activeClasses = ['text-blue-400', 'border-blue-400'];
+        const inactiveClasses = ['text-gray-300', 'border-transparent', 'hover:text-gray-200'];
+
+        tabs.forEach(t => {
+           const btn = document.getElementById(`tab_${t}`);
+           const panel = document.getElementById(`panel_${t}`);
+
+           if (t === tabName) {
+              btn?.classList.add(...activeClasses);
+              btn?.classList.remove(...inactiveClasses);
+              panel?.classList.remove('hidden');
+           } else {
+              btn?.classList.remove(...activeClasses);
+              btn?.classList.add(...inactiveClasses);
+              panel?.classList.add('hidden');
+           }
+        });
+      }
+    </script>
        </div>
     </div>
 </div>
