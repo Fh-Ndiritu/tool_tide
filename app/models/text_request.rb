@@ -55,6 +55,8 @@ class TextRequest < ApplicationRecord
   private
 
   def generate_edit
+    return unless user.afford_text_editing?
+
     validating!
     TextEditorJob.perform_later(id)
   end

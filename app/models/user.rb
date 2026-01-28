@@ -159,13 +159,20 @@ class User < ApplicationRecord
     user_setting || create_user_setting(default_model: "pro_mode", default_variations: 2)
   end
 
+  def resumable_request
+    # Find a mask request that is stuck in validating (saved but not generated)
+    # created recently, and we now have credits to run it.
+    return nil unless afford_generation?
+
+    mask_requests.where(progress: :validating)
+                 .where("mask_requests.created_at > ?", 2.days.ago)
+                 .includes(:main_view_attachment)
+                 .find { |mr| !mr.main_view.attached? }
+  end
+
   private
 
-  enum :restart_onboarding_status, {
-    initial: 0,
-    restarted: 1,
-    completed_after_restart: 2
-  }
+
 
   def prevent_onboarding_regression
     return if onboarding_stage.nil?

@@ -1,5 +1,5 @@
 <% user = local_assigns[:user] || (defined?(current_user) ? current_user : nil) %>
-<% has_purchased = user ? user.has_purchased_credits_before? : false %>
+<% has_purchased = true %>
 <% selected_model = local_assigns[:selected_model] %>
 <% selected_model = user&.default_model || MODEL_ALIAS_PRO if selected_model.blank? %>
 <% input_name = local_assigns[:input_name] || "model" %>

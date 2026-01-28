@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_25_091927) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_28_163448) do
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -461,9 +461,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_25_091927) do
     t.decimal "longitude", precision: 10, scale: 7
     t.json "address"
     t.integer "pro_engine_credits", default: 0
-    t.datetime "received_daily_credits"
-    t.boolean "reverted_to_free_engine", default: false
-    t.boolean "notified_about_pro_credits", default: false
     t.text "error"
     t.boolean "privacy_policy", default: false
     t.integer "sign_in_count", default: 0
@@ -475,7 +472,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_25_091927) do
     t.integer "source", default: 0
     t.string "user_name"
     t.integer "onboarding_stage", default: 0
-    t.integer "restart_onboarding_status", default: 0
     t.datetime "feature_announcement_sent_at"
     t.boolean "completed_survey"
     t.datetime "desktop_projects_announcement_sent_at"

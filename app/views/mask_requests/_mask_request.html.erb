@@ -8,6 +8,24 @@
   </div>
 <% else %>
   <div id="<%= dom_id(mask_request) %>" class="container mx-auto py-8">
+    <% unless current_user.afford_generation? || mask_request.main_view.attached? %>
+      <div class="bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/30 rounded-2xl p-6 mb-8 flex flex-col md:flex-row items-center justify-between gap-6 backdrop-blur-md">
+        <div class="flex items-start gap-4">
+          <div class="p-3 bg-amber-500/20 rounded-xl text-amber-500">
+             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8">
+               <path d="M10.464 8.746c.227-.18.497-.311.786-.394v2.795a2.252 2.252 0 01-.786-.393c-.394-.313-.546-.681-.546-1.004 0-.324.152-.691.546-1.004zM12.75 15.662v-2.824c.347.085.664.228.921.421.427.32.579.686.579.991 0 .305-.152.671-.579.991a2.534 2.534 0 01-.921.42z" />
+               <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 6a.75.75 0 00-1.5 0v.816a3.836 3.836 0 00-1.72.656c-.89.658-1.53 1.576-1.53 2.541 0 1.552 1.243 2.853 3.25 3.323v1.942a4.425 4.425 0 01-1.78-.718.75.75 0 00-1.107.97 5.925 5.925 0 002.887.971V18a.75.75 0 001.5 0v-.816a3.836 3.836 0 001.72-.656c.89-.658 1.53-1.576 1.53-2.541 0-1.552-1.243-2.854-3.25-3.323V8.723a4.425 4.425 0 011.78.718.75.75 0 001.107-.97A5.925 5.925 0 0012.75 7.56V6z" clip-rule="evenodd" />
+             </svg>
+          </div>
+          <div>
+            <h4 class="text-xl font-bold text-white mb-1">Action Required: Add Credits</h4>
+             <p class="text-neutral-300">Your design is saved and ready to generate. Add credits to see the magic happen!</p>
+          </div>
+        </div>
+        <%= link_to "Purchase & Generate", credits_path(return_to: mask_request_path(mask_request, trigger_generation: true)), class: "whitespace-nowrap px-8 py-3 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-black font-bold rounded-xl shadow-lg transform hover:scale-105 transition-all" %>
+      </div>
+    <% end %>
+
     <div class="bg-white/10 backdrop-blur-xl rounded-3xl shadow-xl border border-white/20 overflow-hidden">
       <!-- Header Section -->
       <div
@@ -133,7 +151,7 @@
           <!-- Desktop Hero Content (Project Upsell) -->
           <div
             class="
-              relative z-10 p-8 md:p-10 flex flex-col md:flex-row
+              relative z-10 p-8 md:p-10 flex-col md:flex-row
               items-center justify-between gap-8 hidden min-[580px]:!flex
             "
           >
@@ -250,7 +268,12 @@
                   <p class="text-gray-400 text-sm mt-2"><%= mask_request.progress.humanize %></p>
                  <% else %>
                    <div class="w-12 h-12 rounded-full bg-white/10 mb-4"></div>
-                   <p class="text-gray-500 font-medium">Waiting to start...</p>
+                   <% if !current_user.afford_generation? %>
+                      <p class="text-amber-500 font-bold">Credits required</p>
+                      <%= link_to "Get Credits", low_credits_path, class: "text-sm text-neutral-400 hover:text-white underline mt-2" %>
+                   <% else %>
+                      <p class="text-gray-500 font-medium">Waiting to start...</p>
+                   <% end %>
                  <% end %>
                </div>
           <% end %>

@@ -1,7 +1,8 @@
 <nav
-  class="px-4 shadow-md bg-accent-secondary <%= 'sticky top-0 z-50' unless user_signed_in? %>"
+  class="relative px-4 shadow-md bg-accent-secondary <%= 'sticky top-0 z-50' unless user_signed_in? %>"
   data-controller="navbar"
 >
+
   <div class="container mx-auto flex flex-col lg:flex-row justify-between items-center">
     <div class="w-full lg:w-auto flex items-center mb-0 lg:mb-0 relative">
       <div class="flex-shrink-0">
@@ -304,3 +305,20 @@
     </div>
   </div>
 </nav>
+
+<% if user_signed_in? && (resumable = current_user.resumable_request) %>
+  <div class="bg-gradient-to-r from-amber-500 to-orange-500 text-white text-sm font-bold px-4 py-2 flex items-center justify-center gap-4 relative">
+    <div class="flex items-center gap-2">
+       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-11.25a.75.75 0 00-1.5 0v2.5h-2.5a.75.75 0 000 1.5h2.5v2.5a.75.75 0 001.5 0v-2.5h2.5a.75.75 0 000-1.5h-2.5v-2.5z" clip-rule="evenodd" />
+       </svg>
+       <span>You have a pending design ready to generate!</span>
+    </div>
+    <%= link_to "Resume Now", mask_request_path(resumable, trigger_generation: true), class: "bg-white text-orange-600 px-3 py-1 rounded-full text-xs hover:bg-orange-50 transition-colors shadow-sm" %>
+    <button onclick="this.parentElement.remove()" class="absolute right-2 top-1/2 -translate-y-1/2 p-1 hover:bg-white/20 rounded-full transition-colors">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
+        <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
+      </svg>
+    </button>
+  </div>
+<% end %>

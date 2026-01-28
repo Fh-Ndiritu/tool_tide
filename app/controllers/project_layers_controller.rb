@@ -1,7 +1,7 @@
 class ProjectLayersController < ApplicationController
   before_action :set_project
   before_action :set_design, only: [ :create ]
-  before_action :set_project_layer, only: %i[show update]
+  before_action :set_project_layer, only: %i[show update retry_generation]
 
   def show
     @project_layer.mark_as_viewed!
@@ -100,6 +100,25 @@ class ProjectLayersController < ApplicationController
       respond_to do |format|
         format.turbo_stream { head :unprocessable_content }
         format.html { render :show, status: :unprocessable_content }
+      end
+    end
+  end
+
+  def retry_generation
+    if current_user.can_afford_generation?(@project_layer.model)
+      @project_layer.update(progress: :preparing, user_msg: nil, error_msg: nil)
+      ProjectGenerationJob.perform_later(@project_layer.id)
+      respond_to do |format|
+        format.turbo_stream { render turbo_stream: turbo_stream.replace(@project_layer) }
+        format.html { redirect_to project_path(@project, design_id: @project_layer.design_id), notice: "Retrying generation..." }
+      end
+    else
+      msg = "Insufficient credits. <a href='#{low_credits_path(return_to: project_path(@project))}' class='underline font-bold' data-turbo-frame='_top'>Top up now</a>"
+      flash.now[:alert] = msg.html_safe
+
+      respond_to do |format|
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("flash", partial: "shared/flash") }
+        format.html { redirect_to project_path(@project, design_id: @project_layer.design_id), alert: "Insufficient credits." }
       end
     end
   end

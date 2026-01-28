@@ -16,11 +16,19 @@ class MaskRequestsController < AppController
     puts "Show Flash: #{flash.to_hash}"
     @trigger_pql_event = flash[:pql_event] == "true"
     puts "Trigger: #{@trigger_pql_event}"
+
+    if params[:trigger_generation] == "true" && current_user.afford_generation?
+      DesignGeneratorJob.perform_later(@mask_request.id)
+      @mask_request.validating!
+      flash[:notice] = "Generation resumed!"
+      redirect_to mask_request_path(@mask_request) and return
+    end
   end
 
   # GET /mask_requests/new
   def new
-    redirect_to low_credits_path and return unless @canva.user.afford_generation?
+    # redirect_to low_credits_path and return unless @canva.user.afford_generation?
+
     @mask_request = @canva.mask_requests.new
   end
 
@@ -28,7 +36,8 @@ class MaskRequestsController < AppController
   def edit
     @canva = @mask_request.canva
     if params[:manual].present?
-      redirect_to low_credits_path and return unless @canva.user.afford_generation?
+      # redirect_to low_credits_path and return unless @canva.user.afford_generation?
+
       # we don't need to update this, we can create a copy and work on that
       request = @mask_request.copy
       # we shall recomend modern for now
@@ -79,11 +88,22 @@ class MaskRequestsController < AppController
           end
           current_user.style_selected!
 
-          DesignGeneratorJob.perform_later(@mask_request.id)
-          @mask_request.validating!
+          if current_user.afford_generation?
+            DesignGeneratorJob.perform_later(@mask_request.id)
+            @mask_request.validating!
+            format.html { redirect_to mask_request_path(@mask_request), status: :see_other }
+            format.turbo_stream { redirect_to mask_request_path(@mask_request), status: :see_other }
+          else
+            # Save valid state but don't generate
+            @mask_request.validating! # Or keep as style_selected? Maybe validating! is fine, but job won't pick it up till we trigger it.
+            # actually if we set it to validating!, the polling might be confused if no job runs.
+            # ideally we just save it.
+            # But the user logic "style_selected!" sets a state too.
 
-          format.html { redirect_to mask_request_path(@mask_request), status: :see_other }
-          format.turbo_stream { redirect_to mask_request_path(@mask_request), status: :see_other }
+            flash[:notice] = "Design saved! Add credits to generate your masterpiece."
+            format.html { redirect_to mask_request_path(@mask_request) }
+            format.turbo_stream { redirect_to mask_request_path(@mask_request) }
+          end
 
         else
            # Fallback / manual update case
@@ -98,7 +118,7 @@ class MaskRequestsController < AppController
 
   def preferences
     @canva = @mask_request.canva
-    redirect_to low_credits_path and return unless @canva.user.afford_generation?
+    # redirect_to low_credits_path and return unless @canva.user.afford_generation?
   end
 
   # POST /mask_requests or /mask_requests.json

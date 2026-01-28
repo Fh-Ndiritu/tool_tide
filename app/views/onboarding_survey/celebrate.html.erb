@@ -23,12 +23,14 @@
       </h1>
 
       <p class="text-base text-neutral-300 mb-6 leading-relaxed font-light">
-        You've received
-        <span class="inline-flex items-center justify-center px-4 py-1 mx-1 rounded-full border border-[#f23faf]/30 bg-[#f23faf]/10 text-[#f23faf] font-bold text-base shadow-[0_0_15px_rgba(242,63,175,0.2)]">
-          <%= current_user.signup_credits %> Free Credits
-        </span>
-        to start designing your dream space.
+        Your account is ready. Choose how you'd like to proceed:
       </p>
+
+      <div class="flex flex-col gap-4 mb-6">
+        <%= link_to "Purchase Credits", credits_path, class: "w-full inline-flex items-center justify-center px-6 py-3 text-lg font-bold text-black bg-[#00acc1] rounded-xl hover:bg-[#26c6da] transition-all duration-300 shadow-lg" %>
+
+        <%= link_to "Tour Around", new_project_path, class: "w-full inline-flex items-center justify-center px-6 py-3 text-lg font-bold text-white bg-white/10 border border-white/10 rounded-xl hover:bg-white/20 transition-all duration-300" %>
+      </div>
 
       <div class="bg-[#1a1a1a]/50 rounded-xl p-4 my-3 mb-6 text-left border border-white/5">
          <p class="text-[10px] font-bold text-neutral-500 uppercase tracking-widest mb-3 border-b border-white/5 pb-2">
@@ -52,8 +54,7 @@
         </div>
       </div>
 
-      <%= link_to "Let's Get Started", new_project_path,
-          class: "group w-full inline-flex items-center justify-center px-6 py-3 text-lg font-bold text-white bg-gradient-to-r from-[#00acc1] to-[#26c6da] rounded-xl hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(0,172,193,0.4)] transition-all duration-300 shadow-lg" %>
+
     </div>
   </div>
 </div>

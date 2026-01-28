@@ -40,8 +40,9 @@ class TextRequestsController < AppController
 
   # PATCH/PUT /text_requests/1 or /text_requests/1.json
   def update
-     # if we get an update request for a text_request which already has a result image
-     redirect_to low_credits_path and return unless current_user.afford_text_editing?
+    # if we get an update request for a text_request which already has a result image
+    # redirect_to low_credits_path and return unless current_user.afford_text_editing?
+
 
     if @text_request.result_image.attached? && text_request_params[:prompt].present?
       child = @text_request.children.new(text_request_params.merge(user: current_user))
@@ -55,6 +56,7 @@ class TextRequestsController < AppController
         redirect_to text_requests_path(current_request: @text_request.id)
     else
       respond_to do |format|
+        flash[:notice] = "Request saved. Add credits to process." unless current_user.afford_text_editing?
         format.html { render :show, status: :unprocessable_entity }
       end
     end

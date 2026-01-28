@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     post :convert_to_project, on: :collection
     resources :designs, only: [ :create ] do
       resources :project_layers, only: [ :show, :create, :update ] do
+        post :retry_generation, on: :member
         resources :auto_fixes, only: [ :create, :show ]
       end
     end

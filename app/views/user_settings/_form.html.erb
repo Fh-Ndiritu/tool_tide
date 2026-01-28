@@ -37,7 +37,6 @@
       </p>
     </div>
 
-    <% if current_user.has_purchased_credits_before? %>
       <div class="grid grid-cols-1 gap-3">
         <!-- Pro Mode -->
         <label class="relative group cursor-pointer">
@@ -85,27 +84,6 @@
           </div>
         </label>
       </div>
-
-    <% else %>
-      <!-- Upgrade Teaser -->
-      <div class="p-4 rounded-xl border border-purple-500/30 bg-gradient-to-br from-purple-900/40 to-black/40 space-y-3 relative overflow-hidden">
-         <div class="absolute top-0 right-0 p-4 opacity-10">
-            <svg class="w-24 h-24 text-purple-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zm0 9l2.5-1.25L12 8.5l-2.5 1.25L12 11zm0 2.5l-5-2.5-5 2.5L12 22l10-8.5-5-2.5-5 2.5z"/></svg>
-         </div>
-         <div class="relative z-10 flex items-center gap-2 text-purple-200">
-           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-purple-400">
-             <path fill-rule="evenodd" d="M10 1a4.5 4.5 0 0 0-4.5 4.5V9H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-.5V5.5A4.5 4.5 0 0 0 10 1Zm3 8V5.5a3 3 0 1 0-6 0V9h6Z" clip-rule="evenodd" />
-           </svg>
-           <span class="text-sm font-bold tracking-wide">Unlock Professional Tools</span>
-         </div>
-         <p class="relative z-10 text-xs text-purple-200/80 leading-relaxed">
-           Purchase credits to unlock Pro Mode and persistent settings across all your projects.
-         </p>
-         <%= link_to "Get Credits", credits_path, class: "relative z-10 block w-full py-2.5 text-center text-xs font-bold uppercase tracking-wider text-white bg-purple-600 hover:bg-purple-500 rounded-lg transition-all shadow-lg shadow-purple-900/40" %>
-      </div>
-      <%= f.hidden_field :default_model, value: MODEL_ALIAS_PRO %>
-    <% end %>
-  </div>
 
   <div class="pt-6 border-t border-white/10">
     <%= f.button class: "w-full py-3.5 bg-white hover:bg-gray-100 text-gray-900 text-xs font-bold uppercase tracking-widest rounded-xl transition-all shadow-lg shadow-white/5 active:scale-[0.98] flex items-center justify-center gap-2 group" do %>
