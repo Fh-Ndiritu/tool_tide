@@ -2,7 +2,7 @@ class OnboardingSurveyController < ApplicationController
   before_action :set_survey
 
   def show
-    redirect_to new_canva_path if current_user.can_skip_onboarding_survey?
+    redirect_to new_project_path if current_user.can_skip_onboarding_survey?
   end
 
   def update
