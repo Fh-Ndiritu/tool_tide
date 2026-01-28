@@ -1,16 +1,11 @@
 import { Controller } from "@hotwired/stimulus"
-import confetti from "canvas-confetti"
 
 export default class extends Controller {
-  static targets = ["step", "progressBar", "celebration", "stepDisplay"]
+  static targets = ["step", "progressBar", "stepDisplay"]
 
   connect() {
     if (this.hasStepTarget) {
       this.showStep(this.currentStep)
-    }
-
-    if (this.hasCelebrationTarget) {
-      this.celebrate()
     }
   }
 
@@ -99,30 +94,5 @@ export default class extends Controller {
     })
   }
 
-  celebrate() {
-    const end = Date.now() + (3 * 1000)
-    const colors = ['#00acc1', '#f23faf', '#5c6bc0', '#ffffff', '#212121']
 
-    const frame = () => {
-      confetti({
-        particleCount: 5,
-        angle: 60,
-        spread: 55,
-        origin: { x: 0 },
-        colors: colors
-      })
-      confetti({
-        particleCount: 5,
-        angle: 120,
-        spread: 55,
-        origin: { x: 1 },
-        colors: colors
-      })
-
-      if (Date.now() < end) {
-        requestAnimationFrame(frame)
-      }
-    }
-    frame()
-  }
 }

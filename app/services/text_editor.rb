@@ -10,16 +10,57 @@ class TextEditor
   end
 
   def generate
+    user = @text_request.user
+    cost = GOOGLE_PRO_IMAGE_COST
+
+    # CRITICAL: Charge before generation
+    charged = false
+    user.with_lock do
+      if user.pro_engine_credits >= cost
+        user.pro_engine_credits -= cost
+        user.save!
+        CreditSpending.create!(
+          user: user,
+          amount: cost,
+          transaction_type: :spend,
+          trackable: @text_request
+        )
+        charged = true
+      end
+    end
+
+    unless charged
+      @text_request.update!(progress: :failed, error_msg: "Insufficient credits", user_error: "Insufficient credits")
+      return
+    end
+
     @text_request.update user_error: nil, error_msg: nil, progress: :preparing
 
     process_with_text
 
     @text_request.processed!
-    charge_generation
+    @text_request.user.refinement_generated!
+    @text_request.complete!
 
-  rescue Faraday::ServerError => e
-    user_error = e.is_a?(Faraday::ServerError) ? "We are having some downtime, try again later ..." : "Something went wrong, try a different style."
-    @text_request.update error_msg: e.message, progress: :failed, user_error:
+  rescue StandardError => e
+    # CRITICAL: Refund on failure
+    user.with_lock do
+      user.pro_engine_credits += cost
+      user.save!
+      CreditSpending.create!(
+        user: user,
+        amount: cost,
+        transaction_type: :refund,
+        trackable: @text_request
+      )
+    end
+
+    if e.is_a?(Faraday::ServerError)
+       user_error = "We are having some downtime, try again later ..."
+       @text_request.update error_msg: e.message, progress: :failed, user_error: user_error
+    else
+       raise e
+    end
   end
 
   private
@@ -72,18 +113,5 @@ class TextEditor
     #{ @text_request.prompt }
   </user_or_home_owner_request>
     "
-  end
-
-  def charge_generation
-    if @text_request.reload.result_image.attached?
-      if @text_request.user.afford_text_editing?
-        cost = GOOGLE_PRO_IMAGE_COST * 1
-        @text_request.user.charge_pro_cost!(cost)
-      end
-      @text_request.user.refinement_generated!
-      @text_request.complete!
-    else
-      @text_request.update!(progress: :failed, error_msg: "Result not found")
-    end
   end
 end

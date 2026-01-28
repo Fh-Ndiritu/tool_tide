@@ -70,15 +70,10 @@ class HnPollJob < ApplicationJob
     ratio = (snapshot.items_count / historical_avg * 100).round
     description = build_description(snapshot, historical_avg)
 
-    if snapshot.items_count < (historical_avg * 0.8)
+    if snapshot.items_count < (historical_avg * 0.75)
       dispatch_alert(
         "🚀 **Opportunity to Post!**\n\n#{description}\n" \
         "Activity is #{ratio}% of normal — significantly lower than usual!"
-      )
-    elsif snapshot.items_count > (historical_avg * 1.3)
-      dispatch_alert(
-        "⚠️ **High Activity Warning**\n\n#{description}\n" \
-        "Activity is #{ratio}% of normal — consider waiting."
       )
     end
   end

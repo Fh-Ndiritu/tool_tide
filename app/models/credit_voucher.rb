@@ -6,9 +6,9 @@ class CreditVoucher < ApplicationRecord
   validates :amount, numericality: { greater_than: 0 }
 
   def redeem?
-    return false if redeemed_at.present?
+    with_lock do
+      return false if redeemed_at.present?
 
-    transaction do
       update!(redeemed_at: Time.current)
       user.credits.create!(
         source: :voucher,

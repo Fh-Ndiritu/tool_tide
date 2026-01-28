@@ -30,13 +30,13 @@ class PaymentTransaction < ApplicationRecord
   }, prefix: :invoice
 
   def issue_credits
-    return unless validated? && !credits_issued?
+    with_lock do
+      return unless validated? && !credits_issued?
 
-    ActiveRecord::Base.transaction do
       amount = Object.const_get("PRO_CREDITS_PER_#{currency}") * self.amount
       user.credits.create!(source: :purchase, amount:, credit_type: :pro_engine)
-      update credits_issued: true
-      user.update reverted_to_free_engine: false, notified_about_pro_credits: false
+      update! credits_issued: true
+      user.update! reverted_to_free_engine: false, notified_about_pro_credits: false
     end
   end
 
