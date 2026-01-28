@@ -35,19 +35,18 @@ class ProjectGeneratorService
 
     payload = gcp_payload(prompt: prompt, image: input_image, config: config)
 
-    payload = gcp_payload(prompt: prompt, image: input_image, config: config)
-
     # Use MODEL_NAME_MAP to get the real model name from the alias
     # Standard Mode -> "gemini-2.5-flash-image"
     # Pro Mode -> "gemini-3-pro-image-preview" (fallback)
     actual_model = MODEL_NAME_MAP[@layer.model] || MODEL_NAME_MAP[MODEL_ALIAS_PRO]
+
     response = fetch_gcp_response(payload, model: actual_model)
     blob = save_gcp_results(response)
 
     @layer.result_image.attach(blob)
   rescue StandardError => e
     Rails.logger.error("ProjectGenerator: #{e.message}")
-    raise e
+    raise "ProjectGenerator Failed: #{e.message}"
   end
 
   private
@@ -65,7 +64,18 @@ class ProjectGeneratorService
   end
 
   def load_preset_prompt(preset, config)
-    config.dig("landscape_presets", preset) || config.dig("landscape_preference_presets", preset)
+    prompt = config.dig("projects", "presets", preset)
+    if prompt
+      "Your task is to turn the area masked in violet into a #{preset} landscape design.
+      You SHALL NOT modify anything outside the AREA MASKED IN VIOLET.
+      When the user has highlighted multiple areas, you need to treat them as separate areas and design each one independently without the unmasked regions between them.
+
+      The user wants to apply a #{preset} landscape design to this area.
+
+      Start by counting the number of violet masked areas.
+
+      " + prompt
+    end
   end
 
   def add_system_instructions(prompt)

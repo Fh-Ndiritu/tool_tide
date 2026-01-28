@@ -37,6 +37,10 @@ class ProjectOverlayGenerator
     has_purple = mask_blob ? has_painted_content?(mask_blob) : false
 
     has_purple
+
+  rescue StandardError => e
+    Rails.logger.error("ProjectOverlayGenerator Failed: #{e.message}")
+    raise "ProjectOverlayGenerator Failed: #{e.message}"
   end
 
   private

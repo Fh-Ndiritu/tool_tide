@@ -11,6 +11,7 @@ export default class extends Controller {
 
   static values = {
     imageUrl: String,
+    overlayUrl: String,
     displayWidth: Number,
     displayHeight: Number,
     brushSize: { type: Number, default: 60 },
@@ -39,6 +40,7 @@ export default class extends Controller {
   crosshairVertical = null;
   brushHint = null;
   brushHintVisible = false;
+  isDebugOverlayActive = false;
 
   maskHistory = [];
   historyPointer = -1;
@@ -774,6 +776,19 @@ export default class extends Controller {
 
     // Return the modified canvas as a data URL
     return finalMaskCanvas.toDataURL('image/png');
+  }
+
+  toggleDebugOverlay() {
+    if (!this.hasOverlayUrlValue) {
+      alert('No overlay available for this layer.');
+      return;
+    }
+
+    this.isDebugOverlayActive = !this.isDebugOverlayActive;
+    const url = this.isDebugOverlayActive ? this.overlayUrlValue : this.imageUrlValue;
+
+    console.log('Toggling debug overlay:', this.isDebugOverlayActive ? 'ON' : 'OFF', url);
+    this.loadImage(url);
   }
 
   _handleKeydown(e) {

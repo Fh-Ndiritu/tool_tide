@@ -28,6 +28,7 @@ class ProjectGenerationJob < ApplicationJob
 
   def perform(layer_id)
     layer = ProjectLayer.find(layer_id)
+    layer.processing!
     user = layer.project.user
     cost = if layer.generation_type == "upscale"
              GOOGLE_UPSCALE_COST

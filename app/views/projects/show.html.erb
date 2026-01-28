@@ -235,6 +235,9 @@
                   data-project-canvas-target="canvasContainer"
                   data-project-canvas-layer-id-value="<%= @active_design.active_layer.id %>"
                   data-project-canvas-image-url-value="<%= url_for(@active_design.active_layer.display_image) %>"
+                  <% if @active_design.active_layer.overlay.attached? %>
+                    data-project-canvas-overlay-url-value="<%= url_for(@active_design.active_layer.overlay) %>"
+                  <% end %>
                   data-project-canvas-display-width-value="<%= @active_design.active_layer.display_image.metadata['width'] || 800 %>"
                   data-project-canvas-display-height-value="<%= @active_design.active_layer.display_image.metadata['height'] || 600 %>"
                   data-project-canvas-brush-size-value="60"
@@ -310,6 +313,19 @@
               </svg>
             <% end %>
           <% end %>
+
+           <% if Rails.env.local? %>
+              <div class="h-4 w-px bg-white/10 mx-1"></div>
+              <button class="p-2 text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition-colors relative group"
+                      data-action="click->projects#toggleDebugOverlay"
+                      title="Toggle Debug Overlay">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-yellow-500">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                </svg>
+                <div class="absolute -top-1 -right-1 w-2 h-2 bg-yellow-500 rounded-full"></div>
+              </button>
+           <% end %>
        </div>
     </div>
   </div>

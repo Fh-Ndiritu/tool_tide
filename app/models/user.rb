@@ -128,7 +128,6 @@ class User < ApplicationRecord
   end
 
   def has_purchased_credits_before?(time = nil)
-    return true
     if time
       credits.where(source: :purchase).where("created_at <= ?", time).exists?
     else

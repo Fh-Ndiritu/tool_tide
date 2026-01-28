@@ -251,6 +251,11 @@ export default class extends Controller {
     if (controller) controller.resetZoom()
   }
 
+  toggleDebugOverlay() {
+    const controller = this.projectCanvasController
+    if (controller) controller.toggleDebugOverlay()
+  }
+
   setPanTool(event) {
     const controller = this.projectCanvasController
     if (!controller) return
@@ -485,8 +490,10 @@ export default class extends Controller {
            const html = await response.text()
            await Turbo.renderStreamMessage(html)
            this.projectOnboardingController?.startStylePresetsLayerHint()
+           controller.clearSelection()
       } else if (response.ok) {
            console.log("Generation started successfully")
+           controller.clearSelection()
       } else {
         console.error("Generation failed", response)
         alert("Generation failed. Please try again.")
