@@ -3,6 +3,7 @@ class WelcomeController < AppController
     # Fetch completed mask requests with styles, grouped by style
     # limit to styles with > 5 items
     styled_requests = MaskRequest.complete.everyone
+    .order(id: :desc)
                                      .where.not(preset: [ nil, "" ])
                                      .group_by(&:preset)
                                      .select { |style, requests| requests.count > 2 }.to_a.shuffle
