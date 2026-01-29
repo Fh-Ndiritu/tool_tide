@@ -12,6 +12,8 @@ Rails.application.routes.draw do
       end
     end
   end
+
+
   # Reveal health status on /up that otherwise be unable to shut down due to host constraint
   get "up" => "rails/health#show", as: :rails_health_check
 
@@ -71,7 +73,10 @@ Rails.application.routes.draw do
 
     resources :audios
     post "onboarding/update", to: "onboarding#update"
+    post "onboarding/update", to: "onboarding#update"
     post "project_onboarding/update", to: "project_onboardings#update"
+
+    get "welcome", to: "welcome#index", as: :welcome
 
     resource :onboarding_survey, only: [ :show, :update ], controller: "onboarding_survey" do
       get :celebrate, on: :member

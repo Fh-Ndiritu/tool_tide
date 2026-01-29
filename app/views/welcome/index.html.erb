@@ -1,0 +1,331 @@
+<% content_for :hide_footer, true %>
+
+<div class="min-h-screen bg-[#0f0f0f] text-white font-sans selection:bg-[#00acc1] selection:text-black overflow-x-hidden">
+
+  <%# --- Hero / Pricing Section --- %>
+  <section class="relative min-h-[90vh] flex items-center justify-center py-12 md:py-20 px-6 overflow-hidden">
+    <%# Background Effects %>
+    <div class="absolute inset-0 z-0 select-none pointer-events-none">
+       <%# Darker, more premium gradient background %>
+      <div class="absolute inset-0 bg-gradient-to-br from-[#0f0f0f] via-[#121212] to-[#1a1a1a]"></div>
+      <div class="absolute top-[-10%] right-[-5%] w-[800px] h-[800px] bg-[#00acc1]/10 rounded-full blur-[150px] animate-pulse-slow"></div>
+      <div class="absolute bottom-[-10%] left-[-5%] w-[600px] h-[600px] bg-[#5c6bc0]/10 rounded-full blur-[150px]"></div>
+      <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
+    </div>
+
+    <div class="relative z-10 w-full max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+      <%# Left Column: Copy %>
+      <div class="text-center lg:text-left space-y-8 animate-fade-in-up">
+        <div>
+          <span class="inline-block py-1.5 px-4 rounded-full bg-[#f23faf]/10 border border-[#f23faf]/30 text-[#f23faf] text-xs md:text-sm font-bold tracking-[0.2em] mb-6 uppercase shadow-[0_0_15px_rgba(242,63,175,0.2)]">
+            Account Created Successfully
+          </span>
+          <h1 class="text-5xl md:text-7xl font-black mb-6 tracking-tight text-white leading-[1.05]">
+            Let's build your
+            <br/>
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#00acc1] via-[#f23faf] to-white">
+              dream exterior.
+            </span>
+          </h1>
+          <p class="text-xl text-neutral-400 max-w-xl mx-auto lg:mx-0 font-light leading-relaxed">
+            Get instant access to professional-grade AI tools. Visualize, edit, and plan your perfect landscape in minutes, not months.
+          </p>
+        </div>
+
+        <%# Social Proof Line %>
+        <div class="flex items-center justify-center lg:justify-start gap-4">
+           <div class="flex -space-x-4">
+              <%# Mocks for user avatars %>
+             <div class="w-10 h-10 rounded-full bg-neutral-700 border-2 border-[#121212] flex items-center justify-center text-xs font-bold text-neutral-400">SM</div>
+             <div class="w-10 h-10 rounded-full bg-neutral-600 border-2 border-[#121212] flex items-center justify-center text-xs font-bold text-neutral-400">JT</div>
+             <div class="w-10 h-10 rounded-full bg-neutral-500 border-2 border-[#121212] flex items-center justify-center text-xs font-bold text-neutral-400">ER</div>
+           </div>
+           <div class="text-left">
+              <div class="flex text-[#ffb400]">
+                <% 5.times do %>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
+                    <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
+                  </svg>
+                <% end %>
+              </div>
+              <p class="text-sm text-neutral-400"><span class="font-bold text-white">4.9/5</span> from 2,000+ creators</p>
+           </div>
+        </div>
+      </div>
+
+      <%# Right Column: Pricing Card (Bigger & Bolder) %>
+      <div class="relative max-w-xl mx-auto lg:ml-auto w-full group animate-fade-in-up delay-100">
+         <%# Glow Effect %>
+         <div class="absolute -inset-1 bg-gradient-to-r from-[#00acc1] to-[#f23faf] rounded-[2.5rem] blur opacity-30 group-hover:opacity-60 transition duration-1000 group-hover:duration-200"></div>
+
+         <div class="relative bg-[#18181b] rounded-[2rem] p-8 md:p-10 border border-white/10 shadow-2xl flex flex-col h-full ring-1 ring-white/5">
+            <div class="absolute top-0 right-0 p-6 opacity-10">
+               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-32 h-32">
+                 <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
+               </svg>
+            </div>
+
+            <div class="mb-8">
+              <h3 class="text-xl font-bold text-neutral-400 uppercase tracking-widest mb-4">Starter Pack</h3>
+              <div class="flex items-baseline gap-2">
+                 <span class="text-7xl font-black text-white tracking-tighter">$10</span>
+                 <span class="text-2xl text-neutral-400 font-medium tracking-tight">/ 200 credits</span>
+              </div>
+              <p class="mt-4 text-neutral-400 font-medium">Enough to redesign your entire property multiple times.</p>
+            </div>
+
+            <div class="flex-grow space-y-5 mb-10">
+              <% [
+                 "<b>Instant Style Transformation</b>: Modern, Zen, Tropical...",
+                 "<b>Smart Repair</b>: Fix muddy patches & lighting instantly",
+                 "<b>Planning Tools</b>: Planting guides & local recommendations",
+                 "<b>4K Exports</b>: Print-ready, high-resolution downloads",
+                 "<b>Commercial Usage</b>: Suitable for pros and homeowners"
+              ].each do |item| %>
+              <div class="flex items-start gap-4 p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors border border-white/5">
+                 <div class="p-1 rounded-full bg-[#00acc1]/20 text-[#00acc1]">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="h-4 w-4">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9.135-9.135" />
+                    </svg>
+                 </div>
+                 <span class="text-neutral-200 text-base"><%= item.html_safe %></span>
+              </div>
+              <% end %>
+            </div>
+
+
+            <%= button_to payment_transactions_path,
+                data: {turbo: false},
+                method: :post,
+                onclick: "gtag('event', 'begin_checkout', { 'currency': 'USD', 'value': #{DEFAULT_USD_PURCHASE_AMOUNT.to_f} });",
+                class: "w-full group/btn relative inline-flex items-center justify-center px-8 py-5 text-xl font-black text-black bg-white rounded-xl overflow-hidden shadow-[0_0_30px_rgba(255,255,255,0.2)] hover:shadow-[0_0_50px_rgba(0,172,193,0.4)] transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer" do %>
+              <span class="absolute inset-0 w-full h-full bg-gradient-to-r from-[#00acc1] to-[#26c6da] opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300"></span>
+              <span class="relative flex items-center gap-3">
+                Proceed to Secure Checkout
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+                </svg>
+              </span>
+            <% end %>
+
+            <div class="mt-4 text-center">
+               <span class="text-xs text-neutral-500 flex items-center justify-center gap-1">
+                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3">
+                   <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+                 </svg>
+                 Instant Checkout • No auto-renewal
+               </span>
+            </div>
+         </div>
+      </div>
+    </div>
+  </section>
+
+  <%# --- Testimonials Section (Visual Refresh) - MOVED UP --- %>
+  <section class="py-24 px-6 relative overflow-hidden text-center bg-[#121212]">
+     <div class="relative z-10 max-w-6xl mx-auto">
+        <h2 class="text-4xl md:text-5xl font-black text-white mb-20 tracking-tight">Trusted by Homeowners & Pros</h2>
+
+        <div class="grid md:grid-cols-3 gap-8 text-left">
+          <%# Testimonial 1 %>
+          <div class="bg-[#18181b] border border-white/5 p-8 rounded-3xl shadow-xl hover:translate-y-[-5px] transition-transform duration-300 relative group">
+             <div class="mb-6"><span class="text-6xl text-white/5 font-serif font-black absolute top-4 left-6">“</span></div>
+             <div class="flex text-[#ffb400] mb-6 relative">
+               <% 5.times do %>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" /></svg>
+               <% end %>
+             </div>
+             <p class="text-neutral-300 mb-8 text-lg font-medium leading-relaxed relative z-10">"I uploaded a photo of my messy backyard and within minutes I had 4 beautiful options to choose from. The local plant suggestions were a game changer."</p>
+             <div class="flex items-center justify-between border-t border-white/10 pt-6 mt-auto">
+                <div>
+                   <p class="font-bold text-white text-lg">Sarah M.</p>
+                   <p class="text-xs text-[#00acc1] font-bold uppercase tracking-wide">Homeowner</p>
+                </div>
+                 <div class="flex items-center gap-1.5 px-2 py-1 bg-[#f23faf]/10 rounded-lg border border-[#f23faf]/20">
+                   <span class="text-xs">💎</span>
+                   <span class="text-[10px] font-bold text-[#f23faf] uppercase tracking-wide">Verified Purchase</span>
+                 </div>
+             </div>
+          </div>
+
+           <%# Testimonial 2 %>
+          <div class="bg-[#18181b] border border-white/5 p-8 rounded-3xl shadow-xl hover:translate-y-[-5px] transition-transform duration-300 relative group">
+             <div class="mb-6"><span class="text-6xl text-white/5 font-serif font-black absolute top-4 left-6">“</span></div>
+             <div class="flex text-[#ffb400] mb-6 relative">
+               <% 5.times do %>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" /></svg>
+               <% end %>
+             </div>
+             <p class="text-neutral-300 mb-8 text-lg font-medium leading-relaxed relative z-10">"As a small landscaping business, Hadaa lets me show clients potential outcomes without spending hours in CAD. It pays for itself in one project."</p>
+             <div class="flex items-center justify-between border-t border-white/10 pt-6 mt-auto">
+                <div>
+                   <p class="font-bold text-white text-lg">James T.</p>
+                   <p class="text-xs text-[#00acc1] font-bold uppercase tracking-wide">Landscape Designer</p>
+                </div>
+                 <div class="flex items-center gap-1.5 px-2 py-1 bg-[#f23faf]/10 rounded-lg border border-[#f23faf]/20">
+                   <span class="text-xs">💎</span>
+                   <span class="text-[10px] font-bold text-[#f23faf] uppercase tracking-wide">Verified Purchase</span>
+                 </div>
+             </div>
+          </div>
+
+           <%# Testimonial 3 %>
+          <div class="bg-[#18181b] border border-white/5 p-8 rounded-3xl shadow-xl hover:translate-y-[-5px] transition-transform duration-300 relative group">
+             <div class="mb-6"><span class="text-6xl text-white/5 font-serif font-black absolute top-4 left-6">“</span></div>
+             <div class="flex text-[#ffb400] mb-6 relative">
+               <% 5.times do %>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" /></svg>
+               <% end %>
+             </div>
+             <p class="text-neutral-300 mb-8 text-lg font-medium leading-relaxed relative z-10">"Using Auto Fix on my muddy backyard photo revealed drainage issues I didn't know I had. Fixed them, reshot, and the design came out perfect."</p>
+             <div class="flex items-center justify-between border-t border-white/10 pt-6 mt-auto">
+                <div>
+                   <p class="font-bold text-white text-lg">Elena R.</p>
+                   <p class="text-xs text-[#00acc1] font-bold uppercase tracking-wide">Garden Enthusiast</p>
+                </div>
+                <div class="flex items-center gap-1.5 px-2 py-1 bg-[#f23faf]/10 rounded-lg border border-[#f23faf]/20">
+                   <span class="text-xs">💎</span>
+                   <span class="text-[10px] font-bold text-[#f23faf] uppercase tracking-wide">Verified Purchase</span>
+                 </div>
+             </div>
+          </div>
+        </div>
+     </div>
+  </section>
+
+  <%# --- Visuals / Styles Section - MOVED DOWN --- %>
+  <% if @gallery_cards.any? %>
+    <section class="py-24 px-6 bg-[#0f0f0f]">
+      <div class="max-w-[1600px] mx-auto">
+        <div class="text-center mb-20 animate-fade-in-up">
+           <div class="flex items-center justify-center gap-2 mb-4">
+             <% 5.times do %>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-[#ffb400]">
+                  <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
+                </svg>
+             <% end %>
+           </div>
+          <h2 class="text-4xl md:text-6xl font-black mb-6 text-white tracking-tight">
+            "Customers can't stop raving"
+          </h2>
+          <p class="text-neutral-400 max-w-2xl mx-auto text-xl font-light">
+            Join thousands of homeowners creating their perfect backyard.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+          <% @gallery_cards.each do |card| %>
+            <div class="group relative flex flex-col rounded-3xl overflow-hidden bg-[#18181b] border border-white/5 hover:border-[#00acc1]/30 transition-all duration-300 hover:shadow-[0_0_30px_rgba(0,172,193,0.1)] hover:-translate-y-1">
+              <%# Image Container %>
+              <div class="aspect-[4/3] overflow-hidden relative">
+                 <% if card[:image].attached? %>
+                    <%= image_tag card[:image].variant(:dashboard), class: "w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700", loading: "lazy" %>
+                 <% else %>
+                    <div class="w-full h-full bg-neutral-800 flex items-center justify-center text-neutral-600">No Preview</div>
+                 <% end %>
+
+                 <%# Hover Overlay %>
+                 <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-300"></div>
+              </div>
+
+              <%# Content Body %>
+              <div class="p-6 pt-10 flex-grow relative">
+                 <%# Floating Icon %>
+                 <div class="absolute -top-8 right-6 bg-[#18181b] p-3 rounded-2xl border border-white/10 shadow-xl group-hover:scale-110 transition-transform duration-300 text-[#00acc1] ring-4 ring-[#0f0f0f]">
+                    <%= render(IconComponent.new(name: card[:icon], classes: "w-6 h-6")) %>
+                 </div>
+
+                 <h3 class="text-2xl font-black text-white mb-2 capitalize tracking-tight"><%= card[:style] %></h3>
+
+                 <div class="flex items-center gap-2 mb-4">
+                    <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-widest bg-[#f23faf]/10 text-[#f23faf] border border-[#f23faf]/20">
+                      Popular Style
+                    </span>
+                 </div>
+
+                 <p class="text-neutral-400 text-sm leading-relaxed font-medium">
+                    <%= card[:description] %>
+                 </p>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </section>
+  <% end %>
+
+  <%# --- FAQ Section --- %>
+  <section class="py-24 px-6 bg-[#0f0f0f] border-t border-white/5">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="text-3xl md:text-5xl font-black text-center mb-16 text-white">Frequently Asked Questions</h2>
+
+      <div class="space-y-4">
+        <%
+           faqs = [
+             { q: "What kind of photos work best?", a: "A bright, clear photo taken during the day works best. Avoid extreme angles (too high or too low) and try to capture the entire area you want to redesign in the frame." },
+             { q: "How do I use the AI Brush?", a: "The AI Brush allows you to mask specific areas—like a lawn you want to remove—then apply a 'Style Preset' or 'Smart Fix' to instantly regenerate just that section with new materials or plants." },
+             { q: "What are the main design tools available?", a: "Hadaa offers three powerful ways to design: <b>Presets</b> for instant full-garden makeovers, <b>Smart Fix</b> for changing specific elements, and <b>Auto Fix</b> for intelligent enhancements." },
+             { q: "How do I get the best results?", a: "Create new design iterations from specific layers, upload multiple angles, switch between Standard and Pro models, and use Upscale for print-quality downloads." },
+             { q: "How do I keep existing trees or structures?", a: "Simply avoid painting over them with the mask brush. The AI only changes the areas you highlight. You can also use the 'Eraser' tool to refine your mask." },
+             { q: "Can I visualize my garden at night or in different seasons?", a: "Yes! In the Prompt Editor, use keywords like 'night lighting,' 'sunset,' 'autumn foliage,' or 'snowy winter' to see year-round performance." },
+             { q: "How do I add specific plants or materials?", a: "Use <b>Smart Fix</b> to target a specific area and type exactly what you want (e.g., 'blue slate pavers' or 'white hydrangeas')." },
+             { q: "What is the 'Shopping List' feature?", a: "Once you love a design, the Planting Guide generates a shopping list of similar plants available in your region, including care profiles." },
+             { q: "What information does the Planting Guide provide?", a: "It gives you a comprehensive care profile for each plant—including sun requirements, watering schedules, and soil preferences." },
+             { q: "How does the 'Local Plants' toggle work?", a: "When enabled, it ensures every plant suggested is compatible with your specific USDA hardiness zone and local climate." },
+             { q: "Can I add specific features like trees, seating, or water?", a: "Yes! Switch on <b>'Add Trees'</b> for structure, <b>'Add Seating'</b> for lounge areas, or <b>'Add Water'</b> for ponds/fountains—all intelligently placed by the AI." }
+           ]
+        %>
+
+        <% faqs.each do |faq| %>
+          <details class="group bg-[#18181b] rounded-2xl border border-white/5 open:border-[#00acc1]/50 open:bg-[#1f2024] transition-all duration-300">
+            <summary class="flex items-center justify-between p-6 cursor-pointer list-none">
+              <span class="font-bold text-lg text-neutral-300 group-hover:text-white transition-colors pr-6"><%= faq[:q] %></span>
+              <div class="relative w-6 h-6 flex items-center justify-center">
+                 <div class="absolute w-4 h-0.5 bg-white transition-transform duration-300 group-open:rotate-180"></div>
+                 <div class="absolute w-4 h-0.5 bg-white rotate-90 transition-transform duration-300 group-open:rotate-180 group-open:opacity-0"></div>
+              </div>
+            </summary>
+            <div class="px-6 pb-6 text-neutral-400 leading-relaxed animate-fade-in-down border-t border-white/5 mt-0 pt-4">
+              <p><%= faq[:a].html_safe %></p>
+            </div>
+          </details>
+        <% end %>
+      </div>
+    </div>
+  </section>
+</div>
+
+<style>
+  @keyframes blob {
+    0% { transform: translate(0px, 0px) scale(1); }
+    33% { transform: translate(30px, -50px) scale(1.1); }
+    66% { transform: translate(-20px, 20px) scale(0.9); }
+    100% { transform: translate(0px, 0px) scale(1); }
+  }
+  @keyframes pulse-slow {
+    0%, 100% { opacity: 0.1; }
+    50% { opacity: 0.2; }
+  }
+  .animate-blob {
+    animation: blob 15s infinite;
+  }
+  .animate-pulse-slow {
+     animation: pulse-slow 6s infinite;
+  }
+  .animate-fade-in-up {
+    animation: fadeInUp 0.8s ease-out forwards;
+  }
+  .animate-fade-in-down {
+    animation: fadeInDown 0.3s ease-out forwards;
+  }
+  .delay-100 { animation-delay: 0.1s; }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeInDown {
+     from { opacity: 0; transform: translateY(-10px); }
+     to { opacity: 1; transform: translateY(0); }
+  }
+</style>

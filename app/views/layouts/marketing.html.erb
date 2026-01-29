@@ -96,6 +96,8 @@
       <div class="w-full m-auto block"><%= yield %></div>
     </main>
 
-    <%= render "shared/footer" %>
+    <% unless content_for?(:hide_footer) %>
+      <%= render "shared/footer" %>
+    <% end %>
   </body>
 </html>
