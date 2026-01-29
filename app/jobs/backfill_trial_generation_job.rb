@@ -3,13 +3,13 @@ class BackfillTrialGenerationJob < ApplicationJob
 
   def perform
     MaskRequest.complete.where(trial_generation: false).find_each do |mask_request|
-      unless mask_request.user.has_purchased_credits_before?(mask_request.created_at)
+      unless mask_request.user.has_paid?
         mask_request.update_column(:trial_generation, true)
       end
     end
 
     TextRequest.complete.where(trial_generation: false).find_each do |text_request|
-      unless text_request.user.has_purchased_credits_before?(text_request.created_at)
+      unless text_request.user.has_paid?
         text_request.update_column(:trial_generation, true)
       end
     end

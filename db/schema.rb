@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_28_163448) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_29_204522) do
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -476,6 +476,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_28_163448) do
     t.boolean "completed_survey"
     t.datetime "desktop_projects_announcement_sent_at"
     t.string "last_sign_in_device_type"
+    t.boolean "has_paid", default: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

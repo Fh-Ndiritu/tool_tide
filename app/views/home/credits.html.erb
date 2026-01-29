@@ -1,6 +1,6 @@
 <% content_for :title, "Buy Credits | Pay-As-You-Go AI Garden Design - Hadaa" %>
-
-<% content_for :description, "Purchase credits to unlock unlimited AI garden designs. Simple pay-as-you-go pricing with no subscriptions. Get photorealistic designs, plant recommendations, and shopping lists." %>
+<% content_for :description, "Purchase credits to unlock unlimited AI garden designs. Simple pay-as-you-go pricing with no subscriptions." %>
+<% content_for :hide_footer, true %>
 
 <% if @conversion_event %>
   <script>
@@ -16,79 +16,133 @@
   </script>
 <% end %>
 
-<div class="container mx-auto p-4 w-full lg:w-9/12">
-  <h1 class="text-3xl font-extrabold mb-10 text-white mt-8 w-full text-center">
-    Your <span class="text-[#00acc1]">Design</span> Credits
-  </h1>
+<div class="h-screen bg-[#0f0f0f] text-white font-sans selection:bg-[#00acc1] selection:text-black overflow-hidden flex flex-col items-center justify-center p-6 relative">
+  <%# Background Effects %>
+  <div class="absolute inset-0 z-0 select-none pointer-events-none">
+     <div class="absolute inset-0 bg-gradient-to-br from-[#0f0f0f] via-[#121212] to-[#1a1a1a]"></div>
+     <div class="absolute top-[-10%] right-[-5%] w-[800px] h-[800px] bg-[#00acc1]/10 rounded-full blur-[150px] animate-pulse-slow"></div>
+     <div class="absolute bottom-[-10%] left-[-5%] w-[600px] h-[600px] bg-[#5c6bc0]/10 rounded-full blur-[150px]"></div>
+     <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
+  </div>
 
-  <div class="flex flex-col mb-12">
-    <div
-      class="
-        bg-white/10 text-white rounded-3xl shadow-2xl p-8 border border-white/20 backdrop-blur-xl
-        transition-all duration-300 hover:shadow-[#00acc1]/20 hover:border-white/30
-      "
-    >
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start">
-        <!-- Left Column: Balance & CTA -->
-        <div class="flex flex-col h-full justify-between">
-          <div>
-            <div class="flex items-center space-x-3 mb-6">
-              <div class="bg-[#00acc1]/20 text-[#00acc1] p-3 rounded-full shadow-lg m-0 border border-[#00acc1]/30">
-                <%= render(IconComponent.new(name: "crown", classes: "h-7 w-7")) %>
-              </div>
-              <h2 class="text-2xl font-bold text-white ml-2">
-                Available Credits
-              </h2>
-            </div>
+  <div class="relative z-10 w-full max-w-6xl mx-auto animate-fade-in-up flex flex-col h-full justify-center max-h-[900px]">
+    <!-- Header (Compact) -->
+    <div class="text-center mb-8">
+       <h1 class="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight mb-2">
+          Your Creative <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#00acc1] via-[#26c6da] to-white">Fuel</span>
+       </h1>
+       <p class="text-neutral-400 text-base md:text-lg max-w-xl mx-auto font-light">
+          Everything you need to visualize, plan, and create your dream garden.
+       </p>
+    </div>
 
-            <p class="text-6xl font-extrabold text-[#00acc1] mt-2 leading-tight">
-              <%= current_user.pro_engine_credits %>
-            </p>
+    <!-- Main Card -->
+    <div class="relative group w-full">
+       <!-- Glow -->
+       <div class="absolute -inset-1 bg-gradient-to-r from-[#00acc1] to-[#f23faf] rounded-[2rem] blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
 
-            <p class="text-lg text-neutral-300 mt-4">
-              Fuel for your next creative breakthrough.
-            </p>
+       <div class="relative bg-[#18181b] rounded-[1.5rem] border border-white/10 shadow-2xl p-6 md:p-10 ring-1 ring-white/5 overflow-hidden">
 
-            <p class="text-md text-green-400 mt-2 font-semibold opacity-80">
-              <%= CREDITS_INFO %>
-            </p>
+          <div class="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+             <!-- Left: Balance & Purchase (Super Clean) -->
+             <div class="flex flex-col h-full justify-center space-y-8 py-4">
+                <div>
+                  <div class="flex items-center gap-2 mb-1">
+                      <div class="w-1.5 h-1.5 rounded-full bg-[#00acc1]"></div>
+                      <span class="text-neutral-500 font-bold uppercase tracking-widest text-[10px]">Current Balance</span>
+                  </div>
+
+                   <div class="flex items-baseline gap-2">
+                     <span class="text-7xl md:text-8xl font-black text-white tracking-tighter">
+                       <%= current_user.pro_engine_credits %>
+                     </span>
+                     <span class="text-xl text-neutral-600 font-medium tracking-tight">credits</span>
+                   </div>
+
+                   <% if CREDITS_INFO.present? %>
+                     <p class="mt-2 text-emerald-400 font-medium text-xs flex items-center gap-1.5 bg-emerald-400/5 py-1 px-2.5 rounded-lg w-fit border border-emerald-400/10">
+                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3 h-3">
+                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
+                       </svg>
+                       <%= CREDITS_INFO %>
+                     </p>
+                   <% end %>
+                </div>
+
+                <div>
+                   <div class="flex flex-col mb-6">
+                      <span class="text-[#00acc1] text-[10px] font-bold uppercase tracking-wider mb-1">Single Top-up</span>
+                      <div class="flex items-baseline gap-2">
+                         <span class="text-4xl font-black text-white px-0">$10</span>
+                         <span class="text-neutral-500 text-base font-medium">/ 200 credits</span>
+                      </div>
+                   </div>
+
+                   <%= button_to payment_transactions_path,
+                      data: {turbo: false},
+                      method: :post,
+                      onclick: "gtag('event', 'begin_checkout', { 'currency': 'USD', 'value': #{DEFAULT_USD_PURCHASE_AMOUNT.to_f} });",
+                      class: "w-full group/btn relative inline-flex items-center justify-center px-6 py-4 text-lg font-black text-black bg-white rounded-xl overflow-hidden shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_40px_rgba(0,172,193,0.3)] transition-all duration-300 transform hover:scale-[1.01] active:scale-[0.99] cursor-pointer" do %>
+                    <span class="absolute inset-0 w-full h-full bg-gradient-to-r from-[#00acc1] to-[#26c6da] opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300"></span>
+                    <span class="relative flex items-center gap-2">
+                      Add Credits
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                      </svg>
+                    </span>
+                  <% end %>
+
+                  <div class="mt-4 flex items-center justify-center gap-3 opacity-50 hover:opacity-100 transition-opacity duration-300">
+                     <span class="text-[10px] uppercase tracking-widest text-neutral-500 font-bold flex items-center gap-1">
+                        <svg class="h-3 w-3" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+                        Secure Checkout
+                     </span>
+                  </div>
+                </div>
+             </div>
+
+             <!-- Right: Features List (Compact) -->
+             <div class="bg-[#0f0f0f] rounded-2xl p-6 border border-white/5 relative overflow-hidden h-full flex flex-col justify-center">
+                <div class="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
+                   <%= render(IconComponent.new(name: "sparkles", classes: "h-24 w-24")) %>
+                </div>
+
+                <div class="space-y-3 relative z-10">
+                   <% [
+                     ["sparkles", "<b>Design Presets</b>: Instantly visualize styles"],
+                     ["paint_brush", "<b>Smart Fix</b>: Precision AI editing tools"],
+                     ["leaf", "<b>Planting Guide</b>: Expert care instructions"],
+                     ["download", "<b>4K Exports</b>: Print-ready resolution"],
+                     ["map_pin", "<b>Local Plants</b>: Regional recommendations"]
+                   ].each do |icon, text| %>
+                     <div class="flex items-center gap-3 p-3 rounded-lg bg-white/5 hover:bg-white/10 transition-colors border border-white/5 group/item">
+                        <div class="text-[#00acc1] group-hover/item:scale-110 transition-transform duration-300">
+                           <%= render(IconComponent.new(name: icon, classes: "h-4 w-4")) %>
+                        </div>
+                        <span class="text-neutral-300 text-sm leading-tight"><%= text.html_safe %></span>
+                     </div>
+                   <% end %>
+                </div>
+             </div>
           </div>
-
-          <div class="mt-8 md:mt-12">
-             <%= button_to "Add Credits", payment_transactions_path, data: {turbo: false}, method: :post, onclick: "gtag('event', 'begin_checkout', { 'currency': 'USD', 'value': #{DEFAULT_USD_PURCHASE_AMOUNT.to_f} });", class: "w-full md:w-auto cursor-pointer inline-block bg-[#00acc1] text-black font-bold py-4 px-8 rounded-2xl shadow-xl transition-all duration-300 transform hover:scale-[1.02] hover:bg-[#26c6da] ring-4 ring-[#00acc1]/30 text-center text-lg" %>
-          </div>
-        </div>
-
-        <!-- Right Column: Benefits list -->
-        <div class="bg-white/5 rounded-2xl p-6 border border-white/10">
-          <h3 class="text-xl font-bold mb-6 text-white border-b border-white/10 pb-4">
-             Continue Creating Without Limits
-          </h3>
-
-          <ul class="space-y-4">
-            <li class="flex items-start space-x-3">
-              <%= render(IconComponent.new(name: "check", classes: "h-5 w-5 text-[#00acc1] flex-shrink-0 mt-1")) %>
-              <span class="text-neutral-200 leading-snug"><b>Design Presets</b>: Instantly visualize different styles</span>
-            </li>
-            <li class="flex items-start space-x-3">
-              <%= render(IconComponent.new(name: "check", classes: "h-5 w-5 text-[#00acc1] flex-shrink-0 mt-1")) %>
-              <span class="text-neutral-200 leading-snug"><b>Smart Fix</b>: AI-powered precision editing</span>
-            </li>
-            <li class="flex items-start space-x-3">
-              <%= render(IconComponent.new(name: "check", classes: "h-5 w-5 text-[#00acc1] flex-shrink-0 mt-1")) %>
-              <span class="text-neutral-200 leading-snug"><b>Auto Fix</b>: Automatically enhance your landscape</span>
-            </li>
-            <li class="flex items-start space-x-3">
-              <%= render(IconComponent.new(name: "check", classes: "h-5 w-5 text-[#00acc1] flex-shrink-0 mt-1")) %>
-              <span class="text-neutral-200 leading-snug"><b>Planting Guide</b>: Expert care & maintenance tips</span>
-            </li>
-            <li class="flex items-start space-x-3">
-              <%= render(IconComponent.new(name: "check", classes: "h-5 w-5 text-[#00acc1] flex-shrink-0 mt-1")) %>
-              <span class="text-neutral-200 leading-snug"><b>Local Plants</b>: Recommendations for your region</span>
-            </li>
-          </ul>
-        </div>
-      </div>
+       </div>
     </div>
   </div>
 </div>
+
+<style>
+  @keyframes pulse-slow {
+    0%, 100% { opacity: 0.1; }
+    50% { opacity: 0.2; }
+  }
+  .animate-pulse-slow {
+     animation: pulse-slow 6s infinite;
+  }
+  .animate-fade-in-up {
+    animation: fadeInUp 0.8s ease-out forwards;
+  }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>

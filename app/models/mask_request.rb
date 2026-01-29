@@ -212,7 +212,7 @@ enum :progress, {
   def mark_as_trial_generation
     return if trial_generation? || complete?
 
-    unless user.has_purchased_credits_before?(created_at)
+    unless user.has_paid?
       update_column(:trial_generation, true)
     end
   end

@@ -78,9 +78,7 @@ Rails.application.routes.draw do
 
     get "welcome", to: "welcome#index", as: :welcome
 
-    resource :onboarding_survey, only: [ :show, :update ], controller: "onboarding_survey" do
-      get :celebrate, on: :member
-    end
+    resource :onboarding_survey, only: [ :show, :update ], controller: "onboarding_survey"
 
     resources :favorites, only: [ :create, :destroy, :index ]
 

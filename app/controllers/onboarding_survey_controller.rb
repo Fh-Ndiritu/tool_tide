@@ -9,15 +9,11 @@ class OnboardingSurveyController < ApplicationController
     if @survey.update(survey_params)
       if survey_complete?
         @survey.complete!
-        redirect_to celebrate_onboarding_survey_path
+        redirect_to new_project_path
       else
         redirect_to onboarding_survey_path
       end
     end
-  end
-
-  def celebrate
-    redirect_to onboarding_survey_path if !current_user.can_skip_onboarding_survey?
   end
 
   private

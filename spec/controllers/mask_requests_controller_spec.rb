@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe MaskRequestsController, type: :controller do
-
-
   let(:user) { users(:one) }
   # Manually create Canva since fixtures are broken for this model
   let(:canva) { Canva.create!(user: user, treat_as: :photo, device_width: 1024) }
@@ -45,17 +43,9 @@ RSpec.describe MaskRequestsController, type: :controller do
       get :new, params: { canva_id: canva.id }
       expect(response).to be_successful
     end
-
   end
 
   describe "GET #edit" do
-    it "redirects to low_credits_path if manual and user cannot afford generation" do
-      User.update_all pro_engine_credits: 0
-      mask_request = MaskRequest.create! valid_attributes.merge(progress: :uploading)
-      get :edit, params: { id: mask_request.to_param, manual: true }, session: valid_session
-      expect(response).to redirect_to(low_credits_path)
-    end
-
     it "redirects to mask_request_path if request is failed or complete" do
       mask_request = MaskRequest.create! valid_attributes.merge(progress: :complete)
       get :edit, params: { id: mask_request.to_param }, session: valid_session

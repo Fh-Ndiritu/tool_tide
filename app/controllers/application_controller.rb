@@ -1,23 +1,17 @@
 class ApplicationController < ActionController::Base
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
-  before_action :set_active_storage_url_options
   before_action :configure_permitted_parameters, if: :devise_controller?
+
   before_action :authenticate_user!
   skip_before_action :authenticate_user!, only: [ :robots_block, :render_410 ]
 
-  before_action :block_singapore_users
-  before_action :enforce_onboarding_survey
-  before_action :redirect_to_canva, if: -> { user_signed_in? && devise_controller? }
+  before_action :validate_payment_status, if: :user_signed_in?
 
   def after_sign_in_path_for(resource)
     if resource.is_a?(User) && resource.admin?
-      admin_mask_requests_path
-    elsif !resource.can_skip_onboarding_survey?
-      onboarding_survey_path
-    elsif resource.is_a?(User) && resource.onboarding_stage != "completed"
-      new_canva_path
+      admin_social_media_posts_path
     else
-      super
+      projects_path
     end
   end
 
@@ -45,41 +39,20 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def enforce_onboarding_survey
-    return unless user_signed_in?
-    return if devise_controller?
-    return if controller_name == "onboarding_survey"
+  def validate_payment_status
+    # if the user has not paid and is not on welcome page or payments page redirect to welcome page
+    if !current_user.has_paid? && controller_name != "welcome" && controller_name != "payment_transactions"
+      redirect_to welcome_path and return
+    end
 
-    return if current_user.can_skip_onboarding_survey?
-
-    redirect_to onboarding_survey_path
-  end
-
-  def redirect_to_canva
-    # if the path is sign in and user is signed in, redirect to canva
-    if request.path == "/users/sign_in" && user_signed_in?
-      if current_user.can_skip_onboarding_survey?
-        redirect_to new_canva_path
-      else
-        redirect_to onboarding_survey_path
-      end
+    # if the user has paid and not completed onboarding survey redirect to onboarding survey page
+    if current_user.has_paid? && controller_name != "onboarding_survey" && !current_user.can_skip_onboarding_survey?
+      redirect_to onboarding_survey_path and return
     end
   end
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: [ :privacy_policy, :user_name ])
     devise_parameter_sanitizer.permit(:account_update, keys: [ :user_name ])
-  end
-
-  def set_active_storage_url_options
-    ActiveStorage::Current.url_options = { host: request.host, protocol: request.protocol.delete_suffix(":"), port: request.port }
-  end
-
-  def block_singapore_users
-    location = LocationService.lookup(request.remote_ip)
-    if location&.country_code == "SG"
-      Rails.logger.warn("Blocked user from Singapore. IP: #{request.remote_ip}")
-      render plain: "Access Forbidden", status: :forbidden
-    end
   end
 end

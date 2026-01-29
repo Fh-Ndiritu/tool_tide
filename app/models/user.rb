@@ -118,21 +118,13 @@ class User < ApplicationRecord
 
   def can_skip_onboarding_survey?
     # you can skip if you completed questions or received credits prior to implementation
-    onboarding_response&.completed? || credits.exists?
+    onboarding_response&.completed?
   end
 
   def redacted_email
     email
     email[0..5] = "*" * 5
     email
-  end
-
-  def has_purchased_credits_before?(time = nil)
-    if time
-      credits.where(source: :purchase).where("created_at <= ?", time).exists?
-    else
-      credits.where(source: :purchase).exists?
-    end
   end
 
   def signup_credits
@@ -193,3 +185,12 @@ class User < ApplicationRecord
     WelcomeFollowUpJob.set(wait: 1.hour).perform_later(id)
   end
 end
+
+
+
+# User.find_each do |user|
+#     time = DateTime.current
+#     if user.credits.where(source: :purchase).where("created_at <= ?", time).exists?
+#       user.update_column(:has_paid, true)
+#     end
+# end

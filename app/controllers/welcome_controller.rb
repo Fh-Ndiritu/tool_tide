@@ -1,7 +1,4 @@
-class WelcomeController < ApplicationController
-  skip_before_action :authenticate_user!, only: [ :index ]
-  layout "marketing" # Assuming there is a marketing layout, or use strict application layout if not
-
+class WelcomeController < AppController
   def index
     # Fetch completed mask requests with styles, grouped by style
     # limit to styles with > 5 items
