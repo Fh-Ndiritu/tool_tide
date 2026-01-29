@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
 
   def after_sign_in_path_for(resource)
     if resource.is_a?(User) && resource.admin?
-      admin_social_media_posts_path
+      admin_social_posts_path
     else
       projects_path
     end
@@ -40,6 +40,7 @@ class ApplicationController < ActionController::Base
   private
 
   def validate_payment_status
+    return if devise_controller?
     # if the user has not paid and is not on welcome page or payments page redirect to welcome page
     if !current_user.has_paid? && controller_name != "welcome" && controller_name != "payment_transactions"
       redirect_to welcome_path and return
