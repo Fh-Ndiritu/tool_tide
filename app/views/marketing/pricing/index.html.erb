@@ -1,189 +1,110 @@
 <%# START: Pricing Section %>
+<% content_for :title, "Hadaa Pricing: Professional Landscape Architecture Credits" %>
+<% content_for :description, "Purchase credits for high-fidelity landscape generation. No subscriptions, no expiration. Commercial rights included." %>
 
-<% content_for :title, "Hadaa Pricing: Advanced AI Design Plans & Free Trial" %>
+<section id="pricing" class="relative py-20 px-6 bg-[#0f0f0f] text-white min-h-screen overflow-hidden flex flex-col items-center justify-center">
+  <%# Background Effects %>
+  <div class="absolute inset-0 z-0 select-none pointer-events-none">
+     <div class="absolute top-[-10%] right-[-5%] w-[800px] h-[800px] bg-[#00acc1]/10 rounded-full blur-[150px] animate-pulse-slow"></div>
+     <div class="absolute bottom-[-10%] left-[-5%] w-[600px] h-[600px] bg-[#5c6bc0]/10 rounded-full blur-[150px]"></div>
+  </div>
 
-<% content_for :description, "See Hadaa's subscription plans. Access the intelligent prompt editor, drone views, and plant shopping lists. Start your free, no-commitment trial." %>
-
-<section
-  id="pricing"
-  class="
-    relative py-16 md:py-32 bg-neutral-900 text-white overflow-hidden
-    min-h-screen
-  "
->
-  <%# Background Ambient Glow %>
-  <div
-    class="
-      absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-accent/5
-      blur-[120px] rounded-full pointer-events-none z-0
-    "
-  ></div>
-
-  <div class="container mx-auto px-6 max-w-6xl relative z-10">
-    <h1
-      class="
-        text-center text-4xl md:text-5xl font-extrabold mb-6 text-white
-        leading-tight
-      "
-    >
-      Simple, Transparent Pricing
-    </h1>
-
-    <p
-      class="
-        text-center text-lg md:text-2xl max-w-3xl mx-auto mb-16
-        text-neutral-300 font-light
-      "
-    >
-      Signup and start for free. Experience the magic, then unlock unlimited
-      designs with our transparent
-      <b class="text-accent">Pay-As-You-Go</b>
-      credit system.
-    </p>
-
-    <%# START: Pricing Cards Container %>
-    <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-
-      <%# START: Free Plan Card %>
-      <div
-        class="
-          p-8 md:p-10 bg-neutral-800/30 backdrop-blur-md rounded-3xl shadow-xl
-          border border-white/10 text-white transform transition-all
-          duration-500 hover:scale-[1.02] hover:border-white/30
-          relative overflow-hidden flex flex-col
-        "
-      >
-        <div class="mb-8">
-          <h3 class="text-2xl font-bold mb-2 text-white">Free Plan</h3>
-          <div class="flex items-baseline gap-2">
-            <span class="text-5xl font-extrabold text-white">Free</span>
-          </div>
-          <p class="text-neutral-400 mt-2 font-medium">No Credit Card Required</p>
-        </div>
-
-        <ul class="space-y-4 mb-8 flex-1 text-neutral-300">
-           <li class="flex items-start">
-            <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-3 mt-0.5 text-green-400 flex-shrink-0")) %>
-            <span><b class="text-white">60 plus Free Credits</b> to start</span>
-          </li>
-          <li class="flex items-start">
-            <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-3 mt-0.5 text-green-400 flex-shrink-0")) %>
-            <span><%= link_to "Free Mask Brush Editor", features_brush_prompt_editor_path, class: "text-neutral-300 hover:text-white underline hover:no-underline transition-colors" %></span>
-          </li>
-          <li class="flex items-start">
-            <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-3 mt-0.5 text-green-400 flex-shrink-0")) %>
-            <span><%= link_to "Free Plants & Localizations", features_location_plant_suggestions_path, class: "text-neutral-300 hover:text-white underline hover:no-underline transition-colors" %></span>
-          </li>
-          <li class="flex items-start">
-            <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-3 mt-0.5 text-green-400 flex-shrink-0")) %>
-            <span><%= link_to "Free Text Editor", features_ai_prompt_editor_path, class: "text-neutral-300 hover:text-white underline hover:no-underline transition-colors" %></span>
-          </li>
-          <li class="flex items-start">
-            <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-3 mt-0.5 text-green-400 flex-shrink-0")) %>
-            <span>Free Sketch to 3D</span>
-          </li>
-        </ul>
-
-          <%= render ButtonComponent.new(
-            text: "Start for Free",
-            href: new_user_registration_url(host: "hadaa.app"),
-            html_options: { rel: "nofollow noreferrer" },
-            classes: "w-full bg-white/10 hover:bg-white/20 text-white font-bold py-4 px-8 rounded-full transition duration-300 border border-white/20"
-            ) %>
-      </div>
-      <%# END: Free Plan Card %>
-
-      <%# START: Starter Credit Pack Card %>
-      <div
-        class="
-          p-8 md:p-10 bg-neutral-800/80 backdrop-blur-md rounded-3xl shadow-2xl
-          border border-accent text-white transform transition-all
-          duration-500 hover:scale-[1.02] hover:shadow-[0_0_40px_rgba(var(--color-accent),0.2)]
-          relative overflow-hidden group flex flex-col
-        "
-      >
-         <%# Card Glow Effect %>
-        <div
-          class="
-            absolute -inset-[100%] bg-gradient-to-r from-transparent
-            via-white/5 to-transparent skew-x-12 opacity-0
-            group-hover:animate-shine pointer-events-none
-          "
-        ></div>
-
-         <div class="absolute top-0 right-0 bg-accent text-black text-xs font-bold px-3 py-1 rounded-bl-xl">
-          MOST POPULAR
-        </div>
-
-        <div class="mb-8">
-          <h3 class="text-2xl font-bold mb-2 text-accent">Starter Credit Pack</h3>
-          <div class="flex items-baseline gap-2">
-            <span class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-accent to-white">$10</span>
-            <span class="text-neutral-400 text-lg">/ once</span>
-          </div>
-          <p class="text-neutral-400 mt-2 font-medium">For 200 Usage Credits</p>
-        </div>
-
-        <ul class="space-y-4 mb-8 flex-1 text-neutral-300">
-           <li class="flex items-start">
-            <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-3 mt-0.5 text-accent flex-shrink-0")) %>
-            <span><b class="text-white">200 Credits</b> (approx. 40-50 high-res generations)</span>
-          </li>
-          <li class="flex items-start">
-            <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-3 mt-0.5 text-accent flex-shrink-0")) %>
-            <span>Access to <b class="text-white">exactly all features</b></span>
-          </li>
-          <li class="flex items-start">
-            <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-3 mt-0.5 text-accent flex-shrink-0")) %>
-            <span>Unlimited High-Resolution Downloads</span>
-          </li>
-           <li class="flex items-start">
-            <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-3 mt-0.5 text-accent flex-shrink-0")) %>
-            <span>Pay-As-You-Go Convenience</span>
-          </li>
-           <li class="flex items-start">
-            <%= render(IconComponent.new(name: "check", classes: "h-6 w-6 mr-3 mt-0.5 text-accent flex-shrink-0")) %>
-            <span>No Subscription Required</span>
-          </li>
-        </ul>
-
-         <%= render ButtonComponent.new(
-            text: "Get 200 Credits",
-            href: new_user_registration_url(host: "hadaa.app"),
-            html_options: { rel: "nofollow noreferrer" },
-            classes: "w-full bg-accent hover:bg-accent-hover text-black font-extrabold py-4 px-8 rounded-full shadow-[0_4px_14px_0_rgba(var(--color-accent),0.39)] hover:shadow-[0_6px_20px_rgba(var(--color-accent),0.23)] hover:-translate-y-0.5 transition duration-300"
-            ) %>
-      </div>
-      <%# END: Starter Credit Pack Card %>
-
+  <div class="relative z-10 w-full max-w-6xl mx-auto flex flex-col h-full justify-center">
+    <%# Header %>
+    <div class="text-center mb-12">
+       <span class="text-[#00acc1] font-bold tracking-widest uppercase text-xs mb-4 block">Simple, Transparent Pricing</span>
+       <h1 class="text-5xl md:text-7xl font-serif font-medium leading-none text-white mb-6">
+          Pay for results.<br>
+          <span class="text-neutral-500">Not subscriptions.</span>
+       </h1>
+       <p class="text-xl text-neutral-400 font-light max-w-2xl mx-auto">
+          Purchase credits packages that never expire. Use them whenever you have a project.
+       </p>
     </div>
-    <%# END: Pricing Cards Container %>
 
-    <div class="text-center mt-24 text-white py-16 px-6 border-t border-white/10">
-      <h3 class="text-3xl md:text-4xl font-extrabold mb-6">
-        Ready to Transform Your Outdoor Space?
-      </h3>
+    <%# Main Card (Credits Page Style) %>
+    <div class="relative group w-full max-w-5xl mx-auto">
+       <%# Glow %>
+       <div class="absolute -inset-1 bg-gradient-to-r from-[#00acc1] to-[#f23faf] rounded-[2rem] blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
 
-      <p
-        class="
-          text-lg md:text-xl max-w-3xl mx-auto mb-12 leading-relaxed
-          text-neutral-400
-        "
-      >
-        Your design journey starts with one simple purchase. Join thousands of
-        users who are reimagining their gardens with Hadaa Ai Landscaper.
-      </p>
+       <div class="relative bg-[#18181b] rounded-[1.5rem] border border-white/10 shadow-2xl p-6 md:p-10 ring-1 ring-white/5 overflow-hidden">
 
-      <%# START: Call to Action Button - Get Credits %>
-      <%= render ButtonComponent.new(
-        text: "Signup to Get Free credits and start designing",
-        href: new_user_registration_url(host: "hadaa.app"),
-        html_options: { rel: "nofollow noreferrer" },
-        classes: "inline-block bg-white text-black hover:bg-neutral-200 font-extrabold py-4 px-10 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105"
-        ) %>
-      <%# END: Call to Action Button - Get Credits %>
+          <div class="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+             <%# Left: The Offer %>
+             <div class="flex flex-col h-full justify-center space-y-8 py-4">
+                <div>
+                   <div class="flex flex-col mb-2">
+                      <span class="text-[#00acc1] text-xs font-bold uppercase tracking-wider mb-2">Limited Time Offer</span>
+                      <h3 class="text-3xl font-bold text-white mb-2 leading-tight">Unlock <span class="text-[#00acc1]">Professional</span> Access.</h3>
+                      <p class="text-neutral-400 text-sm leading-relaxed">Stop guessing. Start transforming your property today with 200 premium credits.</p>
+                   </div>
+
+                   <div class="mt-8 flex items-baseline gap-2">
+                      <span class="text-7xl md:text-8xl font-black text-white tracking-tighter">$10</span>
+                      <div class="flex flex-col items-start leading-none">
+                         <span class="text-xl text-neutral-400 font-medium">one-time</span>
+                         <span class="text-sm text-[#00acc1]">200 credits</span>
+                      </div>
+                   </div>
+                   <p class="mt-4 text-xs text-neutral-500 font-medium bg-white/5 w-fit px-3 py-1 rounded-full border border-white/5">
+                      <span class="text-[#00acc1]">✓</span> Risk-free: 100% Satisfaction Guarantee
+                   </p>
+                </div>
+
+                <%= link_to new_user_registration_url(host: "hadaa.app"),
+                   class: "w-full group/btn relative inline-flex items-center justify-center px-6 py-5 text-lg font-black text-black bg-white rounded-xl overflow-hidden shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_50px_rgba(0,172,193,0.4)] transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer" do %>
+                 <span class="absolute inset-0 w-full h-full bg-gradient-to-r from-[#00acc1] to-[#26c6da] opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300"></span>
+                 <span class="relative flex items-center gap-2">
+                   Get Instant Access
+                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
+                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                   </svg>
+                 </span>
+               <% end %>
+
+               <div class="flex items-center justify-center gap-6 opacity-60 text-[10px] uppercase font-bold tracking-widest text-neutral-500">
+                  <span class="flex items-center gap-1.5"><svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9v-2h2v2zm0-4H9V7h2v5z"/></svg> One-time payment</span>
+                  <span class="flex items-center gap-1.5"><svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg> Secure Checkout</span>
+               </div>
+             </div>
+
+             <%# Right: Features List %>
+             <div class="bg-[#0f0f0f] rounded-2xl p-8 border border-white/5 relative overflow-hidden h-full flex flex-col justify-center">
+                <div class="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
+                   <%= render(IconComponent.new(name: "sparkles", classes: "h-32 w-32")) %>
+                </div>
+
+                <p class="text-white font-bold mb-6 text-sm uppercase tracking-wider pl-1">Professional Features:</p>
+
+                <div class="space-y-4 relative z-10">
+                   <% [
+                     ["crown", "<b>Commercial License</b>: Keep 100% ownership"],
+                     ["eye", "<b>8k Resolution</b>: Print-ready renders"],
+                     ["list", "<b>Construction Docs</b>: Planting Guide & BOQ"],
+                     ["paint_brush", "<b>Smart Editor</b>: Remove objects & refine"],
+                     ["check", "<b>Priority Access</b>: Instant GPU generation"]
+                   ].each do |icon, text| %>
+                     <div class="flex items-center gap-4 p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-colors border border-white/5 group/item">
+                        <div class="text-[#00acc1] group-hover/item:scale-110 transition-transform duration-300 bg-[#00acc1]/10 p-2 rounded-lg">
+                           <%= render(IconComponent.new(name: icon, classes: "h-5 w-5")) %>
+                        </div>
+                        <span class="text-neutral-200 text-sm font-medium"><%= text.html_safe %></span>
+                     </div>
+                   <% end %>
+                </div>
+             </div>
+          </div>
+       </div>
     </div>
   </div>
 </section>
 
-<%# END: Pricing Section %>
+<style>
+  @keyframes pulse-slow {
+    0%, 100% { opacity: 0.1; }
+    50% { opacity: 0.2; }
+  }
+  .animate-pulse-slow {
+     animation: pulse-slow 6s infinite;
+  }
+</style>
