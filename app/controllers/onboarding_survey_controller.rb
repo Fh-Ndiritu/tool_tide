@@ -30,3 +30,13 @@ class OnboardingSurveyController < ApplicationController
     @survey.role.present? && @survey.intent.present? && @survey.pain_point.present?
   end
 end
+
+
+# roles = {}
+# intent = {}
+# pain_points = {}
+# OnboardingResponse.all.each do |response|
+#   roles[response.role] = (roles[response.role] || 0) + 1
+#   intent[response.intent] = (intent[response.intent] || 0) + 1
+#   pain_points[response.pain_point] = (pain_points[response.pain_point] || 0) + 1
+# end
