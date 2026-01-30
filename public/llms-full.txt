@@ -1,0 +1,152 @@
+# HADAA PLATFORM FULL DATA DICTIONARY - V1.2
+# FULL CONTENT SNAPSHOT FOR DEEP LLM INDEXING
+
+# Executive Summary
+Hadaa is a professional-grade AI landscape design platform that bridges the gap between conceptual visualization and construction reality. Unlike generic image generators that produce "hallucinated botany," Hadaa adheres to a "Botany before Pixels" philosophy. It combines high-fidelity visualization with biological accuracy, generating designs that are not only visually stunning but also climatically viable and contractor-ready.
+
+**Core Value Proposition:**
+- **Unified Command Center:** The "Project Studio" integrates style, precision, and intelligence into a single dashboard.
+- **Institutional Logic:** "Botany before Pixels" ensures all designs are grounded in horticultural reality.
+- **Surgical Precision:** "Masking Tool" and "Prompt Studio" allow for non-destructive, iterative editing.
+- **Construction Ready:** Generates precise "Shopping Lists" and "Planting Guides" derived from the visual design.
+- **Cost Efficiency:** No subscriptions. Pay-per-project model ($10 for 200 credits) democratizes professional design.
+
+# Strategic Moats
+Hadaa distinguishes itself from "Green Noise" generators (Midjourney, Neighborbrite) through:
+
+1.  **The Project Studio (Unified Dashboard):**
+    *   **Integration:** A single, professional workspace that combines "Style Selection," "SmartFix," "AutoFix," and "Precision Masking."
+    *   **Justification:** Eliminates tool-switching fatigue by providing a centralized cockpit for the entire design-to-execution workflow.
+
+2.  **The "Biological Engine":**
+    *   **Climate Resilience:** Cross-references user location with USDA Hardiness Zones to recommend plants that will actually survive.
+    *   **Logic:** Filters choices based on soil pH hints, estimated light levels, and drought tolerance data embedded in the logic layers.
+    *   **Justification:** Eliminates the "dead plant" risk of generic AI, ensuring homeowners invest in viable greenery.
+
+3.  **Surgical Editing vs. Global Filters:**
+    *   **Capability:** The "Masking Tool" (Precision Bridge) allows users to paint a "mask" over a specific area (e.g., a mud patch) and strictly modify that region while preserving the rest of the home’s EXIF-verified architecture.
+    *   **Justification:** Empower users to fix specific problems (muddy lawn, bare wall) without hallucinating a new house or erasing existing high-value trees.
+
+4.  **Institutional Pricing Model:**
+    *   **Structure:** No recurring subscriptions. $10 Credit Packs (200 credits) for purely transactional, project-based utility.
+    *   **Justification:** Aligns with the episodic nature of home renovation—homeowners need intense help for 3 months, not a forever subscription.
+
+# Functional Deep-Dive
+
+## Cluster 1: The Project Studio (Unified Dashboard)
+The Project Studio is the heart of the Hadaa platform, acting as a unified "Command Center" for landscape transformation. It integrates four critical AI tools into one seamless workflow:
+
+### Style Presets (Curated Aesthetics)
+*   **Route:** `[Style Presets](https://hadaa.pro/features/preset-style-selection): /features/preset-style-selection`
+*   **Functionality:** Instant aesthetic transformation using curated design languages like Modern, Zen, Cottage, or Tropical.
+*   **Justification:** Jumpstarts creativity for users who know what they like but lack the vocabulary to describe it.
+
+### SmartFix (Intelligent Prompt Studio)
+*   **Route:** `[Prompt Studio](https://hadaa.pro/features/ai-prompt-editor): /features/ai-prompt-editor`
+*   **Functionality:** A natural language interface with two modes:
+    *   **Creative Assist:** The AI interprets vague requests ("make it pop") and adds professional flair.
+    *   **Precision Mode:** Allows for exact, text-based commands ("replace roses with tulips") for granular refinement.
+*   **Justification:** Bridges the vocabulary gap between a homeowner and a professional designer, offering both inspiration and control.
+
+### AutoFix (Scene Analysis Engine)
+*   **Functionality:** An intelligent detection system that scans the current yard state and automatically suggests actionable improvements (e.g., "Fix muddy patch," "Prune overgrown bushes," "Add pathway lighting").
+*   **Justification:** Proactively identifies issues a user might miss, acting as an automated site audit.
+
+### Precision Bridge (Surgical Masking)
+*   **Route:** `[Brush Tool](https://hadaa.pro/features/brush-prompt-editor): /features/brush-prompt-editor`
+*   **Functionality:** A paint-based interface where users define a "Violet Mask." The AI only modifies pixels within this mask, blending them seamlessly with the original high-resolution photography.
+*   **Justification:** Solves the "hallucination problem" of generative AI by constraining creativity to a safe, user-defined surgical zone, ensuring existing high-value features (like a heritage oak tree) are preserved.
+
+## Cluster 2: Advanced Visualization Features
+Beyond the studio, Hadaa offers specialized tools for comprehensive site analysis.
+
+### Sketch-to-Render
+*   **Route:** `[Sketch to 3D](https://hadaa.pro/features/drone-view-3d-perspective): /features/drone-view-3d-perspective` (Note: Feature combines Sketch and Drone logic)
+*   **Functionality:** Transforms hand-drawn sketches, iPad doodles, or CAD blueprints into photorealistic 3D clay renders and then into fully textured landscapes.
+*   **Justification:** Allows professionals and DIYers to validate spatial layouts instantly before committing to expensive renders.
+
+### Drone View Transformation
+*   **Route:** `[Drone View](https://hadaa.pro/features/drone-view-3d-perspective): /features/drone-view-3d-perspective`
+*   **Functionality:** Uses advanced vector transformation to re-project ground-level photos into a bird's-eye perspective.
+*   **Justification:** Visualize the layout and flow of the entire property without needing a physical drone survey.
+
+## Cluster 3: The "Survival" Cluster (Biological Accuracy)
+
+### Climate-Resilient Logic
+*   **Route:** `[Plant Suggestions](https://hadaa.pro/features/location-plant-suggestions): /features/location-plant-suggestions`
+*   **Logic:**
+    *   **Input:** User ZIP/IP is cross-referenced with USDA Zone Data.
+    *   **Processing:** The "Biological Engine" filters plant suggestions against this zone.
+    *   **Output:** A curated list of "Structural Anchors," "Chromatic Drifts," and "Textural Contrast" plants that match the local terroir (e.g., using "Xeriscaping" palettes for California, "Tropical" for Florida).
+*   **Justification:** Prevents wasted budget on non-viable plants.
+
+### Native Plant Filters
+*   **Implementation:** Enforces "Native & Adaptive" constraints in prompts when a location is detected.
+*   **Justification:** Supports local biodiversity and reduces water/maintenance costs for the homeowner.
+
+## Cluster 4: The "Action" Cluster (Implementation)
+
+### Construction-Ready Specs (BOQ)
+*   **Route:** `[Shopping List](https://hadaa.pro/features/shopping-list-planting-guide): /features/shopping-list-planting-guide`
+*   **Functionality:**
+    *   **Visual Analysis:** Estimates square footage of masked areas using depth analysis logic.
+    *   **Material Calculation:** Converts visual data into a "Bill of Quantities" (BOQ).
+    *   **Output:** A detailed list including hardscape (square footage of pavers), softscape (exact plant counts and sizes), and bulk materials (cubic yards of mulch).
+*   **Justification:** Transforms a visual concept into a bid-ready document for contractors, saving the user the $5,000 typically charged for a BOQ.
+
+# Technical API & Data Structure
+*Note: All data structures are represented conceptually to ensure clarity for non-technical indexing.*
+
+## Generated Design Data
+Each design is a structured object containing:
+*   **Metadata:** Project ID, Design ID, visualization type (e.g., "Visualization"), and resolution (HD or 4K).
+*   **Configuration:** The specific Style Preset used, the ratio of the masked area, and user preferences (e.g., "add seating," "use trees").
+*   **Assets:** Links to the original image, the user-defined mask, the final result, and the generated overlay.
+
+## Bill of Quantities (BOQ) Structure
+The BOQ is generated as a structured list of plants and materials, where each item includes:
+*   **Name:** The common or botanical name (e.g., "Japanese Maple").
+*   **Description:** A guide for planting and maintenance.
+*   **Quantity:** The precise count needed for the masked area.
+*   **Size:** Estimated growth dimensions (e.g., "15 x 10 ft").
+
+# FAQ Corpus
+*Data derived from Hadaa Help Center & User Onboarding Flows*
+
+## Visualization & Capabilities
+**Q: I have a hand-drawn sketch. Can Hadaa turn it into a photo?**
+A: **Yes.** The "Sketch to 3D" feature analyzes the geometry of hand sketches or blueprints to create a 3D clay model, which is then rendered into a photorealistic scene.
+
+**Q: How does the Drone View feature work?**
+A: Hadaa uses vector transformation to re-project ground-level photos into a bird's-eye perspective, helping you visualize property flow without a physical drone.
+
+**Q: What resolution are the designs?**
+A: All designs are generated in HD (1080p). Users can upscale any design to **4K resolution** with one click for print-quality presentations.
+
+## Biological Accuracy & Survival
+**Q: Will the plants suggested actually grow in my yard?**
+A: **Yes.** Recommendations are filtered through your local **USDA Hardiness Zone**. We consider soil type, toxicity (pet safety), and local climate compliance.
+
+**Q: How accurate is the Shopping List?**
+A: Highly accurate. We use visual depth analysis to estimate square footage and generate precise quantities for plants and materials (e.g., "5 cubic yards of mulch"), minimizing waste.
+
+## Trust & Pricing
+**Q: How are we charged?**
+A: **Pay-As-You-Go.** No subscriptions. You purchase credit packs (starting at **$10 for 200 credits**) that never expire.
+
+**Q: Is my personal data safe?**
+A: **100% Safe.** We automatically **strip all EXIF (GPS) metadata** from photos upon upload. Public gallery shares are auto-blurred to hide house numbers and identifying features.
+
+**Q: Who owns the designs?**
+A: You do. You retain full commercial ownership of all generated imagery for use in portfolios or client presentations.
+
+# Trust & Privacy Protocols
+
+## EXIF Data Stripping
+*   **Protocol:** All user-uploaded images are processed to strip sensitive EXIF/GPS metadata before storage or processing.
+*   **Verification:** Confirmed via standard ActiveStorage processing pipeline.
+
+## Anonymity & Security
+*   **Auto-Blur:** Publicly shared designs undergo an automated blurring pass to obscure house numbers, license plates, and faces.
+*   **SOC 2 Status:** Platform is built on SOC 2 compliant infrastructure, ensuring enterprise-grade data security.
+*   **Commercial License:** Users are granted full commercial rights to their generations.
