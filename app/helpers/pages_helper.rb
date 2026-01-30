@@ -6,12 +6,8 @@ module PagesHelper
         index: 0,
         items: [
           {
-            question: "Is there a free plan/trial? 🎁",
-            answer: "<b class='text-accent'>Yes!</b> Start immediately with our generous Free Plan. You get <b>60 free credits</b>, which is enough for <b>1 Full Mask Design + 1 AI Text Edit</b>. No credit card is required, so you can experience our photorealistic tools with zero commitment."
-          },
-          {
-            question: "Is Hadaa a subscription service?",
-            answer: "<b class='text-accent text-lg'>NO.</b> Hadaa is strictly <b>Pay-As-You-Go</b>. We do not have monthly subscriptions or hidden recurring fees. You purchase credits packs (starting at just <b>$10 for 200 credits</b>) and they are yours to use whenever you want. You only pay for what you use."
+            question: "How are we charged?",
+            answer: "<b class='text-accent text-lg'>Pay-As-You-Go.</b> Hadaa is strictly <b>Credit-Based</b>. We do not have monthly subscriptions or hidden recurring fees. You purchase credits packs (starting at just <b>$10 for 200 credits</b>) and they are yours to use whenever you want. You only pay for what you use, and your credits <b>never expire</b>."
           },
           {
             question: "What makes Hadaa different from other landscape apps?",
