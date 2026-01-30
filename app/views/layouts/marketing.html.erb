@@ -2,18 +2,18 @@
 <html>
   <head>
     <title>
-      <%= content_for?(:title) ? yield(:title) : "AI Landscape Design Generator FREE – Editor, Drone View, No Card Required" %>
+      <%= content_for?(:title) ? yield(:title) : "AI Landscape Design Generator – Professional Editor, Drone View & Plans" %>
     </title>
 
     <meta name="language" content="en">
-    <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Transform your yard instantly with Hadaa's advanced AI tool. Use the Brush Designer & intelligent Prompt Editor for precision editing, get local plant recommendations, and generate shopping lists. Free trial, no credit card required." %>">
+    <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Transform your yard instantly with Hadaa's advanced AI tool. Use the Brush Designer & intelligent Prompt Editor for precision editing, get local plant recommendations, and generate shopping lists. Professional AI Landscape Design." %>">
 
-    <meta property="og:title" content="<%= content_for?(:title) ? yield(:title) : "Hadaa: AI Landscape Design Generator FREE – No Card Required" %>" />
+    <meta property="og:title" content="<%= content_for?(:title) ? yield(:title) : "Hadaa: AI Landscape Design Generator – Professional & Instant" %>" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="<%= request.original_url.split('?').first %>" />
     <meta property="og:image" content="<%= asset_url("social_preview.png") %>" />
     <meta property="twitter:image" content="<%= asset_url("social_preview.png") %>" />
-    <meta property="og:description" content="<%= content_for?(:description) ? yield(:description) : "Hadaa offers precision AI landscape design with a Brush Tool and Prompt Editor. Generate 3D drone views, local plant suggestions, and shopping lists. Start FREE today." %>" />
+    <meta property="og:description" content="<%= content_for?(:description) ? yield(:description) : "Hadaa offers precision AI landscape design with a Brush Tool and Prompt Editor. Generate 3D drone views, local plant suggestions, and shopping lists. Start your project today." %>" />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@hadaa_app" />
