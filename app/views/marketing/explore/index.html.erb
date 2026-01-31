@@ -45,7 +45,7 @@
 
   <!-- Section 2: Image Gallery -->
   <!-- Cottage Section -->
-  <% if @cottage_requests.any? %>
+  <% if @cottage_requests.size > 3 %>
     <section id="cottage" class="max-w-7xl mx-auto mt-20 px-4 sm:px-6 lg:px-8">
       <!-- Text Card -->
       <div class="relative rounded-3xl bg-neutral-900 border border-white/10 p-6 md:p-10 mb-12 overflow-hidden group hover:border-white/20 transition-all duration-500">
@@ -81,7 +81,7 @@
   <% end %>
 
   <!-- Zen Section -->
-  <% if @zen_requests.any? %>
+  <% if @zen_requests.size > 3 %>
     <section id="zen" class="max-w-7xl mx-auto mt-32 px-4 sm:px-6 lg:px-8">
       <!-- Text Card -->
       <div class="relative rounded-3xl bg-neutral-900 border border-white/10 p-6 md:p-10 mb-12 overflow-hidden group hover:border-white/20 transition-all duration-500">
@@ -117,7 +117,7 @@
   <% end %>
 
   <!-- Desert Section -->
-  <% if @desert_requests.any? %>
+  <% if @desert_requests.size > 3 %>
     <section id="desert" class="max-w-7xl mx-auto mt-32 px-4 sm:px-6 lg:px-8">
       <!-- Text Card -->
       <div class="relative rounded-3xl bg-neutral-900 border border-white/10 p-6 md:p-10 mb-12 overflow-hidden group hover:border-white/20 transition-all duration-500">
@@ -153,7 +153,7 @@
   <% end %>
 
   <!-- Mediterranean Section -->
-  <% if @mediterranean_requests.any? %>
+  <% if @mediterranean_requests.size > 3 %>
     <section id="mediterranean" class="max-w-7xl mx-auto mt-32 px-4 sm:px-6 lg:px-8">
       <!-- Text Card -->
       <div class="relative rounded-3xl bg-neutral-900 border border-white/10 p-6 md:p-10 mb-12 overflow-hidden group hover:border-white/20 transition-all duration-500">
@@ -189,7 +189,7 @@
   <% end %>
 
   <!-- Tropical Section -->
-  <% if @tropical_requests.any? %>
+  <% if @tropical_requests.size > 3 %>
     <section id="tropical" class="max-w-7xl mx-auto mt-32 px-4 sm:px-6 lg:px-8">
       <!-- Text Card -->
       <div class="relative rounded-3xl bg-neutral-900 border border-white/10 p-6 md:p-10 mb-12 overflow-hidden group hover:border-white/20 transition-all duration-500">
@@ -225,7 +225,7 @@
   <% end %>
 
   <!-- Modern Section -->
-  <% if @modern_requests.any? %>
+  <% if @modern_requests.size > 3 %>
     <section id="modern" class="max-w-7xl mx-auto mt-32 mb-20 px-4 sm:px-6 lg:px-8">
       <!-- Text Card -->
       <div class="relative rounded-3xl bg-neutral-900 border border-white/10 p-6 md:p-10 mb-12 overflow-hidden group hover:border-white/20 transition-all duration-500">
