@@ -34,6 +34,8 @@ class MaskRequest < ApplicationRecord
   after_update_commit :broadcast_progress, if: :saved_change_to_progress?
   default_scope -> { order(created_at: :desc) }
 
+  scope :main_view_variants, -> { includes(main_view_attachment: { blob: :variant_records }) }
+
 enum :progress, {
   uploading: 0,
   getting_location: 1,
@@ -153,10 +155,6 @@ enum :progress, {
 
     save_overlay(mask_image, api_image)
     save!
-  end
-
-  def face_image
-    [ main_view.presence, rotated_view.presence, drone_view.presence ].compact.sample
   end
 
   def processing?
