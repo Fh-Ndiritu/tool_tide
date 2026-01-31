@@ -43,141 +43,28 @@
     <% end %>
   </div>
 
-  <!-- Section 2: Image Gallery -->
-  <!-- Cottage Section -->
-  <% if @cottage_requests.size > 3 %>
-    <section id="cottage" class="max-w-7xl mx-auto mt-20 px-4 sm:px-6 lg:px-8">
+  <!-- Modern Section -->
+  <% if @modern_requests.size > 3 %>
+    <section id="modern" class="max-w-7xl mx-auto mt-20 px-4 sm:px-6 lg:px-8">
       <!-- Text Card -->
       <div class="relative rounded-3xl bg-neutral-900 border border-white/10 p-6 md:p-10 mb-12 overflow-hidden group hover:border-white/20 transition-all duration-500">
-        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 md:w-96 md:h-96 bg-green-500/10 blur-[100px] rounded-full pointer-events-none"></div>
+        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 md:w-96 md:h-96 bg-slate-500/10 blur-[100px] rounded-full pointer-events-none"></div>
         <div class="relative z-10 w-full">
           <div class="text-left mb-8">
-            <h2 class="text-3xl md:text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-green-300 to-emerald-500 mb-6">
-              Trending English Cottage Garden Ideas - User Generated Designs
+            <h2 class="text-3xl md:text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-slate-200 to-slate-400 mb-6">
+              Contemporary & Minimalist Landscape Ideas - Construction Ready Concepts
             </h2>
             <p class="text-neutral-300 text-lg md:text-xl leading-relaxed max-w-4xl">
-              See how homeowners are using Hadaa as their personal <strong class="text-white">AI landscape architect</strong> to create romantic English Cottage gardens. These user-generated transformations aren't just pretty pictures—they feature <strong class="text-white">biologically accurate planting lists</strong> suitable for specific hardiness zones. Discover authentic inspiration for blending wildflowers and rustic paths, moving you from a simple photo to a <strong class="text-white">renovation-ready plan</strong>.
+              Discover how easily you can create <strong class="text-white">affordable landscape concept plans</strong> with a Modern aesthetic. These user-submitted designs highlight clean lines and geometric pavers, proving you don't need a $5,000 quote to get a professional look. Use these authentic projects as a blueprint to <strong class="text-white">visualize your backyard</strong> makeover, ensuring every element is planned before you break ground.
             </p>
           </div>
 
-          <div
-            data-controller="masonry"
-            data-masonry-item-selector-value=".masonry-item"
-            class="w-full"
-          >
-            <% @cottage_requests.each_with_index do |request, index| %>
+          <div class="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
+            <% @modern_requests.each_with_index do |request, index| %>
               <% if request.main_view.attached? %>
-                <div class="masonry-item w-full sm:w-1/2 md:w-1/3 lg:w-1/4 mb-6 px-3">
-                  <div class="overflow-hidden rounded-2xl border border-white/10 bg-white/5 transition-all duration-300 ease-out hover:scale-[1.02] hover:shadow-2xl hover:border-white/20 relative group w-full">
-                    <%= image_tag request.main_view.variant(:dashboard), loading: index < 4 ? :eager : :lazy, alt: "English Cottage Garden Design - User Generated #{index}", class: "w-full h-auto block" %>
-                  </div>
-                </div>
-              <% end %>
-            <% end %>
-          </div>
-        </div>
-      </div>
-    </section>
-  <% end %>
-
-  <!-- Zen Section -->
-  <% if @zen_requests.size > 3 %>
-    <section id="zen" class="max-w-7xl mx-auto mt-32 px-4 sm:px-6 lg:px-8">
-      <!-- Text Card -->
-      <div class="relative rounded-3xl bg-neutral-900 border border-white/10 p-6 md:p-10 mb-12 overflow-hidden group hover:border-white/20 transition-all duration-500">
-        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 md:w-96 md:h-96 bg-teal-500/10 blur-[100px] rounded-full pointer-events-none"></div>
-        <div class="relative z-10 w-full">
-          <div class="text-left mb-8">
-            <h2 class="text-3xl md:text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-teal-200 to-cyan-400 mb-6">
-              Modern Japanese Zen Garden Ideas - Verified User Projects
-            </h2>
-            <p class="text-neutral-300 text-lg md:text-xl leading-relaxed max-w-4xl">
-              Browse our gallery of <strong class="text-white">backyard design AI</strong> projects focusing on Zen principles. These real user examples showcase how to achieve peace and balance using <strong class="text-white">drought-resistant</strong> moss and raked gravel. Perfect for homeowners seeking <strong class="text-white">low-maintenance landscape solutions</strong>, these trusted designs prove you can visualize a professional-grade sanctuary and get the <strong class="text-white">shopping list</strong> to build it yourself.
-            </p>
-          </div>
-
-          <div
-            data-controller="masonry"
-            data-masonry-item-selector-value=".masonry-item"
-            class="w-full"
-          >
-            <% @zen_requests.each_with_index do |request, index| %>
-              <% if request.main_view.attached? %>
-                <div class="masonry-item w-full sm:w-1/2 md:w-1/3 lg:w-1/4 mb-6 px-3">
-                  <div class="overflow-hidden rounded-2xl border border-white/10 bg-white/5 transition-all duration-300 ease-out hover:scale-[1.02] hover:shadow-2xl hover:border-white/20 relative group w-full">
-                    <%= image_tag request.main_view.variant(:dashboard), loading: :lazy, alt: "Zen Garden Design - User Generated #{index}", class: "w-full h-auto block" %>
-                  </div>
-                </div>
-              <% end %>
-            <% end %>
-          </div>
-        </div>
-      </div>
-    </section>
-  <% end %>
-
-  <!-- Desert Section -->
-  <% if @desert_requests.size > 3 %>
-    <section id="desert" class="max-w-7xl mx-auto mt-32 px-4 sm:px-6 lg:px-8">
-      <!-- Text Card -->
-      <div class="relative rounded-3xl bg-neutral-900 border border-white/10 p-6 md:p-10 mb-12 overflow-hidden group hover:border-white/20 transition-all duration-500">
-        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 md:w-96 md:h-96 bg-amber-500/10 blur-[100px] rounded-full pointer-events-none"></div>
-        <div class="relative z-10 w-full">
-          <div class="text-left mb-8">
-            <h2 class="text-3xl md:text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-orange-300 to-amber-500 mb-6">
-              Luxury Desert & Xeriscape Ideas - Real Homeowner Renovations
-            </h2>
-            <p class="text-neutral-300 text-lg md:text-xl leading-relaxed max-w-4xl">
-              Explore authentic <strong class="text-white">drought-tolerant yard planners</strong> in action. This collection of user-generated Desert Modern landscapes demonstrates <strong class="text-white">smart xeriscaping</strong> that saves water without sacrificing style. See how our community uses Hadaa to visualize <strong class="text-white">native plants</strong> and modern hardscapes, turning a standard backyard into a sustainable, high-value oasis for a fraction of the cost of a traditional designer.
-            </p>
-          </div>
-
-          <div
-            data-controller="masonry"
-            data-masonry-item-selector-value=".masonry-item"
-            class="w-full"
-          >
-            <% @desert_requests.each_with_index do |request, index| %>
-              <% if request.main_view.attached? %>
-                <div class="masonry-item w-full sm:w-1/2 md:w-1/3 lg:w-1/4 mb-6 px-3">
-                  <div class="overflow-hidden rounded-2xl border border-white/10 bg-white/5 transition-all duration-300 ease-out hover:scale-[1.02] hover:shadow-2xl hover:border-white/20 relative group w-full">
-                    <%= image_tag request.main_view.variant(:dashboard), loading: :lazy, alt: "Desert Landscape Design - User Generated #{index}", class: "w-full h-auto block" %>
-                  </div>
-                </div>
-              <% end %>
-            <% end %>
-          </div>
-        </div>
-      </div>
-    </section>
-  <% end %>
-
-  <!-- Mediterranean Section -->
-  <% if @mediterranean_requests.size > 3 %>
-    <section id="mediterranean" class="max-w-7xl mx-auto mt-32 px-4 sm:px-6 lg:px-8">
-      <!-- Text Card -->
-      <div class="relative rounded-3xl bg-neutral-900 border border-white/10 p-6 md:p-10 mb-12 overflow-hidden group hover:border-white/20 transition-all duration-500">
-        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 md:w-96 md:h-96 bg-blue-500/10 blur-[100px] rounded-full pointer-events-none"></div>
-        <div class="relative z-10 w-full">
-          <div class="text-left mb-8">
-            <h2 class="text-3xl md:text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-300 to-indigo-500 mb-6">
-              Mediterranean & Coastal Garden Ideas - AI Landscape Visualizer
-            </h2>
-            <p class="text-neutral-300 text-lg md:text-xl leading-relaxed max-w-4xl">
-              Visualize your own Italian retreat with these user-generated Mediterranean garden designs. Our community uses Hadaa's <strong class="text-white">garden visualizer</strong> to combine sun-drenched pavers with <strong class="text-white">climate-specific plants</strong> like olive trees and lavender. These trusted examples bridge the gap between inspiration and reality, offering a clear vision for your own <strong class="text-white">DIY yard layout</strong> and renovation.
-            </p>
-          </div>
-
-          <div
-            data-controller="masonry"
-            data-masonry-item-selector-value=".masonry-item"
-            class="w-full"
-          >
-            <% @mediterranean_requests.each_with_index do |request, index| %>
-              <% if request.main_view.attached? %>
-                <div class="masonry-item w-full sm:w-1/2 md:w-1/3 lg:w-1/4 mb-6 px-3">
-                  <div class="overflow-hidden rounded-2xl border border-white/10 bg-white/5 transition-all duration-300 ease-out hover:scale-[1.02] hover:shadow-2xl hover:border-white/20 relative group w-full">
-                    <%= image_tag request.main_view.variant(:dashboard), loading: :lazy, alt: "Mediterranean Garden Design - User Generated #{index}", class: "w-full h-auto block" %>
+                <div class="break-inside-avoid relative group w-full mb-4">
+                  <div class="overflow-hidden rounded-2xl border border-white/10 bg-neutral-800 min-h-[200px] transition-all duration-300 ease-out hover:scale-[1.02] hover:shadow-2xl hover:border-white/20">
+                    <%= image_tag request.main_view.variant(:dashboard), loading: :lazy, decoding: :async, alt: "Modern Landscape Design - User Generated #{index}", class: "w-full h-auto block" %>
                   </div>
                 </div>
               <% end %>
@@ -204,16 +91,12 @@
             </p>
           </div>
 
-          <div
-            data-controller="masonry"
-            data-masonry-item-selector-value=".masonry-item"
-            class="w-full"
-          >
+          <div class="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
             <% @tropical_requests.each_with_index do |request, index| %>
               <% if request.main_view.attached? %>
-                <div class="masonry-item w-full sm:w-1/2 md:w-1/3 lg:w-1/4 mb-6 px-3">
-                  <div class="overflow-hidden rounded-2xl border border-white/10 bg-white/5 transition-all duration-300 ease-out hover:scale-[1.02] hover:shadow-2xl hover:border-white/20 relative group w-full">
-                    <%= image_tag request.main_view.variant(:dashboard), loading: :lazy, alt: "Tropical Garden Design - User Generated #{index}", class: "w-full h-auto block" %>
+                <div class="break-inside-avoid relative group w-full mb-4">
+                  <div class="overflow-hidden rounded-2xl border border-white/10 bg-neutral-800 min-h-[200px] transition-all duration-300 ease-out hover:scale-[1.02] hover:shadow-2xl hover:border-white/20">
+                    <%= image_tag request.main_view.variant(:dashboard), loading: :lazy, decoding: :async, alt: "Tropical Garden Design - User Generated #{index}", class: "w-full h-auto block" %>
                   </div>
                 </div>
               <% end %>
@@ -224,32 +107,124 @@
     </section>
   <% end %>
 
-  <!-- Modern Section -->
-  <% if @modern_requests.size > 3 %>
-    <section id="modern" class="max-w-7xl mx-auto mt-32 mb-20 px-4 sm:px-6 lg:px-8">
+  <!-- Cottage Section -->
+  <% if @cottage_requests.size > 3 %>
+    <section id="cottage" class="max-w-7xl mx-auto mt-32 px-4 sm:px-6 lg:px-8">
       <!-- Text Card -->
       <div class="relative rounded-3xl bg-neutral-900 border border-white/10 p-6 md:p-10 mb-12 overflow-hidden group hover:border-white/20 transition-all duration-500">
-        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 md:w-96 md:h-96 bg-slate-500/10 blur-[100px] rounded-full pointer-events-none"></div>
+        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 md:w-96 md:h-96 bg-green-500/10 blur-[100px] rounded-full pointer-events-none"></div>
         <div class="relative z-10 w-full">
           <div class="text-left mb-8">
-            <h2 class="text-3xl md:text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-slate-200 to-slate-400 mb-6">
-              Contemporary & Minimalist Landscape Ideas - Construction Ready Concepts
+            <h2 class="text-3xl md:text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-green-300 to-emerald-500 mb-6">
+              Trending English Cottage Garden Ideas - User Generated Designs
             </h2>
             <p class="text-neutral-300 text-lg md:text-xl leading-relaxed max-w-4xl">
-              Discover how easily you can create <strong class="text-white">affordable landscape concept plans</strong> with a Modern aesthetic. These user-submitted designs highlight clean lines and geometric pavers, proving you don't need a $5,000 quote to get a professional look. Use these authentic projects as a blueprint to <strong class="text-white">visualize your backyard</strong> makeover, ensuring every element is planned before you break ground.
+              See how homeowners are using Hadaa as their personal <strong class="text-white">AI landscape architect</strong> to create romantic English Cottage gardens. These user-generated transformations aren't just pretty pictures—they feature <strong class="text-white">biologically accurate planting lists</strong> suitable for specific hardiness zones. Discover authentic inspiration for blending wildflowers and rustic paths, moving you from a simple photo to a <strong class="text-white">renovation-ready plan</strong>.
             </p>
           </div>
 
-          <div
-            data-controller="masonry"
-            data-masonry-item-selector-value=".masonry-item"
-            class="w-full"
-          >
-            <% @modern_requests.each_with_index do |request, index| %>
+          <div class="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
+            <% @cottage_requests.each_with_index do |request, index| %>
               <% if request.main_view.attached? %>
-                <div class="masonry-item w-full sm:w-1/2 md:w-1/3 lg:w-1/4 mb-6 px-3">
-                  <div class="overflow-hidden rounded-2xl border border-white/10 bg-white/5 transition-all duration-300 ease-out hover:scale-[1.02] hover:shadow-2xl hover:border-white/20 relative group w-full">
-                    <%= image_tag request.main_view.variant(:dashboard), loading: :lazy, alt: "Modern Landscape Design - User Generated #{index}", class: "w-full h-auto block" %>
+                <div class="break-inside-avoid relative group w-full mb-4">
+                  <div class="overflow-hidden rounded-2xl border border-white/10 bg-neutral-800 min-h-[200px] transition-all duration-300 ease-out hover:scale-[1.02] hover:shadow-2xl hover:border-white/20">
+                    <%= image_tag request.main_view.variant(:dashboard), loading: :lazy, decoding: :async, alt: "English Cottage Garden Design - User Generated #{index}", class: "w-full h-auto block" %>
+                  </div>
+                </div>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </section>
+  <% end %>
+
+  <!-- Zen Section -->
+  <% if @zen_requests.size > 3 %>
+    <section id="zen" class="max-w-7xl mx-auto mt-32 px-4 sm:px-6 lg:px-8">
+      <!-- Text Card -->
+      <div class="relative rounded-3xl bg-neutral-900 border border-white/10 p-6 md:p-10 mb-12 overflow-hidden group hover:border-white/20 transition-all duration-500">
+        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 md:w-96 md:h-96 bg-teal-500/10 blur-[100px] rounded-full pointer-events-none"></div>
+        <div class="relative z-10 w-full">
+          <div class="text-left mb-8">
+            <h2 class="text-3xl md:text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-teal-200 to-cyan-400 mb-6">
+              Modern Japanese Zen Garden Ideas - Verified User Projects
+            </h2>
+            <p class="text-neutral-300 text-lg md:text-xl leading-relaxed max-w-4xl">
+              Browse our gallery of <strong class="text-white">backyard design AI</strong> projects focusing on Zen principles. These real user examples showcase how to achieve peace and balance using <strong class="text-white">drought-resistant</strong> moss and raked gravel. Perfect for homeowners seeking <strong class="text-white">low-maintenance landscape solutions</strong>, these trusted designs prove you can visualize a professional-grade sanctuary and get the <strong class="text-white">shopping list</strong> to build it yourself.
+            </p>
+          </div>
+
+          <div class="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
+            <% @zen_requests.each_with_index do |request, index| %>
+              <% if request.main_view.attached? %>
+                <div class="break-inside-avoid relative group w-full mb-4">
+                  <div class="overflow-hidden rounded-2xl border border-white/10 bg-neutral-800 min-h-[200px] transition-all duration-300 ease-out hover:scale-[1.02] hover:shadow-2xl hover:border-white/20">
+                    <%= image_tag request.main_view.variant(:dashboard), loading: :lazy, decoding: :async, alt: "Zen Garden Design - User Generated #{index}", class: "w-full h-auto block" %>
+                  </div>
+                </div>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </section>
+  <% end %>
+
+  <!-- Desert Section -->
+  <% if @desert_requests.size > 3 %>
+    <section id="desert" class="max-w-7xl mx-auto mt-32 px-4 sm:px-6 lg:px-8">
+      <!-- Text Card -->
+      <div class="relative rounded-3xl bg-neutral-900 border border-white/10 p-6 md:p-10 mb-12 overflow-hidden group hover:border-white/20 transition-all duration-500">
+        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 md:w-96 md:h-96 bg-amber-500/10 blur-[100px] rounded-full pointer-events-none"></div>
+        <div class="relative z-10 w-full">
+          <div class="text-left mb-8">
+            <h2 class="text-3xl md:text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-orange-300 to-amber-500 mb-6">
+              Luxury Desert & Xeriscape Ideas - Real Homeowner Renovations
+            </h2>
+            <p class="text-neutral-300 text-lg md:text-xl leading-relaxed max-w-4xl">
+              Explore authentic <strong class="text-white">drought-tolerant yard planners</strong> in action. This collection of user-generated Desert Modern landscapes demonstrates <strong class="text-white">smart xeriscaping</strong> that saves water without sacrificing style. See how our community uses Hadaa to visualize <strong class="text-white">native plants</strong> and modern hardscapes, turning a standard backyard into a sustainable, high-value oasis for a fraction of the cost of a traditional designer.
+            </p>
+          </div>
+
+          <div class="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
+            <% @desert_requests.each_with_index do |request, index| %>
+              <% if request.main_view.attached? %>
+                <div class="break-inside-avoid relative group w-full mb-4">
+                  <div class="overflow-hidden rounded-2xl border border-white/10 bg-neutral-800 min-h-[200px] transition-all duration-300 ease-out hover:scale-[1.02] hover:shadow-2xl hover:border-white/20">
+                    <%= image_tag request.main_view.variant(:dashboard), loading: :lazy, decoding: :async, alt: "Desert Landscape Design - User Generated #{index}", class: "w-full h-auto block" %>
+                  </div>
+                </div>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </section>
+  <% end %>
+
+  <!-- Mediterranean Section -->
+  <% if @mediterranean_requests.size > 3 %>
+    <section id="mediterranean" class="max-w-7xl mx-auto mt-32 px-4 sm:px-6 lg:px-8">
+      <!-- Text Card -->
+      <div class="relative rounded-3xl bg-neutral-900 border border-white/10 p-6 md:p-10 mb-12 overflow-hidden group hover:border-white/20 transition-all duration-500">
+        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 md:w-96 md:h-96 bg-blue-500/10 blur-[100px] rounded-full pointer-events-none"></div>
+        <div class="relative z-10 w-full">
+          <div class="text-left mb-8">
+            <h2 class="text-3xl md:text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-300 to-indigo-500 mb-6">
+              Mediterranean & Coastal Garden Ideas - AI Landscape Visualizer
+            </h2>
+            <p class="text-neutral-300 text-lg md:text-xl leading-relaxed max-w-4xl">
+              Visualize your own Italian retreat with these user-generated Mediterranean garden designs. Our community uses Hadaa's <strong class="text-white">garden visualizer</strong> to combine sun-drenched pavers with <strong class="text-white">climate-specific plants</strong> like olive trees and lavender. These trusted examples bridge the gap between inspiration and reality, offering a clear vision for your own <strong class="text-white">DIY yard layout</strong> and renovation.
+            </p>
+          </div>
+
+          <div class="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
+            <% @mediterranean_requests.each_with_index do |request, index| %>
+              <% if request.main_view.attached? %>
+                <div class="break-inside-avoid relative group w-full mb-4">
+                  <div class="overflow-hidden rounded-2xl border border-white/10 bg-neutral-800 min-h-[200px] transition-all duration-300 ease-out hover:scale-[1.02] hover:shadow-2xl hover:border-white/20">
+                    <%= image_tag request.main_view.variant(:dashboard), loading: :lazy, decoding: :async, alt: "Mediterranean Garden Design - User Generated #{index}", class: "w-full h-auto block" %>
                   </div>
                 </div>
               <% end %>
