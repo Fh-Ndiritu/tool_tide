@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_29_204522) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_31_165348) do
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -56,6 +56,93 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_29_204522) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "agora_brand_contexts", force: :cascade do |t|
+    t.string "key", null: false
+    t.text "raw_content"
+    t.datetime "last_crawled_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.json "metadata"
+    t.index ["key"], name: "index_agora_brand_contexts_on_key", unique: true
+  end
+
+  create_table "agora_comments", force: :cascade do |t|
+    t.integer "post_id", null: false
+    t.string "author_agent_id", null: false
+    t.text "body"
+    t.string "comment_type", default: "general"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "net_score", default: 0
+    t.index ["author_agent_id"], name: "index_agora_comments_on_author_agent_id"
+    t.index ["post_id"], name: "index_agora_comments_on_post_id"
+  end
+
+  create_table "agora_executions", force: :cascade do |t|
+    t.integer "post_id", null: false
+    t.string "platform"
+    t.json "metrics", default: {}
+    t.text "admin_notes"
+    t.datetime "executed_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "video_prompt"
+    t.text "image_prompt"
+    t.text "tiktok_text"
+    t.text "facebook_text"
+    t.text "linkedin_text"
+    t.index ["post_id"], name: "index_agora_executions_on_post_id"
+  end
+
+  create_table "agora_learned_patterns", force: :cascade do |t|
+    t.string "pattern_type"
+    t.string "context_tag"
+    t.text "content"
+    t.float "confidence", default: 0.0
+    t.integer "source_execution_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["pattern_type", "confidence"], name: "index_agora_learned_patterns_on_pattern_type_and_confidence"
+    t.index ["source_execution_id"], name: "index_agora_learned_patterns_on_source_execution_id"
+  end
+
+  create_table "agora_posts", force: :cascade do |t|
+    t.string "author_agent_id", null: false
+    t.string "title", null: false
+    t.text "body"
+    t.integer "revision_number", default: 1
+    t.string "status", default: "draft"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "net_score", default: 0
+    t.string "ancestry"
+    t.index ["ancestry"], name: "index_agora_posts_on_ancestry"
+    t.index ["author_agent_id"], name: "index_agora_posts_on_author_agent_id"
+    t.index ["status"], name: "index_agora_posts_on_status"
+  end
+
+  create_table "agora_trends", force: :cascade do |t|
+    t.string "period", null: false
+    t.json "content", default: {}
+    t.json "source_metadata", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["period"], name: "index_agora_trends_on_period"
+  end
+
+  create_table "agora_votes", force: :cascade do |t|
+    t.string "votable_type", null: false
+    t.integer "votable_id", null: false
+    t.string "voter_id", null: false
+    t.integer "weight", default: 1
+    t.integer "direction", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "voter_type_str", default: "Agent"
+    t.index ["votable_type", "votable_id", "voter_id"], name: "index_agora_votes_uniqueness", unique: true
+    t.index ["votable_type", "votable_id"], name: "index_agora_votes_on_votable"
   end
 
   create_table "audios", force: :cascade do |t|
@@ -500,6 +587,9 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_29_204522) do
   end
 
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "agora_comments", "agora_posts", column: "post_id"
+  add_foreign_key "agora_executions", "agora_posts", column: "post_id"
+  add_foreign_key "agora_learned_patterns", "agora_executions", column: "source_execution_id"
   add_foreign_key "audios", "vlogs"
   add_foreign_key "auto_fixes", "project_layers"
   add_foreign_key "canvas", "users"

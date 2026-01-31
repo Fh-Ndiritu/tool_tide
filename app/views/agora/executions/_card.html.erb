@@ -1,0 +1,50 @@
+<div id="<%= dom_id(execution) %>" class="bg-gray-900 border border-purple-500/30 rounded-lg overflow-hidden shadow-lg flex flex-col h-full">
+  <div class="p-5 border-b border-gray-800 flex justify-between items-start bg-gray-800/50">
+    <div class="flex items-center">
+      <% if execution.image.attached? %>
+        <%= image_tag execution.image, class: "w-16 h-16 object-cover rounded-md mr-4 border border-gray-700" %>
+      <% end %>
+      <div>
+        <h3 class="text-xl font-bold text-white mb-1"><%= execution.post.title %></h3>
+        <span class="text-xs text-purple-400 font-mono uppercase tracking-wide"><%= execution.platform %> Campaign</span>
+      </div>
+    </div>
+    <div class="text-right">
+      <span class="block text-2xl font-bold text-white"><%= number_to_currency(execution.spend || 0) %></span>
+      <span class="text-xs text-gray-500">Spend</span>
+    </div>
+  </div>
+
+  <div class="p-5 grid grid-cols-3 gap-4 flex-grow">
+    <div class="text-center p-3 bg-gray-800/30 rounded-lg border border-gray-800 flex flex-col justify-center">
+      <span class="block text-lg font-bold text-gray-200"><%= execution.impressions %></span>
+      <span class="text-[10px] text-gray-500 uppercase">Impressions</span>
+    </div>
+    <div class="text-center p-3 bg-gray-800/30 rounded-lg border border-gray-800 flex flex-col justify-center">
+      <span class="block text-lg font-bold text-gray-200"><%= execution.clicks %></span>
+      <span class="text-[10px] text-gray-500 uppercase">Clicks</span>
+    </div>
+    <div class="text-center p-3 bg-gray-800/30 rounded-lg border border-gray-800 flex flex-col justify-center">
+      <span class="block text-lg font-bold text-green-400"><%= execution.roas %>x</span>
+      <span class="text-[10px] text-gray-500 uppercase">ROAS</span>
+    </div>
+  </div>
+
+  <div class="px-5 pb-5 mt-auto">
+    <%= form_with url: upload_analytics_agora_execution_path(execution), method: :post, local: true, multipart: true, class: "border-2 border-dashed border-gray-700 rounded-lg p-6 text-center hover:border-purple-500 hover:bg-gray-800 transition-colors cursor-pointer group relative mb-4" do |f| %>
+      <%= f.file_field :analytics_screenshot, class: "absolute inset-0 w-full h-full opacity-0 cursor-pointer",
+          onchange: "this.parentElement.classList.add('opacity-50', 'pointer-events-none'); this.nextElementSibling.innerHTML = '<span class=\"animate-pulse text-purple-400\">🔮 Analyzing Screenshot...</span>'; this.form.requestSubmit()" %>
+      <div class="text-gray-500 group-hover:text-purple-400 pointer-events-none transition-all duration-200">
+        <svg class="w-8 h-8 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+        <span class="text-sm font-medium">Drop Analytics Screenshot</span>
+      </div>
+    <% end %>
+
+    <div class="flex justify-between items-center pt-2 border-t border-gray-800">
+       <span class="text-xs text-gray-600 font-mono">ID: #<%= execution.id %></span>
+       <%= link_to agora_execution_path(execution), class: "flex-grow ml-4 text-center bg-purple-900/30 hover:bg-purple-600 text-purple-300 hover:text-white py-2 rounded transition-colors text-sm font-bold uppercase tracking-wider" do %>
+         View Full Execution →
+       <% end %>
+    </div>
+  </div>
+</div>

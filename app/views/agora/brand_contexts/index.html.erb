@@ -1,0 +1,118 @@
+<div class="max-w-5xl mx-auto">
+  <%= turbo_stream_from "brand_context_updates" %>
+
+  <!-- Header -->
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-100 flex items-center">
+        <span class="mr-2 text-purple-500">🧠</span> Brand Context
+      </h1>
+      <p class="text-sm text-gray-500 mt-1">Configure the institutional knowledge base for your AI agents.</p>
+    </div>
+  </div>
+
+  <!-- Flash Messages & Job Status -->
+  <div id="brand_context_status">
+    <% if flash[:notice] %>
+      <%= render "agora/shared/flash_message", type: :notice, message: flash[:notice] %>
+    <% end %>
+    <% if flash[:alert] %>
+      <%= render "agora/shared/flash_message", type: :alert, message: flash[:alert] %>
+    <% end %>
+  </div>
+
+  <!-- URL Input Form -->
+  <div class="bg-gray-900 border border-gray-800 rounded-lg p-6 mb-8">
+    <h2 class="text-gray-400 font-bold uppercase text-xs tracking-wider mb-4">Source URLs</h2>
+
+    <%= form_with url: agora_brand_contexts_path, method: :post, class: "space-y-4" do |f| %>
+      <div>
+        <label class="block text-sm font-medium text-gray-300 mb-2">Website URL *</label>
+        <input type="url" name="website_url" required
+               placeholder="https://yoursite.com"
+               value="<%= @website_context&.metadata&.dig('website_url') %>"
+               class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-gray-100 placeholder-gray-500 focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+        <p class="text-xs text-gray-500 mt-1">Main website to analyze for brand context</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-300 mb-2">llms.txt URL (optional)</label>
+          <input type="url" name="llms_txt_url"
+                 placeholder="https://yoursite.com/llms.txt"
+                 value="<%= @website_context&.metadata&.dig('llms_txt_url') %>"
+                 class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-gray-100 placeholder-gray-500 focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+          <p class="text-xs text-gray-500 mt-1">If empty, will be auto-generated</p>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-300 mb-2">llms-full.txt URL (optional)</label>
+          <input type="url" name="llms_full_txt_url"
+                 placeholder="https://yoursite.com/llms-full.txt"
+                 value="<%= @website_context&.metadata&.dig('llms_full_txt_url') %>"
+                 class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-gray-100 placeholder-gray-500 focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+          <p class="text-xs text-gray-500 mt-1">If empty, will be auto-generated</p>
+        </div>
+      </div>
+
+      <div class="pt-4">
+        <% if @website_context.present? %>
+          <button type="submit" class="bg-gray-700 hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+            🔄 Refresh Context
+          </button>
+        <% else %>
+          <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+            🚀 Start Crawl
+          </button>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Context Display -->
+  <div id="brand_context_list">
+    <%= render "agora/brand_contexts/list",
+        brand_contexts: @brand_contexts,
+        website_context: @website_context,
+        llms_txt: @llms_txt,
+        llms_full_txt: @llms_full_txt %>
+  </div>
+</div>
+
+<style>
+  /* Dark mode prose overrides for markdown content */
+  .prose-invert h1, .prose-invert h2, .prose-invert h3, .prose-invert h4 {
+    color: #e5e7eb;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+  }
+  .prose-invert p {
+    color: #9ca3af;
+    margin-bottom: 0.75em;
+  }
+  .prose-invert ul, .prose-invert ol {
+    color: #9ca3af;
+    padding-left: 1.5em;
+  }
+  .prose-invert li {
+    margin-bottom: 0.25em;
+  }
+  .prose-invert code {
+    background: #374151;
+    padding: 0.125em 0.25em;
+    border-radius: 0.25em;
+    font-size: 0.875em;
+  }
+  .prose-invert pre {
+    background: #1f2937;
+    padding: 1em;
+    border-radius: 0.5em;
+    overflow-x: auto;
+  }
+  .prose-invert a {
+    color: #818cf8;
+  }
+  .prose-invert strong {
+    color: #e5e7eb;
+  }
+</style>

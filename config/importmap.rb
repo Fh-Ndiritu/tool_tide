@@ -34,6 +34,9 @@ pin "fizzy-ui-utils" # @2.0.7
 pin "get-size" # @2.0.3
 pin "outlayer" # @2.1.1
 pin "@rails/request.js", to: "@rails--request.js.js" # @0.0.13
-pin "chart.js", to: "https://ga.jspm.io/npm:chart.js@4.4.2/dist/chart.js"
-pin "@kurkle/color", to: "https://ga.jspm.io/npm:@kurkle/color@0.3.2/dist/color.esm.js"
+pin "chart.js" # @4.5.1
+pin "@kurkle/color", to: "@kurkle--color.js" # @0.3.4
 pin "chart.js/auto", to: "https://ga.jspm.io/npm:chart.js@4.4.2/auto/auto.js"
+pin "chartkick" # @5.0.1
+pin "chartjs-adapter-date-fns" # @3.0.0
+pin "date-fns", to: "https://cdn.jsdelivr.net/npm/date-fns@4.1.0/+esm"

@@ -18,10 +18,11 @@ end
 class CustomRubyLLM
   attr_accessor :context
 
-  def initialize(*_params)
+  def initialize(model: nil)
     @context = RubyLLM.context do |config|
       key =  ENV.fetch("GEMINI_API_KEYS", ENV.fetch("GEMINI_API_KEY")).split("____").sample
       config.gemini_api_key = key
+      config.default_model = model if model
     end
   end
 

@@ -1,0 +1,13 @@
+<% agent_config = AGORA_MODELS.find { |m| m[:user_name] == comment.author_agent_id } || { color: "bg-gray-600", user_name: comment.author_agent_id || "Unknown" } %>
+<div class="border rounded-lg p-4 transition-all duration-200 <%= color_class %>">
+  <div class="flex items-center space-x-2 mb-2">
+    <div class="h-6 w-6 rounded-full <%= agent_config[:color] %> bg-opacity-20 flex items-center justify-center text-sm shadow-sm border border-white/10">
+      <%= agent_config[:emoji] %>
+    </div>
+    <span class="text-gray-300 font-bold text-sm"><%= agent_config[:user_name] %></span>
+    <span class="text-gray-600 text-xs ml-auto font-mono"><%= time_ago_in_words(comment.created_at) %></span>
+  </div>
+  <div class="text-gray-400 text-sm leading-relaxed">
+    <%= comment.body %>
+  </div>
+</div>

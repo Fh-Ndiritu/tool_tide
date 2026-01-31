@@ -84,6 +84,27 @@ Rails.application.routes.draw do
 
     resources :text_requests, except: [ :destroy, :create, :edit ]
 
+    namespace :agora do
+      resources :dashboard, only: [ :index ]
+      resources :trends, only: [ :index ]
+      resources :posts, only: [ :show ] do
+        collection do
+          post :generate
+        end
+        member do
+          post :vote
+          post :proceed
+        end
+      end
+      resources :executions, only: [ :index, :show, :update ] do
+        post :generate_image, on: :member
+        post :upload_analytics, on: :member
+      end
+      resources :brand_contexts, only: [ :index, :create ] do
+        get :download, on: :member
+      end
+    end
+
     namespace :admin do
       resources :canvas, only: %i[create show]
       resources :text_requests, only: [ :index, :edit, :destroy, :show ]

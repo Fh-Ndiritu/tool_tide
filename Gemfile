@@ -89,6 +89,8 @@ gem "active_storage_validations"
 gem "faraday", "~> 2.13"
 
 gem "kramdown", "~> 2.5"
+gem "chartkick"
+gem "groupdate"
 
 # Bot prevention
 gem "rack-attack"
@@ -133,3 +135,7 @@ gem "omniauth"
 gem "omniauth-google-oauth2"
 gem "omniauth-rails_csrf_protection"
 gem "rack-cors", "~> 3.0"
+
+gem "reverse_markdown", "~> 3.0"
+
+gem "faraday-follow_redirects", "~> 0.5.0"

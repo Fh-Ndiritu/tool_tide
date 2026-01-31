@@ -1,0 +1,27 @@
+<nav class="bg-gray-900 border-b border-gray-800">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <div class="flex items-center">
+        <div class="flex-shrink-0 text-white font-bold text-xl tracking-wider">
+          AGORA <span class="text-indigo-500 text-xs align-top">CMD</span>
+        </div>
+        <div class="hidden md:block">
+          <div class="ml-10 flex items-baseline space-x-4">
+            <%= link_to "Think Tank", agora_dashboard_index_path, class: "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" %>
+            <%= link_to "Trend Radar", agora_trends_path, class: "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" %>
+            <%= link_to "Cockpit", agora_executions_path, class: "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" %>
+          </div>
+        </div>
+      </div>
+      <div class="hidden md:block">
+        <div class="ml-4 flex items-center md:ml-6 space-x-4">
+          <%= link_to "🧠 Brand Context", agora_brand_contexts_path, class: "text-gray-400 hover:text-purple-400 text-sm transition-colors" %>
+          <div class="flex items-center">
+            <span class="text-gray-400 text-xs mr-2">Status: LIVE</span>
+            <div class="h-2 w-2 bg-green-500 rounded-full animate-pulse"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

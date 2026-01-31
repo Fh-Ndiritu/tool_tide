@@ -12,3 +12,5 @@ window.Stimulus = application
 eagerLoadControllersFrom("controllers", application)
 
 import "channels"
+import "chartkick"
+import "chartjs-adapter-date-fns"

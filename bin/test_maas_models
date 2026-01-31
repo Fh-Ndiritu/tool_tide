@@ -1,0 +1,37 @@
+#!/usr/bin/env ruby
+require_relative "../config/environment"
+
+puts "🔍 Testing Fox (Qwen) and Wolf (Minimax)..."
+puts "==========================================="
+
+models = [
+  AGORA_MODELS.find { |m| m[:user_name] == "Fox" },
+  AGORA_MODELS.find { |m| m[:user_name] == "Wolf" }
+].compact
+
+prompt = <<~PROMPT
+  You are a creative agent.
+  Output a JSON object with a 'message' key containing "Hello World".
+  Do NOT output any other text, thinking lines, or markdown.
+PROMPT
+
+models.each do |config|
+  puts "\n🤖 Testing #{config[:user_name]} (#{config[:model_name]})..."
+
+  begin
+    client = Agora::LLMClient.client_for(config)
+    response = client.chat.ask(prompt)
+
+    puts "Context Raw: #{response.content.first(100)}..."
+
+    # Try parsing
+    json = JSON.parse(response.content)
+    puts "✅ Valid JSON: #{json.inspect}"
+  rescue JSON::ParserError => e
+    puts "❌ JSON Parse Failed: #{e.message}"
+    puts "Raw Output:\n#{response.content}"
+  rescue => e
+    puts "❌ Request Failed: #{e.message}"
+  end
+  puts "-------------------------------------------"
+end

@@ -1,0 +1,11 @@
+<%
+  color = type.to_sym == :alert ? "red" : (type.to_sym == :success ? "green" : "blue")
+  # Map notice to green/blue if desired, currently using blue/notice as default informational or green if success specified
+  if type.to_sym == :notice
+    color = "green"
+  end
+%>
+
+<div class="bg-<%= color %>-900/50 border border-<%= color %>-700 text-<%= color %>-300 px-4 py-3 rounded-lg mb-6 animate-fade-in-down">
+  <%= message %>
+</div>

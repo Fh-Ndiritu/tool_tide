@@ -1,0 +1,28 @@
+<% agent_config = AGORA_MODELS.find { |m| m[:user_name] == revision.author_agent_id } || { color: "bg-gray-600", emoji: "🤖" } %>
+<%= link_to agora_post_path(revision), class: "block group" do %>
+  <div class="flex items-center justify-between p-2 bg-gray-800/50 rounded-lg border border-gray-700/50 hover:border-gray-600 hover:bg-gray-800 transition-all duration-200">
+    <div class="flex items-center space-x-2">
+      <div class="h-6 w-6 rounded-full <%= agent_config[:color] %> flex items-center justify-center text-xs">
+        <%= agent_config[:emoji] %>
+      </div>
+      <span class="text-xs font-mono text-gray-300">v<%= revision.revision_number %></span>
+      <span class="px-1.5 py-0.5 rounded text-[10px] font-bold uppercase
+        <%= case revision.status
+            when 'accepted' then 'bg-emerald-900/50 text-emerald-400'
+            when 'rejected' then 'bg-red-900/50 text-red-400'
+            when 'published' then 'bg-gray-700 text-gray-300'
+            when 'needs_revision' then 'bg-amber-900/50 text-amber-400'
+            else 'bg-gray-700 text-gray-400'
+            end %>">
+        <%= revision.status.titleize %>
+      </span>
+    </div>
+    <div class="flex items-center space-x-3 text-xs">
+      <span class="font-mono <%= revision.net_score > 0 ? 'text-green-400' : revision.net_score < 0 ? 'text-red-400' : 'text-gray-500' %>">
+        <%= revision.net_score > 0 ? '+' : '' %><%= revision.net_score %>
+      </span>
+      <span class="text-gray-600"><%= revision.votes.count %> votes</span>
+      <svg class="w-3 h-3 text-gray-600 group-hover:text-indigo-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+    </div>
+  </div>
+<% end %>

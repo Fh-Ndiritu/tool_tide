@@ -1,0 +1,42 @@
+<%# Revision History Slider - Shows revisions of a post %>
+<%# Usage: render 'agora/posts/revision_slider', post: @post %>
+
+<% revisions = post.class.where(title: post.title).order(:revision_number) %>
+<% if revisions.count > 1 %>
+<div class="bg-gray-800/50 rounded-lg p-4 border border-gray-700" data-controller="revision-slider">
+  <div class="flex items-center justify-between mb-3">
+    <h4 class="text-sm font-medium text-gray-300">
+      🕐 Revision History
+    </h4>
+    <span class="text-xs text-gray-500">
+      <span data-revision-slider-target="currentLabel">Rev <%= post.revision_number %></span>
+      of <%= revisions.count %>
+    </span>
+  </div>
+
+  <input type="range"
+         min="1"
+         max="<%= revisions.count %>"
+         value="<%= post.revision_number %>"
+         class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-indigo-500"
+         data-revision-slider-target="slider"
+         data-action="input->revision-slider#slide">
+
+  <div class="flex justify-between text-xs text-gray-500 mt-1">
+    <span>v1 (Original)</span>
+    <span>v<%= revisions.count %> (Current)</span>
+  </div>
+
+  <div class="mt-3 text-xs text-gray-400" data-revision-slider-target="info">
+    <% revisions.each do |rev| %>
+      <div class="hidden" data-revision="<%= rev.revision_number %>">
+        <strong>Revision <%= rev.revision_number %></strong> -
+        <%= time_ago_in_words(rev.created_at) %> ago
+        <% if rev.id != post.id %>
+          <br><%= link_to "View this version", agora_post_path(rev), class: "text-indigo-400 hover:underline" %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
+<% end %>

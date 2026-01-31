@@ -1,0 +1,91 @@
+<% if brand_contexts.any? %>
+  <div class="space-y-6">
+    <h2 class="text-gray-400 font-bold uppercase text-xs tracking-wider">Generated Context Files</h2>
+
+    <!-- Website.md -->
+    <% if website_context %>
+      <div class="bg-gray-900 border border-gray-800 rounded-lg overflow-hidden">
+        <div class="bg-gray-800/50 px-4 py-3 flex items-center justify-between">
+          <div class="flex items-center space-x-3">
+            <span class="text-blue-400">📄</span>
+            <span class="font-mono text-sm text-gray-300">website.md</span>
+            <% if website_context.metadata["source_type"] == "fetched_from_url" %>
+              <span class="bg-blue-900/50 text-blue-300 text-[10px] px-2 py-0.5 rounded border border-blue-800">Fetched</span>
+            <% elsif website_context.metadata["source_type"] == "generated_by_ai" %>
+              <span class="bg-purple-900/50 text-purple-300 text-[10px] px-2 py-0.5 rounded border border-purple-800">✨ AI Generated</span>
+            <% end %>
+          </div>
+          <div class="flex items-center space-x-3">
+            <span class="text-xs text-gray-500">
+              Last updated: <%= website_context.last_crawled_at&.strftime("%b %d, %Y %H:%M") || "Never" %>
+            </span>
+            <%= link_to "⬇️ Download", download_agora_brand_context_path(website_context),
+                class: "text-xs bg-gray-700 hover:bg-gray-600 text-gray-300 px-3 py-1 rounded transition-colors" %>
+          </div>
+        </div>
+        <div class="p-4 max-h-96 overflow-y-auto prose prose-invert prose-sm max-w-none">
+          <%= markdown(website_context.raw_content || "") %>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- llms.txt -->
+    <% if llms_txt %>
+      <div class="bg-gray-900 border border-gray-800 rounded-lg overflow-hidden">
+        <div class="bg-gray-800/50 px-4 py-3 flex items-center justify-between">
+          <div class="flex items-center space-x-3">
+            <span class="text-green-400">📋</span>
+            <span class="font-mono text-sm text-gray-300">llms.txt</span>
+            <% if llms_txt.metadata["source_type"] == "fetched_from_url" %>
+              <span class="bg-blue-900/50 text-blue-300 text-[10px] px-2 py-0.5 rounded border border-blue-800">Fetched</span>
+            <% elsif llms_txt.metadata["source_type"] == "generated_by_ai" %>
+              <span class="bg-purple-900/50 text-purple-300 text-[10px] px-2 py-0.5 rounded border border-purple-800">✨ AI Generated</span>
+            <% end %>
+          </div>
+          <div class="flex items-center space-x-3">
+            <span class="text-xs text-gray-500">
+              Last updated: <%= llms_txt.last_crawled_at&.strftime("%b %d, %Y %H:%M") || "Never" %>
+            </span>
+            <%= link_to "⬇️ Download", download_agora_brand_context_path(llms_txt),
+                class: "text-xs bg-gray-700 hover:bg-gray-600 text-gray-300 px-3 py-1 rounded transition-colors" %>
+          </div>
+        </div>
+        <div class="p-4 max-h-96 overflow-y-auto prose prose-invert prose-sm max-w-none">
+          <%= markdown(llms_txt.raw_content || "") %>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- llms-full.txt -->
+    <% if llms_full_txt %>
+      <div class="bg-gray-900 border border-gray-800 rounded-lg overflow-hidden">
+        <div class="bg-gray-800/50 px-4 py-3 flex items-center justify-between">
+          <div class="flex items-center space-x-3">
+            <span class="text-orange-400">📚</span>
+            <span class="font-mono text-sm text-gray-300">llms-full.txt</span>
+            <% if llms_full_txt.metadata["source_type"] == "fetched_from_url" %>
+              <span class="bg-blue-900/50 text-blue-300 text-[10px] px-2 py-0.5 rounded border border-blue-800">Fetched</span>
+            <% elsif llms_full_txt.metadata["source_type"] == "generated_by_ai" %>
+              <span class="bg-purple-900/50 text-purple-300 text-[10px] px-2 py-0.5 rounded border border-purple-800">✨ AI Generated</span>
+            <% end %>
+          </div>
+          <div class="flex items-center space-x-3">
+            <span class="text-xs text-gray-500">
+              Last updated: <%= llms_full_txt.last_crawled_at&.strftime("%b %d, %Y %H:%M") || "Never" %>
+            </span>
+            <%= link_to "⬇️ Download", download_agora_brand_context_path(llms_full_txt),
+                class: "text-xs bg-gray-700 hover:bg-gray-600 text-gray-300 px-3 py-1 rounded transition-colors" %>
+          </div>
+        </div>
+        <div class="p-4 max-h-96 overflow-y-auto prose prose-invert prose-sm max-w-none">
+          <%= markdown(llms_full_txt.raw_content || "") %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <div class="text-center py-16 border-2 border-dashed border-gray-800 rounded-lg">
+    <p class="text-gray-500 text-lg mb-2">No brand context configured yet</p>
+    <p class="text-gray-600 text-sm">Submit your website URL above to get started.</p>
+  </div>
+<% end %>

@@ -79,3 +79,29 @@ VOICE_MAP = {
   Chiru: "Zephyr"
 
 }.freeze
+
+# I need a total of max 7 votes on each post, 7 - 2 human votes = 5 AI votes
+# 6 models are sufficient, where one gives an idea and the others vote on it
+
+AGORA_HEAD_HUNTER = {
+  user_name: "Falcon",
+  model_name: "gemini-2.5-flash",
+  notes: "The Head Hunter",
+  color: "bg-indigo-600",
+  avatar: "user"
+}
+
+
+
+AGORA_MODELS = [
+  { user_name: "Pelegrine", emoji: "🦅", model_name: "zai-org/glm-4.7-maas", publisher: "zhipuai", location: "global", notes: "Participant", color: "bg-blue-200", avatar: "users", provider: :vertex },
+  { user_name: "Shark", emoji: "🦈", model_name: "meta/llama-4-maverick-17b-128e-instruct-maas", publisher: "meta", location: "us-east5", notes: "Participant", color: "bg-rose-200", avatar: "bolt", provider: :vertex },
+  { user_name: "Dolphin", emoji: "🐬", model_name: "deepseek-ai/deepseek-v3.2-maas", publisher: "deepseek-ai", location: "global", notes: "Participant", color: "bg-cyan-200", avatar: "sparkles", provider: :vertex },
+  { user_name: "Fox", emoji: "🦊", model_name: "qwen/qwen3-coder-480b-a35b-instruct-maas", publisher: "qwen", location: "global", notes: "Participant", color: "bg-amber-200", avatar: "light-bulb", provider: :vertex },
+  { user_name: "Wolf", emoji: "🐺", model_name: "minimaxai/minimax-m2-maas", publisher: "minimaxai", location: "global", notes: "Participant", color: "bg-slate-300", avatar: "eye", provider: :vertex }
+]
+
+VERTEX_CONFIG = {
+  project_id: ENV.fetch("GOOGLE_CLOUD_PROJECT", "tool-tide"),
+  location: ENV.fetch("VERTEX_LOCATION", "us-central1")
+}.freeze

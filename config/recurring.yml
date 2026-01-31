@@ -17,3 +17,11 @@ production:
   hn_poll_task:
     class: HnPollJob
     schedule: every 30 minutes
+
+  trend_hunter:
+    class: Agora::TrendHunterJob
+    schedule: every day at 6am
+
+  pitch_generator:
+    class: Agora::PitchGeneratorJob
+    schedule: every 8 hours
