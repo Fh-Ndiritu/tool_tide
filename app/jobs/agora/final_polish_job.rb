@@ -9,14 +9,10 @@ module Agora
       assembler = Agora::ContextAssemblyService.new
       context = assembler.assemble
 
-      # 2. Select Agent (e.g., 'Falcon' for Strategy or 'Wolf' for Execution)
-      # For Final Polish, we might want a specific persona or a collaborative output.
-      # Let's assign it to 'Wolf' (Execution Specialist) or random.
-      agent_config = AGORA_MODELS.find { |m| m[:user_name] == "Wolf" } || AGORA_MODELS.sample
-      # 3. Generate Implementation Brief
-      brief = generate_brief(post, context, agent_config)
+      # 2. Generate Implementation Brief
+      brief = generate_brief(post, context)
 
-      # 4. Store as Admin Notes (or a separate artifact, but admin_notes works for now)
+      # 3. Store as Admin Notes (or a separate artifact, but admin_notes works for now)
       # We create an Execution record to hold this "Plan" even before metrics come in.
       # 4. Create Execution record with structured data
       execution = Agora::Execution.create!(
@@ -50,7 +46,7 @@ module Agora
     class BriefSchema < RubyLLM::Schema
       object :result do
         string :video_prompt, description: "A detailed prompt for Google Veo to generate a high-quality video for this campaign"
-        string :image_prompt, description: "A detailed prompt for Nano Banana to generate a high-quality image for this campaign"
+        string :image_prompt, description: "A detailed prompt for NANO BANANA to generate a high-quality image for this campaign"
         string :tiktok_text, description: "Optimized caption and hashtags for TikTok"
         string :facebook_text, description: "Optimized ad copy for Facebook"
         string :linkedin_text, description: "Professional yet engaging post text for LinkedIn"
@@ -58,7 +54,7 @@ module Agora
       end
     end
 
-    def generate_brief(post, context, agent_config)
+    def generate_brief(post, context)
       # Fetch website link from brand context if available
       website_context = Agora::BrandContext.find_by(key: "website.md")
       website_url = website_context&.metadata&.dig("origin_url") || "our website"

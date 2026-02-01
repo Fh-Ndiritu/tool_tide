@@ -4,7 +4,8 @@ puts "\n🤖 Testing Agora Models Connection...\n"
 puts "=" * 50
 
 AGORA_MODELS.each do |config|
-  puts "\nTesting #{config[:user_name]} (#{config[:publisher]}/#{config[:model_name]})..."
+  location = config[:location] || "default"
+  puts "\nTesting #{config[:user_name]} (#{config[:publisher]}/#{config[:model_name]}) @ #{location}..."
 
   begin
     client = Agora::LLMClient.client_for(config)
@@ -13,16 +14,19 @@ AGORA_MODELS.each do |config|
     response = client.ask("Briefly introduce yourself in 1 sentence.")
 
     if response.content.present?
-      puts "✅ Success: \"#{response.content.strip}\""
+      puts "✅ Success: \"#{response.content.strip.truncate(100)}\""
     else
       puts "⚠️  Empty Response (Check Logs)"
     end
 
   rescue => e
     puts "❌ Failed: #{e.message}"
-    puts "   Tip: Check publisher/model_name in constants.rb"
+    puts "   Publisher: #{config[:publisher]}, Model: #{config[:model_name]}"
+    puts "   Location: #{location}"
+    puts "   Tip: Check publisher/model_name/location in constants.rb"
   end
   puts "-" * 50
 end
 
 puts "\nDone.\n"
+

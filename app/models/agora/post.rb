@@ -17,11 +17,21 @@ module Agora
 
     broadcasts_refreshes
 
-    after_create_commit { Agora::CommentatorJob.perform_later(self) }
+    after_create_commit { Agora::VotingJob.perform_later(self) }
 
     def update_net_score!
       score = votes.sum("direction * CASE WHEN voter_type_str = 'Human' THEN 2 ELSE 1 END")
       update_column(:net_score, score)
+    end
+
+    # Calculate score as percentage of votes cast (-100% to +100%)
+    # Resilient to model count changes - uses actual votes cast
+    def score_percentage
+      total_votes = votes.count
+      return 0 if total_votes.zero?
+
+      net = votes.sum(:direction)
+      ((net.to_f / total_votes) * 100).round
     end
   end
 end

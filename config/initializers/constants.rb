@@ -98,7 +98,8 @@ AGORA_MODELS = [
   { user_name: "Shark", emoji: "🦈", model_name: "meta/llama-4-maverick-17b-128e-instruct-maas", publisher: "meta", location: "us-east5", notes: "Participant", color: "bg-rose-200", avatar: "bolt", provider: :vertex },
   { user_name: "Dolphin", emoji: "🐬", model_name: "deepseek-ai/deepseek-v3.2-maas", publisher: "deepseek-ai", location: "global", notes: "Participant", color: "bg-cyan-200", avatar: "sparkles", provider: :vertex },
   { user_name: "Fox", emoji: "🦊", model_name: "qwen/qwen3-coder-480b-a35b-instruct-maas", publisher: "qwen", location: "global", notes: "Participant", color: "bg-amber-200", avatar: "light-bulb", provider: :vertex },
-  { user_name: "Wolf", emoji: "🐺", model_name: "minimaxai/minimax-m2-maas", publisher: "minimaxai", location: "global", notes: "Participant", color: "bg-slate-300", avatar: "eye", provider: :vertex }
+  { user_name: "Wolf", emoji: "🐺", model_name: "minimaxai/minimax-m2-maas", publisher: "minimaxai", location: "global", notes: "Participant", color: "bg-slate-300", avatar: "eye", provider: :vertex },
+  { user_name: "Leopard", emoji: "🐆", model_name: "mistral-small-2503", publisher: "mistralai", location: "us-central1", notes: "Participant", color: "bg-purple-200", avatar: "cloud", provider: :vertex }
 ]
 
 VERTEX_CONFIG = {

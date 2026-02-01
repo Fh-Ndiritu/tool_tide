@@ -46,9 +46,6 @@ module Agora
       end
 
       Rails.logger.info("CommentatorJob: Created #{comments_created} comments for Post ##{post.id}")
-
-      # Trigger next step in pipeline
-      Agora::VotingJob.perform_later(post)
     end
 
     private

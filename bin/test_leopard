@@ -1,0 +1,122 @@
+#!/usr/bin/env rails runner
+
+# Test Leopard (Mistral) model in isolation for all Agora job scenarios
+
+puts "\n🐆 Testing Leopard (Mistral Small 2503) for Agora Jobs\n"
+puts "=" * 60
+
+leopard = AGORA_MODELS.find { |m| m[:user_name] == "Leopard" }
+
+unless leopard
+  puts "❌ Leopard not found in AGORA_MODELS!"
+  exit 1
+end
+
+client = Agora::LLMClient.client_for(leopard)
+
+# Test 1: CommentatorJob Prompt
+puts "\n📝 Test 1: CommentatorJob (PRO/CON Comments)\n"
+puts "-" * 60
+
+comment_prompt = <<~PROMPT
+  You are Leopard, a participant in our Think Tank.
+  Your Persona: Critical, strategic, and direct.
+
+  CONTEXT:
+  Brand: Hadaa AI Landscaping - AI-powered landscape design tool.
+
+  POST TO REVIEW:
+  Title: "TikTok Dance Challenge with Before/After Reveals"
+  Body: Partner with landscaping influencers to create viral dance challenges showcasing dramatic before/after property transformations using Hadaa.
+
+  TASK:
+  You must provide two distinct perspectives on this idea:
+  1. PRO (Strategy): A constructive observation on why this works.
+  2. CON (Critique): A critical observation on potential risks or flaws.
+
+  OUTPUT FORMAT:
+  Respond with ONLY a valid JSON object:
+  {
+    "pro": "One specific strength or improvement strategy (Max 1 sentence)",
+    "con": "One specific risk or flaw (Max 1 sentence)"
+  }
+PROMPT
+
+begin
+  response = client.chat.ask(comment_prompt)
+  puts "Raw response: #{response.content}"
+
+  json_str = response.content.strip.gsub(/```json/i, "").gsub(/```/, "").strip
+  parsed = JSON.parse(json_str)
+
+  if parsed["pro"] && parsed["con"]
+    puts "✅ CommentatorJob: PASSED"
+    puts "   PRO: #{parsed['pro']}"
+    puts "   CON: #{parsed['con']}"
+  else
+    puts "⚠️  CommentatorJob: Missing fields"
+    puts "   Parsed: #{parsed.inspect}"
+  end
+rescue JSON::ParserError => e
+  puts "❌ CommentatorJob: JSON Parse Error - #{e.message}"
+rescue => e
+  puts "❌ CommentatorJob: Error - #{e.message}"
+end
+
+# Test 2: VotingJob Prompt
+puts "\n🗳️ Test 2: VotingJob (Vote Decision)\n"
+puts "-" * 60
+
+vote_prompt = <<~PROMPT
+  [SYSTEM: ADVERSARIAL MODE ACTIVATED]
+  You are Leopard, the "Chief Skeptic" of this Think Tank.
+  Your goal is NOT to be nice; it is to prevent us from wasting money on boring, safe, or "invisible" ideas.
+
+  CONTEXT (Brand & Platform Meta):
+  Brand: Hadaa AI Landscaping - AI-powered landscape design tool.
+
+  CONTENT TO EVALUATE:
+  TikTok Dance Challenge with Before/After Reveals
+  Partner with landscaping influencers to create viral dance challenges showcasing dramatic before/after property transformations using Hadaa.
+
+  STRESS TEST CRITERIA:
+  1. "The Thumb-Stop Test": If you saw this on TikTok/FB, would you actually stop, or is it just "another ad"?
+  2. "The Generic Trap": Could any of our competitors run this exact same ad? If yes, it is a fail.
+  3. "The Risk Factor": Does this have enough "guts" to be polarizing? Safe is the same as dead.
+
+  TASK:
+  1. Briefly state ONE specific reason why this idea might FAIL in the real world.
+  2. Briefly state ONE specific reason why this idea might be a VIRAL breakout.
+  3. FINAL VOTE: Cast your vote based on the "Guts-to-ROI" ratio.
+     - Vote +1 ONLY if you would bet your own career on this idea being a massive winner.
+     - Vote -1 if it is safe, generic, or boring.
+
+  RESPOND WITH ONLY THIS JSON OBJECT (no markdown, no explanation):
+  {"reason_to_fail": "one sentence", "reason_to_win": "one sentence", "vote": 1 or -1}
+PROMPT
+
+begin
+  response = client.chat.ask(vote_prompt)
+  puts "Raw response: #{response.content}"
+
+  json_str = response.content.strip.gsub(/```json/i, "").gsub(/```/, "").strip
+  parsed = JSON.parse(json_str)
+
+  if parsed["vote"] && [1, -1].include?(parsed["vote"])
+    puts "✅ VotingJob: PASSED"
+    puts "   Reason to Fail: #{parsed['reason_to_fail']}"
+    puts "   Reason to Win: #{parsed['reason_to_win']}"
+    puts "   Vote: #{parsed['vote'] > 0 ? '👍 +1' : '👎 -1'}"
+  else
+    puts "⚠️  VotingJob: Invalid vote value"
+    puts "   Parsed: #{parsed.inspect}"
+  end
+rescue JSON::ParserError => e
+  puts "❌ VotingJob: JSON Parse Error - #{e.message}"
+rescue => e
+  puts "❌ VotingJob: Error - #{e.message}"
+end
+
+puts "\n" + "=" * 60
+puts "🐆 Leopard Isolation Tests Complete"
+puts "=" * 60

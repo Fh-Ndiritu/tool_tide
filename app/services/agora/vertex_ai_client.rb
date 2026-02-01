@@ -5,6 +5,7 @@ require "ostruct"
 module Agora
   # Client for Vertex AI Model Garden (MaaS) endpoints via OpenAPI interface
   # Uses Gcp::Client for authentication via service account
+  # Supports both OpenAPI format (most models) and rawPredict format (Mistral)
   class VertexAIClient
     def initialize(model_name:, publisher: "google", location: nil)
       @model_name = model_name
@@ -65,40 +66,62 @@ module Agora
       JSON.parse(content)
     end
 
-    def build_endpoint
-      # Vertex AI MaaS OpenAPI format:
-      # https://{location}-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/endpoints/openapi/chat/completions
+    def mistral?
+      @publisher == "mistralai"
+    end
 
-      # Determine hostname based on location
+    def build_endpoint
       hostname = if @location == "global"
         "aiplatform.googleapis.com"
       else
         "#{@location}-aiplatform.googleapis.com"
       end
 
-      "https://#{hostname}/v1/projects/#{@project_id}/locations/#{@location}/endpoints/openapi/chat/completions"
+      if mistral?
+        # Mistral uses rawPredict endpoint format:
+        # https://{region}-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/publishers/mistralai/models/{model_id}:rawPredict
+        model_id = @model_name.split("/").last # e.g., "mistralai/mistral-small-2503" -> "mistral-small-2503"
+        "https://#{hostname}/v1/projects/#{@project_id}/locations/#{@location}/publishers/mistralai/models/#{model_id}:rawPredict"
+      else
+        # OpenAPI format for most MaaS models
+        "https://#{hostname}/v1/projects/#{@project_id}/locations/#{@location}/endpoints/openapi/chat/completions"
+      end
     end
 
     def build_payload(prompt)
-      # OpenAI-compatible payload structure for MaaS
-      # We append a system instruction to force pure JSON/content without commentary
       system_instruction = "You are a precise data processing assistant. Output ONLY the requested format (e.g., JSON) with NO introductory text, markdown formatting, or commentary."
 
-      {
-        "model" => @model_name,
-        "messages" => [
-          { "role" => "system", "content" => system_instruction },
-          { "role" => "user", "content" => prompt }
-        ],
-        "temperature" => 0.5,
-        "max_tokens" => 2048,
-        "stream" => false,
-        "response_format" => { "type" => "json_object" }
-      }
+      if mistral?
+        # Mistral rawPredict payload format
+        model_id = @model_name.split("/").last
+        {
+          "model" => model_id,
+          "messages" => [
+            { "role" => "system", "content" => system_instruction },
+            { "role" => "user", "content" => prompt }
+          ],
+          "temperature" => 0.5,
+          "max_tokens" => 2048,
+          "stream" => false
+        }
+      else
+        # OpenAI-compatible payload structure for MaaS
+        {
+          "model" => @model_name,
+          "messages" => [
+            { "role" => "system", "content" => system_instruction },
+            { "role" => "user", "content" => prompt }
+          ],
+          "temperature" => 0.5,
+          "max_tokens" => 2048,
+          "stream" => false,
+          "response_format" => { "type" => "json_object" }
+        }
+      end
     end
 
     def extract_content(response)
-      # OpenAI-compatible response format:
+      # Both OpenAPI and Mistral use OpenAI-compatible response format:
       # { "choices": [{ "message": { "content": "..." } }] }
       choices = response["choices"] || []
       return "" if choices.empty?
