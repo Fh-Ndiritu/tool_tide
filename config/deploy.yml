@@ -64,6 +64,7 @@ env:
     - TELEGRAM_BOT_TOKEN
     - GOOGLE_CLOUD_PROJECT
     - VERTEX_LOCATION
+    - GOOGLE_JSON_CREDENTIALS
 
   clear:
     # Run the Solid Queue Supervisor inside the web server's Puma process to do jobs.

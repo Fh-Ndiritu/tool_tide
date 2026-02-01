@@ -14,11 +14,18 @@ module ToolTide
     config.load_defaults 8.0
 
     config.before_configuration do
-      # this initializer is required very early in the boot process in the environment settings
-      # we can move it elsewhere to avoid double initialization but that should be memoized already
+      # Write credentials to /tmp to bypass read-only filesystem
+      creds_path = "/tmp/google_credentials.json"
+
+      if ENV["GOOGLE_JSON_CREDENTIALS"].present?
+        File.write(creds_path, ENV["GOOGLE_JSON_CREDENTIALS"])
+        # Set the path so the Google Cloud SDK picks it up automatically
+        ENV["GOOGLE_APPLICATION_CREDENTIALS"] = creds_path
+      end
+
+      # Your existing Brevo requirement
       require Rails.root.join("config/initializers/brevo_api_mailer.rb")
     end
-
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
     # Common ones are `templates`, `generators`, or `middleware`, for example.
