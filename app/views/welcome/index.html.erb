@@ -24,7 +24,7 @@
             Let's build your
             <br/>
             <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#00acc1] via-[#f23faf] to-white">
-              dream exterior.
+             dream landscape.
             </span>
           </h1>
           <p class="text-xl text-neutral-400 max-w-xl mx-auto lg:mx-0 font-light leading-relaxed">
@@ -35,10 +35,15 @@
         <%# Social Proof Line %>
         <div class="flex items-center justify-center lg:justify-start gap-4">
            <div class="flex -space-x-4">
-              <%# Mocks for user avatars %>
-             <div class="w-10 h-10 rounded-full bg-neutral-700 border-2 border-[#121212] flex items-center justify-center text-xs font-bold text-neutral-400">SM</div>
-             <div class="w-10 h-10 rounded-full bg-neutral-600 border-2 border-[#121212] flex items-center justify-center text-xs font-bold text-neutral-400">JT</div>
-             <div class="w-10 h-10 rounded-full bg-neutral-500 border-2 border-[#121212] flex items-center justify-center text-xs font-bold text-neutral-400">ER</div>
+              <div class="w-10 h-10 rounded-full border-2 border-[#121212] overflow-hidden relative">
+                <%= image_tag "testimonials/avatar1.png", class: "w-full h-full object-cover" %>
+              </div>
+              <div class="w-10 h-10 rounded-full border-2 border-[#121212] overflow-hidden relative">
+                <%= image_tag "testimonials/avatar2.png", class: "w-full h-full object-cover" %>
+              </div>
+              <div class="w-10 h-10 rounded-full border-2 border-[#121212] overflow-hidden relative">
+                <%= image_tag "testimonials/avatar3.png", class: "w-full h-full object-cover" %>
+              </div>
            </div>
            <div class="text-left">
               <div class="flex text-[#ffb400]">
@@ -136,16 +141,22 @@
                <% end %>
              </div>
              <p class="text-neutral-300 mb-8 text-lg font-medium leading-relaxed relative z-10">"I uploaded a photo of my messy backyard and within minutes I had 4 beautiful options to choose from. The local plant suggestions were a game changer."</p>
-             <div class="flex items-center justify-between border-t border-white/10 pt-6 mt-auto">
-                <div>
-                   <p class="font-bold text-white text-lg">Sarah M.</p>
-                   <p class="text-xs text-[#00acc1] font-bold uppercase tracking-wide">Homeowner</p>
-                </div>
-                 <div class="flex items-center gap-1.5 px-2 py-1 bg-[#f23faf]/10 rounded-lg border border-[#f23faf]/20">
-                   <span class="text-xs">💎</span>
-                   <span class="text-[10px] font-bold text-[#f23faf] uppercase tracking-wide">Verified Purchase</span>
+              <div class="flex items-center gap-4 pt-6 mt-auto border-t border-white/10">
+                 <div class="w-12 h-12 rounded-full overflow-hidden border border-white/10 shrink-0">
+                    <%= image_tag "testimonials/avatar1.png", class: "w-full h-full object-cover" %>
                  </div>
-             </div>
+                 <div>
+                    <div class="text-white font-bold text-lg leading-tight">Sarah M.</div>
+                    <div class="text-xs font-medium mt-1 flex flex-wrap items-center gap-2">
+                       <span class="text-[#00acc1] uppercase tracking-wide">Homeowner</span>
+                       <span class="text-neutral-600">•</span>
+                       <span class="flex items-center gap-1 text-[#f23faf]">
+                          <span class="text-xs">💎</span>
+                          Verified Purchase
+                       </span>
+                    </div>
+                 </div>
+              </div>
           </div>
 
            <%# Testimonial 2 %>
@@ -157,16 +168,22 @@
                <% end %>
              </div>
              <p class="text-neutral-300 mb-8 text-lg font-medium leading-relaxed relative z-10">"As a small landscaping business, Hadaa lets me show clients potential outcomes without spending hours in CAD. It pays for itself in one project."</p>
-             <div class="flex items-center justify-between border-t border-white/10 pt-6 mt-auto">
-                <div>
-                   <p class="font-bold text-white text-lg">James T.</p>
-                   <p class="text-xs text-[#00acc1] font-bold uppercase tracking-wide">Landscape Designer</p>
-                </div>
-                 <div class="flex items-center gap-1.5 px-2 py-1 bg-[#f23faf]/10 rounded-lg border border-[#f23faf]/20">
-                   <span class="text-xs">💎</span>
-                   <span class="text-[10px] font-bold text-[#f23faf] uppercase tracking-wide">Verified Purchase</span>
+              <div class="flex items-center gap-4 pt-6 mt-auto border-t border-white/10">
+                 <div class="w-12 h-12 rounded-full overflow-hidden border border-white/10 shrink-0">
+                    <%= image_tag "testimonials/avatar2.png", class: "w-full h-full object-cover" %>
                  </div>
-             </div>
+                 <div>
+                    <div class="text-white font-bold text-lg leading-tight">James T.</div>
+                    <div class="text-xs font-medium mt-1 flex flex-wrap items-center gap-2">
+                       <span class="text-[#00acc1] uppercase tracking-wide">Designer</span>
+                       <span class="text-neutral-600">•</span>
+                       <span class="flex items-center gap-1 text-[#f23faf]">
+                          <span class="text-xs">💎</span>
+                          Verified Purchase
+                       </span>
+                    </div>
+                 </div>
+              </div>
           </div>
 
            <%# Testimonial 3 %>
@@ -178,16 +195,22 @@
                <% end %>
              </div>
              <p class="text-neutral-300 mb-8 text-lg font-medium leading-relaxed relative z-10">"Using Auto Fix on my muddy backyard photo revealed drainage issues I didn't know I had. Fixed them, reshot, and the design came out perfect."</p>
-             <div class="flex items-center justify-between border-t border-white/10 pt-6 mt-auto">
-                <div>
-                   <p class="font-bold text-white text-lg">Elena R.</p>
-                   <p class="text-xs text-[#00acc1] font-bold uppercase tracking-wide">Garden Enthusiast</p>
-                </div>
-                <div class="flex items-center gap-1.5 px-2 py-1 bg-[#f23faf]/10 rounded-lg border border-[#f23faf]/20">
-                   <span class="text-xs">💎</span>
-                   <span class="text-[10px] font-bold text-[#f23faf] uppercase tracking-wide">Verified Purchase</span>
+              <div class="flex items-center gap-4 pt-6 mt-auto border-t border-white/10">
+                 <div class="w-12 h-12 rounded-full overflow-hidden border border-white/10 shrink-0">
+                    <%= image_tag "testimonials/avatar3.png", class: "w-full h-full object-cover" %>
                  </div>
-             </div>
+                 <div>
+                    <div class="text-white font-bold text-lg leading-tight">Elena R.</div>
+                    <div class="text-xs font-medium mt-1 flex flex-wrap items-center gap-2">
+                       <span class="text-[#00acc1] uppercase tracking-wide">Enthusiast</span>
+                       <span class="text-neutral-600">•</span>
+                       <span class="flex items-center gap-1 text-[#f23faf]">
+                          <span class="text-xs">💎</span>
+                          Verified Purchase
+                       </span>
+                    </div>
+                 </div>
+              </div>
           </div>
         </div>
      </div>
@@ -256,39 +279,47 @@
 
   <%# --- FAQ Section --- %>
   <section class="py-24 px-6 bg-[#0f0f0f] border-t border-white/5">
-    <div class="max-w-3xl mx-auto">
+    <div class="max-w-6xl mx-auto">
       <h2 class="text-3xl md:text-5xl font-black text-center mb-16 text-white">Frequently Asked Questions</h2>
 
-      <div class="space-y-4">
+      <div class="flex flex-col md:flex-row gap-6 items-start">
         <%
            faqs = [
+             { q: "How does pricing and credits work?", a: "We charge a one-time fee of <b>$10 for 200 credits</b> that you can use anytime and purchase more if needed. These credits <b>never expire</b>. Additionally, using the <b>Auto Detect</b> feature and the <b>Planting Guide Generator</b> is completely <b>free</b> and does not consume any credits." },
              { q: "What kind of photos work best?", a: "A bright, clear photo taken during the day works best. Avoid extreme angles (too high or too low) and try to capture the entire area you want to redesign in the frame." },
              { q: "How do I use the AI Brush?", a: "The AI Brush allows you to mask specific areas—like a lawn you want to remove—then apply a 'Style Preset' or 'Smart Fix' to instantly regenerate just that section with new materials or plants." },
              { q: "What are the main design tools available?", a: "Hadaa offers three powerful ways to design: <b>Presets</b> for instant full-garden makeovers, <b>Smart Fix</b> for changing specific elements, and <b>Auto Fix</b> for intelligent enhancements." },
              { q: "How do I get the best results?", a: "Create new design iterations from specific layers, upload multiple angles, switch between Standard and Pro models, and use Upscale for print-quality downloads." },
              { q: "How do I keep existing trees or structures?", a: "Simply avoid painting over them with the mask brush. The AI only changes the areas you highlight. You can also use the 'Eraser' tool to refine your mask." },
-             { q: "Can I visualize my garden at night or in different seasons?", a: "Yes! In the Prompt Editor, use keywords like 'night lighting,' 'sunset,' 'autumn foliage,' or 'snowy winter' to see year-round performance." },
+             { q: "Can I visualize my garden at different times/seasons?", a: "Yes! In the Prompt Editor, use keywords like 'night lighting,' 'sunset,' 'autumn foliage,' or 'snowy winter' to see year-round performance." },
              { q: "How do I add specific plants or materials?", a: "Use <b>Smart Fix</b> to target a specific area and type exactly what you want (e.g., 'blue slate pavers' or 'white hydrangeas')." },
              { q: "What is the 'Shopping List' feature?", a: "Once you love a design, the Planting Guide generates a shopping list of similar plants available in your region, including care profiles." },
              { q: "What information does the Planting Guide provide?", a: "It gives you a comprehensive care profile for each plant—including sun requirements, watering schedules, and soil preferences." },
              { q: "How does the 'Local Plants' toggle work?", a: "When enabled, it ensures every plant suggested is compatible with your specific USDA hardiness zone and local climate." },
              { q: "Can I add specific features like trees, seating, or water?", a: "Yes! Switch on <b>'Add Trees'</b> for structure, <b>'Add Seating'</b> for lounge areas, or <b>'Add Water'</b> for ponds/fountains—all intelligently placed by the AI." }
            ]
+           half_count = (faqs.size / 2.0).ceil
+           left_column = faqs.take(half_count)
+           right_column = faqs.drop(half_count)
         %>
 
-        <% faqs.each do |faq| %>
-          <details class="group bg-[#18181b] rounded-2xl border border-white/5 open:border-[#00acc1]/50 open:bg-[#1f2024] transition-all duration-300">
-            <summary class="flex items-center justify-between p-6 cursor-pointer list-none">
-              <span class="font-bold text-lg text-neutral-300 group-hover:text-white transition-colors pr-6"><%= faq[:q] %></span>
-              <div class="relative w-6 h-6 flex items-center justify-center">
-                 <div class="absolute w-4 h-0.5 bg-white transition-transform duration-300 group-open:rotate-180"></div>
-                 <div class="absolute w-4 h-0.5 bg-white rotate-90 transition-transform duration-300 group-open:rotate-180 group-open:opacity-0"></div>
-              </div>
-            </summary>
-            <div class="px-6 pb-6 text-neutral-400 leading-relaxed animate-fade-in-down border-t border-white/5 mt-0 pt-4">
-              <p><%= faq[:a].html_safe %></p>
-            </div>
-          </details>
+        <% [left_column, right_column].each do |column_faqs| %>
+          <div class="flex-1 w-full space-y-4">
+            <% column_faqs.each do |faq| %>
+              <details class="group bg-[#18181b] rounded-2xl border border-white/5 open:border-[#00acc1]/50 open:bg-[#1f2024] transition-all duration-300 shadow-lg">
+                <summary class="flex items-center justify-between p-6 cursor-pointer list-none">
+                  <span class="font-bold text-lg text-neutral-300 group-hover:text-white transition-colors pr-6"><%= faq[:q] %></span>
+                  <div class="relative w-6 h-6 flex items-center justify-center">
+                     <div class="absolute w-4 h-0.5 bg-white transition-transform duration-300 group-open:rotate-180"></div>
+                     <div class="absolute w-4 h-0.5 bg-white rotate-90 transition-transform duration-300 group-open:rotate-180 group-open:opacity-0"></div>
+                  </div>
+                </summary>
+                <div class="px-6 pb-6 text-neutral-400 leading-relaxed animate-fade-in-down border-t border-white/5 mt-0 pt-4">
+                  <p><%= faq[:a].html_safe %></p>
+                </div>
+              </details>
+            <% end %>
+          </div>
         <% end %>
       </div>
     </div>

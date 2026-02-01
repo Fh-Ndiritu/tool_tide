@@ -41,14 +41,18 @@ class ApplicationController < ActionController::Base
 
   def validate_payment_status
     return if devise_controller?
-    # if the user has not paid and is not on welcome page or payments page redirect to welcome page
-    if !current_user.has_paid? && controller_name != "welcome" && controller_name != "payment_transactions"
-      redirect_to welcome_path and return
+    return if controller_name == "onboarding_survey"
+    return if controller_name == "welcome"
+    return if controller_name == "payment_transactions"
+
+    # Priority 1: Onboarding survey must be completed first
+    unless current_user.can_skip_onboarding_survey?
+      redirect_to onboarding_survey_path and return
     end
 
-    # if the user has paid and not completed onboarding survey redirect to onboarding survey page
-    if current_user.has_paid? && controller_name != "onboarding_survey" && !current_user.can_skip_onboarding_survey?
-      redirect_to onboarding_survey_path and return
+    # Priority 2: User must have paid
+    unless current_user.has_paid?
+      redirect_to welcome_path and return
     end
   end
 
