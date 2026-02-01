@@ -62,6 +62,8 @@ env:
     - RECAPTCHA_SECRET_KEY
     - TELEGRAM_CHAT_ID
     - TELEGRAM_BOT_TOKEN
+    - GOOGLE_CLOUD_PROJECT
+    - VERTEX_LOCATION
 
   clear:
     # Run the Solid Queue Supervisor inside the web server's Puma process to do jobs.
