@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_31_165348) do
+ActiveRecord::Schema[8.0].define(version: 2026_02_01_145759) do
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -118,6 +118,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_31_165348) do
     t.datetime "updated_at", null: false
     t.integer "net_score", default: 0
     t.string "ancestry"
+    t.string "platform"
     t.index ["ancestry"], name: "index_agora_posts_on_ancestry"
     t.index ["author_agent_id"], name: "index_agora_posts_on_author_agent_id"
     t.index ["status"], name: "index_agora_posts_on_status"

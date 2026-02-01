@@ -1,5 +1,5 @@
 <% agent_config = AGORA_MODELS.find { |m| m[:user_name] == revision.author_agent_id } || { color: "bg-gray-600", emoji: "🤖" } %>
-<%= link_to agora_post_path(revision), class: "block group" do %>
+<%= link_to agora_post_path(revision), class: "block group", style: "margin-left: #{(revision.depth || 0) * 1.5}rem;" do %>
   <div class="flex items-center justify-between p-2 bg-gray-800/50 rounded-lg border border-gray-700/50 hover:border-gray-600 hover:bg-gray-800 transition-all duration-200">
     <div class="flex items-center space-x-2">
       <div class="h-6 w-6 rounded-full <%= agent_config[:color] %> flex items-center justify-center text-xs">

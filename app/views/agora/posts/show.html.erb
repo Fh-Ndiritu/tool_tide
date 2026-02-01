@@ -96,7 +96,7 @@
              <h3 class="text-red-400 font-bold uppercase tracking-widest text-xs">Critiques</h3>
              <span class="bg-red-900/20 text-red-400 px-2 py-0.5 rounded text-xs font-mono"><%= @post.comments.where(comment_type: 'critique').count %></span>
           </div>
-          <% @post.comments.where(comment_type: 'critique').order('RANDOM()').each do |comment| %>
+          <% @post.comments.where(comment_type: 'critique').each do |comment| %>
             <%= render partial: "agora/posts/comment_node", locals: { comment: comment, color_class: "border-l-4 border-red-500/50 bg-gray-800/50 hover:bg-gray-800" } %>
           <% end %>
         </div>
@@ -107,7 +107,7 @@
              <h3 class="text-emerald-400 font-bold uppercase tracking-widest text-xs">Strategies</h3>
              <span class="bg-emerald-900/20 text-emerald-400 px-2 py-0.5 rounded text-xs font-mono"><%= @post.comments.where(comment_type: ['strategy', 'general']).count %></span>
           </div>
-          <% @post.comments.where(comment_type: ['strategy', 'general']).order('RANDOM()').each do |comment| %>
+          <% @post.comments.where(comment_type: ['strategy', 'general']).each do |comment| %>
             <%= render partial: "agora/posts/comment_node", locals: { comment: comment, color_class: "border-l-4 border-emerald-500/50 bg-gray-800/50 hover:bg-gray-800" } %>
           <% end %>
         </div>

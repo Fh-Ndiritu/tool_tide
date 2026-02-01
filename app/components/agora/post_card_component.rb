@@ -3,11 +3,12 @@ module Agora
     def initialize(post:)
       @post = post
       @agent = AGORA_MODELS.find { |m| m[:user_name] == post.author_agent_id } || { color: "bg-gray-500", avatar: "user", user_name: post.author_agent_id || "Unknown", emoji: "🤖" }
-      @children = post.children.order(:revision_number)
+      # Fetch FULL ancestry to show nested revisions
+      @revisions = post.descendants.order(:revision_number)
     end
 
     def has_revisions?
-      @children.any?
+      @revisions.any?
     end
 
     def badge_classes

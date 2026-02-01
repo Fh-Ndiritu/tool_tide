@@ -7,22 +7,23 @@ module Agora
     def perform(post_id)
       post = Agora::Post.find(post_id)
 
-      # 1. Gather critique feedback from agents
-      critiques = post.comments
-                      .where(comment_type: "critique")
-                      .pluck(:body)
-                      .join("\n\n")
+      # 1. Gather critique feedback from FULL ANCESTRY (Root -> Current)
+      # We want to ensure we address all past feedback, not just the latest.
+      # Using path_ids from ancestry gem to get all IDs in the chain.
+      critiques = Agora::Comment.where(post_id: post.path_ids, comment_type: "critique")
+                                .pluck(:body)
+                                .join("\n\n")
+
+      if critiques.blank?
+        Rails.logger.warn("[RevisionGenerator] No critiques found for Post ancestry ##{post.id}. Aborting revision.")
+        broadcast_system_status("⚠️ No critiques found for ##{post.id}. Rejected.")
+        post.update!(status: "rejected")
+        return
+      end
 
       # 2. Gather context
       assembler = Agora::ContextAssemblyService.new
       context = assembler.assemble
-
-      # Deadlock Fix: If no critiques exist (e.g., all votes were +1 strategies), force Self-Reflection
-      if critiques.blank?
-        Rails.logger.warn("[RevisionGenerator] No critiques found for Post ##{post.id}. Triggering Self-Reflection.")
-        broadcast_system_status("🪞 Self-Reflecting on Idea ##{post.id}...")
-        critiques = generate_self_reflection(post, context)
-      end
 
       # 3. Generate revised pitch (blind - no mention of revision)
       revised_body = generate_revised_pitch(post, critiques, context)
@@ -39,6 +40,7 @@ module Agora
         author_agent_id: post.author_agent_id,
         title: post.title, # Keep same title
         body: revised_body,
+        platform: post.platform,
         status: "published",
         revision_number: post.revision_number + 1
       )
@@ -62,13 +64,17 @@ module Agora
         Title: #{post.title}
         #{post.body}
 
-        FEEDBACK FROM REVIEWERS:
+        FEEDBACK FROM REVIEWERS (Cumulative History):
         #{critiques}
 
         TASK:
-        Create an improved version of this pitch that addresses the reviewer feedback.
-        Make the pitch more compelling, specific, and actionable.
-        Keep the core idea but strengthen weak points.
+          You are not just an editor; you are a Reconstructor.
+          The previous version was REJECTED for being too safe or generic.
+
+          1. Analyze the feedback ruthlessly.
+          2. If the reviewers called it "boring," CHANGE the hook entirely.
+          3. Address the "Generic Trap" by adding a brand-specific "Gutsy" angle that only this brand could pull off.
+          4. DO NOT play it safe. If the feedback is harsh, the revision must be radical.
 
         Output ONLY the improved pitch body in markdown (~300 words).
         DO NOT mention this is a revision or reference the feedback directly.
@@ -91,34 +97,6 @@ module Agora
           nil # Return nil on failure
         end
       end
-    end
-
-    def generate_self_reflection(post, context)
-      prompt = <<~PROMPT
-        You are the "Master Strategist" holding a mirror to our own ideas.
-
-        CONTEXT:
-        #{context}
-
-        OUR PITCH:
-        Title: #{post.title}
-        #{post.body}
-
-        TASK:
-        The team liked this idea, but it's not perfect yet.
-        Play the role of a "Constructive Antagonist".
-        Identify 3 weak points or missed opportunities in this pitch.
-        Be ruthless but helpful.
-
-        Output ONLY the critique points as a bulleted list.
-      PROMPT
-
-      agent_config = AGORA_HEAD_HUNTER
-      response = Agora::LLMClient.client_for(agent_config).chat.ask(prompt)
-      response.content
-    rescue => e
-      Rails.logger.error("[RevisionGenerator] Self-Reflection Failed: #{e.message}")
-      "Focus on making the hook more visual and the call to action clearer."
     end
   end
 end

@@ -5,8 +5,107 @@
 
 <div class="bg-gray-900 border border-gray-800 rounded-lg p-6 mb-8">
   <h2 class="text-gray-400 font-bold uppercase text-xs tracking-wider mb-4">Signal Incoming Volume (Daily)</h2>
-  <!-- Using Chartkick -->
-  <%= line_chart Agora::Trend.all.uniq.group_by { |t| t.created_at.to_date }.transform_values(&:count), colors: ["#f97316"], library: {backgroundColor: "#transparent", scales: { x: { grid: { display: false } }, y: { grid: { color: "#374151" } } } } %>
+  <%
+    # Prepare data for Chart.js
+    daily_counts = Agora::Trend.all.uniq.group_by { |t| t.created_at.to_date }.transform_values(&:count).sort.to_h
+    chart_labels = daily_counts.keys.map { |d| d.strftime("%b %d") }
+    chart_values = daily_counts.values
+  %>
+
+  <div class="relative h-64 w-full">
+    <canvas id="trendVolumeChart"></canvas>
+  </div>
+
+  <script>
+    (function() {
+      const initTrendChart = () => {
+        const ctx = document.getElementById('trendVolumeChart');
+        if (!ctx) return;
+
+        // Destroy existing chart if it exists to prevent duplicate rendering
+        if (window.trendChartInstance) {
+          window.trendChartInstance.destroy();
+        }
+
+        const labels = <%= chart_labels.to_json.html_safe %>;
+        const data = <%= chart_values.to_json.html_safe %>;
+
+        window.trendChartInstance = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: 'Signals/Day',
+              data: data,
+              borderColor: '#f97316', // Orange-500
+              backgroundColor: 'rgba(249, 115, 22, 0.1)',
+              borderWidth: 2,
+              pointBackgroundColor: '#f97316',
+              pointBorderColor: '#1f2937', // Gray-900
+              fill: true,
+              tension: 0.4
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                display: false
+              },
+              tooltip: {
+                backgroundColor: '#1f2937',
+                titleColor: '#f3f4f6',
+                bodyColor: '#d1d5db',
+                borderColor: '#374151',
+                borderWidth: 1,
+                padding: 10,
+                displayColors: false
+              }
+            },
+            scales: {
+              x: {
+                grid: {
+                  display: false,
+                  drawBorder: false
+                },
+                ticks: {
+                  color: '#9ca3af', // Gray-400
+                  font: {
+                    family: 'monospace',
+                    size: 10
+                  }
+                }
+              },
+              y: {
+                grid: {
+                  color: '#374151', // Gray-700
+                  drawBorder: false
+                },
+                ticks: {
+                  color: '#9ca3af',
+                  stepSize: 1,
+                  font: {
+                    family: 'monospace',
+                    size: 10
+                  }
+                },
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      };
+
+      // Initialize on Turbo Load and initial Load
+      document.addEventListener("turbo:load", initTrendChart);
+      if (document.readyState === "complete" || document.readyState === "interactive") {
+        initTrendChart();
+      } else {
+        document.addEventListener("DOMContentLoaded", initTrendChart);
+      }
+    })();
+  </script>
 </div>
 
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -17,7 +17,7 @@ module Agora
       # 4. Create Execution record with structured data
       execution = Agora::Execution.create!(
         post: post,
-        platform: extract_platform(post.body),
+        platform: post.platform.presence || extract_platform(post.body),
         video_prompt: brief["video_prompt"],
         image_prompt: brief["image_prompt"],
         tiktok_text: brief["tiktok_text"],
@@ -72,9 +72,9 @@ module Agora
 
         TASK:
         Analyze this idea carefully.
-        1. If it involves video, write a specific prompt for **Google Veo**.
+        1. If it involves video, write a specific prompt for **Google Veo** and avoid try to show too many banners or text in the video which leads to poor quality .
         2. If it involves static images, write a specific prompt for **Nano Banana**.
-        3. Write optimized post text for **TikTok**, **Facebook**, and **LinkedIn**.
+        3. Write optimized post text for **TikTok**, **Facebook**, **LinkedIn** and **Instagram**.
 
         REQUIREMENTS:
         - Think deeply about the platform nuances (TikTok is casual/viral, LinkedIn is professional).
@@ -103,6 +103,10 @@ module Agora
         "TikTok"
       elsif body.match?(/Facebook|Meta/i)
         "Facebook"
+      elsif body.match?(/Instagram/i)
+        "Instagram"
+      elsif body.match?(/LinkedIn/i)
+        "LinkedIn"
       else
         "General"
       end

@@ -6,49 +6,42 @@ module Agora
 
     def perform
       broadcast_system_status("🧠 Generating Pitch...")
-      # 1. Select a Fresh Trend (Random daily trend from last 24h)
-      trend = Agora::Trend.where(period: "daily")
-                          .where("created_at > ?", 24.hours.ago)
-                          .order("RANDOM()")
-                          .first
 
-      unless trend
+      # 1. Assemble Full Context (Handled entirely by Service)
+      assembler = Agora::ContextAssemblyService.new
+      context_data = assembler.assemble_for_pitch
+
+      unless context_data
         Rails.logger.warn("PitchGeneratorJob: No fresh trends available")
         return
       end
 
-      # 2. Select Random Agent from Participants (Vertex AI)
-      # We filter for Vertex providers or just sample from AGORA_MODELS
+      # 2. Select Random Agent
       agent_config = AGORA_MODELS.sample
       author_name = agent_config[:user_name]
-
-      # 3. Assemble Prompt
-      assembler = Agora::ContextAssemblyService.new
-      context = assembler.assemble
-
-      # Fetch Corporate Memory (Learned Patterns)
-      corporate_memory = Agora::LearnedPattern.corporate_memory(limit: 5)
 
       prompt = <<~PROMPT
         You are #{author_name}, a participant in our Think Tank.
         Your Persona: An expert strategist who provides sharp, actionable marketing ideas.
 
-        CONTEXT:
-        #{context}
-
-        #{corporate_memory}
-
-        TODAY'S TREND:
-        Name: #{trend.content['trend_name']}
-        Hook: #{trend.content['viral_hook_idea']}
-        Intersection: #{trend.content['intersection_reason']}
+        #{context_data}
 
         TASK:
-        Create a marketing campaign pitch based on this trend.
+        Create a high-impact marketing campaign pitch by synthesizing or leveraging these trends.
+
+        STRATEGIC PIVOT:
+        We are moving from "Learning/Experimentation" to **"MARKETING SCALE"**.
+        The idea must be scalable, professional, and designed for distribution.
+
+        SELECTION REQUIREMENTS:
+        1. **Target Main Platform**: You MUST choose one (LinkedIn, Facebook, or TikTok, Instagram).
+        2. **Main Media Asset**: You MUST choose one (Reel Video, Static Image, or Website Link).
+        3. You have the freedom to pivot between marketing and learning but your content must be applicable to our brand.
+
         Requirements:
-        1. Visual Hook - Describe the first 3 seconds to grab attention
-        2. Target Platform - Specify where this would work best
-        3. Reason Why - Explain why this fits our brand
+        1. Visual Hook - Describe the first 3 seconds to grab attention (for video) or the first look (for static image) or the first sentence (for website link)
+        2. Target Platform - Specify where this would work best (based on selection)
+        3. Reason Why - Explain why this fits our brand and the chosen channel
         4. Full pitch body in markdown (~300 words)
 
         OUTPUT FORMAT:
@@ -62,7 +55,7 @@ module Agora
         }
       PROMPT
 
-      # 4. Generate with Manual JSON Parsing (since Vertex client may not support Schema)
+      # 5. Generate Pitch
       pitch_data = generate_pitch(prompt, agent_config)
 
       return unless pitch_data
@@ -70,8 +63,9 @@ module Agora
       # 5. Publish Post
       post = Agora::Post.create!(
         author_agent_id: author_name,
-        title: pitch_data["title"] || "Pitch: #{trend.content['trend_name']}",
+        title: pitch_data["title"] || "Untitled",
         body: format_pitch_body(pitch_data),
+        platform: pitch_data["target_platform"],
         status: "published",
         revision_number: 1
       )

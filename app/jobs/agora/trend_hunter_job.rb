@@ -22,9 +22,9 @@ module Agora
       assembler = Agora::ContextAssemblyService.new
       context = assembler.assemble
 
-      # 1.1 Fetch Recent History (Last 48h) to avoid repetition
+      # 1.1 Fetch Recent History (Last 72h) to avoid repetition
       recent_trends = Agora::Trend.where(period: "daily")
-                                  .where("created_at > ?", 48.hours.ago)
+                                  .where("created_at > ?", 72.hours.ago)
                                   .pluck(:content)
                                   .map { |c| c["trend_name"] }
                                   .compact
@@ -61,7 +61,7 @@ module Agora
         #{recent_trends.presence || "None yet"}
 
         TASK:
-        Identify 3-5 NEW, high-engagement marketing trends relevant to our brand's industry.
+        Identify 4-6 NEW, high-engagement marketing trends relevant to our brand's industry.
         For each trend, explain why it intersects with our brand positioning.
         Focus on trends from #{Time.current.year} that have viral potential.
       PROMPT

@@ -13,7 +13,7 @@ module Agora
       comments_created = 0
 
       # 2. Iterate through all Agents
-      AGORA_MODELS.each do |agent_config|
+      AGORA_MODELS.shuffle.each do |agent_config|
         agent_name = agent_config[:user_name]
 
         # Rule: Agents cannot comment on their own Post
@@ -25,23 +25,28 @@ module Agora
         # 4. Save Comments
         if comments_data
           # PRO (Strategy)
-          Agora::Comment.create!(
-            post: post,
-            author_agent_id: agent_name,
-            body: comments_data["pro"],
-            comment_type: "strategy"
-          )
+          if comments_data["pro"].present?
+            Agora::Comment.create!(
+              post: post,
+              author_agent_id: agent_name,
+              body: comments_data["pro"],
+              comment_type: "strategy"
+            )
+            comments_created += 1
+          end
 
           # CON (Critique)
-          Agora::Comment.create!(
-            post: post,
-            author_agent_id: agent_name,
-            body: comments_data["con"],
-            comment_type: "critique"
-          )
+          if comments_data["con"].present?
+            Agora::Comment.create!(
+              post: post,
+              author_agent_id: agent_name,
+              body: comments_data["con"],
+              comment_type: "critique"
+            )
+            comments_created += 1
+          end
 
-          comments_created += 2
-          Rails.logger.info("CommentatorJob: #{agent_name} generated PRO/CON for Post ##{post.id}")
+          Rails.logger.info("CommentatorJob: #{agent_name} generated feedback for Post ##{post.id}")
         end
       end
 
@@ -54,26 +59,30 @@ module Agora
       agent_name = agent_config[:user_name]
 
       prompt = <<~PROMPT
-        You are #{agent_name}, a participant in our Think Tank.
+        [SYSTEM: ADVERSARIAL MODE ACTIVATED]
+        You are #{agent_name}, the "Chief Marketing Skeptic" of this Think Tank.
+        Your goal is NOT to be nice; it is to prevent us from wasting money on boring, safe, or "invisible" ideas.
         Your Persona: Critical, strategic, and direct.
 
         CONTEXT:
         #{context}
 
         POST TO REVIEW:
-        Title: #{post.title}
-        Body: #{post.body}
+        <post>
+          Title: #{post.title}
+          Body: #{post.body}
+        </post>
 
         TASK:
-        You must provide two distinct perspectives on this idea:
-        1. PRO (Strategy): A constructive observation on why this works.
-        2. CON (Critique): A critical observation on potential risks or flaws.
+        You must provide a critical perspective on this idea, focus on the marketing idea not brand or branding critic:
+        1. CON (Critique): A critical observation on potential risks or flaws. (MUST )
+        2. PRO (Strategy): A constructive observation on why this works. This can be empty if you don't have a specific strategy.
 
         OUTPUT FORMAT:
         Respond with ONLY a valid JSON object:
         {
-          "pro": "One specific strength or improvement strategy (Max 1 sentence)",
-          "con": "One specific risk or flaw (Max 1 sentence)"
+          "con": "One specific risk or flaw (Max 1 sentence)",
+          "pro": "Strength which is optional, can be an empty string if you don't have a specific strategy",
         }
       PROMPT
 

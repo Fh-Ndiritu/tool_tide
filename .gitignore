@@ -4,6 +4,8 @@
 # belong in git's global ignore instead:
 # `$XDG_CONFIG_HOME/git/ignore` or `~/.config/git/ignore`
 
+
+prompts_audit.md
 # Ignore bundler config.
 /standard_sop_files/*
 /.bundle

@@ -24,4 +24,4 @@ production:
 
   pitch_generator:
     class: Agora::PitchGeneratorJob
-    schedule: every 8 hours
+    schedule: every 3 hours

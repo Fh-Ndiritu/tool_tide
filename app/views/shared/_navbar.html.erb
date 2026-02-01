@@ -212,6 +212,13 @@
                 z-50 ring-1 ring-black/5 origin-top-right lg:right-0
               "
             >
+              <%= link_to agora_dashboard_index_path, class: active_link_class(agora_dashboard_index_path), data: { action: "click->dropdown#hide" } do %>
+                <div class="font-bold mb-0.5">Agora Think Tank</div>
+                <div class="text-xs text-gray-500 group-hover:text-accent/80">
+                  AI Marketing Strategy
+                </div>
+              <% end %>
+
               <%= link_to admin_mask_requests_path, class: active_link_class(admin_mask_requests_path), data: { action: "click->dropdown#hide" } do %>
                 <div class="font-bold mb-0.5">Users/MaskEdits</div>
                 <div class="text-xs text-gray-500 group-hover:text-accent/80">

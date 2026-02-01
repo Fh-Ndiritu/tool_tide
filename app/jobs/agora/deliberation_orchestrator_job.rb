@@ -66,7 +66,7 @@ module Agora
       post.update_column(:status, "needs_revision")
 
       # Comments first (agents explain what needs improvement), then revision
-      Agora::CommentatorJob.perform_later(post)
+      Agora::CommentatorJob.perform_now(post)
       Agora::RevisionGeneratorJob.perform_later(post.id)
     end
   end

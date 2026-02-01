@@ -89,8 +89,7 @@ gem "active_storage_validations"
 gem "faraday", "~> 2.13"
 
 gem "kramdown", "~> 2.5"
-gem "chartkick"
-gem "groupdate"
+# Gems removed
 
 # Bot prevention
 gem "rack-attack"
