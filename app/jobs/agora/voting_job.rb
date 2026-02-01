@@ -71,8 +71,9 @@ module Agora
         1. Briefly state ONE specific reason why this idea might FAIL in the real world.
         2. Briefly state ONE specific reason why this idea might be a VIRAL breakout.
         3. FINAL VOTE:
-           - Vote +1 if the idea is "Differentiated." It must feel fundamentally different from a standard competitor ad.
+           - Vote +1 if the idea is "Differentiated." and you'd bet your career on this being a massive winner.
            - Vote -1 if it is "Invisible", a money drain, gutless or just a safe, mundane boring idea, it must be killed before it wastes our money and time.
+           - You MUST understand you are betting your reputation on this vote.
 
         RESPOND WITH ONLY THIS JSON OBJECT (no markdown, no explanation):
         {"reason_to_fail": "one sentence", "reason_to_win": "one sentence", "vote": 1 or -1}
