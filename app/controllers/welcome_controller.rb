@@ -1,5 +1,8 @@
 class WelcomeController < AppController
   def index
+    # if the user has paid, redirect to projects_path
+    redirect_to projects_path if current_user.has_paid?
+
     # Fetch completed mask requests with styles, grouped by style
     # limit to styles with > 5 items
     styled_requests = MaskRequest.complete.everyone

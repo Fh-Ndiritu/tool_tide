@@ -2,7 +2,11 @@ class OnboardingSurveyController < ApplicationController
   before_action :set_survey
 
   def show
-    redirect_to new_project_path if current_user.can_skip_onboarding_survey?
+    if current_user.can_skip_onboarding_survey? && current_user.has_paid?
+      redirect_to new_project_path
+    elsif current_user.can_skip_onboarding_survey? && !current_user.has_paid?
+      redirect_to welcome_path
+    end
   end
 
   def update

@@ -1,7 +1,7 @@
 <div class="min-h-screen flex flex-col md:flex-row bg-[#1a1a1a] text-white font-sans selection:bg-[#00acc1] selection:text-black" data-controller="onboarding-survey">
 
   <!-- Left Panel: Branding & Vision -->
-  <div class="md:w-5/12 relative overflow-hidden hidden md:flex flex-col justify-between p-12 z-0 border-r border-white/5">
+  <div class="md:w-5/12 relative overflow-hidden hidden md:flex flex-col justify-between p-8 z-0 border-r border-white/5">
     <!-- Abstract Background -->
     <div class="absolute inset-0 bg-gradient-to-br from-[#121212] via-[#1a1a1a] to-[#212121] z-0"></div>
     <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay z-0"></div>
@@ -17,26 +17,42 @@
       </div>
     </div>
 
-    <div class="relative z-10 space-y-8 max-w-lg">
-      <h2 class="text-5xl lg:text-6xl font-extrabold leading-[1.1] tracking-tight text-white drop-shadow-sm">
-        See your future <br/>
-        <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#00acc1] to-[#4dd0e1] animate-pulse-slow">outdoor space.</span>
+    <div class="relative z-10 space-y-6 max-w-lg">
+      <h2 class="text-4xl lg:text-5xl font-extrabold leading-[1.1] tracking-tight text-white drop-shadow-sm">
+        Master your <br/>
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#00acc1] to-[#4dd0e1] animate-pulse-slow">creative workflow.</span>
       </h2>
 
-      <div class="space-y-6">
+      <div class="space-y-4">
         <div class="flex gap-4 items-start">
-          <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10 shrink-0 text-xl">📸</div>
+          <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10 shrink-0 text-xl">🎨</div>
           <div>
-            <h4 class="font-bold text-white mb-1">Instant Visualization</h4>
-            <p class="text-neutral-400 text-sm leading-relaxed">Upload a phone photo and see it transformed into a finished landscape in seconds.</p>
+            <h4 class="font-bold text-white mb-1">Project Studio</h4>
+            <p class="text-neutral-400 text-sm leading-relaxed">A powerful workspace to manage, iterate, and perfect your landscape designs.</p>
           </div>
         </div>
 
         <div class="flex gap-4 items-start">
-           <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10 shrink-0 text-xl">🧠</div>
+           <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10 shrink-0 text-xl">✨</div>
           <div>
-            <h4 class="font-bold text-white mb-1">Smart Recommendations</h4>
-            <p class="text-neutral-400 text-sm leading-relaxed">Our engine picks plants that actually survive in your local climate and soil.</p>
+            <h4 class="font-bold text-white mb-1">Style Presets</h4>
+            <p class="text-neutral-400 text-sm leading-relaxed">Instantly apply professional aesthetics to transform any outdoor space.</p>
+          </div>
+        </div>
+
+        <div class="flex gap-4 items-start">
+           <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10 shrink-0 text-xl">🔧</div>
+          <div>
+            <h4 class="font-bold text-white mb-1">Smart Fix</h4>
+            <p class="text-neutral-400 text-sm leading-relaxed">Intelligent tools that correct perspective and alignment for photorealistic results.</p>
+          </div>
+        </div>
+
+        <div class="flex gap-4 items-start">
+           <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10 shrink-0 text-xl">⚡</div>
+          <div>
+            <h4 class="font-bold text-white mb-1">Auto Detect & Fix</h4>
+            <p class="text-neutral-400 text-sm leading-relaxed">Proactively identify and resolve design inconsistencies with one click.</p>
           </div>
         </div>
       </div>
@@ -46,9 +62,9 @@
       <div class="p-4 rounded-xl bg-white/5 border border-white/10 backdrop-blur-md">
         <div class="flex items-center gap-3 mb-2">
            <div class="flex -space-x-2">
-            <% 3.times do |i| %>
-              <div class="w-8 h-8 rounded-full border border-[#1a1a1a] bg-neutral-700 flex items-center justify-center text-[10px] text-white overflow-hidden">
-                <span class="opacity-50">User</span>
+            <% ["avatar1.png", "avatar2.png", "avatar3.png"].each do |avatar| %>
+              <div class="w-8 h-8 rounded-full border border-[#1a1a1a] bg-neutral-700 flex items-center justify-center text-[10px] text-white overflow-hidden relative">
+                <%= image_tag "testimonials/#{avatar}", class: "object-cover w-full h-full" %>
               </div>
             <% end %>
            </div>
@@ -68,11 +84,11 @@
       <span class="text-xs bg-white/10 px-3 py-1 rounded-full border border-white/5">Step <span data-onboarding-survey-target="stepDisplay">1</span>/3</span>
     </div>
 
-    <div class="flex-1 flex flex-col max-w-3xl w-full mx-auto p-6 md:p-12 lg:p-20 justify-center">
+    <div class="flex-1 flex flex-col max-w-3xl w-full mx-auto p-6 md:p-8 lg:p-12 justify-center">
 
       <!-- Progress Bar (Desktop) -->
-      <div class="hidden md:block mb-12">
-        <div class="flex justify-between items-end mb-4">
+      <div class="hidden md:block mb-8">
+        <div class="flex justify-between items-end mb-2">
            <span class="text-sm font-medium text-[#00acc1] tracking-wide uppercase text-xs">Onboarding</span>
            <span class="text-xs text-neutral-500 font-mono">STEP <span data-onboarding-survey-target="stepDisplay">1</span>/3</span>
         </div>
@@ -85,14 +101,14 @@
 
         <!-- Step 1: Role -->
         <div data-onboarding-survey-target="step" data-step="0" class="animate-enter-up">
-          <div class="mb-8">
+          <div class="mb-6">
             <h1 class="text-3xl md:text-4xl font-bold mb-2 tracking-tight text-white">Who is designing?</h1>
             <p class="text-neutral-400 text-base">Select your role to configure your workspace.</p>
           </div>
 
           <div class="grid grid-cols-1 gap-4">
             <% OnboardingResponse.roles.keys.each do |role| %>
-              <label class="selectable-card group relative bg-[#2E2E2E] border border-white/5 p-4 md:p-6 rounded-2xl cursor-pointer hover:bg-[#383838] hover:border-white/20 transition-all duration-200 flex items-center gap-4 md:gap-6 overflow-hidden"
+              <label class="selectable-card group relative bg-[#2E2E2E] border border-white/5 p-4 rounded-xl cursor-pointer hover:bg-[#383838] hover:border-white/20 transition-all duration-200 flex items-center gap-4 overflow-hidden"
                    data-action="click->onboarding-survey#select">
                 <%= f.radio_button :role, role, class: "hidden" %>
 
@@ -185,7 +201,7 @@
       <% end %>
 
       <div class="mt-10 md:mt-auto pt-10 text-center md:text-left">
-        <p class="text-xs text-neutral-500 font-medium">✨ Completing this unlocks <span class="text-[#00acc1] font-bold"><%= TRIAL_CREDITS %> pro credits</span></p>
+        <p class="text-xs text-neutral-500 font-medium">✨ Plans start from <span class="text-[#00acc1] font-bold">$10/200 credits</span></p>
       </div>
     </div>
   </div>
