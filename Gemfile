@@ -138,3 +138,5 @@ gem "rack-cors", "~> 3.0"
 gem "reverse_markdown", "~> 3.0"
 
 gem "faraday-follow_redirects", "~> 0.5.0"
+
+gem "pagy"

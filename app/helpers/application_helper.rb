@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module ApplicationHelper
+  # include Pagy::Frontend - removed for v43
   def active_item(path)
     # this will make the current page active
     "active-item " if request.path == path

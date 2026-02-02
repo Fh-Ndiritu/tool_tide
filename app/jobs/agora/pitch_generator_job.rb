@@ -20,11 +20,20 @@ module Agora
       agent_config = AGORA_MODELS.sample
       author_name = agent_config[:user_name]
 
+      previous_accepted_ideas = Agora::Post.where(status: [ "accepted", "proceeding" ]).where(created_at: 1.week.ago..).pluck(:title).join("\n")
+      previous_rejected_ideas = Agora::Post.where(status: [ "rejected" ]).where(created_at: 3.days.ago..).pluck(:title).join("\n")
+
       prompt = <<~PROMPT
         You are #{author_name}, a participant in our Think Tank.
         Your Persona: An expert strategist who provides sharp, actionable marketing ideas.
 
         #{context_data}
+
+        PREVIOUSLY ACCEPTED IDEAS:
+        #{previous_accepted_ideas}
+
+        PREVIOUSLY REJECTED IDEAS:
+        #{previous_rejected_ideas}
 
         TASK:
         Create a high-impact marketing campaign pitch by synthesizing or leveraging these trends.
@@ -37,6 +46,7 @@ module Agora
         1. **Target Main Platform**: You MUST choose one (LinkedIn, Facebook, or TikTok, Instagram).
         2. **Main Media Asset**: You MUST choose one (Reel Video, Static Image, or Website Link).
         3. You have the freedom to pivot between marketing and learning but your content must be applicable to our brand.
+        4. You MUST steer away from ideas that were previously rejected or accepted because they will both be rejected this time.
 
         Requirements:
         1. Visual Hook - Describe the first 3 seconds to grab attention (for video) or the first look (for static image) or the first sentence (for website link)

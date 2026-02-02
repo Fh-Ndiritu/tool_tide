@@ -2,6 +2,41 @@
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
   <!-- Main Feed -->
   <div class="lg:col-span-2">
+    <!-- Quick Access Filters -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+      <%= link_to agora_dashboard_index_path(time_filter: '24h'), class: "bg-gray-900 border border-gray-800 rounded-lg p-4 hover:border-indigo-500 transition-colors group" do %>
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs text-gray-500 font-bold uppercase tracking-wider">Time</span>
+          <span class="text-indigo-500 group-hover:text-white transition-colors">⏰</span>
+        </div>
+        <p class="text-white font-bold text-lg">Last 24h</p>
+      <% end %>
+
+      <%= link_to agora_dashboard_index_path(status_filter: 'accepted'), class: "bg-gray-900 border border-gray-800 rounded-lg p-4 hover:border-green-500 transition-colors group" do %>
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs text-gray-500 font-bold uppercase tracking-wider">Status</span>
+          <span class="text-green-500 group-hover:text-white transition-colors">✅</span>
+        </div>
+        <p class="text-white font-bold text-lg">Accepted</p>
+      <% end %>
+
+      <%= link_to agora_dashboard_index_path(status_filter: 'rejected'), class: "bg-gray-900 border border-gray-800 rounded-lg p-4 hover:border-red-500 transition-colors group" do %>
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs text-gray-500 font-bold uppercase tracking-wider">Status</span>
+          <span class="text-red-500 group-hover:text-white transition-colors">❌</span>
+        </div>
+        <p class="text-white font-bold text-lg">Rejected</p>
+      <% end %>
+
+      <%= link_to agora_dashboard_index_path, class: "bg-gray-900 border border-gray-800 rounded-lg p-4 hover:border-gray-600 transition-colors group" do %>
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs text-gray-500 font-bold uppercase tracking-wider">Reset</span>
+          <span class="text-gray-500 group-hover:text-white transition-colors">🔄</span>
+        </div>
+        <p class="text-white font-bold text-lg">All Posts</p>
+      <% end %>
+    </div>
+
     <!-- Manual Actions -->
     <div class="bg-gray-900 border border-gray-800 rounded-lg p-5 mb-6">
       <div class="flex items-center justify-between">
@@ -24,6 +59,12 @@
     <div id="agora_feed" class="flex flex-col space-y-4">
       <% @latest_posts.each do |post| %>
         <%= render Agora::PostCardComponent.new(post: post) %>
+      <% end %>
+
+      <% if @pagy.pages > 1 %>
+        <div class="mt-6 flex justify-center pagy-nav">
+          <%== @pagy.series_nav %>
+        </div>
       <% end %>
 
       <% if @latest_posts.empty? %>

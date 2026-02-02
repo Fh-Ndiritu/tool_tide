@@ -14,6 +14,41 @@ module Agora
 
     scope :accepted, -> { where(status: "accepted") }
     scope :proceeding, -> { where(status: "proceeding") }
+    scope :rejected, -> { where(status: "rejected") }
+
+    # Filter roots where the LATEST descendant (by revision number) has a specific status
+    # If no descendants exist, check the root's own status
+    # statuses can be a single status string or array of statuses
+    # Uses LIKE pattern to match ALL descendants (ancestry contains root id anywhere)
+    scope :by_final_status, ->(statuses) {
+      statuses = Array(statuses)
+      where(<<~SQL, statuses, statuses)
+        (
+          -- Case 1: Root has descendants, check latest descendant's status
+          EXISTS (
+            SELECT 1 FROM agora_posts children
+            WHERE children.ancestry LIKE '%/' || agora_posts.id || '/%'
+          )
+          AND (
+            SELECT c.status FROM agora_posts c
+            WHERE c.ancestry LIKE '%/' || agora_posts.id || '/%'
+            ORDER BY c.revision_number DESC
+            LIMIT 1
+          ) IN (?)
+        )
+        OR
+        (
+          -- Case 2: Root has no descendants, check own status
+          NOT EXISTS (
+            SELECT 1 FROM agora_posts children
+            WHERE children.ancestry LIKE '%/' || agora_posts.id || '/%'
+          )
+          AND agora_posts.status IN (?)
+        )
+      SQL
+    }
+
+    scope :last_24_hours, -> { where("created_at > ?", 24.hours.ago) }
 
     broadcasts_refreshes
 

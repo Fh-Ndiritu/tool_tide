@@ -54,6 +54,9 @@ module Agora
     private
 
     def generate_revised_pitch(post, critiques, context)
+      previous_accepted_ideas = Agora::Post.where(status: [ "accepted", "proceeding" ]).where(created_at: 1.week.ago..).pluck(:title).join("\n")
+      previous_rejected_ideas = Agora::Post.where(status: [ "rejected" ]).where(created_at: 3.days.ago..).pluck(:title).join("\n")
+
       prompt = <<~PROMPT
         You are a marketing strategist creating a pitch for our brand.
 
@@ -75,6 +78,7 @@ module Agora
           2. If the reviewers called it "boring," CHANGE the hook entirely.
           3. Address the "Generic Trap" by adding a brand-specific "Gutsy" angle that only this brand could pull off.
           4. DO NOT play it safe. If the feedback is harsh, the revision must be radical.
+          5. Avoid ideas that are too similar to previously accepted or rejected ideas since it will be automatically rejected.
 
         Output ONLY the improved pitch body in markdown (~300 words).
         DO NOT mention this is a revision or reference the feedback directly.

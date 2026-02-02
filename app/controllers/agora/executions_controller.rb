@@ -1,7 +1,21 @@
 module Agora
   class ExecutionsController < ApplicationController
     def index
-      @executions = Agora::Execution.includes(:post).order(created_at: :desc).limit(50)
+      # Day-based pagination: page 0 = today, page 1 = yesterday, etc.
+      @day_offset = params[:day].to_i
+      @current_date = @day_offset.days.ago.to_date
+
+      # Get executions for the selected day
+      day_start = @current_date.beginning_of_day
+      day_end = @current_date.end_of_day
+
+      @executions = Agora::Execution.includes(:post)
+                                     .where(created_at: day_start..day_end)
+                                     .order(created_at: :desc)
+
+      # Check if there are older executions for navigation
+      @has_older = Agora::Execution.where("created_at < ?", day_start).exists?
+      @has_newer = @day_offset > 0
     end
 
     def show

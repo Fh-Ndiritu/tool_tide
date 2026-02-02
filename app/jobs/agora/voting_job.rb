@@ -49,6 +49,7 @@ module Agora
     def decide_vote(agent_config, votable, context)
       agent_name = agent_config[:user_name]
       content_preview = votable.is_a?(Agora::Post) ? "#{votable.title}\n#{votable.body}" : votable.body
+      previous_accepted_ideas = votable.class.where(status: [ "accepted", "proceeding" ]).limit(50).pluck(:title).join("\n")
 
       prompt = <<~PROMPT
         [SYSTEM: ADVERSARIAL MODE ACTIVATED]
@@ -62,6 +63,9 @@ module Agora
         CONTENT TO EVALUATE:
         #{content_preview}
 
+        PREVIOUSLY ACCEPTED IDEAS:
+        #{previous_accepted_ideas}
+
         STRESS TEST CRITERIA:
         1. "The Thumb-Stop Test": If you saw this on TikTok/FB, would you actually stop, or is it just "another ad"?
         2. "The Generic Trap": Could our competitors run this exact same ad? If yes, it is a fail.
@@ -74,6 +78,7 @@ module Agora
            - Vote +1 if the idea is "Differentiated." and you'd bet your career on this being a massive winner.
            - Vote -1 if it is "Invisible", a money drain, gutless or just a safe, mundane boring idea, it must be killed before it wastes our money and time.
            - You MUST understand you are betting your reputation on this vote.
+           - We cannot accept an idea that has been accepted before.
 
         RESPOND WITH ONLY THIS JSON OBJECT (no markdown, no explanation):
         {"reason_to_fail": "one sentence", "reason_to_win": "one sentence", "vote": 1 or -1}
