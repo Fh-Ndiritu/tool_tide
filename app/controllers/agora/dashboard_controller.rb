@@ -22,7 +22,7 @@ module Agora
 
       # Use :offset pagination for v43
       @pagy, @latest_posts = pagy(:offset, scope, limit: 6)
-      @active_trends = Agora::Trend.where(period: "daily").order(created_at: :desc).limit(6)
+      @active_trends = Agora::Trend.where(period: "daily").order(created_at: :desc).limit(20)
       @execution_metrics = Agora::Execution.all # For a quick chart if needed, or aggregate
 
       # Grouping posts by status for a summary

@@ -18,5 +18,17 @@ module Agora
       @has_older = Agora::Trend.where("created_at < ?", day_start).exists?
       @has_newer = @day_offset > 0
     end
+
+    def hunt
+      Agora::TrendHunterJob.perform_later
+
+      respond_to do |format|
+        format.turbo_stream {
+          flash.now[:notice] = "📡 Trend Hunter activated! Scanning for signals..."
+          render turbo_stream: turbo_stream.update("flash", partial: "shared/flash")
+        }
+        format.html { redirect_to agora_trends_path, notice: "📡 Trend Hunter activated! Scanning for signals..." }
+      end
+    end
   end
 end

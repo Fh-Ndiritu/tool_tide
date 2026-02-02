@@ -14,6 +14,9 @@ module Agora
     after_save :update_votable_net_score
     after_destroy :update_votable_net_score
 
+    # Trigger broadcast on parent post after vote is saved
+    after_commit :broadcast_votable_update, on: [ :create, :update ]
+
     private
 
     def prevent_self_voting
@@ -27,6 +30,11 @@ module Agora
 
     def update_votable_net_score
       votable.update_net_score! if votable.respond_to?(:update_net_score!)
+    end
+
+    def broadcast_votable_update
+      # Touch the votable to trigger its after_update_commit broadcast
+      votable.touch if votable.respond_to?(:touch)
     end
   end
 end

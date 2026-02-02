@@ -6,7 +6,14 @@ module Agora
 
     def generate
       Agora::PitchGeneratorJob.perform_later
-      redirect_back(fallback_location: agora_dashboard_index_path, notice: "🚀 Pitch Generator trigged! Watch for new activity.")
+
+      respond_to do |format|
+        format.turbo_stream {
+          flash.now[:notice] = "🚀 Pitch Generator triggered! Watch for new activity."
+          render turbo_stream: turbo_stream.update("flash", partial: "shared/flash")
+        }
+        format.html { redirect_back(fallback_location: agora_dashboard_index_path, notice: "🚀 Pitch Generator triggered!") }
+      end
     end
 
     def vote

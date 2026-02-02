@@ -86,7 +86,11 @@ Rails.application.routes.draw do
 
     namespace :agora do
       resources :dashboard, only: [ :index ]
-      resources :trends, only: [ :index ]
+      resources :trends, only: [ :index ] do
+        collection do
+          post :hunt
+        end
+      end
       resources :posts, only: [ :show ] do
         collection do
           post :generate

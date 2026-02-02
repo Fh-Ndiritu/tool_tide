@@ -44,7 +44,15 @@
           <h3 class="text-gray-400 font-bold uppercase text-xs tracking-wider mb-1">Controls</h3>
           <p class="text-xs text-gray-500">Kickstart the creative engine manually.</p>
         </div>
-        <%= button_to "🚀 Generate New Pitch", generate_agora_posts_path, class: "bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded transition-colors text-sm" %>
+        <%= button_to "🚀 Generate New Pitch", generate_agora_posts_path,
+            class: "bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded transition-colors text-sm",
+            form: {
+              data: {
+                controller: "disable-button",
+                action: "submit->disable-button#disable",
+                disable_button_duration_value: 10000
+              }
+            } %>
       </div>
     </div>
 
@@ -77,47 +85,17 @@
 
   <!-- Sidebar: Radar & HUD -->
   <div class="space-y-6">
-    <!-- Status HUD -->
-    <div class="bg-gray-900 border border-gray-800 rounded-lg p-5 shadow-lg relative overflow-hidden">
-      <div class="absolute top-0 right-0 p-2 opacity-10">
-        <svg class="w-24 h-24 text-indigo-500" fill="currentColor" viewBox="0 0 20 20"><path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"></path></svg>
-      </div>
-      <h3 class="text-gray-400 font-bold uppercase text-xs tracking-wider mb-4">System Status</h3>
-      <div class="grid grid-cols-2 gap-4">
-        <div>
-          <span class="block text-2xl font-mono font-bold text-white"><%= @status_counts['accepted'] || 0 %></span>
-          <span class="text-xs text-green-500">Accepted</span>
-        </div>
-        <div>
-          <span class="block text-2xl font-mono font-bold text-white"><%= @status_counts['proceeding'] || 0 %></span>
-          <span class="text-xs text-purple-500">Proceeding</span>
-        </div>
-        <div>
-          <span class="block text-2xl font-mono font-bold text-white"><%= @status_counts['published'] || 0 %></span>
-          <span class="text-xs text-gray-500">Reviewing</span>
-        </div>
-        <div>
-          <span class="block text-2xl font-mono font-bold text-white"><%= @active_trends.count %></span>
-          <span class="text-xs text-orange-500">Active Trends</span>
-        </div>
-      </div>
-    </div>
+    <!-- Status HUD - Subscribe to status updates -->
+    <%= turbo_stream_from "agora_status_hud" %>
+    <%= render Agora::StatusHudComponent.new %>
 
-    <!-- Active Trends List -->
+    <!-- Active Trends List - Subscribe to new trends -->
+    <%= turbo_stream_from "agora_trends" %>
     <div class="bg-gray-900 border border-gray-800 rounded-lg p-5">
       <h3 class="text-gray-400 font-bold uppercase text-xs tracking-wider mb-4 border-b border-gray-800 pb-2">Incoming Signals (Trends)</h3>
-      <div class="space-y-3">
+      <div id="agora_trends_list" class="space-y-3">
         <% @active_trends.each do |trend| %>
-          <div class="group">
-            <div class="flex justify-between items-start">
-              <span class="text-sm font-medium text-gray-300 group-hover:text-indigo-400 transition-colors">
-                <%# Handle direct attribute access if hash, assuming content is JSON %>
-                <%= trend.content['trend_name'] rescue "Unknown Trend" %>
-              </span>
-              <span class="text-[10px] bg-gray-800 text-gray-400 px-1.5 py-0.5 rounded">Daily</span>
-            </div>
-            <p class="text-xs text-gray-600 mt-1 line-clamp-1"><%= trend.content['viral_hook_idea'] rescue "" %></p>
-          </div>
+          <%= render partial: "agora/trends/trend_item", locals: { trend: trend } %>
         <% end %>
       </div>
       <div class="mt-4 pt-2 border-t border-gray-800">

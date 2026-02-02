@@ -1,6 +1,7 @@
 module Agora
   class Post < ApplicationRecord
     include AgoraTable
+    include ActionView::RecordIdentifier # For dom_id in broadcasts
     has_ancestry orphan_strategy: :rootify
 
     has_many :comments, foreign_key: :post_id, dependent: :destroy
@@ -50,7 +51,34 @@ module Agora
 
     scope :last_24_hours, -> { where("created_at > ?", 24.hours.ago) }
 
-    broadcasts_refreshes
+    # Broadcast to dashboard stream for new posts
+    after_create_commit -> {
+      if is_root?
+        # Only prepend ROOT posts to the feed
+        broadcast_prepend_to "agora_posts",
+          target: "agora_feed",
+          partial: "agora/posts/post_card",
+          locals: { post: self }
+      else
+        # Revisions: update the ROOT post card to show new revision
+        broadcast_replace_to "agora_posts",
+          target: dom_id(root),
+          partial: "agora/posts/post_card",
+          locals: { post: root }
+      end
+      # Also update the Status HUD
+      broadcast_status_hud_update
+    }
+
+    # Broadcast replace for updates (status changes, score updates)
+    after_update_commit -> {
+      broadcast_replace_to "agora_posts",
+        target: dom_id(self),
+        partial: "agora/posts/post_card",
+        locals: { post: self }
+      # Update HUD if status changed
+      broadcast_status_hud_update if saved_change_to_status?
+    }
 
     after_create_commit { Agora::VotingJob.perform_later(self) }
 
@@ -67,6 +95,14 @@ module Agora
 
       net = votes.sum(:direction)
       ((net.to_f / total_votes) * 100).round
+    end
+
+    private
+
+    def broadcast_status_hud_update
+      broadcast_replace_to "agora_status_hud",
+        target: "agora_status_hud",
+        partial: "agora/dashboard/status_hud"
     end
   end
 end

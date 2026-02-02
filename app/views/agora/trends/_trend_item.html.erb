@@ -1,0 +1,9 @@
+<div class="group">
+  <div class="flex justify-between items-start">
+    <span class="text-sm font-medium text-gray-300 group-hover:text-indigo-400 transition-colors">
+      <%= trend.content['trend_name'] rescue "Unknown Trend" %>
+    </span>
+    <span class="text-[10px] bg-gray-800 text-gray-400 px-1.5 py-0.5 rounded">Daily</span>
+  </div>
+  <p class="text-xs text-gray-600 mt-1 line-clamp-1"><%= trend.content['viral_hook_idea'] rescue "" %></p>
+</div>
