@@ -14,16 +14,24 @@ class ProjectLayer < ApplicationRecord
 
   has_ancestry ancestry_format: :materialized_path
 
-  has_one_attached :image
+  has_one_attached :image do |attachable|
+    attachable.variant :thumbnail,  resize_to_limit: [ 100, 100 ]
+  end
+
   has_one_attached :mask
   has_one_attached :overlay
-  has_one_attached :result_image
+  has_one_attached :result_image do |attachable|
+    attachable.variant :thumbnail,  resize_to_limit: [ 100, 100 ]
+  end
+
+  scope :image_variants, -> { includes(result_image_attachment: { blob: :variant_records }, image_attachment: { blob: :variant_records }) }
 
   has_many :auto_fixes, dependent: :destroy
 
   def mark_as_viewed!
     update_column(:viewed_at, Time.current) if viewed_at.nil?
   end
+
 
   def viewed?
     viewed_at.present? || original?

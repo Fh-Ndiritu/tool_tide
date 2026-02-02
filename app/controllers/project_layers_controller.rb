@@ -139,7 +139,7 @@ class ProjectLayersController < ApplicationController
   end
 
   def set_project_layer
-    @project_layer = ProjectLayer.find(params[:id])
+    @project_layer = ProjectLayer.image_variants.find(params[:id])
   end
 
   def project_layer_params

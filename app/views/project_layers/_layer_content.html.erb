@@ -7,7 +7,7 @@
             <%= is_active ? 'ring-2 ring-blue-500 ring-offset-1 ring-offset-gray-900 opacity-100' : 'ring-1 ring-gray-700 opacity-60 group-hover/layer:opacity-100' %>
             <%= is_processing ? 'opacity-80' : '' %>">
   <% if project_layer.display_image.attached? %>
-     <%= image_tag project_layer.display_image, class: "w-full h-full object-cover" %>
+     <%= image_tag project_layer.display_image.variant(:thumbnail), class: "w-full h-full object-cover" %>
   <% else %>
      <div class="w-full h-full flex items-center justify-center bg-gray-800 text-[8px] text-gray-500">
        <% if is_processing %>
