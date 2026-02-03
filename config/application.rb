@@ -18,7 +18,7 @@ module ToolTide
       creds_path = "/tmp/google_credentials.json"
 
       if ENV["GOOGLE_JSON_CREDENTIALS"].present?
-        File.write(creds_path, ENV["GOOGLE_JSON_CREDENTIALS"])
+        File.write(creds_path, JSON.parse(ENV["GOOGLE_JSON_CREDENTIALS"]).to_json)
         # Set the path so the Google Cloud SDK picks it up automatically
         ENV["GOOGLE_APPLICATION_CREDENTIALS"] = creds_path
       end
