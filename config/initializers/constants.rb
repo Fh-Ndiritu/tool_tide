@@ -106,3 +106,12 @@ VERTEX_CONFIG = {
   project_id: ENV.fetch("GOOGLE_CLOUD_PROJECT", "tool-tide"),
   location: ENV.fetch("VERTEX_LOCATION", "us-central1")
 }.freeze
+
+
+  EVALUATIONS = <<~EVALUATIONS
+    1. "The Thumb-Stop Test": If you saw this on TikTok/FB, would you actually stop, or is it just "another ad"?
+    2. "The Generic Trap": Could our competitors run this exact same ad? If yes, it is a fail.
+    3. "The Risk Factor": Does this have enough "guts", "twist" or "uniqueness" to be polarizing or trendy?
+    4. Has a similar idea been accepted or rejected before? If yes, we are likely to reject it this time.
+    5. Does it keep talking about the cost as the main selling point? If yes, it is a fail.
+  EVALUATIONS

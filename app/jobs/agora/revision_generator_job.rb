@@ -55,34 +55,47 @@ module Agora
 
     def generate_revised_pitch(post, critiques, context)
       previous_accepted_ideas = Agora::Post.where(status: [ "accepted", "proceeding" ]).where(created_at: 1.week.ago..).pluck(:title).join("\n")
-      previous_rejected_ideas = Agora::Post.where(status: [ "rejected" ]).where(created_at: 3.days.ago..).pluck(:title).join("\n")
 
-      prompt = <<~PROMPT
-        You are a marketing strategist creating a pitch for our brand.
+    prompt = <<~PROMPT
+      [SYSTEM: ARCHITECT OF RECONSTRUCTION ACTIVATED]
+      You are the "Senior Revision Strategist" for Nomos Zero.
+      The previous iteration was REJECTED by the Chief Skeptics. Your job is to engineer an evolution that is so "Gutsy" and "Differentiated" that it forces a +1 vote.
 
-        CONTEXT:
+      <brand_nomos>
         #{context}
+      </brand_nomos>
 
-        ORIGINAL PITCH:
-        Title: #{post.title}
-        #{post.body}
+      <failed_iteration>
+        TITLE: #{post.title}
+        BODY: #{post.body}
+      </failed_iteration>
 
-        FEEDBACK FROM REVIEWERS (Cumulative History):
+      <skeptic_feedback_summary>
         #{critiques}
+      </skeptic_feedback_summary>
 
-        TASK:
-          You are not just an editor; you are a Reconstructor.
-          The previous version was REJECTED for being too safe or generic.
+      <market_constraints>
+        ## DO NOT CLONE THESE SUCCESSES:
+        #{previous_accepted_ideas}
+      </market_constraints>
 
-          1. Analyze the feedback ruthlessly.
-          2. If the reviewers called it "boring," CHANGE the hook entirely.
-          3. Address the "Generic Trap" by adding a brand-specific "Gutsy" angle that only this brand could pull off.
-          4. DO NOT play it safe. If the feedback is harsh, the revision must be radical.
-          5. Avoid ideas that are too similar to previously accepted or rejected ideas since it will be automatically rejected.
+      TASK:
+      You are not polishing a draft; you are performing a Radical Pivot.
 
-        Output ONLY the improved pitch body in markdown (~300 words).
-        DO NOT mention this is a revision or reference the feedback directly.
-      PROMPT
+      RECONSTRUCTION RULES:
+      1. **Identify the Kill Reason**: If the feedback says "Generic," you must inject a specific, controversial, or highly technical feature of the brand that no one else can claim.
+      2. **The 180-Degree Hook**: If the previous hook failed, do not edit it. DELETE it. Start with a completely different psychological angle (e.g., if it was 'Helpful,' go 'Confrontational').
+      3. **Address the Generic Trap**: Add "The Delta"—a brand-specific angle that makes the pitch impossible for a competitor to copy.
+      4. **Avoid the "Similarity Deadlock"**: You must diverge significantly from the failed iteration. If the Skeptics see the same idea in a different suit, they will kill it again.
+      5. **Scale Logic**: Ensure the pitch remains professional and scalable for TikTok, FB, or LinkedIn as requested.
+
+      OUTPUT REQUIREMENTS:
+      - DO NOT acknowledge the feedback or mention this is a revision.
+      - Produce only the refined Markdown body (~300 words).
+      - The tone must be "Gutsy," authoritative, and devoid of "marketing fluff."
+
+      [FINAL INSTRUCTION: If you don't change at least 40% of the hook and the core mechanism, this will fail. Reconstruct now.]
+    PROMPT
 
       agent_config = AGORA_HEAD_HUNTER
       retries = 0

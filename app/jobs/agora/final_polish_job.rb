@@ -80,6 +80,7 @@ module Agora
         - Think deeply about the platform nuances (TikTok is casual/viral, LinkedIn is professional).
         - Ensure the asset prompts are highly descriptive and visual.
         - content must vary appropriately across platforms.
+        - ALL videos and IMAGES must aim for realistic, high quality, 4k resolution.
 
         Output strictly using the provided schema.
       PROMPT

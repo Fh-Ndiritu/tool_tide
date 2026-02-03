@@ -9,9 +9,9 @@ module Agora
 
       # 1. Assemble Full Context (Handled entirely by Service)
       assembler = Agora::ContextAssemblyService.new
-      context_data = assembler.assemble_for_pitch
+      context = assembler.assemble_for_pitch
 
-      unless context_data
+      unless context
         Rails.logger.warn("PitchGeneratorJob: No fresh trends available")
         return
       end
@@ -20,42 +20,47 @@ module Agora
       agent_config = AGORA_MODELS.sample
       author_name = agent_config[:user_name]
 
-      previous_accepted_ideas = Agora::Post.where(status: [ "accepted", "proceeding" ]).where(created_at: 1.week.ago..).pluck(:title).join("\n")
-      previous_rejected_ideas = Agora::Post.where(status: [ "rejected" ]).where(created_at: 3.days.ago..).pluck(:title).join("\n")
+      previous_accepted_ideas = Agora::Post.where(status: [ "accepted", "proceeding" ]).where(created_at: 3.days.ago..).pluck(:title).join("\n")
+      previous_rejected_ideas = Agora::Post.where(status: "rejected").where(created_at: 1.week.ago..).pluck(:title).join("\n")
 
       prompt = <<~PROMPT
-        You are #{author_name}, a participant in our Think Tank.
-        Your Persona: An expert strategist who provides sharp, actionable marketing ideas.
+        [SYSTEM: ARCHITECT MODE ACTIVATED]
+        You are #{author_name}, the Lead Strategist for Nomos Zero.
+        Your mission is to engineer a marketing asset that bypasses the "Chief Skeptic" and the "Generic Trap."
 
-        #{context_data}
+        <brand_context>
+          #{context}
+        </brand_context>
 
-        PREVIOUSLY ACCEPTED IDEAS:
-        #{previous_accepted_ideas}
+        <historical_constraints>
+          ## DO NOT REPEAT:
+          #{previous_accepted_ideas}
 
-        PREVIOUSLY REJECTED IDEAS:
-        #{previous_rejected_ideas}
+          ## AVOID THESE REJECTION PATTERNS:
+          #{previous_rejected_ideas}
+        </historical_constraints>
+
+        <evaluations_to_beat>
+          #{EVALUATIONS}
+        </evaluations_to_beat>
 
         TASK:
-        Create a high-impact marketing campaign pitch by synthesizing or leveraging these trends.
+        Synthesize current trends into a high-velocity marketing pitch.
+        We are moving to **MARKETING SCALE**. This idea must be an industrial-strength distribution engine.
 
-        STRATEGIC PIVOT:
-        We are moving from "Learning/Experimentation" to **"MARKETING SCALE"**.
-        The idea must be scalable, professional, and designed for distribution.
+        CONSTRAINTS:
+        1. **Platform/Media Selection**: Choose (LinkedIn/FB/TikTok/IG) and (Video/Static/Link).
+        2. **Non-Derivative Rule**: You MUST steer away from the logic of previously accepted ideas. If they were "educational," go "confrontational." If they were "polished," go "raw."
+        3. **Feature-First**: Do not compete on price. Focus on the sovereign features and agentic logic of the brand.
+        4. **The Delta Factor**: Identify one "Gutsy" element that makes this impossible for a competitor to copy without looking like they are chasing us.
 
-        SELECTION REQUIREMENTS:
-        1. **Target Main Platform**: You MUST choose one (LinkedIn, Facebook, or TikTok, Instagram).
-        2. **Main Media Asset**: You MUST choose one (Reel Video, Static Image, or Website Link).
-        3. You have the freedom to pivot between marketing and learning but your content must be applicable to our brand.
-        4. You MUST steer away from ideas that were previously rejected or accepted because they will both be rejected this time.
+        OUTPUT REQUIREMENTS:
+        1. Visual Hook: The first 3 seconds (Video) or first sentence (Text/Link).
+        2. Platform Fit: Why this specific channel?
+        3. The "Nomos" Logic: Why this will survive the Stress Test Criteria.
+        4. Pitch Body: ~300 words in Markdown.
 
-        Requirements:
-        1. Visual Hook - Describe the first 3 seconds to grab attention (for video) or the first look (for static image) or the first sentence (for website link)
-        2. Target Platform - Specify where this would work best (based on selection)
-        3. Reason Why - Explain why this fits our brand and the chosen channel
-        4. Full pitch body in markdown (~300 words)
-
-        OUTPUT FORMAT:
-        Respond with ONLY a valid JSON object. Do not include markdown formatting like ```json ... ``` or any introductory text.
+        RESPOND ONLY WITH VALID JSON:
         {
           "title": "Campaign Title",
           "visual_hook": "...",
