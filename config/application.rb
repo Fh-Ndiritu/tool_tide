@@ -18,13 +18,7 @@ module ToolTide
       creds_path = "/tmp/google_credentials.json"
 
       if ENV["GOOGLE_JSON_CREDENTIALS"].present?
-        # Parse JSON and fix double-escaped newlines in private_key
-        parsed_creds = JSON.parse(ENV["GOOGLE_JSON_CREDENTIALS"])
-        if parsed_creds["private_key"]
-          parsed_creds["private_key"] = parsed_creds["private_key"].gsub("\\n", "\n")
-        end
-        File.write(creds_path, JSON.pretty_generate(parsed_creds))
-        # Set the path so the Google Cloud SDK picks it up automatically
+        File.write(creds_path, ENV["GOOGLE_JSON_CREDENTIALS"])
         ENV["GOOGLE_APPLICATION_CREDENTIALS"] = creds_path
       end
 
