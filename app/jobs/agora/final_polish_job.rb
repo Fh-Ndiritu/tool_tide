@@ -45,11 +45,11 @@ module Agora
     # Schema for Final Implementation Brief
     class BriefSchema < RubyLLM::Schema
       object :result do
-        string :video_prompt, description: "A detailed prompt for Google Veo to generate a high-quality video for this campaign"
-        string :image_prompt, description: "A detailed prompt for NANO BANANA to generate a high-quality image for this campaign"
+        string :video_prompt, description: "A detailed prompt to generate a high-quality video for this campaign"
+        string :image_prompt, description: "A detailed prompt to generate a high-quality image for this campaign"
         string :tiktok_text, description: "Optimized caption and hashtags for TikTok"
-        string :facebook_text, description: "Optimized ad copy for Facebook"
-        string :linkedin_text, description: "Professional yet engaging post text for LinkedIn"
+        string :facebook_text, description: "Optimized ad markdown copy for Facebook"
+        string :linkedin_text, description: "Professional yet engaging post markdown text for LinkedIn"
         string :admin_notes, description: "Additional strategic notes for the execution team"
       end
     end
@@ -72,16 +72,17 @@ module Agora
 
         TASK:
         Analyze this idea carefully.
-        1. If it involves video, write a specific prompt for **Google Veo** and avoid try to show too many banners or text in the video which leads to poor quality .
-        2. If it involves static images, write a specific prompt for **Nano Banana**.
-        3. Write optimized post text for **TikTok**, **Facebook**, **LinkedIn** and **Instagram**.
+        1. If it involves video, write a specific prompt for video generation and avoid try to show too many banners or text in the video which leads to poor quality .
+        2. If it involves static images, write a specific prompt that can be used for image generation.
+        3. Write optimized post markdown text for **TikTok**, **Facebook**, **LinkedIn** and **Instagram**.
 
         REQUIREMENTS:
         - Think deeply about the platform nuances (TikTok is casual/viral, LinkedIn is professional).
         - Ensure the asset prompts are highly descriptive and visual.
-        - content must vary appropriately across platforms.
-        - ALL videos and IMAGES must aim for realistic, high quality, 4k resolution.
+        - content must vary appropriately across platforms and avoid being superfluous.
+        - ALL videos and IMAGES must aim for realistic, high quality, 4k resolution and professional resolution.
 
+        Carefully review your prompts and text before returning a response
         Output strictly using the provided schema.
       PROMPT
 
