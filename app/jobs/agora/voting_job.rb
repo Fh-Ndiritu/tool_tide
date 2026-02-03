@@ -78,7 +78,7 @@ module Agora
            - Vote +1 if the idea is "Differentiated." and you'd bet your career on this being a massive winner.
            - Vote -1 if it is "Invisible", a money drain, gutless or just a safe, mundane boring idea, it must be killed before it wastes our money and time.
            - You MUST understand you are betting your reputation on this vote.
-           - We cannot accept an idea that has been accepted before.
+           - If an idea has been identical to one that has been accepted before, you MUST vote -1.
 
         RESPOND WITH ONLY THIS JSON OBJECT (no markdown, no explanation):
         {"reason_to_fail": "one sentence", "reason_to_win": "one sentence", "vote": 1 or -1}
