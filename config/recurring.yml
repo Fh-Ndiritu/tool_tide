@@ -25,3 +25,7 @@ production:
   pitch_generator:
     class: Agora::PitchGeneratorJob
     schedule: every 3 hours
+
+  temporal_aggregator:
+    class: Agora::TemporalAggregatorJob
+    schedule: every Monday at 6am

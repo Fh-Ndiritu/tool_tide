@@ -51,6 +51,16 @@ module Agora
     private
 
     def search_trends(context, recent_trends, model_id)
+      # 4. Macro-Strategy (Weekly Meta-Trend)
+      weekly_trend = Agora::Trend.where(period: "weekly").order(created_at: :desc).first
+
+      weekly_trend_content = ""
+      if weekly_trend
+        weekly_trend_content = "WEEKLY THEME: #{weekly_trend.content['trend_name']}\n" \
+                  "INSIGHT: #{weekly_trend.content['viral_hook_idea']}\n" \
+                  "REASON: #{weekly_trend.content['intersection_reason']}"
+      end
+
       prompt = <<~PROMPT
         You are #{AGORA_HEAD_HUNTER[:user_name]}, the "Trend Hunter" for our brand.
 
@@ -60,10 +70,14 @@ module Agora
         RECENTLY DISCOVERED TRENDS (DO NOT REPEAT THESE):
         #{recent_trends.presence || "None yet"}
 
+        LAST WEEKS TRENDS:
+        #{weekly_trend_content.presence || "None yet"}
+
         TASK:
         Identify 4-6 NEW, high-engagement marketing trends relevant to our brand's industry.
         For each trend, explain why it intersects with our brand positioning.
         Focus on trends from #{Time.current.year} that have viral potential.
+        Avoid trends that are too similar to the weekly trends for last week.
       PROMPT
 
       # Use structured schema output

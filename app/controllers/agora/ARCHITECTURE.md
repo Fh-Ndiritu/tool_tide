@@ -14,8 +14,9 @@ flowchart LR
     B --> C[🗣️ Social Deliberation]
     C --> D[✅ Acceptance]
     D --> E[🚀 Execution]
-    E --> F[📊 Learning Loop]
-    F -.-> A
+    E --> F[📈 Analytics Extraction]
+    F --> G[🧠 Post-Mortem Reflection]
+    G -.-> A
 ```
 
 ---
@@ -53,7 +54,9 @@ flowchart LR
         CMJ[CommentatorJob]
         VTJ[VotingJob]
         FPJ[FinalPolishJob]
+        AEJ[AnalyzeMetricsJob]
         PMJ[PostMortemJob]
+        TAJ[TemporalAggregatorJob]
     end
 
     subgraph Data
@@ -70,7 +73,9 @@ flowchart LR
     CMJ --> CO
     VTJ --> VO
     FPJ --> EX
+    AEJ --> EX
     PMJ --> LP
+    TAJ --> TR
 ```
 
 ---
@@ -116,6 +121,9 @@ flowchart TB
 | Vertex Client | `app/services/agora/vertex_ai_client.rb` |
 | Reputation | `app/services/agora/reputation_calculator.rb` |
 | Context Assembly | `app/services/agora/context_assembly_service.rb` |
+| Analytics Job | `app/jobs/agora/analyze_execution_metrics_job.rb` |
+| Post-Mortem Job | `app/jobs/agora/post_mortem_job.rb` |
+| Aggregator Job | `app/jobs/agora/temporal_aggregator_job.rb` |
 
 ---
 
@@ -167,3 +175,21 @@ This chain fires automatically once a Post is created.
 - **`Agora::RevisionGeneratorJob`**:
   - **Function**: Rewrites **Borderline** ideas based on feedback.
   - **Trigger**: Called by Orchestrator.
+
+### 5. Analytics & Feedback Loop
+- **`Agora::AnalyzeExecutionMetricsJob`**:
+  - **Function**: Extracts performance metrics (views, clicks, CTR) from execution screenshots using Vision AI.
+  - **Trigger**: Called after Execution result is uploaded.
+- **`Agora::PostMortemJob`**:
+  - **Function**: "Head Hunter" agent compares actual results vs. expectations. Generates `F` (Success/Failure reason).
+  - **Trigger**: Called after Analytics are ready.
+
+### 6. Corporate Memory
+- **`Agora::LearnedPattern`**:
+  - **Function**: Stores structured insights (e.g., "TikTok audiences dislike corporate styling").
+  - **Usage**: Injected into `ContextAssemblyService` so future agents don't repeat mistakes.
+
+### 7. Temporal Aggregation
+- **`Agora::TemporalAggregatorJob`**:
+  - **Function**: Summarizes daily trends into "Weekly Meta-Trends" to reduce noise. Archives old daily data.
+  - **Trigger**: Scheduled (Weekly).

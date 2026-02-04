@@ -1,8 +1,8 @@
 <div id="<%= dom_id(execution) %>" class="bg-gray-900 border border-purple-500/30 rounded-lg overflow-hidden shadow-lg flex flex-col h-full">
   <div class="p-5 border-b border-gray-800 flex justify-between items-start bg-gray-800/50">
     <div class="flex items-center">
-      <% if execution.image.attached? %>
-        <%= image_tag execution.image, class: "w-16 h-16 object-cover rounded-md mr-4 border border-gray-700" %>
+      <% if execution.latest_image.present? %>
+        <%= image_tag execution.latest_image, class: "w-16 h-16 object-cover rounded-md mr-4 border border-gray-700" %>
       <% end %>
       <div>
         <h3 class="text-xl font-bold text-white mb-1"><%= execution.post.title %></h3>

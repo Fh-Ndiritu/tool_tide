@@ -12,6 +12,9 @@ module Agora
       # Reload to ensure we broadcast the latest DB state
       execution.reload
       broadcast_update(execution, success: !!result)
+
+      # Trigger Post-Mortem Analysis if analytics were successfully extracted
+      Agora::PostMortemJob.perform_later(execution.id) if result
     end
 
     private

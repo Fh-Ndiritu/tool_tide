@@ -89,6 +89,7 @@ gem "active_storage_validations"
 gem "faraday", "~> 2.13"
 
 gem "kramdown", "~> 2.5"
+gem "kramdown-parser-gfm"
 # Gems removed
 
 # Bot prevention
@@ -127,8 +128,6 @@ gem "browser"
 
 
 gem "ancestry", "~> 4.3"
-
-gem "redcarpet", "~> 3.6"
 
 gem "omniauth"
 gem "omniauth-google-oauth2"

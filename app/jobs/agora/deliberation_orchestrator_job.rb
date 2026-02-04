@@ -49,7 +49,6 @@ module Agora
       Rails.logger.info("[Orchestrator] Post ##{post.id} → ACCEPTED")
       broadcast_system_status("✅ Idea Accepted! Initializing Execution...")
       post.update_column(:status, "accepted")
-      Agora::CommentatorJob.perform_later(post)
       Agora::FinalPolishJob.perform_later(post.id)
     end
 

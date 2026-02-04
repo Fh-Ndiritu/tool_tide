@@ -70,28 +70,27 @@ module ApplicationHelper
     end
   end
 
-  def markdown(text)
-    options = {
-      filter_html: false, # Allow some HTML if needed, but renderer handles most
-      hard_wrap: true,
-      link_attributes: { rel: "nofollow", target: "_blank", class: "text-indigo-400 hover:text-indigo-300 underline" },
-      space_after_headers: true,
-      fenced_code_blocks: true
-    }
+  def markdown(text, font_class: "text-base")
+    return "" if text.blank?
 
-    extensions = {
-      autolink: true,
-      superscript: true,
-      disable_indented_code_blocks: true,
-      tables: true,
-      strikethrough: true,
-      highlight: true,
-      fenced_code_blocks: true
-    }
+    doc = Kramdown::Document.new(
+      text,
+      input: "GFM",
+      syntax_highlighter: nil,
+      hard_wrap: true
+    )
 
-    renderer = Agora::MarkdownRenderer.new(options)
-    markdown = Redcarpet::Markdown.new(renderer, extensions)
+    options = doc.options.merge(font_class: font_class)
+    Agora::KramdownRenderer.convert(doc.root, options).first.html_safe
+  end
 
-    markdown.render(text.to_s).html_safe
+  def strip_markdown(text)
+    return "" if text.blank?
+    # Simple strategy: render to HTML (handling strict newlines), then strip tags
+    # preventing tag collapsing by adding newlines
+    html = markdown(text)
+    # Using a simple replacements for common block tags to preserve spacing
+    html = html.gsub("</p>", "\n\n").gsub("<br>", "\n").gsub("</li>", "\n")
+    strip_tags(html).strip
   end
 end

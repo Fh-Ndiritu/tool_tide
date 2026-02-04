@@ -27,7 +27,7 @@ module Agora
       context_parts << section("INSTITUTIONAL MEMORY (llms.txt)", load_context("llms.txt"))
 
       # 3.2 Corporate Memory (Learned Patterns) - Specific to Pitch
-      corporate_memory = Agora::LearnedPattern.corporate_memory(limit: 5)
+      corporate_memory = Agora::LearnedPattern.corporate_memory(limit: 50)
       context_parts << section("CORPORATE MEMORY (LEARNED PATTERNS)", corporate_memory) if corporate_memory.present?
 
       # 3.3 Trends (Last 24h, excluding active trends) - Specific logic
@@ -77,10 +77,15 @@ module Agora
       # 1. High Priority: System Identity & llms.txt
       context_parts << section("INSTITUTIONAL MEMORY (llms.txt)", load_context("llms.txt"))
 
-      # 2. Medium Priority: Trends (Recent)
+      # 2. Corporate Memory (Learned Patterns)
+      corporate_memory = Agora::LearnedPattern.corporate_memory(limit: 50)
+      context_parts << section("CORPORATE MEMORY (LEARNED PATTERNS)", corporate_memory) if corporate_memory.present?
+
+      # 3. Medium Priority: Trends (Recent)
       trends = Agora::Trend.order(created_at: :desc).limit(5).map do |t|
         "- #{t.content['trend_name']}: #{t.content['viral_hook_idea']}"
       end.join("\n")
+
       context_parts << section("CURRENT MARKET TRENDS", trends) if trends.present?
 
       # 3. Flexible Priority: website.md (Title + summary)

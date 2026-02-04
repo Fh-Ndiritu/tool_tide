@@ -12,9 +12,9 @@ module Agora
       image_blob = SocialMedia::ImageGenerator.perform(execution.image_prompt)
 
       if image_blob
-        execution.image.attach(
+        execution.images.attach(
           io: image_blob,
-          filename: "agora_execution_#{execution.id}.png",
+          filename: "agora_execution_#{execution.id}_#{Time.current.to_i}.png",
           content_type: "image/png"
         )
         broadcast_system_status("✅ Image Attached to Execution ##{execution.id}")
