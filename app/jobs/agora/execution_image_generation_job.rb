@@ -18,6 +18,14 @@ module Agora
           content_type: "image/png"
         )
         broadcast_system_status("✅ Image Attached to Execution ##{execution.id}")
+
+        # Broadcast the updated image slider to the view
+        Turbo::StreamsChannel.broadcast_replace_to(
+          "agora_execution_#{execution.id}",
+          target: "image_generation_#{execution.id}",
+          partial: "agora/executions/image_section",
+          locals: { execution: execution }
+        )
       else
         Rails.logger.error("[ExecutionImageGenerationJob] Failed to generate image for Execution ##{execution.id}")
         broadcast_system_status("❌ Image Generation Failed")

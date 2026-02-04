@@ -8,20 +8,20 @@ module ApplicationHelper
   end
 
   def active_link_class(path)
-    base_classes = "block px-4 py-3 text-sm rounded-lg transition duration-150 group"
+    base_classes = "block px-4 py-3 text-sm rounded-lg transition duration-150 group font-medium"
     if current_page?(path)
-      "#{base_classes} bg-accent/10 text-accent"
+      "#{base_classes} bg-[#ce219a]/75 text-white is-active"
     else
-      "#{base_classes} text-gray-700 hover:bg-accent/10 hover:text-accent"
+      "#{base_classes} text-neutral-900 hover:bg-[#ce219a]/75 hover:text-white"
     end
   end
 
   def marketing_link_class(path)
     base_classes = "px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200"
     if current_page?(path)
-      "#{base_classes} bg-[#ce219a]/25 text-[#ce219a]"
+      "#{base_classes} bg-[#ce219a]/75 text-white font-bold"
     else
-      "#{base_classes} text-neutral-600 hover:bg-[#ce219a]/15 hover:text-[#ce219a]"
+      "#{base_classes} text-black hover:bg-[#ce219a]/75 hover:text-white"
     end
   end
 

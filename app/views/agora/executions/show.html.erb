@@ -26,31 +26,8 @@
           </div>
         </div>
 
-        <div class="relative bg-black min-h-[300px] flex flex-col justify-center p-4" id="<%= dom_id(@execution, :image_generation) %>">
-          <% if @execution.images.attached? %>
-             <div class="w-full relative group" data-controller="slider">
-                <!-- Slider Track -->
-                <div class="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 scrollbar-hide" data-slider-target="track">
-                  <% @execution.images.order(created_at: :desc).each_with_index do |image, index| %>
-                    <div class="flex-none w-full snap-center relative group/image">
-                      <%= image_tag image, class: "w-full h-auto rounded-lg shadow-lg border border-gray-800" %>
-
-                      <!-- Download Overlay -->
-                      <%= link_to rails_blob_path(image, disposition: "attachment"), class: "absolute top-4 right-4 bg-black/50 hover:bg-black/80 text-white p-2 rounded-full backdrop-blur-sm opacity-0 group-hover/image:opacity-100 transition-opacity border border-white/20" do %>
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                      <% end %>
-
-                      <div class="absolute bottom-2 right-2 bg-black/60 text-white text-[10px] px-2 py-1 rounded backdrop-blur-sm border border-white/10">
-                        <%= index + 1 %> / <%= @execution.images.count %>
-                      </div>
-                    </div>
-                  <% end %>
-                </div>
-             </div>
-          <% else %>
-             <%= render partial: "agora/executions/generating_state", locals: { execution: @execution } %>
-          <% end %>
-        </div>
+        <%= turbo_stream_from "agora_execution_#{@execution.id}" %>
+        <%= render partial: "agora/executions/image_section", locals: { execution: @execution } %>
       </div>
 
       <!-- VIDEO PROMPT -->

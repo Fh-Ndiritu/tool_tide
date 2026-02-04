@@ -45,8 +45,8 @@
             data-action="dropdown#toggle"
             class="
               flex items-center gap-1.5 bg-transparent
-              focus:outline-none text-neutral-600
-              hover:text-[#ce219a] hover:bg-[#ce219a]/15
+              focus:outline-none text-black
+              hover:text-white hover:bg-[#ce219a]/75
               px-3 py-2 rounded-lg transition-colors
               w-full lg:w-auto justify-center text-sm font-medium
             "
@@ -73,61 +73,61 @@
             "
           >
             <div class="space-y-1">
-              <%= link_to "/features/project-studio", class: "block p-3 rounded-lg hover:bg-gray-50 transition-colors group", data: { action: "click->dropdown#hide" } do %>
-                <div class="font-bold text-neutral-900 text-sm mb-0.5 flex items-center gap-2">
+              <%= link_to "/features/project-studio", class: "block p-3 rounded-lg text-black hover:bg-[#ce219a]/75 hover:text-white transition-colors group", data: { action: "click->dropdown#hide" } do %>
+                <div class="font-bold text-sm mb-0.5 flex items-center gap-2">
                   Project Studio
                   <span class="text-[#ce219a] text-[10px] uppercase border border-[#ce219a]/30 px-1.5 rounded bg-[#ce219a]/10">Core</span>
                 </div>
-                <div class="text-xs text-neutral-500 group-hover:text-neutral-700">
+                <div class="text-xs text-neutral-500 group-hover:text-white/80">
                   Precision Control, Presets & AutoFix
                 </div>
               <% end %>
 
-              <%= link_to "/features/preset-style-selection", class: "block p-3 rounded-lg hover:bg-gray-50 transition-colors group", data: { action: "click->dropdown#hide" } do %>
-                <div class="font-bold text-neutral-900 text-sm mb-0.5">Style Presets</div>
-                <div class="text-xs text-neutral-500 group-hover:text-neutral-700">
+              <%= link_to "/features/preset-style-selection", class: "block p-3 rounded-lg text-black hover:bg-[#ce219a]/75 hover:text-white transition-colors group", data: { action: "click->dropdown#hide" } do %>
+                <div class="font-bold text-sm mb-0.5">Style Presets</div>
+                <div class="text-xs text-neutral-500 group-hover:text-white/80">
                   Instant aesthetic transformation
                 </div>
               <% end %>
 
-              <%= link_to "/features/ai-prompt-editor", class: "block p-3 rounded-lg hover:bg-gray-50 transition-colors group", data: { action: "click->dropdown#hide" } do %>
-                <div class="font-bold text-neutral-900 text-sm mb-0.5">Prompt Studio</div>
-                <div class="text-xs text-neutral-500 group-hover:text-neutral-700">
+              <%= link_to "/features/ai-prompt-editor", class: "block p-3 rounded-lg text-black hover:bg-[#ce219a]/75 hover:text-white transition-colors group", data: { action: "click->dropdown#hide" } do %>
+                <div class="font-bold text-sm mb-0.5">Prompt Studio</div>
+                <div class="text-xs text-neutral-500 group-hover:text-white/80">
                   AI-assisted design refinement
                 </div>
               <% end %>
 
-              <%= link_to "/features/brush-prompt-editor", class: "block p-3 rounded-lg hover:bg-gray-50 transition-colors group", data: { action: "click->dropdown#hide" } do %>
-                <div class="font-bold text-neutral-900 text-sm mb-0.5">Masking Tool</div>
-                <div class="text-xs text-neutral-500 group-hover:text-neutral-700">
+              <%= link_to "/features/brush-prompt-editor", class: "block p-3 rounded-lg text-black hover:bg-[#ce219a]/75 hover:text-white transition-colors group", data: { action: "click->dropdown#hide" } do %>
+                <div class="font-bold text-sm mb-0.5">Masking Tool</div>
+                <div class="text-xs text-neutral-500 group-hover:text-white/80">
                   Precision editing for your landscape
                 </div>
               <% end %>
 
-              <%= link_to "/features/location-plant-suggestions", class: "block p-3 rounded-lg hover:bg-gray-50 transition-colors group", data: { action: "click->dropdown#hide" } do %>
-                <div class="font-bold text-neutral-900 text-sm mb-0.5">Plant Finder</div>
-                <div class="text-xs text-neutral-500 group-hover:text-neutral-700">
+              <%= link_to "/features/location-plant-suggestions", class: "block p-3 rounded-lg text-black hover:bg-[#ce219a]/75 hover:text-white transition-colors group", data: { action: "click->dropdown#hide" } do %>
+                <div class="font-bold text-sm mb-0.5">Plant Finder</div>
+                <div class="text-xs text-neutral-500 group-hover:text-white/80">
                   Sustainable, data-driven garden planning
                 </div>
               <% end %>
 
-              <%= link_to "/features/shopping-list-planting-guide", class: "block p-3 rounded-lg hover:bg-gray-50 transition-colors group", data: { action: "click->dropdown#hide" } do %>
-                <div class="font-bold text-neutral-900 text-sm mb-0.5">Shopping List</div>
-                <div class="text-xs text-neutral-500 group-hover:text-neutral-700">
+              <%= link_to "/features/shopping-list-planting-guide", class: "block p-3 rounded-lg text-black hover:bg-[#ce219a]/75 hover:text-white transition-colors group", data: { action: "click->dropdown#hide" } do %>
+                <div class="font-bold text-sm mb-0.5">Shopping List</div>
+                <div class="text-xs text-neutral-500 group-hover:text-white/80">
                   Automated procurement and execution
                 </div>
               <% end %>
 
-              <%= link_to "/features/drone-view-3d-perspective", class: "block p-3 rounded-lg hover:bg-gray-50 transition-colors group", data: { action: "click->dropdown#hide" } do %>
-                <div class="font-bold text-neutral-900 text-sm mb-0.5">Drone View</div>
-                <div class="text-xs text-neutral-500 group-hover:text-neutral-700">
+              <%= link_to "/features/drone-view-3d-perspective", class: "block p-3 rounded-lg text-black hover:bg-[#ce219a]/75 hover:text-white transition-colors group", data: { action: "click->dropdown#hide" } do %>
+                <div class="font-bold text-sm mb-0.5">Drone View</div>
+                <div class="text-xs text-neutral-500 group-hover:text-white/80">
                   3D perspectives from above
                 </div>
               <% end %>
 
-              <%= link_to "/features/intuitive-onboarding", class: "block p-3 rounded-lg hover:bg-gray-50 transition-colors group", data: { action: "click->dropdown#hide" } do %>
-                <div class="font-bold text-neutral-900 text-sm mb-0.5">Easy Onboarding</div>
-                <div class="text-xs text-neutral-500 group-hover:text-neutral-700">
+              <%= link_to "/features/intuitive-onboarding", class: "block p-3 rounded-lg text-black hover:bg-[#ce219a]/75 hover:text-white transition-colors group", data: { action: "click->dropdown#hide" } do %>
+                <div class="font-bold text-sm mb-0.5">Easy Onboarding</div>
+                <div class="text-xs text-neutral-500 group-hover:text-white/80">
                   Get started in seconds
                 </div>
               <% end %>
