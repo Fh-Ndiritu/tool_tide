@@ -14,15 +14,6 @@ module ToolTide
     config.load_defaults 8.0
 
     config.before_configuration do
-      # Write credentials to /tmp to bypass read-only filesystem
-      creds_path = "/tmp/google_credentials.json"
-
-      if ENV["GOOGLE_JSON_CREDENTIALS"].present?
-        File.write(creds_path, ENV["GOOGLE_JSON_CREDENTIALS"])
-        ENV["GOOGLE_APPLICATION_CREDENTIALS"] = creds_path
-      end
-
-      # Your existing Brevo requirement
       require Rails.root.join("config/initializers/brevo_api_mailer.rb")
     end
     # Please, add to the `ignore` list any other `lib` subdirectories that do

@@ -48,7 +48,6 @@ env:
     - GOOGLE_LOCATION
     - GOOGLE_PROJECT_ID
     - BASE_URL
-    - GOOGLE_APPLICATION_CREDENTIALS
     - GEMINI_API_KEY
     - GEMINI_API_KEYS
     - BREVO_API_KEY
@@ -64,12 +63,12 @@ env:
     - TELEGRAM_BOT_TOKEN
     - GOOGLE_CLOUD_PROJECT
     - VERTEX_LOCATION
-    - GOOGLE_JSON_CREDENTIALS
 
   clear:
     # Run the Solid Queue Supervisor inside the web server's Puma process to do jobs.
     # When you start using multiple servers, you should split out job processing to a dedicated machine.
     SOLID_QUEUE_IN_PUMA: true
+    GOOGLE_APPLICATION_CREDENTIALS: /app/config/google_credentials.json
 
     # Set number of processes dedicated to Solid Queue (default: 1)
     # JOB_CONCURRENCY: 2
