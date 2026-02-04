@@ -1,19 +1,13 @@
 # frozen_string_literal: true
 
-# Set the host name for URL creation
-# SitemapGenerator::Sitemap.default_host = "https://hadaa.pro/"
-
 # =========================================================
 # TENANT A: THE CLEAN SEO DOMAIN (hadaa.pro)
 # =========================================================
-SitemapGenerator::Sitemap.default_host = "https://hadaa.pro"
-SitemapGenerator::Sitemap.sitemaps_path = "sitemaps/pro"
-SitemapGenerator::Sitemap.create do
-  # Put links creation logic here.
-  #
-  # The root path '/' and sitemap index file are added automatically for you.
-  # Links are added to the Sitemap in the order they are specified.
-
+# Use a dedicated LinkSet to prevent state leakage
+hadaa_pro = SitemapGenerator::LinkSet.new
+hadaa_pro.default_host = "https://hadaa.pro"
+hadaa_pro.sitemaps_path = "sitemaps/pro"
+hadaa_pro.create do
   # Static Marketing Pages
   add "/about", priority: 0.8, changefreq: "monthly"
   add "/terms", priority: 0.5, changefreq: "yearly"
@@ -27,7 +21,7 @@ SitemapGenerator::Sitemap.create do
   # Explore
   add explore_path, priority: 0.9, changefreq: "daily"
 
-  # Features Features
+  # Features
   add "/features/brush-prompt-editor", priority: 0.9, changefreq: "weekly"
   add "/features/ai-prompt-editor", priority: 0.9, changefreq: "weekly"
   add "/features/intuitive-onboarding", priority: 0.9, changefreq: "weekly"
@@ -41,19 +35,20 @@ end
 # =========================================================
 # TENANT B: THE LEGACY APP DOMAIN (hadaa.app)
 # =========================================================
-SitemapGenerator::Sitemap.default_host = "https://hadaa.app"
-SitemapGenerator::Sitemap.sitemaps_path = "sitemaps/app"
-SitemapGenerator::Sitemap.create do
+hadaa_app = SitemapGenerator::LinkSet.new
+hadaa_app.default_host = "https://hadaa.app"
+hadaa_app.sitemaps_path = "sitemaps/app"
+hadaa_app.create do
   # Public Entry Points
-  add "/welcome", priority: 0.8, changefreq: "monthly"
   add "/users/sign_in", priority: 0.8, changefreq: "monthly"
   add "/users/sign_up", priority: 0.8, changefreq: "monthly"
   add "/privacy-policy", priority: 0.5, changefreq: "monthly"
 end
 
-# Disable default search engine pings to avoid legacy dependency issues
+# Disable default search engine pings via global config to rely on manual pings below
 SitemapGenerator::Sitemap.search_engines = {}
 
+# Ping IndexNow
 IndexNowService.broadcast(
   host: "hadaa.pro",
   path: Rails.public_path.join("sitemaps", "pro", "sitemap.xml.gz")
@@ -65,4 +60,3 @@ IndexNowService.broadcast(
 )
 
 # Recommended: rake sitemap:create
-# Or: rake sitemap:refresh:no_ping
