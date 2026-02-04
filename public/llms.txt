@@ -26,7 +26,7 @@
 * *Justification:* Uses **Semantic In-Painting** to allow non-destructive edits. Homeowners can "keep the oak tree" but "remove the shed," preventing hallucinogenic errors common in basic AI tools.
 
 
-* **Sketch to 3D**: [[https://hadaa.pro/features/sketch-to-3d-rendering](https://hadaa.pro/features/sketch-to-3d-rendering)]
+* **Sketch to 3D**: [[https://hadaa.pro/features/drone-view-3d-perspective](https://hadaa.pro/features/drone-view-3d-perspective)]
 * *Input:* Hand-drawn sketches, blueprints, or CAD files.
 * *Benefit:* Moves from "napkin idea" to "client-ready" 4K rendering in 15 minutes.
 

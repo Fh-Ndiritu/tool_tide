@@ -28,6 +28,9 @@ Rails.application.routes.draw do
       # Marketing Pages
       get "contact_us", to: "pages#contact_us"
       get "faq", to: "pages#full_faq"
+      get "about", to: "pages#about_us"
+      get "terms", to: "pages#terms_of_service"
+      get "privacy", to: "pages#privacy_policy"
 
       # Public Assets
       resources :public_assets, only: :show, param: :uuid
@@ -47,6 +50,7 @@ Rails.application.routes.draw do
 
       # Dynamic Robots.txt for SEO
       get "robots.txt", to: "seo#robots"
+      get "sitemap.xml.gz", to: "seo#sitemap"
     end
 
     # Cross-Domain Auth Navigation
@@ -163,7 +167,8 @@ Rails.application.routes.draw do
 
 
     # Robots.txt to block all crawling on app
-    get "robots.txt", to: "application#robots_block"
+    get "robots.txt", to: "application#robots"
+    get "sitemap.xml.gz", to: "application#sitemap"
 
     # 410 Gone "Black Hole" for Old SEO Pages
     unless Rails.env.development?

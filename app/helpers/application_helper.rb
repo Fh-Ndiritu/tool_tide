@@ -16,6 +16,15 @@ module ApplicationHelper
     end
   end
 
+  def marketing_link_class(path)
+    base_classes = "px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200"
+    if current_page?(path)
+      "#{base_classes} bg-[#ce219a]/25 text-[#ce219a]"
+    else
+      "#{base_classes} text-neutral-600 hover:bg-[#ce219a]/15 hover:text-[#ce219a]"
+    end
+  end
+
   def progress_message(progress)
     case progress
     when "uploading"

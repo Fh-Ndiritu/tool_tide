@@ -1,0 +1,50 @@
+<% content_for :title, "About Hadaa - Democratizing Landscape Architecture" %>
+
+<section class="py-32 px-6 bg-[#0f0f0f] min-h-screen text-white">
+  <div class="max-w-4xl mx-auto">
+    <div class="text-center mb-16 animate-fade-in-up">
+      <h1 class="text-5xl md:text-7xl font-serif font-medium mb-6">Born from Frustration. <br><span class="text-[#00acc1]">Grown globally.</span></h1>
+    </div>
+
+    <div class="prose prose-lg prose-invert mx-auto space-y-12">
+      <div class="bg-[#18181b] p-8 rounded-3xl border border-white/5 shadow-2xl">
+        <h2 class="text-3xl font-black mb-6 text-white">The Origin Story</h2>
+        <p class="text-neutral-400 leading-relaxed">
+          Hadaa didn't start in a boardroom. It started in a messy backyard.
+        </p>
+        <p class="text-neutral-400 leading-relaxed">
+          Our founder, frustration mounting, was trying to renovate a simple garden. The options were bleak: pay a landscape architect $5,000 for a PDF that took weeks to arrive, or struggle with clunky, 90s-era CAD software that required a PhD to operate.
+        </p>
+        <p class="text-neutral-400 leading-relaxed">
+          There had to be a better way. We wanted to fuse the creative freedom of generative AI with the biological constraints of real-world botany. We wanted a tool that didn't just "paint" a garden, but understood climate zones, sun exposure, and drainage.
+        </p>
+        <p class="text-neutral-400 leading-relaxed">
+          So we built it. <strong class="text-white">From scratch.</strong>
+        </p>
+        <p class="text-neutral-400 leading-relaxed">
+          What began as a hacky script to automate planting layouts quickly evolved. We hosted it, shared it with a few friends, and suddenly, homeowners and pros alike were clamoring for access. They loved the speed. They loved the cost-cutting. They loved the ability to iterate 50 times in an hour instead of once a week.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        <div class="bg-[#18181b] p-8 rounded-3xl border border-white/5">
+           <h3 class="text-xl font-bold mb-4 text-[#00acc1]">Our Philosophy</h3>
+           <p class="text-neutral-400">
+             We believe design should be democratic. You shouldn't need a budget of tens of thousands to visualize a beautiful, sustainable outdoor space. We give you the professional tools to cut costs, get feedback instantly, and iterate until it's perfect.
+           </p>
+        </div>
+        <div class="bg-[#18181b] p-8 rounded-3xl border border-white/5">
+           <h3 class="text-xl font-bold mb-4 text-[#f23faf]">The Technology</h3>
+           <p class="text-neutral-400">
+             We are not just a wrapper around Stable Diffusion. We are a specialized engine trained on landscape architecture principals, fine-tuned for biological accuracy, and optimized for construction readiness.
+           </p>
+        </div>
+      </div>
+
+      <div class="text-center pt-12">
+        <h3 class="text-2xl font-bold mb-6">Join the revolution</h3>
+        <%= link_to "Start Designing Now", new_user_registration_url(host: "hadaa.app"), class: "px-8 py-4 bg-white text-black font-black rounded-full hover:bg-neutral-200 transition-colors" %>
+      </div>
+    </div>
+  </div>
+</section>

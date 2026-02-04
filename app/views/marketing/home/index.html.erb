@@ -5,31 +5,56 @@
 <% content_for(:main_classes, "mx-0 pl-0 pr-0 max-w-[100vw] block bg-[#0f0f0f]") %>
 
 <%# HERO SECTION %>
-<section class="relative min-h-[90vh] flex items-center justify-center py-20 px-6 overflow-hidden bg-[#0f0f0f] text-white">
-   <%# Background Image %>
-   <div class="absolute inset-0 z-0">
-      <%# Gradient: Darker top for nav, clear center for image, dark bottom for transition %>
-      <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/20 to-[#0f0f0f] z-10"></div>
-      <%= image_tag "home/hero.webp", class: "w-full h-full object-cover opacity-60", alt: "Luxury landscape background", loading: "eager" %>
-   </div>
+<%# HERO SECTION %>
+<section class="relative min-h-[90vh] flex flex-col items-center justify-center py-32 px-6 overflow-hidden bg-[#0f0f0f] text-white">
+   <%# Background Ambient Glow (Subtle) %>
+   <div class="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-b from-[#00acc1]/5 to-transparent pointer-events-none"></div>
 
    <div class="relative z-10 max-w-5xl mx-auto text-center space-y-8 animate-fade-in-up">
-      <h1 class="text-6xl md:text-8xl font-serif font-medium tracking-tight leading-[1.1] drop-shadow-2xl">
-         Fire your landscape
+      <%# Trusted By Badge %>
+      <div class="flex items-center justify-center gap-4 mb-4">
+         <div class="flex -space-x-3">
+             <%= image_tag "testimonials/avatar1.png", class: "w-10 h-10 rounded-full border-2 border-[#0f0f0f]", alt: "User" %>
+             <%= image_tag "testimonials/avatar2.png", class: "w-10 h-10 rounded-full border-2 border-[#0f0f0f]", alt: "User" %>
+             <%= image_tag "testimonials/avatar4.png", class: "w-10 h-10 rounded-full border-2 border-[#0f0f0f]", alt: "User" %>
+             <div class="w-10 h-10 rounded-full border-2 border-[#0f0f0f] bg-[#27272a] flex items-center justify-center text-[10px] font-bold text-white">+2k</div>
+         </div>
+         <span class="text-neutral-400 text-sm font-medium">Trusted by <strong class="text-white">10,000+</strong> homeowners & landscapers</span>
+      </div>
+
+      <h1 class="text-6xl md:text-8xl font-serif font-medium tracking-tight leading-[1] drop-shadow-2xl">
+         Fire your
          <span class="font-sans font-black text-transparent bg-clip-text bg-gradient-to-r from-[#00acc1] to-[#f23faf]">
-            designer.
+            landscaper.
          </span>
       </h1>
-      <p class="text-xl md:text-2xl text-white max-w-3xl mx-auto font-light leading-relaxed drop-shadow-lg">
-         The first AI landscape architect that actually works. Visualize, edit, and plan your perfect exterior in minutes. Get biologically accurate planting guides and construction-ready specs instantly.
+      <p class="text-xl md:text-2xl text-neutral-300 max-w-3xl mx-auto font-light leading-relaxed">
+         The first AI landscape architect that actually works. Visualize your garden, auto detect and fix issues,  edit, and plan your perfect garden in minutes. Get biologically accurate planting guides instantly.
       </p>
 
       <div class="flex flex-col items-center gap-4 pt-8">
-         <%= link_to "Get Professional Access", new_user_registration_url(host: "hadaa.app"), class: "px-10 py-5 bg-white text-black text-xl font-black rounded-full hover:scale-105 transition-transform duration-300 shadow-[0_0_40px_rgba(255,255,255,0.3)]" %>
-         <span class="text-sm font-bold text-white/90 tracking-widest uppercase drop-shadow-md">
-            Commercial Rights Included • GPU-Accelerated Rendering
+         <%= link_to "Start Designing Now", new_user_registration_url(host: "hadaa.app"), class: "px-10 py-5 bg-white text-black text-xl font-black rounded-full hover:scale-105 transition-transform duration-300 shadow-[0_0_40px_rgba(255,255,255,0.2)]" %>
+         <span class="text-xs font-bold text-neutral-500 tracking-widest uppercase">
+            Accurate yard and garden designs • GPU-Accelerated Rendering
          </span>
       </div>
+   </div>
+
+   <%# Video Placeholder %>
+   <div class="hidden container mx-auto max-w-6xl mt-24 relative z-10 animate-fade-in-up" style="animation-delay: 0.2s">
+      <div class="relative rounded-2xl overflow-hidden border border-white/10 shadow-2xl bg-[#18181b] aspect-video">
+         <div class="absolute inset-0 flex items-center justify-center bg-black/50 group cursor-pointer">
+            <div class="w-20 h-20 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:bg-white/20 transition-colors">
+               <svg class="w-8 h-8 text-white ml-1" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M8 5v14l11-7z" />
+               </svg>
+            </div>
+         </div>
+         <%# Placeholder for actual video %>
+         <%= image_tag "home/hero.webp", class: "w-full h-full object-cover opacity-60", alt: "Demo Video Thumbnail" %>
+      </div>
+      <%# Glow behind video %>
+      <div class="absolute -inset-4 bg-gradient-to-r from-[#00acc1]/20 to-[#f23faf]/20 blur-2xl -z-10 rounded-[30px] opacity-50"></div>
    </div>
 </section>
 

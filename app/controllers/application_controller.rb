@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   before_action :authenticate_user!
-  skip_before_action :authenticate_user!, only: [ :robots_block, :render_410 ]
+  skip_before_action :authenticate_user!, only: [ :robots, :sitemap, :render_410 ]
 
   before_action :validate_payment_status, if: :user_signed_in?
 
@@ -23,11 +23,23 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def robots_block
+  def robots
     render plain: <<~ROBOTS
       User-agent: *
-      Disallow: /
+      Allow: /
+
+      Sitemap: https://hadaa.app/sitemap.xml.gz
     ROBOTS
+  end
+
+  def sitemap
+    # Serve the sitemap file from the public/sitemaps/app directory
+    path = Rails.public_path.join("sitemaps", "app", "sitemap.xml.gz")
+    if File.exist?(path)
+      send_file path, type: "application/xml", disposition: "inline"
+    else
+      head :not_found
+    end
   end
 
   def user

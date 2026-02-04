@@ -5,5 +5,9 @@ module Marketing
 
     def full_faq
     end
+
+    def privacy_policy
+      render "pages/privacy_policy"
+    end
   end
 end

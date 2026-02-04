@@ -1,8 +1,13 @@
 # frozen_string_literal: true
 
 # Set the host name for URL creation
-SitemapGenerator::Sitemap.default_host = "https://hadaa.pro/"
+# SitemapGenerator::Sitemap.default_host = "https://hadaa.pro/"
 
+# =========================================================
+# TENANT A: THE CLEAN SEO DOMAIN (hadaa.pro)
+# =========================================================
+SitemapGenerator::Sitemap.default_host = "https://hadaa.pro"
+SitemapGenerator::Sitemap.sitemaps_path = "sitemaps/pro"
 SitemapGenerator::Sitemap.create do
   # Put links creation logic here.
   #
@@ -10,7 +15,10 @@ SitemapGenerator::Sitemap.create do
   # Links are added to the Sitemap in the order they are specified.
 
   # Static Marketing Pages
-  add privacy_policy_path, priority: 0.5, changefreq: "monthly"
+  add "/about", priority: 0.8, changefreq: "monthly"
+  add "/terms", priority: 0.5, changefreq: "yearly"
+  add "/privacy", priority: 0.5, changefreq: "yearly"
+
   add contact_us_path, priority: 0.5, changefreq: "monthly"
   add faq_path, priority: 0.8, changefreq: "monthly"
 
@@ -30,6 +38,31 @@ SitemapGenerator::Sitemap.create do
   add "/features/project-studio", priority: 0.9, changefreq: "weekly"
 end
 
-IndexNowService.new.broadcast
+# =========================================================
+# TENANT B: THE LEGACY APP DOMAIN (hadaa.app)
+# =========================================================
+SitemapGenerator::Sitemap.default_host = "https://hadaa.app"
+SitemapGenerator::Sitemap.sitemaps_path = "sitemaps/app"
+SitemapGenerator::Sitemap.create do
+  # Public Entry Points
+  add "/welcome", priority: 0.8, changefreq: "monthly"
+  add "/users/sign_in", priority: 0.8, changefreq: "monthly"
+  add "/users/sign_up", priority: 0.8, changefreq: "monthly"
+  add "/privacy-policy", priority: 0.5, changefreq: "monthly"
+end
 
-# rake sitemap:refresh:no_ping
+# Disable default search engine pings to avoid legacy dependency issues
+SitemapGenerator::Sitemap.search_engines = {}
+
+IndexNowService.broadcast(
+  host: "hadaa.pro",
+  path: Rails.public_path.join("sitemaps", "pro", "sitemap.xml.gz")
+)
+
+IndexNowService.broadcast(
+  host: "hadaa.app",
+  path: Rails.public_path.join("sitemaps", "app", "sitemap.xml.gz")
+)
+
+# Recommended: rake sitemap:create
+# Or: rake sitemap:refresh:no_ping

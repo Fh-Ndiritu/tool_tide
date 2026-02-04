@@ -3,32 +3,29 @@ class IndexNowService
   require "open-uri"
 
   INDEX_NOW_URL = "https://api.indexnow.org/indexnow"
-  HOST = "hadaa.pro"
   KEY = "4db450da45524514ad47d1a067244edf"
-  KEY_LOCATION = "https://#{HOST}/#{KEY}.txt"
 
-  def self.broadcast
-    new.broadcast
+  def self.broadcast(host:, path:)
+    new.broadcast(host: host, path: path)
   end
 
-  def broadcast
-    path = Rails.root.join("public", "sitemap.xml.gz")
+  def broadcast(host:, path:)
     unless File.exist?(path)
-      Rails.logger.warn "IndexNow: sitemap.xml.gz not found at #{path}"
+      Rails.logger.warn "IndexNow: sitemap file not found at #{path}"
       return
     end
 
     urls = extract_urls_from_path(path)
 
     if urls.empty?
-      Rails.logger.info "IndexNow: No URLs found to submit."
+      Rails.logger.info "IndexNow: No URLs found to submit for #{host}."
       return
     end
 
-    Rails.logger.info "IndexNow: Found #{urls.size} URLs to submit."
+    Rails.logger.info "IndexNow: Found #{urls.size} URLs to submit for #{host}."
 
     urls.each_slice(10_000) do |batch|
-      submit_batch(batch)
+      submit_batch(batch, host)
     end
   end
 
@@ -59,11 +56,11 @@ class IndexNowService
     end
   end
 
-  def submit_batch(url_list)
+  def submit_batch(url_list, host)
     payload = {
-      host: HOST,
+      host: host,
       key: KEY,
-      keyLocation: KEY_LOCATION,
+      keyLocation: "https://#{host}/#{KEY}.txt",
       urlList: url_list
     }
 
