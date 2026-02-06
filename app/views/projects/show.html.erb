@@ -10,7 +10,8 @@
      data-projects-image-cost-value="<%= GOOGLE_PRO_IMAGE_COST %>"
      data-project-onboarding-style-presets-status-value="<%= current_user.project_onboarding&.style_presets_status || 'not_started' %>"
      data-project-onboarding-smart-fix-status-value="<%= current_user.project_onboarding&.smart_fix_status || 'not_started' %>"
-     data-project-onboarding-auto-fix-status-value="<%= current_user.project_onboarding&.auto_fix_status || 'not_started' %>">
+     data-project-onboarding-auto-fix-status-value="<%= current_user.project_onboarding&.auto_fix_status || 'not_started' %>"
+     data-project-onboarding-show-smart-fix-warning-value="<%= current_user.project_onboarding&.should_show_smart_fix_warning? %>">
 
   <!-- Left Side: Sidebar + Dock Wrapper -->
   <div class="relative z-30 transition-[width] duration-300 ease-in-out w-[280px] data-[state=collapsed]:w-[60px] group/leftSidebar group-data-[layout-mode=overlay]/layout:absolute group-data-[layout-mode=overlay]/layout:left-0 group-data-[layout-mode=overlay]/layout:h-full group-data-[layout-mode=overlay]/layout:z-50"
@@ -429,18 +430,21 @@
           <button class="flex-1 py-3 text-sm font-medium border-b-2 text-blue-400 border-blue-400 transition-colors"
                   id="tab_style_presets"
                   onclick="switchInnerTab('style_presets')"
+                  data-project-onboarding-target="stylePresetsTab"
                   data-action="click->projects#updateBrushHint click->project-onboarding#initOnboarding">
             Style Presets
           </button>
            <button class="flex-1 py-3 text-sm font-medium border-b-2 text-gray-300 border-transparent hover:text-gray-200 transition-colors"
                   id="tab_smart_fix"
                   onclick="switchInnerTab('smart_fix')"
+                  data-project-onboarding-target="smartFixTab"
                   data-action="click->projects#updateBrushHint click->project-onboarding#initOnboarding">
             SmartFix
           </button>
            <button class="flex-1 py-3 text-sm font-medium border-b-2 text-gray-300 border-transparent hover:text-gray-200 transition-colors"
                   id="tab_auto_fix"
                   onclick="switchInnerTab('auto_fix')"
+                  data-project-onboarding-target="autoFixTab"
                   data-action="click->projects#updateBrushHint click->project-onboarding#initOnboarding">
             AutoFix
           </button>

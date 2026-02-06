@@ -95,6 +95,9 @@
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+
+    <%# Chart.js via CDN for Chartkick stability if importmap fails %>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <% if content_for?(:head) %>
       <%= yield :head %>
     <% end %>

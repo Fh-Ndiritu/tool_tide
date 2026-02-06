@@ -1,5 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
-import Chart from "chart.js/auto"
+// import Chart from "chart.js/auto" -> usage via CDN/window.Chart
 
 export default class extends Controller {
   static targets = ["canvas", "stats"]
@@ -10,7 +10,21 @@ export default class extends Controller {
   }
 
   connect() {
-    this.initChart()
+    this.waitForChart()
+  }
+
+  waitForChart(attempts = 0) {
+    if (typeof Chart !== "undefined") {
+      this.initChart()
+      return
+    }
+
+    if (attempts > 20) {
+      console.error("Chart.js failed to load after 2 seconds")
+      return
+    }
+
+    setTimeout(() => this.waitForChart(attempts + 1), 100)
   }
 
   initChart() {

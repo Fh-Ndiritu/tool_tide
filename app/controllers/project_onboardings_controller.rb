@@ -17,6 +17,6 @@ class ProjectOnboardingsController < AppController
   private
 
   def onboarding_params
-    params.require(:project_onboarding).permit(:style_presets_status, :smart_fix_status, :auto_fix_status)
+    params.require(:project_onboarding).permit(:style_presets_status, :smart_fix_status, :auto_fix_status, :smart_fix_warning_seen)
   end
 end

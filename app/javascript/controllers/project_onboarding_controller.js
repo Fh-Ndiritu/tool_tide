@@ -11,7 +11,8 @@ export default class extends Controller {
   static values = {
     stylePresetsStatus: String,
     smartFixStatus: String,
-    autoFixStatus: String
+    autoFixStatus: String,
+    showSmartFixWarning: Boolean
   }
 
   connect() {
@@ -37,16 +38,23 @@ export default class extends Controller {
 
     if (activeTab === "Style Presets" && this.stylePresetsStatusValue !== "completed" && this.stylePresetsStatusValue !== "generate_seen") {
       this.handleStylePresetsTour()
-    } else if (activeTab === "SmartFix" && this.smartFixStatusValue !== "completed") {
-      this.handleSmartFixTour()
+    } else if (activeTab === "SmartFix") {
+      if (this.smartFixStatusValue !== "completed") {
+        this.handleSmartFixTour()
+      } else if (this.showSmartFixWarningValue) {
+        this.handleSmartFixWarning()
+      }
     } else if (activeTab === "AutoFix" && this.autoFixStatusValue !== "completed") {
       this.handleAutoFixTour()
     }
   }
 
   getActiveTabName() {
-    const activeTab = document.querySelector('[data-tools-target="tab"].text-blue-400')
-    return activeTab ? activeTab.innerText.trim() : null
+    // Check targets directly to see which one has the active class
+    if (this.hasStylePresetsTabTarget && this.stylePresetsTabTarget.classList.contains('text-blue-400')) return "Style Presets"
+    if (this.hasSmartFixTabTarget && this.smartFixTabTarget.classList.contains('text-blue-400')) return "SmartFix"
+    if (this.hasAutoFixTabTarget && this.autoFixTabTarget.classList.contains('text-blue-400')) return "AutoFix"
+    return null
   }
 
   handleStylePresetsTour() {
@@ -234,6 +242,50 @@ export default class extends Controller {
         }
       })
     }
+  }
+
+  handleSmartFixWarning() {
+    if (!this.hasAiAssistToggleTarget) return
+
+    this.startTour([
+      {
+        element: this.aiAssistToggleTarget,
+        popover: {
+          title: "⚠️ Turn Off AI Assist",
+          description: "You've used AI Assist many times. If you have very specific instructions, <b>turning this OFF</b> gives you much more precision by doing exactly what you want.",
+          side: "bottom",
+          align: "center"
+        }
+      }
+    ], {
+      allowClose: true,
+      onNextClick: () => this.confirmSmartFixWarning(),
+      onCloseClick: () => this.confirmSmartFixWarning(),
+      onDestroyed: () => {
+         this.confirmSmartFixWarning()
+      }
+    })
+  }
+
+  confirmSmartFixWarning() {
+      // If we have an active driver, destroy it to close the popover UI
+      if (this.driverObj) {
+        this.driverObj.destroy()
+      }
+
+      if (this.showSmartFixWarningValue === false) return
+      this.showSmartFixWarningValue = false
+
+      const formData = new FormData()
+      formData.append(`project_onboarding[smart_fix_warning_seen]`, true)
+
+      fetch("/project_onboarding/update", {
+        method: "POST",
+        headers: {
+          "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: formData
+      })
   }
 
   updateStatus(tool, status) {
