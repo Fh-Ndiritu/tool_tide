@@ -61,8 +61,8 @@ module Stripe
         mode: "payment",
         # Redirect to our callback with the session_id
         # Stripe replaces {CHECKOUT_SESSION_ID} with the actual ID after payment
-        success_url: Rails.application.routes.url_helpers.stripe_callback_url(session_id: "{CHECKOUT_SESSION_ID}", host: ENV.fetch("APP_HOST", "localhost:3000")),
-        cancel_url: Rails.application.routes.url_helpers.credits_url(canceled: true, host: ENV.fetch("APP_HOST", "localhost:3000")),
+        success_url: Rails.application.routes.url_helpers.stripe_callback_url(session_id: "{CHECKOUT_SESSION_ID}", host: ENV.fetch("BASE_URL", "localhost:3000")),
+        cancel_url: Rails.application.routes.url_helpers.credits_url(canceled: true, host: ENV.fetch("BASE_URL", "localhost:3000")),
         client_reference_id: @transaction.id,
         metadata: {
           transaction_id: @transaction.id,

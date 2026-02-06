@@ -11,7 +11,7 @@ RSpec.describe Stripe::InitializeCheckout do
   before do
     allow(ENV).to receive(:fetch).and_call_original
     allow(ENV).to receive(:fetch).with('STRIPE_PRICE_ID').and_return('price_test123')
-    allow(ENV).to receive(:fetch).with('APP_HOST', 'localhost:3000').and_return('localhost:3000')
+    allow(ENV).to receive(:fetch).with('BASE_URL', 'localhost:3000').and_return('localhost:3000')
   end
 
   describe '.perform' do
