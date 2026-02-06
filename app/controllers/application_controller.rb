@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
   skip_before_action :authenticate_user!, only: [ :robots, :sitemap, :render_410 ]
 
   before_action :validate_payment_status, if: :user_signed_in?
+  before_action :update_last_sign_in_device_type, if: :user_signed_in?
 
   def after_sign_in_path_for(resource)
     if resource.is_a?(User) && resource.admin?
@@ -66,6 +67,13 @@ class ApplicationController < ActionController::Base
     # Priority 2: User must have paid
     unless current_user.has_paid?
       redirect_to welcome_path and return
+    end
+  end
+
+  def update_last_sign_in_device_type
+    device_type = browser.device.mobile? ? "mobile" : "desktop"
+    if current_user.last_sign_in_device_type != device_type
+      current_user.update(last_sign_in_device_type: device_type)
     end
   end
 

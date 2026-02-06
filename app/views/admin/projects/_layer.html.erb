@@ -4,56 +4,105 @@
 
   <div class="border rounded-lg overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow mb-6 flex flex-col md:flex-row">
     <!-- Image Section -->
-    <div class="w-full md:w-64 h-48 md:h-auto relative bg-gray-100 border-b md:border-b-0 md:border-r border-gray-200 flex-shrink-0">
-      <% if layer.display_image.attached? %>
-        <%= image_tag layer.display_image.variant(resize_to_limit: [400, 300]), class: "w-full h-full object-contain" %>
-      <% else %>
-        <div class="flex items-center justify-center h-full text-gray-400 text-sm">No Image</div>
-      <% end %>
+    <div class="w-full md:w-96 h-auto relative bg-gray-100 border-b md:border-b-0 md:border-r border-gray-200 flex-shrink-0 flex divide-x divide-gray-200">
 
-      <div class="absolute top-2 left-2 bg-black/60 text-white text-xs px-2 py-1 rounded backdrop-blur-sm">
-        Layer <%= layer.layer_number %>
+      <!-- Request/Overlay Image -->
+      <div class="w-1/2 relative group/image">
+        <div class="absolute top-2 left-2 z-10 bg-black/60 text-white text-[10px] px-1.5 py-0.5 rounded backdrop-blur-sm">
+          Request
+        </div>
+        <% request_image = layer.overlay.attached? ? layer.overlay : layer.image %>
+        <% if request_image.attached? %>
+          <%= image_tag request_image.variant(resize_to_limit: [400, 300]), class: "w-full h-48 object-contain bg-gray-50" %>
+        <% else %>
+          <div class="flex items-center justify-center h-48 text-gray-400 text-xs text-center p-4 bg-gray-50">No Request Image</div>
+        <% end %>
       </div>
 
-      <div class="absolute bottom-2 right-2 flex gap-1">
-         <% if layer.original? %>
-           <span class="px-2 py-0.5 bg-blue-500/90 text-white text-[10px] font-bold uppercase rounded">Original</span>
-         <% elsif layer.generated? %>
-           <span class="px-2 py-0.5 bg-purple-500/90 text-white text-[10px] font-bold uppercase rounded">Generated</span>
-         <% end %>
+      <!-- Result Image -->
+      <div class="w-1/2 relative group/image">
+         <div class="absolute top-2 left-2 z-10 bg-black/60 text-white text-[10px] px-1.5 py-0.5 rounded backdrop-blur-sm">
+          Result (L<%= layer.layer_number %>)
+        </div>
+        <% if layer.result_image.attached? %>
+          <%= image_tag layer.result_image.variant(resize_to_limit: [400, 300]), class: "w-full h-48 object-contain bg-white" %>
+        <% else %>
+           <div class="flex items-center justify-center h-48 text-gray-400 text-xs text-center p-4 bg-white">No Result</div>
+        <% end %>
+
+        <div class="absolute bottom-2 right-2 flex gap-1">
+           <% if layer.original? %>
+             <span class="px-2 py-0.5 bg-blue-500/90 text-white text-[10px] font-bold uppercase rounded">Original</span>
+           <% elsif layer.generated? %>
+             <span class="px-2 py-0.5 bg-purple-500/90 text-white text-[10px] font-bold uppercase rounded">Generated</span>
+           <% end %>
+        </div>
       </div>
     </div>
 
     <!-- Content Section -->
-    <div class="p-4 flex-1 flex flex-col justify-center">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="p-4 flex-1 flex flex-col gap-4 justify-between">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2 text-sm">
+
+        <!-- Column 1: Core Type & Status -->
         <div>
-           <div class="mb-3">
+           <div class="mb-4">
              <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Type</div>
-             <div class="text-sm font-medium text-gray-900"><%= layer.layer_type.titleize %></div>
+             <div class="flex flex-wrap items-center gap-2">
+                <% if layer.generated? %>
+                  <span class="font-semibold text-gray-900 text-base">
+                    <%= layer.generation_type.titleize %>
+                  </span>
+
+                  <% if layer.smart_fix? %>
+                    <% if layer.ai_assist? %>
+                      <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-green-50 text-green-700 text-xs font-medium border border-green-200">
+                        <span class="w-1.5 h-1.5 rounded-full bg-green-600"></span> AI Assist On
+                      </span>
+                    <% else %>
+                       <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-gray-50 text-gray-600 text-xs font-medium border border-gray-200">
+                        <span class="w-1.5 h-1.5 rounded-full bg-gray-400"></span> AI Assist Off
+                      </span>
+                    <% end %>
+                  <% end %>
+
+                <% else %>
+                  <span class="font-medium text-gray-900"><%= layer.layer_type.titleize %></span>
+                <% end %>
+             </div>
            </div>
 
-           <div class="mb-3">
+           <div class="mb-2">
              <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Created</div>
-             <div class="text-sm text-gray-700"><%= layer.created_at.strftime("%B %d, %H:%M") %></div>
+             <div class="text-gray-700 text-xs"><%= layer.created_at.strftime("%B %d, %H:%M") %></div>
            </div>
         </div>
 
+        <!-- Column 2: Specific Params (Preset etc) -->
         <div>
-           <% if layer.generated? %>
-             <div class="mb-3">
-               <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Prompt</div>
-               <div class="text-sm text-gray-700 leading-snug"><%= layer.prompt.presence || "No prompt" %></div>
+           <% if layer.generated? && layer.preset.present? %>
+             <div class="mb-2">
+               <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Preset</div>
+               <div class="font-mono bg-indigo-50 px-2 py-1 rounded inline-block text-indigo-700 text-xs border border-indigo-100"><%= layer.preset %></div>
              </div>
-             <% if layer.preset.present? %>
-               <div class="mb-3">
-                 <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Preset</div>
-                 <div class="text-sm font-mono bg-gray-100 px-2 py-1 rounded inline-block text-gray-700"><%= layer.preset %></div>
-               </div>
-             <% end %>
+           <% elsif layer.original? %>
+             <div class="mb-2">
+                <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Info</div>
+                <div class="text-gray-500 italic text-xs">User uploaded base layer</div>
+             </div>
            <% end %>
         </div>
       </div>
+
+      <!-- Bottom Row: Prompt -->
+      <% if layer.generated? && layer.prompt.present? %>
+        <div class="pt-3 border-t border-gray-100 w-full">
+           <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Prompt</div>
+           <div class="text-gray-800 text-sm leading-snug bg-gray-50 p-2 rounded border border-gray-100">
+             <%= layer.prompt %>
+           </div>
+        </div>
+      <% end %>
     </div>
   </div>
 
