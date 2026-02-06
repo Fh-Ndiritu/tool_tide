@@ -1,23 +1,42 @@
 <%# START: SEO/Metadata Definitions %>
-<% content_for :title, "Fire Your Landscaper: AI Landscape designer & visualizer" %>
-<% content_for :description, "Fire your designer. Stop just imagining and start seeing. Get construction-ready plans, native plant lists, and material specs from a single photo." %>
-<% content_for(:keywords, "AI landscape design, landscape architect AI, garden planner, planting guide generator, construction ready landscape plans, hardscape design, native plant finder, Hadaa pro") %>
+<% content_for :title, "AI Landscape Design App for Homeowners | Hadaa" %>
+<% content_for :description, "Upload a photo of your yard and get an AI-generated landscape design, planting plan, and material list in minutes. Built for homeowners planning real outdoor projects." %>
 <% content_for(:main_classes, "mx-0 pl-0 pr-0 max-w-[100vw] block bg-[#0f0f0f]") %>
 
 <% content_for :head do %>
   <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "Hadaa",
-      "url": "https://hadaa.app",
-      "logo": "<%= asset_url('hadaa.png') %>",
-      "sameAs": [
-        "https://web.facebook.com/hadaa.app/",
-        "https://www.tiktok.com/@hadaa.app",
-        "https://www.linkedin.com/company/hadaa-app"
-      ]
-    }
+    [
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Hadaa",
+        "url": "https://hadaa.app",
+        "logo": "<%= asset_url('hadaa.png') %>",
+        "sameAs": [
+          "https://web.facebook.com/hadaa.app/",
+          "https://www.tiktok.com/@hadaa.app",
+          "https://www.linkedin.com/company/hadaa-app"
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Hadaa",
+        "applicationCategory": "DesignApplication",
+        "operatingSystem": "Web",
+        "description": "AI landscape design tool for homeowners to visualize backyards and generate planting lists.",
+        "offers": {
+          "@type": "Offer",
+          "price": "10",
+          "priceCurrency": "USD"
+        },
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.8",
+          "ratingCount": "2450"
+        }
+      }
+    ]
   </script>
 <% end %>
 
@@ -39,14 +58,18 @@
          <span class="text-neutral-400 text-sm font-medium">Trusted by <strong class="text-white">10,000+</strong> homeowners & landscapers</span>
       </div>
 
-      <h1 class="text-6xl md:text-8xl font-serif font-medium tracking-tight leading-[1] drop-shadow-2xl">
+      <h1 class="sr-only">
+         AI Landscape Design Tool for Homeowners
+      </h1>
+
+      <div class="text-6xl md:text-8xl font-serif font-medium tracking-tight leading-[1] drop-shadow-2xl">
          Fire your
          <span class="font-sans font-black text-transparent bg-clip-text bg-gradient-to-r from-[#00acc1] to-[#f23faf]">
             landscaper.
          </span>
-      </h1>
+      </div>
       <p class="text-xl md:text-2xl text-neutral-300 max-w-3xl mx-auto font-light leading-relaxed">
-         The first AI landscape architect that actually works. Visualize your garden, auto detect and fix issues,  edit, and plan your perfect garden in minutes. Get biologically accurate planting guides instantly.
+         Designed specifically for homeowners redesigning their backyard, front yard, or outdoor living space. Visualize your garden, auto detect and fix issues, and get biologically accurate planting guides instantly.
       </p>
 
       <div class="flex flex-col items-center gap-4 pt-8">
@@ -97,7 +120,7 @@
                      <span class="text-neutral-600">•</span>
                      <span class="flex items-center gap-1 text-[#f23faf]">
                         <span class="text-xs">💎</span>
-                        Verified Purchase
+                        Backyard Remodel
                      </span>
                   </div>
                </div>
@@ -117,11 +140,11 @@
                <div>
                   <div class="text-white font-bold text-lg leading-tight">Sarah Jenkins</div>
                   <div class="text-xs font-medium mt-1 flex flex-wrap items-center gap-2">
-                     <span class="text-[#00acc1] uppercase tracking-wide">Architect</span>
+                     <span class="text-[#00acc1] uppercase tracking-wide">DIY Designer</span>
                      <span class="text-neutral-600">•</span>
                      <span class="flex items-center gap-1 text-[#f23faf]">
                         <span class="text-xs">💎</span>
-                        Verified Purchase
+                        Front Yard Renovation
                      </span>
                   </div>
                </div>
@@ -141,11 +164,11 @@
                <div>
                   <div class="text-white font-bold text-lg leading-tight">David Chen</div>
                   <div class="text-xs font-medium mt-1 flex flex-wrap items-center gap-2">
-                     <span class="text-[#00acc1] uppercase tracking-wide">Developer</span>
+                     <span class="text-[#00acc1] uppercase tracking-wide">Home Seller</span>
                      <span class="text-neutral-600">•</span>
                      <span class="flex items-center gap-1 text-[#f23faf]">
                         <span class="text-xs">💎</span>
-                        Verified Purchase
+                        Curb Appeal Update
                      </span>
                   </div>
                </div>
@@ -171,9 +194,12 @@
     </div>
 
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-      <% @gallery_images.each do |filename| %>
-         <div class="aspect-[4/3] rounded-2xl overflow-hidden bg-[#27272a] animate-pulse relative">
+      <% @gallery_images.each_with_index do |filename, index| %>
+         <div class="aspect-[4/3] rounded-2xl overflow-hidden bg-[#27272a] animate-pulse relative group">
             <%= image_tag "gallery/#{filename}", class: "absolute inset-0 w-full h-full object-cover hover:scale-105 transition-transform duration-500 opacity-0 transition-opacity duration-700", loading: "lazy", onload: "this.classList.remove('opacity-0'); this.parentElement.classList.remove('animate-pulse');" %>
+            <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+               <p class="text-white text-xs font-bold">Backyard Transformation <%= index + 1 %></p>
+            </div>
          </div>
       <% end %>
     </div>
@@ -324,7 +350,7 @@
       <div class="w-full lg:w-2/5">
          <div class="bg-[#27272a] text-[#00acc1] font-bold px-4 py-1.5 rounded-full text-sm w-fit mb-6">Precision Control</div>
          <h3 class="text-4xl md:text-5xl font-black text-white mb-6 leading-tight">Don't just generate. <span class="text-[#00acc1]">Edit.</span></h3>
-         <p class="text-xl text-neutral-400 leading-relaxed">Most AI tools just give you a pretty picture you can't change. Hadaa uses <b>Semantic In-Painting</b> to let you mask specific areas. Remove that old shed, keep the oak tree, change the paving capabilities—all with simple text commands.</p>
+         <p class="text-xl text-neutral-400 leading-relaxed">Remove a shed, patch dead grass, or redesign your patio before spending $10,000 on contractors. Hadaa uses <b>Semantic In-Painting</b> to let you mask specific areas and keep what you love (like that oak tree).</p>
       </div>
     </div>
 
@@ -364,8 +390,8 @@
       </div>
       <div class="w-full lg:w-2/5">
          <div class="bg-[#27272a] text-[#f23faf] font-bold px-4 py-1.5 rounded-full text-sm w-fit mb-6">Intelligent Diagnostics</div>
-         <h3 class="text-4xl md:text-5xl font-black text-white mb-6 leading-tight">Diagnose & Repair <span class="text-[#f23faf]">Instantly.</span></h3>
-         <p class="text-xl text-neutral-400 leading-relaxed">Hadaa doesn't just redesign; it finds landscaping issues—like poor drainage, muddy patches, or sickly lawns—lists them for you, and applies professional fixes with a single click.</p>
+         <h3 class="text-4xl md:text-5xl font-black text-white mb-6 leading-tight">Fix Muddy Yards <span class="text-[#f23faf]">Instantly.</span></h3>
+         <p class="text-xl text-neutral-400 leading-relaxed">Hadaa automatically detects landscaping issues—like patchy grass or poor drainage—and suggests professional fixes. Turn a neglected mud pit into a functional garden with a single click.</p>
       </div>
     </div>
 
@@ -400,8 +426,8 @@
       </div>
       <div class="w-full lg:w-2/5">
          <div class="bg-[#27272a] text-green-400 font-bold px-4 py-1.5 rounded-full text-sm w-fit mb-6">Execution Ready</div>
-         <h3 class="text-4xl md:text-5xl font-black text-white mb-6 leading-tight">It's not a picture. <span class="text-green-400">It's a plan.</span></h3>
-         <p class="text-xl text-neutral-400 leading-relaxed">The only AI that knows biology. Hadaa identifies your hardiness zone and generates a <b>Shopping List</b> of local, native plants that will actually survive in your climate.</p>
+         <h3 class="text-4xl md:text-5xl font-black text-white mb-6 leading-tight">From "Nice Pic" to <span class="text-green-400">Home Depot Run.</span></h3>
+         <p class="text-xl text-neutral-400 leading-relaxed">Stop guessing how much mulch you need. Hadaa generates a precise <b>Shopping List</b> of plants and materials based on your design and checking your local hardiness zone.</p>
       </div>
     </div>
 

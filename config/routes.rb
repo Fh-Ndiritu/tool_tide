@@ -52,6 +52,8 @@ Rails.application.routes.draw do
     get "features/preset-style-selection", to: "/application#render_410"
     get "features/brush-prompt-editor", to: "/application#render_410"
     get "features/ai-prompt-editor", to: "/application#render_410"
+    get "features/city-design-inspiration", to: "/application#render_410"
+    get "features/sketch-to-3d-rendering", to: "/application#render_410"
 
     # Explore/Gallery
     get "explore", to: "explore#index", as: :explore
