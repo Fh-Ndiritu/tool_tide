@@ -22,7 +22,7 @@ proxy:
   ssl: true
   hosts:
     - hadaa.app
-    - hadaa.app
+    - hadaa.pro
   app_port: 3000
   forward_headers: true
 

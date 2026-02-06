@@ -18,9 +18,13 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   # =========================================================
-  # MAIN APP ROUTES (hadaa.app)
+  # GLOBAL REDIRECTS (Domain Consolidation)
   # =========================================================
+  constraints(host: /hadaa\.pro/) do
+    match "/(*path)", to: redirect { |params, req| "https://hadaa.app/#{params[:path]}" }, via: :all
+  end
 
+  # Binding constraints for Marketing Scope
   # Marketing Scope
   scope module: "marketing" do
     root to: "home#index"
