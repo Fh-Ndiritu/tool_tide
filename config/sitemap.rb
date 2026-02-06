@@ -25,16 +25,10 @@ SitemapGenerator::Sitemap.create do
   # ============================
   # FEATURES
   # ============================
-  add "/features/brush-prompt-editor", priority: 0.9, changefreq: "weekly"
-  add "/features/ai-prompt-editor", priority: 0.9, changefreq: "weekly"
-  add "/features/intuitive-onboarding", priority: 0.9, changefreq: "weekly"
-  add "/features/location-plant-suggestions", priority: 0.9, changefreq: "weekly"
-  add "/features/preset-style-selection", priority: 0.9, changefreq: "weekly"
-  add "/features/drone-view-3d-perspective", priority: 0.9, changefreq: "weekly"
-  add "/features/shopping-list-planting-guide", priority: 0.9, changefreq: "weekly"
-  add "/features/project-studio", priority: 0.9, changefreq: "weekly"
-  add "/features/sketch-to-3d-rendering", priority: 0.9, changefreq: "weekly"
-  add "/features/city-design-inspiration", priority: 0.9, changefreq: "weekly"
+  add features_project_studio_path, priority: 1.0, changefreq: "weekly"
+  add features_sketch_to_3d_path, priority: 1.0, changefreq: "weekly"
+  add features_biological_engine_path, priority: 1.0, changefreq: "weekly"
+  add features_planting_guide_path, priority: 1.0, changefreq: "weekly"
 
   # ============================
   # APP ENTRY POINTS

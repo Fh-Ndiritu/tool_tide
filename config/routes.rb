@@ -36,15 +36,22 @@ Rails.application.routes.draw do
     # Public Assets
     resources :public_assets, only: :show, param: :uuid
 
-    # Features Pages
-    get "features/brush-prompt-editor", to: "features#brush_prompt_editor", as: :features_brush_prompt_editor
-    get "features/ai-prompt-editor", to: "features#ai_prompt_editor", as: :features_ai_prompt_editor
-    get "features/preset-style-selection", to: "features#preset_style_selection", as: :features_preset_style_selection
-    get "features/location-plant-suggestions", to: "features#location_plant_suggestions", as: :features_location_plant_suggestions
-    get "features/drone-view-3d-perspective", to: "features#drone_view_3d_perspective", as: :features_drone_view_3d_perspective
-    get "features/shopping-list-planting-guide", to: "features#shopping_list_planting_guide", as: :features_shopping_list_planting_guide
-    get "features/intuitive-onboarding", to: "features#intuitive_onboarding", as: :features_intuitive_onboarding
+    # Features Pages (New SEO Pillars)
     get "features/project-studio", to: "features#project_studio", as: :features_project_studio
+    get "features/sketch-to-3d", to: "features#sketch_to_3d", as: :features_sketch_to_3d
+    get "features/biological-engine", to: "features#biological_engine", as: :features_biological_engine
+    get "features/planting-guide", to: "features#planting_guide", as: :features_planting_guide
+
+    # Legacy Redirects (301 Moved Permanently)
+    get "features/drone-view-3d-perspective", to: redirect("features/sketch-to-3d", status: 301)
+    get "features/location-plant-suggestions", to: redirect("features/biological-engine", status: 301)
+    get "features/shopping-list-planting-guide", to: redirect("features/planting-guide", status: 301)
+
+    # Removed Features (410 Gone)
+    get "features/intuitive-onboarding", to: "/application#render_410"
+    get "features/preset-style-selection", to: "/application#render_410"
+    get "features/brush-prompt-editor", to: "/application#render_410"
+    get "features/ai-prompt-editor", to: "/application#render_410"
 
     # Explore/Gallery
     get "explore", to: "explore#index", as: :explore

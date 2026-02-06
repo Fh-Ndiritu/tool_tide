@@ -1,0 +1,218 @@
+<% content_for :title, "3D Backyard Design From a Photo | Sketch to Landscape AI" %>
+<% content_for :description, "Turn a backyard photo or sketch into a stunning 3D landscape design. Visualize patios, gardens, and layouts before you start building." %>
+
+<%# --- Schema (FAQ + SoftwareApp + Breadcrumbs) --- %>
+<% content_for :head do %>
+  <script type="application/ld+json">
+    [
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Can I use a drone photo?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, drone photos work perfectly for layout planning and give the best top-down perspective."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is this accurate enough for contractors?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Absolutely. It gives them the exact visual intent they need to quote accurately, reducing miscommunication."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Do I need special software?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Hadaa works in your browser—just upload a photo and generate your 3D backyard design instantly."
+            }
+          }
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Hadaa 3D Visualization",
+        "applicationCategory": "DesignApplication",
+        "operatingSystem": "Web",
+        "offers": {
+          "@type": "Offer",
+          "price": "10",
+          "priceCurrency": "USD"
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://hadaa.pro/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Sketch to 3D",
+            "item": "https://hadaa.pro/features/sketch-to-3d"
+          }
+        ]
+      }
+    ]
+  </script>
+<% end %>
+
+<div class="bg-neutral-900 text-white min-h-screen font-sans selection:bg-accent selection:text-black">
+
+  <%# --- Hero Section --- %>
+  <section class="relative py-20 lg:py-32 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-neutral-900/90 to-neutral-900 z-0"></div>
+    <div class="absolute inset-0 bg-cover bg-center opacity-20" style="background-image: url('<%= asset_path("features/drone_view_bg.png") %>')"></div>
+
+    <div class="container mx-auto px-6 relative z-10 text-center">
+      <span class="inline-block py-1 px-3 rounded-full bg-accent/10 border border-accent/30 text-accent text-sm font-bold tracking-wider mb-6 animate-fade-in-up">
+        3D VISUALIZATION
+      </span>
+
+      <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 leading-tight animate-fade-in-up delay-100">
+        Turn a Photo into a <br class="hidden md:block" />
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent to-secondary">
+          3D Backyard Design
+        </span>
+      </h1>
+
+      <p class="text-lg text-neutral-400 font-medium mb-8 animate-fade-in-up delay-150">
+        Visualize your renovation ideas in 3D.
+      </p>
+
+      <p class="text-xl md:text-2xl text-neutral-300 max-w-4xl mx-auto leading-relaxed mb-12 animate-fade-in-up delay-200 font-light">
+        Stop guessing. Visualize your renovation ideas in stunning 3D reality before you hire a contractor.
+      </p>
+
+      <div class="flex flex-col sm:flex-row justify-center gap-4 animate-fade-in-up delay-300">
+        <%= link_to "Visualize My Yard", new_user_registration_url, class: "px-8 py-4 bg-accent text-black font-bold rounded-full hover:bg-white hover:text-black transition-all duration-300 transform hover:scale-105 shadow-[0_0_20px_rgba(34,211,238,0.4)]" %>
+      </div>
+    </div>
+  </section>
+
+  <%# --- Section 1: Sketch to Reality --- %>
+  <section class="py-16 bg-neutral-900 border-b border-white/5">
+    <div class="container mx-auto px-6 max-w-6xl">
+      <div class="flex flex-col lg:flex-row items-center gap-12">
+        <div class="w-full lg:w-1/2">
+           <div class="flex items-center gap-4 mb-6">
+            <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white">
+              <%= render IconComponent.new(name: "upload", classes: "w-5 h-5") %>
+            </div>
+            <h2 class="text-3xl font-bold text-white">From Napkin Sketch to Reality</h2>
+          </div>
+          <p class="text-lg text-neutral-300 leading-relaxed mb-6">
+            Have a rough sketch on a napkin? A photo of a muddy construction site? Hadaa interprets your inputs to create a fully realized <strong>3D garden plan</strong>.
+          </p>
+          <ul class="space-y-4 text-neutral-400">
+            <li class="flex items-center gap-3">
+              <span class="w-2 h-2 rounded-full bg-accent"></span>
+              See the flow of traffic
+            </li>
+            <li class="flex items-center gap-3">
+              <span class="w-2 h-2 rounded-full bg-accent"></span>
+              Understand tree scale vs. your house
+            </li>
+            <li class="flex items-center gap-3">
+              <span class="w-2 h-2 rounded-full bg-accent"></span>
+              Connect different zones seamlessly
+            </li>
+          </ul>
+        </div>
+
+        <div class="w-full lg:w-1/2">
+           <div class="relative rounded-2xl overflow-hidden border border-white/10 shadow-xl">
+             <%= image_tag "features/drone_view_analysis.png", alt: "3D backyard design rendering from uploaded photo", class: "w-full h-auto" %>
+           </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <%# --- Section 2: Walkthrough --- %>
+  <section class="py-20 bg-neutral-800/30">
+    <div class="container mx-auto px-6 max-w-6xl">
+       <div class="flex flex-col lg:flex-row-reverse items-center gap-12">
+        <div class="w-full lg:w-1/2">
+           <h2 class="text-3xl font-bold text-white mb-6">Experience the Space</h2>
+           <p class="text-lg text-neutral-300 leading-relaxed mb-8">
+             Static images can't show you how a space <em>feels</em>. Our <strong>3D backyard visualization</strong> lets you understand sightlines and privacy.
+           </p>
+
+           <div class="space-y-6">
+              <div class="group p-6 bg-black/40 rounded-xl border border-white/5 hover:border-accent/30 transition-colors">
+                <h3 class="font-bold text-white mb-2">Patio Expansion</h3>
+                <p class="text-sm text-neutral-400">See if that 12x12 deck actually fits your dining table.</p>
+              </div>
+              <div class="group p-6 bg-black/40 rounded-xl border border-white/5 hover:border-accent/30 transition-colors">
+                <h3 class="font-bold text-white mb-2">Add a Walkway</h3>
+                <p class="text-sm text-neutral-400">Visualize the path from the back door to the fire pit.</p>
+              </div>
+              <div class="group p-6 bg-black/40 rounded-xl border border-white/5 hover:border-accent/30 transition-colors">
+                <h3 class="font-bold text-white mb-2">Small Garden Corner</h3>
+                <p class="text-sm text-neutral-400">Turn a dead space into a lush retreat.</p>
+              </div>
+           </div>
+        </div>
+
+         <div class="w-full lg:w-1/2">
+           <div class="relative rounded-2xl overflow-hidden border border-white/10 shadow-xl">
+             <%= image_tag "features/drone_view_bg.png", alt: "Before and after backyard renovation visualization", class: "w-full h-auto" %>
+           </div>
+        </div>
+       </div>
+    </div>
+  </section>
+
+  <%# --- Section 3: Materials --- %>
+  <section class="py-20 bg-neutral-900 border-t border-white/5">
+    <div class="container mx-auto px-6 text-center max-w-3xl">
+      <h2 class="text-3xl font-bold text-white mb-6">Brick, Stone, or Pavers?</h2>
+      <p class="text-lg text-neutral-300 mb-10">
+        Don't commit to expensive materials until you see them. Toggle between stamped concrete, bluestone, and timber decking instantly to match your home's architecture.
+      </p>
+
+      <%= link_to "Compare Materials Now", new_user_registration_url, class: "inline-flex items-center gap-2 text-accent font-bold hover:text-white transition-colors" %>
+    </div>
+  </section>
+
+  <%# --- Internal Link Hook --- %>
+  <section class="py-20 bg-neutral-800/30 border-t border-white/5">
+     <div class="container mx-auto px-6 text-center">
+       <p class="text-neutral-400 mb-4">Ready to start designing?</p>
+       <%= link_to "Go to Design Studio", features_project_studio_path, class: "text-2xl font-bold text-white hover:text-accent transition-colors" %>
+     </div>
+  </section>
+
+   <%# --- FAQ Section --- %>
+  <section class="py-20 bg-neutral-900 border-t border-white/5">
+    <div class="container mx-auto px-6 max-w-4xl">
+      <h2 class="text-3xl font-bold text-white mb-12 text-center">Frequently Asked Questions</h2>
+
+      <div class="space-y-6">
+        <div class="bg-neutral-800/30 rounded-2xl p-6 border border-white/5">
+          <h3 class="text-lg font-bold text-white mb-2">Can I use a drone photo?</h3>
+          <p class="text-neutral-400">Yes, drone photos work perfectly for layout planning and give the best top-down perspective.</p>
+        </div>
+
+         <div class="bg-neutral-800/30 rounded-2xl p-6 border border-white/5">
+          <h3 class="text-lg font-bold text-white mb-2">Is this accurate enough for contractors?</h3>
+          <p class="text-neutral-400">Absolutely. It gives them the exact visual intent they need to quote accurately, reducing miscommunication.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>

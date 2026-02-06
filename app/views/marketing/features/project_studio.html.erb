@@ -1,214 +1,314 @@
-<% content_for :title, "Project Studio: Precision Control, Presets & AutoFix" %>
+<% content_for :title, "AI Backyard Design Studio | Hadaa Landscape Planner" %>
+<% content_for :description, "Design your dream backyard in minutes with Hadaa’s AI landscape studio. Upload a photo, edit with a brush, choose a style, and generate a realistic garden plan instantly." %>
 
-<% content_for :description, "Experience the Project Studio. Combine Style Presets, SmartFix AI assistance, and AutoFix recommendations with surgical masking precision." %>
+<%# --- Schema (FAQ + SoftwareApp + Breadcrumbs) --- %>
+<% content_for :head do %>
+  <script type="application/ld+json">
+    [
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Do I need design experience?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "None at all. If you can take a photo, you can design your yard using our AI tools."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I keep my existing trees?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes! Use the precision masking tool to protect any elements you want to keep while redesigning the rest."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I redesign a small backyard?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Hadaa helps homeowners maximize small spaces with patios, plants, seating areas, and layout ideas."
+            }
+          }
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Hadaa Project Studio",
+        "applicationCategory": "DesignApplication",
+        "operatingSystem": "Web",
+        "offers": {
+          "@type": "Offer",
+          "price": "10",
+          "priceCurrency": "USD"
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://hadaa.pro/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Project Studio",
+            "item": "https://hadaa.pro/features/project-studio"
+          }
+        ]
+      }
+    ]
+  </script>
+<% end %>
 
-<% content_for :keywords, "AI landscape editor, garden design software, landscape design presets, AI garden planner, smart fix landscape, auto fix yard design, precision landscape masking, professional garden design tool" %>
+<div class="bg-neutral-900 text-white min-h-screen font-sans selection:bg-accent selection:text-black">
 
-<div
-  class="
-    bg-neutral-900 text-white min-h-screen font-sans selection:bg-accent
-    selection:text-black
-  "
->
   <%# --- Hero Section --- %>
   <section class="relative py-20 lg:py-32 overflow-hidden">
-    <div
-      class="
-        absolute inset-0 bg-gradient-to-b from-black/80 via-neutral-900/90
-        to-neutral-900 z-0
-      "
-    ></div>
-
-    <%# Background placeholder %>
-    <div
-      class="absolute inset-0 bg-cover bg-center opacity-20"
-      style="background-image: url('<%= asset_path('features/ai_prompt_bg.png') %>')"
-    ></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-neutral-900/90 to-neutral-900 z-0"></div>
+    <div class="absolute inset-0 bg-cover bg-center opacity-30" style="background-image: url('<%= asset_path("features/project_studio_hero.png") %>')"></div>
 
     <div class="container mx-auto px-6 relative z-10 text-center">
-      <span
-        class="
-          inline-block py-1 px-3 rounded-full bg-accent/10 border
-          border-accent/30 text-accent text-sm font-bold
-          tracking-wider mb-6 animate-fade-in-up
-        "
-      >
+      <span class="inline-block py-1 px-3 rounded-full bg-accent/10 border border-accent/30 text-accent text-sm font-bold tracking-wider mb-6 animate-fade-in-up">
         PROJECT STUDIO
       </span>
 
-      <h1
-        class="
-          text-5xl md:text-7xl font-extrabold tracking-tight mb-8
-          leading-tight animate-fade-in-up delay-100
-        "
-      >
-        Complete Creative
-        <br class="hidden md:block" />
-        <span
-          class="
-            text-transparent bg-clip-text bg-gradient-to-r from-accent
-            to-secondary
-          "
-        >
-          Control
+      <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 leading-tight animate-fade-in-up delay-100">
+        AI Backyard & <br class="hidden md:block" />
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent to-secondary">
+          Garden Design Studio
         </span>
       </h1>
 
-      <p
-        class="
-          text-xl md:text-2xl text-neutral-300 max-w-4xl mx-auto
-          leading-relaxed mb-12 animate-fade-in-up delay-200 font-light
-        "
-      >
-        Hadaa isn't just an image generator. It's a professional-grade editor
-        that gives you surgical command over every pixel of your landscape design.
+      <p class="text-lg text-neutral-400 font-medium mb-8 animate-fade-in-up delay-150">
+        Edit and redesign your yard instantly.
       </p>
 
-      <div
-        class="
-          flex flex-col sm:flex-row justify-center gap-4 animate-fade-in-up
-          delay-300
-        "
-      >
-        <%= link_to "Try the Editor", new_user_registration_url, class: "px-8 py-4 bg-accent text-black font-bold rounded-full hover:bg-white hover:text-black transition-all duration-300 transform hover:scale-105 shadow-[0_0_20px_rgba(34,211,238,0.4)]" %>
+      <p class="text-xl md:text-2xl text-neutral-300 max-w-4xl mx-auto leading-relaxed mb-8 animate-fade-in-up delay-200 font-light">
+        Design your dream yard in minutes. No complex 3D modeling—just upload a photo, describe your vision, and see it instantly.
+      </p>
+
+      <p class="text-neutral-400 text-sm mb-10 animate-fade-in-up delay-250 italic">
+        "Used by 10,000+ homeowners to design their dream yards in under 10 minutes."
+      </p>
+
+      <div class="flex flex-col sm:flex-row justify-center gap-4 animate-fade-in-up delay-300">
+        <%= link_to "Start Designing Now", new_user_registration_url, class: "px-8 py-4 bg-accent text-black font-bold rounded-full hover:bg-white hover:text-black transition-all duration-300 transform hover:scale-105 shadow-[0_0_20px_rgba(34,211,238,0.4)]" %>
       </div>
     </div>
   </section>
 
-  <%# --- Feature Grid --- %>
-  <section class="py-20 bg-neutral-900">
-    <div class="container mx-auto px-6 max-w-7xl">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+  <%# --- Section 1: The Workflow (Hub) --- %>
+  <section class="py-16 bg-neutral-900 border-b border-white/5">
+    <div class="container mx-auto px-6 max-w-6xl">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">From Photo to Plan in 5 Seconds</h2>
+        <p class="text-neutral-400 max-w-2xl mx-auto">The complete workflow to transform your outdoor space.</p>
+      </div>
 
-        <%# Feature 1: Presets %>
-        <div class="bg-neutral-800/30 border border-white/5 rounded-3xl p-8 hover:border-accent/30 transition-all duration-300 group">
-          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center mb-6 shadow-lg shadow-cyan-900/20 group-hover:scale-110 transition-transform">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-white">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M9.53 16.122a3 3 0 0 0-5.78 1.128 2.25 2.25 0 0 1-2.4 2.245 4.5 4.5 0 0 0 8.4-2.245c0-.399-.078-.78-.22-1.128Zm0 0a15.998 15.998 0 0 0 3.388-1.62m-5.043-.025a15.994 15.994 0 0 1 1.622-3.395m3.42 3.42a15.995 15.995 0 0 0 4.764-4.648l3.876-5.814a1.151 1.151 0 0 0-1.597-1.597L14.146 6.32a15.996 15.996 0 0 0-4.649 4.763m3.42 3.42a6.776 6.776 0 0 0-3.42-3.42" />
-            </svg>
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-6 relative z-10">
+        <%# Steps %>
+        <% [
+          { num: 1, title: "Upload", desc: "Snap a photo of your messy backyard." },
+          { num: 2, title: "Edit", desc: "Use the Brush to erase sheds or add pools." },
+          { num: 3, title: "Style", desc: "Cycle through presets like Modern or Cottage." },
+          { num: 4, title: "Plan", desc: "Generate a buildable layout." },
+          { num: 5, title: "Plant", desc: "Choose climate-safe plants." }
+        ].each do |step| %>
+          <div class="bg-neutral-800/30 p-6 rounded-2xl border border-white/5 text-center group hover:-translate-y-2 transition-transform duration-300">
+            <div class="w-10 h-10 rounded-full bg-white/10 text-white flex items-center justify-center font-bold mx-auto mb-4 group-hover:bg-accent group-hover:text-black transition-colors">
+              <%= step[:num] %>
+            </div>
+            <h3 class="font-bold text-white mb-2"><%= step[:title] %></h3>
+            <p class="text-sm text-neutral-400"><%= step[:desc] %></p>
           </div>
-          <h3 class="text-2xl font-bold text-white mb-4"><%= link_to "Style Presets", features_preset_style_selection_path, class: "hover:underline" %></h3>
-          <p class="text-neutral-400 leading-relaxed mb-6">
-            Jumpstart your creativity with curated design languages. Whether it's Modern, Zen, or Cottage, instantly apply a consistent aesthetic to your masked area.
-          </p>
-          <ul class="space-y-2 text-sm text-neutral-300">
-            <li class="flex items-center gap-2">
-              <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
-              One-click aesthetic transformation
-            </li>
-            <li class="flex items-center gap-2">
-              <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
-              Curated plant & material palettes
-            </li>
-          </ul>
-        </div>
-
-        <%# Feature 2: SmartFix %>
-        <div class="bg-neutral-800/30 border border-white/5 rounded-3xl p-8 hover:border-accent/30 transition-all duration-300 group">
-          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center mb-6 shadow-lg shadow-purple-900/20 group-hover:scale-110 transition-transform">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-white">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z" />
-            </svg>
-          </div>
-          <h3 class="text-2xl font-bold text-white mb-4">SmartFix</h3>
-          <p class="text-neutral-400 leading-relaxed mb-6">
-             Your words, visualized. Type exactly what you want, or toggle "AI Assist" to let our creative engine interpret your vibe and handle the technical details for you.
-          </p>
-          <ul class="space-y-2 text-sm text-neutral-300">
-            <li class="flex items-center gap-2">
-              <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
-              Natural language-to-design translation
-            </li>
-            <li class="flex items-center gap-2">
-              <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
-              Dual modes: Creative Assist or Precision Control
-            </li>
-          </ul>
-        </div>
-
-        <%# Feature 3: AutoFix %>
-        <div class="bg-neutral-800/30 border border-white/5 rounded-3xl p-8 hover:border-accent/30 transition-all duration-300 group">
-          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center mb-6 shadow-lg shadow-teal-900/20 group-hover:scale-110 transition-transform">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-white">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17 17.25 21A2.652 2.652 0 0 0 21 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 1 1-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.703-.127 1.5.168 2.973 1.25 3.723 2.75 2.15 4.302-3.137 7.747-5.426 5.426" />
-            </svg>
-          </div>
-          <h3 class="text-2xl font-bold text-white mb-4">AutoFix</h3>
-          <p class="text-neutral-400 leading-relaxed mb-6">
-            Don't know where to start? AutoFix scans your yard and intelligently suggests improvements—like fixing patches, pruning, or adding lighting—that you can apply with one click.
-          </p>
-          <ul class="space-y-2 text-sm text-neutral-300">
-            <li class="flex items-center gap-2">
-              <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
-              Intelligent scene analysis
-            </li>
-            <li class="flex items-center gap-2">
-              <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
-              Instant, actionable recommendations
-            </li>
-          </ul>
-        </div>
-
-         <%# Feature 4: Precision Bridge %>
-        <div class="bg-neutral-800/30 border border-white/5 rounded-3xl p-8 hover:border-accent/30 transition-all duration-300 group">
-          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center mb-6 shadow-lg shadow-orange-900/20 group-hover:scale-110 transition-transform">
-             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-white">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M4.098 19.902a3.75 3.75 0 0 0 5.304 0l6.401-6.402M6.75 21A3.75 3.75 0 0 1 3 17.25V4.125C3 3.504 3.504 3 4.125 3h5.25c.621 0 1.125.504 1.125 1.125v4.072M6.75 21a3.75 3.75 0 0 0 3.75-3.75V8.197M6.75 21h13.125c.621 0 1.125-.504 1.125-1.125v-5.25c0-.621-.504-1.125-1.125-1.125h-4.072M10.5 8.197l2.88-2.88c.438-.439 1.15-.439 1.59 0l3.712 3.713c.44.44.44 1.152 0 1.59l-2.879 2.88M6.75 17.25h.008v.008H6.75v-.008Z" />
-              </svg>
-          </div>
-          <h3 class="text-2xl font-bold text-white mb-4">Precision Bridge</h3>
-          <p class="text-neutral-400 leading-relaxed mb-6">
-            Everything starts with the mask. Use our <%= link_to "brush tool", features_brush_prompt_editor_path, class: "text-neutral-400 underline hover:text-white transition-colors" %> to isolate exactly what you want to change—the lawn, the walkway, the flowerbed—ensuring the rest of your home remains perfectly untouched.
-          </p>
-          <ul class="space-y-2 text-sm text-neutral-300">
-             <li class="flex items-center gap-2">
-              <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
-              Surgical editing accuracy
-            </li>
-            <li class="flex items-center gap-2">
-              <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
-              Seamless integration with original photo
-            </li>
-          </ul>
-        </div>
-
+        <% end %>
       </div>
     </div>
   </section>
 
-  <%# --- CTA Section --- %>
-  <section class="py-20">
+  <%# --- Section 2: Brush Feature --- %>
+  <section class="py-20 bg-neutral-800/30 relative overflow-hidden">
     <div class="container mx-auto px-6">
-      <div
-        class="
-          bg-gradient-to-r from-neutral-800 to-black rounded-3xl p-12 md:p-20
-          text-center shadow-2xl relative overflow-hidden border border-white/10
-        "
-      >
-        <div
-          class="absolute inset-0 opacity-10 mix-blend-overlay"
-          style="background-image: url('<%= asset_path("features/noise_texture.png") %>');"
-        ></div>
+      <div class="flex flex-col lg:flex-row items-center gap-16">
+        <%# Content %>
+        <div class="w-full lg:w-1/2">
+          <div class="flex items-center gap-4 mb-6">
+            <div class="w-12 h-12 rounded-2xl bg-accent flex items-center justify-center text-black font-bold text-xl shadow-lg shadow-accent/20">
+              <%= render IconComponent.new(name: "sparkles", classes: "w-6 h-6") %>
+            </div>
+            <h2 class="text-3xl md:text-4xl font-bold text-white">Don't like that bush? Erase it.</h2>
+          </div>
 
-        <h2 class="text-4xl md:text-6xl font-black text-white mb-8 relative z-10 w-full">
-          Ready to take control?
-        </h2>
+          <p class="text-lg text-neutral-300 mb-8 leading-relaxed">
+            Creating the perfect yard isn't about starting from scratch; it's about refining what you have. Use our <strong>Precision Brush Tool</strong> to:
+          </p>
 
-        <p
-          class="
-            text-xl text-white/80 max-w-2xl mx-auto mb-10 font-medium
-            relative z-10
-          "
-        >
-          Use the ultimate editor to execute your vision with professional precision.
-        </p>
+          <ul class="space-y-4">
+             <li class="flex items-start gap-3">
+              <%= render IconComponent.new(name: "check", classes: "w-6 h-6 text-accent mt-0.5") %>
+              <div>
+                <strong class="text-white block">Remove unwanted elements</strong>
+                <span class="text-neutral-400">Delete an old shed, a dying tree, or messy shrubs instantly.</span>
+              </div>
+            </li>
+            <li class="flex items-start gap-3">
+              <%= render IconComponent.new(name: "check", classes: "w-6 h-6 text-accent mt-0.5") %>
+              <div>
+                <strong class="text-white block">Add new features</strong>
+                <span class="text-neutral-400">Brush over an area and type "add a fire pit" or "install a pergola."</span>
+              </div>
+            </li>
+             <li class="flex items-start gap-3">
+              <%= render IconComponent.new(name: "check", classes: "w-6 h-6 text-accent mt-0.5") %>
+              <div>
+                <strong class="text-white block">Keep what you love</strong>
+                <span class="text-neutral-400">Protect your favorite oak tree while redesigning everything around it.</span>
+              </div>
+            </li>
+          </ul>
+        </div>
 
-        <%= link_to "Start Your Project", new_user_registration_url, class: "inline-block px-10 py-5 bg-white text-black text-xl font-bold rounded-full hover:bg-neutral-200 transition-all duration-300 transform hover:scale-105 shadow-xl relative z-10" %>
-
-        <p class="mt-6 text-white/60 text-sm font-semibold relative z-10">
-           Secure Payment • Instant access
-        </p>
+        <%# Visual %>
+        <div class="w-full lg:w-1/2">
+          <div class="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl group">
+             <%= image_tag "features/brush_tool_interface.png", alt: "AI landscape design editing brush", class: "w-full h-auto transform group-hover:scale-105 transition-transform duration-700" %>
+          </div>
+        </div>
       </div>
     </div>
   </section>
+
+  <%# --- Section 3: Presets Feature --- %>
+  <section class="py-20 lg:py-32 bg-neutral-900 border-t border-white/5">
+    <div class="container mx-auto px-6">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">Find Your Aesthetic Instantly</h2>
+        <p class="text-lg text-neutral-400">
+          Not sure what you want? Cycle through professional design styles with a single click.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <% [
+          { name: "Modern Minimalist", desc: "Clean lines, concrete pavers, and architectural grasses.", img: "features/style_modern.png" },
+          { name: "Tropical Oasis", desc: "Lush ferns, palms, and vibrant colors.", img: "features/style_zen.png" },
+          { name: "Desert Xeriscape", desc: "Low-water succulents, gravel, and natural stone.", img: "features/style_desert.png" },
+          { name: "English Cottage", desc: "Wildflowers, winding paths, and rustic charm.", img: "features/style_cottage.png" }
+        ].each do |style| %>
+          <div class="group bg-neutral-800/30 rounded-2xl overflow-hidden border border-white/5 hover:border-accent/30 transition-all duration-300">
+            <div class="h-48 overflow-hidden">
+               <%= image_tag style[:img], class: "w-full h-full object-cover group-hover:scale-110 transition-transform duration-500", alt: "#{style[:name]} garden design" %>
+            </div>
+            <div class="p-6">
+              <h3 class="font-bold text-white mb-2"><%= style[:name] %></h3>
+              <p class="text-sm text-neutral-400"><%= style[:desc] %></p>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </section>
+
+  <%# --- Section 4: Prompt Feature --- %>
+  <section class="py-20 bg-neutral-800/30 relative overflow-hidden">
+    <div class="container mx-auto px-6">
+      <div class="flex flex-col lg:flex-row-reverse items-center gap-16">
+        <div class="w-full lg:w-1/2">
+          <div class="flex items-center gap-4 mb-6">
+            <div class="w-12 h-12 rounded-2xl bg-secondary flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-secondary/20">
+              <%= render IconComponent.new(name: "sparkles", classes: "w-6 h-6") %>
+            </div>
+            <h2 class="text-3xl md:text-4xl font-bold text-white">If you can say it, you can see it.</h2>
+          </div>
+
+          <div class="bg-black/40 p-6 rounded-2xl border border-white/10 mb-8 backdrop-blur-sm">
+            <p class="text-xl text-neutral-300 font-mono">
+              "A cozy reading nook with a hammock and string lights."
+            </p>
+          </div>
+
+           <div class="bg-black/40 p-6 rounded-2xl border border-white/10 mb-8 backdrop-blur-sm">
+            <p class="text-xl text-neutral-300 font-mono">
+              "A modern pool deck with limestone pavers and privacy hedges."
+            </p>
+          </div>
+
+          <p class="text-lg text-neutral-300 leading-relaxed">
+            Our <strong>AI Landscape Design Tool</strong> understands natural language, turning your text descriptions into photorealistic designs. No CAD skills required.
+          </p>
+        </div>
+
+        <div class="w-full lg:w-1/2">
+           <div class="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl group">
+             <%= image_tag "features/seasonal_design_editor.png", alt: "Text to design AI landscape editor", class: "w-full h-auto transform group-hover:scale-105 transition-transform duration-700" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+   <%# --- Internal Links / Next Steps --- %>
+   <section class="py-20 bg-neutral-900 border-t border-white/5">
+    <div class="container mx-auto px-6">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold text-white mb-4">What's Next?</h2>
+        <p class="text-neutral-400">Continue your design journey.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        <%= link_to features_sketch_to_3d_path, class: "group block bg-neutral-800/50 p-8 rounded-3xl border border-white/5 hover:border-accent/50 transition-all duration-300 hover:-translate-y-1" do %>
+          <div class="mb-4 text-accent group-hover:scale-110 transition-transform origin-left">
+            <%= render IconComponent.new(name: "eye", classes: "w-8 h-8") %>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2 group-hover:text-accent transition-colors">Visualize in 3D &rarr;</h3>
+          <p class="text-sm text-neutral-400">Turn your 2D design into a 3D walkthrough.</p>
+        <% end %>
+
+        <%= link_to features_biological_engine_path, class: "group block bg-neutral-800/50 p-8 rounded-3xl border border-white/5 hover:border-accent/50 transition-all duration-300 hover:-translate-y-1" do %>
+           <div class="mb-4 text-green-400 group-hover:scale-110 transition-transform origin-left">
+            <%= render IconComponent.new(name: "map_pin", classes: "w-8 h-8") %>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2 group-hover:text-green-400 transition-colors">Check Survival &rarr;</h3>
+          <p class="text-sm text-neutral-400">Will these plants grow in my zip code?</p>
+        <% end %>
+
+        <%= link_to features_planting_guide_path, class: "group block bg-neutral-800/50 p-8 rounded-3xl border border-white/5 hover:border-accent/50 transition-all duration-300 hover:-translate-y-1" do %>
+           <div class="mb-4 text-secondary group-hover:scale-110 transition-transform origin-left">
+            <%= render IconComponent.new(name: "list", classes: "w-8 h-8") %>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2 group-hover:text-secondary transition-colors">Build It &rarr;</h3>
+          <p class="text-sm text-neutral-400">Get the material planting list & shopping guide.</p>
+        <% end %>
+      </div>
+    </div>
+   </section>
+
+  <%# --- FAQ Section --- %>
+  <section class="py-20 bg-neutral-900 border-t border-white/5">
+    <div class="container mx-auto px-6 max-w-4xl">
+      <h2 class="text-3xl font-bold text-white mb-12 text-center">Frequently Asked Questions</h2>
+
+      <div class="space-y-6">
+        <div class="bg-neutral-800/30 rounded-2xl p-6 border border-white/5">
+          <h3 class="text-lg font-bold text-white mb-2">Do I need design experience?</h3>
+          <p class="text-neutral-400">None at all. If you can take a photo, you can design your yard using our AI tools.</p>
+        </div>
+
+         <div class="bg-neutral-800/30 rounded-2xl p-6 border border-white/5">
+          <h3 class="text-lg font-bold text-white mb-2">Can I keep my existing trees?</h3>
+          <p class="text-neutral-400">Yes! Use the precision masking tool to protect any elements you want to keep while redesigning the rest.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
 </div>

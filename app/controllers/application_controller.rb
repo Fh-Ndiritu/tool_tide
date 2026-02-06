@@ -18,10 +18,9 @@ class ApplicationController < ActionController::Base
   end
 
   def render_410
-    respond_to do |format|
-      format.html { render file: "#{Rails.root}/public/410.html", layout: false, status: :gone }
-      format.all  { head :gone }
-    end
+    render file: "#{Rails.root}/public/410.html", layout: false, status: :gone
+  rescue ActionController::MissingFile
+    render plain: "410 Gone", status: :gone
   end
 
   def robots

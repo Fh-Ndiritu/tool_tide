@@ -287,7 +287,7 @@
     <%# Feature 1: Smart Fix (Image Left, Text Right) %>
     <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
       <div class="w-full lg:w-3/5">
-         <div class="rounded-3xl overflow-hidden border border-white/10 bg-[#18181b] aspect-[16/9] relative flex items-center justify-center p-8 group overflow-hidden">
+         <div class="rounded-3xl overflow-hidden border border-white/10 bg-[#18181b] aspect-[16/9] relative flex items-center justify-center p-8 group">
             <%# Background & Glow %>
             <div class="absolute inset-0 bg-[#00acc1]/5 group-hover:bg-[#00acc1]/10 transition-colors duration-500"></div>
             <div class="absolute -right-20 -top-20 w-64 h-64 bg-[#00acc1]/20 rounded-full blur-[100px]"></div>
@@ -417,7 +417,7 @@
     <div class="grid lg:grid-cols-12 gap-12 lg:gap-24 items-start">
 
       <%# Left: Headline %>
-      <div class="lg:col-span-5 relative sticky top-32">
+      <div class="lg:col-span-5 sticky top-32">
         <span class="text-[#00acc1] font-bold tracking-widest uppercase text-sm mb-6 block">The Hadaa Standard</span>
         <h2 class="text-5xl md:text-6xl lg:text-7xl font-serif font-medium leading-[1.1] mb-8 text-neutral-100">
           Beauty is common.<br>
@@ -597,7 +597,7 @@
    <div class="max-w-7xl mx-auto">
       <div class="grid lg:grid-cols-2 gap-20 items-start">
          <%# Left Column: Sticky Image/Visual %>
-         <div class="hidden lg:block relative sticky top-32">
+         <div class="hidden lg:block sticky top-32">
             <div class="relative rounded-3xl overflow-hidden shadow-2xl border border-white/10 group">
                <%= image_tag "home/home_design.webp", class: "w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105" %>
                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>

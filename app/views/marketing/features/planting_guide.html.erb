@@ -1,0 +1,215 @@
+<% content_for :title, "Backyard Planting Plan & Shopping List Generator | Hadaa" %>
+<% content_for :description, "From 'Nice Picture' to 'Home Depot Run.' Get a personalized planting plan, plant quantities, and a landscaping shopping list to build your backyard design." %>
+
+<%# --- Schema (FAQ + SoftwareApp + Breadcrumbs) --- %>
+<% content_for :head do %>
+  <script type="application/ld+json">
+    [
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Is this a Bill of Quantities (BOQ)?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "It's a simplified version designed for homeowners. It gives you the confidence to talk to contractors or DIY your shopping run."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I take this to a nursery?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, the list includes specific species names so you come home with the right plants."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I estimate how much my landscaping project will cost?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Hadaa provides material quantities and rough cost guidance so homeowners can budget before shopping."
+            }
+          }
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Hadaa Planting Guide",
+        "applicationCategory": "DesignApplication",
+        "operatingSystem": "Web",
+        "offers": {
+          "@type": "Offer",
+          "price": "10",
+          "priceCurrency": "USD"
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://hadaa.pro/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Planting Guide",
+            "item": "https://hadaa.pro/features/planting-guide"
+          }
+        ]
+      }
+    ]
+  </script>
+<% end %>
+
+<div class="bg-neutral-900 text-white min-h-screen font-sans selection:bg-accent selection:text-black">
+
+  <%# --- Hero Section --- %>
+  <section class="relative py-20 lg:py-32 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-neutral-900/90 to-neutral-900 z-0"></div>
+    <!-- Reuse abstract texture or specific background if available -->
+    <div class="absolute inset-0 bg-cover bg-center opacity-30" style="background-image: url('<%= asset_path("features/planting_guide_hero.png") %>')"></div>
+
+    <div class="container mx-auto px-6 relative z-10 text-center">
+      <span class="inline-block py-1 px-3 rounded-full bg-secondary/10 border border-secondary/30 text-secondary text-sm font-bold tracking-wider mb-6 animate-fade-in-up">
+        BUILD IT
+      </span>
+
+      <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 leading-tight animate-fade-in-up delay-100">
+        Your Personalized <br class="hidden md:block" />
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-secondary to-purple-500">
+          Planting Plan & Shopping List
+        </span>
+      </h1>
+
+      <p class="text-lg text-neutral-400 font-medium mb-8 animate-fade-in-up delay-150">
+        Get the exact shopping list to build it.
+      </p>
+
+      <p class="text-xl md:text-2xl text-neutral-300 max-w-4xl mx-auto leading-relaxed mb-12 animate-fade-in-up delay-200 font-light">
+        From "Nice Picture" to "Home Depot Run." Get the exact list of materials and plants you need to build your design.
+      </p>
+
+      <div class="flex flex-col sm:flex-row justify-center gap-4 animate-fade-in-up delay-300">
+        <%= link_to "Get My List", new_user_registration_url, class: "px-8 py-4 bg-secondary text-white font-bold rounded-full hover:bg-white hover:text-secondary transition-all duration-300 transform hover:scale-105 shadow-[0_0_20px_rgba(206,33,154,0.4)]" %>
+      </div>
+    </div>
+  </section>
+
+  <%# --- Section 1: The Deliverables --- %>
+  <section class="py-16 bg-neutral-900 border-b border-white/5">
+    <div class="container mx-auto px-6 max-w-6xl">
+      <div class="flex flex-col lg:flex-row items-center gap-12">
+        <div class="w-full lg:w-1/2">
+           <div class="flex items-center gap-4 mb-6">
+            <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white">
+              <%= render IconComponent.new(name: "list", classes: "w-5 h-5") %>
+            </div>
+            <h2 class="text-3xl font-bold text-white">The "Build It" Blueprint</h2>
+          </div>
+          <p class="text-lg text-neutral-300 leading-relaxed mb-6">
+            Don't just dream it—build it. Hadaa generates a comprehensive <strong>Landscaping Shopping List</strong> including:
+          </p>
+
+          <div class="space-y-6">
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center text-green-400 flex-shrink-0">
+                 <%= render IconComponent.new(name: "sparkles", classes: "w-6 h-6") %>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-white mb-1">Plant Quantities</h3>
+                <p class="text-neutral-400 text-sm">Know exactly how many shrubs, trees, and groundcovers to buy (e.g., "12x Boxwood 'Green Velvet'").</p>
+              </div>
+            </div>
+
+             <div class="flex items-start gap-4">
+              <div class="w-12 h-12 rounded-xl bg-yellow-500/20 flex items-center justify-center text-yellow-400 flex-shrink-0">
+                 <%= render IconComponent.new(name: "rectangle-dashed", classes: "w-6 h-6") %>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-white mb-1">Material Estimates</h3>
+                <p class="text-neutral-400 text-sm">Get rough square footage for pavers and cubic yards for mulch/gravel.</p>
+              </div>
+            </div>
+
+             <div class="flex items-start gap-4">
+              <div class="w-12 h-12 rounded-xl bg-secondary/20 flex items-center justify-center text-secondary flex-shrink-0">
+                 <%= render IconComponent.new(name: "download", classes: "w-6 h-6") %>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-white mb-1">Exportable PDF</h3>
+                <p class="text-neutral-400 text-sm">Print it out and hand it to your nursery or contractor.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="w-full lg:w-1/2">
+           <div class="relative rounded-2xl overflow-hidden border border-white/10 shadow-xl bg-white/5 p-8 flex items-center justify-center">
+              <%# UI Mockup of a list %>
+              <div class="bg-white text-black p-8 rounded-xl w-3/4 shadow-2xl rotate-3 transform">
+                <h4 class="font-bold text-xl mb-4 border-b pb-2">Shopping List</h4>
+                <ul class="space-y-3 font-mono text-sm">
+                  <li class="flex justify-between"><span>Hydrangea arb.</span> <span>x4</span></li>
+                  <li class="flex justify-between"><span>Hosta 'Patriot'</span> <span>x12</span></li>
+                  <li class="flex justify-between"><span>Black Mulch</span> <span>3 cu.yd</span></li>
+                  <li class="flex justify-between"><span>Limestone Paver</span> <span>450 sq.ft</span></li>
+                </ul>
+                <div class="mt-6 pt-4 border-t text-xs text-center text-gray-500">Hadaa Generated Plan</div>
+              </div>
+           </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <%# --- Section 2: Cost Estimation --- %>
+  <section class="py-20 bg-neutral-800/30">
+    <div class="container mx-auto px-6 max-w-4xl text-center">
+       <h2 class="text-3xl font-bold text-white mb-6">Budget with Confidence</h2>
+       <p class="text-lg text-neutral-300 mb-8">
+         Start your project knowing the scale. Use our material quantities to run a <strong>landscaping cost estimate</strong> before you buy. Need more mulch? Check the <strong>mulch calculator</strong> output to avoid overbuying.
+       </p>
+
+       <div class="p-6 bg-neutral-900 rounded-2xl border border-white/5 inline-block">
+         <p class="text-secondary font-bold">Stop waving your hands and describing "big fluffy bushes."</p>
+         <p class="text-neutral-400 text-sm mt-2">Hand your contractor a professional garden planting plan.</p>
+       </div>
+    </div>
+  </section>
+
+  <%# --- Internal Link Hook --- %>
+  <section class="py-20 bg-neutral-900 border-t border-white/5">
+     <div class="container mx-auto px-6 text-center">
+       <p class="text-neutral-400 mb-4">Want to change the layout?</p>
+       <%= link_to "Back to Design Studio", features_project_studio_path, class: "text-2xl font-bold text-white hover:text-secondary transition-colors" %>
+     </div>
+  </section>
+
+   <%# --- FAQ Section --- %>
+  <section class="py-20 bg-neutral-900 border-t border-white/5">
+    <div class="container mx-auto px-6 max-w-4xl">
+      <h2 class="text-3xl font-bold text-white mb-12 text-center">Frequently Asked Questions</h2>
+
+      <div class="space-y-6">
+        <div class="bg-neutral-800/30 rounded-2xl p-6 border border-white/5">
+          <h3 class="text-lg font-bold text-white mb-2">Is this a Bill of Quantities (BOQ)?</h3>
+          <p class="text-neutral-400">Ideally, yes! It serves as a homeowner-friendly BOQ for estimating costs.</p>
+        </div>
+
+         <div class="bg-neutral-800/30 rounded-2xl p-6 border border-white/5">
+          <h3 class="text-lg font-bold text-white mb-2">Can I take this to a nursery?</h3>
+          <p class="text-neutral-400">Yes, the list includes specific species names so you come home with the right plants.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
