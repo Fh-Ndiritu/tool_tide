@@ -19,6 +19,7 @@ class PaymentTransactionsController < AppController
   end
 
   def callback
+    sleep 3
     if params[:session_id]
       # Stripe: Webhook should have processed this by now, or shortly.
       # We just look up the transaction by session_id.
@@ -52,7 +53,7 @@ class PaymentTransactionsController < AppController
         flash[:notice] = "Payment is processing. Credits will appear shortly."
       end
     else
-      flash[:alert] = "Transaction not found."
+      flash[:notice] = "Payment is processing. Credits will appear shortly."
     end
 
     redirect_to credits_path
