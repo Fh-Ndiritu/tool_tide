@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe MaskRequestsController, type: :controller do
   include ActiveJob::TestHelper
 
-  let(:user) { User.create!(email: 'test@example.com', password: 'password', pro_engine_credits: 1000, privacy_policy: true, onboarding_stage: :completed) }
+  let(:user) { User.create!(email: 'test@example.com', password: 'password', pro_engine_credits: 1000, privacy_policy: true, onboarding_stage: :completed, has_paid: true) }
   let(:canva) { Canva.create!(user: user) }
   let(:mask_request) { MaskRequest.create!(canva: canva, progress: :preparing) }
 

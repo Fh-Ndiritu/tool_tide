@@ -88,6 +88,7 @@ Rails.application.configure do
 
   console do
     ActiveStorage::Current.url_options = { host: "localhost:3000", protocol: "http" }
-    current_user = User.first
   end
+
+  config.hosts << /.*\.ngrok-free\.app/
 end

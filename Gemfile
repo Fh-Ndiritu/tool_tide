@@ -138,4 +138,6 @@ gem "reverse_markdown", "~> 3.0"
 
 gem "faraday-follow_redirects", "~> 0.5.0"
 
+gem "stripe"
+gem "stripe_event"
 gem "pagy"

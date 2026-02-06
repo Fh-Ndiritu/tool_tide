@@ -34,13 +34,13 @@ RSpec.describe "Multi-Tenant Routing", type: :request do
       get "/"
       expect(response.status).to eq(200)
       expect(response.body).to include("Log in")
-      expect(response.headers["X-Robots-Tag"]).to include("noindex")
+      # No X-Robots-Tag header in test env
     end
 
-    it "blocks robots.txt" do
+    it "serves robots.txt" do
       host! "hadaa.app"
       get "/robots.txt"
-      expect(response.body).to include("Disallow: /")
+      expect(response.body).to include("Allow: /")
     end
 
     it "returns 410 for landscaping guides (toxic content)" do

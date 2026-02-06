@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe "Project Creation Analysis", type: :request do
-  let(:user) { User.create!(email: "test@example.com", password: "password", name: "Test User", privacy_policy: true, completed_survey: true, onboarding_stage: :completed) }
+  let(:user) { User.create!(email: "test@example.com", password: "password", name: "Test User", privacy_policy: true, completed_survey: true, onboarding_stage: :completed, has_paid: true) }
 
   before do
     login_as(user, scope: :user)

@@ -1,0 +1,19 @@
+one:
+  user: one
+  role: 0
+  intent: 0
+  pain_point: 0
+  completed: true
+  completed_at: <%= Time.current %>
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+two:
+  user: two
+  role: 0
+  intent: 0
+  pain_point: 0
+  completed: true
+  completed_at: <%= Time.current %>
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>

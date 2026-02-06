@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe OnboardingSurveyController, type: :request do
-  let(:user) { User.create!(email: "test@example.com", password: "password", name: "Test User", privacy_policy: true) }
+  let(:user) { User.create!(email: "test@example.com", password: "password", name: "Test User", privacy_policy: true, has_paid: true) }
 
   before do
     host! "localhost"
@@ -35,7 +35,7 @@ RSpec.describe OnboardingSurveyController, type: :request do
         }
 
         expect(user.reload.onboarding_response).to be_completed
-        expect(user.credits.where(source: :signup).sum(:amount)).to eq(64)
+        expect(user.credits.where(source: :signup).sum(:amount)).to eq(TRIAL_CREDITS)
       end
     end
   end
@@ -46,8 +46,9 @@ RSpec.describe OnboardingSurveyController, type: :request do
       expect(response).to redirect_to(onboarding_survey_path)
     end
 
-    it "does not redirect if user has credits" do
+    it "does not redirect if user has credits and completed onboarding" do
       user.credits.create!(amount: 10, source: :signup, credit_type: :pro_engine)
+      OnboardingResponse.create!(user: user, completed: true)
       get mask_requests_path
       expect(response).not_to redirect_to(onboarding_survey_path)
     end

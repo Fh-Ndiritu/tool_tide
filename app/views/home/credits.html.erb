@@ -2,6 +2,10 @@
 <% content_for :description, "Purchase credits to unlock unlimited AI garden designs. Simple pay-as-you-go pricing with no subscriptions." %>
 <% content_for :hide_footer, true %>
 
+<% if flash[:notice]&.include?("processing") %>
+  <meta http-equiv="refresh" content="2">
+<% end %>
+
 <% if @conversion_event %>
   <script>
     gtag('event', 'purchase', {

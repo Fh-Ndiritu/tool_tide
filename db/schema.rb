@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_02_01_145759) do
+ActiveRecord::Schema[8.0].define(version: 2026_02_05_124857) do
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -394,6 +394,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_01_145759) do
     t.string "paystack_customer_id"
     t.string "currency", default: "USD"
     t.boolean "credits_issued", default: false, null: false
+    t.string "stripe_session_id"
+    t.index ["stripe_session_id"], name: "index_payment_transactions_on_stripe_session_id"
     t.index ["user_id"], name: "index_payment_transactions_on_user_id"
   end
 
@@ -565,8 +567,10 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_01_145759) do
     t.datetime "desktop_projects_announcement_sent_at"
     t.string "last_sign_in_device_type"
     t.boolean "has_paid", default: false
+    t.string "stripe_customer_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["stripe_customer_id"], name: "index_users_on_stripe_customer_id"
   end
 
   create_table "video_clips", force: :cascade do |t|

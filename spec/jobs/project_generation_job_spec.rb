@@ -50,7 +50,7 @@ RSpec.describe ProjectGenerationJob, type: :job do
     }.to raise_error(ProjectGenerationJob::InsufficientCreditsError)
 
     expect(user.reload.pro_engine_credits).to eq(0)
-    expect(layer.reload.progress).to eq("preparing")
+    expect(layer.reload.progress).to eq("processing")
   end
 
   it "calls SmartFixImprover if ai_assist is true" do

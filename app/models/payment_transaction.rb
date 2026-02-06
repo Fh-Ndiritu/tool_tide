@@ -33,7 +33,7 @@ class PaymentTransaction < ApplicationRecord
     with_lock do
       return unless validated? && !credits_issued?
 
-      amount = Object.const_get("PRO_CREDITS_PER_#{currency}") * self.amount
+      amount = Object.const_get("PRO_CREDITS_PER_#{currency.upcase}") * self.amount
       user.credits.create!(source: :purchase, amount:, credit_type: :pro_engine)
       update! credits_issued: true
       user.update! has_paid: true

@@ -64,33 +64,32 @@ RSpec.configure do |config|
 
   # Configure DatabaseCleaner
   # Configure DatabaseCleaner
-  # config.before(:suite) do
-  #   DatabaseCleaner.clean_with(:truncation) # Clean database before the test suite runs
-  # end
+  config.before(:suite) do
+    DatabaseCleaner.clean_with(:truncation) # Clean database before the test suite runs
+  end
 
-  # config.before do
-  #   DatabaseCleaner.strategy = :transaction # Use transactions for most tests
-  # end
+  config.before do
+    DatabaseCleaner.strategy = :transaction # Use transactions for most tests
+  end
 
-  # config.before(:each, type: :feature) do
-  #   # Driver for Capybara browser tests
-  #   DatabaseCleaner.strategy = :truncation # Truncation for feature tests
-  # end
+  config.before(:each, type: :feature) do
+    # Driver for Capybara browser tests
+    DatabaseCleaner.strategy = :truncation # Truncation for feature tests
+  end
 
-  # config.before(:each, type: :system) do # For Rails 6+ System Tests
-  #   DatabaseCleaner.strategy = :truncation
-  # end
+  config.before(:each, type: :system) do # For Rails 6+ System Tests
+    DatabaseCleaner.strategy = :truncation
+  end
 
-  # config.before do
-  #   DatabaseCleaner.start
-  # end
+  config.before do
+    DatabaseCleaner.start
+  end
 
-  # config.after do
-  #   DatabaseCleaner.clean
-  # end
+  config.after do
+    DatabaseCleaner.clean
+  end
 
-  # FactoryBot is NOT being used, so this line is removed:
-  # config.include FactoryBot::Syntax::Methods
+
 
   # If using ActiveRecord fixtures globally (they are auto-loaded if fixture_paths is set),
   # you might use a line like this, though it's typically handled by fixture_paths and transactional_fixtures.

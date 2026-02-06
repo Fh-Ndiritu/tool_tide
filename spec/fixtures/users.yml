@@ -3,9 +3,15 @@ one:
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
   created_at: <%= Time.current %>
   updated_at: <%= Time.current %>
+  onboarding_stage: completed
+  has_paid: true
+  privacy_policy: true
 
 two:
   email: user2@example.com
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
   created_at: <%= Time.current %>
   updated_at: <%= Time.current %>
+  onboarding_stage: completed
+  has_paid: true
+  privacy_policy: true

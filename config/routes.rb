@@ -61,7 +61,7 @@ Rails.application.routes.draw do
   # =========================================================
   # TENANT B: THE LEGACY APP DOMAIN (hadaa.app)
   # =========================================================
-  constraints DomainConstraint.new([ "hadaa.app", "localhost" ]) do
+  constraints DomainConstraint.new([ "hadaa.app", "localhost", "ngrok-free.app" ]) do
     get "privacy-policy", to: "pages#privacy_policy"
 
     # App root (Login/Dashboard)
@@ -158,10 +158,12 @@ Rails.application.routes.draw do
     get "credits", to: "home#credits", as: :credits
 
     get "paystack/callback", to: "payment_transactions#callback"
+    get "stripe/callback", to: "payment_transactions#callback", as: :stripe_callback
 
     resources :payment_transactions, only: :create
     devise_for :users, controllers: { omniauth_callbacks: "users/omniauth_callbacks", registrations: "users/registrations", sessions: "users/sessions" }
 
+    mount StripeEvent::Engine, at: "/stripe/webhooks"
     mount ActionCable.server => "/cable"
 
 
