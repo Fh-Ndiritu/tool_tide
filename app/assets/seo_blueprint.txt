@@ -1,4 +1,4 @@
-This updated blueprint is specifically engineered for **hadaa.pro** based on your internal onboarding data, which confirms that roughly **75% of your users are homeowners** primarily seeking **visualization (82 users)** and **inspiration (68 users)**.
+This updated blueprint is specifically engineered for **hadaa.app** based on your internal onboarding data, which confirms that roughly **75% of your users are homeowners** primarily seeking **visualization (82 users)** and **inspiration (68 users)**.
 
 This strategy pivots away from "flaky" broad hooks to focus on high-intent terms that solve the "Knowledge" gap (38 users) and the "Renovation" intent (33 users), positioning the $10 credit model as a high-value alternative to expensive traditional designers.
 

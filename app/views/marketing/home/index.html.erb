@@ -4,6 +4,23 @@
 <% content_for(:keywords, "AI landscape design, landscape architect AI, garden planner, planting guide generator, construction ready landscape plans, hardscape design, native plant finder, Hadaa pro") %>
 <% content_for(:main_classes, "mx-0 pl-0 pr-0 max-w-[100vw] block bg-[#0f0f0f]") %>
 
+<% content_for :head do %>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Hadaa",
+      "url": "https://hadaa.app",
+      "logo": "<%= asset_url('hadaa.png') %>",
+      "sameAs": [
+        "https://web.facebook.com/hadaa.app/",
+        "https://www.tiktok.com/@hadaa.app",
+        "https://www.linkedin.com/company/hadaa-app"
+      ]
+    }
+  </script>
+<% end %>
+
 <%# HERO SECTION %>
 <%# HERO SECTION %>
 <section class="relative min-h-[90vh] flex flex-col items-center justify-center py-32 px-6 overflow-hidden bg-[#0f0f0f] text-white">
@@ -33,7 +50,7 @@
       </p>
 
       <div class="flex flex-col items-center gap-4 pt-8">
-         <%= link_to "Start Designing Now", new_user_registration_url(host: "hadaa.app"), class: "px-10 py-5 bg-white text-black text-xl font-black rounded-full hover:scale-105 transition-transform duration-300 shadow-[0_0_40px_rgba(255,255,255,0.2)]" %>
+         <%= link_to "Start Designing Now", new_user_registration_url, class: "px-10 py-5 bg-white text-black text-xl font-black rounded-full hover:scale-105 transition-transform duration-300 shadow-[0_0_40px_rgba(255,255,255,0.2)]" %>
          <span class="text-xs font-bold text-neutral-500 tracking-widest uppercase">
             Accurate yard and garden designs • GPU-Accelerated Rendering
          </span>
@@ -186,7 +203,7 @@
             Instant result generation
          </li>
       </ul>
-      <%= link_to "Start Designing", new_user_registration_url(host: "hadaa.app"), class: "inline-block px-8 py-4 bg-[#00acc1] text-black font-black uppercase tracking-wider rounded-lg hover:bg-[#00acc1]/90 transition-colors" %>
+      <%= link_to "Start Designing", new_user_registration_url, class: "inline-block px-8 py-4 bg-[#00acc1] text-black font-black uppercase tracking-wider rounded-lg hover:bg-[#00acc1]/90 transition-colors" %>
     </div>
     <div class="relative w-full aspect-[16/9] md:aspect-auto md:h-[500px] flex items-center justify-center">
       <%# Composition Container %>

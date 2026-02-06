@@ -2,8 +2,8 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins "https://hadaa.pro",
-            "https://www.hadaa.pro",
+    origins "https://hadaa.app",
+            "https://www.hadaa.app",
             "https://hadaa.app",
             "https://www.hadaa.app",
             "http://localhost:3000"

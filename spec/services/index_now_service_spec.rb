@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe IndexNowService do
-  let(:host) { "hadaa.pro" }
+  let(:host) { "hadaa.app" }
   let(:path) { Rails.root.join("public", "sitemap.xml.gz") }
 
   before do
@@ -51,8 +51,8 @@ RSpec.describe IndexNowService do
         <<~XML
           <?xml version="1.0" encoding="UTF-8"?>
           <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-            <url><loc>https://hadaa.pro/</loc></url>
-            <url><loc>https://hadaa.pro/about</loc></url>
+            <url><loc>https://hadaa.app/</loc></url>
+            <url><loc>https://hadaa.app/about</loc></url>
           </urlset>
         XML
       end

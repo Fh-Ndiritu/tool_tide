@@ -140,9 +140,9 @@
         <%= link_to "About", about_path, class: marketing_link_class(about_path) %>
 
         <div class="lg:pl-6 flex flex-col lg:flex-row items-center gap-4 w-full lg:w-auto">
-          <%= link_to "Sign In", new_user_session_url(host: Rails.env.production? ? "hadaa.app" : "localhost:3000"), class: "text-sm font-bold text-neutral-900 hover:text-[#00acc1] transition-colors" %>
+          <%= link_to "Sign In", new_user_session_url, class: "text-sm font-bold text-neutral-900 hover:text-[#00acc1] transition-colors" %>
 
-          <%= link_to new_user_registration_url(host: Rails.env.production? ? "hadaa.app" : "localhost:3000"), class: "w-full lg:w-auto px-5 py-2.5 bg-neutral-900 text-white font-bold text-sm rounded-full hover:bg-neutral-800 transition-colors shadow-lg text-center" do %>
+          <%= link_to new_user_registration_url, class: "w-full lg:w-auto px-5 py-2.5 bg-neutral-900 text-white font-bold text-sm rounded-full hover:bg-neutral-800 transition-colors shadow-lg text-center" do %>
             Get Started
           <% end %>
         </div>

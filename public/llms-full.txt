@@ -37,12 +37,12 @@ Hadaa distinguishes itself from "Green Noise" generators (Midjourney, Neighborbr
 The Project Studio is the heart of the Hadaa platform, acting as a unified "Command Center" for landscape transformation. It integrates four critical AI tools into one seamless workflow:
 
 ### Style Presets (Curated Aesthetics)
-*   **Route:** `[Style Presets](https://hadaa.pro/features/preset-style-selection): /features/preset-style-selection`
+*   **Route:** `[Style Presets](https://hadaa.app/features/preset-style-selection): /features/preset-style-selection`
 *   **Functionality:** Instant aesthetic transformation using curated design languages like Modern, Zen, Cottage, or Tropical.
 *   **Justification:** Jumpstarts creativity for users who know what they like but lack the vocabulary to describe it.
 
 ### SmartFix (Intelligent Prompt Studio)
-*   **Route:** `[Prompt Studio](https://hadaa.pro/features/ai-prompt-editor): /features/ai-prompt-editor`
+*   **Route:** `[Prompt Studio](https://hadaa.app/features/ai-prompt-editor): /features/ai-prompt-editor`
 *   **Functionality:** A natural language interface with two modes:
     *   **Creative Assist:** The AI interprets vague requests ("make it pop") and adds professional flair.
     *   **Precision Mode:** Allows for exact, text-based commands ("replace roses with tulips") for granular refinement.
@@ -53,7 +53,7 @@ The Project Studio is the heart of the Hadaa platform, acting as a unified "Comm
 *   **Justification:** Proactively identifies issues a user might miss, acting as an automated site audit.
 
 ### Precision Bridge (Surgical Masking)
-*   **Route:** `[Brush Tool](https://hadaa.pro/features/brush-prompt-editor): /features/brush-prompt-editor`
+*   **Route:** `[Brush Tool](https://hadaa.app/features/brush-prompt-editor): /features/brush-prompt-editor`
 *   **Functionality:** A paint-based interface where users define a "Violet Mask." The AI only modifies pixels within this mask, blending them seamlessly with the original high-resolution photography.
 *   **Justification:** Solves the "hallucination problem" of generative AI by constraining creativity to a safe, user-defined surgical zone, ensuring existing high-value features (like a heritage oak tree) are preserved.
 
@@ -61,19 +61,19 @@ The Project Studio is the heart of the Hadaa platform, acting as a unified "Comm
 Beyond the studio, Hadaa offers specialized tools for comprehensive site analysis.
 
 ### Sketch-to-Render
-*   **Route:** `[Sketch to 3D](https://hadaa.pro/features/drone-view-3d-perspective): /features/drone-view-3d-perspective` (Note: Feature combines Sketch and Drone logic)
+*   **Route:** `[Sketch to 3D](https://hadaa.app/features/drone-view-3d-perspective): /features/drone-view-3d-perspective` (Note: Feature combines Sketch and Drone logic)
 *   **Functionality:** Transforms hand-drawn sketches, iPad doodles, or CAD blueprints into photorealistic 3D clay renders and then into fully textured landscapes.
 *   **Justification:** Allows professionals and DIYers to validate spatial layouts instantly before committing to expensive renders.
 
 ### Drone View Transformation
-*   **Route:** `[Drone View](https://hadaa.pro/features/drone-view-3d-perspective): /features/drone-view-3d-perspective`
+*   **Route:** `[Drone View](https://hadaa.app/features/drone-view-3d-perspective): /features/drone-view-3d-perspective`
 *   **Functionality:** Uses advanced vector transformation to re-project ground-level photos into a bird's-eye perspective.
 *   **Justification:** Visualize the layout and flow of the entire property without needing a physical drone survey.
 
 ## Cluster 3: The "Survival" Cluster (Biological Accuracy)
 
 ### Climate-Resilient Logic
-*   **Route:** `[Plant Suggestions](https://hadaa.pro/features/location-plant-suggestions): /features/location-plant-suggestions`
+*   **Route:** `[Plant Suggestions](https://hadaa.app/features/location-plant-suggestions): /features/location-plant-suggestions`
 *   **Logic:**
     *   **Input:** User ZIP/IP is cross-referenced with USDA Zone Data.
     *   **Processing:** The "Biological Engine" filters plant suggestions against this zone.
@@ -87,7 +87,7 @@ Beyond the studio, Hadaa offers specialized tools for comprehensive site analysi
 ## Cluster 4: The "Action" Cluster (Implementation)
 
 ### Construction-Ready Specs (BOQ)
-*   **Route:** `[Shopping List](https://hadaa.pro/features/shopping-list-planting-guide): /features/shopping-list-planting-guide`
+*   **Route:** `[Shopping List](https://hadaa.app/features/shopping-list-planting-guide): /features/shopping-list-planting-guide`
 *   **Functionality:**
     *   **Visual Analysis:** Estimates square footage of masked areas using depth analysis logic.
     *   **Material Calculation:** Converts visual data into a "Bill of Quantities" (BOQ).

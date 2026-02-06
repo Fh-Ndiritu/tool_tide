@@ -39,7 +39,7 @@ module SocialMedia
         Previous Content Performance:
         #{last_posts}
 
-        Hadaa.Pro link: https://hadaa.pro
+        Hadaa.App link: https://hadaa.app
         Any past Post with less than a score of 60 is not desirable, we need to keep trying variations and improving.
       CONTEXT
     end
@@ -54,7 +54,8 @@ module SocialMedia
         Select different archetypes for variety.
         Ensure strict adherence to the JSON Output Schema.
         Hashtags must be carefully selected to maximize reach and engagement and use only one `#` symbol per tag.
-        Do not use placeholder links, use https://hadaa.pro when you need a link.
+        Hadaa.App link: https://hadaa.app
+        Do not use placeholder links, use https://hadaa.app when you need a link.
       SYSTEM
 
 
@@ -75,7 +76,7 @@ module SocialMedia
         content: idea["facebook_caption"],
         prompt: idea["image_generation_prompt"],
         tags: tags_array,
-        platform: 'facebook',
+        platform: "facebook",
         status: :generated
       )
 

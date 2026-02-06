@@ -9,7 +9,7 @@ module Marketing
         User-agent: *
         Allow: /
 
-        Sitemap: https://hadaa.pro/sitemap.xml.gz
+        Sitemap: https://hadaa.app/sitemap.xml.gz
       ROBOTS
     end
 

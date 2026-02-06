@@ -132,7 +132,7 @@ module Agora
 
     def fetch_content(url)
       conn = Faraday.new do |f|
-        f.headers["User-Agent"] = "Mozilla/5.0 (compatible; SiteCrawlBot/1.0; +https://hadaa.pro)"
+        f.headers["User-Agent"] = "Mozilla/5.0 (compatible; SiteCrawlBot/1.0; +https://hadaa.app)"
         f.headers["Accept"] = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
         f.request :url_encoded
         f.response :follow_redirects

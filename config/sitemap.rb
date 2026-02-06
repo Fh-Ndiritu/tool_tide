@@ -1,27 +1,30 @@
 # frozen_string_literal: true
 
 # =========================================================
-# TENANT A: THE CLEAN SEO DOMAIN (hadaa.pro)
+# SINGLE DOMAIN CONFIGURATION (hadaa.app)
 # =========================================================
-# Use a dedicated LinkSet to prevent state leakage
-hadaa_pro = SitemapGenerator::LinkSet.new
-hadaa_pro.default_host = "https://hadaa.pro"
-hadaa_pro.sitemaps_path = "sitemaps/pro"
-hadaa_pro.create do
-  # Static Marketing Pages
+
+SitemapGenerator::Sitemap.default_host = "https://hadaa.app"
+SitemapGenerator::Sitemap.sitemaps_path = "sitemaps"
+
+SitemapGenerator::Sitemap.create do
+  # ============================
+  # MARKETING PAGES
+  # ============================
+  add root_path, priority: 1.0, changefreq: "weekly"
+
   add "/about", priority: 0.8, changefreq: "monthly"
   add "/terms", priority: 0.5, changefreq: "yearly"
   add "/privacy", priority: 0.5, changefreq: "yearly"
 
   add contact_us_path, priority: 0.5, changefreq: "monthly"
   add faq_path, priority: 0.8, changefreq: "monthly"
-
-  add pricing_path, priority: 0.8, changefreq: "weekly"
-
-  # Explore
+  add pricing_path, priority: 0.9, changefreq: "weekly"
   add explore_path, priority: 0.9, changefreq: "daily"
 
-  # Features
+  # ============================
+  # FEATURES
+  # ============================
   add "/features/brush-prompt-editor", priority: 0.9, changefreq: "weekly"
   add "/features/ai-prompt-editor", priority: 0.9, changefreq: "weekly"
   add "/features/intuitive-onboarding", priority: 0.9, changefreq: "weekly"
@@ -30,33 +33,24 @@ hadaa_pro.create do
   add "/features/drone-view-3d-perspective", priority: 0.9, changefreq: "weekly"
   add "/features/shopping-list-planting-guide", priority: 0.9, changefreq: "weekly"
   add "/features/project-studio", priority: 0.9, changefreq: "weekly"
+  add "/features/sketch-to-3d-rendering", priority: 0.9, changefreq: "weekly"
+  add "/features/city-design-inspiration", priority: 0.9, changefreq: "weekly"
+
+  # ============================
+  # APP ENTRY POINTS
+  # ============================
+  add new_user_session_path, priority: 0.8, changefreq: "monthly"
+  add new_user_registration_path, priority: 0.8, changefreq: "monthly"
+  # Note: /privacy-policy is likely the same as /privacy or handled by routes,
+  # but keeping consistent with previous sitemap if it existed separately.
+  # Checking routes: map to exact path if specific route exists, else ignore duplicates.
 end
 
-# =========================================================
-# TENANT B: THE LEGACY APP DOMAIN (hadaa.app)
-# =========================================================
-hadaa_app = SitemapGenerator::LinkSet.new
-hadaa_app.default_host = "https://hadaa.app"
-hadaa_app.sitemaps_path = "sitemaps/app"
-hadaa_app.create do
-  # Public Entry Points
-  add "/users/sign_in", priority: 0.8, changefreq: "monthly"
-  add "/users/sign_up", priority: 0.8, changefreq: "monthly"
-  add "/privacy-policy", priority: 0.5, changefreq: "monthly"
-end
-
-# Disable default search engine pings via global config to rely on manual pings below
+# Disable default search engine pings
 SitemapGenerator::Sitemap.search_engines = {}
 
-# Ping IndexNow
-IndexNowService.broadcast(
-  host: "hadaa.pro",
-  path: Rails.public_path.join("sitemaps", "pro", "sitemap.xml.gz")
-)
-
+# Ping IndexNow for hadaa.app
 IndexNowService.broadcast(
   host: "hadaa.app",
-  path: Rails.public_path.join("sitemaps", "app", "sitemap.xml.gz")
+  path: Rails.public_path.join("sitemaps", "sitemap.xml.gz")
 )
-
-# Recommended: rake sitemap:create

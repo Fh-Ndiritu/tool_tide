@@ -65,7 +65,7 @@
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
               <div class="flex items-center space-x-2">
                 <%
-                  url_options = Rails.env.production? ? { host: "hadaa.pro", protocol: "https" } : {}
+                  url_options = Rails.env.production? ? { host: "hadaa.app", protocol: "https" } : {}
                   asset_url = public_asset_url(asset.uuid, **url_options)
                 %>
                 <input type="text" readonly value="<%= asset_url %>" class="text-xs border-gray-300 rounded w-64 bg-gray-50" onclick="this.select()">

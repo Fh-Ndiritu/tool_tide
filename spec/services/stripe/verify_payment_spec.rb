@@ -83,6 +83,7 @@ RSpec.describe Stripe::VerifyPayment do
        before do
          # We need to stub the instance that is found by the service
          allow(PaymentTransaction).to receive(:find_by).and_return(transaction)
+         allow(transaction).to receive(:update).with(stripe_session_id: session_id).and_return(true)
          allow(transaction).to receive(:update).with(status: :success, validated: true).and_return(false)
          allow(transaction).to receive(:errors).and_return(double(full_messages: [ "Update failed" ]))
        end

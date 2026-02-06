@@ -47,13 +47,11 @@ class PaymentTransactionsController < AppController
         set_conversion_event(transaction)
       else
         # Webhook hasn't arrived yet or failed.
-        # Check Stripe Status purely for display/polling?
-        # User requested to RELY on webhooks.
-        # So we tell them "Processing..."
         flash[:notice] = "Payment is processing. Credits will appear shortly."
       end
     else
-      flash[:notice] = "Payment is processing. Credits will appear shortly."
+      # Spec expects alert for missing transaction
+      flash[:alert] = "Transaction not found"
     end
 
     redirect_to credits_path
