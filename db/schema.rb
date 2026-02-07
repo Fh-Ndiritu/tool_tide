@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_02_06_145215) do
+ActiveRecord::Schema[8.0].define(version: 2026_02_07_072154) do
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -445,10 +445,10 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_06_145215) do
     t.datetime "completed_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "style_presets_status"
-    t.integer "smart_fix_status"
-    t.integer "auto_fix_status"
-    t.boolean "smart_fix_warning_seen"
+    t.integer "style_presets_status", default: 0
+    t.integer "smart_fix_status", default: 0
+    t.integer "auto_fix_status", default: 0
+    t.boolean "smart_fix_warning_seen", default: false
     t.index ["user_id"], name: "index_project_onboardings_on_user_id"
   end
 

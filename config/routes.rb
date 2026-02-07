@@ -35,7 +35,7 @@ Rails.application.routes.draw do
     get "faq", to: "pages#full_faq"
     get "about", to: "pages#about_us"
     get "terms", to: "pages#terms_of_service"
-    get "privacy", to: "pages#privacy_policy"
+
 
     # Public Assets
     resources :public_assets, only: :show, param: :uuid
@@ -65,9 +65,6 @@ Rails.application.routes.draw do
 
   # Redirect legacy authentication paths if needed, or rely on Devise defaults
   # get "login", to: redirect("users/sign_in") # Optional if we want to alias
-
-  get "privacy-policy", to: "marketing/pages#privacy_policy"
-
   # App root (Login/Dashboard)
   resource :user_setting, only: [ :update ]
 
@@ -167,6 +164,8 @@ Rails.application.routes.draw do
 
   mount StripeEvent::Engine, at: "/stripe/webhooks"
   mount ActionCable.server => "/cable"
+
+  get "privacy", to: "pages#privacy_policy"
 
   # Robots and Sitemap
   # Note: seo#robots and seo#sitemap were in marketing scope. application#robots/sitemap in app scope.

@@ -11,7 +11,7 @@
      data-project-onboarding-style-presets-status-value="<%= current_user.project_onboarding&.style_presets_status || 'not_started' %>"
      data-project-onboarding-smart-fix-status-value="<%= current_user.project_onboarding&.smart_fix_status || 'not_started' %>"
      data-project-onboarding-auto-fix-status-value="<%= current_user.project_onboarding&.auto_fix_status || 'not_started' %>"
-     data-project-onboarding-show-smart-fix-warning-value="<%= current_user.project_onboarding&.should_show_smart_fix_warning? %>">
+     data-project-onboarding-show-smart-fix-warning-value="<%= current_user.project_onboarding&.should_show_smart_fix_warning? || false %>">
 
   <!-- Left Side: Sidebar + Dock Wrapper -->
   <div class="relative z-30 transition-[width] duration-300 ease-in-out w-[280px] data-[state=collapsed]:w-[60px] group/leftSidebar group-data-[layout-mode=overlay]/layout:absolute group-data-[layout-mode=overlay]/layout:left-0 group-data-[layout-mode=overlay]/layout:h-full group-data-[layout-mode=overlay]/layout:z-50"

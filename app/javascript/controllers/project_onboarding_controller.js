@@ -34,26 +34,41 @@ export default class extends Controller {
 
   initOnboarding() {
     // Determine which tool tour to start based on statuses and current active tab
-    const activeTab = this.getActiveTabName()
+    // Small delay to allow DOM updates from vanilla JS tab switcher
+    setTimeout(() => {
+        const activeTab = this.getActiveTabName()
+        console.log("InitOnboarding: Active Tab:", activeTab, "Status:", this.stylePresetsStatusValue)
 
-    if (activeTab === "Style Presets" && this.stylePresetsStatusValue !== "completed" && this.stylePresetsStatusValue !== "generate_seen") {
-      this.handleStylePresetsTour()
-    } else if (activeTab === "SmartFix") {
-      if (this.smartFixStatusValue !== "completed") {
-        this.handleSmartFixTour()
-      } else if (this.showSmartFixWarningValue) {
-        this.handleSmartFixWarning()
-      }
-    } else if (activeTab === "AutoFix" && this.autoFixStatusValue !== "completed") {
-      this.handleAutoFixTour()
-    }
+        if (activeTab === "Style Presets") {
+             if (this.stylePresetsStatusValue === "not_started" || this.stylePresetsStatusValue === "intro_seen") {
+                 this.handleStylePresetsTour()
+             } else if (this.stylePresetsStatusValue === "generate_seen") {
+                  this.startStylePresetsLayerHint()
+             }
+        } else if (activeTab === "SmartFix") {
+             if (this.smartFixStatusValue !== "completed") {
+                 this.handleSmartFixTour()
+             } else if (this.showSmartFixWarningValue) {
+                 this.handleSmartFixWarning()
+             }
+        } else if (activeTab === "AutoFix") {
+             if (this.autoFixStatusValue !== "completed") {
+                 this.handleAutoFixTour()
+             }
+        }
+    }, 100)
   }
 
   getActiveTabName() {
-    // Check targets directly to see which one has the active class
-    if (this.hasStylePresetsTabTarget && this.stylePresetsTabTarget.classList.contains('text-blue-400')) return "Style Presets"
-    if (this.hasSmartFixTabTarget && this.smartFixTabTarget.classList.contains('text-blue-400')) return "SmartFix"
-    if (this.hasAutoFixTabTarget && this.autoFixTabTarget.classList.contains('text-blue-400')) return "AutoFix"
+    // Check panels directly as they are the source of truth for visibility
+    const stylePresetsPanel = document.getElementById('panel_style_presets')
+    const smartFixPanel = document.getElementById('panel_smart_fix')
+    const autoFixPanel = document.getElementById('panel_auto_fix')
+
+    if (stylePresetsPanel && !stylePresetsPanel.classList.contains('hidden')) return "Style Presets"
+    if (smartFixPanel && !smartFixPanel.classList.contains('hidden')) return "SmartFix"
+    if (autoFixPanel && !autoFixPanel.classList.contains('hidden')) return "AutoFix"
+
     return null
   }
 
@@ -113,14 +128,13 @@ export default class extends Controller {
 
     this.startTour(steps, {
       onNextClick: () => {
-        const activeIndex = this.driverObj.getActiveIndex()
-        const totalSteps = this.driverObj.getConfig().steps.length
-
-        if (activeIndex === totalSteps - 1) {
-          this.updateStatus("style_presets", "generate_seen")
-          this.driverObj.destroy()
-        } else {
-          this.driverObj.moveNext()
+        this.driverObj.moveNext()
+      },
+      onDestroyed: () => {
+        // If the user closes the tour at any point, we mark it as seen so it doesn't pop up again
+        // "generate_seen" effectively silences the intro tour but keeps the layer hint available
+        if (this.stylePresetsStatusValue === "not_started" || this.stylePresetsStatusValue === "intro_seen") {
+             this.updateStatus("style_presets", "generate_seen")
         }
       }
     })
@@ -132,7 +146,7 @@ export default class extends Controller {
     const defaultOptions = {
       showProgress: false,
       animate: true,
-      allowClose: true,
+      allowClose: false,
       steps: steps
     }
 
@@ -206,7 +220,6 @@ export default class extends Controller {
     }
 
     this.startTour(steps, {
-      allowClose: true,
       onNextClick: () => {
         const activeIndex = this.driverObj.getActiveIndex()
         const totalSteps = this.driverObj.getConfig().steps.length
@@ -235,7 +248,6 @@ export default class extends Controller {
           }
         }
       ], {
-        allowClose: true,
         onNextClick: () => {
           this.updateStatus("auto_fix", "completed")
           this.driverObj.destroy()
@@ -258,7 +270,6 @@ export default class extends Controller {
         }
       }
     ], {
-      allowClose: true,
       onNextClick: () => this.confirmSmartFixWarning(),
       onCloseClick: () => this.confirmSmartFixWarning(),
       onDestroyed: () => {

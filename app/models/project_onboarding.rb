@@ -25,7 +25,6 @@ class ProjectOnboarding < ApplicationRecord
   }, prefix: true
 
   def should_show_smart_fix_warning?
-    # return true
     return false if smart_fix_warning_seen?
 
     # Check if user has > 5 smart fix requests and ALL of them used AI assist
