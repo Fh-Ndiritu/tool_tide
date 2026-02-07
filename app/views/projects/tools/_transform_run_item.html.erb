@@ -1,0 +1,30 @@
+<div id="transform_run_<%= run.id %>"
+     class="flex items-center justify-between p-2 rounded-lg <%= run.running? ? 'bg-teal-900/30 border border-teal-500/30' : 'bg-gray-800/30 border border-gray-700/30' %>">
+  <div class="flex items-center gap-2">
+    <% if run.running? %>
+      <div class="w-2 h-2 rounded-full bg-teal-400 animate-pulse"></div>
+      <span class="text-xs text-teal-300 font-medium">Running</span>
+    <% elsif run.completed? %>
+      <div class="w-2 h-2 rounded-full bg-green-400"></div>
+      <span class="text-xs text-green-300">Completed</span>
+    <% elsif run.cancelled? %>
+      <div class="w-2 h-2 rounded-full bg-yellow-400"></div>
+      <span class="text-xs text-yellow-300">Cancelled</span>
+    <% elsif run.failed? %>
+      <div class="w-2 h-2 rounded-full bg-red-400"></div>
+      <span class="text-xs text-red-300">Failed</span>
+    <% else %>
+      <div class="w-2 h-2 rounded-full bg-gray-400"></div>
+      <span class="text-xs text-gray-300"><%= run.status.titleize %></span>
+    <% end %>
+    <span class="text-[10px] text-gray-500"><%= time_ago_in_words(run.created_at) %> ago</span>
+  </div>
+
+  <% if run.running? || run.pending? %>
+    <%= button_to cancel_transform_project_path(project, run_id: run.id),
+                  method: :post,
+                  class: "text-xs px-2 py-1 bg-red-500/20 hover:bg-red-500/40 text-red-300 rounded transition-colors" do %>
+      Cancel
+    <% end %>
+  <% end %>
+</div>

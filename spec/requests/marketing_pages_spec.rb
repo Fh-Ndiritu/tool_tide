@@ -18,9 +18,9 @@ RSpec.describe "Marketing Pages", type: :request do
   end
 
   describe "Feature Pages" do
-    it "renders the AI prompt editor page" do
+    it "returns 410 Gone for the AI prompt editor page" do
       get features_ai_prompt_editor_path
-      expect(response).to have_http_status(:success)
+      expect(response).to have_http_status(:gone)
     end
   end
 

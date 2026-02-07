@@ -1,0 +1,105 @@
+<div id="panel_sketch" class="hidden h-full relative overflow-hidden" data-controller="sketch-ui">
+   <div class="absolute inset-0 overflow-y-auto p-4 space-y-4 premium-scrollbar pb-40">
+      <input type="hidden" name="generation_type" value="sketch">
+      <%= turbo_stream_from @project, :sketch_logs %>
+      <%= turbo_stream_from @project, :sketch_run %>
+
+      <div class="space-y-4">
+         <!-- Header with teal accent -->
+         <div class="flex items-center gap-2 mb-2">
+           <div class="w-2 h-2 rounded-full bg-teal-400"></div>
+           <h3 class="text-sm font-bold text-teal-300 uppercase tracking-wider">Hadaa Transform Engine</h3>
+         </div>
+
+         <p class="text-xs text-gray-400 leading-snug">
+           Autonomously transforms your sketches into polished designs. The engine analyzes, transforms, compares, refines, and upscales your work.
+         </p>
+
+         <!-- Cost Warning -->
+         <div class="bg-teal-900/20 border border-teal-500/30 rounded-lg p-3">
+           <div class="flex items-start gap-2">
+             <svg class="w-4 h-4 text-teal-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+             </svg>
+             <div class="text-[11px] text-teal-200/80">
+               <strong>Cost:</strong> <%= GOOGLE_PRO_IMAGE_COST %> – <%= GOOGLE_PRO_IMAGE_COST * 5 %> credits per transformation.
+               <span class="text-teal-400/60">Cancel anytime once you see good results.</span>
+             </div>
+           </div>
+         </div>
+
+         <!-- Description Input (Optional) -->
+         <div>
+            <label class="block text-xs font-bold uppercase text-gray-400 tracking-wider mb-2">Description (Optional)</label>
+            <p class="text-[10px] text-gray-500 mb-2">Describe what your sketch represents or any specific details to guide the transformation.</p>
+            <textarea class="w-full h-24 bg-black/40 border border-white/10 rounded-xl p-3 text-sm text-gray-200 placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-teal-500/50 focus:border-teal-500/50 resize-none shadow-inner transition-all premium-scrollbar"
+                      name="sketch_description"
+                      placeholder="e.g., 'This is an aerial view of a house with a pool and a garden'"
+                      data-sketch-ui-target="descriptionInput"></textarea>
+         </div>
+
+         <!-- Transformation Type -->
+         <div>
+            <label class="block text-xs font-bold uppercase text-gray-400 tracking-wider mb-2">Transformation Type</label>
+            <select name="sketch_transformation_type"
+                    class="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-sm text-gray-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 focus:border-teal-500/50 transition-all appearance-none cursor-pointer"
+                    data-sketch-ui-target="typeInput">
+               <option value="photorealistic">Photorealistic</option>
+               <option value="clay_render">Clay Render</option>
+               <option value="archicad">ArchiCAD Style</option>
+               <option value="watercolor">Watercolor Sketch</option>
+            </select>
+         </div>
+
+         <!-- Start Button -->
+         <%= render "projects/tools/sketch_start_button" %>
+      </div>
+
+      <!-- Active Transformations (Collapsible - Collapsed by default) -->
+      <% design_runs = @active_design ? @project.agentic_runs.where(design: @active_design).order(created_at: :desc).limit(10) : [] %>
+      <% running_runs = design_runs.select { |r| r.running? || r.pending? } %>
+      <details class="mt-4 border-t border-white/10 pt-4 group">
+        <summary class="flex items-center justify-between cursor-pointer list-none">
+          <span class="text-xs font-bold uppercase text-teal-400/70 tracking-wider">
+            Active Transformations
+            <% if running_runs.any? %>
+              <span class="ml-1 px-1.5 py-0.5 bg-teal-500/30 text-teal-300 rounded text-[10px]"><%= running_runs.count %></span>
+            <% end %>
+          </span>
+          <svg class="w-4 h-4 text-gray-500 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </summary>
+        <div id="active_transform_runs" class="mt-3 space-y-2">
+          <% if design_runs.any? %>
+            <% design_runs.each do |run| %>
+              <%= render "projects/tools/transform_run_item", run: run, project: @project %>
+            <% end %>
+          <% else %>
+            <div class="text-[10px] text-gray-600 italic">No transformations for this design yet.</div>
+          <% end %>
+        </div>
+      </details>
+
+      <!-- Transformation Log (Collapsible - Open by default) -->
+      <details open class="mt-4 border-t border-white/10 pt-4 group">
+        <summary class="flex items-center justify-between cursor-pointer list-none">
+          <span class="text-xs font-bold uppercase text-gray-500 tracking-wider">Transformation Log</span>
+          <svg class="w-4 h-4 text-gray-500 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </summary>
+        <div class="mt-3 bg-black/20 rounded-lg p-3 h-48 overflow-y-auto font-mono text-[10px] text-gray-400 space-y-1"
+             id="sketch_logs"
+             data-sketch-ui-target="logs">
+           <% if @project.agentic_runs.last&.logs.present? %>
+             <% @project.agentic_runs.last.logs.each do |entry| %>
+                <%= render "projects/tools/sketch_log_entry", entry: entry %>
+             <% end %>
+          <% else %>
+             <div class="text-gray-600 italic">Ready to transform your sketch...</div>
+          <% end %>
+        </div>
+      </details>
+   </div>
+</div>

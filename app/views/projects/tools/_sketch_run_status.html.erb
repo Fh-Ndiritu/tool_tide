@@ -1,0 +1,20 @@
+<div id="sketch_run_status">
+  <% if run.present? %>
+    <div class="p-2 rounded-lg mb-2 text-xs font-mono
+      <%= case run.status
+          when "running" then "bg-blue-900/40 text-blue-300 border border-blue-500/20"
+          when "paused" then "bg-yellow-900/40 text-yellow-300 border border-yellow-500/20"
+          when "completed" then "bg-green-900/40 text-green-300 border border-green-500/20"
+          when "failed" then "bg-red-900/40 text-red-300 border border-red-500/20"
+          when "cancelled" then "bg-gray-800 text-gray-400 border border-gray-600/20"
+          else "bg-gray-800 text-gray-400"
+          end %>">
+      Status: <span class="uppercase font-bold"><%= run.status %></span>
+      <% if run.paused? %>
+         <div class="mt-1">
+            Build credits low. <a href="/billing" class="underline text-yellow-200">Top up</a> to resume.
+         </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

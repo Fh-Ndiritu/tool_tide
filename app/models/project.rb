@@ -8,6 +8,7 @@ class Project < ApplicationRecord
 
   has_many :designs, dependent: :destroy
   has_many :project_layers, dependent: :destroy
+  has_many :agentic_runs, dependent: :destroy
 
   validates :title, presence: true
 

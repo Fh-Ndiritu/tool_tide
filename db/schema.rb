@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_02_07_072154) do
+ActiveRecord::Schema[8.0].define(version: 2026_02_07_161500) do
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -56,6 +56,18 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_07_072154) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "agentic_runs", force: :cascade do |t|
+    t.integer "project_id", null: false
+    t.integer "status", default: 0
+    t.json "logs", default: []
+    t.string "job_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "design_id"
+    t.index ["design_id"], name: "index_agentic_runs_on_design_id"
+    t.index ["project_id"], name: "index_agentic_runs_on_project_id"
   end
 
   create_table "agora_brand_contexts", force: :cascade do |t|
@@ -419,7 +431,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_07_072154) do
     t.integer "layer_type"
     t.integer "status"
     t.integer "progress", default: 0
-    t.integer "transformation_type"
+    t.string "transformation_type"
     t.integer "views_count", default: 0
     t.text "prompt"
     t.string "preset"
@@ -433,6 +445,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_07_072154) do
     t.string "error_msg"
     t.string "user_msg"
     t.string "model", default: "pro_mode"
+    t.string "detected_type"
     t.index ["ancestry"], name: "index_project_layers_on_ancestry"
     t.index ["auto_fix_id"], name: "index_project_layers_on_auto_fix_id"
     t.index ["design_id"], name: "index_project_layers_on_design_id"
@@ -593,6 +606,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_07_072154) do
   end
 
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "agentic_runs", "designs"
+  add_foreign_key "agentic_runs", "projects"
   add_foreign_key "agora_comments", "agora_posts", column: "post_id"
   add_foreign_key "agora_executions", "agora_posts", column: "post_id"
   add_foreign_key "agora_learned_patterns", "agora_executions", column: "source_execution_id"

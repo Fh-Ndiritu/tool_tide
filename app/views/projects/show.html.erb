@@ -1,6 +1,12 @@
 <% content_for :hide_navbar, true %>
 
-<div id="project_notifications" class="fixed top-0 left-0 right-0 z-[200] flex flex-col pointer-events-none"></div>
+<div id="project_notifications" class="fixed top-0 left-0 right-0 z-[200] flex flex-col pointer-events-none">
+  <% if @active_design&.active_layer&.sketch? %>
+    <%= render "project_layers/sketch_notification", result: "sketch", project_layer: @active_design.active_layer %>
+  <% elsif @active_design&.active_layer&.satellite? %>
+    <%= render "project_layers/sketch_notification", result: "satellite", project_layer: @active_design.active_layer %>
+  <% end %>
+</div>
 
 <%= render "projects/mobile_redirect" %>
 
@@ -432,7 +438,7 @@
                   onclick="switchInnerTab('style_presets')"
                   data-project-onboarding-target="stylePresetsTab"
                   data-action="click->projects#updateBrushHint click->project-onboarding#initOnboarding">
-            Style Presets
+            Styles
           </button>
            <button class="flex-1 py-3 text-sm font-medium border-b-2 text-gray-300 border-transparent hover:text-gray-200 transition-colors"
                   id="tab_smart_fix"
@@ -448,6 +454,10 @@
                   data-action="click->projects#updateBrushHint click->project-onboarding#initOnboarding">
             AutoFix
           </button>
+           <div id="tab_sketch_container" class="flex-1 flex">
+             <%= turbo_stream_from @project %>
+             <%= render "projects/tools/sketch_tab_button", active_layer: @active_design&.active_layer %>
+           </div>
        </div>
 
        <!-- Content Area -->
@@ -603,7 +613,11 @@
           </div>
           </div>
 
-            <!-- Tab 4: Export Tools (Commented Out) -->
+
+            <!-- Tab 4: Sketch -->
+            <%= render "projects/tools/sketch_panel" %>
+
+            <!-- Tab 5: Export Tools (Commented Out) -->
             <!--
             <div data-tools-target="panel" class="h-full relative hidden overflow-hidden">
               <div class="absolute inset-0 overflow-y-auto p-4 space-y-4 premium-scrollbar">
@@ -703,7 +717,7 @@
       function switchInnerTab(tabName, save = true) {
         if (save) localStorage.setItem(STORAGE_KEY_INNER, tabName);
 
-        const tabs = ['style_presets', 'smart_fix', 'auto_fix'];
+        const tabs = ['style_presets', 'smart_fix', 'auto_fix', 'sketch'];
         const activeClasses = ['text-blue-400', 'border-blue-400'];
         const inactiveClasses = ['text-gray-300', 'border-transparent', 'hover:text-gray-200'];
 

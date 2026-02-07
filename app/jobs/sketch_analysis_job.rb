@@ -59,7 +59,7 @@ class SketchAnalysisJob < ApplicationJob
     # Upload image directly to Telegram to avoid URL access issues
     image_io = if record.image.attached?
       # Resize to max 400x400 to save bandwidth and avoid payload limits
-      variant = record.image.variant(resize_to_limit: [400, 400]).processed
+      variant = record.image.variant(resize_to_limit: [ 400, 400 ]).processed
       StringIO.new(variant.download)
     end
 
@@ -75,6 +75,9 @@ class SketchAnalysisJob < ApplicationJob
 
     return unless %w[sketch satellite].include?(result)
 
+    # Persist the detection result if possible
+    record.update(detected_type: result) if record.respond_to?(:detected_type)
+
     if record.is_a?(Canva)
        Turbo::StreamsChannel.broadcast_update_to(
         record,
@@ -83,11 +86,15 @@ class SketchAnalysisJob < ApplicationJob
         locals: { canva: record, result: result }
       )
     elsif record.is_a?(ProjectLayer)
-        Turbo::StreamsChannel.broadcast_append_to(
-          [record.design, :layers],
-          target: "project_notifications",
-          partial: "project_layers/sketch_notification",
-          locals: { result: result, project_layer: record }
+        # We rely on the record update triggering a refresh of the page/design
+        # which will then render the notification and the correct tab button state in show.html.erb
+
+        # Explicitly broadcast to update the tab button just in case the refresh is slow or partial
+        Turbo::StreamsChannel.broadcast_replace_to(
+          record.project,
+          target: "tab_sketch_container",
+          partial: "projects/tools/sketch_tab_button",
+          locals: { project: record.project, active_layer: record }
         )
     end
   end

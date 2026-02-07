@@ -11,6 +11,8 @@ Rails.application.routes.draw do
         resources :auto_fixes, only: [ :create, :show ]
       end
     end
+    post :start_sketch, on: :member
+    post :cancel_transform, on: :member
   end
 
 

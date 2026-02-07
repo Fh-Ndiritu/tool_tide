@@ -57,8 +57,19 @@ class ProjectLayer < ApplicationRecord
     style_preset: 10,
     smart_fix: 20,
     autofix: 30,
-    upscale: 40
+    upscale: 40,
+    intermediate: 50,
+    final: 60,
+    upscaled: 70
   }
+
+  def sketch?
+    detected_type == "sketch"
+  end
+
+  def satellite?
+    detected_type == "satellite"
+  end
 
   delegate :user, to: :project
 

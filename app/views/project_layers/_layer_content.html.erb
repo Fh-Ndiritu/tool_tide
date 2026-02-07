@@ -35,40 +35,48 @@
      </div>
   <% end %>
 </div>
+<% is_sketch_layer = project_layer.intermediate? || project_layer.upscaled? %>
 
 <!-- Info -->
 <div class="flex-1 min-w-0 flex flex-col justify-center">
    <div class="flex items-center justify-between">
       <span class="text-xs font-medium truncate transition-colors
-                  <%= is_active ? 'text-blue-400' : 'text-gray-200 group-hover/layer:text-white' %>">
+                  <%= is_active ? 'text-blue-400' : (is_sketch_layer ? 'text-teal-300 group-hover/layer:text-teal-200' : 'text-gray-200 group-hover/layer:text-white') %>">
         <% if project_layer.original? %>
           Original Upload
+        <% elsif is_sketch_layer && project_layer.transformation_type.present? %>
+          <%= project_layer.transformation_type.to_s.titleize %>
+        <% elsif project_layer.style_preset? && project_layer.preset.present? %>
+          <%= project_layer.preset.titleize %>
         <% else %>
           Layer <%= project_layer.layer_number %>
         <% end %>
       </span>
       <% unless is_viewed || is_processing %>
         <span class="flex h-2 w-2 relative">
-          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-          <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full <%= is_sketch_layer ? 'bg-teal-400' : 'bg-blue-400' %> opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 <%= is_sketch_layer ? 'bg-teal-500' : 'bg-blue-500' %>"></span>
         </span>
       <% end %>
    </div>
 
    <div class="flex items-center gap-1.5 text-[10px] leading-none mt-0.5">
       <% if is_processing %>
-        <span class="text-blue-400 font-medium animate-pulse"><%= project_layer.progress.titleize %>...</span>
+        <span class="<%= is_sketch_layer ? 'text-teal-400' : 'text-blue-400' %> font-medium animate-pulse"><%= project_layer.progress.titleize %>...</span>
       <% elsif project_layer.failed? %>
         <span class="text-red-400 font-medium"><%= project_layer.user_msg.presence || "Generation Failed" %></span>
       <% else %>
-        <span class="text-gray-400">
-          <%=  project_layer.not_specified? ? 'Uploaded' : project_layer.generation_type.titleize %>
-          <% if project_layer.style_preset? && project_layer.preset.present? %>
-            &bull; <%= project_layer.preset.titleize %>
+        <span class="<%= is_sketch_layer ? 'text-teal-400/70' : 'text-gray-400' %>">
+          <% if is_sketch_layer %>
+            <%= project_layer.generation_type.titleize %>
+          <% elsif project_layer.style_preset? %>
+            Style Preset
+          <% else %>
+            <%= project_layer.not_specified? ? 'Uploaded' : project_layer.generation_type.titleize %>
           <% end %>
         </span>
-        <span class="text-gray-500">&bull;</span>
-        <span class="text-gray-500"><%= time_ago_in_words(project_layer.created_at) %></span>
+        <span class="<%= is_sketch_layer ? 'text-teal-500/50' : 'text-gray-500' %>">&bull;</span>
+        <span class="<%= is_sketch_layer ? 'text-teal-500/50' : 'text-gray-500' %>"><%= time_ago_in_words(project_layer.created_at) %></span>
       <% end %>
    </div>
 </div>

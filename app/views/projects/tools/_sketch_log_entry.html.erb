@@ -1,0 +1,4 @@
+<div id="sketch_log_entry_<%= entry[:timestamp] || entry["timestamp"] %>" class="<%= entry[:color] || entry["color"] %> mb-1 fade-in">
+  [<%= Time.parse(entry[:timestamp] || entry["timestamp"]).strftime("%H:%M:%S") rescue entry[:timestamp] || entry["timestamp"] %>]
+  <%= entry[:message] || entry["message"] %>
+</div>

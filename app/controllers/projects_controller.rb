@@ -90,6 +90,58 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def start_sketch
+    @project = current_user.projects.find(params[:id])
+    goal = params[:goal] # Optional - can be nil/empty
+    transformation_type = params[:transformation_type]
+
+    # Use active layer from current design
+    active_layer = @project.current_design&.active_layer
+
+    if active_layer
+      # Create the run record for persistence
+      run = @project.agentic_runs.create!(
+        design: @project.current_design,
+        status: :pending,
+        logs: [],
+        job_id: nil
+      )
+
+      # Enqueue job
+      job = AgenticOrchestratorJob.perform_later(active_layer.id, goal, transformation_type, run.id)
+
+      # Update run with job_id
+      run.update(job_id: job.job_id)
+
+      head :ok
+    else
+      head :unprocessable_entity
+    end
+  end
+
+  def cancel_transform
+    @project = current_user.projects.find(params[:id])
+    run_id = params[:run_id]
+
+    run = @project.agentic_runs.find_by(id: run_id)
+    if run && (run.running? || run.pending?)
+      run.cancelled!
+
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace(
+            "transform_run_#{run.id}",
+            partial: "projects/tools/transform_run_item",
+            locals: { run: run, project: @project }
+          )
+        end
+        format.html { redirect_to project_path(@project) }
+      end
+    else
+      head :unprocessable_entity
+    end
+  end
+
   private
 
   def set_project
@@ -97,6 +149,6 @@ class ProjectsController < ApplicationController
   end
 
   def project_params
-    params.require(:project).permit(:title, :current_design_id) # Allow title and current_design_id
+    params.require(:project).permit(:title, :current_design_id)
   end
 end
