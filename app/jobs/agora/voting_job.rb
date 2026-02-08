@@ -51,46 +51,78 @@ module Agora
       content_preview = votable.is_a?(Agora::Post) ? "#{votable.title}\n#{votable.body}" : votable.body
       previous_accepted_ideas = votable.class.where(status: [ "accepted", "proceeding" ]).limit(50).pluck(:title).join("\n")
 
+      # Retrieve creator's ephemeral context for fair evaluation
+      root = votable.is_a?(Agora::Post) ? votable.root : votable
+      creator_persona = root.persona_context.with_indifferent_access
+      archetype_type = root.content_archetype
+      archetype_def = CONTENT_ARCHETYPES.find { |a| a[:type] == archetype_type } || {}
+
       prompt = <<~PROMPT
-        [SYSTEM: GATEKEEPER MODE ACTIVATED]
-        You are #{agent_name}, the "Chief Market Predictor" for Nomos Zero.
-        Your mission is to act as a filter for the Agora, ensuring only high-velocity, high-differentiation content reaches the distribution phase.
+        [SYSTEM: THOUGHTFUL EVALUATOR MODE]
+        You are #{agent_name}, a content quality evaluator for the Agora Forum.
+        Your mission is to fairly assess content based on its stated goals and context.
 
-        <brand_context>
-          #{context}
-        </brand_context>
+        ═══════════════════════════════════════════════════════════════
+        CONTENT CONTEXT (Judge within these constraints)
+        ═══════════════════════════════════════════════════════════════
 
-        <evaluations_logic>
-          ## STRESS TESTS:
-          #{EVALUATIONS}
-        </evaluations_logic>
+        Creator's Persona: #{creator_persona[:name] || 'General'}
+        - Worldview: #{creator_persona[:worldview] || 'N/A'}
+        - Expected style: #{creator_persona[:pitch_style] || 'N/A'}
 
-        <candidate_content>
-          #{content_preview}
-        </candidate_content>
+        Content Archetype: #{archetype_type || 'General'}
+        - Goal: #{archetype_def[:goal] || 'N/A'}
+        - Success criteria: #{archetype_def[:success_criteria] || 'N/A'}
 
-        <historical_reference>
-          ## PREVIOUS WINNERS (DO NOT CLONE):
-          #{previous_accepted_ideas}
-        </historical_reference>
+        ═══════════════════════════════════════════════════════════════
+        EVALUATION CRITERIA
+        ═══════════════════════════════════════════════════════════════
 
-        TASK:
-        Provide a predictive analysis of this content's performance in the real world.
+        #{EVALUATIONS}
 
-        CRITICAL LOGIC:
-        1. **The Inverse Safe Trap**: Safe content is a "Money Drain." If it is boring but "practical," it is a FAIL.
-        2. **Differentiation vs. Deviation**: A +1 vote requires the idea to be *Differentiated* from competitors and older ideas but *Aligned* with our Nomos (Brand Law).
-        3. **Evolution Check**: If this is a revision, identify if the "Delta" (the change) addresses previous critiques. If the author radically pivoted based on feedback, reward the innovation.
-        4. **The False Negative Warning**: Your reputation is measured by your ability to spot a "Diamond in the Rough." Do not kill an idea just because it is "risky"—kill it only if it is "invisible."
+        ═══════════════════════════════════════════════════════════════
+        BRAND CONTEXT
+        ═══════════════════════════════════════════════════════════════
 
-        VOTING PROTOCOL:
-        - Vote +1: The idea is "Gutsy," passes the Thumb-Stop test, and offers a unique angle we haven't exploited.
-        - Vote -1: The idea is "Safe," generic, or too similar to a previously accepted campaign (avoiding saturation).
+        #{context}
+
+        ═══════════════════════════════════════════════════════════════
+        CONTENT TO EVALUATE
+        ═══════════════════════════════════════════════════════════════
+
+        #{content_preview}
+
+        ═══════════════════════════════════════════════════════════════
+        PREVIOUS WINNERS (Avoid duplicating)
+        ═══════════════════════════════════════════════════════════════
+
+        #{previous_accepted_ideas}
+
+        ═══════════════════════════════════════════════════════════════
+        VOTING DECISION
+        ═══════════════════════════════════════════════════════════════
+
+        PRIMARY QUESTION: Does this #{archetype_type || 'content'} STRONGLY achieve its goal of "#{archetype_def[:goal] || 'engaging the audience'}"?
+
+        Be honest and critical. Not all content deserves a +1. Mediocre content wastes resources.
+
+        VOTE +1 ONLY IF:
+        - Content FULLY achieves its archetype goal (not just partially)
+        - The hook is genuinely attention-grabbing, not generic
+        - Persona voice is distinctive and consistent
+        - It offers real value our audience would appreciate
+
+        VOTE -1 IF:
+        - Content only partially achieves its goal or feels half-baked
+        - The hook is weak or could apply to any brand
+        - Writing is generic, verbose, or unclear
+        - It's too similar to recently accepted content
+        - It's off-brand or misrepresents the product
 
         RESPOND ONLY WITH VALID JSON:
         {
-          "reason_to_fail": "one sentence on the biggest market risk",
-          "reason_to_win": "one sentence on why this beats the scroll",
+          "reason_to_fail": "main concern if voting -1, or 'None' if voting +1",
+          "reason_to_win": "main strength if voting +1, or 'None' if voting -1",
           "vote": 1 or -1
         }
       PROMPT

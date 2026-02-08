@@ -23,8 +23,8 @@ module Agora
       # 3. Assemble Custom Context for Pitch
       context_parts = []
 
-      # 3.1 Institutional Memory
-      context_parts << section("INSTITUTIONAL MEMORY (llms.txt)", load_context("llms.txt"))
+      # 3.1 Brand Context (website.md is the primary source)
+      context_parts << section("BRAND CONTEXT", load_context("website.md"))
 
       # 3.2 Corporate Memory (Learned Patterns) - Specific to Pitch
       corporate_memory = Agora::LearnedPattern.corporate_memory(limit: 50)
@@ -40,17 +40,6 @@ module Agora
       end.join("\n")
 
       context_parts << section("CURRENT MARKET TRENDS (CONTEXT)", trends) if trends.present?
-
-      # 3.4 Website Reference
-      website_md = load_context("website.md")
-      if website_md.present?
-        remaining_budget = MAX_CHARS - context_parts.join.length
-        if website_md.length > remaining_budget
-          context_parts << section("WEBSITE REFERENCE (Truncated)", website_md[0...remaining_budget] + "\n...[TRUNCATED]")
-        else
-          context_parts << section("WEBSITE REFERENCE", website_md)
-        end
-      end
 
       general_context = context_parts.join("\n\n---\n\n")
 
@@ -74,8 +63,8 @@ module Agora
     def assemble
       context_parts = []
 
-      # 1. High Priority: System Identity & llms.txt
-      context_parts << section("INSTITUTIONAL MEMORY (llms.txt)", load_context("llms.txt"))
+      # 1. High Priority: Brand Context (website.md is the primary source)
+      context_parts << section("BRAND CONTEXT", load_context("website.md"))
 
       # 2. Corporate Memory (Learned Patterns)
       corporate_memory = Agora::LearnedPattern.corporate_memory(limit: 50)
@@ -87,18 +76,6 @@ module Agora
       end.join("\n")
 
       context_parts << section("CURRENT MARKET TRENDS", trends) if trends.present?
-
-      # 3. Flexible Priority: website.md (Title + summary)
-      website_md = load_context("website.md")
-      if website_md.present?
-        # If we have space, add full website.md, otherwise truncate
-        remaining_budget = MAX_CHARS - context_parts.join.length
-        if website_md.length > remaining_budget
-          context_parts << section("WEBSITE REFERENCE (Truncated)", website_md[0...remaining_budget] + "\n...[TRUNCATED]")
-        else
-          context_parts << section("WEBSITE REFERENCE", website_md)
-        end
-      end
 
       # Standardize format
       context_parts.join("\n\n---\n\n")

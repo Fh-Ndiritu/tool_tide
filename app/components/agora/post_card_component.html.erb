@@ -15,6 +15,20 @@
           <span class="mx-1">•</span>
           <span><%= time_ago_in_words(@post.created_at) %> ago</span>
         </div>
+        <% if @post.persona_context.present? || @post.content_archetype.present? %>
+          <div class="flex flex-wrap gap-1 mt-1">
+            <% if @post.persona_context.present? && @post.persona_context['name'].present? %>
+              <span class="px-1.5 py-0.5 text-[10px] rounded bg-purple-900/50 text-purple-300 border border-purple-700/50" title="Persona: <%= @post.persona_context['worldview'] %>">
+                🎭 <%= @post.persona_context['name'] %>
+              </span>
+            <% end %>
+            <% if @post.content_archetype.present? %>
+              <span class="px-1.5 py-0.5 text-[10px] rounded bg-cyan-900/50 text-cyan-300 border border-cyan-700/50" title="Content Archetype">
+                📝 <%= @post.content_archetype.humanize %>
+              </span>
+            <% end %>
+          </div>
+        <% end %>
       </div>
     </div>
 

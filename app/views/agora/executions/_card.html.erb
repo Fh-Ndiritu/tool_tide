@@ -1,3 +1,9 @@
+<%
+  root = execution.post.root
+  archetype = root&.content_archetype
+  persona = root&.persona_context&.with_indifferent_access || {}
+%>
+
 <div id="<%= dom_id(execution) %>" class="bg-gray-900 border border-purple-500/30 rounded-lg overflow-hidden shadow-lg flex flex-col h-full">
   <div class="p-5 border-b border-gray-800 flex justify-between items-start bg-gray-800/50">
     <div class="flex items-center">
@@ -6,7 +12,15 @@
       <% end %>
       <div>
         <h3 class="text-xl font-bold text-white mb-1"><%= execution.post.title %></h3>
-        <span class="text-xs text-purple-400 font-mono uppercase tracking-wide"><%= execution.platform %> Campaign</span>
+        <div class="flex flex-wrap gap-2 mt-1">
+          <span class="text-xs text-purple-400 font-mono uppercase tracking-wide"><%= execution.platform %></span>
+          <% if archetype.present? %>
+            <span class="text-xs bg-blue-900/50 text-blue-300 px-2 py-0.5 rounded border border-blue-500/30"><%= archetype %></span>
+          <% end %>
+          <% if persona[:name].present? %>
+            <span class="text-xs bg-amber-900/50 text-amber-300 px-2 py-0.5 rounded border border-amber-500/30"><%= persona[:emoji] %> <%= persona[:name] %></span>
+          <% end %>
+        </div>
       </div>
     </div>
     <div class="text-right">

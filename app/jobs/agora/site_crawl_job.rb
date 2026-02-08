@@ -11,6 +11,16 @@ module Agora
       end
     end
 
+    # Schema for discovering feature pages to crawl
+    class DiscoverPagesSchema < RubyLLM::Schema
+      array :pages, description: "List of up to 5 additional pages to crawl" do
+        object do
+          string :url, description: "Full URL of the page to crawl"
+          string :reason, description: "Why this page has feature/documentation value"
+        end
+      end
+    end
+
     # Schema for llms.txt generation
     class LlmsTxtSchema < RubyLLM::Schema
       object :result do
@@ -26,47 +36,73 @@ module Agora
     end
 
     def perform(website_url:, llms_txt_url: nil, llms_full_txt_url: nil)
-      @source_urls = {
-        website_url: website_url,
-        llms_txt_url: llms_txt_url,
-        llms_full_txt_url: llms_full_txt_url
-      }
+      @source_urls = { website_url: website_url }
 
       broadcast_status("🚀 Starting crawl of #{website_url}...", type: :info)
 
-      # 1. Process Website Content
+      # 1. Fetch and process homepage
       site_content = fetch_content(website_url)
+      homepage_md = html_to_markdown(site_content)
 
-      broadcast_status("📄 Summarizing website content...", type: :info)
-      markdown_content = html_to_markdown(site_content)
-      website_md = summarize_site(markdown_content)
+      # 2. Try to fetch existing llms files EARLY (to incorporate into summary)
+      broadcast_status("🔍 Checking for existing llms.txt files...", type: :info)
+      llms_txt_content = try_fetch_llms_file(website_url, "/llms.txt")
+      llms_full_txt_content = try_fetch_llms_file(website_url, "/llms-full.txt")
 
-      # 2. Process llms.txt
-      broadcast_status("🤖 Processing llms.txt...", type: :info)
-      llms_txt_result = fetch_or_generate(
-        user_provided_url: llms_txt_url,
-        default_path: "/llms.txt",
-        base_url: website_url,
-        type: :llms_txt,
-        base_context: website_md
-      )
+      # 3. Discover additional feature pages using LLM
+      broadcast_status("🔍 Discovering feature pages...", type: :info)
+      feature_pages = discover_feature_pages(homepage_md, website_url)
 
-      # 3. Process llms-full.txt
-      broadcast_status("📚 Processing llms-full.txt...", type: :info)
-      llms_full_txt_result = fetch_or_generate(
-        user_provided_url: llms_full_txt_url,
-        default_path: "/llms-full.txt",
-        base_url: website_url,
-        type: :llms_full_txt,
-        base_context: website_md
-      )
+      # 4. Crawl all discovered pages
+      all_page_contents = [ homepage_md ]
+      feature_pages.each_with_index do |page, index|
+        begin
+          broadcast_status("📄 Crawling page #{index + 1}/#{feature_pages.length}: #{page['url']}...", type: :info)
+          page_content = fetch_content(page["url"])
+          page_md = html_to_markdown(page_content)
+          all_page_contents << "\n\n---\n## Page: #{page['url']}\n### Reason: #{page['reason']}\n\n#{page_md}"
+        rescue StandardError => e
+          Rails.logger.warn("[SiteCrawlJob] Failed to fetch #{page['url']}: #{e.message}")
+        end
+      end
 
-      # 4. Atomic upsert - delete old and insert new in transaction
+      # 5. Build combined content for summarization (include llms files if found)
+      combined_content = all_page_contents.join("\n\n")
+      if llms_txt_content
+        combined_content += "\n\n---\n## Existing llms.txt (official site context):\n#{llms_txt_content}"
+      end
+      if llms_full_txt_content
+        combined_content += "\n\n---\n## Existing llms-full.txt (official deep documentation):\n#{llms_full_txt_content}"
+      end
+
+      # 6. Summarize combined content into website.md
+      broadcast_status("📄 Summarizing #{all_page_contents.length} pages...", type: :info)
+      website_md = summarize_site(combined_content)
+
+      # 7. If llms files were NOT found, auto-generate them from website.md
+      if llms_txt_content.nil?
+        broadcast_status("⚠️ llms.txt not found, generating...", type: :info)
+        llms_txt_content = generate_llms_txt(website_md)
+        llms_txt_source = "generated_by_ai"
+      else
+        llms_txt_source = "fetched_from_url"
+      end
+
+      if llms_full_txt_content.nil?
+        broadcast_status("⚠️ llms-full.txt not found, generating...", type: :info)
+        llms_full_txt_content = generate_llms_full_txt(website_md)
+        llms_full_txt_source = "generated_by_ai"
+      else
+        llms_full_txt_source = "fetched_from_url"
+      end
+
+      # 8. Atomic upsert - store all context
+      # Note: llms files are stored for users to download, but website.md is the primary source
       ActiveRecord::Base.transaction do
         Agora::BrandContext.delete_all
         upsert_context("website.md", website_md, source: "generated_by_ai", origin_url: website_url)
-        upsert_context("llms.txt", llms_txt_result[:content], source: llms_txt_result[:source], origin_url: llms_txt_result[:url])
-        upsert_context("llms-full.txt", llms_full_txt_result[:content], source: llms_full_txt_result[:source], origin_url: llms_full_txt_result[:url])
+        upsert_context("llms.txt", llms_txt_content, source: llms_txt_source, origin_url: website_url)
+        upsert_context("llms-full.txt", llms_full_txt_content, source: llms_full_txt_source, origin_url: website_url)
       end
 
       broadcast_list
@@ -169,7 +205,7 @@ module Agora
       doc = Nokogiri::HTML(html)
 
       # Remove noise
-      %w[nav footer script style iframe noscript].each do |tag|
+      %w[script style iframe noscript].each do |tag|
         doc.css(tag).remove
       end
 
@@ -178,72 +214,133 @@ module Agora
 
     def summarize_site(markdown)
       prompt = <<~PROMPT
-        You are an expert site analyzer.
-        Summarize the following raw website markdown into a concise, high-density description of the site's features, purpose, and key value propositions.
-        Output strictly in Markdown format.
+        You are an expert site analyzer extracting marketing intelligence.
+
+        Analyze the following website content and produce a structured summary.
+
+        OUTPUT FORMAT (use exactly these sections):
+
+        # Brand Overview
+        - Company name and tagline
+        - Core value proposition (1-2 sentences)
+        - Target audience
+
+        # Key Features
+        List each distinct feature with:
+        - **Feature Name**: Brief description of what it does
+        - Focus on UNIQUE capabilities, not generic claims
+
+        # Differentiation
+        - What makes this different from competitors?
+        - Unique technology, approach, or positioning
+
+        # Use Cases
+        - Primary use cases or customer scenarios
+        - Who benefits most from this product?
+
+        # Pricing/Business Model
+        - Pricing tiers if mentioned
+        - Free trial, freemium, or paid only
+
+        # Social Proof
+        - Testimonials, case studies, or notable clients mentioned
+
+        REQUIREMENTS:
+        - Be specific and concrete, avoid marketing fluff
+        - Extract actual feature names and capabilities
+        - If information is not available, write "Not mentioned"
+        - Output strictly in GitHub Flavored Markdown format
 
         RAW CONTENT:
-        #{markdown[0..50000]}
+        #{markdown[0..150_000]}
       PROMPT
 
       generate_with_llm(prompt, WebsiteSummarySchema)
     end
 
-    def fetch_or_generate(user_provided_url:, default_path:, base_url:, type:, base_context:)
-      # 1. Determine target URL (User provided OR guess default)
-      target_url = user_provided_url.presence
-
-      if target_url.blank?
-        begin
-          uri = URI.parse(base_url)
-          target_url = URI.join("#{uri.scheme}://#{uri.host}", default_path).to_s
-        rescue StandardError
-          target_url = nil
-        end
+    # Try to fetch an llms file from the website, return nil if not found
+    def try_fetch_llms_file(base_url, path)
+      begin
+        uri = URI.parse(base_url)
+        target_url = URI.join("#{uri.scheme}://#{uri.host}", path).to_s
+        content = fetch_content(target_url)
+        return content if content.present? && content.length > 50
+      rescue StandardError => e
+        Rails.logger.info("[SiteCrawlJob] #{path} not found: #{e.message}")
       end
+      nil
+    end
 
-      # 2. Try fetching if we have a URL
-      if target_url.present?
-        begin
-          broadcast_status("🔍 Checking #{target_url}...", type: :info)
-          content = fetch_content(target_url)
+    def generate_llms_txt(website_md)
+      prompt = <<~PROMPT
+        Generate an 'llms.txt' file based on the following website summary.
+        The 'llms.txt' should be a high-level sitemap and summary for LLM agents.
 
-          if content.present? && content.length > 50
-             return { content: content, source: "fetched_from_url", url: target_url }
-          end
-        rescue StandardError => e
-          Rails.logger.warn("Failed to fetch #{target_url}, falling back to generation: #{e.message}")
-        end
-      end
+        Follow the llms.txt standard format:
+        - Start with a brief description of the site
+        - List key pages and their purposes
+        - Include relevant metadata
 
-      # 3. Generate if missing or fetch failed
-      broadcast_status("⚠️ #{default_path} not found, generating via AI...", type: :info)
+        Output strictly in plain text/markdown format.
 
-      generated_content = case type
-      when :llms_txt
-        prompt = <<~PROMPT
-          Generate an 'llms.txt' file based on the following website summary.
-          The 'llms.txt' should be a high-level sitemap and summary for LLM agents.
-          Output strictly in plain text/markdown format.
+        WEBSITE CONTEXT:
+        #{website_md}
+      PROMPT
+      generate_with_llm(prompt, LlmsTxtSchema)
+    end
 
-          WEBSITE CONTEXT:
-          #{base_context}
-        PROMPT
-        generate_with_llm(prompt, LlmsTxtSchema)
+    def generate_llms_full_txt(website_md)
+      prompt = <<~PROMPT
+        Generate an 'llms-full.txt' file based on the following website summary.
+        The 'llms-full.txt' should contain deep documentation and detailed context for LLM agents.
 
-      when :llms_full_txt
-        prompt = <<~PROMPT
-          Generate an 'llms-full.txt' file based on the following website summary.
-          The 'llms-full.txt' should contain deep documentation and detailed context for LLM agents.
-          Output strictly in plain text/markdown format.
+        Include:
+        - Complete feature documentation
+        - Use cases and examples
+        - Technical details if available
+        - Any pricing or business model information
 
-          WEBSITE CONTEXT:
-          #{base_context}
-        PROMPT
-        generate_with_llm(prompt, LlmsFullTxtSchema)
-      end
+        Output strictly in plain text/markdown format.
 
-      { content: generated_content, source: "generated_by_ai", url: nil }
+        WEBSITE CONTEXT:
+        #{website_md}
+      PROMPT
+      generate_with_llm(prompt, LlmsFullTxtSchema)
+    end
+
+    def discover_feature_pages(homepage_md, base_url)
+      prompt = <<~PROMPT
+        Analyze this homepage and identify up to 5 additional pages that would contain:
+        - Detailed feature documentation
+        - How-to/tutorial content
+        - Use cases and examples
+        - Pricing/plans information
+        - About/company information
+
+        Base URL: #{base_url}
+
+        Homepage Content (analyze for links):
+        #{homepage_md[0..30000]}
+
+        Return only URLs that:
+        1. Are on the same domain
+        2. Would provide valuable feature/documentation context
+        3. Are likely to have substantive content (not privacy policy, terms, etc.)
+
+        Return an empty array if you cannot identify any suitable pages.
+      PROMPT
+
+      response = CustomRubyLLM.context.chat.with_schema(DiscoverPagesSchema).ask(prompt)
+      pages = response.content["pages"] || []
+
+      # Validate and filter pages
+      pages.select do |page|
+        url = page["url"].to_s
+        url.present? && url.start_with?("http") && !url.include?("/privacy") && !url.include?("/terms")
+      end.first(5)
+    rescue StandardError => e
+      Rails.logger.warn("[SiteCrawlJob] Failed to discover feature pages: #{e.message}")
+      []
     end
 
     def generate_with_llm(prompt, schema)

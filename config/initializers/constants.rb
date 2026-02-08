@@ -104,6 +104,37 @@ AGORA_MODELS = [
   { user_name: "Leopard", emoji: "🐆", model_name: "mistral-small-2503", publisher: "mistralai", location: "us-central1", notes: "Participant", color: "bg-purple-200", avatar: "cloud", provider: :vertex }
 ]
 
+# === Ephemeral Persona System ===
+# Personas are randomly assigned per round, NOT tied to models
+AGORA_PERSONAS = [
+  { key: "bold_visionary", name: "Bold Visionary", worldview: "Dramatic contrasts, high-risk polarizing ideas", pitch_style: "Aggressive hooks, confrontational", expects_from_voters: "Judge on 'gutsy' factor, not safety" },
+  { key: "organic_flow", name: "Organic Flow", worldview: "Emotional resonance, calm harmony", pitch_style: "Soft, aspirational, feel-good", expects_from_voters: "Judge on emotional impact" },
+  { key: "trend_hacker", name: "Trend Hacker", worldview: "Ride viral waves, meme-able content", pitch_style: "Fast, current, reference-heavy", expects_from_voters: "Judge on shareability, not longevity" },
+  { key: "roi_maximizer", name: "ROI Maximizer", worldview: "Conversion-first, metric-driven", pitch_style: "Clear CTA, benefit-focused", expects_from_voters: "Judge on conversion logic" },
+  { key: "storyteller", name: "Pack Storyteller", worldview: "Community-building narrative", pitch_style: "Tribe identity, belonging", expects_from_voters: "Judge on connection potential" },
+  { key: "luxury_aesthete", name: "Luxury Aesthete", worldview: "Premium feel, sophisticated execution", pitch_style: "High-end, minimal, refined", expects_from_voters: "Judge on aesthetic quality" }
+].freeze
+
+# === Content Archetypes ===
+# Randomly assigned per round, maintained through revision cycle
+CONTENT_ARCHETYPES = [
+  { type: "educational", goal: "Teach concepts", success_criteria: "Viewer learns something actionable" },
+  { type: "transformational", goal: "Before/after magic", success_criteria: "Dramatic visual change shown" },
+  { type: "feature_demo", goal: "Highlight capability", success_criteria: "Feature is clearly understood" },
+  { type: "social_proof", goal: "Build trust", success_criteria: "Real results/testimonials shown" },
+  { type: "trend_riding", goal: "Viral leverage", success_criteria: "Connects to current cultural moment" },
+  { type: "behind_scenes", goal: "Process reveal", success_criteria: "Demystifies how it works" },
+  { type: "myth_busting", goal: "Challenge assumptions", success_criteria: "Common belief proven wrong" },
+  { type: "comparison", goal: "Side-by-side value", success_criteria: "Clear winner evident" },
+  { type: "quick_tips", goal: "Bite-sized value", success_criteria: "Immediately actionable" },
+  { type: "seasonal", goal: "Timely relevance", success_criteria: "Tied to current season/event" },
+  { type: "hot_take", goal: "Polarize", success_criteria: "Strong reactions, not lukewarm" },
+  { type: "interactive", goal: "Drive engagement", success_criteria: "Prompts action (vote, comment)" }
+].freeze
+
+# === Target Platforms ===
+TARGET_PLATFORMS = %w[facebook instagram tiktok linkedin youtube pinterest twitter].freeze
+
 VERTEX_CONFIG = {
   project_id: ENV.fetch("GOOGLE_CLOUD_PROJECT", "tool-tide"),
   location: ENV.fetch("VERTEX_LOCATION", "us-central1")
@@ -111,9 +142,10 @@ VERTEX_CONFIG = {
 
 
   EVALUATIONS = <<~EVALUATIONS
-    1. "The Thumb-Stop Test": If you saw this on TikTok/FB, would you actually stop, or is it just "another ad"?
-    2. "The Generic Trap": Could our competitors run this exact same ad? If yes, it is a fail.
-    3. "The Risk Factor": Does this have enough "guts", "twist" or "uniqueness" to be polarizing or trendy?
-    4. Has a similar idea been accepted or rejected before? If yes, we are likely to reject it this time.
-    5. Does it keep talking about the cost as the main selling point? If yes, it is a fail.
+    1. "Archetype Execution": Does this content FULLY achieve its archetype goal, not just partially? (Rate: Weak / Adequate / Strong)
+    2. "Scroll-Stop Potential": Would this actually stop someone scrolling, or is it forgettable?
+    3. "Persona Consistency": Is the creator's voice clear and distinctive, not generic?
+    4. "Brand Fit": Does this represent our product accurately without being salesy or off-putting?
+    5. "Freshness": Is this angle meaningfully different from our recent content, or retreading the same ground?
+    6. "Execution Quality": Is the writing crisp, the hook immediate, and the message clear?
   EVALUATIONS

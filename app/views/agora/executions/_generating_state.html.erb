@@ -1,5 +1,5 @@
-<% if execution.image.attached? %>
-  <%= image_tag execution.image, class: "w-full h-auto object-cover rounded-lg" %>
+<% if execution.images.attached? %>
+  <%= image_tag execution.images.last, class: "w-full h-auto object-cover rounded-lg" %>
 <% elsif execution.image_prompt.present? %>
   <div class="text-center w-full py-10">
     <div class="mb-4">

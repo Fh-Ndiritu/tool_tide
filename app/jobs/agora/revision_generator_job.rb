@@ -6,6 +6,12 @@ module Agora
 
     def perform(post_id)
       post = Agora::Post.find(post_id)
+      root = post.root
+
+      # Retrieve ephemeral context from root (maintained throughout revision cycle)
+      persona = (root.persona_context || {}).with_indifferent_access
+      archetype_type = root.content_archetype
+      archetype = CONTENT_ARCHETYPES.find { |a| a[:type] == archetype_type } || CONTENT_ARCHETYPES.first
 
       # 1. Gather critique feedback from FULL ANCESTRY (Root -> Current)
       # We want to ensure we address all past feedback, not just the latest.
@@ -26,7 +32,7 @@ module Agora
       context = assembler.assemble
 
       # 3. Generate revised pitch (blind - no mention of revision)
-      revised_body = generate_revised_pitch(post, critiques, context)
+      revised_body = generate_revised_pitch(post, critiques, context, persona, archetype_type, archetype)
 
       unless revised_body
         Rails.logger.error("[RevisionGenerator] Failed to generate revision for Post ##{post.id}. Aborting.")
@@ -34,7 +40,7 @@ module Agora
         return
       end
 
-      # 4. Create child post with ancestry
+      # 4. Create child post with ancestry (maintaining persona+archetype from root)
       new_post = Agora::Post.create!(
         parent: post,
         author_agent_id: post.author_agent_id,
@@ -42,7 +48,9 @@ module Agora
         body: revised_body,
         platform: post.platform,
         status: "published",
-        revision_number: post.revision_number + 1
+        revision_number: post.revision_number + 1,
+        persona_context: persona.to_h,
+        content_archetype: archetype_type
       )
 
       Rails.logger.info("[RevisionGenerator] Created revision Post ##{new_post.id} (child of ##{post.id})")
@@ -53,12 +61,21 @@ module Agora
 
     private
 
-    def generate_revised_pitch(post, critiques, context)
+    def generate_revised_pitch(post, critiques, context, persona, archetype_type, archetype)
       previous_accepted_ideas = Agora::Post.where(status: [ "accepted", "proceeding" ]).where(created_at: 1.week.ago..).pluck(:title).join("\n")
 
     prompt = <<~PROMPT
       [SYSTEM: ARCHITECT OF RECONSTRUCTION ACTIVATED]
       You are the "Senior Revision Strategist" for Nomos Zero.
+
+      [MAINTAINING PERSONA: #{persona[:name] || 'Unknown'}]
+      You started with this worldview: #{persona[:worldview] || 'N/A'}
+      Stay in character: #{persona[:pitch_style] || 'N/A'}
+
+      [MAINTAINING ARCHETYPE: #{archetype_type&.upcase || 'UNKNOWN'}]
+      Your goal remains: #{archetype[:goal]}
+      Success criteria: #{archetype[:success_criteria]}
+
       The previous iteration was REJECTED by the Chief Skeptics. Your job is to engineer an evolution that is so "Gutsy" and "Differentiated" that it forces a +1 vote.
 
       <brand_nomos>

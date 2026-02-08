@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_02_07_161500) do
+ActiveRecord::Schema[8.0].define(version: 2026_02_08_164501) do
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -105,6 +105,10 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_07_161500) do
     t.text "tiktok_text"
     t.text "facebook_text"
     t.text "linkedin_text"
+    t.text "instagram_text"
+    t.text "pinterest_text"
+    t.text "twitter_text"
+    t.text "youtube_description"
     t.index ["post_id"], name: "index_agora_executions_on_post_id"
   end
 
@@ -131,6 +135,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_07_161500) do
     t.integer "net_score", default: 0
     t.string "ancestry"
     t.string "platform"
+    t.json "persona_context", default: {}
+    t.string "content_archetype"
     t.index ["ancestry"], name: "index_agora_posts_on_ancestry"
     t.index ["author_agent_id"], name: "index_agora_posts_on_author_agent_id"
     t.index ["status"], name: "index_agora_posts_on_status"

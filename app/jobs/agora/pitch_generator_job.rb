@@ -16,9 +16,11 @@ module Agora
         return
       end
 
-      # 2. Select Random Agent
+      # 2. Select Random Agent, Persona, and Archetype for THIS round
       agent_config = AGORA_MODELS.sample
       author_name = agent_config[:user_name]
+      persona = AGORA_PERSONAS.sample
+      archetype = CONTENT_ARCHETYPES.sample
 
       previous_accepted_ideas = Agora::Post.where(status: [ "accepted", "proceeding" ]).where(created_at: 3.days.ago..).pluck(:title).join("\n")
       previous_rejected_ideas = Agora::Post.where(status: "rejected").where(created_at: 1.week.ago..).pluck(:title).join("\n")
@@ -26,6 +28,15 @@ module Agora
       prompt = <<~PROMPT
         [SYSTEM: ARCHITECT MODE ACTIVATED]
         You are #{author_name}, the Lead Strategist for Nomos Zero.
+
+        [YOUR TEMPORARY PERSONA: #{persona[:name]}]
+        Worldview: #{persona[:worldview]}
+        Your pitch style: #{persona[:pitch_style]}
+
+        [YOUR CONTENT ARCHETYPE: #{archetype[:type].upcase}]
+        Goal: #{archetype[:goal]}
+        Success criteria: #{archetype[:success_criteria]}
+
         Your mission is to engineer a marketing asset that bypasses the "Chief Skeptic" and the "Generic Trap."
 
         <brand_context>
@@ -45,14 +56,15 @@ module Agora
         </evaluations_to_beat>
 
         TASK:
-        Synthesize current trends into a high-velocity marketing pitch.
-        We are moving to **MARKETING SCALE**. This idea must be an industrial-strength distribution engine.
+        Create a #{archetype[:type]} content piece that achieves: #{archetype[:goal]}
+        Your content will be judged on: #{archetype[:success_criteria]}
+        Express this through your #{persona[:name]} lens: #{persona[:pitch_style]}
 
         CONSTRAINTS:
-        1. **Platform/Media Selection**: Choose (LinkedIn/FB/TikTok/IG) and (Video/Static/Link).
-        2. **Non-Derivative Rule**: You MUST steer away from the logic of previously accepted ideas. If they were "educational," go "confrontational." If they were "polished," go "raw."
-        3. **Feature-First**: Do not compete on price. Focus on the sovereign features and agentic logic of the brand.
-        4. **The Delta Factor**: Identify one "Gutsy" element that makes this impossible for a competitor to copy without looking like they are chasing us.
+        1. **Platform Selection**: Choose from: #{TARGET_PLATFORMS.join(', ')} and media type (Video/Static/Link).
+        2. **Stay in Character**: Your #{persona[:name]} persona must be evident in tone and approach.
+        3. **Archetype Alignment**: Content must serve the #{archetype[:type]} goal, not drift into other archetypes.
+        4. **The Delta Factor**: Identify one "Gutsy" element that makes this impossible for a competitor to copy.
 
         OUTPUT REQUIREMENTS:
         1. Visual Hook: The first 3 seconds (Video) or first sentence (Text/Link).
@@ -75,17 +87,19 @@ module Agora
 
       return unless pitch_data
 
-      # 5. Publish Post
+      # 6. Publish Post with ephemeral context stored
       post = Agora::Post.create!(
         author_agent_id: author_name,
         title: pitch_data["title"] || "Untitled",
         body: format_pitch_body(pitch_data),
         platform: pitch_data["target_platform"],
         status: "published",
-        revision_number: 1
+        revision_number: 1,
+        persona_context: persona,
+        content_archetype: archetype[:type]
       )
 
-      Rails.logger.info("PitchGeneratorJob: Created Post ##{post.id} - #{post.title}")
+      Rails.logger.info("PitchGeneratorJob: Created Post ##{post.id} - #{post.title} [Persona: #{persona[:name]}, Archetype: #{archetype[:type]}]")
       broadcast_system_status("✨ Pitch Created: #{post.title.truncate(30)}")
       post
     end
