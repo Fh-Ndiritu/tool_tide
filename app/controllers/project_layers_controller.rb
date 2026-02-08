@@ -1,7 +1,7 @@
 class ProjectLayersController < ApplicationController
   before_action :set_project
   before_action :set_design, only: [ :create ]
-  before_action :set_project_layer, only: %i[show update retry_generation]
+  before_action :set_project_layer, only: %i[show update retry_generation cancel_generation]
 
   def show
     @project_layer.mark_as_viewed!
@@ -120,6 +120,59 @@ class ProjectLayersController < ApplicationController
         format.turbo_stream { render turbo_stream: turbo_stream.replace("flash", partial: "shared/flash") }
         format.html { redirect_to project_path(@project, design_id: @project_layer.design_id), alert: "Insufficient credits." }
       end
+    end
+  end
+
+  def cancel_generation
+    if [ "preparing", "processing", "generating" ].include?(@project_layer.progress)
+      # 1. Update status to failed
+      @project_layer.update(
+        progress: :failed,
+        user_msg: "Cancelled by user.",
+        error_msg: "Cancelled by user request."
+      )
+
+      # 2. Refund logic (atomic with user lock)
+      user = @project_layer.project.user
+      cost = if @project_layer.generation_type == "upscale"
+               GOOGLE_UPSCALE_COST
+      else
+               MODEL_COST_MAP[@project_layer.model] || GOOGLE_PRO_IMAGE_COST
+      end
+
+      user.with_lock do
+        has_been_charged = CreditSpending.exists?(
+          user: user,
+          trackable: @project_layer,
+          transaction_type: :spend
+        )
+
+        if has_been_charged
+          user.pro_engine_credits += cost
+          user.save!
+          CreditSpending.create!(
+            user: user,
+            amount: cost,
+            transaction_type: :refund,
+            trackable: @project_layer
+          )
+          flash.now[:notice] = "Generation cancelled and credits refunded."
+        else
+          flash.now[:notice] = "Generation cancelled."
+        end
+      end
+    else
+      flash.now[:alert] = "Cannot cancel a layer that is already #{@project_layer.progress}."
+    end
+
+    respond_to do |format|
+      format.turbo_stream {
+        render turbo_stream: [
+          turbo_stream.replace(@project_layer),
+          turbo_stream.update("user_credits_count", partial: "projects/credits_count", locals: { user: current_user })
+        ]
+      }
+      format.html { redirect_to project_path(@project, design_id: @project_layer.design_id) }
     end
   end
 

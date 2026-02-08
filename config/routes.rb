@@ -6,8 +6,11 @@ Rails.application.routes.draw do
   resources :projects, only: %i[index show create update new] do
     post :convert_to_project, on: :collection
     resources :designs, only: [ :create ] do
-      resources :project_layers, only: [ :show, :create, :update ] do
-        post :retry_generation, on: :member
+      resources :project_layers, only: [ :create, :show, :update, :destroy ] do
+        member do
+          post :retry_generation
+          post :cancel_generation
+        end
         resources :auto_fixes, only: [ :create, :show ]
       end
     end
