@@ -1,10 +1,17 @@
 <% content_for :hide_navbar, true %>
 
+<%= turbo_stream_from @project, :notifications %>
 <div id="project_notifications" class="fixed top-0 left-0 right-0 z-[200] flex flex-col pointer-events-none">
-  <% if @active_design&.active_layer&.sketch? %>
+  <% has_transform_started = @active_design&.agentic_runs&.exists? %>
+  <% if @active_design&.active_layer&.sketch? && !has_transform_started %>
     <%= render "project_layers/sketch_notification", result: "sketch", project_layer: @active_design.active_layer %>
   <% elsif @active_design&.active_layer&.satellite? %>
     <%= render "project_layers/sketch_notification", result: "satellite", project_layer: @active_design.active_layer %>
+  <% end %>
+
+  <% low_credits_threshold = 5 %>
+  <% if current_user.pro_engine_credits < low_credits_threshold %>
+    <%= render "projects/low_credits_notification", low_credits: true, credits_remaining: current_user.pro_engine_credits %>
   <% end %>
 </div>
 

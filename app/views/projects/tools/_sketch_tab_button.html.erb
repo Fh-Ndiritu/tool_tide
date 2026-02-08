@@ -1,16 +1,8 @@
-<% if local_assigns[:active_layer]&.sketch? %>
-  <button class="flex-1 py-3 text-sm font-medium border-b-2 text-teal-300 border-teal-500 hover:text-teal-200 transition-colors animate-pulse"
-          id="tab_sketch"
-          onclick="switchInnerTab('sketch')"
-          data-action="click->projects#updateBrushHint">
-    Transform
-  </button>
-<% else %>
-  <!-- Hidden by default if not a sketch -->
-  <button class="hidden flex-1 py-3 text-sm font-medium border-b-2 text-gray-300 border-transparent hover:text-gray-200 transition-colors"
-          id="tab_sketch"
-          onclick="switchInnerTab('sketch')"
-          data-action="click->projects#updateBrushHint">
-    Transform
-  </button>
-<% end %>
+<% active_layer = local_assigns[:active_layer] %>
+<% is_sketch = active_layer&.sketch? || active_layer&.intermediate? || active_layer&.upscaled? %>
+<button class="flex-1 py-3 text-sm font-medium border-b-2 transition-colors <%= is_sketch ? 'text-teal-300 border-teal-500 hover:text-teal-200 animate-pulse' : 'text-gray-300 border-transparent hover:text-gray-200' %>"
+        id="tab_sketch"
+        onclick="switchInnerTab('sketch')"
+        data-action="click->projects#updateBrushHint">
+  Transform
+</button>

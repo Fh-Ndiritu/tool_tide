@@ -2,6 +2,7 @@ class Design < ApplicationRecord
   belongs_to :project
   belongs_to :current_project_layer, class_name: "ProjectLayer", optional: true
   has_many :project_layers, dependent: :destroy
+  has_many :agentic_runs, dependent: :nullify
 
   before_destroy :nullify_current_design_in_project
 
@@ -10,8 +11,8 @@ class Design < ApplicationRecord
   end
 
   after_commit -> {
-    broadcast_refresh_to [self, :layers]
-    broadcast_refresh_to [project, :layers]
+    broadcast_refresh_to [ self, :layers ]
+    broadcast_refresh_to [ project, :layers ]
   }
 
   validates :title, presence: true

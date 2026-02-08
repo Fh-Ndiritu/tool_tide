@@ -4,13 +4,15 @@ module Agentic
 
     param :note, type: :string, desc: "Optional note about what to focus the comparison on.", required: false
 
-    def initialize(project_layer)
+    def initialize(project_layer, agentic_run: nil)
       @project_layer = project_layer
       @design = project_layer.design
+      @agentic_run = agentic_run
     end
 
     def execute(note: nil)
       Rails.logger.info("Agentic::CompareTool executing")
+      broadcast_progress("🔍 CompareTool checking fidelity...")
 
       # Get original sketch (the initial layer)
       original_layer = @design.project_layers.where(layer_type: :original).first || @project_layer
@@ -19,6 +21,7 @@ module Agentic
       latest_layer = @design.project_layers.where(layer_type: :generated).order(created_at: :desc).first
 
       unless latest_layer
+        broadcast_progress("⚠️ No transformed image to compare", "text-orange-400")
         return "No transformed image found to compare. Please run a transformation first."
       end
 
@@ -28,8 +31,10 @@ module Agentic
       comparison = compare_images(original_blob, transformed_blob, note)
 
       if comparison[:success]
+        broadcast_progress("✅ Comparison complete", "text-yellow-300")
         RubyLLM::Content.new(comparison[:content])
       else
+        broadcast_progress("❌ Comparison failed: #{comparison[:error]}", "text-red-400")
         "Error comparing images: #{comparison[:error]}"
       end
     end
@@ -106,6 +111,23 @@ module Agentic
       end
     rescue => e
       { success: false, error: e.message }
+    end
+
+    def broadcast_progress(message, color_class = "text-yellow-300")
+      log_entry = { timestamp: Time.current.iso8601, message: message, color: color_class }
+
+      if @agentic_run
+        logs = @agentic_run.logs || []
+        logs << log_entry
+        @agentic_run.update_column(:logs, logs)
+      end
+
+      Turbo::StreamsChannel.broadcast_append_to(
+        @project_layer.project,
+        :sketch_logs,
+        target: "sketch_logs",
+        html: "<div class='#{color_class} mb-1'>[#{Time.current.strftime('%H:%M:%S')}] #{message}</div>"
+      )
     end
   end
 end

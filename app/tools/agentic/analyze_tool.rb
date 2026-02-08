@@ -4,19 +4,23 @@ module Agentic
 
     param :focus_areas, type: :string, desc: "Optional specific areas or elements to focus the analysis on.", required: false
 
-    def initialize(project_layer)
+    def initialize(project_layer, agentic_run: nil)
       @project_layer = project_layer
+      @agentic_run = agentic_run
     end
 
     def execute(focus_areas: nil)
       Rails.logger.info("Agentic::AnalyzeTool executing")
+      broadcast_progress("🔍 AnalyzeTool scanning sketch elements...")
 
       image_blob = @project_layer.display_image.blob
       analysis = analyze_sketch(image_blob, focus_areas)
 
       if analysis[:success]
+        broadcast_progress("✅ Analysis complete - elements catalogued", "text-cyan-300")
         RubyLLM::Content.new(analysis[:content])
       else
+        broadcast_progress("❌ Analysis failed: #{analysis[:error]}", "text-red-400")
         "Error analyzing sketch: #{analysis[:error]}"
       end
     end
@@ -82,6 +86,23 @@ module Agentic
       end
     rescue => e
       { success: false, error: e.message }
+    end
+
+    def broadcast_progress(message, color_class = "text-yellow-300")
+      log_entry = { timestamp: Time.current.iso8601, message: message, color: color_class }
+
+      if @agentic_run
+        logs = @agentic_run.logs || []
+        logs << log_entry
+        @agentic_run.update_column(:logs, logs)
+      end
+
+      Turbo::StreamsChannel.broadcast_append_to(
+        @project_layer.project,
+        :sketch_logs,
+        target: "sketch_logs",
+        html: "<div class='#{color_class} mb-1'>[#{Time.current.strftime('%H:%M:%S')}] #{message}</div>"
+      )
     end
   end
 end

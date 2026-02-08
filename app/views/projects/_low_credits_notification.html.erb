@@ -1,0 +1,21 @@
+<% if low_credits %>
+  <div id="low_credits_notification" class="notification-item pointer-events-auto bg-orange-500 text-white px-4 py-3 shadow-lg flex items-center justify-between relative z-[200]">
+    <div class="flex items-center gap-3">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <div>
+        <p class="font-bold text-sm md:text-base">Low Credits</p>
+        <p class="text-xs md:text-sm text-white/90">
+          You have <span class="font-bold"><%= credits_remaining %></span> credits remaining.
+          <%= link_to "Top up now", pricing_path, class: "underline font-bold hover:text-yellow-200" %> to continue transforming.
+        </p>
+      </div>
+    </div>
+    <button type="button" class="p-1 hover:bg-white/20 rounded-full transition-colors" onclick="this.closest('.notification-item').remove()">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+      </svg>
+    </button>
+  </div>
+<% end %>

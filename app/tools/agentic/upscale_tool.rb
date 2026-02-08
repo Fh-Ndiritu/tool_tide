@@ -10,14 +10,16 @@ module Agentic
     # But to be safe, let's add an optional note.
     param :note, type: :string, desc: "Optional note for the upscale.", required: false
 
-    def initialize(project_layer, transformation_type: nil)
+    def initialize(project_layer, transformation_type: nil, agentic_run: nil)
       @project_layer = project_layer
       @design = project_layer.design
       @transformation_type = transformation_type
+      @agentic_run = agentic_run
     end
 
     def execute(note: nil)
       Rails.logger.info("Agentic::UpscaleTool executing")
+      broadcast_progress("⬆️ UpscaleTool creating high-resolution output...")
 
       # Get the latest layer in the design (could be the result of a previous tool)
       latest_layer = @design.project_layers.order(created_at: :desc).first || @project_layer
@@ -30,18 +32,22 @@ module Agentic
       spending = charge_user!(user, cost, latest_layer)
 
       image_blob = latest_layer.display_image.blob
+      broadcast_progress("🔄 Processing upscale request...")
       response = upscale_image(image_blob)
 
       if response[:success]
+        broadcast_progress("💾 Saving upscaled layer...")
         save_result(response[:data], response[:mime_type], latest_layer, spending)
       else
         # Refund on failure
         refund_user!(user, cost, spending)
+        broadcast_progress("❌ Upscale failed: #{response[:error]}", "text-red-400")
         "Error upscaling image: #{response[:error]}"
       end
     rescue => e
       # Refund on any exception
       refund_user!(user, cost, spending) if spending
+      broadcast_progress("❌ Error: #{e.message}", "text-red-400")
       raise e
     end
 
@@ -154,6 +160,23 @@ module Agentic
       end
 
       Rails.logger.info("Agentic::UpscaleTool refunded #{cost} credit(s) for layer #{@project_layer.id}")
+    end
+
+    def broadcast_progress(message, color_class = "text-pink-300")
+      log_entry = { timestamp: Time.current.iso8601, message: message, color: color_class }
+
+      if @agentic_run
+        logs = @agentic_run.logs || []
+        logs << log_entry
+        @agentic_run.update_column(:logs, logs)
+      end
+
+      Turbo::StreamsChannel.broadcast_append_to(
+        @project_layer.project,
+        :sketch_logs,
+        target: "sketch_logs",
+        html: "<div class='#{color_class} mb-1'>[#{Time.current.strftime('%H:%M:%S')}] #{message}</div>"
+      )
     end
   end
 end

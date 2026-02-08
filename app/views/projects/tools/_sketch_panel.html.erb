@@ -1,3 +1,5 @@
+<% active_layer = @active_design&.active_layer %>
+<% is_sketch = active_layer&.sketch? || active_layer&.intermediate? || active_layer&.upscaled? || @active_design&.agentic_runs&.exists? %>
 <div id="panel_sketch" class="hidden h-full relative overflow-hidden" data-controller="sketch-ui">
    <div class="absolute inset-0 overflow-y-auto p-4 space-y-4 premium-scrollbar pb-40">
       <input type="hidden" name="generation_type" value="sketch">
@@ -102,4 +104,34 @@
         </div>
       </details>
    </div>
+
+   <!-- Disabled Overlay - shown when no sketch is detected -->
+   <% unless is_sketch %>
+     <div class="absolute inset-0 z-50 bg-gray-900/90 backdrop-blur-sm flex items-center justify-center">
+       <div class="text-center p-8 max-w-sm">
+         <!-- Icon -->
+         <div class="w-16 h-16 mx-auto mb-5 rounded-2xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center">
+           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-teal-400">
+             <path stroke-linecap="round" stroke-linejoin="round" d="M9.53 16.122a3 3 0 0 0-5.78 1.128 2.25 2.25 0 0 1-2.4 2.245 4.5 4.5 0 0 0 8.4-2.245c0-.399-.078-.78-.22-1.128Zm0 0a15.998 15.998 0 0 0 3.388-1.62m-5.043-.025a15.994 15.994 0 0 1 1.622-3.395m3.42 3.42a15.995 15.995 0 0 0 4.764-4.648l3.876-5.814a1.151 1.151 0 0 0-1.597-1.597L14.146 6.32a15.996 15.996 0 0 0-4.649 4.763m3.42 3.42a6.776 6.776 0 0 0-3.42-3.42" />
+           </svg>
+         </div>
+
+         <!-- Title -->
+         <h3 class="text-lg font-bold text-white mb-2">Upload a Sketch</h3>
+
+         <!-- Description -->
+         <p class="text-sm text-gray-400 leading-relaxed mb-6">
+           Upload a hand-drawn sketch or achitectural plan to unlock the Transform Engine. We'll convert your sketch into stunning, polished designs.
+         </p>
+
+         <!-- Visual hint -->
+         <div class="flex items-center justify-center gap-2 text-xs text-teal-400/80">
+           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+             <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18" />
+           </svg>
+           <span>Use 'Upload Image' to add a sketch</span>
+         </div>
+       </div>
+     </div>
+   <% end %>
 </div>

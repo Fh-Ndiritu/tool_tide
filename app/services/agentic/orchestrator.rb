@@ -74,10 +74,10 @@ module Agentic
 
       chat = CustomRubyLLM.context(model: "gemini-2.5-flash").chat
         .with_tools(
-          Agentic::AnalyzeTool.new(@project_layer),
-          Agentic::InpaintTool.new(@project_layer, transformation_type: @transformation_type),
-          Agentic::CompareTool.new(@project_layer),
-          Agentic::UpscaleTool.new(@project_layer, transformation_type: @transformation_type)
+          Agentic::AnalyzeTool.new(@project_layer, agentic_run: @agentic_run),
+          Agentic::InpaintTool.new(@project_layer, transformation_type: @transformation_type, agentic_run: @agentic_run),
+          Agentic::CompareTool.new(@project_layer, agentic_run: @agentic_run),
+          Agentic::UpscaleTool.new(@project_layer, transformation_type: @transformation_type, agentic_run: @agentic_run)
         )
         .with_instructions(system_message)
 
@@ -105,6 +105,7 @@ module Agentic
         if !@user.can_afford_generation?("pro_mode", 1)
           @agentic_run.paused!
           broadcast_log("[Layer #{layer_id}] Paused: Insufficient credits.", "text-yellow-400")
+          broadcast_low_credits_notification
           break
         end
 
@@ -122,10 +123,25 @@ module Agentic
         broadcast_log("[Layer #{layer_id}] Calling agent...", "text-cyan-400")
         response = chat.ask(user_message, with: @project_layer.display_image)
 
-        # Truncate long responses for log display
-        response_preview = response.content.to_s.length > 200 ? "#{response.content[0..200]}..." : response.content
-        broadcast_log("[Layer #{layer_id}] Agent: #{response_preview}", "text-green-300")
-        Rails.logger.info("Agent Step #{i}: #{response.content}")
+        # Debug: Log the full response object to understand its structure
+        Rails.logger.info("Agent Step #{i} response class: #{response.class}")
+        Rails.logger.info("Agent Step #{i} response inspect: #{response.inspect[0..500]}")
+
+        # Store full response for debugging
+        full_response = response.content.to_s
+        Rails.logger.info("Agent Step #{i} full response:\n#{full_response}")
+
+        # Store full agent thoughts in run logs
+        store_agent_response(i, full_response)
+
+        # Handle empty responses (common when tools are executed)
+        if full_response.blank?
+          broadcast_log("[Layer #{layer_id}] Agent executing tools...", "text-yellow-300")
+        else
+          # Truncate for UI display only
+          response_preview = full_response.length > 200 ? "#{full_response[0..200]}..." : full_response
+          broadcast_log("[Layer #{layer_id}] Agent: #{response_preview}", "text-green-300")
+        end
 
         layers_count_after = @project_layer.project.project_layers.count
         new_layers = layers_count_after - layers_count_before
@@ -134,17 +150,18 @@ module Agentic
           broadcast_log("[Layer #{layer_id}] Created #{new_layers} new layer(s)", "text-purple-400")
         end
 
-        # Check for tool usage indicators
-        if response.content.to_s.include?("AnalyzeTool")
+        # Check for tool usage indicators in response
+        content_str = response.content.to_s
+        if content_str.include?("AnalyzeTool") || content_str.include?("analyze")
           broadcast_log("[Layer #{layer_id}] ✓ Analysis complete", "text-cyan-300")
         end
-        if response.content.to_s.include?("InpaintTool")
+        if content_str.include?("InpaintTool") || content_str.include?("generated") || content_str.include?("layer")
           broadcast_log("[Layer #{layer_id}] ✓ Transformation applied", "text-green-300")
         end
-        if response.content.to_s.include?("CompareTool")
+        if content_str.include?("CompareTool") || content_str.include?("compare") || content_str.include?("FIDELITY")
           broadcast_log("[Layer #{layer_id}] ✓ Comparison complete", "text-yellow-300")
         end
-        if response.content.to_s.include?("UpscaleTool")
+        if content_str.include?("UpscaleTool") || content_str.include?("upscale")
           broadcast_log("[Layer #{layer_id}] ✓ Upscale complete", "text-pink-300")
         end
 
@@ -206,7 +223,6 @@ module Agentic
         locals: { entry: log_entry }
       )
 
-       # Also broadcast to project for the main panel if it's the active run
        Turbo::StreamsChannel.broadcast_append_to(
         @project_layer.project,
         :sketch_logs,
@@ -215,12 +231,36 @@ module Agentic
       )
     end
 
+    def store_agent_response(step_number, full_response)
+      log_entry = {
+        timestamp: Time.current.iso8601,
+        type: "agent_response",
+        step: step_number,
+        content: full_response
+      }
+
+      logs = @agentic_run.logs || []
+      logs << log_entry
+      @agentic_run.update_column(:logs, logs)
+    end
+
     def broadcast_button_reset
       Turbo::StreamsChannel.broadcast_replace_to(
         @project_layer.project,
         :sketch_logs,
         target: "sketch_start_button",
         partial: "projects/tools/sketch_start_button"
+      )
+    end
+
+    def broadcast_low_credits_notification
+      @user.reload
+      Turbo::StreamsChannel.broadcast_append_to(
+        @project_layer.project,
+        :notifications,
+        target: "project_notifications",
+        partial: "projects/low_credits_notification",
+        locals: { low_credits: true, credits_remaining: @user.pro_engine_credits }
       )
     end
   end
