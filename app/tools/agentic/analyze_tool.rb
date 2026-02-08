@@ -4,23 +4,24 @@ module Agentic
 
     param :focus_areas, type: :string, desc: "Optional specific areas or elements to focus the analysis on.", required: false
 
-    def initialize(project_layer, agentic_run: nil)
+    def initialize(project_layer, transformation_type: nil, agentic_run: nil)
       @project_layer = project_layer
+      @transformation_type = transformation_type
       @agentic_run = agentic_run
     end
 
     def execute(focus_areas: nil)
       Rails.logger.info("Agentic::AnalyzeTool executing")
-      broadcast_progress("🔍 AnalyzeTool scanning sketch elements...")
+      broadcast_progress("🔍 Let me analyze your sketch and identify all elements...")
 
       image_blob = @project_layer.display_image.blob
       analysis = analyze_sketch(image_blob, focus_areas)
 
       if analysis[:success]
-        broadcast_progress("✅ Analysis complete - elements catalogued", "text-cyan-300")
+        broadcast_progress("✅ I've catalogued all the elements in your sketch.", "text-cyan-300")
         RubyLLM::Content.new(analysis[:content])
       else
-        broadcast_progress("❌ Analysis failed: #{analysis[:error]}", "text-red-400")
+        broadcast_progress("❌ I couldn't analyze the sketch: #{analysis[:error]}", "text-red-400")
         "Error analyzing sketch: #{analysis[:error]}"
       end
     end
@@ -39,6 +40,8 @@ module Agentic
       end
 
       analysis_prompt = <<~PROMPT
+        TARGET STYLE: #{@transformation_type&.upcase || 'PHOTOREALISTIC'}
+
         Analyze this sketch in detail and provide a comprehensive inventory of ALL visual elements.
 
         For each element, identify:
@@ -46,10 +49,14 @@ module Agentic
         2. Location (top-left, center, bottom-right, etc.)
         3. Size (large, medium, small relative to image)
         4. Key characteristics (shape, orientation, distinctive features)
+        5. How it should look in #{@transformation_type || 'photorealistic'} style
 
         Be extremely thorough - every element matters for fidelity.
 
         #{focus_areas.present? ? "Focus especially on: #{focus_areas}" : ""}
+
+        IMPORTANT: The target style is #{@transformation_type || 'photorealistic'}. Note any elements
+        that require special treatment to achieve this style (lighting, materials, textures).
 
         Format your response as a structured list that can be used as a checklist during transformation verification.
       PROMPT

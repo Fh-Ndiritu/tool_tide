@@ -19,12 +19,12 @@ module Agentic
 
     def execute(note: nil)
       Rails.logger.info("Agentic::UpscaleTool executing")
-      broadcast_progress("⬆️ UpscaleTool creating high-resolution output...")
+      broadcast_progress("⬆️ I'm creating a high-resolution version of your image...")
 
       # Get the latest layer in the design (could be the result of a previous tool)
       latest_layer = @design.project_layers.order(created_at: :desc).first || @project_layer
       user = latest_layer.user
-      cost = GOOGLE_2K_UPSCALE_COST
+      cost = TRANSFORM_ENGINE_COST
 
       Rails.logger.info("Upscaling layer #{latest_layer.id} (layer_number: #{latest_layer.layer_number})")
 
@@ -32,16 +32,16 @@ module Agentic
       spending = charge_user!(user, cost, latest_layer)
 
       image_blob = latest_layer.display_image.blob
-      broadcast_progress("🔄 Processing upscale request...")
+      broadcast_progress("🔄 I'm processing the upscale request...")
       response = upscale_image(image_blob)
 
       if response[:success]
-        broadcast_progress("💾 Saving upscaled layer...")
+        broadcast_progress("💾 I'm saving the upscaled layer...")
         save_result(response[:data], response[:mime_type], latest_layer, spending)
       else
         # Refund on failure
         refund_user!(user, cost, spending)
-        broadcast_progress("❌ Upscale failed: #{response[:error]}", "text-red-400")
+        broadcast_progress("❌ I couldn't upscale the image: #{response[:error]}", "text-red-400")
         "Error upscaling image: #{response[:error]}"
       end
     rescue => e
@@ -80,7 +80,12 @@ module Agentic
               }
             ]
           }
-        ]
+        ],
+        "generationConfig" => {
+          "imageConfig" => {
+            "imageSize" => "2K"
+          }
+        }
       }
 
       response = conn.post("", payload.to_json)

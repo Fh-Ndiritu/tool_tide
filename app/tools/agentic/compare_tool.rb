@@ -4,15 +4,16 @@ module Agentic
 
     param :note, type: :string, desc: "Optional note about what to focus the comparison on.", required: false
 
-    def initialize(project_layer, agentic_run: nil)
+    def initialize(project_layer, transformation_type: nil, agentic_run: nil)
       @project_layer = project_layer
       @design = project_layer.design
+      @transformation_type = transformation_type
       @agentic_run = agentic_run
     end
 
     def execute(note: nil)
       Rails.logger.info("Agentic::CompareTool executing")
-      broadcast_progress("🔍 CompareTool checking fidelity...")
+      broadcast_progress("🔍 I'm comparing the result against your original sketch...")
 
       # Get original sketch (the initial layer)
       original_layer = @design.project_layers.where(layer_type: :original).first || @project_layer
@@ -21,7 +22,7 @@ module Agentic
       latest_layer = @design.project_layers.where(layer_type: :generated).order(created_at: :desc).first
 
       unless latest_layer
-        broadcast_progress("⚠️ No transformed image to compare", "text-orange-400")
+        broadcast_progress("⚠️ I don't see a transformed image to compare yet.", "text-orange-400")
         return "No transformed image found to compare. Please run a transformation first."
       end
 
@@ -31,10 +32,10 @@ module Agentic
       comparison = compare_images(original_blob, transformed_blob, note)
 
       if comparison[:success]
-        broadcast_progress("✅ Comparison complete", "text-yellow-300")
+        broadcast_progress("✅ I've finished my comparison review.", "text-yellow-300")
         RubyLLM::Content.new(comparison[:content])
       else
-        broadcast_progress("❌ Comparison failed: #{comparison[:error]}", "text-red-400")
+        broadcast_progress("❌ I couldn't complete the comparison: #{comparison[:error]}", "text-red-400")
         "Error comparing images: #{comparison[:error]}"
       end
     end
@@ -53,6 +54,8 @@ module Agentic
       end
 
       comparison_prompt = <<~PROMPT
+        TARGET STYLE: #{@transformation_type&.upcase || 'PHOTOREALISTIC'}
+
         Compare these two images: the FIRST is the original sketch, the SECOND is the transformed result.
 
         Identify ALL discrepancies between the original sketch and the transformation:
@@ -61,15 +64,22 @@ module Agentic
         2. INCORRECT ELEMENTS: What was transformed incorrectly (wrong shape, position, style)?
         3. ADDED ELEMENTS: What was added that doesn't exist in the original?
         4. COMPOSITION ISSUES: Any layout or spatial relationship problems?
+        5. STYLE CONSISTENCY: Does the result maintain #{@transformation_type || 'photorealistic'} style throughout?
+           - Is the style consistent across the entire image?
+           - Are materials, lighting, and textures appropriate for #{@transformation_type || 'photorealistic'} rendering?
 
         #{note.present? ? "Special focus: #{note}" : ""}
 
         For each issue, provide:
         - Element name and location
         - What's wrong
-        - Specific fix needed
+        - Specific fix needed (while MAINTAINING #{@transformation_type || 'photorealistic'} style)
 
-        If the transformation is faithful to the original with acceptable stylistic interpretation, state "FIDELITY_PASSED" at the start of your response.
+        CRITICAL: Any refinement suggestions must preserve the #{@transformation_type || 'photorealistic'} style.
+        DO NOT suggest changes that would alter the style.
+
+        If the transformation is faithful to the original with consistent #{@transformation_type || 'photorealistic'} styling,
+        state "FIDELITY_PASSED" at the start of your response.
         Otherwise, start with "FIDELITY_ISSUES_FOUND" followed by the detailed list.
       PROMPT
 

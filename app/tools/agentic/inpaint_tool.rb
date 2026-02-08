@@ -14,10 +14,10 @@ module Agentic
 
     def execute(prompt:, mask: nil)
       Rails.logger.info("Agentic::InpaintTool executing with prompt: #{prompt}")
-      broadcast_progress("🖌️ InpaintTool starting transformation...")
+      broadcast_progress("🖌️ I'm starting a transformation on your image...")
 
       user = @project_layer.user
-      cost = GOOGLE_PRO_IMAGE_COST
+      cost = TRANSFORM_ENGINE_COST
 
       # Pre-charge before API call
       spending = charge_user!(user, cost)
@@ -33,16 +33,16 @@ module Agentic
       # For initial transform: send only original
       response = if latest_generated
         Rails.logger.info("Agentic::InpaintTool refinement mode - using original + latest layer #{latest_generated.id}")
-        broadcast_progress("🔄 Refining based on previous iteration...")
+        broadcast_progress("🔄 I'm refining the [#{@transformation_type || 'photorealistic'}] render based on my previous work...")
         generate_image_with_reference(prompt, original_blob, latest_generated.display_image.blob)
       else
         Rails.logger.info("Agentic::InpaintTool initial transform mode - using original only")
-        broadcast_progress("✨ Generating initial transformation...")
+        broadcast_progress("✨ I'm generating the initial [#{@transformation_type || 'photorealistic'}] transformation...")
         generate_image(prompt, original_blob)
       end
 
       if response[:success]
-        broadcast_progress("💾 Saving generated layer...")
+        broadcast_progress("💾 I'm saving the generated layer...")
         save_result(response[:data], response[:mime_type], spending)
       else
         # Refund on failure
@@ -63,11 +63,21 @@ module Agentic
     def generate_image(prompt, image_blob)
       conn = build_connection
 
+      # Reinforce transformation type in prompt
+      enhanced_prompt = <<~PROMPT
+        TARGET STYLE: #{@transformation_type&.upcase || 'PHOTOREALISTIC'}
+
+        #{prompt}
+
+        CRITICAL: The output MUST be in #{@transformation_type || 'photorealistic'} style.
+        Maintain this style consistently throughout the entire image.
+      PROMPT
+
       payload = {
         "contents" => [
           {
             "parts" => [
-              { "text" => prompt },
+              { "text" => enhanced_prompt },
               {
                 "inline_data" => {
                   "mime_type" => image_blob.content_type,
@@ -86,13 +96,18 @@ module Agentic
     def generate_image_with_reference(prompt, original_blob, latest_blob)
       conn = build_connection
 
-      # Enhanced prompt for refinement with dual-image context
+      # Enhanced prompt with transformation type reinforcement
       refinement_prompt = <<~PROMPT
+        TARGET STYLE: #{@transformation_type&.upcase || 'PHOTOREALISTIC'}
+
         #{prompt}
 
-        IMPORTANT: The FIRST image is the ORIGINAL SKETCH that must be preserved for fidelity.
-        The SECOND image is the CURRENT ITERATION that you should refine and improve.
-        Preserve all elements from the original while improving upon the current iteration.
+        CRITICAL INSTRUCTIONS:
+        1. The output MUST be in #{@transformation_type || 'photorealistic'} style - DO NOT DEVIATE.
+        2. The FIRST image is the ORIGINAL SKETCH - preserve all elements from it.
+        3. The SECOND image is the CURRENT ITERATION - refine and improve it.
+        4. Fix any fidelity issues while MAINTAINING the #{@transformation_type || 'photorealistic'} style.
+        5. Do not change the style or aesthetic - only improve accuracy.
       PROMPT
 
       payload = {

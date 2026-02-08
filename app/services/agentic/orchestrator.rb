@@ -29,15 +29,18 @@ module Agentic
       If CompareTool reports FIDELITY_ISSUES_FOUND:
       - Use InpaintTool again with a targeted prompt to fix SPECIFIC discrepancies
       - Focus on the exact elements that were missing or incorrect
-      - Maximum 3 refinement iterations
+      - MAXIMUM 3 refinement iterations - then you MUST move to upscale
 
-      STEP 5 - UPSCALE:
-      Only after CompareTool reports FIDELITY_PASSED (or max iterations reached):
+      STEP 5 - UPSCALE (MANDATORY FINAL STEP):
+      After max 3 refinements OR when CompareTool reports FIDELITY_PASSED:
       Use UpscaleTool to create the final high-resolution output.
+      You MUST ALWAYS end with upscaling - this is non-negotiable.
 
       CRITICAL RULES:
       - NEVER skip the analysis step
       - ALWAYS compare after transformation
+      - MAXIMUM 3 InpaintTool refinements - then STOP refining
+      - ALWAYS end with UpscaleTool - never finish without upscaling
       - Be EXPLICIT about every element in your prompts
       - Prioritize fidelity over artistic interpretation
 
@@ -74,9 +77,9 @@ module Agentic
 
       chat = CustomRubyLLM.context(model: "gemini-2.5-flash").chat
         .with_tools(
-          Agentic::AnalyzeTool.new(@project_layer, agentic_run: @agentic_run),
+          Agentic::AnalyzeTool.new(@project_layer, transformation_type: @transformation_type, agentic_run: @agentic_run),
           Agentic::InpaintTool.new(@project_layer, transformation_type: @transformation_type, agentic_run: @agentic_run),
-          Agentic::CompareTool.new(@project_layer, agentic_run: @agentic_run),
+          Agentic::CompareTool.new(@project_layer, transformation_type: @transformation_type, agentic_run: @agentic_run),
           Agentic::UpscaleTool.new(@project_layer, transformation_type: @transformation_type, agentic_run: @agentic_run)
         )
         .with_instructions(system_message)
@@ -93,6 +96,9 @@ module Agentic
 
       # Increased iterations for analyze + transform + compare + refine + upscale workflow
       completed = false
+      refinement_count = 0
+      max_refinements = 3
+      has_upscaled = false
       8.times do |i|
         # Reload to check for cancellation
         @agentic_run.reload
@@ -110,6 +116,12 @@ module Agentic
         end
 
         broadcast_log("[Layer #{layer_id}] Step #{i+1}/8: Processing...", "text-gray-300")
+
+        # Check if we've hit the refinement limit - force upscale
+        if refinement_count >= max_refinements && !has_upscaled
+          broadcast_log("[Layer #{layer_id}] Max refinements reached - proceeding to upscale", "text-orange-400")
+          user_message = "STOP REFINING. You have reached the maximum number of refinement iterations. Now use UpscaleTool to upscale the final result. DO NOT call InpaintTool again."
+        end
 
         # Execute Chat
         # Note: In a real agent loop, we need to inspect the tool calls to deduct credits *after* execution
@@ -163,6 +175,17 @@ module Agentic
         end
         if content_str.include?("UpscaleTool") || content_str.include?("upscale")
           broadcast_log("[Layer #{layer_id}] ✓ Upscale complete", "text-pink-300")
+          has_upscaled = true
+        end
+
+        # Track InpaintTool calls for refinement limiting
+        if new_layers > 0
+          # Check if this was an InpaintTool call (not UpscaleTool)
+          latest_layer = @project_layer.project.project_layers.order(created_at: :desc).first
+          if latest_layer&.intermediate?
+            refinement_count += 1
+            broadcast_log("[Layer #{layer_id}] Refinement #{refinement_count}/#{max_refinements}", "text-blue-300")
+          end
         end
 
         if response.content.to_s.downcase.include?("finished") ||
