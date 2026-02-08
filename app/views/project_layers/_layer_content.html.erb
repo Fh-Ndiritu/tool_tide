@@ -62,10 +62,13 @@
 
    <div class="flex items-center gap-1.5 text-[10px] leading-none mt-0.5">
       <% if is_processing %>
-        <span class="<%= is_sketch_layer ? 'text-teal-400' : 'text-blue-400' %> font-medium animate-pulse group-hover/layer:hidden"><%= project_layer.progress.titleize %>...</span>
-        <div class="hidden group-hover/layer:block">
-          <%= button_to "Cancel", cancel_generation_project_design_project_layer_path(project_layer.project, project_layer.design, project_layer), method: :post, class: "text-red-500 hover:text-red-400 text-[10px] uppercase font-bold tracking-wide transition-colors", form_class: "inline" %>
-        </div>
+        <% can_cancel = project_layer.preparing? || project_layer.processing? %>
+        <span class="<%= is_sketch_layer ? 'text-teal-400' : 'text-blue-400' %> font-medium animate-pulse <%= can_cancel ? 'group-hover/layer:hidden' : '' %>"><%= project_layer.progress.titleize %>...</span>
+        <% if can_cancel %>
+          <div class="hidden group-hover/layer:block">
+            <%= button_to "Cancel", cancel_generation_project_design_project_layer_path(project_layer.project, project_layer.design, project_layer), method: :post, class: "text-red-500 hover:text-red-400 text-[10px] uppercase font-bold tracking-wide transition-colors", form_class: "inline" %>
+          </div>
+        <% end %>
       <% elsif project_layer.failed? %>
         <span class="text-red-400 font-medium"><%= project_layer.user_msg.presence || "Generation Failed" %></span>
       <% else %>

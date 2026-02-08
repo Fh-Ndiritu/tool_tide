@@ -28,7 +28,13 @@ class ProjectGenerationJob < ApplicationJob
 
   def perform(layer_id)
     layer = ProjectLayer.find(layer_id)
-    layer.processing!
+
+    # Guard: Check if layer was cancelled before we start
+    layer.with_lock do
+      return if layer.failed? || layer.complete?
+      layer.processing!
+    end
+
     user = layer.project.user
     cost = if layer.generation_type == "upscale"
              GOOGLE_UPSCALE_COST
@@ -37,6 +43,10 @@ class ProjectGenerationJob < ApplicationJob
     end
 
     charge_user!(user, layer, cost)
+
+    # Guard: Check again after charging in case cancelled during wait
+    return if layer.reload.failed?
+
     layer.generating!
     broadcast_update(layer)
 
@@ -48,7 +58,11 @@ class ProjectGenerationJob < ApplicationJob
 
     ProjectGeneratorService.perform(layer)
 
-    layer.complete!
+    # Guard: Don't overwrite 'failed' status if cancelled during generation
+    layer.with_lock do
+      return if layer.failed?
+      layer.complete!
+    end
     broadcast_update(layer)
   end
 
@@ -56,6 +70,12 @@ class ProjectGenerationJob < ApplicationJob
 
   def charge_user!(user, layer, cost)
     user.with_lock do
+      # Check if layer was cancelled while waiting for lock
+      if layer.reload.failed?
+        Rails.logger.info("Skipping charge for layer #{layer.id} - cancelled by user")
+        return
+      end
+
       if user.pro_engine_credits < cost
         raise InsufficientCreditsError, "Insufficient credits"
       end

@@ -124,52 +124,64 @@ class ProjectLayersController < ApplicationController
   end
 
   def cancel_generation
-    if [ "preparing", "processing", "generating" ].include?(@project_layer.progress)
-      # 1. Update status to failed
-      @project_layer.update(
-        progress: :failed,
-        user_msg: "Cancelled by user.",
-        error_msg: "Cancelled by user request."
-      )
+    user = @project_layer.project.user
+    refunded = false
+    cancelled = false
 
-      # 2. Refund logic (atomic with user lock)
-      user = @project_layer.project.user
-      cost = if @project_layer.generation_type == "upscale"
-               GOOGLE_UPSCALE_COST
-      else
-               MODEL_COST_MAP[@project_layer.model] || GOOGLE_PRO_IMAGE_COST
-      end
-
-      user.with_lock do
-        has_been_charged = CreditSpending.exists?(
-          user: user,
-          trackable: @project_layer,
-          transaction_type: :spend
+    # Atomic lock to prevent race condition with ProjectGenerationJob
+    @project_layer.with_lock do
+      if [ "preparing", "processing" ].include?(@project_layer.progress)
+        # 1. Update status to failed immediately
+        @project_layer.update!(
+          progress: :failed,
+          user_msg: "Cancelled by user.",
+          error_msg: "Cancelled by user request."
         )
+        cancelled = true
 
-        if has_been_charged
-          user.pro_engine_credits += cost
-          user.save!
-          CreditSpending.create!(
-            user: user,
-            amount: cost,
-            transaction_type: :refund,
-            trackable: @project_layer
-          )
-          flash.now[:notice] = "Generation cancelled and credits refunded."
+        # 2. Kill any queued/scheduled Solid Queue jobs for this layer
+        cancel_queued_jobs(@project_layer.id)
+
+        # 3. Refund logic (nested lock on user)
+        cost = if @project_layer.generation_type == "upscale"
+                 GOOGLE_UPSCALE_COST
         else
-          flash.now[:notice] = "Generation cancelled."
+                 MODEL_COST_MAP[@project_layer.model] || GOOGLE_PRO_IMAGE_COST
         end
+
+        user.with_lock do
+          has_been_charged = CreditSpending.exists?(
+            user: user,
+            trackable: @project_layer,
+            transaction_type: :spend
+          )
+
+          if has_been_charged
+            user.pro_engine_credits += cost
+            user.save!
+            CreditSpending.create!(
+              user: user,
+              amount: cost,
+              transaction_type: :refund,
+              trackable: @project_layer
+            )
+            refunded = true
+          end
+        end
+      else
+        flash.now[:alert] = "Cannot cancel a layer that is already #{@project_layer.progress}."
       end
-    else
-      flash.now[:alert] = "Cannot cancel a layer that is already #{@project_layer.progress}."
+    end
+
+    if cancelled
+      flash.now[:notice] = refunded ? "Generation cancelled and credits refunded." : "Generation cancelled."
     end
 
     respond_to do |format|
       format.turbo_stream {
         render turbo_stream: [
           turbo_stream.replace(@project_layer),
-          turbo_stream.update("user_credits_count", partial: "projects/credits_count", locals: { user: current_user })
+          turbo_stream.update("user_credits_count", partial: "projects/credits_count", locals: { user: user.reload })
         ]
       }
       format.html { redirect_to project_path(@project, design_id: @project_layer.design_id) }
@@ -197,5 +209,19 @@ class ProjectLayersController < ApplicationController
 
   def project_layer_params
     params.require(:project_layer).permit(:prompt, :preset, :transformation_type, :model)
+  end
+
+  def cancel_queued_jobs(layer_id)
+    # Find and discard any Solid Queue jobs for ProjectGenerationJob with this layer_id
+    # Jobs store arguments as JSON, so we search for the layer_id in the arguments column
+    SolidQueue::Job.where(class_name: "ProjectGenerationJob")
+                   .where("arguments LIKE ?", "%#{layer_id}%")
+                   .find_each do |job|
+      Rails.logger.info("Cancelling queued job #{job.id} for layer #{layer_id}")
+      job.destroy
+    end
+  rescue StandardError => e
+    Rails.logger.error("Failed to cancel queued jobs for layer #{layer_id}: #{e.message}")
+    # Don't raise - cancellation should still proceed even if job cleanup fails
   end
 end
