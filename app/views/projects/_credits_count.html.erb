@@ -1,0 +1,4 @@
+<% has_low_credits = user.pro_engine_credits < GOOGLE_PRO_IMAGE_COST %>
+<span id="user_credits_count" class="text-xs font-bold <%= has_low_credits ? 'text-red-400' : 'text-white' %>">
+  <%= user.pro_engine_credits %> <span class="text-xs font-bold <%= has_low_credits ? 'text-red-400' : 'text-white' %>">Credits</span>
+</span>
