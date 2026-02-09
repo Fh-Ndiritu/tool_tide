@@ -38,7 +38,7 @@ class ProjectLayer < ApplicationRecord
   end
 
   enum :progress, {
-    waiting: 0,
+    preparing: 0,
     processing: 5,
     generating: 10,
     processed: 20,
