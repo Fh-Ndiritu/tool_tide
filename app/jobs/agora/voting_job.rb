@@ -49,7 +49,6 @@ module Agora
     def decide_vote(agent_config, votable, context)
       agent_name = agent_config[:user_name]
       content_preview = votable.is_a?(Agora::Post) ? "#{votable.title}\n#{votable.body}" : votable.body
-      previous_accepted_ideas = votable.class.where(status: [ "accepted", "proceeding" ]).limit(50).pluck(:title).join("\n")
 
       # Retrieve creator's ephemeral context for fair evaluation
       root = votable.is_a?(Agora::Post) ? votable.root : votable
@@ -93,12 +92,6 @@ module Agora
         #{content_preview}
 
         ═══════════════════════════════════════════════════════════════
-        PREVIOUS WINNERS (Avoid duplicating)
-        ═══════════════════════════════════════════════════════════════
-
-        #{previous_accepted_ideas}
-
-        ═══════════════════════════════════════════════════════════════
         VOTING DECISION
         ═══════════════════════════════════════════════════════════════
 
@@ -116,7 +109,6 @@ module Agora
         - Content only partially achieves its goal or feels half-baked
         - The hook is weak or could apply to any brand
         - Writing is generic, verbose, or unclear
-        - It's too similar to recently accepted content
         - It's off-brand or misrepresents the product
 
         RESPOND ONLY WITH VALID JSON:

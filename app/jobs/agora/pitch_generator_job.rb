@@ -23,7 +23,6 @@ module Agora
       archetype = CONTENT_ARCHETYPES.sample
 
       previous_accepted_ideas = Agora::Post.where(status: [ "accepted", "proceeding" ]).where(created_at: 3.days.ago..).pluck(:title).join("\n")
-      previous_rejected_ideas = Agora::Post.where(status: "rejected").where(created_at: 1.week.ago..).pluck(:title).join("\n")
 
       prompt = <<~PROMPT
         [SYSTEM: ARCHITECT MODE ACTIVATED]
@@ -46,9 +45,6 @@ module Agora
         <historical_constraints>
           ## DO NOT REPEAT:
           #{previous_accepted_ideas}
-
-          ## AVOID THESE REJECTION PATTERNS:
-          #{previous_rejected_ideas}
         </historical_constraints>
 
         <evaluations_to_beat>
