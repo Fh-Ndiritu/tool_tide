@@ -35,9 +35,7 @@
 
     <link rel="shortcut icon" href="/favicon.ico">
 
-    <% if content_for?(:schema_markup) %>
-      <%= yield :schema_markup %>
-    <% end %>
+
 
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -50,9 +48,7 @@
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
 
-    <% if content_for?(:head) %>
-      <%= yield :head %>
-    <% end %>
+
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-ESX8FF1NG8"></script>
     <script>
