@@ -24,6 +24,7 @@ class SmartFixImprover
         Focus on how the changes interact with the surrounding environment.
         Maintain the user's intent but ensure the prompt is robust for inpainting.
         Before responding, carefully and scientifically analyze the user's request to ensure we do not digress from the user's goal.
+        YOU MUST return changes to be made with no commentary or irrelevant information.
       PROMPT
     else
       <<~PROMPT
@@ -44,6 +45,7 @@ class SmartFixImprover
         Your output must be only the refined description for the inpainting tool.
 
         Before responding, carefully and scientifically analyze the user's request to ensure we do not digress from the user's goal.
+        YOU MUST return changes to be made with no commentary or irrelevant information.
       PROMPT
     end
 
