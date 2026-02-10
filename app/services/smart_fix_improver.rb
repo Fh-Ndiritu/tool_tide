@@ -50,7 +50,7 @@ class SmartFixImprover
     user_input = @layer.prompt
     full_prompt = "#{system_prompt}\n\nRefine this request:\n    <user_request>#{user_input}</user_request>"
 
-    image_context = @layer.overlay.variant(resize_to_limit: [600, 600]).processed.image.blob
+    image_context = @layer.overlay.variant(resize_to_limit: [ 600, 600 ]).processed.image.blob
 
     response = CustomRubyLLM.context.chat.with_schema(RecommendationSchema).ask(
       full_prompt,
@@ -60,7 +60,10 @@ class SmartFixImprover
     optimized = response.content["optimized_prompt"]
 
     if optimized.present?
-      @layer.update(prompt: optimized)
+      @layer.update(
+        original_prompt: @layer.prompt,
+        prompt: optimized
+      )
     end
   rescue StandardError => e
     Rails.logger.error("SmartFixImprover Error: #{e.message}")

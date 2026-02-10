@@ -103,6 +103,15 @@
            </div>
         </div>
       <% end %>
+
+      <% if layer.original_prompt.present? %>
+        <div class="pt-3 border-t border-gray-100 w-full">
+           <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Original Prompt (Pre-AI)</div>
+           <div class="text-gray-600 text-sm leading-snug bg-yellow-50 p-2 rounded border border-yellow-100 italic">
+             <%= layer.original_prompt %>
+           </div>
+        </div>
+      <% end %>
     </div>
   </div>
 
