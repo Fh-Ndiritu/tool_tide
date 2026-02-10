@@ -59,10 +59,20 @@ class SmartFixImprover
 
     optimized = response.content["optimized_prompt"]
 
-    if optimized.present?
+    final_prompt = if @has_mask
+      "You are a professional Landscape Architect.
+      The user has highlighted a specific area of the image (violet mask) they want to modify.
+      Apply the following changes to the masked area:
+
+      " + optimized
+    else
+      optimized
+    end
+
+    if final_prompt.present?
       @layer.update(
         original_prompt: @layer.prompt,
-        prompt: optimized
+        prompt: final_prompt
       )
     end
   rescue StandardError => e
