@@ -81,9 +81,12 @@
       id="navigation-links"
       data-navbar-target="navigationLinks"
       class="
-        lg:pr-4 flex justify-center lg:justify-end hidden lg:flex flex-col
-        lg:flex-row max-lg:w-full items-center space-y-2 lg:space-y-0
+        hidden lg:flex justify-center lg:justify-end flex-col
+        lg:flex-row items-center space-y-4 lg:space-y-0
         lg:space-x-4 lg:flex-1
+        absolute lg:static top-full left-0 right-0 w-full
+        bg-accent-secondary lg:bg-transparent shadow-xl lg:shadow-none
+        p-6 lg:p-0 z-50 border-t border-black/5 lg:border-none
       "
     >
       <% if user_signed_in? %>

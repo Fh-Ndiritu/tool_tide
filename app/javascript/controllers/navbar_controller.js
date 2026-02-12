@@ -5,5 +5,6 @@ export default class extends Controller {
   static targets = ['navigationLinks'];
   toggleMenu() {
     this.navigationLinksTarget.classList.toggle('hidden');
+    this.navigationLinksTarget.classList.toggle('flex');
   }
 }
