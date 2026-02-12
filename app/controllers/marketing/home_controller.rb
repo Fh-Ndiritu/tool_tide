@@ -35,16 +35,46 @@ module Marketing
 
       # Top 10 High-Conversion FAQs
       @faqs = [
-        { q: "Is this a subscription?", a: "No. We believe you should only pay for what you use. You purchase credits packages starting at just $10. There are no monthly fees, no hidden cancellations, and your credits never expire." },
-        { q: "Can I use the images for my business?", a: "Yes. All paid credit packs include a full Commercial License. You own the copyright to every design you generate. Perfect for landscape architects, real estate agents, and contractors." },
-        { q: "Will the plants actually grow in my area?", a: "Yes. Hadaa is the only AI landscape tool with a biological engine. When you enable 'Local Plants,' we cross-reference your location with USDA Hardiness Zones to suggest species that thrive in your specific climate." },
-        { q: "Can I keep my existing trees?", a: "Absolutely. Use our 'Masking Brush' to paint only over the areas you want to change (like the grass or fence) while leaving your favorite trees or patio untouched. The AI blends the new design seamlessly with the old." },
-        { q: "How is this better than ChatGPT or Midjourney?", a: "Generic AI models hallucinate geometry and ignore physics. Hadaa is fine-tuned specifically for landscape architecture. We understand scale, perspective, and plant biology. Plus, we give you the construction data to actually build it." },
-        { q: "Do I need 3D modeling skills?", a: "Zero. If you can take a photo with your phone, you can use Hadaa. We handle all the perspective alignment, depth mapping, and lighting calculations automatically." },
-        { q: "Can I upload a sketch or a blueprint?", a: "Yes. In addition to photos, our 'Sketch-to-Life' mode can turn a napkin drawing or a professional CAD line drwaring into a photorealistic render in seconds." },
-        { q: "What if I don't like the result?", a: "We offer a 'Smart Remix' feature. You can iterate indefinitely on a single design, changing styles, materials, or seasons until it's perfect. If a generation completely fails due to a system error, we refund the credit automatically." },
-        { q: "Can I visualize night lighting?", a: "Yes. Our lighting engine simulates various times of day. You can request 'twilight,' 'night with garden lights,' or 'golden hour' to see how your property looks 24/7." },
-        { q: "Is my data private?", a: "Your uploaded photos and generated designs are private by default. We do not share your property data with third parties. You have full control over your project library." }
+        {
+          q: "Is Hadaa a free landscaping app or paid software?", # Added "landscaping app"
+          a: "We are a pay-as-you-go platform. Unlike subscription-based **landscape design software**, you only pay for what you use. Packages start at $10 with no monthly fees, making it perfect for one-off DIY projects."
+        },
+        {
+          q: "Can I use this AI garden design software for commercial work?", # Added "AI garden design software"
+          a: "Yes. All paid credits include a Commercial License. Hadaa is built for **landscape architects** and contractors who need to generate professional concepts for clients without expensive CAD tools."
+        },
+        {
+          q: "Does the biological engine suggest plants for my climate?",
+          a: "Yes. Hadaa is the only **AI landscape tool** that cross-references your location with USDA Hardiness Zones. We suggest species that will actually thrive in your specific garden, not just what looks good."
+        },
+        {
+          q: "Can I keep existing trees in my backyard design?", # Added "backyard design"
+          a: "Absolutely. Use our 'Masking Brush' to paint only the areas you want to renovate (like replacing grass with pavers) while protecting your favorite trees or patio. The AI blends the new **garden design** seamlessly with the old."
+        },
+        {
+          q: "How is Hadaa better than Midjourney for landscape design?",
+          a: "Generic AI models hallucinate geometry. Hadaa is a specialized **landscape design app** that understands scale, perspective, and plant biology. Plus, we generate the material list and planting plan you need to actually build it."
+        },
+        {
+          q: "Do I need 3D modeling skills to use this planner?",
+          a: "Zero. If you can take a photo, you can use Hadaa. We handle the 3D perspective alignment and depth mapping automatically, making us the easiest **garden planner** for homeowners."
+        },
+        {
+          q: "Can I turn a sketch into a realistic landscape render?",
+          a: "Yes. Our 'Sketch-to-Life' feature turns napkins sketches or 2D CAD drawings into photorealistic 3D renders in seconds, streamlining the workflow for professional designers."
+        },
+        {
+          q: "What if I don't like the AI generated design?",
+          a: "We offer a 'Smart Remix' feature. You can iterate indefinitely on a single design, changing styles to 'Modern', 'Tropical', or 'Xeriscape' until it's perfect. If a generation fails technically, we refund the credit."
+        },
+        {
+          q: "Can I visualize night lighting and curb appeal?", # Added "curb appeal"
+          a: "Yes. Our lighting engine simulates 'twilight', 'night', and 'golden hour'. It is an essential tool for real estate agents looking to boost **curb appeal** on property listings."
+        },
+        {
+          q: "Is my property data private?",
+          a: "Your uploaded photos and designs are private by default. We do not share your property data. You have full control over your project library."
+        }
       ]
     end
   end

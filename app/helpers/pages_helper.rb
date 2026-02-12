@@ -1,85 +1,89 @@
 module PagesHelper
   def faq_structured_data
-    [
+    @faqs = [
       {
         category: "General, Pricing & Access",
         index: 0,
         items: [
           {
-            question: "How are we charged?",
-            answer: "<b class='text-accent text-lg'>Pay-As-You-Go.</b> Hadaa is strictly <b>Credit-Based</b>. We do not have monthly subscriptions or hidden recurring fees. You purchase credits packs (starting at just <b>$10 for 200 credits</b>) and they are yours to use whenever you want. You only pay for what you use, and your credits <b>never expire</b>."
+            # SEO TARGET: "No subscription landscape software"
+            question: "Is Hadaa a free landscaping app?",
+            answer: "<b class='text-accent text-lg'>No hidden fees.</b> Hadaa is a premium <b>AI garden design software</b> that operates on a strictly <b>Pay-As-You-Go</b> basis. Unlike subscription apps that charge you monthly, credit packs start at just <b>$10</b>. You only pay for what you generate, and credits never expire."
           },
           {
-            question: "What makes Hadaa different from other landscape apps?",
-            answer: "Hadaa is the only platform that combines <b>Precision Control</b> with <b>Execution Planning</b>. Unlike simple image generators, we offer a <b class='text-white'>Dual Editing Mode</b> (Mask Designer + AI Text Editor) for surgical changes, and we back it up with actionable logistics like <b>Shopping List Generators</b> and <b>Localized Planting Guides</b> based on your specific USDA zone."
+            # SEO TARGET: "Commercial landscape design software"
+            question: "Can I use Hadaa for commercial client work?",
+            answer: "<b>Yes.</b> We grant full <b>Commercial Rights</b> for every generation. Hadaa is built for <b>landscape architects</b>, contractors, and real estate agents. You own the copyright to your designs, making it safe to use for client presentations and portfolios."
+          },
+          {
+            # SEO TARGET: "Midjourney for landscape design"
+            question: "How is Hadaa better than Midjourney?",
+            answer: "Generic AI models hallucinate geometry and ignore physics. Hadaa is a specialized <b>landscape design app</b> that understands scale, perspective, and plant biology. Plus, we generate the <b>material list and planting plan</b> you need to actually build the project."
+          },
+          {
+            # SEO TARGET: "Easy garden planner"
+            question: "Do I need 3D modeling skills?",
+            answer: "<b>Zero.</b> If you can take a photo with your phone, you can use Hadaa. We handle the 3D perspective alignment and depth mapping automatically, making us the easiest <b>garden planner</b> for homeowners and pros alike."
+          },
+          {
+            # SEO TARGET: "Web-based landscape app"
+            question: "Do I need to download an app?",
+            answer: "<b>No.</b> Hadaa is a cloud-based tool that runs directly in your browser. Whether you are on an iPhone, Android, or Desktop, you get the full power of our AI engine without installing heavy software."
           }
         ]
       },
       {
-        category: "Core AI Tools: Presets, SmartFix & AutoFix",
+        category: "Advanced Tools: Sketches, Lighting & Fixes",
         index: 1,
         items: [
           {
-            question: "What are Style Presets and how do they help?",
-            answer: "<b>#{link_to 'Style Presets', features_preset_style_selection_path, class: 'text-accent hover:underline'}</b> are the fastest way to jumpstart your design. Instead of writing prompts from scratch, simply select a curated style (like <b>Modern, Cottage, Zen, or Tropical</b>) and the AI will instantly reimagine your masked area in that aesthetic, selecting plants and materials that fit the vibe."
+            # SEO TARGET: "Turn sketch into 3D landscape"
+            question: "Can I turn a hand-drawn sketch into a 3D render?",
+            answer: "<b>Yes.</b> Our new <b>Sketch Transform Engine</b> uses an Agentic AI System to analyze your drawing, fix perspective errors, and upscale it. It turns rough napkin sketches or CAD lines into photorealistic <b>3D landscape renders</b> in seconds."
           },
           {
-            question: "What is SmartFix?",
-            answer: "<b>#{link_to 'SmartFix', features_ai_prompt_editor_path, class: 'text-accent hover:underline'}</b> is our intelligent AI prompt editor. It allows you to describe exactly what you want (e.g., 'replace grass with clover', 'add a fire pit'). It features an <b>AI Assist</b> toggle that can add creative flair to your prompts, or you can turn it off for <b>precision control</b> when you need to specify exact details like plant counts or material types."
+            # SEO TARGET: "Landscape lighting visualizer"
+            question: "Can I visualize night lighting?",
+            answer: "<b>Yes.</b> Our lighting engine simulates various times of day. You can request 'twilight', 'night with garden lights', or 'golden hour' to see how your property looks 24/7—a crucial tool for selling <b>curb appeal</b>."
           },
           {
-            question: "What is AutoFix?",
-            answer: "<b>AutoFix</b> is an intelligent detection system that analyzes your current yard and <b>automatically suggests improvements</b>. It identifies opportunities—like fixing a messy lawn, pruning overgrown bushes, or adding lighting—and generates ready-to-use prompts so you can improve your design with a single click."
+            question: "What if I don't like the result?",
+            answer: "We offer a <b>'Smart Remix'</b> feature. You can iterate indefinitely on a single design, changing styles to 'Modern', 'Tropical', or 'Xeriscape' until it's perfect. If a generation fails technically, we refund the credit automatically."
           },
           {
-            question: "How does the 'Precision Bridge' (Masking) feature work?",
-            answer: "The Precision Bridge allows you to make <b>surgical edits</b> via the #{link_to 'Brush Tool', features_brush_prompt_editor_path, class: 'text-accent hover:underline text-inherit'}. Instead of changing the whole image, you mask only specific areas (e.g., just the front lawn). This masking technology ensures that edits applied via <b>Presets, SmartFix, or AutoFix</b> only affect the designated area, leaving the rest of your original photo 100% untouched."
+            # SEO TARGET: "Fix messy yard"
+            question: "How do I fix a messy yard instantly?",
+            answer: "Use <b>AutoFix</b>. This intelligent diagnostic tool scans your photo to identify issues—like patchy grass, weeds, or construction debris. It automatically generates a prompt to fix these flaws instantly."
           }
         ]
       },
       {
-        category: "Visualizing Your Ideas: Sketches & Drone Views",
+        category: "Planting & Logistics",
         index: 2,
         items: [
           {
-            question: "I have a hand-drawn sketch. Can Hadaa turn it into a photo?",
-            answer: "<b>Yes.</b> Our 'Sketch to 3D' feature accepts hand sketches, iPad drawings, or architectural blueprints. The AI analyzes the lines and geometry to create a <b>3D clay rendering</b> before transforming it into a fully photorealistic scene, preserving your original perspective and layout."
+            # SEO TARGET: "Native plants by zone"
+            question: "Will the AI suggest plants that grow in my area?",
+            answer: "<b>Yes.</b> Hadaa includes a biological engine. We cross-reference your location with <b>#{link_to 'USDA Hardiness Zones', features_location_plant_suggestions_path, class: 'text-white hover:underline'}</b> to suggest native plants that are drought-tolerant and thrive in your specific soil type."
           },
           {
-            question: "How does the Drone View feature work?",
-            answer: "Hadaa uses advanced <b>Vector Transformation</b> and agentic workflows to re-render your ground-level photo from a <b>#{link_to "bird's-eye perspective", features_drone_view_3d_perspective_path, class: 'text-white hover:underline'}</b>. This helps you visualize the layout and flow of the entire property without needing a physical drone survey."
+            # SEO TARGET: "Landscape material calculator"
+            question: "Does it generate a shopping list?",
+            answer: "<b>Yes.</b> We use Depth Analysis to calculate the real-world scale of your project. This allows us to generate a precise <b>#{link_to 'Shopping List', features_shopping_list_planting_guide_path, class: 'text-white hover:underline'}</b> with estimated quantities for plants, mulch, and pavers."
           }
         ]
       },
       {
-        category: "Execution: From Design to Reality",
+        category: "Privacy & Tech Specs",
         index: 3,
         items: [
           {
-            question: "Will the plants suggested actually grow in my yard?",
-            answer: "<b>Yes.</b> We prioritize survivability. Our recommendations are filtered through your local <b>#{link_to 'USDA Hardiness Zone', features_location_plant_suggestions_path, class: 'text-white hover:underline'}</b>. We also consider practical factors like <b>Pet/Kid Safety</b> (toxicity), <b>HOA Regulations</b>, and <b>Soil Type</b> to ensure the plants are safer, compliant, and thriving in your specific environment."
+            question: "Is my personal data safe?",
+            answer: "<b class='text-accent'>100% Safe.</b> We automatically strip all EXIF (GPS) data from your photos upon upload. Your project library is private by default, and we do not sell your property data to third parties."
           },
           {
-            question: "How accurate is the Shopping List?",
-            answer: "Highly accurate. We use <b>Depth Analysis</b> vision models to calculate the real-world square footage of your masked area. This allows us to generate a precise <b>#{link_to 'Shopping List', features_shopping_list_planting_guide_path, class: 'text-white hover:underline'}</b> with exact quantities for plants, mulch, gravel, and pavers, minimizing expensive material waste."
-          }
-        ]
-      },
-      {
-        category: "Trust, Privacy & Technology",
-        index: 4,
-        items: [
-          {
-            question: "Is my personal data/home address safe?",
-            answer: "<b class='text-accent'>100% Safe.</b> We take privacy seriously. We automatically <b>strip all EXIF (GPS) data</b> from your photos upon upload. If you choose to share your design in our gallery, we use AI to <b>blur identifying features</b> (like house numbers) to ensure anonymity."
-          },
-          {
-            question: "Who owns the designs I create?",
-            answer: "You do. You have full ownership of the designs you generate and can use them for personal projects, client presentations, or your portfolio."
-          },
-          {
-            question: "What resolution are the downloaded designs?",
-            answer: "All initial designs are generated in clear HD (1080p). For professional presentations or detailed viewing, you can instant <b>upscale to 4K resolution</b> with a single click, ensuring state-of-the-art fidelity suitable for print."
+            question: "What resolution are the downloads?",
+            answer: "All designs are generated in HD (1080p). For professional printing or client boards, you can use our <b>AI Upscaler</b> to enhance your renders to <b>4K resolution</b> with crisp details."
           }
         ]
       }

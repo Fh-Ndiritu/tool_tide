@@ -1,6 +1,6 @@
 <%# START: SEO/Metadata Definitions %>
 <% content_for :title, "AI Landscape Design App for Homeowners | Hadaa" %>
-<% content_for :description, "Upload a photo of your yard and get an AI-generated landscape design, planting plan, and material list in minutes. Built for homeowners planning real outdoor projects." %>
+<% content_for :description, "Upload a photo of your yard and get an AI-generated landscape design, planting plan, and material list in minutes. The #1 AI garden design software and landscaping app built for homeowners planning real outdoor projects." %>
 <% content_for(:main_classes, "mx-0 pl-0 pr-0 max-w-[100vw] block bg-[#0f0f0f]") %>
 
 <% content_for :head do %>
@@ -35,6 +35,22 @@
           "ratingValue": "4.8",
           "ratingCount": "2450"
         }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          <% @faqs.each_with_index do |faq, index| %>
+            {
+              "@type": "Question",
+              "name": "<%= j faq[:q] %>",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "<%= j faq[:a] %>"
+              }
+            }<%= "," unless index == @faqs.size - 1 %>
+          <% end %>
+        ]
       }
     ]
   </script>
@@ -50,24 +66,24 @@
       <%# Trusted By Badge %>
       <div class="flex items-center justify-center gap-4 mb-4">
          <div class="flex -space-x-3">
-             <%= image_tag "testimonials/avatar1.png", class: "w-10 h-10 rounded-full border-2 border-[#0f0f0f]", alt: "User" %>
-             <%= image_tag "testimonials/avatar2.png", class: "w-10 h-10 rounded-full border-2 border-[#0f0f0f]", alt: "User" %>
-             <%= image_tag "testimonials/avatar4.png", class: "w-10 h-10 rounded-full border-2 border-[#0f0f0f]", alt: "User" %>
+             <%= image_tag "testimonials/avatar1.webp", class: "w-10 h-10 rounded-full border-2 border-[#0f0f0f]", alt: "Hadaa User Avatar 1" %>
+             <%= image_tag "testimonials/avatar2.webp", class: "w-10 h-10 rounded-full border-2 border-[#0f0f0f]", alt: "Hadaa User Avatar 2" %>
+             <%= image_tag "testimonials/avatar4.webp", class: "w-10 h-10 rounded-full border-2 border-[#0f0f0f]", alt: "Hadaa User Avatar 3" %>
              <div class="w-10 h-10 rounded-full border-2 border-[#0f0f0f] bg-[#27272a] flex items-center justify-center text-[10px] font-bold text-white">+2k</div>
          </div>
          <span class="text-neutral-400 text-sm font-medium">Trusted by <strong class="text-white">10,000+</strong> homeowners & landscapers</span>
       </div>
 
-      <h1 class="sr-only">
-         AI Landscape Design Tool for Homeowners
+      <h1 class="text-[#00acc1] font-bold tracking-widest uppercase text-sm mb-4">
+         AI Garden Design Software & Landscaping App
       </h1>
 
-      <div class="text-6xl md:text-8xl font-serif font-medium tracking-tight leading-[1] drop-shadow-2xl">
+      <h2 class="text-6xl md:text-8xl font-serif font-medium tracking-tight leading-[1] drop-shadow-2xl">
          Fire your
          <span class="font-sans font-black text-transparent bg-clip-text bg-gradient-to-r from-[#00acc1] to-[#f23faf]">
             landscaper.
          </span>
-      </div>
+      </h2>
       <p class="text-xl md:text-2xl text-neutral-300 max-w-3xl mx-auto font-light leading-relaxed">
          Designed specifically for homeowners redesigning their backyard, front yard, or outdoor living space. Visualize your garden, auto detect and fix issues, and get biologically accurate planting guides instantly.
       </p>
@@ -111,7 +127,7 @@
             <p class="text-neutral-300 mb-8 text-lg font-medium leading-relaxed relative z-10">"I was quoted $5,000 just for a concept plan. Hadaa gave me 4 stunning variations and a shopping list for $10. I handed the printout to my contractor and we started digging the next day."</p>
             <div class="flex items-center gap-4 pt-6 mt-auto border-t border-white/10">
                <div class="w-12 h-12 rounded-full overflow-hidden border border-white/10 shrink-0">
-                  <%= image_tag "testimonials/avatar2.png", class: "w-full h-full object-cover" %>
+                  <%= image_tag "testimonials/avatar2.webp", class: "w-full h-full object-cover", alt: "Michael R. - Homeowner using Hadaa" %>
                </div>
                <div>
                   <div class="text-white font-bold text-lg leading-tight">Michael R.</div>
@@ -135,7 +151,7 @@
             <p class="text-neutral-300 mb-8 text-lg font-medium leading-relaxed relative z-10">"This tool replaced my entire rendering workflow. I used to spend 3 days on SketchUp for a client pitch. Now I do it in 15 minutes during the consultation. It pays for itself 10x over on every job."</p>
             <div class="flex items-center gap-4 pt-6 mt-auto border-t border-white/10">
                <div class="w-12 h-12 rounded-full overflow-hidden border border-white/10 shrink-0">
-                  <%= image_tag "testimonials/avatar1.png", class: "w-full h-full object-cover" %>
+                  <%= image_tag "testimonials/avatar1.webp", class: "w-full h-full object-cover", alt: "Sarah Jenkins - DIY Landscape Designer" %>
                </div>
                <div>
                   <div class="text-white font-bold text-lg leading-tight">Sarah Jenkins</div>
@@ -159,7 +175,7 @@
             <p class="text-neutral-300 mb-8 text-lg font-medium leading-relaxed relative z-10">"We use this to stage every listing with a 'fixer-upper' yard. Showing buyers the potential adds measurable value to the final sale price. The 'Auto Fix' feature is magic for curb appeal."</p>
             <div class="flex items-center gap-4 pt-6 mt-auto border-t border-white/10">
                <div class="w-12 h-12 rounded-full overflow-hidden border border-white/10 shrink-0">
-                  <%= image_tag "testimonials/avatar4.png", class: "w-full h-full object-cover" %>
+                  <%= image_tag "testimonials/avatar4.webp", class: "w-full h-full object-cover", alt: "David Chen - Real Estate Home Seller" %>
                </div>
                <div>
                   <div class="text-white font-bold text-lg leading-tight">David Chen</div>
@@ -196,7 +212,7 @@
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
       <% @gallery_images.each_with_index do |filename, index| %>
          <div class="aspect-[4/3] rounded-2xl overflow-hidden bg-[#27272a] animate-pulse relative group">
-            <%= image_tag "gallery/#{filename}", class: "absolute inset-0 w-full h-full object-cover hover:scale-105 transition-transform duration-500 opacity-0 transition-opacity duration-700", loading: "lazy", onload: "this.classList.remove('opacity-0'); this.parentElement.classList.remove('animate-pulse');" %>
+            <%= image_tag "gallery/#{filename}", class: "absolute inset-0 w-full h-full object-cover hover:scale-105 transition-transform duration-500 opacity-0 transition-opacity duration-700", loading: "lazy", onload: "this.classList.remove('opacity-0'); this.parentElement.classList.remove('animate-pulse');", alt: cycle("Modern backyard ai landscape design with fire pit", "Drought tolerant front yard xeriscape ideas", "Luxury outdoor living space with pool deck", "Small garden makeover visualization", "Contemporary patio pavers and planting plan", "Tropical garden oasis with palms and lighting", "Curb appeal update for home resale value", "Low maintenance desert landscaping design", "Vegetable garden layout and raised beds", "Japanese zen garden concept art") %>
             <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                <p class="text-white text-xs font-bold">Backyard Transformation <%= index + 1 %></p>
             </div>
@@ -459,7 +475,7 @@
         <div class="group">
            <h3 class="text-2xl font-bold text-white mb-4 flex items-center gap-3">
              <span class="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-xs text-[#00acc1]">01</span>
-             Botany before Pixels.
+             Botany before Pixels: Biologically Accurate Plant Selection & Hardiness Zones
            </h3>
            <p class="text-xl text-neutral-400 font-light leading-relaxed">
              Generic AI models treat plants as green noise. They hallucinate tropical palms in Alaska and thirsty ferns in the desert.
@@ -472,7 +488,7 @@
         <div class="group">
            <h3 class="text-2xl font-bold text-white mb-4 flex items-center gap-3">
              <span class="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-xs text-[#00acc1]">02</span>
-             From Dream to Digging.
+             Construction Ready: Material Lists, Planting Plans & Cost Estimates
            </h3>
            <p class="text-xl text-neutral-400 font-light leading-relaxed">
              A render without dimensions is just a hallucination. Contractors can't quote a "vibe." They need hard data.
@@ -485,7 +501,7 @@
         <div class="group">
            <h3 class="text-2xl font-bold text-white mb-4 flex items-center gap-3">
              <span class="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-xs text-[#00acc1]">03</span>
-             Non-Destructive Creativity.
+             Non-Destructive Creativity: AI In-painting & Partial Redesign
            </h3>
            <p class="text-xl text-neutral-400 font-light leading-relaxed">
              True design is iterative. It’s a conversation, not a command. Unlike "one-shot" image generators that force you to re-roll the entire dice, Hadaa offers <strong class="text-neutral-200">surgical precision</strong>.
@@ -611,6 +627,93 @@
                <div><span class="font-bold block">No Specs</span><span class="text-xs">No biological engine</span></div>
             </li>
          </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="py-24 px-6 bg-[#121212] border-t border-white/5">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-16">
+      <h2 class="text-4xl md:text-5xl font-black text-white mb-6">
+        The Most Versatile <span class="text-[#00acc1]">Garden Design Software.</span>
+      </h2>
+      <p class="text-xl text-neutral-400 max-w-3xl mx-auto">
+        Whether you are a DIY homeowner or a professional contractor, Hadaa is the
+        <strong>landscaping app</strong> that adapts to your workflow.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-8">
+
+      <div class="bg-[#18181b] rounded-3xl p-8 border border-white/5 hover:border-[#00acc1]/50 transition-colors duration-300 group">
+        <div class="w-14 h-14 bg-[#00acc1]/10 rounded-2xl flex items-center justify-center mb-6 text-[#00acc1] group-hover:scale-110 transition-transform">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold text-white mb-4">For Homeowners</h3>
+        <p class="text-neutral-400 leading-relaxed mb-6">
+          Stop guessing. Use our <strong>AI landscaping app</strong> to visualize your dream backyard in seconds. See exactly how new plants, pavers, and furniture will look before you buy.
+        </p>
+        <ul class="space-y-3 mb-8">
+          <li class="flex items-center gap-3 text-sm text-neutral-300">
+            <svg class="w-5 h-5 text-[#00acc1]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+            DIY-friendly interface
+          </li>
+          <li class="flex items-center gap-3 text-sm text-neutral-300">
+            <svg class="w-5 h-5 text-[#00acc1]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+            Instant shopping lists
+          </li>
+        </ul>
+        <a href="/users/sign_up" class="text-white font-bold text-sm border-b border-[#00acc1] pb-0.5 hover:text-[#00acc1] transition-colors">Start Your DIY Project →</a>
+      </div>
+
+      <div class="bg-[#18181b] rounded-3xl p-8 border border-white/5 hover:border-[#f23faf]/50 transition-colors duration-300 group">
+        <div class="w-14 h-14 bg-[#f23faf]/10 rounded-2xl flex items-center justify-center mb-6 text-[#f23faf] group-hover:scale-110 transition-transform">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold text-white mb-4">For Professionals</h3>
+        <p class="text-neutral-400 leading-relaxed mb-6">
+          Close deals 5x faster. Hadaa is the professional <strong>landscape design software</strong> that replaces hours of CAD work with instant, client-ready visualizations.
+        </p>
+        <ul class="space-y-3 mb-8">
+          <li class="flex items-center gap-3 text-sm text-neutral-300">
+            <svg class="w-5 h-5 text-[#f23faf]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+            Impress clients instantly
+          </li>
+          <li class="flex items-center gap-3 text-sm text-neutral-300">
+            <svg class="w-5 h-5 text-[#f23faf]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+            Export construction docs
+          </li>
+        </ul>
+        <a href="/features/project-studio" class="text-white font-bold text-sm border-b border-[#f23faf] pb-0.5 hover:text-[#f23faf] transition-colors">See Pro Features →</a>
+      </div>
+
+      <div class="bg-[#18181b] rounded-3xl p-8 border border-white/5 hover:border-green-500/50 transition-colors duration-300 group">
+        <div class="w-14 h-14 bg-green-500/10 rounded-2xl flex items-center justify-center mb-6 text-green-500 group-hover:scale-110 transition-transform">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold text-white mb-4">For Real Estate</h3>
+        <p class="text-neutral-400 leading-relaxed mb-6">
+          Sell the potential, not just the property. Use our <strong>virtual staging tool</strong> to fix curb appeal issues and show buyers what a "fixer-upper" yard could look like.
+        </p>
+        <ul class="space-y-3 mb-8">
+          <li class="flex items-center gap-3 text-sm text-neutral-300">
+            <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+            Boost listing value
+          </li>
+          <li class="flex items-center gap-3 text-sm text-neutral-300">
+            <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+            Fix mud & dead grass
+          </li>
+        </ul>
+        <a href="/users/sign_up" class="text-white font-bold text-sm border-b border-green-500 pb-0.5 hover:text-green-500 transition-colors">Boost Your Listings →</a>
       </div>
 
     </div>
