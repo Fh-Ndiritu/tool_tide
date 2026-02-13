@@ -39,4 +39,13 @@ class UserMailer < ApplicationMailer
       subject: "Introducing Projects: A New Way to Design"
     )
   end
+
+  def stripe_announcement_email
+    @user = params[:user]
+
+    mail(
+      to: @user.email,
+      subject: "Update: Easier Payments with Stripe"
+    )
+  end
 end
