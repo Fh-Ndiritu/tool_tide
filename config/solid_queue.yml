@@ -12,6 +12,9 @@ production:
     - polling_interval: 1
       batch_size: 500
   workers:
-    - queues: "*"
+    - queues:
+      - generation
+      - default
+      - "*"
       threads: 5
       polling_interval: 2

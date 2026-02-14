@@ -1,6 +1,6 @@
 class ProjectGenerationJob < ApplicationJob
   class InsufficientCreditsError < StandardError; end
-  queue_as :default
+  queue_as :generation
 
   retry_on StandardError, attempts: 3 do |job, error|
     raise error if error.is_a?(InsufficientCreditsError)
