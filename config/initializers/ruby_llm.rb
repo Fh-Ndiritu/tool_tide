@@ -6,8 +6,8 @@ RubyLLM.configure do |config|
 
   config.default_model = "gemini-2.5-flash"
 
-  config.request_timeout = 300
-  config.max_retries = 4
+  config.request_timeout = 45
+  config.max_retries = 2
 
   # Advanced retry behavior
   config.retry_interval = 1 # Initial retry delay in seconds (default: 0.1)

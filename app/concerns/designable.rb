@@ -21,15 +21,15 @@ module Designable
     ) do |f|
       f.response :raise_error
       # Time to wait for the connection to open
-      f.options.open_timeout = 30
+      f.options.open_timeout = 10
       # Total time for the request to complete
-      f.options.timeout = 120
+      f.options.timeout = 60
       # Time to wait for a read to complete
-      f.options.read_timeout = 120
+      f.options.read_timeout = 60
     end
   end
 
-  def fetch_gcp_response(payload, max_retries = 3, model: "gemini-2.5-flash-image")
+  def fetch_gcp_response(payload, max_retries = 1, model: "gemini-2.5-flash-image")
     retries = 0
     begin
       response = gcp_connection(model: model).post("") do |req|
