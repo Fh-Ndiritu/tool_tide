@@ -44,7 +44,7 @@ class ProjectGeneratorService
     response = fetch_gcp_response(payload, model: actual_model)
     blob = save_gcp_results(response)
 
-    @layer.result_image.attach(blob)
+    @layer.result_image.attach(convert_to_webp(blob))
   rescue StandardError => e
     Rails.logger.error("ProjectGenerator: #{e.message}")
     raise "ProjectGenerator Failed: #{e.message}"
@@ -89,5 +89,22 @@ class ProjectGeneratorService
 
     # Fallback to parent result or image (Maskless Stub)
     @layer.parent&.result_image || @layer.parent&.image
+  end
+
+  def convert_to_webp(blob)
+    return blob unless blob
+
+    img = MiniMagick::Image.read(blob.download)
+    img.format "webp"
+
+    io = StringIO.new(img.to_blob)
+    ActiveStorage::Blob.create_and_upload!(
+      io: io,
+      filename: "result_image.webp",
+      content_type: "image/webp"
+    )
+  rescue => e
+    Rails.logger.warn("WebP conversion failed: #{e.message}, using original")
+    blob
   end
 end

@@ -64,6 +64,11 @@ class ProjectGenerationJob < ApplicationJob
       return if layer.failed?
       layer.complete!
     end
+
+    # Post-generation storage optimizations
+    downsize_overlay!(layer)
+    purge_mask!(layer)
+
     broadcast_update(layer)
   end
 
@@ -148,6 +153,28 @@ class ProjectGenerationJob < ApplicationJob
     TelegramNotifier::Dispatcher.new.dispatch(message)
   rescue StandardError => e
     Rails.logger.error("Failed to send Telegram notification: #{e.message}")
+  end
+
+  def downsize_overlay!(layer)
+    return unless layer.overlay.attached?
+    return if layer.overlay.blob.byte_size < 100_000 # Already small
+
+    variant = layer.overlay.variant(resize_to_limit: [ 400, 400 ]).processed
+    layer.overlay.attach(
+      io: StringIO.new(variant.download),
+      filename: "overlay_thumb.webp",
+      content_type: "image/webp"
+    )
+  rescue => e
+    Rails.logger.warn("Overlay downsize failed for layer #{layer.id}: #{e.message}")
+  end
+
+  def purge_mask!(layer)
+    return unless layer.mask.attached? && layer.overlay.attached?
+
+    layer.mask.purge
+  rescue => e
+    Rails.logger.warn("Mask purge failed for layer #{layer.id}: #{e.message}")
   end
 
   def broadcast_update(layer)
