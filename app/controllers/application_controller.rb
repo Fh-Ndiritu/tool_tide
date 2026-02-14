@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
 
   def after_sign_in_path_for(resource)
     if resource.is_a?(User) && resource.admin?
-      admin_social_posts_path
+      agora_dashboard_index_path
     else
       projects_path
     end

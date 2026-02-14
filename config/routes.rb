@@ -86,7 +86,7 @@ Rails.application.routes.draw do
 
   devise_for :users, controllers: { omniauth_callbacks: "users/omniauth_callbacks", registrations: "users/registrations", sessions: "users/sessions" }
 
-  resources :audios
+
   post "onboarding/update", to: "onboarding#update"
   post "project_onboarding/update", to: "project_onboardings#update"
 
@@ -127,11 +127,8 @@ Rails.application.routes.draw do
     resources :canvas, only: %i[create show]
     resources :text_requests, only: [ :index, :edit, :destroy, :show ]
     resources :mask_requests, only: [ :index, :edit, :destroy ]
-    resources :blogs, only: [ :index, :new, :create, :show ]
+
     resources :public_assets, only: [ :index, :create, :destroy ]
-    resources :social_posts, only: [ :index, :show, :update ] do
-      post :generate, on: :collection
-    end
     resources :projects, only: [ :index, :show ]
 
     post "mask_requests/toggle_display"

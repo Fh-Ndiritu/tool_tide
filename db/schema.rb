@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_02_10_075705) do
+ActiveRecord::Schema[8.0].define(version: 2026_02_14_142630) do
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -164,16 +164,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_10_075705) do
     t.index ["votable_type", "votable_id"], name: "index_agora_votes_on_votable"
   end
 
-  create_table "audios", force: :cascade do |t|
-    t.json "content"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.boolean "single_speaker", default: true
-    t.string "error_msg"
-    t.integer "vlog_id"
-    t.index ["vlog_id"], name: "index_audios_on_vlog_id"
-  end
-
   create_table "auto_fixes", force: :cascade do |t|
     t.integer "project_layer_id", null: false
     t.string "title"
@@ -182,31 +172,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_10_075705) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["project_layer_id"], name: "index_auto_fixes_on_project_layer_id"
-  end
-
-  create_table "blog_locations", force: :cascade do |t|
-    t.string "country"
-    t.string "region_category"
-    t.string "state"
-    t.string "city"
-    t.string "major_counties"
-    t.datetime "last_processed_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "blogs", force: :cascade do |t|
-    t.string "location_name"
-    t.string "slug"
-    t.string "title"
-    t.text "raw_deep_dive"
-    t.text "content"
-    t.json "metadata"
-    t.boolean "published"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.text "html_content"
-    t.index ["slug"], name: "index_blogs_on_slug"
   end
 
   create_table "canvas", force: :cascade do |t|
@@ -492,19 +457,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_10_075705) do
     t.index ["uuid"], name: "index_public_assets_on_uuid"
   end
 
-  create_table "social_posts", force: :cascade do |t|
-    t.text "content"
-    t.text "prompt"
-    t.integer "status", default: 0
-    t.string "platform", default: "facebook"
-    t.datetime "published_at"
-    t.decimal "performance_score"
-    t.json "performance_metrics"
-    t.json "tags", default: []
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "suggested_plants", force: :cascade do |t|
     t.string "name"
     t.text "description"
@@ -589,27 +541,10 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_10_075705) do
     t.string "last_sign_in_device_type"
     t.boolean "has_paid", default: false
     t.string "stripe_customer_id"
+    t.datetime "stripe_migration_announcement_sent_at"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["stripe_customer_id"], name: "index_users_on_stripe_customer_id"
-  end
-
-  create_table "video_clips", force: :cascade do |t|
-    t.integer "vlog_id", null: false
-    t.json "metadata"
-    t.string "status"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["vlog_id"], name: "index_video_clips_on_vlog_id"
-  end
-
-  create_table "vlogs", force: :cascade do |t|
-    t.string "title"
-    t.string "status"
-    t.string "project_id"
-    t.json "manifest"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
@@ -618,7 +553,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_10_075705) do
   add_foreign_key "agora_comments", "agora_posts", column: "post_id"
   add_foreign_key "agora_executions", "agora_posts", column: "post_id"
   add_foreign_key "agora_learned_patterns", "agora_executions", column: "source_execution_id"
-  add_foreign_key "audios", "vlogs"
   add_foreign_key "auto_fixes", "project_layers"
   add_foreign_key "canvas", "users"
   add_foreign_key "credit_spendings", "users"
@@ -646,5 +580,4 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_10_075705) do
   add_foreign_key "text_requests", "users"
   add_foreign_key "tool_calls", "messages"
   add_foreign_key "user_settings", "users"
-  add_foreign_key "video_clips", "vlogs"
 end
