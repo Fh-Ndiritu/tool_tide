@@ -5,7 +5,6 @@ class Canva < ApplicationRecord
   end
 
   has_many :mask_requests, dependent: :destroy
-  has_many :sketch_requests, dependent: :destroy
   after_create_commit :update_user
 
   def drawable_image

@@ -20,7 +20,6 @@ class User < ApplicationRecord
   has_many :credits, dependent: :destroy
   has_many :credit_spendings, dependent: :destroy
   has_many :text_requests, dependent: :destroy
-  has_many :sketch_requests, dependent: :destroy
   has_many :favorites, dependent: :destroy
   has_many :received_favorites, class_name: "Favorite", as: :favoritable, dependent: :destroy
 
@@ -74,8 +73,7 @@ class User < ApplicationRecord
   def last_design_date
     [
       mask_requests.maximum(:created_at),
-      text_requests.maximum(:created_at),
-      sketch_requests.maximum(:created_at)
+      text_requests.maximum(:created_at)
     ].compact.max
   end
 
@@ -185,3 +183,25 @@ class User < ApplicationRecord
     WelcomeFollowUpJob.set(wait: 1.hour).perform_later(id)
   end
 end
+
+
+
+
+
+# # Preserve explore/welcome page mask requests
+# explore_ids = MaskRequest.unscoped.where(progress: :complete, visibility: :everyone).pluck(:id)
+# puts "Preserving #{explore_ids.size} explore mask requests"
+
+# User.where(has_paid: false).find_each do |user|
+#   # Destroy mask requests directly (skip canva association)
+#   user.mask_requests.unscope(:order).where.not(id: explore_ids).find_each(&:destroy)
+#   user.text_requests.unscope(:order).find_each(&:destroy)
+#   user.projects.find_each(&:destroy)
+
+#   # Destroy orphaned canvases (no mask requests left)
+#   user.canvas.left_joins(:mask_requests).where(mask_requests: { id: nil }).find_each(&:destroy)
+# end
+
+# # Purge orphaned blobs
+# ActiveStorage::Blob.unattached.find_each(&:purge)
+# puts "Done!"
