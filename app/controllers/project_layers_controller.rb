@@ -17,6 +17,7 @@ class ProjectLayersController < ApplicationController
     parent_layer = @design.project_layers.find_by(id: params[:parent_layer_id]) || @design.project_layers.roots.first
 
     variations_count = (params[:variations].presence || 1).to_i.clamp(1, 4)
+    created_layer_ids = []
 
     ActiveRecord::Base.transaction do
       variations_count.times do |i|
@@ -46,7 +47,7 @@ class ProjectLayersController < ApplicationController
              )
           end
 
-          ProjectGenerationJob.perform_later(layer.id)
+          created_layer_ids << layer.id
         else
           # Collect error from first failing layer and return
           error_message = layer.errors.full_messages.to_sentence
@@ -68,6 +69,9 @@ class ProjectLayersController < ApplicationController
         auto_fix&.applied!
       end
     end
+
+    # Enqueue jobs AFTER the transaction has committed so layers exist in the DB
+    created_layer_ids.each { |id| ProjectGenerationJob.perform_later(id) }
 
     # Guard against double render if validation failed inside transaction
     return if performed?
