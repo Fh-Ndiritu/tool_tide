@@ -185,12 +185,3 @@ class User < ApplicationRecord
     WelcomeFollowUpJob.set(wait: 1.hour).perform_later(id)
   end
 end
-
-
-
-# User.find_each do |user|
-#     time = DateTime.current
-#     if user.credits.where(source: :purchase).where("created_at <= ?", time).exists?
-#       user.update_column(:has_paid, true)
-#     end
-# end
