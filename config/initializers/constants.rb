@@ -36,10 +36,11 @@ MODEL_COST_MAP = {
 
 # Map alias -> Real Model Name (Separation of Concerns)
 MODEL_NAME_MAP = {
-  # MODEL_ALIAS_PRO => "gemini-2.5-flash-image",
-  MODEL_ALIAS_PRO => "gemini-3-pro-image-preview",
+  MODEL_ALIAS_PRO => "gemini-2.5-flash-image",
   MODEL_ALIAS_STANDARD => "gemini-2.5-flash-image"
 }.freeze
+
+SKETCH_TRANSFORM_MODEL = "gemini-3-pro-image-preview"
 
 GOOGLE_2K_UPSCALE_COST = GOOGLE_PRO_IMAGE_COST
 GOOGLE_4K_UPSCALE_COST = GOOGLE_PRO_IMAGE_COST * 3

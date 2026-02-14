@@ -55,7 +55,7 @@ module Agentic
 
     def upscale_image(image_blob)
       conn = Faraday.new(
-        url: "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-pro-image-preview:generateContent",
+        url: "https://generativelanguage.googleapis.com/v1beta/models/#{SKETCH_TRANSFORM_MODEL}:generateContent",
         headers: {
           "Content-Type" => "application/json",
           "x-goog-api-key" => ENV["GEMINI_API_KEYS"].split("____").sample

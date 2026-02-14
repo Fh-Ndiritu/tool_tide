@@ -183,25 +183,3 @@ class User < ApplicationRecord
     WelcomeFollowUpJob.set(wait: 1.hour).perform_later(id)
   end
 end
-
-
-
-
-
-# # Preserve explore/welcome page mask requests
-# explore_ids = MaskRequest.unscoped.where(progress: :complete, visibility: :everyone).pluck(:id)
-# puts "Preserving #{explore_ids.size} explore mask requests"
-
-# User.where(has_paid: false).find_each do |user|
-#   # Destroy mask requests directly (skip canva association)
-#   user.mask_requests.unscope(:order).where.not(id: explore_ids).find_each(&:destroy)
-#   user.text_requests.unscope(:order).find_each(&:destroy)
-#   user.projects.find_each(&:destroy)
-
-#   # Destroy orphaned canvases (no mask requests left)
-#   user.canvas.left_joins(:mask_requests).where(mask_requests: { id: nil }).find_each(&:destroy)
-# end
-
-# # Purge orphaned blobs
-# ActiveStorage::Blob.unattached.find_each(&:purge)
-# puts "Done!"

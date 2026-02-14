@@ -37,7 +37,8 @@ class ProjectGeneratorService
 
     # Use MODEL_NAME_MAP to get the real model name from the alias
     # Standard Mode -> "gemini-2.5-flash-image"
-    # Pro Mode -> "gemini-3-pro-image-preview" (fallback)
+    # Pro Mode -> "gemini-2.5-flash-image" (fallback)
+    # Note: Sketch transforms use SKETCH_TRANSFORM_MODEL via the Agentic tools, not this service.
     actual_model = MODEL_NAME_MAP[@layer.model] || MODEL_NAME_MAP[MODEL_ALIAS_PRO]
 
     response = fetch_gcp_response(payload, model: actual_model)
