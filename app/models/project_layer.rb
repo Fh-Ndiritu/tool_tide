@@ -16,6 +16,7 @@ class ProjectLayer < ApplicationRecord
 
   has_one_attached :image do |attachable|
     attachable.variant :thumbnail,  resize_to_limit: [ 100, 100 ]
+    attachable.variant :card,  resize_to_limit: [ 600, 600 ]
   end
 
   has_one_attached :mask
