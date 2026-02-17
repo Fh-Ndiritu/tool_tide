@@ -1,5 +1,5 @@
 class PlantingGuideJob < ApplicationJob
-  queue_as :default
+  queue_as :low_priority
 
   def perform(mask_request_id)
     mask_request = MaskRequest.find(mask_request_id)

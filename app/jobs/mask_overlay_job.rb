@@ -1,5 +1,5 @@
 class MaskOverlayJob < ApplicationJob
-  queue_as :default
+  queue_as :generation
 
   def perform(mask_request_id)
     mask_request = MaskRequest.find(mask_request_id)

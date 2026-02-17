@@ -1,5 +1,5 @@
 class SketchAnalysisJob < ApplicationJob
-  queue_as :default
+  queue_as :generation
   retry_on StandardError, attempts: 3
 
   class ImageAnalysisSchema < RubyLLM::Schema

@@ -15,7 +15,7 @@ end
 
 module Agora
   class TrendHunterJob < ApplicationJob
-    queue_as :default
+    queue_as :low_priority
 
     def perform
       # 1. Gather Institutional Truth
