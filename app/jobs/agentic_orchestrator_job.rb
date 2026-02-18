@@ -1,5 +1,5 @@
 class AgenticOrchestratorJob < ApplicationJob
-  queue_as :default
+  queue_as :generation
 
   def perform(project_layer_id, goal, transformation_type, agentic_run_id = nil)
     project_layer = ProjectLayer.find_by(id: project_layer_id)

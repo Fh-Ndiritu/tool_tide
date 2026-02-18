@@ -2,7 +2,7 @@
 
 module Agora
   class RevisionGeneratorJob < ApplicationJob
-    queue_as :default
+    queue_as :low_priority
 
     def perform(post_id)
       post = Agora::Post.find(post_id)

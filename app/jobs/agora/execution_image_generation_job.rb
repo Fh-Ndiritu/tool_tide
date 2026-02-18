@@ -1,6 +1,6 @@
 module Agora
   class ExecutionImageGenerationJob < ApplicationJob
-    queue_as :default
+    queue_as :low_priority
 
     GEMINI_IMAGE_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-pro-image-preview:generateContent".freeze
 

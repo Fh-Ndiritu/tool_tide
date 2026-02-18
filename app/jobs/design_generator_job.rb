@@ -1,5 +1,5 @@
 class DesignGeneratorJob < ApplicationJob
-  queue_as :default
+  queue_as :generation
 
   def perform(id)
     mask_request = MaskRequest.find(id)

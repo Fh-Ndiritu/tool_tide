@@ -57,8 +57,6 @@ env:
     - MISTRAL_API_KEY
     - SENTRY_DSN
     - IPINFO_API_TOKEN
-    - RECAPTCHA_SITE_KEY
-    - RECAPTCHA_SECRET_KEY
     - TELEGRAM_CHAT_ID
     - TELEGRAM_BOT_TOKEN
     - GOOGLE_CLOUD_PROJECT
@@ -78,7 +76,7 @@ env:
     # JOB_CONCURRENCY: 2
 
     # Set number of cores available to the application on each server (default: 1).
-    WEB_CONCURRENCY: 2
+    # WEB_CONCURRENCY: 2
 
     # Match this to any external database server to configure Active Record correctly
     # Use tool_tide-db for a db accessory server on same machine via local kamal docker network.

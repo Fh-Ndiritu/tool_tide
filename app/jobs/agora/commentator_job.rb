@@ -2,7 +2,7 @@
 
 module Agora
   class CommentatorJob < ApplicationJob
-    queue_as :default
+    queue_as :low_priority
 
     def perform(post)
       broadcast_system_status("🗣️ Debating Idea ##{post.id}...")

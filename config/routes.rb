@@ -121,6 +121,7 @@ Rails.application.routes.draw do
     resources :brand_contexts, only: [ :index, :create ] do
       get :download, on: :member
     end
+    resources :opportunities, only: [ :index, :update ]
   end
 
   namespace :admin do

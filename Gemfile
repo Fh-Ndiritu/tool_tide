@@ -94,7 +94,7 @@ gem "kramdown-parser-gfm"
 
 # Bot prevention
 gem "rack-attack"
-gem "recaptcha"
+
 # Framework for creating reusable, testable, & encapsulated view components
 gem "view_component"
 
@@ -108,6 +108,8 @@ gem "faraday-retry", "~> 2.3"
 
 gem "googleauth"
 gem "google-cloud-ai_platform-v1", "~> 1.23.0"
+gem "google-cloud-discovery_engine"
+
 gem "mini_magick", "~> 5.2"
 gem "rdoc", "6.14.2"
 
@@ -141,3 +143,8 @@ gem "faraday-follow_redirects", "~> 0.5.0"
 gem "stripe"
 gem "stripe_event"
 gem "pagy"
+
+gem "google_search_results", "~> 2.2"
+
+gem "httparty", "~> 0.24.2"
+gem "ruby-readability", "~> 0.7.3"

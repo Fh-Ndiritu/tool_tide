@@ -1,6 +1,6 @@
 module Agora
   class FinalPolishJob < ApplicationJob
-    queue_as :default
+    queue_as :low_priority
 
     # Platform-specific aspect ratios (Gemini 3 Pro supported: 1:1, 2:3, 3:2, 3:4, 4:3, 4:5, 5:4, 9:16, 16:9, 21:9)
     PLATFORM_ASPECT_RATIOS = {

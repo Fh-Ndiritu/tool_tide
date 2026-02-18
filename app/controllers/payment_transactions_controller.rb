@@ -49,9 +49,6 @@ class PaymentTransactionsController < AppController
         # Webhook hasn't arrived yet or failed.
         flash[:notice] = "Payment is processing. Credits will appear shortly."
       end
-    else
-      # Spec expects alert for missing transaction
-      flash[:alert] = "Transaction not found"
     end
 
     redirect_to credits_path

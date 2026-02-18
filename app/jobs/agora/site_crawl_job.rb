@@ -2,7 +2,7 @@ require "faraday/follow_redirects"
 
 module Agora
   class SiteCrawlJob < ApplicationJob
-    queue_as :default
+    queue_as :low_priority
 
     # Schema for website summary
     class WebsiteSummarySchema < RubyLLM::Schema

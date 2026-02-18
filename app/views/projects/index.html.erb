@@ -17,7 +17,7 @@
       <%= link_to project_path(project), class: "block bg-gray-800 rounded-lg shadow hover:shadow-md transition-shadow p-4" do %>
         <div class="aspect-video bg-gray-700 rounded mb-4 overflow-hidden relative">
           <% if project.project_layers.first&.image&.attached? %>
-            <%= image_tag project.project_layers.first.image, class: "w-full h-full object-cover" %>
+            <%= image_tag project.project_layers.first.image.variant(:card), class: "w-full h-full object-cover" %>
           <% else %>
             <div class="flex items-center justify-center h-full text-gray-400">
               No Preview

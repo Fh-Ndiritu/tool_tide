@@ -1,7 +1,17 @@
 <nav class="bg-gray-900 border-b border-gray-800">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="w-full px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-16">
       <div class="flex items-center">
+        <!-- New Back Button -->
+        <div class="mr-4 flex-shrink-0">
+          <%= link_to projects_path, class: "text-gray-400 hover:text-white transition-colors flex items-center gap-2", title: "Back to Project Studio" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+            </svg>
+            <span class="hidden md:inline text-sm font-medium">Project Studio</span>
+          <% end %>
+        </div>
+
         <div class="flex-shrink-0 text-white font-bold text-xl tracking-wider">
           AGORA <span class="text-indigo-500 text-xs align-top">CMD</span>
         </div>
@@ -10,6 +20,7 @@
             <%= link_to "Think Tank", agora_dashboard_index_path, class: "text-gray-400 hover:bg-gray-800 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors" %>
             <%= link_to "Trend Radar", agora_trends_path, class: "text-gray-400 hover:bg-gray-800 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors" %>
             <%= link_to "Cockpit", agora_executions_path, class: "text-gray-400 hover:bg-gray-800 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors" %>
+            <%= link_to "Posting Opportunities", agora_opportunities_path, class: "text-gray-400 hover:bg-gray-800 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors" %>
           </div>
         </div>
       </div>

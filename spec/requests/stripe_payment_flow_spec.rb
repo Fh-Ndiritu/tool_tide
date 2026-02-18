@@ -64,14 +64,5 @@ RSpec.describe 'Stripe Payment Flow', type: :request do
         expect(flash[:notice]).to include('processing')
       end
     end
-
-    context 'when transaction is missing' do
-      it 'shows failure message' do
-        get stripe_callback_path(session_id: 'non_existent_id')
-
-        expect(response).to redirect_to(credits_path)
-        expect(flash[:alert]).to include('Transaction not found')
-      end
-    end
   end
 end

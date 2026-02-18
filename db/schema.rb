@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_02_14_142630) do
+ActiveRecord::Schema[8.0].define(version: 2026_02_16_172735) do
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -92,6 +92,16 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_14_142630) do
     t.index ["post_id"], name: "index_agora_comments_on_post_id"
   end
 
+  create_table "agora_draft_responses", force: :cascade do |t|
+    t.integer "agora_opportunity_id", null: false
+    t.text "content"
+    t.string "response_type"
+    t.text "rationale"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["agora_opportunity_id"], name: "index_agora_draft_responses_on_agora_opportunity_id"
+  end
+
   create_table "agora_executions", force: :cascade do |t|
     t.integer "post_id", null: false
     t.string "platform"
@@ -122,6 +132,20 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_14_142630) do
     t.datetime "updated_at", null: false
     t.index ["pattern_type", "confidence"], name: "index_agora_learned_patterns_on_pattern_type_and_confidence"
     t.index ["source_execution_id"], name: "index_agora_learned_patterns_on_source_execution_id"
+  end
+
+  create_table "agora_opportunities", force: :cascade do |t|
+    t.string "url", null: false
+    t.string "platform"
+    t.string "title"
+    t.text "content_snippet"
+    t.datetime "posted_at"
+    t.integer "engagement_score", default: 0
+    t.string "status", default: "pending"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "content"
+    t.index ["url"], name: "index_agora_opportunities_on_url", unique: true
   end
 
   create_table "agora_posts", force: :cascade do |t|
@@ -242,6 +266,28 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_14_142630) do
     t.boolean "liked"
     t.index ["favoritable_type", "favoritable_id"], name: "index_favorites_on_favoritable"
     t.index ["user_id"], name: "index_favorites_on_user_id"
+  end
+
+  create_table "generation_runs", force: :cascade do |t|
+    t.integer "project_layer_id", null: false
+    t.integer "status"
+    t.json "metadata"
+    t.string "generation_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_layer_id"], name: "index_generation_runs_on_project_layer_id"
+  end
+
+  create_table "generation_sessions", force: :cascade do |t|
+    t.integer "project_layer_id", null: false
+    t.integer "status"
+    t.text "analysis_content"
+    t.text "generation_prompt"
+    t.json "process_log"
+    t.decimal "cost"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_layer_id"], name: "index_generation_sessions_on_project_layer_id"
   end
 
   create_table "generation_taggings", force: :cascade do |t|
@@ -418,6 +464,10 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_14_142630) do
     t.string "model", default: "pro_mode"
     t.string "detected_type"
     t.text "original_prompt"
+    t.json "preferences", default: {}
+    t.text "analysis_content"
+    t.text "generation_prompt"
+    t.json "process_log"
     t.index ["ancestry"], name: "index_project_layers_on_ancestry"
     t.index ["auto_fix_id"], name: "index_project_layers_on_auto_fix_id"
     t.index ["design_id"], name: "index_project_layers_on_design_id"
@@ -551,6 +601,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_14_142630) do
   add_foreign_key "agentic_runs", "designs"
   add_foreign_key "agentic_runs", "projects"
   add_foreign_key "agora_comments", "agora_posts", column: "post_id"
+  add_foreign_key "agora_draft_responses", "agora_opportunities"
   add_foreign_key "agora_executions", "agora_posts", column: "post_id"
   add_foreign_key "agora_learned_patterns", "agora_executions", column: "source_execution_id"
   add_foreign_key "auto_fixes", "project_layers"
@@ -561,6 +612,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_14_142630) do
   add_foreign_key "designs", "project_layers", column: "current_project_layer_id"
   add_foreign_key "designs", "projects"
   add_foreign_key "favorites", "users"
+  add_foreign_key "generation_runs", "project_layers"
+  add_foreign_key "generation_sessions", "project_layers"
   add_foreign_key "generation_taggings", "tags"
   add_foreign_key "landscape_requests", "landscapes"
   add_foreign_key "landscapes", "users"

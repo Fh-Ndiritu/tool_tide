@@ -2,7 +2,7 @@
 
 module Agora
   class PitchGeneratorJob < ApplicationJob
-    queue_as :default
+    queue_as :low_priority
 
     def perform
       broadcast_system_status("🧠 Generating Pitch...")

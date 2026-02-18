@@ -1,5 +1,5 @@
 class HnPollJob < ApplicationJob
-  queue_as :default
+  queue_as :low_priority
 
   def perform
     # 1. Record the snapshot

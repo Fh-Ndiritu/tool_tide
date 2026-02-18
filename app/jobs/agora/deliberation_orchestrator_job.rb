@@ -2,7 +2,7 @@
 
 module Agora
   class DeliberationOrchestratorJob < ApplicationJob
-    queue_as :default
+    queue_as :low_priority
 
     # Accept threshold (constant): scores above 60% get accepted
     ACCEPT_THRESHOLD = 60

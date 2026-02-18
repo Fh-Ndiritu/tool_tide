@@ -1,5 +1,5 @@
 class AutoFixDetectionJob < ApplicationJob
-  queue_as :default
+  queue_as :generation
 
   def perform(layer_id)
     layer = ProjectLayer.find_by(id: layer_id)

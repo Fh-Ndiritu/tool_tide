@@ -2,7 +2,7 @@
 
 module Agora
   class VotingJob < ApplicationJob
-    queue_as :default
+    queue_as :low_priority
 
     def perform(votable)
       broadcast_system_status("🗳️ Casting Votes...")

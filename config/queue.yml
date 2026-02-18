@@ -1,20 +1,30 @@
 default: &default
   dispatchers:
     - polling_interval: 1
+    - polling_interval: 1
       batch_size: 500
   workers:
+    # High-priority generation queue (image generation, sketch processing, agentic workflows)
     - queues:
         - generation
-      threads: 2
-      processes: 1
+      threads: 5
+      processes: 2
       polling_interval: 1
 
+    # Default queue for general background jobs
     - queues:
         - default
+      threads: 3
+      processes: 2
+      polling_interval: 2
+
+    # Low priority maintenance tasks
+    - queues:
         - low_priority
-      threads: 2
+      threads: 1
       processes: 1
-      polling_interval: 1
+      polling_interval: 5
+      polling_interval: 5
 
 development:
   <<: *default

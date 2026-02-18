@@ -1,6 +1,6 @@
 module Agora
   class PostMortemJob < ApplicationJob
-    queue_as :default
+    queue_as :low_priority
 
     def perform(execution_id)
       execution = Agora::Execution.find(execution_id)
