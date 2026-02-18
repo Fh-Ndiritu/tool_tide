@@ -94,7 +94,7 @@ gem "kramdown-parser-gfm"
 
 # Bot prevention
 gem "rack-attack"
-gem "recaptcha"
+
 # Framework for creating reusable, testable, & encapsulated view components
 gem "view_component"
 

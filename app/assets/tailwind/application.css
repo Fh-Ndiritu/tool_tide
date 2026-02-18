@@ -623,15 +623,7 @@ input[type='checkbox'] {
   background-color: rgba(0, 172, 193, 0.1); /* Cyan tint */
 }
 
-/* Recaptcha Responsive Scaling */
-@media screen and (max-width: 767px) {
-  .g-recaptcha {
-    transform: scale(0.77);
-    -webkit-transform: scale(0.77);
-    transform-origin: 50% 0;
-    -webkit-transform-origin: 50% 0;
-  }
-}
+
 
 /* Custom Premium Scrollbar - Overrides Global Defaults */
 /* Custom Premium Scrollbar - Overrides Global Defaults */
